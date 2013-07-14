@@ -1,0 +1,20 @@
+`extends base_layout
+`set title:i18n("site.name")
+`def content
+`
+
+`set cssAndJs
+$extendCssAndJs()
+`
+
+`def extendCssAndJs
+`
+
+`set bodyID:"fatherContainer"
+
+`set bodyContent
+<div class="wrapper">
+	$content()
+</div>
+<div style="clear: both;height: 10px;"></div>
+`

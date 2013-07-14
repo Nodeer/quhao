@@ -1,0 +1,44 @@
+# You can specialize this file for each language.
+# For example, for French create a messages.fr file
+#
+
+validation.required=%s is required.
+validation.minSize=Minimum size is %2$d
+validation.maxSize=Maximum size is %2$d
+validation.email=Please input valid email address.
+validation.range=%s length should be %2$d-%3$d
+validation.min=Cannot be lower than %2$d
+validation.max=Cannot be greater than %2$d
+validation.match=Must match %2$s
+validation.isTrue=Must be checked
+validation.equals=Must be equal to &{%2$s}
+validation.invalid=Incorrect value
+validation.future=Must be in the future
+validation.after=Must be after %2$s
+validation.past=Must be in the past
+validation.before=Must be before %2$s
+validation.object=Validation failed
+validation.notFound=Object not found for id %2$s
+validation.url=Not a valid URL
+validation.phone=Not a valid phone
+validation.ipv4=Not a valid IP address
+validation.ipv6=Not a valid IP v6 address
+validation.unique=Must be unique
+validation.alreadyexist=%s already exits
+validation.repeat_password_does_not_equal=Please input same password
+validation.usernameUnmatchPassword=Invalid username/email and password pair
+validation.captcha=Invlide captcha code
+validation.login_failed=Please input valid email address or password
+
+fields.nickname=Username
+fields.password=Password
+fields.email=Email
+fields.repeat_password=Repeat password
+fields.captcha=Captcha code
+fields.username_email=Email or Username
+
+# login form fields:
+login.username=Username or Email
+login.password=Password
+
+site.name=取号啦

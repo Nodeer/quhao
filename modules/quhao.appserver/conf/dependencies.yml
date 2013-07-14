@@ -1,0 +1,9 @@
+# Application dependencies
+
+require:
+    - play
+    - play -> morphia 1.2.9a
+    - play -> japid 0.9.4.3
+    - play -> press 1.0.25
+    - org.apache.poi -> poi 3.9
+    - org.im4java -> im4java 1.4.0

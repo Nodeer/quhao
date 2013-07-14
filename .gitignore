@@ -1,0 +1,13 @@
+# Play generated #
+##################
+log/
+tmp/
+eclipse/
+modules/**/modules/
+test-result/
+
+# Eclipse Files #
+#################
+.settings/
+.project
+.classpath

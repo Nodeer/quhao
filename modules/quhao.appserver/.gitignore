@@ -1,0 +1,20 @@
+# japid created java files
+app/japidviews/*/*.java
+app/japidviews/*/*/*.java
+app/japidviews/*/*/*/*.java
+!app/japidviews/_javatags/*.java
+
+# press created files
+press/
+
+# play deps imported modules
+modules/
+conf/japid-0.9.4.3/
+conf/morphia-1.2.9a/
+conf/press-1.0.25/
+
+japid-0.9.4.3/
+morphia-1.2.9a/
+press-1.0.25/
+
+*.log
