@@ -6,17 +6,9 @@
 
 *		/									module:press
 GET     /                     		  		LandingController.index
-GET		/test								TestFacebook.book					
 
 # Accounts
 GET		/accounts							rsecure.Secure.accounts
-
-# Captcha
-GET		/captcha/{key}/.*					CaptchaController.captcha
-
-# School
-
-*		/page/{uniqueID}					SchoolController.page_more_info
 
 # Login / Logout
 GET     /login                      		rsecure.Secure.login

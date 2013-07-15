@@ -6,7 +6,7 @@ public class Constants {
 		IOS, ANDROID
 	}
 
-	public static String COOKIE_USERNAME = null;
+	public static String COOKIE_USERNAME = "quhao_username";
 
-	public static String SESSION_USERNAME;
+	public static String SESSION_USERNAME = "quhao_username";
 }

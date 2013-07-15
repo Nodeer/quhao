@@ -34,7 +34,7 @@ import com.withiter.models.account.Account;
 
 public class Secure extends JapidController {
 
-	@Before(unless = { "login", "authenticate", "logout", "resetpwd", "resetPasswordByEmail", "resetPassword", "signup", "signupresult", "resentEmail", "enable", "setPassWord", "enableUser" })
+//	@Before(unless = { "login", "authenticate", "logout", "resetpwd", "resetPasswordByEmail", "resetPassword", "signup", "signupresult", "resentEmail", "enable", "setPassWord", "enableUser" })
 	static void checkAccess() {
 		if (!session.contains(Constants.SESSION_USERNAME)) {
 			flash.put("url", "GET".equals(request.method) ? request.url : "/");
@@ -64,27 +64,14 @@ public class Secure extends JapidController {
 
 	public static void login() {
 		Http.Cookie username = request.cookies.get(Constants.COOKIE_USERNAME);
-		// TODO: Maybe we should add encryption for cookie. By Dong Zhao
-		// 20130402
 		if (username != null) {
 			if (session.contains(Constants.COOKIE_USERNAME)) {
 				redirectToOriginalURL();
 			}
 		}
-		/*
-		 * Http.Cookie remember = request.cookies.get("rememberme"); if
-		 * (remember != null && remember.value.indexOf("-") > 0) { String sign =
-		 * remember.value.substring(0, remember.value.indexOf("-")); String
-		 * userid = remember.value.substring(remember.value.indexOf("-") + 1);
-		 * if (Crypto.sign(userid).equals(sign)) { session.put("userid",
-		 * userid); redirectToOriginalURL(); } }
-		 */
 		flash.keep("url");
-		flash.keep("commentRid");
-		// renderJapid("");
-		LoginPageVO lpVO = new LoginPageVO("", "");
-		redirect("/");
-		//renderJapidWith("japidviews.rsecure.Secure.login", lpVO);
+		renderJapid();
+//		redirect("/");
 	}
 
 	public static void authenticate(@Required Account account, String checkpassword) {
