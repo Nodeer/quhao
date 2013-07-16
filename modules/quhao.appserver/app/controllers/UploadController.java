@@ -15,13 +15,7 @@ import com.withiter.common.ContentType;
 public class UploadController extends BaseController {
 	private static String FILE_SHOP = "FileShop";
 
-	public static void upload4Home() {
-		GridFSInputFile file = uploadFirst("image");
-		String title = params.get("title");
-		String content = params.get("content");
-		redirect("/home");
-	}
-	
+	@SuppressWarnings("unused")
 	private static GridFSInputFile uploadFirst(String param) {
 		GridFSInputFile gfsFile = null;
 		File[] files = params.get(param, File[].class);
