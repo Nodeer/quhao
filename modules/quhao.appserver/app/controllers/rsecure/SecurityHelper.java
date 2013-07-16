@@ -13,7 +13,7 @@ public class SecurityHelper {
 	public static Account user() {
 		Account a = (Account) RenderArgs.current().get("user");
 		if (a == null && Secure.Security.isConnected()) {
-			a = Account.findUserByUserEmail(Session.current().get(Constants.SESSION_USERNAME));
+			a = Account.findByEmail(Session.current().get(Constants.SESSION_USERNAME));
 			if (a != null) {
 				RenderArgs.current().put("user", a);
 			}

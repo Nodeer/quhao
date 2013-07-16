@@ -9,51 +9,17 @@ GET     /                     		  		LandingController.index
 
 # Accounts
 GET		/accounts							rsecure.Secure.accounts
+GET		/signup								AccountController.signup
+GET		/login								AccountController.login
 
 # Login / Logout
-GET     /login                      		rsecure.Secure.login
-POST    /login                        		rsecure.Secure.authenticate
-GET     /logout                       		rsecure.Secure.logout
-POST    /logout                       		rsecure.Secure.logout
 GET		/resetpwd					  		rsecure.Secure.resetpwd
 POST	/resetpwd					  		rsecure.Secure.resetpwd
-GET		/AccountController/resetpwd	  		rsecure.Secure.resetpwd
-POST	/AccountController/resetpwd	  		rsecure.Secure.resetpwd
 GET		/resetpasswordbyemail		  		rsecure.Secure.resetPasswordByEmail
-GET  	/AccountController/settings			rsecure.Secure.settings
 POST	/resetpasswordbyemail		  		rsecure.Secure.resetPasswordByEmail
-GET		/accountcontroller/resetPassword	rsecure.Secure.resetPassword
-POST	/accountcontroller/resetPassword	rsecure.Secure.resetPassword
-GET		/accountcontroller/signup			rsecure.Secure.signup
-POST	/accountcontroller/signup			rsecure.Secure.signup
-GET		/accountcontroller/signupresult		rsecure.Secure.signupresult
-POST	/accountcontroller/signupresult		rsecure.Secure.signupresult
-GET		/accountcontroller/resentEmail		rsecure.Secure.resentEmail
-POST	/accountcontroller/resentEmail		rsecure.Secure.resentEmail
-GET		/AccountController/enable		  	rsecure.Secure.enable
-POST	/AccountController/enable			rsecure.Secure.enable
-POST 	/accountcontroller/updatePassword	rsecure.Secure.updatePassword
-POST    /AccountController/editProfile		rsecure.Secure.editProfile
-GET		/AccountController/enableUser		rsecure.Secure.enableUser
-POST	/AccountController/enableUser		rsecure.Secure.enableUser
-GET     /AccountController/SetPassWord      rsecure.Secure.setPassWord
-POST    /AccountController/SetPassWord      rsecure.Secure.setPassWord
 GET     /home        			      		HomeController.home
-GET		/tags 								TagsController.list
 
 # Sign-up
-GET		/facebook.js				  		FacebookController.facebook
-GET		/facebookcontroller/signupfb		FacebookController.signupfb
-GET    	/dropbox.js                         DropboxController.script
-GET 	/evernote/auth 						EvernoteController.auth
-GET 	/evernote/callback 					EvernoteController.callback
-GET 	/evernote/notebooks 				EvernoteController.notebooks
-GET 	/evernote/notebooks/{guid}/notes 	EvernoteController.notes
-POST 	/evernote/import/{noteGuid} 		EvernoteController.importNote
-GET 	/gdrive/auth 						GoogleDriveController.auth
-GET 	/gdrive/callback 					GoogleDriveController.callback
-GET 	/gdrive/import/{id} 				GoogleDriveController.importDoc
-POST 	/gdrive/import/{id}					GoogleDriveController.importDoc
 *		/p/{action}							Patches.{action}
 GET		/p        							Patches.index
 
@@ -62,27 +28,6 @@ GET     /favicon.ico                        staticFile:public/images/applyful_fa
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                            staticDir:public
-
-# Management
-GET		/m/users							SimpleUserManagement.listUser	
-
-#Onboarding
-*		/onboarding/{action}				OnboardingController.{action}
-
-# SearchResult
-*		/SearchResult						SearchResultController.searchResult
-
-# AccountList
-*		/AccountList						AccountListController.accountList
-
-#TEST
-*		/PartnerInvitationTest				PartnerInvitationTestController.partnerInvitationTest
-
-#Console
-*		/Console							ConsoleController.console
-
-#APIs
-*		/api/school/{action}				api.SchoolAPI.{action}
 
 #Image
 *		/imgs								ImageController.loadImage

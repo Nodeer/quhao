@@ -17,6 +17,8 @@ import play.libs.Codec;
 import play.modules.morphia.Model.MorphiaQuery;
 import play.modules.morphia.Model.NoAutoTimestamp;
 
+import cn.bran.japid.util.StringUtils;
+
 import com.withiter.common.Constants;
 import com.withiter.common.ContentType;
 import com.google.code.morphia.annotations.Entity;
@@ -43,79 +45,67 @@ public class Account extends AccountEntityDef {
 		return "";
 	}
 
-	
-	public String newValidate(){
-		Account account=Account.find("email", email).first();
-		Validation.min("E-mail: at least 6 chars.", email.length(), 6);
-		Validation.max("E-mail: at most 40 chars.", email.length(), 40);
-		Validation.email("E-mail: Invalid e-mail address.", email);
-		if (Validation.hasErrors()) {
-			return Validation.errors().get(0).getKey();
-		}
-		synchronized (Account.class) {
-			if (Account.filter("email", email).count() > 0) {
-				if(account.isFinishedOnboarding){
-					Validation.addError("E-mail: e-mail address exists.",
-							I18nKeys.V_ALREADY_EXISTS);
-				}else return null;
-				
-			}
-
-			if (Validation.hasErrors()) {
-				return Validation.errors().get(0).getKey();
-			} else {
-				create();
-			}
-		}
-		return null;
-	}
 	/**
 	 * @author Cross
 	 * @return
 	 */
-	public String validate() {
-		firstName = firstName.trim();
-		lastName = lastName.trim();
-		email = email.trim().toLowerCase();
-		password = password.trim();
-		location = location.trim();
+	public String validateThenCreate() {
+		phone = this.phone.trim().toLowerCase();
+		email = this.email.trim().toLowerCase();
+		password = this.password.trim();
 
-		Validation.min("First Name: at least 2 chars.", firstName.length(), 2);
-		Validation.max("First Name: at most 20 chars.", firstName.length(), 20);
-
-		Validation.min("Last Name: at least 2 chars.", lastName.length(), 2);
-		Validation.max("Last Name: at most 20 chars.", lastName.length(), 20);
-
-		Validation.min("E-mail: at least 6 chars.", email.length(), 6);
-		Validation.max("E-mail: at most 40 chars.", email.length(), 40);
-		Validation.email("E-mail: Invalid e-mail address.", email);
-
-		//Validation.min("Passowrd: at least 6 chars.", password.length(), 6);
-		//Validation.max("Password: at most 12 chars.", password.length(), 12);
-
-		//password = Codec.hexSHA1(password);
+		if(!StringUtils.isEmpty(phone)){
+			Validation.phone("Invalid phone number", phone);
+			if(phone.length() != 11){
+				Validation.addError("Invalid phone number","Invalid phone number");
+			}
+		}
+		if(!StringUtils.isEmpty(email)){
+			Validation.email("Invalid email address", email);
+		}
+		if(!StringUtils.isEmpty(password)){
+			Validation.min("At least 6 length", password.length(), 6);
+			Validation.max("At most 20 length", password.length(), 20);
+		}
 
 		if (Validation.hasErrors()) {
 			return Validation.errors().get(0).getKey();
 		}
 
 		synchronized (Account.class) {
-			if (Account.filter("email", email).count() > 0) {
-				Validation.addError("E-mail: e-mail address exists.",
-						I18nKeys.V_ALREADY_EXISTS);
+			if(!StringUtils.isEmpty(phone)){
+				if (Account.filter("phone", phone).count() > 0) {
+					Validation.addError("phone exists.",
+							I18nKeys.V_ALREADY_EXISTS);
+				}
 			}
-
+			if(!StringUtils.isEmpty(email)){
+				if (Account.filter("email", email).count() > 0) {
+					Validation.addError("email exists.",
+							I18nKeys.V_ALREADY_EXISTS);
+				}
+			}
+			
 			if (Validation.hasErrors()) {
 				return Validation.errors().get(0).getKey();
 			} else {
+				this.password = Codec.hexSHA1(password);
 				create();
 			}
 		}
 		return null;
 	}
 
-	public static Account findUserByUserEmail(String email) {
+	public static Account findByEmail(String email) {
 		Account account = Account.q().filter("email", email).first();
+		if (account == null) {
+			return null;
+		}
+		return account;
+	}
+	
+	public static Account findByPhone(String phone) {
+		Account account = Account.q().filter("phone", phone).first();
 		if (account == null) {
 			return null;
 		}
@@ -193,16 +183,10 @@ public class Account extends AccountEntityDef {
 		return getFile("UserImage", account.id());
 	}
 
-	/**
-	 * @author Cross
-	 * @param account
-	 * @param oldpassword
-	 * @return
-	 */
-	public static boolean validatePassword(Account account, String oldpassword) {
+	public boolean validatePassword(String password) {
 		boolean flag = false;
-		String hexedOldPwd = Codec.hexSHA1(oldpassword);
-		if (account.password.equals(hexedOldPwd)) {
+		String hexedPwd = Codec.hexSHA1(password);
+		if (this.password.equals(hexedPwd)) {
 			flag = true;
 		}
 		return flag;
@@ -218,18 +202,16 @@ public class Account extends AccountEntityDef {
 		account.save();
 	}
 
-	public String displayName() {
-		return this.firstName + " " + this.lastName;
-	}
-
 	/**
 	 * get register and disabled accounts
+	 * 
 	 * @author Cross
 	 * @return
 	 */
-	public static List<Account> getUnenabledAccounts(){
+	public static List<Account> getUnenabledAccounts() {
 		MorphiaQuery q = Account.q();
 		q.filter("enable", false);
 		return q.asList();
 	}
+	
 }

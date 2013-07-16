@@ -2,34 +2,23 @@ package controllers.rsecure;
 
 import java.io.File;
 import java.io.InputStream;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-
-import notifiers.MailsController;
-import play.Play;
 import play.data.validation.Required;
 import play.data.validation.Validation;
 import play.libs.Codec;
 import play.libs.Crypto;
 import play.modules.morphia.Model.MorphiaQuery;
-import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Http.Request;
 import vo.account.EditProfilePageVO;
-import vo.account.LoginPageVO;
+import vo.account.LoginVO;
 import cn.bran.play.JapidController;
 
 import com.withiter.common.Constants;
-import com.withiter.utils.DesUtils;
 import com.withiter.models.account.Account;
+import com.withiter.utils.DesUtils;
 
 
 public class Secure extends JapidController {
@@ -75,23 +64,6 @@ public class Secure extends JapidController {
 	}
 
 	public static void authenticate(@Required Account account, String checkpassword) {
-		LoginPageVO lpVO = login(account, checkpassword);
-		if (lpVO != null) {
-			flash.keep("url");
-			params.flash(); 	
-			renderJSON(lpVO);
-			return;
-		}else{
-			lpVO=new LoginPageVO();
-			lpVO.errorText="ok";
-		}
-		//renderJapidWith("japidviews.rsecure.Secure.login", lpVO);
-
-		Account user = SecurityHelper.user();
-		user.lastLogin = new Date();
-		user.save();
-		renderJSON(lpVO);
-		//redirectToOriginalURL();
 	}
 
 	public static void logout() {
@@ -139,30 +111,6 @@ public class Secure extends JapidController {
 	 * @param partnerId
 	 */
 	public static void setPassWord(String password, String code, String date, String partnerId) {
-		if (null != code && !"".equals(code)) {
-			try {
-				DesUtils des = new DesUtils();
-				String email = des.decrypt(code);
-				Account account = Account.findUserByUserEmail(email);
-				if (account != null) {
-					account.password = Codec.hexSHA1(password);
-					account.saveModel();
-
-					if (account.username != null && !"".equals(account.username)) {
-						session.put(Constants.SESSION_USERNAME, account.username);
-						response.setCookie(Constants.COOKIE_USERNAME, account.username);
-					} else {
-						session.put(Constants.SESSION_USERNAME, account.email);
-						response.setCookie(Constants.COOKIE_USERNAME, account.email);
-					}
-
-					String path = "/AccountController/enableUser?code=" + code + "&date=" + date + "&partnerId=" + partnerId;
-					redirect(path);
-				}
-			} catch (Exception e) {
-			}
-		}
-		renderJapidWith("AccountController/setpassword", code, date, partnerId);
 	}
 
 
@@ -253,58 +201,8 @@ public class Secure extends JapidController {
 		}
 	}
 
-	public static LoginPageVO login(Account account, String checkpassword) {
-		String errorTip = "invalid";
-		LoginPageVO lpVO = new LoginPageVO();
-		if (account.email == null || "".equals(account.email)) {
-			lpVO.errorField = "email";
-			lpVO.errorText = "Please enter a valid e-mail address.";
-			// renderJapidWith("japidviews.rsecure.Secure.login", lpVO);
-			return lpVO;
-		}
-
-		Validation.email(errorTip, account.email);
-		if (Validation.hasErrors()) {
-			lpVO.errorField = "email";
-			lpVO.errorText = "Please enter a valid e-mail address.";
-			// renderJapidWith("japidviews.rsecure.Secure.login", lpVO);
-			return lpVO;
-		}
-
-		Account accountForLogin = new Account();
-		String loginResult = null;
-		loginResult = accountForLogin.login(account.email, account.password);
-		if (loginResult == null) {
-			Account a=Account.find("email", account.email).first();
-			if(!a.isFinishedOnboarding){
-				lpVO.errorText="Registration is not complete";
-				return lpVO;
-			}
-			if (account.username == null || "".equals(account.username)) {
-				session.put(Constants.SESSION_USERNAME, account.email);
-				response.setCookie(Constants.COOKIE_USERNAME, account.email);
-			} else {
-				session.put(Constants.SESSION_USERNAME, account.username);
-				response.setCookie(Constants.COOKIE_USERNAME, account.username);
-			}
-			// redirect("/home");
-			flash.put("url", "/home");
-			return null;
-		} else {
-			if (loginResult.equals("notenabled")) {
-				lpVO.errorField = "notenabled";
-				lpVO.errorText = account.email;
-//				SignupPageVO spVO = new SignupPageVO();
-//				spVO.email = account.email;
-//				spVO.enable = PartnerInvitation.isPartnerSignedUp(account.email);
-				//renderJapidWith("japidviews.AccountController.signupresult", spVO);
-			} else {
-				lpVO.errorField = "password";
-				lpVO.errorText = "Invalide email address or password.";
-			}
-			// renderJapidWith("japidviews.rsecure.Secure.login", lpVO);
-			return lpVO;
-		}
+	public static LoginVO login(Account account, String checkpassword) {
+		return null;
 	}
 	/**
 	 * Get user's profile and redirect to settings page
@@ -319,7 +217,7 @@ public class Secure extends JapidController {
 	}
 	public static void showUserImage() {
 		String email = session.get(Constants.SESSION_USERNAME);
-		Account currentAccount = Account.findUserByUserEmail(email);
+		Account currentAccount = Account.findByEmail(email);
 		InputStream is = Account.getUserImage(currentAccount);
 		renderBinary(is);
 	}
@@ -327,7 +225,7 @@ public class Secure extends JapidController {
 	public static void showUserImageForEmail(String email) {
 		// TXC
 		// System.out.println(email);
-		Account currentAccount = Account.findUserByUserEmail(email);
+		Account currentAccount = Account.findByEmail(email);
 		InputStream is = Account.getUserImage(currentAccount);
 		renderBinary(is);
 	}
@@ -342,9 +240,9 @@ public class Secure extends JapidController {
 		EditProfilePageVO eppVO = new EditProfilePageVO();
 
 		String email = session.get(Constants.SESSION_USERNAME);
-		Account account = Account.findUserByUserEmail(email);
+		Account account = Account.findByEmail(email);
 
-		if (!Account.validatePassword(account, oldpassword)) {
+		if (!account.validatePassword(oldpassword)) {
 			eppVO.errorKey = "old";
 			eppVO.errorText = "Your old password is incorrect!";
 			renderJSON(eppVO);
