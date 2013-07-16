@@ -9,7 +9,7 @@ import play.modules.morphia.Model.MorphiaQuery;
 import com.withiter.models.BaseModel;
 
 public abstract class OnetimePatch extends BaseModel {
-	public boolean	isExecuted;
+	public boolean isExecuted;
 
 	public static void registerAllOnetimePatch() {
 		for (Class c : Play.classloader.getAllClasses()) {
@@ -47,7 +47,8 @@ public abstract class OnetimePatch extends BaseModel {
 	public abstract void run() throws Exception;
 
 	public static void executeAll() {
-		List<OnetimePatch> patches = OnetimePatch.filter("isExecuted", false).asList();
+		List<OnetimePatch> patches = OnetimePatch.filter("isExecuted", false)
+				.asList();
 		for (OnetimePatch patch : patches) {
 			patch.execute();
 		}

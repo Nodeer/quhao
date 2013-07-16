@@ -2,21 +2,15 @@ package controllers;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import org.bson.types.ObjectId;
 
 import play.modules.morphia.Model.MorphiaQuery;
 
-import com.withiter.common.Constants;
-import com.withiter.common.ContentType;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSInputFile;
-import com.withiter.models.account.Account;
-
-import controllers.rsecure.Secure;
-import controllers.rsecure.SecurityHelper;
+import com.withiter.common.ContentType;
 
 public class UploadController extends BaseController {
 	private static String FILE_SHOP = "FileShop";
@@ -53,7 +47,7 @@ public class UploadController extends BaseController {
 		String suffix = fName.replaceFirst("^.*\\.", ".");
 		gfsFile.setContentType(ContentType.get(suffix));
 		gfsFile.put("ext", suffix);
-		gfsFile.put("aliases", SecurityHelper.user().getId());
+		// gfsFile.put("aliases", SecurityHelper.user().getId());
 		// gfsFile.put("filename", SecurityHelper.user().getId());
 		gfsFile.save();
 		return gfsFile;

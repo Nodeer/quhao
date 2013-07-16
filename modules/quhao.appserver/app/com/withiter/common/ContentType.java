@@ -6,8 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class ContentType {
-	
-	
+
 	private static Map<String, String> holder = new HashMap<String, String>();
 	public static Set<String> images = new HashSet<String>();
 	public static Set<String> audios = new HashSet<String>();
@@ -34,7 +33,7 @@ public class ContentType {
 		audios.add(".mid");
 		audios.add(".mka");
 		audios.add(".wv");
-		
+
 		videos.add(".avi");
 		videos.add(".wmv");
 		videos.add(".flv");
@@ -47,7 +46,7 @@ public class ContentType {
 		videos.add(".rmvb");
 		videos.add(".ts");
 		videos.add(".swf");
-		
+
 		holder.put(".*", "application/octet-stream");
 		holder.put(".001", "application/x-001");
 		holder.put(".301", "application/x-301");
@@ -159,7 +158,6 @@ public class ContentType {
 		holder.put(".jpe", "application/x-jpe");
 		holder.put(".jpeg", "image/jpeg");
 		holder.put(".jpg", "image/jpeg");
-		//holder.put(".jpg", "application/x-jpg");
 		holder.put(".js", "application/x-javascript");
 		holder.put(".jsp", "text/html");
 		holder.put(".la1", "audio/x-liquid-file");
@@ -238,7 +236,6 @@ public class ContentType {
 		holder.put(".pls", "audio/scpls");
 		holder.put(".plt", "application/x-plt");
 		holder.put(".png", "image/png");
-		//holder.put(".png", "application/x-png");
 		holder.put(".pot", "applications-powerpoint");
 		holder.put(".ppa", "application/vs-powerpoint");
 		holder.put(".ppm", "application/x-ppm");

@@ -12,8 +12,10 @@ public class IdTools {
 	public static <T extends Model> Long generateLongId(Class c) {
 		String idName = c.getCanonicalName();
 		Query q = MorphiaPlugin.ds().find(LongIdEntity.class, "_id", idName);
-		UpdateOperations uOps = MorphiaPlugin.ds().createUpdateOperations(LongIdEntity.class).inc("value");
-		LongIdEntity newId = (LongIdEntity) MorphiaPlugin.ds().findAndModify(q, uOps);
+		UpdateOperations uOps = MorphiaPlugin.ds()
+				.createUpdateOperations(LongIdEntity.class).inc("value");
+		LongIdEntity newId = (LongIdEntity) MorphiaPlugin.ds().findAndModify(q,
+				uOps);
 		if (newId == null) {
 			newId = new LongIdEntity(idName);
 			MorphiaPlugin.ds().save(newId);
@@ -22,7 +24,8 @@ public class IdTools {
 	}
 
 	public static void resetAllIds() {
-		MorphiaPlugin.ds().delete(MorphiaPlugin.ds().createQuery(LongIdEntity.class));
+		MorphiaPlugin.ds().delete(
+				MorphiaPlugin.ds().createQuery(LongIdEntity.class));
 	}
 
 	@Entity(value = "ids", noClassnameStored = true)

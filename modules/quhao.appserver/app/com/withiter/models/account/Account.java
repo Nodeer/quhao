@@ -32,38 +32,22 @@ import com.mongodb.gridfs.GridFSInputFile;
 @NoAutoTimestamp
 public class Account extends AccountEntityDef {
 
-	public void signUp(String repeatPassword) {
-	}
-
-	/**
-	 * @author Cross
-	 * @param loginemail
-	 * @param loginpassword
-	 * @return
-	 */
-	public String login(String loginemail, String loginpassword) {
-		return "";
-	}
-
-	/**
-	 * @author Cross
-	 * @return
-	 */
 	public String validateThenCreate() {
 		phone = this.phone.trim().toLowerCase();
 		email = this.email.trim().toLowerCase();
 		password = this.password.trim();
 
-		if(!StringUtils.isEmpty(phone)){
+		if (!StringUtils.isEmpty(phone)) {
 			Validation.phone("Invalid phone number", phone);
-			if(phone.length() != 11){
-				Validation.addError("Invalid phone number","Invalid phone number");
+			if (phone.length() != 11) {
+				Validation.addError("Invalid phone number",
+						"Invalid phone number");
 			}
 		}
-		if(!StringUtils.isEmpty(email)){
+		if (!StringUtils.isEmpty(email)) {
 			Validation.email("Invalid email address", email);
 		}
-		if(!StringUtils.isEmpty(password)){
+		if (!StringUtils.isEmpty(password)) {
 			Validation.min("At least 6 length", password.length(), 6);
 			Validation.max("At most 20 length", password.length(), 20);
 		}
@@ -73,19 +57,19 @@ public class Account extends AccountEntityDef {
 		}
 
 		synchronized (Account.class) {
-			if(!StringUtils.isEmpty(phone)){
+			if (!StringUtils.isEmpty(phone)) {
 				if (Account.filter("phone", phone).count() > 0) {
 					Validation.addError("phone exists.",
 							I18nKeys.V_ALREADY_EXISTS);
 				}
 			}
-			if(!StringUtils.isEmpty(email)){
+			if (!StringUtils.isEmpty(email)) {
 				if (Account.filter("email", email).count() > 0) {
 					Validation.addError("email exists.",
 							I18nKeys.V_ALREADY_EXISTS);
 				}
 			}
-			
+
 			if (Validation.hasErrors()) {
 				return Validation.errors().get(0).getKey();
 			} else {
@@ -103,7 +87,7 @@ public class Account extends AccountEntityDef {
 		}
 		return account;
 	}
-	
+
 	public static Account findByPhone(String phone) {
 		Account account = Account.q().filter("phone", phone).first();
 		if (account == null) {
@@ -213,5 +197,5 @@ public class Account extends AccountEntityDef {
 		q.filter("enable", false);
 		return q.asList();
 	}
-	
+
 }
