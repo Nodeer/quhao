@@ -3,28 +3,28 @@
 # ~~~~
 
 # Press
-
 *		/									module:press
+
+# Ignore favicon request
+GET     /favicon.ico                        staticFile:public/images/applyful_favicon.gif
+
 GET     /                     		  		LandingController.index
+
+# Routes for Android & IOS clients
+# Routes for Android & IOS clients
+
+# Category
+GET		/allCategories						MerchantController.allCategories
 
 # Accounts
 GET		/accounts							rsecure.Secure.accounts
 GET		/signup								AccountController.signup
 GET		/login								AccountController.login
 
-# Login / Logout
-GET		/resetpwd					  		rsecure.Secure.resetpwd
-POST	/resetpwd					  		rsecure.Secure.resetpwd
-GET		/resetpasswordbyemail		  		rsecure.Secure.resetPasswordByEmail
-POST	/resetpasswordbyemail		  		rsecure.Secure.resetPasswordByEmail
-GET     /home        			      		HomeController.home
-
-# Sign-up
+# Patch
 *		/p/{action}							Patches.{action}
 GET		/p        							Patches.index
 
-# Ignore favicon requests
-GET     /favicon.ico                        staticFile:public/images/applyful_favicon.gif
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                            staticDir:public
