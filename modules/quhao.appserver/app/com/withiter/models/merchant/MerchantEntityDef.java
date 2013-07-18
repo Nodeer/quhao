@@ -22,13 +22,15 @@ public abstract class MerchantEntityDef extends BaseModel {
 	
 	public String grade = "";
 	public String averageCost = "";
+	public List<String> tags = null;
 	
 	public int kouwei;
 	public int huanjing;
 	public int fuwu;
+	public int xingjiabi;;
 	
 	@Reference
-	public List<Tese> teses; 
+	public List<Tese> teses;
 	public String nickName;
 	public String description;
 	public Date openTime;

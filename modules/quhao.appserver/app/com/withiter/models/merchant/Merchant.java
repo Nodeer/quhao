@@ -12,6 +12,5 @@ public class Merchant extends MerchantEntityDef {
 		q.filter("cateType", cateType);
 		return q.asList();
 	}
-	
-	
+
 }
