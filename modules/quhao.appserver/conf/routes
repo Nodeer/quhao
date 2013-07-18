@@ -16,6 +16,9 @@ GET     /                     		  		LandingController.index
 # Category
 GET		/allCategories						MerchantController.allCategories
 
+# Category
+GET		/merchantByCategory					MerchantController.merchantByCategory
+
 # Accounts
 GET		/accounts							rsecure.Secure.accounts
 GET		/signup								AccountController.signup
