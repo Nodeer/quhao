@@ -60,9 +60,9 @@ public class ParserTest {
 		Connection conn = Jsoup.connect(url);
 		conn.timeout(0);
 		Document doc = conn.get();
-		doc.html().replaceAll("&lt;", "<");
-		doc.html().replaceAll("&gt;", ">");
-		doc.html().replaceAll("&quot;", "\"");
+		doc.html().replaceAll("\\&lt;", "<");
+		doc.html().replaceAll("\\&gt;", ">");
+		doc.html().replaceAll("\\&quot;", "\"");
 		System.out.println(doc.html());
 		
 		
