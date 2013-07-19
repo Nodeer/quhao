@@ -6,6 +6,6 @@ import com.withiter.models.BaseModel;
 public abstract class CategoryEntityDef extends BaseModel {
 
 	public int count = 0;
-	public CateType cateType;
+	public String cateType;
 	
 }

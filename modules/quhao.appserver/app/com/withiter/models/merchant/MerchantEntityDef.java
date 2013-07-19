@@ -33,8 +33,8 @@ public abstract class MerchantEntityDef extends BaseModel {
 	public List<Tese> teses;
 	public String nickName;
 	public String description;
-	public Date openTime;
-	public Date closeTime;	
+	public String openTime;
+	public String closeTime;	
 	public int markedCount;
 	public boolean enable = false;
 	public Date joinedDate = new Date();

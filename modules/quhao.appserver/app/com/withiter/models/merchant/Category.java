@@ -18,7 +18,7 @@ public class Category extends CategoryEntityDef {
 		return q.asList();
 	}
 	
-	public Category(CateType cateType, int count){
+	public Category(String cateType, int count){
 		this.cateType = cateType;
 		this.count = count;
 	}
