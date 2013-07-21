@@ -16,7 +16,7 @@ public abstract class MerchantEntityDef extends BaseModel {
 	@Indexed
 	public String address = "";
 	@Indexed
-	public String[] telephone;
+	public String[] telephone = {""};
 
 	public CateType cateType;
 	

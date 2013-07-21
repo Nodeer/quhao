@@ -15,8 +15,16 @@ public class Merchant extends MerchantEntityDef {
 
 	@Override
 	public String toString() {
+		String telStr = "";
+		if(this.telephone != null){
+			StringBuffer sb = new StringBuffer();
+			for(int i = 0; i < this.telephone.length; i++){
+			 sb. append(telephone[i]);
+			}
+			telStr = sb.toString();
+		}
 		return "[this.name:" + this.name + "],[this.address：" + this.address
-				+ "],[this.telephone：" + this.telephone[0]
+				+ "],[this.telephone：" + telStr
 				+ "],[this.averageCost：" + this.averageCost
 				+ "],[this.openTime：" + this.openTime + "],[this.closeTime："
 				+ this.closeTime + "],[this.description：" + this.description

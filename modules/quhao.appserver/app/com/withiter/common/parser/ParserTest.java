@@ -1,5 +1,8 @@
 package com.withiter.common.parser;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,12 +38,13 @@ public class ParserTest {
 
 	// proxy configuration
 	static {
-		System.getProperties().setProperty("proxySet", "true");
-		System.getProperties().setProperty("http.proxyHost", "www-proxy.ericsson.se");
-		System.getProperties().setProperty("http.proxyPort", "8080");
+//		System.getProperties().setProperty("proxySet", "true");
+//		System.getProperties().setProperty("http.proxyHost", "www-proxy.ericsson.se");
+//		System.getProperties().setProperty("http.proxyPort", "8080");
 	}
 
 	private static void mainListPage(String url) throws IOException, InterruptedException{
+		logger.info(ParserTest.class.getName()+": mainListPage start");
 		Connection conn = Jsoup.connect(url);
 		conn.timeout(60000);
 		Document doc = conn.get();
@@ -51,34 +55,26 @@ public class ParserTest {
 			Elements list = allCategories.get(0).getElementsByAttributeValue("class", "list");
 			if(checkElementsSize(allCategories)){
 				Elements allList = list.first().children();
-				logger.info(ParserTest.class.getName()+"All categories url start");
+				logger.info(ParserTest.class.getName()+": All categories url start");
 				for(Element e : allList){
 					String menuUrl = e.children().first().attr("href");
 					menuList.add(menuUrl);
 					logger.info(menuUrl);
 				}
-				logger.info(ParserTest.class.getName()+"All categories url end");
+				logger.info(ParserTest.class.getName()+": All categories url end");
 			}
 		}
 		
-		for(String menuUrl : menuList){
-			categoryPage(menuUrl);
-		}
+		Element e2 = allCategories.get(0).child(1);
+		categoryPage(menuList.get(0), e2);
+		logger.info(ParserTest.class.getName()+": mainListPage end");
 	}
 	
-	private static void categoryPage(String url) throws IOException, InterruptedException {
-		Connection conn = Jsoup.connect(url);
-		conn.timeout(60000);
-		Document doc = conn.get();
-		
-		Elements cateTypes = doc.select("div[class=repast list_nav]");
-
-//		Element e1 = cateTypes.get(0).child(0);
-		Element e2 = cateTypes.get(0).child(1);
-
+	private static void categoryPage(String url, Element e) throws IOException, InterruptedException {
+		Element e2 = e;
 		Elements e22 = e2.children();
+		
 		for (Element node : e22) {
-			// System.out.println(node.text());
 			String cateAndNumberStr = node.text();
 			Matcher cateAndNumberMatcher = cateAndNumberPattern.matcher(cateAndNumberStr);
 			Category category = null;
@@ -94,14 +90,41 @@ public class ParserTest {
 				System.out.println(number);
 			}
 
+			if(cate.equalsIgnoreCase("本帮菜")||cate.equalsIgnoreCase("中餐菜系")||cate.equalsIgnoreCase("火锅")
+					||cate.equalsIgnoreCase("西餐")||cate.equalsIgnoreCase("韩国料理")||cate.equalsIgnoreCase("粤菜馆")
+					||cate.equalsIgnoreCase("日本料理")||cate.equalsIgnoreCase("面包蛋糕")||cate.equalsIgnoreCase("甜品饮品")
+					||cate.equalsIgnoreCase("湘菜")||cate.equalsIgnoreCase("小吃快餐")){
+				continue;
+			}
+			
 			int pages = (number % 10) != 0 ? (number / 10) + 1 : (number / 10);
 			System.out.println("pages : " + pages);
+			pages = (pages > 100) ? 100 : pages;
+			System.out.println("pages : " + pages);
 
+			// write into file
+			File f = new File("/Users/user/c/quhao/data/shangjia/"+cate + ".csv");
+			BufferedWriter output = new BufferedWriter(new FileWriter(f));
+			if(!f.exists()){
+				f.createNewFile();
+			}
+
+			logger.info("start to write to file /Users/user/c/quhao/data/shangjia/"+cate + ".csv");
 			for (int i = 1; i <= pages; i++) {
 				String childUrl = formatUrlWithPage(node.select("a[href]").attr("href"), i);
 				parseListChild(childUrl);
-//				Thread.currentThread().sleep(1000);
+				for(String s : merchantMap.keySet()){
+					Merchant m = merchantMap.get(s);
+					output.write(m.toString());
+					output.newLine();
+				}
+				logger.info("writing to file /Users/user/c/quhao/data/shangjia/"+cate + ".csv");
+				merchantMap.clear();
+				Thread.currentThread().sleep(1000);
 			}
+			output.flush();
+			output.close();
+			logger.info("end to write to file /Users/user/c/quhao/data/shangjia/"+cate + ".csv");
 		}
 	}
 
@@ -195,49 +218,6 @@ public class ParserTest {
 	}
 	
 	/**
-	 * extract the link of one item in page list
-	 * @param url
-	 * @throws IOException
-	 */
-	private static String extractDetailsUrl(String url) throws IOException {
-		System.out.println("child url: " + url);
-		String linkUrl = "";
-		Connection conn = Jsoup.connect(url);
-		conn.timeout(0);
-		Document doc = conn.get();
-		String docHtml = doc.html()
-				.replaceAll("<textarea class=\"ks-datalazyload hidden\">", "")
-				.replaceAll("</textarea>", "").replaceAll("&lt;", "<")
-				.replaceAll("&gt;", ">").replaceAll("&quot;", "\"")
-				.replaceAll("</span>", "</span").replaceAll("</a>", "</a")
-				.replaceAll("</div>", "</div").replaceAll("</em>", "</em")
-				.replaceAll("</p>", "</p").replaceAll("</span", "</span>")
-				.replaceAll("</a", "</a>").replaceAll("</div", "</div>")
-				.replaceAll("</em", "</em>").replaceAll("</p", "</p>");
-		doc = Jsoup.parse(docHtml);
-		
-		Elements es = doc.select("li[class=clearfix place-item]");
-		System.out.println("es size: " + es.size());
-		
-		for (Element e : es) {
-			Merchant m = new Merchant();
-			Elements titleDiv = e.select("div[class=clearfix]");
-			m.name = titleDiv.text();
-			System.out.println("name : " + m.name);
-			
-			if(titleDiv != null && titleDiv.size() > 0){
-				Elements aLink = titleDiv.get(0).select("a[class=name]");
-				if(aLink != null && aLink.size() > 0){
-					Element nameLink = aLink.get(0);
-					linkUrl = nameLink.attr("href");
-				}
-			}
-		}
-		
-		return linkUrl;
-	}
-	
-	/**
 	 * parse the list items on the page
 	 * @param url
 	 * @throws IOException
@@ -265,7 +245,6 @@ public class ParserTest {
 			Merchant m = new Merchant();
 			Elements titleDiv = e.select("div[class=clearfix]");
 			m.name = titleDiv.text();
-//			System.out.println("name : " + m.name);
 			
 			Elements childes = e.select("div[class=more-info clearfix]");
 
@@ -275,39 +254,37 @@ public class ParserTest {
 				Elements detailsDivs = details.children();
 				if (detailsDivs != null && detailsDivs.size() > 0) {
 					Element placeTagDiv = detailsDivs.get(0);
-					
-//					System.out.println("detailsDivs.size():"+detailsDivs.size());
 					if (detailsDivs.size() == 2) {
 						Element priceDiv = detailsDivs.get(1);
+						
 						/* price begin */
 						Elements price = priceDiv.select("strong[style]");
 						if (price != null && price.size() > 0) {
 							m.averageCost = price.get(0).text();
-//							System.out.println("averageCost: " + m.averageCost);
 						}
 						/* price end */
 					}
 					if (detailsDivs.size() == 3) {
 						Element priceDiv = detailsDivs.get(1);
+						
 						/* price begin */
 						Elements price = priceDiv.select("strong[style]");
 						if (price != null && price.size() > 0) {
 							m.averageCost = price.get(0).text();
-//							System.out.println("averageCost: " + m.averageCost);
 						}
 						/* price end */
 						Element dpDiv = detailsDivs.get(2);
+
 						/* haopinglv */
 						Elements haopinglv = dpDiv.select("em");
 						if (haopinglv != null && haopinglv.size() > 0) {
 							m.grade = haopinglv.get(0).text();
-//							System.out.println("haopinglv :" + m.grade);
 						}
 						/* haopinglv */
 					}
+					
 					/* place tag begin */
-					Elements pingFenDiv = placeTagDiv
-							.select("div[class=pingfen]");
+					Elements pingFenDiv = placeTagDiv.select("div[class=pingfen]");
 					if (pingFenDiv != null && pingFenDiv.size() > 1) {
 						m.fuwu = Integer.parseInt(pingFenDiv.get(0)
 								.select("em").get(0).text());
@@ -319,15 +296,8 @@ public class ParserTest {
 								.select("em").get(3).text());
 					}
 
-//					System.out.println("fuwu :" + m.fuwu);
-//					System.out.println("kouwei :" + m.kouwei);
-//					System.out.println("huanjing :" + m.huanjing);
-//					System.out.println("xingjiabi :" + m.xingjiabi);
-
-					Elements placeSpan = placeTagDiv
-							.select("span[class=place]");
+					Elements placeSpan = placeTagDiv.select("span[class=place]");
 					m.address = placeSpan.get(0).parent().text();
-//					System.out.println("address: " + m.address);
 
 					Elements tagsDiv = placeTagDiv.select("div[class=tags]");
 					List<String> tags = new ArrayList<String>();
@@ -337,7 +307,6 @@ public class ParserTest {
 						}
 					}
 					m.tags = tags;
-//					System.out.println("tags: " + m.tags);
 					/* place tag end */
 
 				}
@@ -353,25 +322,12 @@ public class ParserTest {
 				}
 			}
 			System.out.println(m.toString());
-//			merchantMap.put(m.name, m);
+			merchantMap.put(m.name, m);
 		}
 	}
 
 	public static void main(String[] args) throws IOException, InterruptedException {
-		// String baseUrl = "http://dianping.com/search/category/1/10/g101";
-		
-//		String baseUrl = "http://bendi.koubei.com/shanghai/list--c1-1000430?spm=5026.1000614.1000217.10.VY4Lke";
 		String baseUrl = "http://bendi.koubei.com/list.htm?spm=0.0.0.0.1NrzyZ&city=310100";
 		mainListPage(baseUrl);
-		
-//		categoryPage(baseUrl);
-// 		String childUrl = "http://bendi.koubei.com/shanghai/list--c1-1000445";
-		String childUrl = "http://bendi.koubei.com/shanghai/list--c1-1000437--page-1";
-//		parseListChild(childUrl);
-
-		String details = "http://dd.taobao.com/detail.htm?spm=5026.1000614.1000256.1.U7w6IO&localstoreId=90f6288aa9764faa82142a5a5194cf2c";
-//		String details = "http://detail.koubei.com/store/detail--id-37ca435061774800a96600ef8757d23e?spm=5026.1000614.1000256.1.F0uI61";
-//		parseDetails(details);
-		
 	}
 }
