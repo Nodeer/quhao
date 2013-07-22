@@ -15,6 +15,6 @@ public class Startup extends Job {
 	
 	@Override
 	public void doJob() {
-		logger.info("play job test.");
+		logger.info(Startup.class.getName()+ " play job test.");
 	}
 }
