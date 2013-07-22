@@ -1,19 +1,5 @@
-`args String number
 <html>
 <body style="">
-	`if(number!=null && !"".equals(number)){
-		`if("1".equals(number)){
-			<form id="menu_camera_file_form" target=""  action="@{loadSchoolFromCSV()}" method="post" enctype="multipart/form-data">
-		`}else if("2".equals(number)){
-			<form id="menu_camera_file_form" target=""  action="@{updateMytonomyData()}" method="post" enctype="multipart/form-data">
-		`}else if("3".equals(number)){
-			<form id="menu_camera_file_form" target=""  action="@{updateSchoolData()}" method="post" enctype="multipart/form-data">
-		`}else if("4".equals(number)){
-			<form id="menu_camera_file_form" target=""  action="@{updateSchoolTestScores()}" method="post" enctype="multipart/form-data">
-		`}
-	`}
-		<input type="file" id="attachment" name="attachment" />
-		<input type="submit" name="OK" />
-	</form>
+	add patch form here
 </body>
 </html>

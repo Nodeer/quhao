@@ -24,8 +24,8 @@ public class TestJob extends Job {
 			public void run() {
 				long start = System.currentTimeMillis();
 				logger.info(TestJob.class.getName() + ": category job started.");
-				removeCategory();
-				createCategory();
+//				removeCategory();
+//				createCategory();
 				logger.info(TestJob.class.getName() + ": category job finished, elapsed time " + (System.currentTimeMillis() - start) + "ms.");
 			}
 		});
@@ -33,8 +33,8 @@ public class TestJob extends Job {
 			public void run() {
 				long start = System.currentTimeMillis();
 				logger.info(TestJob.class.getName() + ": merchant job started.");
-				removeMerchant();
-				createMerchant();
+//				removeMerchant();
+//				createMerchant();
 				logger.info(TestJob.class.getName() + ": merchant job finished, elapsed time " + (System.currentTimeMillis() - start) + "ms.");
 			}
 		});
@@ -76,7 +76,7 @@ public class TestJob extends Job {
 			merchant = new Merchant();
 			
 			merchant.name = "merchant"+i;
-			merchant.cateType = type;
+			merchant.cateType = type.toString();
 			
 			merchant.create();
 		}

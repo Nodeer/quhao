@@ -18,7 +18,7 @@ public abstract class MerchantEntityDef extends BaseModel {
 	@Indexed
 	public String[] telephone = {""};
 
-	public CateType cateType;
+	public String cateType;
 	
 	public String grade = "";
 	public String averageCost = "";
@@ -37,6 +37,6 @@ public abstract class MerchantEntityDef extends BaseModel {
 	public String closeTime;	
 	public int markedCount;
 	public boolean enable = false;
-	public Date joinedDate = new Date();
+	public String joinedDate = new Date().toString();
 	
 }
