@@ -100,10 +100,4 @@ public class Patches extends BaseController {
 		}
 		m.save();
 	}
-	
-	public static void main(String[] args) {
-		String aa = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()).toString();
-		System.out.println(aa);
-	}
-	
 }

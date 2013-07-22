@@ -7,9 +7,9 @@ public class Constants {
 	}
 	
 	public enum CateType{
-		BENBANGJIANGZECAI, CHUANCAI, YUECAI, XIANGCAI, DONGBEICAI, GUIZHOUCAI, TAIWANCAI, 
-		XINJIANG_QINGZHEN, XIBEICAI, SUCAI, HUOGUO, ZIZHUCAN, XIAOCHIKUAICAI, RIBEN, HANGUOLIAOLI, 
-		DONGNANYACAI, XICAN, MIANBAOTIANDIAN, QITA
+		benbangcai, hanguoliaoli, huoguo, mianbaodangao, ribenliaoli, tianpinyinpin, xiangcai, 
+//		xiaochikuaican, xican, yuecaiguan, zhongcancaixi, ZIZHUCAN, XIAOCHIKUAICAI, RIBEN, HANGUOLIAOLI, 
+//		DONGNANYACAI, XICAN, MIANBAOTIANDIAN, QITA
 	}
 
 	public static String COOKIE_USERNAME = "quhao_username";

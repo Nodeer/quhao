@@ -20,26 +20,26 @@ public class TestJob extends Job {
 	
 	@Override
 	public void doJob() throws Exception {
-		Thread t1 = new Thread(new Runnable() {
-			public void run() {
-				long start = System.currentTimeMillis();
-				logger.info(TestJob.class.getName() + ": category job started.");
+//		Thread t1 = new Thread(new Runnable() {
+//			public void run() {
+//				long start = System.currentTimeMillis();
+//				logger.info(TestJob.class.getName() + ": category job started.");
 //				removeCategory();
 //				createCategory();
-				logger.info(TestJob.class.getName() + ": category job finished, elapsed time " + (System.currentTimeMillis() - start) + "ms.");
-			}
-		});
-		Thread t2 = new Thread(new Runnable() {
-			public void run() {
-				long start = System.currentTimeMillis();
-				logger.info(TestJob.class.getName() + ": merchant job started.");
+//				logger.info(TestJob.class.getName() + ": category job finished, elapsed time " + (System.currentTimeMillis() - start) + "ms.");
+//			}
+//		});
+//		Thread t2 = new Thread(new Runnable() {
+//			public void run() {
+//				long start = System.currentTimeMillis();
+//				logger.info(TestJob.class.getName() + ": merchant job started.");
 //				removeMerchant();
 //				createMerchant();
-				logger.info(TestJob.class.getName() + ": merchant job finished, elapsed time " + (System.currentTimeMillis() - start) + "ms.");
-			}
-		});
-		t1.start();
-		t2.start();
+//				logger.info(TestJob.class.getName() + ": merchant job finished, elapsed time " + (System.currentTimeMillis() - start) + "ms.");
+//			}
+//		});
+//		t1.start();
+//		t2.start();
 	}
 	
 	private static void removeCategory(){

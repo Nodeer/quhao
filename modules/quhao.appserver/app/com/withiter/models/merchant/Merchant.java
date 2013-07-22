@@ -23,18 +23,18 @@ public class Merchant extends MerchantEntityDef {
 			}
 			telStr = sb.toString();
 		}
-		return "[this.name:" + this.name + "],[this.address：" + this.address
-				+ "],[this.telephone：" + telStr
-				+ "],[this.averageCost：" + this.averageCost
-				+ "],[this.openTime：" + this.openTime + "],[this.closeTime："
-				+ this.closeTime + "],[this.description：" + this.description
-				+ "],[this.fuwu：" + this.fuwu + "],[this.huanjing："
-				+ this.huanjing + "],[this.kouwei：" + this.kouwei
-				+ "],[this.xingjiabi：" + this.xingjiabi + "],[this.grade："
-				+ this.grade + "],[this.markedCount：" + this.markedCount
-				+ "],[this.nickName：" + this.nickName + "],[this.cateType："
-				+ this.cateType + "],[this.enable：" + this.enable
-				+ "],[this.joinedDate：" + this.joinedDate + "],[this.tags："
-				+ this.tags + "],[this.teses：" + this.teses + "]";
+		return "[this.name:" + this.name + "],[this.address:" + this.address
+				+ "],[this.telephone:" + telStr
+				+ "],[this.averageCost:" + this.averageCost
+				+ "],[this.openTime:" + this.openTime + "],[this.closeTime:"
+				+ this.closeTime + "],[this.description:" + this.description
+				+ "],[this.fuwu:" + this.fuwu + "],[this.huanjing:"
+				+ this.huanjing + "],[this.kouwei:" + this.kouwei
+				+ "],[this.xingjiabi:" + this.xingjiabi + "],[this.grade:"
+				+ this.grade + "],[this.markedCount:" + this.markedCount
+				+ "],[this.nickName:" + this.nickName + "],[this.cateType:"
+				+ this.cateType + "],[this.enable:" + this.enable
+				+ "],[this.joinedDate:" + this.joinedDate + "],[this.tags:"
+				+ this.tags + "],[this.teses:" + this.teses + "]";
 	}
 }

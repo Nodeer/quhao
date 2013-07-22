@@ -38,15 +38,15 @@ public class ParserTest {
 
 	// proxy configuration
 	static {
-//		System.getProperties().setProperty("proxySet", "true");
-//		System.getProperties().setProperty("http.proxyHost", "www-proxy.ericsson.se");
-//		System.getProperties().setProperty("http.proxyPort", "8080");
+		System.getProperties().setProperty("proxySet", "true");
+		System.getProperties().setProperty("http.proxyHost", "www-proxy.ericsson.se");
+		System.getProperties().setProperty("http.proxyPort", "8080");
 	}
 
 	private static void mainListPage(String url) throws IOException, InterruptedException{
 		logger.info(ParserTest.class.getName()+": mainListPage start");
 		Connection conn = Jsoup.connect(url);
-		conn.timeout(60000);
+		conn.timeout(0);
 		Document doc = conn.get();
 		
 		// get list of all categories
@@ -103,7 +103,8 @@ public class ParserTest {
 			System.out.println("pages : " + pages);
 
 			// write into file
-			File f = new File("/Users/user/c/quhao/data/shangjia/"+cate + ".csv");
+//			File f = new File("/Users/user/c/quhao/data/shangjia/"+cate + ".csv");
+			File f = new File("c:/cross/shangjia/"+cate + ".csv");
 			BufferedWriter output = new BufferedWriter(new FileWriter(f));
 			if(!f.exists()){
 				f.createNewFile();
@@ -327,7 +328,18 @@ public class ParserTest {
 	}
 
 	public static void main(String[] args) throws IOException, InterruptedException {
-		String baseUrl = "http://bendi.koubei.com/list.htm?spm=0.0.0.0.1NrzyZ&city=310100";
+//		String baseUrl = "http://bendi.koubei.com/list.htm?spm=0.0.0.0.1NrzyZ&city=310100";
+		String baseUrl = "http://bendi.koubei.com/shanghai/list--c1-1000243?spm=5026.1000614.0.0.jySz57";
 		mainListPage(baseUrl);
+		
+//		System.getProperties().setProperty("proxySet", "true");
+//		System.getProperties().setProperty("http.proxyHost", "www-proxy.ericsson.se");
+//		System.getProperties().setProperty("http.proxyPort", "8080");
+//		
+//		Connection conn = Jsoup.connect(baseUrl);
+//		conn.timeout(60000);
+//		Document doc = conn.get();
+//		System.out.println(doc.html());
+		
 	}
 }

@@ -10,7 +10,7 @@ import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 
 @OnApplicationStart
-@Every("10min")
+@Every("1min")
 public class CategoryJob extends Job {
 
 	private static Logger logger = LoggerFactory.getLogger(CategoryJob.class);
