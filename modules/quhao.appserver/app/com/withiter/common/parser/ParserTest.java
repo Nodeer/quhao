@@ -103,8 +103,8 @@ public class ParserTest {
 			System.out.println("pages : " + pages);
 
 			// write into file
-//			File f = new File("/Users/user/c/quhao/data/shangjia/"+cate + ".csv");
-			File f = new File("c:/cross/shangjia/"+cate + ".csv");
+			File f = new File("/Users/user/c/quhao/data/shangjia/"+cate + ".csv");
+//			File f = new File("c:/cross/shangjia/"+cate + ".csv");
 			BufferedWriter output = new BufferedWriter(new FileWriter(f));
 			if(!f.exists()){
 				f.createNewFile();
