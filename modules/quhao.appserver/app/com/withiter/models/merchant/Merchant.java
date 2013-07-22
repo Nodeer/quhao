@@ -1,11 +1,15 @@
 package com.withiter.models.merchant;
 
+import java.util.Date;
 import java.util.List;
+
+import play.modules.morphia.Model.MorphiaQuery;
 
 import com.google.code.morphia.annotations.Entity;
 
 @Entity
 public class Merchant extends MerchantEntityDef {
+	private static int DEFAULT_PAGE_ITEMS_NUMBER = 5;
 
 	public static List<Merchant> findByType(String cateType) {
 		MorphiaQuery q = Merchant.q();
@@ -13,6 +17,31 @@ public class Merchant extends MerchantEntityDef {
 		return q.asList();
 	}
 
+	
+	// TODO add pagenate here
+//	public static List<Merchant> allNextPage(int page) {
+//		return findAll(page);
+//	}
+//	
+//	public static List<Merchant> findAll(int pageSize, String sortBy) {
+//		MorphiaQuery q = Merchant.q().limit(100);
+//		q = sortBy(q, sortBy);
+//		return paginate(q, pageSize, lastCreated);
+//	}
+//	
+//	private static MorphiaQuery sortBy(MorphiaQuery q, HomePageSortBy sortBy) {
+//		if (sortBy == HomePageSortBy.DATE) {
+//			q = q.order("-" + "created");
+//		}
+//		if (sortBy == HomePageSortBy.NAME) {
+//			q = q.order("-title");
+//		}
+//		if (sortBy == HomePageSortBy.SOURCE) {
+//			q = q.order("domainName");
+//		}
+//		return q;
+//	}
+	
 	@Override
 	public String toString() {
 		String telStr = "";
