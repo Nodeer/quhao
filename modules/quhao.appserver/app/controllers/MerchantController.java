@@ -51,4 +51,12 @@ public class MerchantController extends BaseController {
 		Merchant m = Merchant.findById(id);
 		renderJSON(MerchantVO.build(m));
 	}
+	
+	
+	
+	
+	
+	public static void quhao(String merchantId){
+		
+	}
 }
