@@ -11,8 +11,6 @@ public class Category extends CategoryEntityDef {
 
 	// update category counts for CategoryJob
 	public static void updateCounts() {
-		// TODO update category counts for CategoryJob
-		
 		CateType[] categories = Constants.CateType.values();
 		for(CateType cate : categories){
 			MorphiaQuery q = Category.q();
