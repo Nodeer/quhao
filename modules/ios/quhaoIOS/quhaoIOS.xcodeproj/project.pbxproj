@@ -154,7 +154,6 @@
 		CE01CE68179BC3BB00090EB0 = {
 			isa = PBXGroup;
 			children = (
-				CE206F5E179EDB26003ECAC4 /* ASIHTTPRequest */,
 				CE5FA80C179D61E900E09663 /* Classes */,
 				CEEC072F179BF021000879AE /* Reachability */,
 				CE01CE7A179BC3BB00090EB0 /* quhaoIOS */,
@@ -247,9 +246,10 @@
 				CE01CFDC179BD13400090EB0 /* ASIProgressDelegate.h */,
 			);
 			name = ASIHTTPRequest;
+			path = ..;
 			sourceTree = "<group>";
 		};
-		CE5FA80C179D61E900E09663 /* Classes */ = {
+		CE206F5F179EDC01003ECAC4 /* SBJson */ = {
 			isa = PBXGroup;
 			children = (
 				CE5FA80D179D61E900E09663 /* NSObject+SBJson.h */,
@@ -277,6 +277,15 @@
 				CE5FA823179D61E900E09663 /* SBJsonUTF8Stream.m */,
 				CE5FA824179D61E900E09663 /* SBJsonWriter.h */,
 				CE5FA825179D61E900E09663 /* SBJsonWriter.m */,
+			);
+			name = SBJson;
+			sourceTree = "<group>";
+		};
+		CE5FA80C179D61E900E09663 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				CE206F5E179EDB26003ECAC4 /* ASIHTTPRequest */,
+				CE206F5F179EDC01003ECAC4 /* SBJson */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
