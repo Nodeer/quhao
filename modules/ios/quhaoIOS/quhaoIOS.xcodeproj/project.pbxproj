@@ -154,7 +154,9 @@
 		CE01CE68179BC3BB00090EB0 = {
 			isa = PBXGroup;
 			children = (
-				CE01CFC8179BD10000090EB0 /* Class */,
+				CE206F5E179EDB26003ECAC4 /* ASIHTTPRequest */,
+				CE5FA80C179D61E900E09663 /* Classes */,
+				CEEC072F179BF021000879AE /* Reachability */,
 				CE01CE7A179BC3BB00090EB0 /* quhaoIOS */,
 				CE01CE73179BC3BB00090EB0 /* Frameworks */,
 				CE01CE72179BC3BB00090EB0 /* Products */,
@@ -220,11 +222,9 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		CE01CFC8179BD10000090EB0 /* Class */ = {
+		CE206F5E179EDB26003ECAC4 /* ASIHTTPRequest */ = {
 			isa = PBXGroup;
 			children = (
-				CE5FA80C179D61E900E09663 /* Classes */,
-				CEEC072F179BF021000879AE /* Reachability */,
 				CE01CFC9179BD13400090EB0 /* ASIAuthenticationDialog.h */,
 				CE01CFCA179BD13400090EB0 /* ASIAuthenticationDialog.m */,
 				CE01CFCB179BD13400090EB0 /* ASICacheDelegate.h */,
@@ -246,7 +246,7 @@
 				CE01CFDB179BD13400090EB0 /* ASINetworkQueue.m */,
 				CE01CFDC179BD13400090EB0 /* ASIProgressDelegate.h */,
 			);
-			name = Class;
+			name = ASIHTTPRequest;
 			sourceTree = "<group>";
 		};
 		CE5FA80C179D61E900E09663 /* Classes */ = {
