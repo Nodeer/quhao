@@ -18,6 +18,7 @@ GET		/allCategories						MerchantController.allCategories
 
 # Category
 GET		/merchantByCategory					MerchantController.merchantByCategory
+GET		/nextPage							MerchantController.nextPage
 
 # Accounts
 GET		/accounts							rsecure.Secure.accounts

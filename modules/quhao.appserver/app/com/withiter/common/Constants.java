@@ -7,11 +7,15 @@ public class Constants {
 	}
 	
 	public enum CateType{
-		benbangcai, hanguoliaoli, huoguo, mianbaodangao, ribenliaoli, tianpinyinpin, xiangcai, 
-//		xiaochikuaican, xican, yuecaiguan, zhongcancaixi, ZIZHUCAN, XIAOCHIKUAICAI, RIBEN, HANGUOLIAOLI, 
-//		DONGNANYACAI, XICAN, MIANBAOTIANDIAN, QITA
+		benbangcai, chuancai, dongnanyacai, haixian, hanguoliaoli, huoguo,
+		mianbaodangao, ribenliaoli, shaokao, tianpinyinpin, xiangcai,
+		xiaochikuaican, xican, xinjiangqingzhen, yuecaiguan, zhongcancaixi, zizhucan
 	}
 
+	public enum SortBy{
+		cateType, grade, averageCost, kouwei, huanjing, fuwu, xingjiabi, markedCount
+	}
+	
 	public static String COOKIE_USERNAME = "quhao_username";
 
 	public static String SESSION_USERNAME = "quhao_username";

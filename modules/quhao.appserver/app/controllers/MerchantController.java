@@ -20,4 +20,15 @@ public class MerchantController extends BaseController {
 		List<Merchant> merchantList = Merchant.findByType(cateType);
 		renderJSON(merchantList);
 	}
+	
+	/**
+	 * 进入分类商家
+	 * @param page 分页
+	 * @param cateType 菜系
+	 * @param sortBy 排序
+	 */
+	public static void nextPage(int page, String cateType, String sortBy){
+		List<Merchant> merchantList = Merchant.nextPage(cateType, page, sortBy);
+		renderJSON(merchantList);
+	}
 }

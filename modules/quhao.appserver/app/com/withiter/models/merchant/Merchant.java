@@ -1,15 +1,16 @@
 package com.withiter.models.merchant;
 
-import java.util.Date;
 import java.util.List;
 
-import play.modules.morphia.Model.MorphiaQuery;
+import cn.bran.japid.util.StringUtils;
 
 import com.google.code.morphia.annotations.Entity;
+import com.withiter.common.Constants.CateType;
+import com.withiter.common.Constants.SortBy;
 
 @Entity
 public class Merchant extends MerchantEntityDef {
-	private static int DEFAULT_PAGE_ITEMS_NUMBER = 5;
+	private static int DEFAULT_PAGE_ITEMS_NUMBER = 10;
 
 	public static List<Merchant> findByType(String cateType) {
 		MorphiaQuery q = Merchant.q();
@@ -17,30 +18,39 @@ public class Merchant extends MerchantEntityDef {
 		return q.asList();
 	}
 
+	/**
+	 * get next page merchants
+	 * @param cateType
+	 * @param page
+	 * @param sortBy
+	 * @return
+	 */
+	public static List<Merchant> nextPage(String cateType, int page, String sortBy){
+		MorphiaQuery q = Merchant.q();
+		if(!StringUtils.isEmpty(cateType)){
+			q.filter("cateType", cateType);
+		}else{
+			q.filter("cateType", CateType.benbangcai.toString());
+		}
+		if(!StringUtils.isEmpty(sortBy)){
+			q = sortBy(q, sortBy);
+		}
+		return paginate(q, page);
+	}
 	
-	// TODO add pagenate here
-//	public static List<Merchant> allNextPage(int page) {
-//		return findAll(page);
-//	}
-//	
-//	public static List<Merchant> findAll(int pageSize, String sortBy) {
-//		MorphiaQuery q = Merchant.q().limit(100);
-//		q = sortBy(q, sortBy);
-//		return paginate(q, pageSize, lastCreated);
-//	}
-//	
-//	private static MorphiaQuery sortBy(MorphiaQuery q, HomePageSortBy sortBy) {
-//		if (sortBy == HomePageSortBy.DATE) {
-//			q = q.order("-" + "created");
-//		}
-//		if (sortBy == HomePageSortBy.NAME) {
-//			q = q.order("-title");
-//		}
-//		if (sortBy == HomePageSortBy.SOURCE) {
-//			q = q.order("domainName");
-//		}
-//		return q;
-//	}
+	private static MorphiaQuery sortBy(MorphiaQuery q, String sortBy) {
+		q.order(sortBy);
+		return q;
+	}
+	
+	private static List<Merchant> paginate(MorphiaQuery q, int page){
+		q.skip((page - 1) * DEFAULT_PAGE_ITEMS_NUMBER).limit(DEFAULT_PAGE_ITEMS_NUMBER);
+		return q.asList();
+	}
+	
+	
+	
+	
 	
 	@Override
 	public String toString() {
