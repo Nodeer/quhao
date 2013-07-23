@@ -58,7 +58,7 @@
     SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
     NSError *error = nil;
     NSArray *jsonObjects = [jsonParser objectWithString:response error:&error];
-    [jsonParser release], jsonParser = nil;
+//    [jsonParser release], jsonParser = nil;
 
     for (NSDictionary *dict in jsonObjects) {
 //        NSLog(@"%@", dict);
