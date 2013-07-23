@@ -16,9 +16,11 @@ GET     /                     		  		LandingController.index
 # Category
 GET		/allCategories						MerchantController.allCategories
 
-# Category
-GET		/merchantByCategory					MerchantController.merchantByCategory
+# Merchant
 GET		/nextPage							MerchantController.nextPage
+GET		/merchantByCategory					MerchantController.merchantByCategory
+GET		/merchant							MerchantController.merchant
+
 
 # Accounts
 GET		/accounts							rsecure.Secure.accounts

@@ -1,6 +1,10 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import vo.CategoryVO;
+import vo.MerchantVO;
 
 import com.withiter.models.merchant.Category;
 import com.withiter.models.merchant.Merchant;
@@ -11,9 +15,16 @@ import com.withiter.models.merchant.Merchant;
  */
 public class MerchantController extends BaseController {
 
+	/**
+	 * 返回所有分类
+	 */
 	public static void allCategories(){
 		List<Category> categories = Category.getAll();
-		renderJSON(categories);
+		List<CategoryVO> categoriesVO = new ArrayList<CategoryVO>();
+		for(Category c: categories){
+			categoriesVO.add(CategoryVO.build(c));
+		}
+		renderJSON(categoriesVO);
 	}
 	
 	public static void merchantByCategory(String cateType){
@@ -29,6 +40,15 @@ public class MerchantController extends BaseController {
 	 */
 	public static void nextPage(int page, String cateType, String sortBy){
 		List<Merchant> merchantList = Merchant.nextPage(cateType, page, sortBy);
-		renderJSON(merchantList);
+		List<MerchantVO> merchantVOList = new ArrayList<MerchantVO>();
+		for(Merchant m : merchantList){
+			merchantVOList.add(MerchantVO.build(m));
+		}
+		renderJSON(merchantVOList);
+	}
+	
+	public static void merchant(String id){
+		Merchant m = Merchant.findById(id);
+		renderJSON(MerchantVO.build(m));
 	}
 }
