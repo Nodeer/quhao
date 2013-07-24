@@ -7,32 +7,59 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ASIAuthenticationDialog.h"
-#import "ASICacheDelegate.h"
-#import "ASIDataCompressor.h"
-#import "ASIDataDecompressor.h"
-#import "ASIDownloadCache.h"
-#import "ASIFormDataRequest.h"
 #import "ASIHTTPRequest.h"
-#import "ASIHTTPRequestConfig.h"
-#import "ASIHTTPRequestDelegate.h"
-#import "ASIInputStream.h"
-#import "ASINetworkQueue.h"
-#import "ASIProgressDelegate.h"
-
 
 @interface WithiterFirstViewController : UIViewController{
     UILabel *categoryLabel1;
     UISearchBar *searchBar1;
+    UICollectionView *collectionView;
+    
+    UILabel *label1;
+    UILabel *label2;
+    UILabel *label3;
+    UILabel *label4;
+    UILabel *label5;
+    UILabel *label6;
+    UILabel *label7;
+    UILabel *label8;
+    UILabel *label9;
+    UILabel *label10;
+    UILabel *label11;
 }
 
 @property (nonatomic, retain)
     IBOutlet UILabel *categoryLabel1;
 @property (nonatomic, retain)
     IBOutlet UISearchBar *searchBar1;
+@property (nonatomic, retain)
+    IBOutlet UICollectionView *collectionView;
 
--(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar;
+@property (nonatomic, retain)
+IBOutlet UILabel *label1;
+@property (nonatomic, retain)
+IBOutlet UILabel *label2;
+@property (nonatomic, retain)
+IBOutlet UILabel *label3;
+@property (nonatomic, retain)
+IBOutlet UILabel *label4;
+@property (nonatomic, retain)
+IBOutlet UILabel *label5;
+@property (nonatomic, retain)
+IBOutlet UILabel *label6;
+@property (nonatomic, retain)
+IBOutlet UILabel *label7;
+@property (nonatomic, retain)
+IBOutlet UILabel *label8;
+@property (nonatomic, retain)
+IBOutlet UILabel *label9;
+@property (nonatomic, retain)
+IBOutlet UILabel *label10;
+@property (nonatomic, retain)
+IBOutlet UILabel *label11;
 
--(void)testJsonParser: (NSString *) jsonString;
+
+//-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar;
+//
+//-(void)testJsonParser: (NSString *) jsonString;
 
 @end

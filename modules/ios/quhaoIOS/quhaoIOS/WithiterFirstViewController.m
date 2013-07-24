@@ -17,6 +17,19 @@
 
 @synthesize categoryLabel1;
 @synthesize searchBar1;
+@synthesize collectionView;
+
+@synthesize label1;
+@synthesize label2;
+@synthesize label3;
+@synthesize label4;
+@synthesize label5;
+@synthesize label6;
+@synthesize label7;
+@synthesize label8;
+@synthesize label9;
+@synthesize label10;
+@synthesize label11;
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     NSLog(@"search clicked");
@@ -60,13 +73,67 @@
     NSArray *jsonObjects = [jsonParser objectWithString:response error:&error];
 //    [jsonParser release], jsonParser = nil;
 
-    for (NSDictionary *dict in jsonObjects) {
-//        NSLog(@"%@", dict);
-        NSString *value1 = [dict objectForKey:@"cateType"];
-        NSString *value2 = [dict objectForKey:@"count"];
-        NSLog(@" value1 is : %@", value1);
-        NSLog(@" value2 is : %@", value2);
+//    for (NSDictionary *dict in jsonObjects) {
+////        NSLog(@"%@", dict);
+//        NSString *value1 = [dict objectForKey:@"cateType"];
+//        NSString *value2 = [dict objectForKey:@"count"];
+//        NSLog(@" value1 is : %@", value1);
+//        NSLog(@" value2 is : %@", value2);
+//
+//        
+//    }
+    
+    NSString *lableText = [@"aaa" stringByAppendingString:@"bbb"];
+    NSLog(@"%@", lableText);
+    
+    NSString *temp = [lableText stringByAppendingString:lableText];
+    NSLog(@"%@", temp);
+    
+    for(int i=0; i < [jsonObjects count]; ){
+        NSString *value1 = [[jsonObjects objectAtIndex:i] objectForKey:@"cateType"];
+        NSString *value2 = [[jsonObjects objectAtIndex:i] objectForKey:@"count"];
+
+        NSLog(@"value11 is %@", value1);
+        NSLog(@"value22 is %@", value2);
+        
+        NSString *lableText = [[[value1 stringByAppendingString:@"("] stringByAppendingString:[value2 description]] stringByAppendingString:@")"];
+        i++;
+        if(i == 1){
+            label1.text = lableText;
+        }
+        if(i == 2){
+            label2.text = lableText;
+        }
+        if(i == 3){
+            label3.text = lableText;
+        }
+        if(i == 4){
+            label4.text = lableText;
+        }
+        if(i == 5){
+            label5.text = lableText;
+        }
+        if(i == 6){
+            label6.text = lableText;
+        }
+        if(i == 7){
+            label7.text = lableText;
+        }
+        if(i == 8){
+            label8.text = lableText;
+        }
+        if(i == 9){
+            label9.text = lableText;
+        }
+        if(i == 10){
+            label10.text = lableText;
+        }
+        if(i == 11){
+            label11.text = lableText;
+        }
+        
     }
+    
 }
     
 - (void)didReceiveMemoryWarning {
@@ -74,19 +141,19 @@
     // Dispose of any resources that can be recreated.
 }
 
-//测试json的解析
-+ (void) testJsonParser: (NSString *) jsonString {
-    jsonString = [[NSString alloc] initWithString:@"{\"userInfo\":{\"userName\":\"徐泽宇\",\"sex\":\"男\"}}"];
-    NSLog(@"正在解析json字符串是：%@",jsonString);
-    
-    SBJsonParser * parser = [[SBJsonParser alloc] init];
-    NSError * error = nil;
-    NSMutableDictionary *jsonDic = [parser objectWithString:jsonString error:&error];
-    NSMutableDictionary *dicUserInfo = [jsonDic objectForKey:@"userInfo"];
-    
-    NSLog(@"%@",[jsonDic objectForKey:@"userInfo" ]);
-    NSLog(@"%@",[dicUserInfo objectForKey:@"userName"]);
-    NSLog(@"%@",[dicUserInfo objectForKey:@"sex"]);
-}
+////测试json的解析
+//+ (void) testJsonParser: (NSString *) jsonString {
+//    jsonString = [[NSString alloc] initWithString:@"{\"userInfo\":{\"userName\":\"徐泽宇\",\"sex\":\"男\"}}"];
+//    NSLog(@"正在解析json字符串是：%@",jsonString);
+//    
+//    SBJsonParser * parser = [[SBJsonParser alloc] init];
+//    NSError * error = nil;
+//    NSMutableDictionary *jsonDic = [parser objectWithString:jsonString error:&error];
+//    NSMutableDictionary *dicUserInfo = [jsonDic objectForKey:@"userInfo"];
+//    
+//    NSLog(@"%@",[jsonDic objectForKey:@"userInfo" ]);
+//    NSLog(@"%@",[dicUserInfo objectForKey:@"userName"]);
+//    NSLog(@"%@",[dicUserInfo objectForKey:@"sex"]);
+//}
 
 @end

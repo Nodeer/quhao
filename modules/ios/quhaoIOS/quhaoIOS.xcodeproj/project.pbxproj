@@ -48,6 +48,7 @@
 		CE207003179EDEC4003ECAC4 /* ASIHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = CE206FF6179EDEC4003ECAC4 /* ASIHTTPRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CE207004179EDEC4003ECAC4 /* ASIInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = CE206FFA179EDEC4003ECAC4 /* ASIInputStream.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CE207005179EDEC4003ECAC4 /* ASINetworkQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = CE206FFC179EDEC4003ECAC4 /* ASINetworkQueue.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CE6A3F2317A003CF004AAF20 /* CategoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6A3F2217A003CF004AAF20 /* CategoryModel.m */; };
 		CEEC0732179BF021000879AE /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC0731179BF021000879AE /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CEEC0735179C2060000879AE /* WithiterThirdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC0734179C2060000879AE /* WithiterThirdViewController.m */; };
 		CEEC0737179C22C7000879AE /* WithiterThirdViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEEC0736179C22C7000879AE /* WithiterThirdViewController.xib */; };
@@ -126,6 +127,8 @@
 		CE206FFB179EDEC4003ECAC4 /* ASINetworkQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASINetworkQueue.h; path = Classes/ASIHTTPRequest/ASINetworkQueue.h; sourceTree = "<group>"; };
 		CE206FFC179EDEC4003ECAC4 /* ASINetworkQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ASINetworkQueue.m; path = Classes/ASIHTTPRequest/ASINetworkQueue.m; sourceTree = "<group>"; };
 		CE206FFD179EDEC4003ECAC4 /* ASIProgressDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIProgressDelegate.h; path = Classes/ASIHTTPRequest/ASIProgressDelegate.h; sourceTree = "<group>"; };
+		CE6A3F2117A002CA004AAF20 /* CategoryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryModel.h; sourceTree = "<group>"; };
+		CE6A3F2217A003CF004AAF20 /* CategoryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryModel.m; sourceTree = "<group>"; };
 		CEEC0730179BF021000879AE /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		CEEC0731179BF021000879AE /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		CEEC0733179C2011000879AE /* WithiterThirdViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WithiterThirdViewController.h; sourceTree = "<group>"; };
@@ -187,6 +190,7 @@
 		CE01CE7A179BC3BB00090EB0 /* quhaoIOS */ = {
 			isa = PBXGroup;
 			children = (
+				CE6A3F1F17A00207004AAF20 /* models */,
 				CE01CE83179BC3BB00090EB0 /* WithiterAppDelegate.h */,
 				CE01CE84179BC3BB00090EB0 /* WithiterAppDelegate.m */,
 				CE01CE8F179BC3BB00090EB0 /* first.png */,
@@ -288,6 +292,15 @@
 				CE206F5F179EDC01003ECAC4 /* SBJson */,
 			);
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		CE6A3F1F17A00207004AAF20 /* models */ = {
+			isa = PBXGroup;
+			children = (
+				CE6A3F2117A002CA004AAF20 /* CategoryModel.h */,
+				CE6A3F2217A003CF004AAF20 /* CategoryModel.m */,
+			);
+			name = models;
 			sourceTree = "<group>";
 		};
 		CEEC072F179BF021000879AE /* Reachability */ = {
@@ -416,6 +429,7 @@
 				CE207003179EDEC4003ECAC4 /* ASIHTTPRequest.m in Sources */,
 				CE207004179EDEC4003ECAC4 /* ASIInputStream.m in Sources */,
 				CE207005179EDEC4003ECAC4 /* ASINetworkQueue.m in Sources */,
+				CE6A3F2317A003CF004AAF20 /* CategoryModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
