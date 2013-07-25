@@ -20,7 +20,7 @@ GET		/allCategories						MerchantController.allCategories
 GET		/nextPage							MerchantController.nextPage
 GET		/merchantByCategory					MerchantController.merchantByCategory
 GET		/merchant							MerchantController.merchant
-
+GET		/quhao								MerchantController.quhao
 
 # Accounts
 GET		/accounts							rsecure.Secure.accounts
