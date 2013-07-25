@@ -25,6 +25,14 @@
     UILabel *label9;
     UILabel *label10;
     UILabel *label11;
+    UILabel *label12;
+    UILabel *label13;
+    UILabel *label14;
+    UILabel *label15;
+    UILabel *label16;
+    UILabel *label17;
+    
+    UIButton *btnTest;
 }
 
 @property (nonatomic, retain)
@@ -56,7 +64,21 @@ IBOutlet UILabel *label9;
 IBOutlet UILabel *label10;
 @property (nonatomic, retain)
 IBOutlet UILabel *label11;
+@property (nonatomic, retain)
+IBOutlet UILabel *label12;
+@property (nonatomic, retain)
+IBOutlet UILabel *label13;
+@property (nonatomic, retain)
+IBOutlet UILabel *label14;
+@property (nonatomic, retain)
+IBOutlet UILabel *label15;
+@property (nonatomic, retain)
+IBOutlet UILabel *label16;
+@property (nonatomic, retain)
+IBOutlet UILabel *label17;
 
+@property (nonatomic, retain)
+IBOutlet UIButton *btnTest;
 
 //-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar;
 //

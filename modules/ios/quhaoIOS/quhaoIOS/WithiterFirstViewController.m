@@ -30,6 +30,14 @@
 @synthesize label9;
 @synthesize label10;
 @synthesize label11;
+@synthesize label12;
+@synthesize label13;
+@synthesize label14;
+@synthesize label15;
+@synthesize label16;
+@synthesize label17;
+
+@synthesize btnTest;
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     NSLog(@"search clicked");
@@ -74,25 +82,63 @@
 //    [jsonParser release], jsonParser = nil;
 
 //    for (NSDictionary *dict in jsonObjects) {
-////        NSLog(@"%@", dict);
 //        NSString *value1 = [dict objectForKey:@"cateType"];
 //        NSString *value2 = [dict objectForKey:@"count"];
 //        NSLog(@" value1 is : %@", value1);
 //        NSLog(@" value2 is : %@", value2);
-//
-//        
 //    }
     
-    NSString *lableText = [@"aaa" stringByAppendingString:@"bbb"];
-    NSLog(@"%@", lableText);
-    
-    NSString *temp = [lableText stringByAppendingString:lableText];
-    NSLog(@"%@", temp);
+
     
     for(int i=0; i < [jsonObjects count]; ){
         NSString *value1 = [[jsonObjects objectAtIndex:i] objectForKey:@"cateType"];
         NSString *value2 = [[jsonObjects objectAtIndex:i] objectForKey:@"count"];
 
+        if([value1 isEqualToString:@"benbangcai"]){
+//            btnTest = [[UIButton alloc] setValue:value1 forKey:@"value1"];
+            value1 = @"本帮菜";
+        }
+        if([value1 isEqualToString:@"hanguoliaoli"]){
+            value1 = @"韩国料理";
+        }
+        if([value1 isEqualToString:@"huoguo"]){
+            value1 = @"火锅";
+        }
+        if([value1 isEqualToString:@"ribenliaoli"]){
+            value1 = @"日本料理";
+        }
+        if([value1 isEqualToString:@"xiangcai"]){
+            value1 = @"湘菜";
+        }
+        if([value1 isEqualToString:@"chuancai"]){
+            value1 = @"川菜";
+        }
+        if([value1 isEqualToString:@"dongnanyacai"]){
+            value1 = @"东南亚菜";
+        }
+        if([value1 isEqualToString:@"haixian"]){
+            value1 = @"海鲜";
+        }
+        if([value1 isEqualToString:@"shaokao"]){
+            value1 = @"烧烤";
+        }
+        if([value1 isEqualToString:@"xican"]){
+            value1 = @"西餐";
+        }
+        if([value1 isEqualToString:@"xinjiangqingzhen"]){
+            value1 = @"新疆清真";
+        }
+        if([value1 isEqualToString:@"yuecaiguan"]){
+            value1 = @"粤菜馆";
+        }
+        if([value1 isEqualToString:@"zhongcancaixi"]){
+            value1 = @"中餐菜系";
+        }
+        if([value1 isEqualToString:@"zizhucan"]){
+            value1 = @"自助餐";
+        }
+        
+        
         NSLog(@"value11 is %@", value1);
         NSLog(@"value22 is %@", value2);
         
@@ -109,12 +155,14 @@
         }
         if(i == 4){
             label4.text = lableText;
+            label4.hidden = true;
         }
         if(i == 5){
             label5.text = lableText;
         }
         if(i == 6){
             label6.text = lableText;
+            label6.hidden = true;
         }
         if(i == 7){
             label7.text = lableText;
@@ -131,6 +179,26 @@
         if(i == 11){
             label11.text = lableText;
         }
+        if(i == 12){
+            label12.text = lableText;
+            label12.hidden = true;
+        }
+        if(i == 13){
+            label13.text = lableText;
+        }
+        if(i == 14){
+            label14.text = lableText;
+        }
+        if(i == 15){
+            label15.text = lableText;
+        }
+        if(i == 16){
+            label16.text = lableText;
+        }
+        if(i == 17){
+            label17.text = lableText;
+        }
+
         
     }
     
