@@ -12,17 +12,10 @@ import com.google.code.morphia.annotations.Indexed;
 
 public abstract class ReservationEntityDef extends BaseModel {
 	@Indexed
-	public String phone = "";
-	@Indexed
-	public String email = "";
-	@Indexed
-	public String password = "";
-	@Indexed
-	public String nickname = "";
-
-	public String birthDay = "";
-	public String userImage = "";
-	public boolean enable = false;
-	public Constants.MobileOSType mobileOS;
-	public Date lastLogin = new Date();
+	public String rid;
+	
+	public String accountId;
+	public String merchantId;
+	public int searNumber;
+	public int myNumber;
 }
