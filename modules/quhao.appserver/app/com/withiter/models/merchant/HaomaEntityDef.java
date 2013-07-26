@@ -11,12 +11,12 @@ import com.withiter.models.BaseModel;
 public abstract class HaomaEntityDef extends BaseModel {
 
 	@Indexed
-	String merchantId;
-	Map<Integer, Paidui> haoma = new HashMap<Integer, Paidui>();
+	public String merchantId;
+	public Map<Integer, Paidui> haomaMap = new HashMap<Integer, Paidui>();
 	
-	class Paidui{
-		int currentWait = 0;
-		boolean enable = false;
+	public class Paidui{
+		public int currentWait = 0;
+		public boolean enable = false;
 	}
 }
 

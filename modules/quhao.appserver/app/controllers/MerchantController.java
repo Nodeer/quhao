@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import vo.CategoryVO;
+import vo.HaomaVO;
 import vo.MerchantVO;
 
 import com.withiter.models.merchant.Category;
@@ -69,7 +70,8 @@ public class MerchantController extends BaseController {
 	 */
 	public static void quhao(String id){
 		Haoma haoma = Haoma.findByMerchantId(id);
-		renderJSON(haoma);
+		HaomaVO vo = HaomaVO.build(haoma);
+		renderJSON(vo);
 	}
 	
 	/**

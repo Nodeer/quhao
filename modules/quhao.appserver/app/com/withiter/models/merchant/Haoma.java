@@ -22,7 +22,7 @@ public class Haoma extends HaomaEntityDef {
 		Paidui p = null;
 		for(int i=1; i <= 20; i++){
 			p = new Paidui();
-			this.haoma.put(i, p);
+			this.haomaMap.put(i, p);
 		}
 	}
 }
