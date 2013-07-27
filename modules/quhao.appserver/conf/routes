@@ -21,6 +21,7 @@ GET		/nextPage							MerchantController.nextPage
 GET		/merchantByCategory					MerchantController.merchantByCategory
 GET		/merchant							MerchantController.merchant
 GET		/quhao								MerchantController.quhao
+GET		/getTopMerchants					MerchantController.getTopMerchants
 
 # Accounts
 GET		/accounts							rsecure.Secure.accounts

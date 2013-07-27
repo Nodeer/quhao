@@ -6,10 +6,12 @@ import java.util.List;
 import vo.CategoryVO;
 import vo.HaomaVO;
 import vo.MerchantVO;
+import vo.TopMerchantVO;
 
 import com.withiter.models.merchant.Category;
 import com.withiter.models.merchant.Haoma;
 import com.withiter.models.merchant.Merchant;
+import com.withiter.models.merchant.TopMerchant;
 
 /**
  *  所有商家的操作
@@ -81,5 +83,19 @@ public class MerchantController extends BaseController {
 	 */
 	public static void nahao(String id, int set){
 		
+	}
+	
+	public static void getTopMerchants()
+	{
+		List<TopMerchant> topMerchants = TopMerchant.findAll();
+		List<TopMerchantVO> topMerchantVos = new ArrayList<TopMerchantVO>();
+		if(null != topMerchants && !topMerchants.isEmpty())
+		{
+			for(TopMerchant topMerchant: topMerchants)
+			{
+				topMerchantVos.add(TopMerchantVO.build(topMerchant));
+			}
+		}
+		renderJSON(topMerchantVos);
 	}
 }
