@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<drawable name="translucent_background">#60000000</drawable>
+	<drawable name="transparent_background">#00000000</drawable>
+	<color name="blue">#2d8ad9</color>
+	<color name="gray">#9a9a9a</color>
+	<color name="white">#FFFFFF</color>
+	<color name="black">#000000</color>
+	<color name="darkgray">#938192</color>
+	<color name="Silver">#CCCCCC</color>
+	<color name="Silver11">#999999</color>
+	<color name="lightgreen">#7cd12e</color>
+	<color name="shen_black">#000033</color>
+	<color name="zise">#660066</color>
+	<color name="silver_blue">#0066CC</color>
+	<color name="yellow">#FF9900</color>
+	<color name="red">#FF0033</color>
+	<color name="detail_blue">#003399</color>
+	<color name="detail_red">#CE0A0A</color>
+	<color name="detail_gray">#878787</color>
+	<color name="orange">#FF8000</color>
+	<color name="dark_blue">#0E3D9E</color>
+</resources>
