@@ -13,10 +13,7 @@ public abstract class HaomaEntityDef extends BaseModel {
 	@Indexed
 	public String merchantId;
 	public Map<Integer, Paidui> haomaMap = new HashMap<Integer, Paidui>();
-	
-	public class Paidui{
-		public int currentWait = 0;
-		public boolean enable = false;
-	}
 }
+
+
 

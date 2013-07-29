@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import com.withiter.models.merchant.Haoma;
-import com.withiter.models.merchant.HaomaEntityDef.Paidui;
+import com.withiter.models.merchant.Paidui;
 
 public class HaomaVO {
 

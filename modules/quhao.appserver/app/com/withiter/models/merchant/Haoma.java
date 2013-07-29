@@ -43,7 +43,9 @@ public class Haoma extends HaomaEntityDef {
 		paidui.enable = true;
 		paidui.currentWait = number;
 		
-		haoma.haomaMap.put(seatNumber, paidui);
+		Paidui p = new Paidui(number, true);
+		
+		haoma.haomaMap.put(seatNumber, p);
 		haoma.save();
 		
 		Reservation reservation = new Reservation();
