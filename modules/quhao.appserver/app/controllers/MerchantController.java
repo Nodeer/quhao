@@ -97,8 +97,13 @@ public class MerchantController extends BaseController {
 		renderJSON(reservation);
 	}
 
-	public static void getTopMerchants() {
-		List<TopMerchant> topMerchants = TopMerchant.topX(6);
+	/**
+	 * Top merchant 列表
+	 * 
+	 * @param x top merchant 数量
+	 */
+	public static void getTopMerchants(int x) {
+		List<TopMerchant> topMerchants = TopMerchant.topX(x);
 		List<TopMerchantVO> topMerchantVos = new ArrayList<TopMerchantVO>();
 		if (null != topMerchants && !topMerchants.isEmpty()) {
 			for (TopMerchant topMerchant : topMerchants) {
