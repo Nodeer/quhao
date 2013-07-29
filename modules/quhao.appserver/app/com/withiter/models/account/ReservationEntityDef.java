@@ -11,11 +11,8 @@ import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Indexed;
 
 public abstract class ReservationEntityDef extends BaseModel {
-	@Indexed
-	public String rid;
-	
 	public String accountId;
 	public String merchantId;
-	public int searNumber;
+	public int seatNumber;
 	public int myNumber;
 }
