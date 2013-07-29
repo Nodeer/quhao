@@ -1,18 +1,17 @@
 package com.withiter.jobs;
 
-import java.util.Random;
+import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
+import play.libs.Codec;
 import play.modules.morphia.Model.MorphiaQuery;
 
-import com.withiter.common.Constants.CateType;
-import com.withiter.models.merchant.Category;
-import com.withiter.models.merchant.Merchant;
-import com.withiter.models.merchant.TopMerchant;
+import com.withiter.common.Constants;
+import com.withiter.models.account.Account;
 
 @OnApplicationStart
 public class TestJob extends Job {
@@ -21,6 +20,7 @@ public class TestJob extends Job {
 	
 	@Override
 	public void doJob() throws Exception {
+		addTestAccount();
 //		Thread t1 = new Thread(new Runnable() {
 //			public void run() {
 //				long start = System.currentTimeMillis();
@@ -43,4 +43,23 @@ public class TestJob extends Job {
 //		t2.start();
 	}
 	
+	
+	private static void addTestAccount(){
+		MorphiaQuery account = Account.q();
+		if(account.count() == 0){
+			logger.info(TestJob.class.getName() + " : start to add test accounts");
+			for(int i=0; i < 10; i++){
+				Account a = new Account();
+				a.birthDay = new Date().toString();
+				a.email = "test"+i+"@126.com";
+				a.enable = true;
+				a.lastLogin = new Date();
+				a.mobileOS = Constants.MobileOSType.IOS;
+				a.nickname = "Cross"+i;
+				a.password = Codec.hexSHA1("test"+i);
+				a.phone = "1888888888"+i;
+				a.save();
+			}
+		}
+	}
 }
