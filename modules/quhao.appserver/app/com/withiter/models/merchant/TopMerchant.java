@@ -17,6 +17,12 @@ public class TopMerchant extends TopMerchantEntityDef {
 		q.filter("cateType", cateType);
 		return q.asList();
 	}
+	
+	public static List<TopMerchant> topX(int x){
+		MorphiaQuery q = TopMerchant.q();
+		q.limit(x);
+		return q.asList();
+	}
 
 	/**
 	 * get next page merchants
@@ -75,10 +81,5 @@ public class TopMerchant extends TopMerchantEntityDef {
 				+ this.cateType + "],[this.enable:" + this.enable
 				+ "],[this.joinedDate:" + this.joinedDate + "],[this.tags:"
 				+ this.tags + "],[this.teses:" + this.teses + "]";
-	}
-	
-	public static void main(String[] args)
-	{
-		
 	}
 }

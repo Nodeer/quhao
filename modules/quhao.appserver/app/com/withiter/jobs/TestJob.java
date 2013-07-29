@@ -12,6 +12,7 @@ import play.modules.morphia.Model.MorphiaQuery;
 import com.withiter.common.Constants.CateType;
 import com.withiter.models.merchant.Category;
 import com.withiter.models.merchant.Merchant;
+import com.withiter.models.merchant.TopMerchant;
 
 @OnApplicationStart
 public class TestJob extends Job {
@@ -42,43 +43,4 @@ public class TestJob extends Job {
 //		t2.start();
 	}
 	
-	private static void removeCategory(){
-		MorphiaQuery q = Category.q();
-		q.delete();
-	}
-	
-	private static void createCategory(){
-		CateType[] cts = CateType.values();
-		Random r = new Random();
-		
-		Category category = null;
-		for(int i=0; i < 100; i++){
-			int rn = r.nextInt(cts.length);
-			String type = cts[rn].toString();
-			category = new Category(type, (int)(Math.random()*100)+1);
-			category.create();
-		}
-	}
-	
-	private static void removeMerchant(){
-		MorphiaQuery q = Merchant.q();
-		q.delete();
-	}
-	
-	private static void createMerchant(){
-		CateType[] cts = CateType.values();
-		Random r = new Random();
-		
-		Merchant merchant = null;
-		for(int i=0; i < 20; i++){
-			int rn = r.nextInt(cts.length);
-			CateType type = cts[rn];
-			merchant = new Merchant();
-			
-			merchant.name = "merchant"+i;
-			merchant.cateType = type.toString();
-			
-			merchant.create();
-		}
-	}
 }

@@ -98,7 +98,7 @@ public class MerchantController extends BaseController {
 	}
 
 	public static void getTopMerchants() {
-		List<TopMerchant> topMerchants = TopMerchant.findAll();
+		List<TopMerchant> topMerchants = TopMerchant.topX(6);
 		List<TopMerchantVO> topMerchantVos = new ArrayList<TopMerchantVO>();
 		if (null != topMerchants && !topMerchants.isEmpty()) {
 			for (TopMerchant topMerchant : topMerchants) {
