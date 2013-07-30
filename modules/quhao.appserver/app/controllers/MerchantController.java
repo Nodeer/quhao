@@ -6,6 +6,7 @@ import java.util.List;
 import vo.CategoryVO;
 import vo.HaomaVO;
 import vo.MerchantVO;
+import vo.ReservationVO;
 import vo.TopMerchantVO;
 
 import com.withiter.models.account.Reservation;
@@ -92,9 +93,20 @@ public class MerchantController extends BaseController {
 	 *            几人桌
 	 */
 	public static void nahao(String accountId, String mid, int seatNumber) {
-		Reservation reservation = Haoma.nahao(accountId, mid, seatNumber);
-		reservation.save();
-		renderJSON(reservation);
+		ReservationVO rvo = new ReservationVO();
+		Reservation r = Reservation.reservationExist(accountId, mid, seatNumber);
+		if(r != null){
+			rvo.tipValue = "您已经拿过此家商家的号，无法重复拿号！";
+			rvo.build(r);
+		}else{
+			Reservation reservation = Haoma.nahao(accountId, mid, seatNumber);
+			reservation.save();
+			rvo.tipKey = true;
+			rvo.tipValue = "拿号成功！";
+			rvo.build(reservation);
+		}
+		
+		renderJSON(rvo);
 	}
 
 	/**

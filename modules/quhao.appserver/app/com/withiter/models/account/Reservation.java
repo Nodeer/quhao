@@ -31,5 +31,17 @@ import com.mongodb.gridfs.GridFSInputFile;
 @Entity
 @NoAutoTimestamp
 public class Reservation extends ReservationEntityDef {
+
+	public static List<Reservation> findValidReservations(String accountId) {
+		MorphiaQuery q = Reservation.q();
+		q.filter("accountId", accountId).filter("valid", true);
+		return q.asList();
+	}
 	
+	public static Reservation reservationExist(String accountId,
+			String mid, int seatNumber){
+		MorphiaQuery q = Reservation.q();
+		q.filter("accountId", accountId).filter("merchantId", mid).filter("valid", true).filter("seatNumber", seatNumber);
+		return q.first();
+	}
 }

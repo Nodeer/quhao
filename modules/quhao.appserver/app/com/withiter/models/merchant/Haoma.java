@@ -53,6 +53,7 @@ public class Haoma extends HaomaEntityDef {
 		reservation.merchantId = mid;
 		reservation.myNumber = number;
 		reservation.seatNumber = seatNumber;
+		reservation.valid = true;
 		
 		return reservation;
 	}
