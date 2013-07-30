@@ -35,8 +35,6 @@ public class Haoma extends HaomaEntityDef {
 	 */
 	public synchronized static Reservation nahao(String accountId, String mid, int seatNumber){
 		
-		// TODO need to check the java.lang.StackOverflowError issue
-		
 		Haoma haoma = Haoma.findByMerchantId(mid);
 		Paidui paidui = haoma.haomaMap.get(seatNumber);
 		int number = paidui.currentWait+1;

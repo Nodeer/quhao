@@ -20,6 +20,7 @@ public abstract class AccountEntityDef extends BaseModel {
 	@Indexed
 	public String nickname = "";
 
+	public int jifen = 5;
 	public String birthDay = "";
 	public String userImage = "";
 	public boolean enable = false;
