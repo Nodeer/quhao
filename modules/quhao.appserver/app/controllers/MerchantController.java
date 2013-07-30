@@ -106,7 +106,10 @@ public class MerchantController extends BaseController {
 		int left = account.jifen;
 		if(left < 1){
 			rvo.tipValue = "NO_MORE_JIFEN";
-			rvo.build(r);
+			rvo.accountId = accountId;
+			rvo.merchantId = mid;
+			rvo.myNumber = 0;
+			rvo.seatNumber = seatNumber;
 			renderJSON(rvo);
 		}
 		if(left >= 1){
