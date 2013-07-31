@@ -17,6 +17,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,25 +82,47 @@ public class Patches extends BaseController {
 		renderJSON(q.count());
 	}
 	
-	public static void importMerchantCoordinate() throws UnsupportedEncodingException{
+	public static void importMerchantCoordinate() throws UnsupportedEncodingException, JSONException{
 		MorphiaQuery q = Merchant.q();
 		List<Merchant> mList = q.asList();
+		int i = 0;
 		for(Merchant m : mList){
 			if(StringUtils.isEmpty(m.x)){
 				String addEncode = URLEncoder.encode(m.address, "UTF-8");
-				String urlStr = "http://api.map.baidu.com/geocoder?address="+addEncode+"&output=json&key=c5df6a3c70535c64f58437cbaf5a675f";
+				String cityEncode = URLEncoder.encode("上海","UTF-8");
+				String urlStr = "http://api.map.baidu.com/geocoder?address="+addEncode+"&output=json&key=c5df6a3c70535c64f58437cbaf5a675f&city="+cityEncode;
 				String jsonStr = getXY(urlStr);
+				System.out.println("==============");
+				System.out.println(m.address);
 				System.out.println(jsonStr);
+				updateMerchant(jsonStr, m);
+				i++;
+				System.out.println("==============");
 			}
+		}
+		
+		renderJSON(i);
+	}
+	
+	private static void updateMerchant(String jsonStr, Merchant m) throws JSONException{
+		JSONObject json = new JSONObject(jsonStr);
+		String status = json.get("status").toString();
+		if("OK".equalsIgnoreCase(status) && !json.get("result").toString().startsWith("[")) {
+			JSONObject xyJSON = new JSONObject(new JSONObject(json.get("result").toString()).get("location").toString());
+			String x = xyJSON.get("lng").toString();
+			String y = xyJSON.get("lat").toString();
+			m.x = x;
+			m.y = y;
+			m.save();
 		}
 	}
 	
 	private static String getXY(String strUrl){
 //		String strUrl = "http://localhost:9081/testcontroller/test1?arg=2222";
 
-		System.getProperties().setProperty("proxySet", "true");
-		System.getProperties().setProperty("http.proxyHost", "www-proxy.ericsson.se");
-		System.getProperties().setProperty("http.proxyPort", "8080");
+//		System.getProperties().setProperty("proxySet", "true");
+//		System.getProperties().setProperty("http.proxyHost", "www-proxy.ericsson.se");
+//		System.getProperties().setProperty("http.proxyPort", "8080");
         URL url = null;
         String result = "";
         try {
@@ -113,7 +137,6 @@ public class Patches extends BaseController {
 			}
 			in.close();
 			urlConn.disconnect();
-			System.out.println("result:"+result);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

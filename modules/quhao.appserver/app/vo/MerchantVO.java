@@ -33,6 +33,9 @@ public class MerchantVO {
 	public boolean enable = false;
 	public String joinedDate = new Date().toString();
 	
+	public String x;
+	public String y;
+	
 	public static MerchantVO build(Merchant m) {
 		MerchantVO vo = new MerchantVO();
 		vo.id = m.id();
@@ -55,6 +58,8 @@ public class MerchantVO {
 		vo.telephone = m.telephone;
 		vo.teses = m.teses;
 		vo.xingjiabi = m.xingjiabi;
+		vo.x = m.x;
+		vo.y = m.y;
 		
 		return vo;
 	}
