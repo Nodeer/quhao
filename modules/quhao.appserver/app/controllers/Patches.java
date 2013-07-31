@@ -86,7 +86,7 @@ public class Patches extends BaseController {
 		for(Merchant m : mList){
 			if(StringUtils.isEmpty(m.x)){
 				String addEncode = URLEncoder.encode(m.address, "UTF-8");
-				String urlStr = "http://api.map.baidu.com/geocoder?address=&"+addEncode+"output=json&key=c5df6a3c70535c64f58437cbaf5a675f";
+				String urlStr = "http://api.map.baidu.com/geocoder?address="+addEncode+"&output=json&key=c5df6a3c70535c64f58437cbaf5a675f";
 				String jsonStr = getXY(urlStr);
 				System.out.println(jsonStr);
 			}
