@@ -5,11 +5,18 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +38,10 @@ public class Patches extends BaseController {
 		renderJapid();
 	}
 	
+	/**
+	 * 从data/merchants导入商家信息
+	 * @throws IOException
+	 */
 	public static void importMerchants() throws IOException{
 		logger.info(Patches.class.getName()+" start to importMerchants.");
 		long start = System.currentTimeMillis();
@@ -48,6 +59,10 @@ public class Patches extends BaseController {
 		renderJSON(q.count());
 	}
 	
+	/**
+	 * 从data/topmerchants导入topX商家信息
+	 * @throws IOException
+	 */
 	public static void importTopMerchants() throws IOException{
 		logger.info(Patches.class.getName()+" start to importMerchants.");
 		long start = System.currentTimeMillis();
@@ -65,8 +80,50 @@ public class Patches extends BaseController {
 		renderJSON(q.count());
 	}
 	
-	private static void importTopMerchantFromCSV(File file) throws IOException
-	{
+	public static void importMerchantCoordinate() throws UnsupportedEncodingException{
+		MorphiaQuery q = Merchant.q();
+		List<Merchant> mList = q.asList();
+		for(Merchant m : mList){
+			if(StringUtils.isEmpty(m.x)){
+				String addEncode = URLEncoder.encode(m.address, "UTF-8");
+				String urlStr = "http://api.map.baidu.com/geocoder?address=&"+addEncode+"output=json&key=c5df6a3c70535c64f58437cbaf5a675f";
+				String jsonStr = getXY(urlStr);
+				System.out.println(jsonStr);
+			}
+		}
+	}
+	
+	private static String getXY(String strUrl){
+//		String strUrl = "http://localhost:9081/testcontroller/test1?arg=2222";
+
+		System.getProperties().setProperty("proxySet", "true");
+		System.getProperties().setProperty("http.proxyHost", "www-proxy.ericsson.se");
+		System.getProperties().setProperty("http.proxyPort", "8080");
+        URL url = null;
+        String result = "";
+        try {
+			url = new URL(strUrl);
+			HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
+			InputStreamReader in = new InputStreamReader(urlConn.getInputStream());
+			BufferedReader br = new BufferedReader(in);
+			
+			String readerLine = null;
+			while((readerLine=br.readLine())!=null){
+				result += readerLine;
+			}
+			in.close();
+			urlConn.disconnect();
+			System.out.println("result:"+result);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        return result;
+	}
+	
+	private static void importTopMerchantFromCSV(File file) throws IOException {
 		System.out.println(file.getAbsolutePath());
 		String fileName = file.getName().replaceAll(".csv", "");
 		BufferedReader br = new BufferedReader(new FileReader(file));
@@ -76,7 +133,6 @@ public class Patches extends BaseController {
 			buildTopMerchant(s, fileName);
 		}
 		br.close();
-		
 	}
 
 	private static void importMerchantFromCSV(File file) throws IOException{
