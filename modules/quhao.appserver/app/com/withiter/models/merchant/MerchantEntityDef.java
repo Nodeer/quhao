@@ -20,6 +20,10 @@ public abstract class MerchantEntityDef extends BaseModel {
 	
 	public String cateType;
 	
+	// 百度坐标
+	public String x;
+	public String y;
+	
 	public String grade = "";
 	public String averageCost = "";
 	public List<String> tags = null;
