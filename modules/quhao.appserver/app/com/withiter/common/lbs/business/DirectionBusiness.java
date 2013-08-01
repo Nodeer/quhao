@@ -12,6 +12,7 @@ import play.Play;
 import cn.bran.japid.util.StringUtils;
 
 import com.withiter.common.Constants;
+import com.withiter.common.httprequest.CommonHTTPRequest;
 import com.withiter.common.lbs.bean.Distance;
 
 public class DirectionBusiness {
@@ -68,36 +69,9 @@ public class DirectionBusiness {
 			requestUrl = sb.toString();
 		}
 		
-		String jsonResponse = httpRequest(requestUrl);
+		String jsonResponse = CommonHTTPRequest.request(requestUrl);
 		d = buildDistanceObj(jsonResponse);
 		return d;
-	}
-	
-	private static String httpRequest(String urlStr){
-		System.getProperties().setProperty("proxySet", "true");
-		System.getProperties().setProperty("http.proxyHost", "www-proxy.ericsson.se");
-		System.getProperties().setProperty("http.proxyPort", "8080");
-        URL url = null;
-        String result = "";
-        try {
-			url = new URL(urlStr);
-			HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
-			InputStreamReader in = new InputStreamReader(urlConn.getInputStream());
-			BufferedReader br = new BufferedReader(in);
-			
-			String readerLine = null;
-			while((readerLine=br.readLine())!=null){
-				result += readerLine;
-			}
-			in.close();
-			urlConn.disconnect();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-        
-        return result;
 	}
 	
 	private static Distance buildDistanceObj(String json){

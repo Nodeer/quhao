@@ -9,8 +9,16 @@ import java.net.URL;
 
 public class CommonHTTPRequest {
 
-	public static boolean useProxy = false;
+	private static boolean useProxy = false;
 	
+	public static boolean isUseProxy() {
+		return useProxy;
+	}
+
+	public static void setUseProxy(boolean useProxy) {
+		CommonHTTPRequest.useProxy = useProxy;
+	}
+
 	private static void initProxy(){
 		System.getProperties().setProperty("proxySet", "true");
 		System.getProperties().setProperty("http.proxyHost", "www-proxy.ericsson.se");
@@ -18,6 +26,12 @@ public class CommonHTTPRequest {
 	}
 	
 	public static String request(String strUrl){
+
+		String userHome = System.getProperty("user.home");
+		if(userHome.contains("eacfgjl")){
+			useProxy = true;
+		}
+		
 		if(useProxy){
 			initProxy();
 		}
