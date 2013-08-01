@@ -1,5 +1,12 @@
 package com.withiter.common.lbs.business;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import play.Play;
 
 import cn.bran.japid.util.StringUtils;
@@ -66,9 +73,31 @@ public class DirectionBusiness {
 		return d;
 	}
 	
-	private static String httpRequest(String url){
-		
-		return "";
+	private static String httpRequest(String urlStr){
+		System.getProperties().setProperty("proxySet", "true");
+		System.getProperties().setProperty("http.proxyHost", "www-proxy.ericsson.se");
+		System.getProperties().setProperty("http.proxyPort", "8080");
+        URL url = null;
+        String result = "";
+        try {
+			url = new URL(urlStr);
+			HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
+			InputStreamReader in = new InputStreamReader(urlConn.getInputStream());
+			BufferedReader br = new BufferedReader(in);
+			
+			String readerLine = null;
+			while((readerLine=br.readLine())!=null){
+				result += readerLine;
+			}
+			in.close();
+			urlConn.disconnect();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        return result;
 	}
 	
 	private static Distance buildDistanceObj(String json){
