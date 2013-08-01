@@ -32,6 +32,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.AbsListView;
+import android.widget.ScrollView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -42,6 +43,7 @@ import com.withiter.quhao.adapter.CategoryAdapter;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
+import com.withiter.quhao.view.InnerListView;
 import com.withiter.quhao.vo.Category;
 
 public class MainActivity extends AppStoreActivity
@@ -51,7 +53,7 @@ public class MainActivity extends AppStoreActivity
 	
 	protected ListView topMerchantListView;
 	
-	protected ListView categorysListView;
+	protected InnerListView categorysListView;
 	
 	protected ProgressDialogUtil progressDialogUtil;
 	
@@ -101,6 +103,8 @@ public class MainActivity extends AppStoreActivity
 		categorysListView.setAdapter(adapter);
 		adapter.notifyDataSetChanged();
 		
+		
+		
 		/*
 		LinearLayout.LayoutParams topMerchantListParams = (LayoutParams) topMerchantListView.getLayoutParams();
 		topMerchantListView.setLayoutParams(topMerchantListParams);
@@ -147,7 +151,10 @@ public class MainActivity extends AppStoreActivity
 		categorysLayout.setLayoutParams(topMerchantLayoutParams);
 		
 		
-		categorysListView = (ListView) findViewById(R.id.categorysListView);
+		categorysListView = (InnerListView) findViewById(R.id.categorysListView);
+		ScrollView parentScroll = (ScrollView) findViewById(R.id.parentScroll);
+		categorysListView.setParentScroll(parentScroll);
+		categorysListView.setMaxHeight(200);
 		categorysListView.setNextFocusDownId(R.id.categorysListView);
 		categorysListView.setOnScrollListener(categorysListScrollListener);
 		categorysListView.setVisibility(View.GONE);

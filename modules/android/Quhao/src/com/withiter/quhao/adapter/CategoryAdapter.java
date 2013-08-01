@@ -161,6 +161,7 @@ public class CategoryAdapter extends BaseAdapter
 		
 	}
 
+	
 	class ViewHolder
 	{
 		ImageView img;
