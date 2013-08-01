@@ -35,6 +35,8 @@ public class Patches extends BaseController {
 	private static final String MERCHANT_CSV_FOLDER = Play.configuration.getProperty("merchants.path");
 	private static final String TOP_MERCHANT_CSV_FOLDER = Play.configuration.getProperty("topMerchants.path");
 	private static Logger logger = LoggerFactory.getLogger(Patches.class);
+	private static final String geocodingKey = Play.configuration.getProperty("develop.geocoding.app.key");
+	
 	
 	public static void index(){
 		renderJapid();
@@ -90,7 +92,7 @@ public class Patches extends BaseController {
 			if(StringUtils.isEmpty(m.x)){
 				String addEncode = URLEncoder.encode(m.address, "UTF-8");
 				String cityEncode = URLEncoder.encode("上海","UTF-8");
-				String urlStr = "http://api.map.baidu.com/geocoder?address="+addEncode+"&output=json&key=c5df6a3c70535c64f58437cbaf5a675f&city="+cityEncode;
+				String urlStr = "http://api.map.baidu.com/geocoder?address="+addEncode+"&output=json&key="+geocodingKey+"&city="+cityEncode;
 				String jsonStr = getXY(urlStr);
 				System.out.println("==============");
 				System.out.println(m.address);
