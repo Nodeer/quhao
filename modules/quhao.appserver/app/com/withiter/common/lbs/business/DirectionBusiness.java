@@ -31,7 +31,7 @@ public class DirectionBusiness {
 		if (StringUtils.isEmpty(origin) || StringUtils.isEmpty(destination)
 				|| StringUtils.isEmpty(origin_region)
 				|| StringUtils.isEmpty(destination_region)
-				|| StringUtils.isEmpty(ak)) {
+				|| StringUtils.isEmpty(key)) {
 			return null;
 		}
 		String requestUrl = null;
@@ -55,7 +55,7 @@ public class DirectionBusiness {
 					.append(destination).append("&origin_region=")
 					.append(origin_region).append("&destination_region=")
 					.append(destination_region).append("&output=")
-					.append(output).append("&ak=").append(ak);
+					.append(output).append("&ak=").append(key);
 			requestUrl = sb.toString();
 		}
 
@@ -65,7 +65,7 @@ public class DirectionBusiness {
 					.append("&origin_region=").append(origin_region)
 					.append("&destination_region=").append(destination_region)
 					.append("&output=").append(output).append("&ak=")
-					.append(ak);
+					.append(key);
 			requestUrl = sb.toString();
 		}
 		
@@ -76,7 +76,7 @@ public class DirectionBusiness {
 	
 	private static Distance buildDistanceObj(String json){
 		Distance d = new Distance();
-		
+		// TODO add exact data from json response
 		return d;
 	}
 }
