@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import play.Play;
 import play.modules.morphia.Model.MorphiaQuery;
 
+import com.withiter.common.httprequest.CommonHTTPRequest;
 import com.withiter.jobs.CategoryJob;
 import com.withiter.models.merchant.Merchant;
 import com.withiter.models.merchant.Tese;
@@ -93,7 +94,7 @@ public class Patches extends BaseController {
 				String addEncode = URLEncoder.encode(m.address, "UTF-8");
 				String cityEncode = URLEncoder.encode("上海","UTF-8");
 				String urlStr = "http://api.map.baidu.com/geocoder?address="+addEncode+"&output=json&key="+geocodingKey+"&city="+cityEncode;
-				String jsonStr = getXY(urlStr);
+				String jsonStr = CommonHTTPRequest.request(urlStr);
 				System.out.println("==============");
 				System.out.println(m.address);
 				System.out.println(jsonStr);
@@ -117,35 +118,6 @@ public class Patches extends BaseController {
 			m.y = y;
 			m.save();
 		}
-	}
-	
-	private static String getXY(String strUrl){
-//		String strUrl = "http://localhost:9081/testcontroller/test1?arg=2222";
-
-		System.getProperties().setProperty("proxySet", "true");
-		System.getProperties().setProperty("http.proxyHost", "www-proxy.ericsson.se");
-		System.getProperties().setProperty("http.proxyPort", "8080");
-        URL url = null;
-        String result = "";
-        try {
-			url = new URL(strUrl);
-			HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
-			InputStreamReader in = new InputStreamReader(urlConn.getInputStream());
-			BufferedReader br = new BufferedReader(in);
-			
-			String readerLine = null;
-			while((readerLine=br.readLine())!=null){
-				result += readerLine;
-			}
-			in.close();
-			urlConn.disconnect();
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-        
-        return result;
 	}
 	
 	private static void importTopMerchantFromCSV(File file) throws IOException {
