@@ -35,7 +35,9 @@ GET		/p        							Patches.index
 
 # backend management
 *		/b/m/{action}						backend.MerchantManagementController.{action}
-*		/b/w									backend.{action}
+*		/b/m								backend.merchant.MerchantManagementController.index
+*		/b/w/{action}						backend.self.{action}
+*		/b/w								backend.self.SelfManagementController.index
 # backend management
 
 # Map static resources from the /app/public folder to the /public path
