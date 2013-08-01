@@ -54,10 +54,6 @@ public class TopMerchant extends TopMerchantEntityDef {
 		return q.asList();
 	}
 	
-	
-	
-	
-	
 	@Override
 	public String toString() {
 		String telStr = "";

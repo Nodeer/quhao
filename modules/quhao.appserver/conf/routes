@@ -33,6 +33,10 @@ GET		/login								AccountController.login
 *		/p/{action}							Patches.{action}
 GET		/p        							Patches.index
 
+# backend management
+*		/b/m/{action}						backend.MerchantManagementController.{action}
+*		/b/w									backend.{action}
+# backend management
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                            staticDir:public
