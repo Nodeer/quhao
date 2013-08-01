@@ -16,4 +16,5 @@ public abstract class ReservationEntityDef extends BaseModel {
 	public int seatNumber;
 	public int myNumber;
 	public boolean valid;
+	public Constants.ReservationStatus status;
 }

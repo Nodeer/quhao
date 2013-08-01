@@ -20,6 +20,10 @@ public class Constants {
 		driving, walking, transit
 	}
 	
+	public enum ReservationStatus{
+		finish, cancel, expired
+	}
+	
 	public static String COOKIE_USERNAME = "quhao_username";
 
 	public static String SESSION_USERNAME = "quhao_username";
