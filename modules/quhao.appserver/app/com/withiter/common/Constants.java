@@ -16,6 +16,14 @@ public class Constants {
 		cateType, grade, averageCost, kouwei, huanjing, fuwu, xingjiabi, markedCount
 	}
 	
+	public enum DirectionMode{
+		driving, walking, transit
+	}
+	
+	public enum ReservationStatus{
+		finish, cancel, expired
+	}
+	
 	public static String COOKIE_USERNAME = "quhao_username";
 
 	public static String SESSION_USERNAME = "quhao_username";

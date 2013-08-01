@@ -5,17 +5,27 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import play.Play;
 import play.modules.morphia.Model.MorphiaQuery;
 
+import com.withiter.common.httprequest.CommonHTTPRequest;
 import com.withiter.jobs.CategoryJob;
 import com.withiter.models.merchant.Merchant;
 import com.withiter.models.merchant.Tese;
@@ -26,11 +36,17 @@ public class Patches extends BaseController {
 	private static final String MERCHANT_CSV_FOLDER = Play.configuration.getProperty("merchants.path");
 	private static final String TOP_MERCHANT_CSV_FOLDER = Play.configuration.getProperty("topMerchants.path");
 	private static Logger logger = LoggerFactory.getLogger(Patches.class);
+	private static final String geocodingKey = Play.configuration.getProperty("develop.geocoding.app.key");
+	
 	
 	public static void index(){
 		renderJapid();
 	}
 	
+	/**
+	 * 从data/merchants导入商家信息
+	 * @throws IOException
+	 */
 	public static void importMerchants() throws IOException{
 		logger.info(Patches.class.getName()+" start to importMerchants.");
 		long start = System.currentTimeMillis();
@@ -48,6 +64,10 @@ public class Patches extends BaseController {
 		renderJSON(q.count());
 	}
 	
+	/**
+	 * 从data/topmerchants导入topX商家信息
+	 * @throws IOException
+	 */
 	public static void importTopMerchants() throws IOException{
 		logger.info(Patches.class.getName()+" start to importMerchants.");
 		TopMerchant.deleteAll();
@@ -66,8 +86,42 @@ public class Patches extends BaseController {
 		renderJSON(q.count());
 	}
 	
-	private static void importTopMerchantFromCSV(File file) throws IOException
-	{
+	public static void importMerchantCoordinate() throws UnsupportedEncodingException, JSONException{
+		MorphiaQuery q = Merchant.q();
+		List<Merchant> mList = q.asList();
+		int i = 0;
+		for(Merchant m : mList){
+			if(StringUtils.isEmpty(m.x)){
+				String addEncode = URLEncoder.encode(m.address, "UTF-8");
+				String cityEncode = URLEncoder.encode("上海","UTF-8");
+				String urlStr = "http://api.map.baidu.com/geocoder?address="+addEncode+"&output=json&key="+geocodingKey+"&city="+cityEncode;
+				String jsonStr = CommonHTTPRequest.request(urlStr);
+				System.out.println("==============");
+				System.out.println(m.address);
+				System.out.println(jsonStr);
+				updateMerchant(jsonStr, m);
+				i++;
+				System.out.println("==============");
+			}
+		}
+		
+		renderJSON(i);
+	}
+	
+	private static void updateMerchant(String jsonStr, Merchant m) throws JSONException{
+		JSONObject json = new JSONObject(jsonStr);
+		String status = json.get("status").toString();
+		if("OK".equalsIgnoreCase(status) && !json.get("result").toString().startsWith("[")) {
+			JSONObject xyJSON = new JSONObject(new JSONObject(json.get("result").toString()).get("location").toString());
+			String x = xyJSON.get("lng").toString();
+			String y = xyJSON.get("lat").toString();
+			m.x = x;
+			m.y = y;
+			m.save();
+		}
+	}
+	
+	private static void importTopMerchantFromCSV(File file) throws IOException {
 		System.out.println(file.getAbsolutePath());
 		String fileName = file.getName().replaceAll(".csv", "");
 		BufferedReader br = new BufferedReader(new FileReader(file));
@@ -77,7 +131,6 @@ public class Patches extends BaseController {
 			buildTopMerchant(s, fileName);
 		}
 		br.close();
-		
 	}
 
 	private static void importMerchantFromCSV(File file) throws IOException{

@@ -44,7 +44,7 @@ public class Merchant extends MerchantEntityDef {
 	}
 	
 	private static List<Merchant> paginate(MorphiaQuery q, int page){
-		q.skip((page - 1) * DEFAULT_PAGE_ITEMS_NUMBER).limit(DEFAULT_PAGE_ITEMS_NUMBER);
+		q.offset((page - 1) * DEFAULT_PAGE_ITEMS_NUMBER).limit(DEFAULT_PAGE_ITEMS_NUMBER);
 		return q.asList();
 	}
 	

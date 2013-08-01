@@ -1,4 +1,4 @@
-package controllers.backend;
+package controllers.backend.self;
 
 import controllers.BaseController;
 
