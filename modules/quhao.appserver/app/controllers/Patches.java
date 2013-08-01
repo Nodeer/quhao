@@ -50,6 +50,7 @@ public class Patches extends BaseController {
 	
 	public static void importTopMerchants() throws IOException{
 		logger.info(Patches.class.getName()+" start to importMerchants.");
+		TopMerchant.deleteAll();
 		long start = System.currentTimeMillis();
 		String dir = TOP_MERCHANT_CSV_FOLDER;
 		File f = new File(dir);
