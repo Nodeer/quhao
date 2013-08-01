@@ -7,4 +7,12 @@ public class MerchantManagementController extends BaseController {
 	public static void index(){
 		renderJapid();
 	}
+	
+	public static void regist(){
+		
+	}
+	
+	public static void login(){
+		
+	}
 }
