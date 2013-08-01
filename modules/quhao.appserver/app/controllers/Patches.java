@@ -122,9 +122,9 @@ public class Patches extends BaseController {
 	private static String getXY(String strUrl){
 //		String strUrl = "http://localhost:9081/testcontroller/test1?arg=2222";
 
-//		System.getProperties().setProperty("proxySet", "true");
-//		System.getProperties().setProperty("http.proxyHost", "www-proxy.ericsson.se");
-//		System.getProperties().setProperty("http.proxyPort", "8080");
+		System.getProperties().setProperty("proxySet", "true");
+		System.getProperties().setProperty("http.proxyHost", "www-proxy.ericsson.se");
+		System.getProperties().setProperty("http.proxyPort", "8080");
         URL url = null;
         String result = "";
         try {
