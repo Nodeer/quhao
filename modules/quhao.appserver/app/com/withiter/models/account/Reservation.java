@@ -49,6 +49,6 @@ public class Reservation extends ReservationEntityDef {
 	{
 			MorphiaQuery q = Reservation.q();
 			q.filter("accountId", accountId).filter("valid", false);
-			return q.first();
+			return q.asList();
 	}
 }
