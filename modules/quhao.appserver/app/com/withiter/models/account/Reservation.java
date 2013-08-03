@@ -44,4 +44,11 @@ public class Reservation extends ReservationEntityDef {
 		q.filter("accountId", accountId).filter("merchantId", mid).filter("valid", true).filter("seatNumber", seatNumber);
 		return q.first();
 	}
+
+	public static List<Reservation> findHistroyReservations(String accountId)
+	{
+			MorphiaQuery q = Reservation.q();
+			q.filter("accountId", accountId).filter("valid", false);
+			return q.first();
+	}
 }

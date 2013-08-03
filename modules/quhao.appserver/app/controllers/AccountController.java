@@ -1,9 +1,12 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import play.Logger;
+import vo.MerchantVO;
 import vo.PersonalInfoVO;
+import vo.ReservationVO;
 import vo.account.LoginVO;
 import cn.bran.japid.util.StringUtils;
 
@@ -92,10 +95,49 @@ public class AccountController extends BaseController {
 			personalInfo.msg = "account is not exsit";
 		}
 		
-		//List<Reservation> reservations = Reservation.findbyAccountId(String.valueOf(account.getId()));
-		//List<Merchant> currentMerchants = Merchant.findbyAccountId(account.getId());
+		LoginVO loginVO = new LoginVO();
+		loginVO.build(account);
 		
+		List<Reservation> currentReservations = Reservation.findValidReservations(String.valueOf(account.getId()));
 		
+		List<ReservationVO> currentReservationVOs = new ArrayList<ReservationVO>();
+		ReservationVO reservationVO = null;
+		for (Reservation reservation : currentReservations)
+		{
+			reservationVO = new ReservationVO();
+			reservationVO.build(reservation);
+			currentReservationVOs.add(reservationVO);
+		}
 		
+		List<Merchant> currentMerchants = Merchant.findbyReservations(currentReservations);
+		List<MerchantVO> currentMerchantVOs = new ArrayList<MerchantVO>(); 
+		for (Merchant merchant : currentMerchants)
+		{
+			currentMerchantVOs.add(MerchantVO.build(merchant));
+			
+		}
+		
+		List<Reservation> histroyReservations = Reservation.findHistroyReservations(String.valueOf(account.getId()));
+		
+		List<ReservationVO> histroytReservationVOs = new ArrayList<ReservationVO>();
+		for (Reservation reservation : histroyReservations)
+		{
+			reservationVO = new ReservationVO();
+			reservationVO.build(reservation);
+			histroytReservationVOs.add(reservationVO);
+		}
+		
+		List<Merchant> histroyMerchants = Merchant.findbyReservations(histroyReservations);
+		
+		List<MerchantVO> histroyMerchantVOs = new ArrayList<MerchantVO>(); 
+		for (Merchant merchant : histroyMerchants)
+		{
+			histroyMerchantVOs.add(MerchantVO.build(merchant));
+			
+		}
+		
+		personalInfo.build(loginVO,currentReservationVOs,currentMerchantVOs,histroytReservationVOs,histroyMerchantVOs);
+		
+		renderJSON(personalInfo);
 	}
 }
