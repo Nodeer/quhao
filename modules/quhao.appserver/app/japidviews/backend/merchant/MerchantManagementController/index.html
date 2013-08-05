@@ -7,6 +7,36 @@
 </head>
 <body class="landingBG">
     <div class="logintll">已经有账号了? <a href="javascript:void(0);">登陆.</a></div>
+    
+    <div class="login_nav" id="new_login" style="display:none;">
+                <div class="login_nav_arrow"></div>
+           		<div class="login_facebook">
+                     <span class="facebook_ico"></span>
+                     <span class="facebook_text" onclick="Facebook.signup()">Login With Facebook</span>
+                </div>
+                <div class="login_box">
+                     <span class="login_list"></span>
+                     OR
+                     <span class="login_list"></span>
+                </div>
+                <form action="" id="loginform">
+               <!--  <input type="text" class="email_input" placeholder="E-mail Address" /> -->
+                <span id="errorEmail" style="display: none;" class="errorMsg"><span id="errorWordForEmail">Please enter a valid e-mail address. </span></span>
+						<input id="loginemail" disabled="disabled" autocomplete="off" onfocus="Login.loginFocus(this);" type="text" placeHolder="E-mail Address" class="email_input"/>
+						<input id="showloginemail" style="display: none;" type="text" name="account.email" autocomplete="off" value="" class="email_input" onblur="Login.loginBlur(this, 'E-mail Address')"/>
+                <span id="errorPwd" style="display: none;" class="errorMsg"><span id="errorWordForPassword">Please enter a valid Password.</span></span>
+						<input id="loginpassword" disabled="disabled" class="password_input" placeHolder="Password" type="text" autocomplete="off" onfocus="Login.loginFocus(this);"/>
+       					<input id="showloginpassword" style="display: none;" class="password_input" type="password" name="account.password" autocomplete="off"  onkeypress="Login.loginWithKeyboard(event);" onblur="Login.loginBlur(this, '$i18n(F_PASSWORD)')"/>
+                <span class="password_btn" id="btnLogin">Log In</span>
+                </form>
+                <div class="login_check">
+                     <input type="checkbox" name="" class="login_checkbox"/>
+                     <span>Remember me ·</span>
+                     <a href="javascript: void(0);">Forgot password?</a></p>
+                </div>
+                
+           </div>
+    
     <div class="landingHeader">
         <div class="logo"><img src="/public/images/common/logo_no_bg_beta.png"></div>
         <div class="landingTip"><img src="/public/images/common/loadingTip.png"></div>
