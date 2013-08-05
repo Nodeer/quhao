@@ -41,9 +41,9 @@ public class DirectionBusiness {
 		}
 
 		sb.append("?mode=").append(mode);
-		if (StringUtils.isEmpty(mode)) {
-			mode = Constants.DirectionMode.driving.toString();
-		}
+//		if (StringUtils.isEmpty(mode)) {
+//			mode = Constants.DirectionMode.driving.toString();
+//		}
 
 		if (StringUtils.isEmpty(output)) {
 			output = "json";

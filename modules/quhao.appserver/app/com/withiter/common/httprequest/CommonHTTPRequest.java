@@ -7,9 +7,13 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class CommonHTTPRequest {
 
 	private static boolean useProxy = false;
+	private static Logger logger =  LoggerFactory.getLogger(CommonHTTPRequest.class);
 	
 	public static boolean isUseProxy() {
 		return useProxy;
@@ -27,6 +31,8 @@ public class CommonHTTPRequest {
 	
 	public static String request(String strUrl){
 
+		logger.debug(CommonHTTPRequest.class.getName() + ", request url is : " + strUrl);
+		
 		String userHome = System.getProperty("user.home");
 		if(userHome.contains("eacfgjl")){
 			useProxy = true;
