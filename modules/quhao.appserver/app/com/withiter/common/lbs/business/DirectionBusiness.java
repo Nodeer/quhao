@@ -75,6 +75,7 @@ public class DirectionBusiness {
 	
 	private static Distance buildDistanceObj(String json){
 		Distance d = new Distance();
+		
 		// TODO add exact data from json response
 		return d;
 	}
