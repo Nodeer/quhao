@@ -92,6 +92,6 @@ public class Reservation extends ReservationEntityDef {
 			r.status = ReservationStatus.expired;
 			r.valid = false;
 			r.save();
-		}		
+		}
 	}
 }
