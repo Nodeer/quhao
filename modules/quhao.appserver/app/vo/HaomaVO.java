@@ -21,7 +21,7 @@ public class HaomaVO {
 			Integer key = (Integer)ite.next();
 			Paidui p = haoma.haomaMap.get(key);
 			PaiduiVO pvo = vo.new PaiduiVO();
-			pvo.currentWait = p.currentWait;
+			pvo.currentWait = p.currentNumber;
 			pvo.enable = p.enable;
 			vo.haomaVOMap.put(key, pvo);
 		}

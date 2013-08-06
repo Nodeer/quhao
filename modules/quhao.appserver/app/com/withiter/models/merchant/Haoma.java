@@ -37,9 +37,9 @@ public class Haoma extends HaomaEntityDef {
 		
 		Haoma haoma = Haoma.findByMerchantId(mid);
 		Paidui paidui = haoma.haomaMap.get(seatNumber);
-		int number = paidui.currentWait+1;
+		int number = paidui.currentNumber+1;
 		paidui.enable = true;
-		paidui.currentWait = number;
+		paidui.currentNumber = number;
 		
 		Paidui p = new Paidui(number, true);
 		

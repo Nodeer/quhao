@@ -2,7 +2,7 @@ package com.withiter.models.merchant;
 
 public class Paidui{
 	public Paidui(int number, boolean b) {
-		this.currentWait = number;
+		this.currentNumber = number;
 		this.enable = b;
 	}
 	
@@ -10,6 +10,6 @@ public class Paidui{
 		
 	}
 	
-	public int currentWait = 0;
+	public int currentNumber = 0;
 	public boolean enable = false;
 }
