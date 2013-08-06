@@ -22,7 +22,7 @@ public class HaomaVO {
 			Paidui p = haoma.haomaMap.get(key);
 			PaiduiVO pvo = vo.new PaiduiVO();
 			pvo.currentNumber = p.currentNumber;
-			pvo.cancled = p.cancled;
+			pvo.canceled = p.canceled;
 			pvo.expired = p.expired;
 			pvo.finished = p.finished;
 			pvo.enable = p.enable;
@@ -34,7 +34,7 @@ public class HaomaVO {
 	
 	public class PaiduiVO {
 		public int currentNumber = 0;
-		public int cancled = 0;
+		public int canceled = 0;
 		public int expired = 0;
 		public int finished = 0;
 		public boolean enable = false;
