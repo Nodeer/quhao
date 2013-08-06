@@ -72,6 +72,7 @@ public class Reservation extends ReservationEntityDef {
 		Reservation r = Reservation.findById(reservationId);
 		if(r != null){
 			r.status = ReservationStatus.canceled;
+			r.valid = false;
 			r.save();
 		}
 	}
@@ -80,6 +81,7 @@ public class Reservation extends ReservationEntityDef {
 		Reservation r = Reservation.findById(reservationId);
 		if(r != null){
 			r.status = ReservationStatus.finished;
+			r.valid = false;
 			r.save();
 		}
 	}
@@ -88,6 +90,7 @@ public class Reservation extends ReservationEntityDef {
 		Reservation r = Reservation.findById(reservationId);
 		if(r != null){
 			r.status = ReservationStatus.expired;
+			r.valid = false;
 			r.save();
 		}		
 	}
