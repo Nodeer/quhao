@@ -11,5 +11,8 @@ public class Paidui{
 	}
 	
 	public int currentNumber = 0;
+	public int cancled = 0;
+	public int expired = 0;
+	public int finished = 0;
 	public boolean enable = false;
 }

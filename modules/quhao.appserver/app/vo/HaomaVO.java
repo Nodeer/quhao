@@ -21,7 +21,10 @@ public class HaomaVO {
 			Integer key = (Integer)ite.next();
 			Paidui p = haoma.haomaMap.get(key);
 			PaiduiVO pvo = vo.new PaiduiVO();
-			pvo.currentWait = p.currentNumber;
+			pvo.currentNumber = p.currentNumber;
+			pvo.cancled = p.cancled;
+			pvo.expired = p.expired;
+			pvo.finished = p.finished;
 			pvo.enable = p.enable;
 			vo.haomaVOMap.put(key, pvo);
 		}
@@ -30,7 +33,10 @@ public class HaomaVO {
 	}
 	
 	public class PaiduiVO {
-		public int currentWait = 0;
+		public int currentNumber = 0;
+		public int cancled = 0;
+		public int expired = 0;
+		public int finished = 0;
 		public boolean enable = false;
 	}
 	

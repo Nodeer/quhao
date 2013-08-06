@@ -41,9 +41,9 @@ public class Haoma extends HaomaEntityDef {
 		paidui.enable = true;
 		paidui.currentNumber = number;
 		
-		Paidui p = new Paidui(number, true);
+//		Paidui p = new Paidui(number, true);
 		
-		haoma.haomaMap.put(seatNumber, p);
+//		haoma.haomaMap.put(seatNumber, p);
 		haoma.save();
 		
 		Reservation reservation = new Reservation();
@@ -51,6 +51,7 @@ public class Haoma extends HaomaEntityDef {
 		reservation.merchantId = mid;
 		reservation.myNumber = number;
 		reservation.seatNumber = seatNumber;
+		reservation.beforeYou = number - (paidui.cancled + paidui.expired + paidui.finished);
 		reservation.valid = true;
 		
 		return reservation;
