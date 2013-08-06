@@ -11,12 +11,10 @@ import com.withiter.common.Constants.SortBy;
 import com.withiter.models.account.Reservation;
 
 @Entity
-public class Merchant extends MerchantEntityDef
-{
+public class Merchant extends MerchantEntityDef {
 	private static int DEFAULT_PAGE_ITEMS_NUMBER = 10;
 
-	public static List<Merchant> findByType(String cateType)
-	{
+	public static List<Merchant> findByType(String cateType) {
 		MorphiaQuery q = Merchant.q();
 		q.filter("cateType", cateType);
 		return q.asList();
@@ -31,45 +29,36 @@ public class Merchant extends MerchantEntityDef
 	 * @return
 	 */
 	public static List<Merchant> nextPage(String cateType, int page,
-			String sortBy)
-	{
+			String sortBy) {
 		MorphiaQuery q = Merchant.q();
-		if (!StringUtils.isEmpty(cateType))
-		{
+		if (!StringUtils.isEmpty(cateType)) {
 			q.filter("cateType", cateType);
-		} else
-		{
+		} else {
 			q.filter("cateType", CateType.benbangcai.toString());
 		}
-		if (!StringUtils.isEmpty(sortBy))
-		{
+		if (!StringUtils.isEmpty(sortBy)) {
 			q = sortBy(q, sortBy);
 		}
 		return paginate(q, page);
 	}
 
-	private static MorphiaQuery sortBy(MorphiaQuery q, String sortBy)
-	{
+	private static MorphiaQuery sortBy(MorphiaQuery q, String sortBy) {
 		q.order(sortBy);
 		return q;
 	}
 
-	private static List<Merchant> paginate(MorphiaQuery q, int page)
-	{
+	private static List<Merchant> paginate(MorphiaQuery q, int page) {
 		q.offset((page - 1) * DEFAULT_PAGE_ITEMS_NUMBER).limit(
 				DEFAULT_PAGE_ITEMS_NUMBER);
 		return q.asList();
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		String telStr = "";
-		if (this.telephone != null)
-		{
+		if (this.telephone != null) {
 			StringBuffer sb = new StringBuffer();
-			for (int i = 0; i < this.telephone.length; i++)
-			{
+			for (int i = 0; i < this.telephone.length; i++) {
 				sb.append(telephone[i]);
 			}
 			telStr = sb.toString();
@@ -90,25 +79,19 @@ public class Merchant extends MerchantEntityDef
 	}
 
 	public static List<Merchant> findbyReservations(
-			List<Reservation> reservations)
-	{
+			List<Reservation> reservations) {
 		String whereSql = "";
-		if (null != reservations && !reservations.isEmpty())
-		{
+		if (null != reservations && !reservations.isEmpty()) {
 			whereSql = "id in (";
-		} else
-		{
+		} else {
 			return new ArrayList<Merchant>();
 		}
 		Reservation reservation = null;
-		for (int i = 0; i < reservations.size(); i++)
-		{
+		for (int i = 0; i < reservations.size(); i++) {
 			reservation = reservations.get(i);
 			if (null != reservation.merchantId
-					&& !"".equals(reservation.merchantId))
-			{
-				if (i < reservations.size() - 1)
-				{
+					&& !"".equals(reservation.merchantId)) {
+				if (i < reservations.size() - 1) {
 					whereSql = whereSql + reservation.merchantId + ",";
 					continue;
 				}

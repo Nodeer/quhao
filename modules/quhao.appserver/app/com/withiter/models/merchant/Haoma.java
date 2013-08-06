@@ -52,5 +52,10 @@ public class Haoma extends HaomaEntityDef {
 		return reservation;
 	}
 	
-//	public synchronized static 
+	public synchronized static Haoma updateByCancel(Haoma haoma, String mid, int myNumber, int seatNumber){
+		Paidui p = haoma.haomaMap.get(seatNumber);
+		p.canceled += 1;
+		haoma.save();
+		return haoma;
+	}
 }

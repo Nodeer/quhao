@@ -20,7 +20,9 @@ import play.modules.morphia.Model.NoAutoTimestamp;
 import cn.bran.japid.util.StringUtils;
 
 import com.withiter.common.Constants;
+import com.withiter.common.Constants.ReservationStatus;
 import com.withiter.common.ContentType;
+import com.withiter.models.merchant.Haoma;
 import com.google.code.morphia.annotations.Entity;
 import com.mongodb.DB;
 import com.mongodb.Mongo;
@@ -37,18 +39,35 @@ public class Reservation extends ReservationEntityDef {
 		q.filter("accountId", accountId).filter("valid", true);
 		return q.asList();
 	}
-	
-	public static Reservation reservationExist(String accountId,
-			String mid, int seatNumber){
+
+	public static Reservation reservationExist(String accountId, String mid,
+			int seatNumber) {
 		MorphiaQuery q = Reservation.q();
-		q.filter("accountId", accountId).filter("merchantId", mid).filter("valid", true).filter("seatNumber", seatNumber);
+		q.filter("accountId", accountId).filter("merchantId", mid)
+				.filter("valid", true).filter("seatNumber", seatNumber);
 		return q.first();
 	}
 
-	public static List<Reservation> findHistroyReservations(String accountId)
-	{
-			MorphiaQuery q = Reservation.q();
-			q.filter("accountId", accountId).filter("valid", false);
-			return q.asList();
+	public static List<Reservation> findHistroyReservations(String accountId) {
+		MorphiaQuery q = Reservation.q();
+		q.filter("accountId", accountId).filter("valid", false);
+		return q.asList();
+	}
+
+	public static void cancel(String reservationId) {
+		Reservation r = Reservation.findById(reservationId);
+		if(r != null){
+			r.status = ReservationStatus.canceled;
+			r.save();
+		}
+	}
+	
+	@OnUpdate
+	private void updateHaoma(){
+		String mid = this.merchantId;
+		int myNumber = this.myNumber;
+		int seatNumber = this.seatNumber;
+		Haoma haoma = Haoma.findByMerchantId(mid);
+		Haoma.updateByCancel(haoma, mid, myNumber, seatNumber);
 	}
 }

@@ -21,7 +21,7 @@ public class Constants {
 	}
 	
 	public enum ReservationStatus{
-		finish, cancel, expired
+		finished, canceled, expired
 	}
 	
 	public static String COOKIE_USERNAME = "quhao_username";

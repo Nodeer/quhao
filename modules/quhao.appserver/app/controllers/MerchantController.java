@@ -125,7 +125,7 @@ public class MerchantController extends BaseController {
 	}
 
 	public static void cancel(String reservationId){
-		
+		Reservation.cancel(reservationId);
 	}
 	
 	public static void finish(String reservationId){
