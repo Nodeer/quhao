@@ -4,22 +4,23 @@
 <link href="/public/stylesheets/base.css" rel="stylesheet" type="text/css" charset="utf-8">
 <link href="/public/stylesheets/landing.css" rel="stylesheet" type="text/css" charset="utf-8">
 <link href="/public/stylesheets/pop_signUp_login.css" rel="stylesheet" type="text/css" charset="utf-8">
+
+<script src="/public/javascripts/backend/login.js" type="text/javascript" charset="utf-8" ></script>
+
 <title>取号啦 - 商家后台管理</title>
 </head>
 <body class="landingBG">
-    <div class="logintll">已经有账号了? <a href="javascript:void(0);">登陆.</a></div>
+    <div class="logintll">已经有账号了? <a href="javascript:Login.exchange();">登陆.</a></div>
     
-    <div class="pop_logIn" style="display: none;">
-		<strong>Log in to Applyful.</strong>
-		<a href="javascript:void(0);" class="btnfaceBook"><span class="icon faceBook"></span>Sign Up With Facebook</a>
-		<p class="or"><span>OR</span></p>
-		<p class="errorText">Wrong e-mail address or password.</p>
+    <div id="login_div" class="pop_logIn" style="display:none;">
+		<p class="or"><span>登陆</span></p>
+		<p class="errorText" style="visibility: hidden;">请输入手机号或者邮箱</p>
 		<form action="" method="">
 			<fieldset class="fieldset">
 				<ul>
-					<li><input type="text" placeHolder="Email" class="textInput"/></li>
-					<li><input type="text" placeHolder="Password" class="textInput"/></li>
-					<li class="link"><a href="javascript: void(0);">Forgot password?</a></li>
+					<li><input type="text" placeHolder="手机号/邮箱" class="textInput"/></li>
+					<li><input type="text" placeHolder="密码" class="textInput"/></li>
+					<li class="link"><a href="javascript: void(0);">忘记密码了?</a></li>
 					<li class="buttonBox"><input type="button" name="" class="styleBtn corner lgoinBtn" value="Log In"/></li>
 				</ul>
 			</fieldset>

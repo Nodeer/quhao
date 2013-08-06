@@ -5,10 +5,6 @@
 * 
 /* 1. sign up
 ===========================================================*/
-body{
-	background-color: rgba(0,0,0,0.4);
-	padding: 50px;
-}
 
 .pop_signUp, .pop_logIn{
 	border-radius: 4px;
@@ -142,9 +138,28 @@ body{
 	visibility: hidden;
 }
 
+/* override by cross */
+.fieldset .textInput {
+    width: 190px;
+}
 
+.pop_logIn{
+	padding: 35px 25px;
+	background: #eff6f0;
+	width: 200px;
+}
 
+.pop_logIn .or{
+	margin-top: 0px;
+}
 
+.pop_logIn {
+	position: absolute;
+	right: 7%;
+	top: 10%;
+}
+
+/* override by cross */
 
 
 
