@@ -54,6 +54,20 @@ public class Reservation extends ReservationEntityDef {
 		return q.asList();
 	}
 
+	@OnUpdate
+	private void updateHaoma(){
+		String mid = this.merchantId;
+		int myNumber = this.myNumber;
+		int seatNumber = this.seatNumber;
+		Haoma haoma = Haoma.findByMerchantId(mid);
+		Haoma.updateByXmethod(haoma, mid, myNumber, seatNumber, this.status);
+		pushToClient();
+	}
+	
+	private void pushToClient(){
+		// TODO add push to client.
+	}
+
 	public static void cancel(String reservationId) {
 		Reservation r = Reservation.findById(reservationId);
 		if(r != null){
@@ -62,17 +76,19 @@ public class Reservation extends ReservationEntityDef {
 		}
 	}
 	
-	@OnUpdate
-	private void updateHaoma(){
-		String mid = this.merchantId;
-		int myNumber = this.myNumber;
-		int seatNumber = this.seatNumber;
-		Haoma haoma = Haoma.findByMerchantId(mid);
-		Haoma.updateByCancel(haoma, mid, myNumber, seatNumber);
-		pushToClient();
+	public static void finish(String reservationId) {
+		Reservation r = Reservation.findById(reservationId);
+		if(r != null){
+			r.status = ReservationStatus.finished;
+			r.save();
+		}
 	}
-	
-	private void pushToClient(){
-		// TODO add push to client.
+
+	public static void expire(String reservationId) {
+		Reservation r = Reservation.findById(reservationId);
+		if(r != null){
+			r.status = ReservationStatus.expired;
+			r.save();
+		}		
 	}
 }

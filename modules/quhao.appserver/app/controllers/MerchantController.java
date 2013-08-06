@@ -129,11 +129,11 @@ public class MerchantController extends BaseController {
 	}
 	
 	public static void finish(String reservationId){
-		
+		Reservation.finish(reservationId);
 	}
 	
 	public static void expire(String reservationId){
-		
+		Reservation.expire(reservationId);
 	}
 	
 	/**

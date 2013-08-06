@@ -1,5 +1,6 @@
 package com.withiter.models.merchant;
 
+import com.withiter.common.Constants.ReservationStatus;
 import com.withiter.models.account.Reservation;
 
 public class Haoma extends HaomaEntityDef {
@@ -52,9 +53,28 @@ public class Haoma extends HaomaEntityDef {
 		return reservation;
 	}
 	
-	public synchronized static Haoma updateByCancel(Haoma haoma, String mid, int myNumber, int seatNumber){
+	/**
+	 * 更新X人座位的finished, canceled, expired 数量
+	 * @param haoma
+	 * @param mid
+	 * @param myNumber
+	 * @param seatNumber
+	 * @param status
+	 * @return
+	 */
+	public synchronized static Haoma updateByXmethod(Haoma haoma, String mid, int myNumber, int seatNumber, ReservationStatus status){
 		Paidui p = haoma.haomaMap.get(seatNumber);
-		p.canceled += 1;
+		switch(status){
+			case canceled : 
+				p.canceled += 1;
+				break;
+			case finished : 
+				p.finished += 1;
+				break;
+			case expired : 
+				p.expired += 1;
+				break;
+		}
 		haoma.save();
 		return haoma;
 	}
