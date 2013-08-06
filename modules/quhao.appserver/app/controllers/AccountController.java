@@ -3,12 +3,13 @@ package controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import play.Logger;
 import vo.MerchantVO;
 import vo.PersonalInfoVO;
 import vo.ReservationVO;
 import vo.account.LoginVO;
-import cn.bran.japid.util.StringUtils;
 
 import com.withiter.common.Constants;
 import com.withiter.models.account.Account;
