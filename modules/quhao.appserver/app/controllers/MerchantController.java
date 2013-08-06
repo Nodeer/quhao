@@ -124,6 +124,18 @@ public class MerchantController extends BaseController {
 		renderJSON(rvo);
 	}
 
+	public static void cancel(String reservationId){
+		
+	}
+	
+	public static void finish(String reservationId){
+		
+	}
+	
+	public static void expire(String reservationId){
+		
+	}
+	
 	/**
 	 * Top merchant 列表
 	 * 

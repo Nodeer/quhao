@@ -12,6 +12,7 @@ public class ReservationVO {
 	public String merchantId;
 	public int seatNumber;
 	public int myNumber;
+	public int beforeYou;
 	public boolean valid;
 	public Constants.ReservationStatus status;
 	
@@ -21,6 +22,7 @@ public class ReservationVO {
 		this.merchantId = r.merchantId;
 		this.myNumber = r.myNumber;
 		this.seatNumber = r.seatNumber;
+		this.beforeYou = r.beforeYou;
 		this.valid = r.valid;
 		this.status = r.status;
 	}
