@@ -69,5 +69,10 @@ public class Reservation extends ReservationEntityDef {
 		int seatNumber = this.seatNumber;
 		Haoma haoma = Haoma.findByMerchantId(mid);
 		Haoma.updateByCancel(haoma, mid, myNumber, seatNumber);
+		pushToClient();
+	}
+	
+	private void pushToClient(){
+		// TODO add push to client.
 	}
 }
