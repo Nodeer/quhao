@@ -7,4 +7,8 @@ public class AccountController extends BaseController {
 	public static void test(){
 		renderJSON("aaa");
 	}
+	
+	public static void login(){
+		
+	}
 }
