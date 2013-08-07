@@ -10,8 +10,8 @@ Login.hide = function(){
 
 Login.exchange = function(){
 	if($("#login_div").is(":hidden")){
-		$("#login_div").show('bounce',0);
+		$("#login_div").show();
 	} else {
-		$("#login_div").hide('bounce',0);
+		$("#login_div").hide();
 	}
 }

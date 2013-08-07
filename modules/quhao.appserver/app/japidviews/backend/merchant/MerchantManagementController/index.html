@@ -1,12 +1,23 @@
+`import static press.Plugin.*; 
+`extends base_layout
+`set cssAndJs
+$addJS("backend/login.js", true)
+$addCSS("landing.css", true)
+$addCSS("pop_signUp_logIn.css", true)
+`
+`set title:i18n("取号啦 - 商家后台管理")
 <!DOCTYPE html>
 <html lang="cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="/public/images/common/quhao_favicon.jpg" type="image/png" rel="shortcut icon">
+
+
+<!-- 
 <link href="/public/stylesheets/base.css" rel="stylesheet" type="text/css" charset="utf-8">
 <link href="/public/stylesheets/landing.css" rel="stylesheet" type="text/css" charset="utf-8">
 <link href="/public/stylesheets/pop_signUp_login.css" rel="stylesheet" type="text/css" charset="utf-8">
-
 <script src="/public/javascripts/backend/login.js" type="text/javascript" charset="utf-8" ></script>
-
+ -->
+ 
 <title>取号啦 - 商家后台管理</title>
 </head>
 <body class="landingBG">
