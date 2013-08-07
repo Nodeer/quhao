@@ -151,4 +151,13 @@ public class MerchantController extends BaseController {
 		}
 		renderJSON(topMerchantVos);
 	}
+	
+	/**
+	 * 
+	 * @param x top merchant 数量
+	 */
+	public static void getMerchantsByName(String name) {
+		List<Merchant> merchantList = Merchant.findByName(name);
+		renderJSON(merchantList);
+	}
 }

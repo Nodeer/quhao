@@ -23,6 +23,7 @@ GET		/merchant							MerchantController.merchant
 GET		/quhao								MerchantController.quhao
 GET		/getTopMerchants					MerchantController.getTopMerchants
 GET		/nahao								MerchantController.nahao
+GET		/search								MerchantController.getMerchantsByName
 
 # Accounts
 GET		/accounts							rsecure.Secure.accounts
