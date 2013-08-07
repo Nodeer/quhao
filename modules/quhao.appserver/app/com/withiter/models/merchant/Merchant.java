@@ -2,6 +2,7 @@ package com.withiter.models.merchant;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import cn.bran.japid.util.StringUtils;
 
@@ -53,6 +54,15 @@ public class Merchant extends MerchantEntityDef {
 		return q.asList();
 	}
 
+	public static List<Merchant> findByName(String name) {
+		MorphiaQuery q = Merchant.q();
+		//首字查询
+		//Pattern pattern = Pattern.compile("^" + name + ".*$", Pattern.CASE_INSENSITIVE);
+		Pattern pattern = Pattern.compile("^.*" + name + ".*$", Pattern.CASE_INSENSITIVE);
+		q.filter("name", pattern);
+		return q.asList();
+	}
+	
 	@Override
 	public String toString() {
 		String telStr = "";
