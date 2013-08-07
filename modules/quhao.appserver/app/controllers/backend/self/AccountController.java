@@ -9,6 +9,7 @@ public class AccountController extends BaseController {
 	}
 	
 	public static void login(){
-		
+		System.out.println(params.allSimple());
+		renderJSON(false);
 	}
 }
