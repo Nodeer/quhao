@@ -10,6 +10,10 @@ public class AccountController extends BaseController {
 	
 	public static void login(){
 		System.out.println(params.allSimple());
+		
+		String userName = params.get("userName");
+		String userPwd = params.get("userPwd");
+		
 		renderJSON(false);
 	}
 }
