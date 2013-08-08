@@ -21,6 +21,7 @@ $addCSS("pop_signUp_logIn.css", true)
 <title>取号啦 - 商家后台管理</title>
 </head>
 <body class="landingBG">
+	<div  id="fatherDIV">
     <div class="logintll">已经有账号了? <a href="javascript:Login.exchange();">登陆.</a></div>
     
     <div id="login_div" class="pop_logIn" style="display:none;">
@@ -34,7 +35,7 @@ $addCSS("pop_signUp_logIn.css", true)
 						<input type="password" name="userPwd" id="userPwd" placeHolder="密码" class="textInput"/>
 					</li>
 					<li class="link"><a href="javascript: void(0);">忘记密码了?</a></li>
-					<li class="buttonBox"><input type="button" name="" class="styleBtn corner lgoinBtn" value="Log In" onclick="Login.login();"/></li>
+					<li class="buttonBox"><input type="button" name="" class="styleBtn corner lgoinBtn" value="登录" onclick="Login.login();"/></li>
 				</ul>
 			</fieldset>
 		</form>
@@ -52,7 +53,7 @@ $addCSS("pop_signUp_logIn.css", true)
             </a>
         </div>
           -->
-        <a href="javascript:void(0);" class="loginLink">通过E-mail注册</a>
+        <a href="javascript:Common.popup('register_div', 400, 300, 'fatherDIV', null);" class="loginLink">注册</a>
     </div>
 	<div class="landingFooter">
 		<ul>
@@ -63,6 +64,26 @@ $addCSS("pop_signUp_logIn.css", true)
 		<div class="copyright">
 			&copy;2013 Quhaola, INC.
 		</div>
+	</div>
+	
+	<div id="register_div" class="pop_logIn" style="display: none;">
+		<p class="or"><span>注册</span></p>
+		<p id="error_tip" class="errorText" style="visibility:hidden;">请输入手机号或者邮箱</p>
+		<form id="login_form" action="@{backend.self.AccountController.login()}" method="post">
+			<fieldset class="fieldset">
+				<ul>
+					<li><input type="text" name="userName" id="userName" placeHolder="手机号/邮箱" class="textInput"/></li>
+					<li>
+						<input type="password" name="userPwd" id="userPwd" placeHolder="密码" class="textInput"/>
+					</li>
+					<li>
+						<input type="password" name="userPwd" id="userPwd" placeHolder="密码" class="textInput"/>
+					</li>
+					<li class="buttonBox"><input type="button" name="" class="styleBtn corner lgoinBtn" value="注册" onclick="Login.login();"/></li>
+				</ul>
+			</fieldset>
+		</form>
+	</div>
 	</div>
 </body>
 </html>
