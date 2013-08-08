@@ -43,17 +43,6 @@ public class Merchant extends MerchantEntityDef {
 		return paginate(q, page);
 	}
 
-	private static MorphiaQuery sortBy(MorphiaQuery q, String sortBy) {
-		q.order(sortBy);
-		return q;
-	}
-
-	private static List<Merchant> paginate(MorphiaQuery q, int page) {
-		q.offset((page - 1) * DEFAULT_PAGE_ITEMS_NUMBER).limit(
-				DEFAULT_PAGE_ITEMS_NUMBER);
-		return q.asList();
-	}
-
 	public static List<Merchant> findByName(String name) {
 		MorphiaQuery q = Merchant.q();
 		//首字查询
@@ -111,6 +100,29 @@ public class Merchant extends MerchantEntityDef {
 		whereSql = whereSql + ")";
 		MorphiaQuery q = Merchant.q();
 		q.where(whereSql);
+		return q.asList();
+	}
+	
+	/**
+	 * 通用排序
+	 * @param q
+	 * @param sortBy
+	 * @return
+	 */
+	private static MorphiaQuery sortBy(MorphiaQuery q, String sortBy) {
+		q.order(sortBy);
+		return q;
+	}
+
+	/**
+	 * 通用分页
+	 * @param q
+	 * @param page
+	 * @return
+	 */
+	private static List<Merchant> paginate(MorphiaQuery q, int page) {
+		q.offset((page - 1) * DEFAULT_PAGE_ITEMS_NUMBER).limit(
+				DEFAULT_PAGE_ITEMS_NUMBER);
 		return q.asList();
 	}
 }
