@@ -66,20 +66,20 @@ $addCSS("pop_signUp_logIn.css", true)
 		</div>
 	</div>
 	
-	<div id="register_div" class="pop_logIn" style="display: none;">
+	<div id="su_div" class="pop_logIn" style="display: none;">
 		<p class="or"><span>注册</span></p>
-		<p id="error_tip" class="errorText" style="visibility:hidden;">请输入手机号或者邮箱</p>
-		<form id="login_form" action="@{backend.self.AccountController.login()}" method="post">
+		<p id="error_tip_su" class="errorText" style="visibility:hidden;">请输入手机号或者邮箱</p>
+		<form id="su_form" action="@{backend.self.AccountController.login()}" method="post">
 			<fieldset class="fieldset">
 				<ul>
-					<li><input type="text" name="userName" id="userName" placeHolder="手机号/邮箱" class="textInput"/></li>
+					<li><input type="text" name="userName_su" id="userName_su" placeHolder="手机号/邮箱" class="textInput"/></li>
 					<li>
-						<input type="password" name="userPwd" id="userPwd" placeHolder="密码" class="textInput"/>
+						<input type="password" name="userPwd1_su" id="userPwd1_su" placeHolder="密码" class="textInput"/>
 					</li>
 					<li>
-						<input type="password" name="userPwd" id="userPwd" placeHolder="密码" class="textInput"/>
+						<input type="password" name="userPwd2_su" id="userPwd2_su" placeHolder="密码" class="textInput"/>
 					</li>
-					<li class="buttonBox"><input type="button" name="" class="styleBtn corner lgoinBtn" value="注册" onclick="Login.login();"/></li>
+					<li class="buttonBox"><input type="button" name="" class="styleBtn corner lgoinBtn" value="注册" onclick="Signup.login();"/></li>
 				</ul>
 			</fieldset>
 		</form>
