@@ -189,10 +189,8 @@ public class Account extends AccountEntityDef {
 	}
 
 	
-	public Account signupValidate(String userName, String userPwd1,
+	public String signupValidate(String userName, String userPwd1,
 			String userPwd2) {
-		
-		Account account = null;
 		
 		Validation.required(Messages.get(I18nKeys.F_USERNAME), userName);
 		Validation.range(Messages.get(I18nKeys.F_USERNAME), userName.length(),
@@ -210,8 +208,10 @@ public class Account extends AccountEntityDef {
 
 		String password = Codec.hexSHA1(userPwd1);
 
-		if (Validation.hasErrors())
-			throw new ValidationException();
+		if (Validation.hasErrors()){
+			return Validation.errors().get(0).toString();
+//			throw new ValidationException();
+		}
 		
 		synchronized (Account.class) {
 			if(userName.contains("@")){
@@ -228,14 +228,15 @@ public class Account extends AccountEntityDef {
 				this.phone = userName;
 			}
 			if (Validation.hasErrors()) {
-				throw new ValidationException();
+				return Validation.errors().get(0).toString();
+//				throw new ValidationException();
 			} else {
 				this.password = password;
 //				create();
-				account = this.save();
+				this.save();
 			}
 		}
 		
-		return account;
+		return null;
 	}
 }

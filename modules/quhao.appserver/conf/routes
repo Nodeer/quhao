@@ -35,7 +35,7 @@ GET		/login								AccountController.login
 GET		/p        							Patches.index
 
 # backend management
-*		/b/m/{action}						backend.MerchantManagementController.{action}
+*		/b/m/{action}						backend.merchant.MerchantManagementController.{action}
 *		/b/m								backend.merchant.MerchantManagementController.index
 *		/b/w/{action}						backend.self.{action}
 *		/b/w								backend.self.SelfManagementController.index

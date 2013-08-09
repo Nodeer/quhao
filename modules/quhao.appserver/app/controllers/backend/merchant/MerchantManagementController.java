@@ -1,5 +1,9 @@
 package controllers.backend.merchant;
 
+import vo.account.AccountVO;
+
+import com.withiter.models.account.Account;
+
 import controllers.BaseController;
 
 public class MerchantManagementController extends BaseController {
@@ -8,8 +12,9 @@ public class MerchantManagementController extends BaseController {
 		renderJapid();
 	}
 	
-	public static void regist(){
-		
+	public static void home(String uid){
+		Account account = Account.findById(uid);
+		renderJapid(AccountVO.build(account));
 	}
 	
 	public static void login(){

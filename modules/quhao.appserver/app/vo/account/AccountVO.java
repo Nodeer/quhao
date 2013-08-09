@@ -8,6 +8,8 @@ import com.withiter.models.account.Account;
 
 public class AccountVO {
 
+	public String uid = "";
+	
 	public String phone = "";
 	public String email = "";
 	public String password = "";
@@ -20,9 +22,11 @@ public class AccountVO {
 	public String mobileOS;
 	public Date lastLogin;
 	
+	public String error;
+	
 	public static AccountVO build(Account account) {
 		AccountVO avo = new AccountVO();
-		
+		avo.uid = account.id();
 		avo.phone = account.phone;
 		avo.email = account.email;
 		avo.nickname = account.nickname;

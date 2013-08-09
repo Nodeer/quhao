@@ -30,11 +30,16 @@ public class AccountController extends BaseController {
 		String userPwd1 = params.get("userPwd1_su");
 		String userPwd2 = params.get("userPwd2_su");
 		
-		Account account = new Account().signupValidate(userName, userPwd1, userPwd2);
-		if(account != null && !StringUtils.isEmpty(account.getId().toString())){
+		Account account = new Account();
+		String result = account.signupValidate(userName, userPwd1, userPwd2);
+		if(result == null){
 			AccountVO avo = AccountVO.build(account);
-			renderJapidWith("japidviews.backend.merchant.MerchantManagementController.home",avo);
+			avo.error = "";
+			renderJSON(avo);
+		}else{
+			AccountVO avo = new AccountVO();
+			avo.error = result;
+			renderJSON(avo);
 		}
-		renderJSON(false);
 	}
 }

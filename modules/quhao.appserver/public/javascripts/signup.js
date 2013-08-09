@@ -40,21 +40,27 @@ Signup.validate = function() {
 Signup.signup = function() {
 	if (Signup.validate()) {
 		
-		$("#su_form").submit();
+//		$("#su_form").submit();
 		
-//		$.ajax({
-//			type : "POST",
-//			url : "/b/self/AccountController/signup",
-//			data : $("#su_form").serialize(),
-//			dataType : "json",
-//			async : false,
-//			success : function(data) {
-//				if (data != null) {
-//				}
-//			},
-//			error : function() {
-//				alert("error!");
-//			}
-//		});
+		$.ajax({
+			type : "POST",
+			url : "/b/self/AccountController/signup",
+			data : $("#su_form").serialize(),
+			dataType : "json",
+			async : false,
+			success : function(data) {
+				if (data != null) {
+					if(data.error != ""){
+						$("#error_tip_su").text(data.error).css("visibility", "visible");
+						return;
+					}
+					
+					window.location.href = "/b/m/home?uid="+data.uid;
+				}
+			},
+			error : function() {
+				alert("ajax error!");
+			}
+		});
 	}
 }
