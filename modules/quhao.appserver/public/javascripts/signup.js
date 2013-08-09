@@ -39,19 +39,22 @@ Signup.validate = function() {
 
 Signup.signup = function() {
 	if (Signup.validate()) {
-		$.ajax({
-			type : "POST",
-			url : "/b/self/AccountController/login",
-			data : $("#su_form").serialize(),
-			dataType : "json",
-			async : false,
-			success : function(data) {
-				if (data != null) {
-				}
-			},
-			error : function() {
+		
+		$("#su_form").submit();
+		
+//		$.ajax({
+//			type : "POST",
+//			url : "/b/self/AccountController/signup",
+//			data : $("#su_form").serialize(),
+//			dataType : "json",
+//			async : false,
+//			success : function(data) {
+//				if (data != null) {
+//				}
+//			},
+//			error : function() {
 //				alert("error!");
-			}
-		});
+//			}
+//		});
 	}
 }

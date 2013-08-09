@@ -189,10 +189,10 @@ public class Account extends AccountEntityDef {
 	}
 
 	
-	public boolean signupValidate(String userName, String userPwd1,
+	public Account signupValidate(String userName, String userPwd1,
 			String userPwd2) {
 		
-		boolean flag = false;
+		Account account = null;
 		
 		Validation.required(Messages.get(I18nKeys.F_USERNAME), userName);
 		Validation.range(Messages.get(I18nKeys.F_USERNAME), userName.length(),
@@ -231,10 +231,11 @@ public class Account extends AccountEntityDef {
 				throw new ValidationException();
 			} else {
 				this.password = password;
-				flag = create();
+//				create();
+				account = this.save();
 			}
 		}
 		
-		return flag;
+		return account;
 	}
 }

@@ -3,7 +3,7 @@ package com.withiter.common;
 public class Constants {
 
 	public enum MobileOSType {
-		IOS, ANDROID
+		IOS, ANDROID, WEB
 	}
 	
 	public enum CateType{

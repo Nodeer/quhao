@@ -1,8 +1,11 @@
 package controllers.backend.self;
 
-import com.withiter.models.account.Account;
+import vo.account.AccountVO;
 
 import cn.bran.japid.util.StringUtils;
+
+import com.withiter.models.account.Account;
+
 import controllers.BaseController;
 
 public class AccountController extends BaseController {
@@ -27,10 +30,10 @@ public class AccountController extends BaseController {
 		String userPwd1 = params.get("userPwd1_su");
 		String userPwd2 = params.get("userPwd2_su");
 		
-		Account account = new Account();
-		boolean flag = account.signupValidate(userName, userPwd1, userPwd2);
-		if(flag){
-			renderJapidWith("japidviews.backend.self.SelfManagementController.home",account);
+		Account account = new Account().signupValidate(userName, userPwd1, userPwd2);
+		if(account != null && !StringUtils.isEmpty(account.getId().toString())){
+			AccountVO avo = AccountVO.build(account);
+			renderJapidWith("japidviews.backend.merchant.MerchantManagementController.home",avo);
 		}
 		renderJSON(false);
 	}
