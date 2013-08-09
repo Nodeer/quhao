@@ -16,4 +16,13 @@ public class AccountController extends BaseController {
 		
 		renderJSON(false);
 	}
+	
+	public static void signup(){
+		System.out.println(params.allSimple());
+		
+		String userName = params.get("userName");
+		String userPwd = params.get("userPwd");
+		
+		renderJSON(false);
+	}
 }

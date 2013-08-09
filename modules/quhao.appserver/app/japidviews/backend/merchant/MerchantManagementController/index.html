@@ -21,7 +21,7 @@ $addCSS("pop_signUp_logIn.css", true)
 <title>取号啦 - 商家后台管理</title>
 </head>
 <body class="landingBG">
-	<div  id="fatherDIV">
+	<div id="fatherDIV">
     <div class="logintll">已经有账号了? <a href="javascript:Login.exchange();">登陆.</a></div>
     
     <div id="login_div" class="pop_logIn" style="display:none;">
@@ -69,7 +69,7 @@ $addCSS("pop_signUp_logIn.css", true)
 	<div id="su_div" class="pop_logIn" style="display: none;">
 		<p class="or"><span>注册</span></p>
 		<p id="error_tip_su" class="errorText" style="visibility:hidden;">请输入手机号或者邮箱</p>
-		<form id="su_form" action="@{backend.self.AccountController.login()}" method="post">
+		<form id="su_form" action="@{backend.self.AccountController.signup()}" method="post">
 			<fieldset class="fieldset">
 				<ul>
 					<li><input type="text" name="userName_su" id="userName_su" placeHolder="手机号/邮箱" class="textInput"/></li>
@@ -79,7 +79,7 @@ $addCSS("pop_signUp_logIn.css", true)
 					<li>
 						<input type="password" name="userPwd2_su" id="userPwd2_su" placeHolder="密码" class="textInput"/>
 					</li>
-					<li class="buttonBox"><input type="button" name="" class="styleBtn corner lgoinBtn" value="注册" onclick="Signup.login();"/></li>
+					<li class="buttonBox"><input type="button" name="" class="styleBtn corner lgoinBtn" value="注册" onclick="Signup.signup();"/></li>
 				</ul>
 			</fieldset>
 		</form>
