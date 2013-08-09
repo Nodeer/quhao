@@ -1,9 +1,11 @@
 package controllers.backend.self;
 
+import play.mvc.Scope.Session;
 import vo.account.AccountVO;
 
 import cn.bran.japid.util.StringUtils;
 
+import com.withiter.common.Constants;
 import com.withiter.models.account.Account;
 
 import controllers.BaseController;
@@ -15,17 +17,25 @@ public class AccountController extends BaseController {
 	}
 	
 	public static void login(){
-		System.out.println(params.allSimple());
-		
 		String userName = params.get("userName");
 		String userPwd = params.get("userPwd");
-		
-		renderJSON(false);
+		String result = Account.validate(userName, userPwd);
+		if(result != null){
+			renderJSON(result);
+		}else{
+			Account account = null;
+			if(userName.contains("@")){
+				account = Account.findByEmail(userName);
+			}else{
+				account = Account.findByPhone(userName);
+			}
+			AccountVO avo = AccountVO.build(account);
+			Session.current().put(Constants.SESSION_USERNAME, account);
+			renderJSON(avo);
+		}
 	}
 	
 	public static void signup(){
-		System.out.println(params.allSimple());
-		
 		String userName = params.get("userName_su");
 		String userPwd1 = params.get("userPwd1_su");
 		String userPwd2 = params.get("userPwd2_su");

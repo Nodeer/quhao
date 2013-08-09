@@ -22,6 +22,35 @@ import com.withiter.exceptions.ValidationException;
 @NoAutoTimestamp
 public class Account extends AccountEntityDef {
 
+	public static String validate(String userName, String userPwd){
+		Validation.required(Messages.get(I18nKeys.F_USERNAME), userName);
+		Validation.range(Messages.get(I18nKeys.F_USERNAME), userName.length(),
+				6, 20);
+
+		Validation.required(Messages.get(I18nKeys.F_PASSWORD), userPwd);
+		Validation.range(Messages.get(I18nKeys.F_PASSWORD), userPwd.length(),
+				8, 12);
+
+		if (Validation.hasErrors()){
+			return Validation.errors().get(0).toString();
+		}
+		
+		String password = Codec.hexSHA1(userPwd);
+		MorphiaQuery q = Account.q();
+		if(userName.contains("@")){
+			q.filter("email", userName);
+		}else{
+			q.filter("phone", userName);
+		}
+		q.filter("password", password);
+		if(q.first() != null){
+			return null;
+		}else{
+			return "账号密码错误！";
+		}
+		
+	}
+	
 	public String validateThenCreate() {
 		phone = this.phone.trim().toLowerCase();
 		email = this.email.trim().toLowerCase();

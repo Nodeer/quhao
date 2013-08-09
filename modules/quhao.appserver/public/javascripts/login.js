@@ -41,10 +41,16 @@ Login.login = function() {
 			async : false,
 			success : function(data) {
 				if (data != null) {
+					if(data.error != ""){
+						$("#error_tip").text(data.error).css("visibility", "visible");
+						return;
+					}
+					
+					window.location.href = "/b/m/home?uid="+data.uid;
 				}
 			},
 			error : function() {
-//				alert("error!");
+				alert("ajax error!");
 			}
 		});
 	}
