@@ -2,31 +2,21 @@ package com.withiter.models.account;
 
 import japidviews._javatags.I18nKeys;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import org.bson.types.ObjectId;
-
-import play.Play;
 import play.data.validation.Validation;
 import play.i18n.Messages;
 import play.libs.Codec;
-import play.modules.morphia.Model.MorphiaQuery;
 import play.modules.morphia.Model.NoAutoTimestamp;
-
 import cn.bran.japid.util.StringUtils;
 
-import com.withiter.common.Constants;
-import com.withiter.common.ContentType;
 import com.google.code.morphia.annotations.Entity;
-import com.mongodb.DB;
-import com.mongodb.Mongo;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSInputFile;
+import com.withiter.exceptions.ValidationException;
 
 @Entity
 @NoAutoTimestamp
@@ -198,4 +188,53 @@ public class Account extends AccountEntityDef {
 		return q.asList();
 	}
 
+	
+	public boolean signupValidate(String userName, String userPwd1,
+			String userPwd2) {
+		
+		boolean flag = false;
+		
+		Validation.required(Messages.get(I18nKeys.F_USERNAME), userName);
+		Validation.range(Messages.get(I18nKeys.F_USERNAME), userName.length(),
+				6, 20);
+
+		Validation.required(Messages.get(I18nKeys.F_PASSWORD), userPwd1);
+		Validation.range(Messages.get(I18nKeys.F_PASSWORD), userPwd1.length(),
+				8, 12);
+		if (!Validation.hasError(Messages.get(I18nKeys.F_PASSWORD))) {
+			if (!userPwd1.equals(userPwd2)) {
+				Validation.addError(Messages.get(I18nKeys.F_PASSWORD),
+						I18nKeys.V_REPEAT_PASSWORD_DOES_NOT_EQUAL);
+			}
+		}
+
+		String password = Codec.hexSHA1(userPwd1);
+
+		if (Validation.hasErrors())
+			throw new ValidationException();
+		
+		synchronized (Account.class) {
+			if(userName.contains("@")){
+				if (Account.filter("email", userName).count() > 0) {
+					Validation.addError(Messages.get(I18nKeys.F_EMAIL),
+							I18nKeys.V_ALREADY_EXISTS);
+				}
+				this.email = userName;
+			}else{
+				if (Account.filter("phone", userName).count() > 0) {
+					Validation.addError(Messages.get(I18nKeys.F_PHONE),
+							I18nKeys.V_ALREADY_EXISTS);
+				}
+				this.phone = userName;
+			}
+			if (Validation.hasErrors()) {
+				throw new ValidationException();
+			} else {
+				this.password = password;
+				flag = create();
+			}
+		}
+		
+		return flag;
+	}
 }

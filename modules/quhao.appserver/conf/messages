@@ -33,6 +33,7 @@ validation.login_failed=Please input valid email address or password
 fields.nickname=Username
 fields.password=Password
 fields.email=Email
+fields.phone=Phone Number
 fields.repeat_password=Repeat password
 fields.captcha=Captcha code
 fields.username_email=Email or Username

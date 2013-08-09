@@ -5,10 +5,11 @@ import play.i18n.Messages;
 public class I18nKeys {
 
 	// Field message keys
-	public static final String	F_NICKNAME							= "fields.nickname";
+	public static final String	F_USERNAME							= "fields.username";
+	public static final String	F_PHONE								= "fields.phone";
 	public static final String	F_PASSWORD							= "fields.password";
-	public static final String	F_EMAIL								= "fields.email";
 	public static final String	F_REPEAT_PASSWORD					= "fields.repeat_password";
+	public static final String	F_EMAIL								= "fields.email";
 	public static final String	F_CAPTCHA							= "fields.captcha";
 	public static final String  F_USERNAME_EMAIL                    = "fields.username_email";
 	
