@@ -16,16 +16,16 @@ Signup.validate = function() {
 		$("#error_tip_su").text("请输入密码！").css("visibility", "visible");
 		return false;
 	}
-	if (userPwd1.length < 8) {
-		$("#error_tip_su").text("密码长度不小于8位！").css("visibility", "visible");
+	if (userPwd1.length < 6) {
+		$("#error_tip_su").text("密码长度不小于6位！").css("visibility", "visible");
 		return false;
 	}
 	if (userPwd2 == null || userPwd2 == "") {
 		$("#error_tip_su").text("请再次输入密码！").css("visibility", "visible");
 		return false;
 	}
-	if (userPwd2.length < 8) {
-		$("#error_tip_su").text("密码长度不小于8位！").css("visibility", "visible");
+	if (userPwd2.length < 6) {
+		$("#error_tip_su").text("密码长度不小于6位！").css("visibility", "visible");
 		return false;
 	}
 	

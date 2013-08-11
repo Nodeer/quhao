@@ -227,7 +227,7 @@ public class Account extends AccountEntityDef {
 
 		Validation.required(Messages.get(I18nKeys.F_PASSWORD), userPwd1);
 		Validation.range(Messages.get(I18nKeys.F_PASSWORD), userPwd1.length(),
-				8, 12);
+				6, 12);
 		if (!Validation.hasError(Messages.get(I18nKeys.F_PASSWORD))) {
 			if (!userPwd1.equals(userPwd2)) {
 				Validation.addError(Messages.get(I18nKeys.F_PASSWORD),

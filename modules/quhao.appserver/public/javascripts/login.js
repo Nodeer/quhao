@@ -23,8 +23,8 @@ Login.validate = function() {
 		$("#error_tip").text("请输入密码！").css("visibility", "visible");
 		return false;
 	}
-	if (userPwd.length < 8) {
-		$("#error_tip").text("密码长度不小于8位！").css("visibility", "visible");
+	if (userPwd.length < 6) {
+		$("#error_tip").text("密码长度不小于6位！").css("visibility", "visible");
 		return false;
 	}
 	$("#error_tip").text("请输入手机号或邮箱！").css("visibility", "hidden");
