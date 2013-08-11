@@ -8,11 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -117,7 +114,7 @@ public class CategoryAdapter extends BaseAdapter
 			String imageUrl = category.url;
 			
 			holder.img.setTag(imageUrl);
-			if(null != imageUrl && "".equals(imageUrl))
+			if(null != imageUrl && !"".equals(imageUrl))
 			{
 				cachedImage = asyncImageLoader.loadDrawable(imageUrl, new ImageCallback()
 				{

@@ -1,50 +1,42 @@
 package com.withiter.quhao.activity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.HttpVersion;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.scheme.PlainSocketFactory;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.scheme.SocketFactory;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.util.EntityUtils;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.WindowManager;
-import android.widget.AbsListView;
-import android.widget.ScrollView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import com.withiter.quhao.R;
-import com.withiter.quhao.adapter.CategoryAdapter;
+import com.withiter.quhao.adapter.CategoryGridAdapter;
+import com.withiter.quhao.adapter.TopMerchantGridAdapter;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.view.InnerListView;
 import com.withiter.quhao.vo.Category;
+import com.withiter.quhao.vo.TopMerchant;
 
 public class MainActivity extends AppStoreActivity
 {
@@ -55,7 +47,17 @@ public class MainActivity extends AppStoreActivity
 	
 	protected InnerListView categorysListView;
 	
-	protected ProgressDialogUtil progressDialogUtil;
+	private GridView topMerchantsGird;
+	
+	private List<TopMerchant> topMerchants;
+	
+	private GridView categorysGird;
+	
+	private DisplayMetrics localDisplayMetrics;
+	
+	protected ProgressDialogUtil progressCategory;
+	
+	protected ProgressDialogUtil progressTopMerchant;
 	
 	private final int UNLOCK_CLICK = 1000;
 	
@@ -76,6 +78,24 @@ public class MainActivity extends AppStoreActivity
 		}
 	};
 	
+	private Handler topMerchantsUpdateHandler = new Handler()
+	{
+
+		@Override
+		public void handleMessage(Message msg)
+		{
+			if(msg.what == 200)
+			{
+				super.handleMessage(msg);
+				ListAdapter adapter = new TopMerchantGridAdapter(topMerchants, topMerchantsGird,MainActivity.this);
+				topMerchantsGird.setAdapter(adapter);
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			}
+			
+		}
+
+	};
+	
 	private Handler categorysUpdateHandler = new Handler()
 	{
 
@@ -83,95 +103,105 @@ public class MainActivity extends AppStoreActivity
 		public void handleMessage(Message msg)
 		{
 			if(msg.what == 200)
-			super.handleMessage(msg);
-			updateCategorys();
+			{
+				super.handleMessage(msg);
+				
+				ListAdapter adapter = new CategoryGridAdapter(categorys, categorysGird,MainActivity.this);
+				/*
+				List<Map<String, Object>> categorysData = new ArrayList<Map<String,Object>>();
+				Category category = null;
+				for (int i = 0; i < categorys.size(); i++)
+				{
+					category = categorys.get(i);
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("item_type", category.categoryType);
+					map.put("item_count", category.count);
+					categorysData.add(map);
+				}
+				
+				SimpleAdapter adapter = new SimpleAdapter(MainActivity.this,categorysData,R.layout.category_item,
+						new String[]{"item_type","item_count"},new int[]{R.id.item_type,R.id.item_count });
+						*/
+				categorysGird.setAdapter(adapter);
+				
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			}
+			
 		}
 
 	};
 	
-	private void updateCategorys()
-	{
-		LinearLayout.LayoutParams categorysParams = (LayoutParams) categorysListView.getLayoutParams();
-		
-		//设置自定义的layout
-		
-		categorysListView.setLayoutParams(categorysParams);
-		categorysListView.invalidate();
-		categorysListView.setVisibility(View.VISIBLE);
-		
-		CategoryAdapter adapter = new CategoryAdapter(MainActivity.this, categorysListView, categorys);
-		categorysListView.setAdapter(adapter);
-		adapter.notifyDataSetChanged();
-		
-		
-		
-		/*
-		LinearLayout.LayoutParams topMerchantListParams = (LayoutParams) topMerchantListView.getLayoutParams();
-		topMerchantListView.setLayoutParams(topMerchantListParams);
-		topMerchantListView.invalidate();
-		topMerchantListView.setVisibility(View.VISIBLE);
-		
-		CategoryAdapter adapter1 = new CategoryAdapter(MainActivity.this, topMerchantListView, categorys);
-		topMerchantListView.setAdapter(adapter1);
-		adapter1.notifyDataSetChanged();
-		
-		*/
-		unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-		
-	}
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.main_layout);
 		super.onCreate(savedInstanceState);
-		initView();
 		
+		//initView();
+		localDisplayMetrics = getResources().getDisplayMetrics();
+		
+		topMerchants = new ArrayList<TopMerchant>();
+		
+		topMerchantsGird = (GridView) findViewById(R.id.topMerchants);
+		getTopMerchants();
+		
+		
+		topMerchantsGird.setOnItemClickListener(topMerchantClickListener);
+		categorys = new ArrayList<Category>();
+		categorysGird = (GridView) findViewById(R.id.categorys);
+		getCateGorys();
+
+		categorysGird.setOnItemClickListener(categorysClickListener);
 		btnPerson.setOnClickListener(goPersonCenterListener(this));
 		btnMarchent.setOnClickListener(getMarchentListListener(this));
 	}
 
-	private void initView()
+	private OnItemClickListener topMerchantClickListener = new OnItemClickListener()
 	{
-		WindowManager windowManager = getWindowManager();
-		Display display = windowManager.getDefaultDisplay();
-		int screenHeight = display.getHeight();
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id)
+		{
+			String topMerchantId = topMerchants.get(position).id;
+			Intent intent = new Intent();
+			intent.putExtra("id", topMerchantId);
+			intent.setClass(MainActivity.this, MerchantDetailActivity.class);
+			startActivity(intent);
+			overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
+		}
+	};
+	
+	private OnItemClickListener categorysClickListener = new OnItemClickListener()
+	{
+
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id)
+		{
+			Category category = categorys.get(position);
+			Log.d(LOGTAG, "the category is : " + category.categoryType + "the count is : " + category.count);
+			Intent intent = new Intent();
+			intent.putExtra("categoryType", category.categoryType); 
+			intent.putExtra("categoryTypeStr", category.categoryTypeStr); 
+			intent.putExtra("categoryCount", String.valueOf(category.count)); 
+			intent.setClass(MainActivity.this, MerchantsActivity.class);
+			startActivity(intent);
+			overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
+		}
+	};
+	
+	private void getTopMerchants()
+	{
+		progressTopMerchant = new ProgressDialogUtil(this, R.string.empty, R.string.querying, false);
+		progressTopMerchant.showProgress();
 		
-		Log.d(LOGTAG, "the height of screen is : " + screenHeight);
-		LinearLayout topMerchantLayout = (LinearLayout) findViewById(R.id.topMerchantLayout); 
-		LinearLayout.LayoutParams topMerchantLayoutParams = (LayoutParams) topMerchantLayout.getLayoutParams();
-		Log.d(LOGTAG, "the height of topMerchantLayout is : " + topMerchantLayoutParams.height);
-		topMerchantLayoutParams.height =  (int) Math.floor(screenHeight/3);
-		topMerchantLayout.setLayoutParams(topMerchantLayoutParams);
-		
-		LinearLayout categorysLayout = (LinearLayout) findViewById(R.id.categorysLayout); 
-		LinearLayout.LayoutParams categorysLayoutParams = (LayoutParams) categorysLayout.getLayoutParams();
-		Log.d(LOGTAG, "the height of categorysLayout is : " + categorysLayoutParams.height);
-		categorysLayoutParams.height =  (int) Math.floor(screenHeight/3);
-		categorysLayout.setLayoutParams(topMerchantLayoutParams);
-		
-		
-		categorysListView = (InnerListView) findViewById(R.id.categorysListView);
-		ScrollView parentScroll = (ScrollView) findViewById(R.id.parentScroll);
-		categorysListView.setParentScroll(parentScroll);
-		categorysListView.setMaxHeight(200);
-		categorysListView.setNextFocusDownId(R.id.categorysListView);
-		categorysListView.setOnScrollListener(categorysListScrollListener);
-		categorysListView.setVisibility(View.GONE);
-		
-		/*
-		topMerchantListView = (ListView) findViewById(R.id.topMerchantListView);
-		topMerchantListView.setNextFocusDownId(R.id.categorysListView);
-		topMerchantListView.setOnScrollListener(categorysListScrollListener);
-		topMerchantListView.setVisibility(View.GONE);
-		
-		*/
-		//获取数据
-		getCateGorys();
-		
+		Thread topMerchantsThread = new Thread(topMerchantsRunnable);
+		topMerchantsThread.start();
 	}
-	
-	
 	
 	private void getCateGorys()
 	{
@@ -182,12 +212,79 @@ public class MainActivity extends AppStoreActivity
 		
 		isClick = true;
 		
-		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.querying, false);
-		progressDialogUtil.showProgress();
+		progressCategory = new ProgressDialogUtil(this, R.string.empty, R.string.querying, false);
+		progressCategory.showProgress();
+		
 		Thread categoryThread = new Thread(categoryRunnable);
 		categoryThread.start();
 	}
 
+	private Runnable topMerchantsRunnable = new Runnable()
+	{
+		
+		@Override
+		public void run()
+		{
+			try
+			{
+				Log.v(LOGTAG,"get categorys data form server begin");
+				/**
+				 * 
+				SchemeRegistry schemeRegistry = new SchemeRegistry();
+				SocketFactory sf = PlainSocketFactory.getSocketFactory();
+				schemeRegistry.register(new Scheme("http", sf, 80));
+				HttpParams params = new BasicHttpParams();
+				HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
+				HttpProtocolParams.setContentCharset(params, "UTF-8");
+				HttpProtocolParams.setHttpElementCharset(params, "UTF-8");
+				HttpProtocolParams.setUseExpectContinue(params, false);
+				HttpConnectionParams.setConnectionTimeout(params, 30000);
+				ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, schemeRegistry);
+				DefaultHttpClient httpClient = new DefaultHttpClient(ccm,params);
+				httpClient.setHttpRequestRetryHandler(new DefaultHttpRequestRetryHandler(3, false));
+				HttpGet request = new HttpGet(QuhaoConstant.HTTP_URL + "MerchantController/allCategories");
+				// request.setHeader("User-Agent", Constant.UserAgent);
+				request.setHeader("Accept-Language", "zh-cn");
+				request.setHeader("Accept", "");*/
+				HttpGet request = new HttpGet(QuhaoConstant.HTTP_URL + "MerchantController/getTopMerchants?x=6");
+				HttpClient httpClient = new DefaultHttpClient();
+				HttpResponse response = httpClient.execute(request);
+				Log.v(LOGTAG, "get top merchant data form server : " + response.getStatusLine().getStatusCode());
+				if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK)
+				{
+					String buf = EntityUtils.toString(response.getEntity());
+					Log.v(LOGTAG, "get top merchant data form server buf : " + buf);
+					// 返回HTML页面
+					if (buf.indexOf("<html>") != -1
+							|| buf.indexOf("<HTML>") != -1) {
+						//mGetHandler.sendMessage(mGetHandler
+						//		.obtainMessage(-2));
+						throw new Exception("session timeout!");
+					}
+					
+					if(null == topMerchants)
+					{
+						topMerchants = new ArrayList<TopMerchant>();
+					}
+					
+					topMerchants.addAll(ParseJson.getTopMerchants(buf));
+					
+					topMerchantsUpdateHandler.obtainMessage(200,topMerchants).sendToTarget();
+					
+				}
+				
+				
+			} catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+			finally
+			{
+				progressTopMerchant.closeProgress();
+			}
+		}
+	};
+	
 	private Runnable categoryRunnable = new Runnable()
 	{
 		
@@ -221,7 +318,6 @@ public class MainActivity extends AppStoreActivity
 				Log.v(LOGTAG, "get categorys data form server : " + response.getStatusLine().getStatusCode());
 				if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK)
 				{
-					progressDialogUtil.closeProgress();
 					String buf = EntityUtils.toString(response.getEntity());
 					Log.v(LOGTAG, "get categorys data form server buf : " + buf);
 					// 返回HTML页面
@@ -250,41 +346,10 @@ public class MainActivity extends AppStoreActivity
 			}
 			finally
 			{
-				progressDialogUtil.closeProgress();
+				progressCategory.closeProgress();
 			}
 		}
 	};
-	@Override
-	protected void sendRequest()
-	{
-		super.sendRequest();
-	}
-
-
-
-	private OnScrollListener categorysListScrollListener = new OnScrollListener()
-	{
-		
-		@Override
-		public void onScrollStateChanged(AbsListView view, int scrollState)
-		{
-			
-		}
-		
-		@Override
-		public void onScroll(AbsListView view, int firstVisibleItem,
-				int visibleItemCount, int totalItemCount)
-		{
-			
-			
-		}
-	};
-
-	@Override
-	public void HttpClientCallBack(String buf)
-	{
-		
-	}
 
 	@Override
 	public void onClick(View v)
@@ -297,11 +362,4 @@ public class MainActivity extends AppStoreActivity
 	{
 		return false;
 	}
-
-	@Override
-	public void HttpCallBack(String buf)
-	{
-		
-	}
-
 }

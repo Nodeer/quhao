@@ -58,16 +58,13 @@ public class AccountInfoHelper
 				accounts.add(account);
 				cursor.moveToNext();
 			}
-			cursor.close();
-			cursor = null;
+			
 		}
-		
+		cursor.close();
+		cursor = null;
 		return accounts;
 	}
 
-	/**
-	 * πÿ±’¡¨Ω”
-	 */
 	public void close()
 	{
 		if(dbHelper!=null)

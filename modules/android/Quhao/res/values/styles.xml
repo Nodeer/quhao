@@ -17,4 +17,7 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+    <style name="CustomGridView" parent="@android:style/Widget.AbsListView">
+        <item name="android:listSelector">@drawable/grid_selector_background</item>
+    </style>
 </resources>

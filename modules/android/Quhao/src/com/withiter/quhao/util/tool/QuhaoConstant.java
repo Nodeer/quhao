@@ -6,7 +6,7 @@ public class QuhaoConstant
 	/**
 	 * HTTP_URL
 	 */
-	public static final String HTTP_URL = "http://192.168.0.17:9081/";
+	public static final String HTTP_URL = "http://192.168.0.11:9081/";
 
 	public static final String NEW_BODY = null;
 

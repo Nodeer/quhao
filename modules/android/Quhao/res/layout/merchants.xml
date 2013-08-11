@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="#ffffffff"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+   
+    <LinearLayout 
+		android:layout_width="fill_parent"    
+    	android:layout_height="wrap_content"    
+    	android:background="@drawable/title_background"    
+    	android:paddingLeft="5dip"    
+    	android:paddingRight="5dip" 
+    	android:paddingTop="5dip"
+    	android:paddingBottom="5dip" 
+    	android:gravity="center_vertical" 
+    	>
+		
+			<TextView android:id="@+id/categoryType"
+				android:textAppearance="?android:textAppearanceMedium"
+				android:layout_gravity="center_vertical" 
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="搜索 - 美食"
+				android:textColor="#ffffffff"
+				/>
+		
+			<TextView android:id="@+id/categoryCount"
+				android:textAppearance="?android:textAppearanceMediumInverse"
+				android:layout_gravity="center_vertical" 
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="【共2345家】"
+				android:textColor="#ffffffff"
+				android:textSize="14.0sp"
+				/>
+			
+	</LinearLayout>
+    <LinearLayout android:gravity="center" android:orientation="horizontal" android:background="@drawable/search_bar_background" android:padding="6.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <Button android:textAppearance="?android:textAppearanceMedium" android:gravity="left|center" android:id="@+id/edit_search" android:background="@android:drawable/edit_text" android:layout_width="0.0dip" android:layout_height="wrap_content" android:hint="\u0020商户名,地址等..." android:drawableLeft="@drawable/ic_btn_search" android:layout_weight="1.0" />
+    </LinearLayout>
+    <LinearLayout android:id="@+id/merchantsLayout" android:layout_width="fill_parent"
+	    android:layout_height="wrap_content" android:layout_weight="1.0">
+		<ListView android:id="@+id/merchantsListView" android:layout_width="fill_parent"
+		    android:layout_height="fill_parent" android:layout_gravity="center_horizontal"
+		    android:cacheColorHint="@null" android:divider="@null" android:entries="@null"
+		    android:headerDividersEnabled="true"  android:listSelector="@drawable/list_item_trans"
+		    android:scrollbarThumbVertical="@drawable/scrollbar"
+		    android:scrollbars="vertical" />
+	</LinearLayout>
+    <LinearLayout android:layout_width="fill_parent"
+		android:id="@+id/menuLayout" android:layout_height="wrap_content">
+		<include android:id="@+id/menu" layout="@layout/menu_bar" />
+	</LinearLayout>
+</LinearLayout> 

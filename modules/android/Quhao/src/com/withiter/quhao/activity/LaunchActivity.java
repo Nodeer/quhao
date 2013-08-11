@@ -1,12 +1,10 @@
 package com.withiter.quhao.activity;
 
-import com.withiter.quhao.R;
-import com.withiter.quhao.R.layout;
-import com.withiter.quhao.R.menu;
-
-import android.os.Bundle;
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.Menu;
+
+import com.withiter.quhao.R;
 
 public class LaunchActivity extends Activity {
 

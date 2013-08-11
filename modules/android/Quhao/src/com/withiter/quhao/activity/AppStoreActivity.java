@@ -13,16 +13,11 @@ import android.widget.Toast;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
-import com.withiter.quhao.util.http.MyHttpClient;
-import com.withiter.quhao.util.http.MyHttpClientListener;
 import com.withiter.quhao.util.tool.InfoHelper;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
-import com.withiter.quhao.util.tool.QuhaoConstant;
 
-public abstract class AppStoreActivity extends QuhaoActivity implements MyHttpClientListener, OnClickListener, OnTouchListener
+public abstract class AppStoreActivity extends QuhaoActivity implements OnClickListener, OnTouchListener
 {
-	
-	protected MyHttpClient myHttp;
 	
 	private boolean isClick = false;
 	
@@ -47,8 +42,6 @@ public abstract class AppStoreActivity extends QuhaoActivity implements MyHttpCl
 		}
 	};
 	
-	public abstract void HttpCallBack(String buf);
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -79,7 +72,7 @@ public abstract class AppStoreActivity extends QuhaoActivity implements MyHttpCl
 				Intent intent = new Intent(activity, PersonCenterActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
-				activity.finish();
+				//activity.finish();
 			}
 		};
 		return clickListener;
@@ -96,22 +89,12 @@ public abstract class AppStoreActivity extends QuhaoActivity implements MyHttpCl
 				Intent intent = new Intent(activity, MainActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
-				activity.finish();
+				//activity.finish();
 			}
 		};
 		return clickListener;
 	}
 	
-	protected void sendRequest()
-	{
-		
-		action = "";
-		QuhaoConstant.NEXT_CMD = "";
-		QuhaoConstant.TIME_STAMP = 0;
-		QuhaoConstant.TIME_STAMP_OLD = 0;
-		myHttp.getHttpBuf(QuhaoConstant.HTTP_URL + QuhaoConstant.NEW_BODY, true);
-	}
-
 	private boolean autoLogin()
 	{
 		if(QHClientApplication.getInstance().isLogined)
@@ -129,7 +112,6 @@ public abstract class AppStoreActivity extends QuhaoActivity implements MyHttpCl
 		{
 			QHClientApplication.getInstance().isAuto = true;
 			progressDialogUtil.showProgress();
-			myHttp.getHttpBuf(QuhaoConstant.HTTP_URL + "",false);
 		}
 		return false;
 	}
@@ -146,16 +128,4 @@ public abstract class AppStoreActivity extends QuhaoActivity implements MyHttpCl
 		return true;
 	}
 
-	private void initData()
-	{
-		if(null == myHttp)
-		{
-			myHttp = new MyHttpClient(this,this);
-		}
-		
-	}
-	
-	
-	
-	
 }
