@@ -43,10 +43,12 @@ public class CommonHTTPRequest {
 		}
         URL url = null;
         String result = "";
+        HttpURLConnection urlConn = null;
+        InputStreamReader in = null;
         try {
 			url = new URL(strUrl);
-			HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
-			InputStreamReader in = new InputStreamReader(urlConn.getInputStream());
+			urlConn = (HttpURLConnection) url.openConnection();
+			in = new InputStreamReader(urlConn.getInputStream());
 			BufferedReader br = new BufferedReader(in);
 			
 			String readerLine = null;
@@ -59,6 +61,13 @@ public class CommonHTTPRequest {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			try {
+				in.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			urlConn.disconnect();
 		}
         
         return result;
