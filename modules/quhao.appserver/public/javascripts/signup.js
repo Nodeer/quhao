@@ -1,6 +1,10 @@
 Signup = {};
 
-Signup.validate = function() {
+Signup.validate = function(type) {
+	
+	if(type == "mobile"){
+		
+	}
 	var userName = Quhao.trim($("#userName_su").val());
 	var userPwd1 = Quhao.trim($("#userPwd1_su").val());
 	var userPwd2 = Quhao.trim($("#userPwd2_su").val());
@@ -37,8 +41,8 @@ Signup.validate = function() {
 	return true;
 }
 
-Signup.signup = function() {
-	if (Signup.validate()) {
+Signup.signup = function(type) {
+	if (Signup.validate(type)) {
 		$.ajax({
 			type : "POST",
 			url : "/b/self/AccountController/signup",
@@ -58,5 +62,17 @@ Signup.signup = function() {
 				alert("ajax error!");
 			}
 		});
+	}
+}
+
+Signup.changeType = function(){
+	var type = $("#signup_type").val();
+	if(type == "mobile"){
+		$("#email_form").hide();
+		$("#mobile_form").show();
+	}
+	if(type == "email"){
+		$("#email_form").show();
+		$("#mobile_form").hide();
 	}
 }
