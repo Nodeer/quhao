@@ -29,7 +29,7 @@ public class Account extends AccountEntityDef {
 
 		Validation.required(Messages.get(I18nKeys.F_PASSWORD), userPwd);
 		Validation.range(Messages.get(I18nKeys.F_PASSWORD), userPwd.length(),
-				8, 12);
+				6, 12);
 
 		if (Validation.hasErrors()){
 			return Validation.errors().get(0).toString();
@@ -44,11 +44,15 @@ public class Account extends AccountEntityDef {
 		}
 		q.filter("password", password);
 		if(q.first() != null){
-			return null;
+			Account a = q.first();
+			if(a.enable){
+				return null;
+			}else{
+				return "账号还未激活，请进入邮箱进行激活";
+			}
 		}else{
 			return "账号密码错误！";
 		}
-		
 	}
 	
 	public String validateThenCreate() {

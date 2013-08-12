@@ -39,9 +39,6 @@ Signup.validate = function() {
 
 Signup.signup = function() {
 	if (Signup.validate()) {
-		
-//		$("#su_form").submit();
-		
 		$.ajax({
 			type : "POST",
 			url : "/b/self/AccountController/signup",
@@ -54,7 +51,6 @@ Signup.signup = function() {
 						$("#error_tip_su").text(data.error).css("visibility", "visible");
 						return;
 					}
-					
 					window.location.href = "/b/m/home?uid="+data.uid;
 				}
 			},

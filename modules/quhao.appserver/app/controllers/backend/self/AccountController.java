@@ -20,8 +20,10 @@ public class AccountController extends BaseController {
 		String userName = params.get("userName");
 		String userPwd = params.get("userPwd");
 		String result = Account.validate(userName, userPwd);
+		AccountVO avo = new AccountVO();
 		if(result != null){
-			renderJSON(result);
+			avo.error = result;
+			renderJSON(avo);
 		}else{
 			Account account = null;
 			if(userName.contains("@")){
@@ -29,7 +31,8 @@ public class AccountController extends BaseController {
 			}else{
 				account = Account.findByPhone(userName);
 			}
-			AccountVO avo = AccountVO.build(account);
+			avo = AccountVO.build(account);
+			avo.error = "";
 			Session.current().put(Constants.SESSION_USERNAME, account);
 			renderJSON(avo);
 		}
