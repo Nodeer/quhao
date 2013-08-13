@@ -34,12 +34,24 @@ import com.mongodb.gridfs.GridFSInputFile;
 @NoAutoTimestamp
 public class Reservation extends ReservationEntityDef {
 
+	/**
+	 * Find valid reservation list by account id
+	 * @param accountId user account id
+	 * @return the list of valid reservation
+	 */
 	public static List<Reservation> findValidReservations(String accountId) {
 		MorphiaQuery q = Reservation.q();
 		q.filter("accountId", accountId).filter("valid", true);
 		return q.asList();
 	}
 
+	/**
+	 * Check whether does the reservation exist by account id, merchant id and seat number
+	 * @param accountId user account id
+	 * @param mid merchant id
+	 * @param seatNumber the number of seat
+	 * @return Reservation object
+	 */
 	public static Reservation reservationExist(String accountId, String mid,
 			int seatNumber) {
 		MorphiaQuery q = Reservation.q();
@@ -48,12 +60,21 @@ public class Reservation extends ReservationEntityDef {
 		return q.first();
 	}
 
+	/**
+	 * Find the history reservations by account id
+	 * @param accountId user account id
+	 * @return the list of history reservations (valid == false)
+	 */
 	public static List<Reservation> findHistroyReservations(String accountId) {
 		MorphiaQuery q = Reservation.q();
 		q.filter("accountId", accountId).filter("valid", false);
 		return q.asList();
 	}
 
+	/**
+	 * 当排队情况有变化时，需要推送到所有关联的用户
+	 * when current object updated, this function will automatically invoked.
+	 */
 	@OnUpdate
 	private void updateHaoma(){
 		String mid = this.merchantId;
@@ -68,6 +89,10 @@ public class Reservation extends ReservationEntityDef {
 		// TODO add push to client.
 	}
 
+	/**
+	 * Cancel one reservation by reservation id
+	 * @param reservationId the id of reservation
+	 */
 	public static void cancel(String reservationId) {
 		Reservation r = Reservation.findById(reservationId);
 		if(r != null){
@@ -77,6 +102,10 @@ public class Reservation extends ReservationEntityDef {
 		}
 	}
 	
+	/**
+	 * Finish one reservation by reservation id
+	 * @param reservationId the id of reservation
+	 */
 	public static void finish(String reservationId) {
 		Reservation r = Reservation.findById(reservationId);
 		if(r != null){
@@ -86,6 +115,10 @@ public class Reservation extends ReservationEntityDef {
 		}
 	}
 
+	/**
+	 * Expire one reservation by reservation id
+	 * @param reservationId the id of reservation
+	 */
 	public static void expire(String reservationId) {
 		Reservation r = Reservation.findById(reservationId);
 		if(r != null){
