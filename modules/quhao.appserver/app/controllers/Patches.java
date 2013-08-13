@@ -80,6 +80,11 @@ public class Patches extends BaseController {
 		renderJSON(q.count());
 	}
 	
+	/**
+	 * Import the coordinate info for all merchants
+	 * @throws UnsupportedEncodingException
+	 * @throws JSONException
+	 */
 	public static void importMerchantCoordinate() throws UnsupportedEncodingException, JSONException{
 		MorphiaQuery q = Merchant.q();
 		List<Merchant> mList = q.asList();
@@ -101,7 +106,6 @@ public class Patches extends BaseController {
 	}
 	
 	private static void importTopMerchantFromCSV(File file) throws IOException {
-		System.out.println(file.getAbsolutePath());
 		String fileName = file.getName().replaceAll(".csv", "");
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		String line = null;
@@ -113,7 +117,6 @@ public class Patches extends BaseController {
 	}
 
 	private static void importMerchantFromCSV(File file) throws IOException{
-		System.out.println(file.getAbsolutePath());
 		String fileName = file.getName().replaceAll(".csv", "");
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		String line = null;
