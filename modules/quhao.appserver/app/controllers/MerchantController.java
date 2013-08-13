@@ -124,14 +124,26 @@ public class MerchantController extends BaseController {
 		renderJSON(rvo);
 	}
 
+	/**
+	 * Cancel one reservation by reservation id
+	 * @param reservationId the id of reservation
+	 */
 	public static void cancel(String reservationId){
 		Reservation.cancel(reservationId);
 	}
 	
+	/**
+	 * Finish one reservation by reservation id
+	 * @param reservationId the id of reservation
+	 */
 	public static void finish(String reservationId){
 		Reservation.finish(reservationId);
 	}
 	
+	/**
+	 * Expire one reservation by reservation id
+	 * @param reservationId the id of reservation
+	 */
 	public static void expire(String reservationId){
 		Reservation.expire(reservationId);
 	}
