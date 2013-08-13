@@ -15,6 +15,7 @@ import com.withiter.common.ContentType;
 public class UploadController extends BaseController {
 	private static String FILE_SHOP = "FileShop";
 
+	@SuppressWarnings("unused")
 	private static GridFSInputFile uploadFirst(String param) {
 		GridFSInputFile gfsFile = null;
 		File[] files = params.get(param, File[].class);
