@@ -5,6 +5,11 @@ import com.withiter.models.account.Reservation;
 
 public class Haoma extends HaomaEntityDef {
 
+	/**
+	 * Find Haoma by merchant id
+	 * @param merchantId id of merchant
+	 * @return
+	 */
 	public static Haoma findByMerchantId(String merchantId) {
 		
 		MorphiaQuery q = Haoma.q();
