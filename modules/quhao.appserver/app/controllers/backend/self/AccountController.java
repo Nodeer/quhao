@@ -16,6 +16,9 @@ public class AccountController extends BaseController {
 		renderJSON("aaa");
 	}
 	
+	/**
+	 * merchant login function
+	 */
 	public static void login(){
 		String userName = params.get("userName");
 		String userPwd = params.get("userPwd");
@@ -38,6 +41,9 @@ public class AccountController extends BaseController {
 		}
 	}
 	
+	/**
+	 * merchant sign up function
+	 */
 	public static void signup(){
 		String userName = params.get("userName_su");
 		String userPwd1 = params.get("userPwd1_su");
