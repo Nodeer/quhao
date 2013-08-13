@@ -7,5 +7,6 @@ public class Distance {
 	public String x1 = "";
 	public String y1 = "";
 
+	// 单位是米
 	public String distance = "";
 }

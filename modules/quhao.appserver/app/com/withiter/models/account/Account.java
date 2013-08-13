@@ -22,6 +22,12 @@ import com.withiter.exceptions.ValidationException;
 @NoAutoTimestamp
 public class Account extends AccountEntityDef {
 
+	/**
+	 * validate user name and password for login function
+	 * @param userName
+	 * @param userPwd
+	 * @return if return null, means pass validation. otherwise, the returned value is the error content.
+	 */
 	public static String validate(String userName, String userPwd){
 		Validation.required(Messages.get(I18nKeys.F_USERNAME), userName);
 		Validation.range(Messages.get(I18nKeys.F_USERNAME), userName.length(),
@@ -55,6 +61,10 @@ public class Account extends AccountEntityDef {
 		}
 	}
 	
+	/**
+	 * validate and create self Account object.
+	 * @return if return null, means pass validation. otherwise, the returned value is the error content.
+	 */
 	public String validateThenCreate() {
 		phone = this.phone.trim().toLowerCase();
 		email = this.email.trim().toLowerCase();
@@ -103,6 +113,11 @@ public class Account extends AccountEntityDef {
 		return null;
 	}
 
+	/**
+	 * Find Account object by email.
+	 * @param email
+	 * @return
+	 */
 	public static Account findByEmail(String email) {
 		Account account = Account.q().filter("email", email).first();
 		if (account == null) {
@@ -111,6 +126,11 @@ public class Account extends AccountEntityDef {
 		return account;
 	}
 
+	/**
+	 * Find Account object by mobile number
+	 * @param phone the mobile number
+	 * @return
+	 */
 	public static Account findByPhone(String phone) {
 		Account account = Account.q().filter("phone", phone).first();
 		if (account == null) {
@@ -190,6 +210,11 @@ public class Account extends AccountEntityDef {
 		return getFile("UserImage", account.id());
 	}
 
+	/**
+	 * Validate the password
+	 * @param password
+	 * @return
+	 */
 	public boolean validatePassword(String password) {
 		boolean flag = false;
 		String hexedPwd = Codec.hexSHA1(password);
@@ -221,7 +246,13 @@ public class Account extends AccountEntityDef {
 		return q.asList();
 	}
 
-	
+	/**
+	 * Validate for sign up function.
+	 * @param userName user name, email/mobile number
+	 * @param userPwd1 password
+	 * @param userPwd2 repeat password
+	 * @return
+	 */
 	public String signupValidate(String userName, String userPwd1,
 			String userPwd2) {
 		
@@ -243,7 +274,6 @@ public class Account extends AccountEntityDef {
 
 		if (Validation.hasErrors()){
 			return Validation.errors().get(0).toString();
-//			throw new ValidationException();
 		}
 		
 		synchronized (Account.class) {
@@ -262,14 +292,11 @@ public class Account extends AccountEntityDef {
 			}
 			if (Validation.hasErrors()) {
 				return Validation.errors().get(0).toString();
-//				throw new ValidationException();
 			} else {
 				this.password = password;
-//				create();
 				this.save();
 			}
 		}
-		
 		return null;
 	}
 }
