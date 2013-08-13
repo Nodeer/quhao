@@ -20,6 +20,14 @@ public class LocationBusiness {
 	private static final String serviceUrl = Play.configuration
 			.getProperty("service.geocoding.baseurl");
 
+	/**
+	 * Get the coordinate of one address
+	 * @param city the city name
+	 * @param address the detail address
+	 * @return Location object witch has x,y coordinate
+	 * @throws UnsupportedEncodingException
+	 * @throws JSONException
+	 */
 	public static Location getLocationByAddress(String city, String address)
 			throws UnsupportedEncodingException, JSONException {
 		Location location = new Location();

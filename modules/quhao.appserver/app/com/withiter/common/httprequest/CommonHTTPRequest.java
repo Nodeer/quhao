@@ -29,6 +29,11 @@ public class CommonHTTPRequest {
 		System.getProperties().setProperty("http.proxyPort", "8080");
 	}
 	
+	/**
+	 * a http request with given url
+	 * @param strUrl the url you want to request
+	 * @return
+	 */
 	public static String request(String strUrl){
 
 		logger.debug(CommonHTTPRequest.class.getName() + ", request url is : " + strUrl);

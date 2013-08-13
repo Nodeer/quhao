@@ -31,8 +31,20 @@ public class DirectionBusiness {
 	//	for transit
 	//	http://api.map.baidu.com/direction/v1?mode=transit&origin=%E4%B8%8A%E5%9C%B0%E4%BA%94%E8%A1%97&destination=%E5%8C%97%E4%BA%AC%E5%A4%A7%E5%AD%A6&region=%E5%8C%97%E4%BA%AC&output=json&ak=E4805d16520de693a3fe707cdc962045
 	
+	/**
+	 * Get distance by given two coordinate (x1,y1) and (x2,y2).<br>
+	 * for details, visit : http://developer.baidu.com/map/direction-api.htm
+	 * @param origin 起点名称(可以是地址，也可以是坐标，也可以是名字加坐标)。示例： name:百度大厦|latlng: 40.056878, 116.30815 
+	 * @param destination 终点名称(可以是地址，也可以是坐标，也可以是名字加坐标) 示例： name:百度大厦|latlng: 40.056878, 116.30815 
+	 * @param mode 导航模式(driving/transit)
+	 * @param region 如果mode的参数是transit，此参数必须给定。origin_region和destination_region可不给定。
+	 * @param origin_region 指定起始点城市
+	 * @param destination_region 指定终点城市
+	 * @return
+	 * @throws JSONException
+	 */
 	public static Distance direction(String origin, String destination,
-			String mode, String region, String origin_region, String destination_region, String output, String ak) throws JSONException {
+			String mode, String region, String origin_region, String destination_region) throws JSONException {
 		Distance d = new Distance();
 		if (StringUtils.isEmpty(origin) || StringUtils.isEmpty(destination)
 				|| StringUtils.isEmpty(key)) {
@@ -46,23 +58,19 @@ public class DirectionBusiness {
 		}
 		sb.append("?mode=").append(mode);
 
-		if (StringUtils.isEmpty(output)) {
-			output = "json";
-		}
-
 		if (mode.equalsIgnoreCase(Constants.DirectionMode.driving.toString())) {
 			sb.append("&origin=").append(origin)
 					.append("&destination=").append(destination)
 					.append("&origin_region=").append(origin_region)
 					.append("&destination_region=").append(destination_region)
-					.append("&output=").append(output).append("&ak=").append(key);
+					.append("&output=").append("json").append("&ak=").append(key);
 			requestUrl = sb.toString();
 		}
 
 		if (!mode.equalsIgnoreCase(Constants.DirectionMode.driving.toString())) {
 			sb.append("&origin=").append(origin).append("&destination=")
 					.append("&region=").append(region).append(destination)
-					.append("&output=").append(output).append("&ak=")
+					.append("&output=").append("json").append("&ak=")
 					.append(key);
 			requestUrl = sb.toString();
 		}
