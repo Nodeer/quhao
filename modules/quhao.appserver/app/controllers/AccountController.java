@@ -18,6 +18,13 @@ import com.withiter.models.merchant.Merchant;
 
 public class AccountController extends BaseController {
 
+	/**
+	 * Account sign up with mobile number or email address
+	 * @param phone
+	 * @param email
+	 * @param password
+	 * @param os the type of end user (ANDROID, IOS, WEB)
+	 */
 	public static void signup(String phone, String email, String password,
 			String os) {
 		Account account = new Account();
@@ -53,6 +60,12 @@ public class AccountController extends BaseController {
 
 	}
 
+	/**
+	 * login with mobile or email
+	 * @param phone the mobile number
+	 * @param email the email
+	 * @param password the password
+	 */
 	public static void login(String phone, String email, String password) {
 		LoginVO loginVO = new LoginVO();
 		Account account = null;
@@ -78,6 +91,12 @@ public class AccountController extends BaseController {
 
 	}
 
+	/**
+	 * Get personal info by mobile number or email address
+	 * @param phone the mobile number
+	 * @param email the email address
+	 * @throws Exception
+	 */
 	public static void getPersonalInfo(String phone, String email)
 			throws Exception {
 		PersonalInfoVO personalInfo = new PersonalInfoVO();
