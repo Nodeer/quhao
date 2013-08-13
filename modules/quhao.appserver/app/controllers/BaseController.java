@@ -21,6 +21,10 @@ public class BaseController extends JapidController {
 		return GeoBusiness.getLocationByIp(clientIp);
 	}
 
+	/**
+	 * Get current user location by IP
+	 * @return
+	 */
 	protected static String getLocationStr() {
 		String city = "";
 		String location = "";
