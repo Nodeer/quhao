@@ -15,7 +15,6 @@ import com.withiter.common.ContentType;
 public class UploadController extends BaseController {
 	private static String FILE_SHOP = "FileShop";
 
-	@SuppressWarnings("unused")
 	private static GridFSInputFile uploadFirst(String param) {
 		GridFSInputFile gfsFile = null;
 		File[] files = params.get(param, File[].class);
@@ -34,6 +33,12 @@ public class UploadController extends BaseController {
 		}
 	}
 
+	/**
+	 * Save file
+	 * @param file
+	 * @return
+	 * @throws IOException
+	 */
 	public static GridFSInputFile saveBinary(File file) throws IOException {
 		GridFS gfs = new GridFS(MorphiaQuery.ds().getDB(), FILE_SHOP);
 		GridFSInputFile gfsFile = gfs.createFile(file);
@@ -47,6 +52,10 @@ public class UploadController extends BaseController {
 		return gfsFile;
 	}
 
+	/**
+	 * find file by file name
+	 * @param fileName
+	 */
 	public static void find(String fileName) {
 		GridFSDBFile gfsFile = findOne(fileName);
 		if (gfsFile.getContentType() == null) {
