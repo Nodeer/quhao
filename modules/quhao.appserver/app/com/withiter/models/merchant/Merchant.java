@@ -15,6 +15,11 @@ import com.withiter.models.account.Reservation;
 public class Merchant extends MerchantEntityDef {
 	private static int DEFAULT_PAGE_ITEMS_NUMBER = 10;
 
+	/**
+	 * Get merchant list by category type.
+	 * @param cateType the type of category
+	 * @return the list of merchant
+	 */
 	public static List<Merchant> findByType(String cateType) {
 		MorphiaQuery q = Merchant.q();
 		q.filter("cateType", cateType);
@@ -24,9 +29,9 @@ public class Merchant extends MerchantEntityDef {
 	/**
 	 * get next page merchants
 	 * 
-	 * @param cateType
-	 * @param page
-	 * @param sortBy
+	 * @param cateType the type of category
+	 * @param page the page number
+	 * @param sortBy 排序方式
 	 * @return
 	 */
 	public static List<Merchant> nextPage(String cateType, int page,
@@ -43,12 +48,17 @@ public class Merchant extends MerchantEntityDef {
 		return paginate(q, page);
 	}
 
+	/**
+	 * Search merchants by key word name
+	 * @param name the key word
+	 * @return the top 10 merchants
+	 */
 	public static List<Merchant> findByName(String name) {
 		MorphiaQuery q = Merchant.q();
 		//首字查询
 		//Pattern pattern = Pattern.compile("^" + name + ".*$", Pattern.CASE_INSENSITIVE);
 		Pattern pattern = Pattern.compile("^.*" + name + ".*$", Pattern.CASE_INSENSITIVE);
-		q.filter("name", pattern);
+		q.filter("name", pattern).limit(DEFAULT_PAGE_ITEMS_NUMBER);
 		return q.asList();
 	}
 	
@@ -77,6 +87,7 @@ public class Merchant extends MerchantEntityDef {
 				+ this.tags + "],[this.teses:" + this.teses + "]";
 	}
 
+	// TODO add comments here
 	public static List<Merchant> findbyReservations(
 			List<Reservation> reservations) {
 		String whereSql = "";
