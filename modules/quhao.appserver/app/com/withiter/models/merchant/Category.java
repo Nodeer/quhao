@@ -9,7 +9,9 @@ import com.withiter.common.Constants.CateType;
 @Entity
 public class Category extends CategoryEntityDef {
 
-	// update category counts for CategoryJob
+	/**
+	 * update category counts for CategoryJob
+	 */
 	public static void updateCounts() {
 		CateType[] categories = Constants.CateType.values();
 		for(CateType cate : categories){
@@ -34,6 +36,10 @@ public class Category extends CategoryEntityDef {
 		return q.count();
 	}
 	
+	/**
+	 * Get all categories
+	 * @return the list of all category
+	 */
 	public static List<Category> getAll() {
 		MorphiaQuery q = Category.q();
 		return q.asList();
