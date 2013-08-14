@@ -74,7 +74,7 @@ $addCSS("pop_signUp_logIn.css", true)
 				<li>
 					<span class="select">
 						<select id="signup_type" onchange="Signup.changeType();" class="select" style="width: 198px;">
-							<option value="mobile">手机注册</option>
+							<option selected="selected" value="mobile">手机注册</option>
 							<option value="email">邮箱注册</option>
 						</select>
 					</span>
@@ -82,26 +82,6 @@ $addCSS("pop_signUp_logIn.css", true)
 			</ul>
 		</fieldset>
 		<p id="error_tip_su" class="errorText" style="visibility:hidden;">请输入手机号或者邮箱</p>
-		<form id="mobile_form" action="@{backend.self.AccountController.signup()}" method="post" >
-			<fieldset class="fieldset">
-				<ul>
-					<li>
-						<input type="text" name="userName_su" id="userName_su" placeHolder="手机号" class="textInput" style="width: 120px;"/>
-						<input type="button" name="" class="styleBtn corner lgoinBtn" value="动态密码" onclick="" style="width: 66px; padding: 4px 15px;"/>
-					</li>
-					<li>
-						<input type="password" name="userPwd1_su" id="userPwd1_su" placeHolder="动态密码" class="textInput"/>
-					</li>
-					<li>
-						<input type="password" name="userPwd1_su" id="userPwd1_su" placeHolder="设置密码" class="textInput"/>
-					</li>
-					<li>
-						<input type="password" name="userPwd2_su" id="userPwd2_su" placeHolder="重复密码" class="textInput"/>
-					</li>
-					<li class="buttonBox"><input type="button" name="" class="styleBtn corner lgoinBtn" value="注册" onclick="Signup.signup('mobile');"/></li>
-				</ul>
-			</fieldset>
-		</form>
 		<form id="email_form" action="@{backend.self.AccountController.signup()}" method="post" style="display: none;">
 			<fieldset class="fieldset">
 				<ul>
@@ -113,6 +93,26 @@ $addCSS("pop_signUp_logIn.css", true)
 						<input type="password" name="userPwd2_su" id="userPwd2_su" placeHolder="重复密码" class="textInput"/>
 					</li>
 					<li class="buttonBox"><input type="button" name="" class="styleBtn corner lgoinBtn" value="注册" onclick="Signup.signup('email');"/></li>
+				</ul>
+			</fieldset>
+		</form>
+		<form id="mobile_form" action="@{backend.self.AccountController.signup()}" method="post" >
+			<fieldset class="fieldset">
+				<ul>
+					<li>
+						<input type="text" name="userName" id="userName" placeHolder="手机号" class="textInput" style="width: 120px;"/>
+						<input type="button" name="" class="styleBtn corner lgoinBtn" value="动态密码" onclick="" style="width: 66px; padding: 4px 15px;"/>
+					</li>
+					<li>
+						<input type="password" name="userPwd1" id="userPwd1" placeHolder="动态密码" class="textInput"/>
+					</li>
+					<li>
+						<input type="password" name="userPwd1" id="userPwd" placeHolder="设置密码" class="textInput"/>
+					</li>
+					<li>
+						<input type="password" name="userPwd2" id="userPwd2" placeHolder="重复密码" class="textInput"/>
+					</li>
+					<li class="buttonBox"><input type="button" name="" class="styleBtn corner lgoinBtn" value="注册" onclick="Signup.signup('mobile');"/></li>
 				</ul>
 			</fieldset>
 		</form>
