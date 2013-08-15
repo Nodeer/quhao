@@ -1,5 +1,6 @@
 package controllers.backend.self;
 
+import notifiers.MailsController;
 import play.mvc.Scope.Session;
 import vo.account.AccountVO;
 
@@ -54,6 +55,8 @@ public class AccountController extends BaseController {
 		if(result == null){
 			AccountVO avo = AccountVO.build(account);
 			avo.error = "";
+			MailsController.sendTo("withiter@126.com");
+//			MailsController.sendBySignUp("withiter@126.com");
 			renderJSON(avo);
 		}else{
 			AccountVO avo = new AccountVO();

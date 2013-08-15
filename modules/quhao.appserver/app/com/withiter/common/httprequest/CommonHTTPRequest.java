@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 
 public class CommonHTTPRequest {
 
-	private static boolean useProxy = false;
 	private static Logger logger =  LoggerFactory.getLogger(CommonHTTPRequest.class);
+	private static boolean useProxy = false;
 	
 	public static boolean isUseProxy() {
 		return useProxy;
