@@ -44,6 +44,9 @@ public class MailsController extends JapidMailer {
 	}
 	
 	public static void sendBySignUp(String mailsTo) {
+		
+		setUseProxy(true);
+		
 		String userHome = System.getProperty("user.home");
 		if(userHome.contains("eacfgjl")){
 			useProxy = true;
