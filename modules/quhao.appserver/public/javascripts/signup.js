@@ -1,5 +1,13 @@
+/**
+ * Sign up function
+ */
+
 Signup = {};
 
+/**
+ * validate the sign up form,
+ * the parameter type is "email" or "mobile"
+ */
 Signup.validate = function(type) {
 	if(type == "email"){
 		var userName=Quhao.trim($("#userName_su").val());
@@ -34,44 +42,48 @@ Signup.validate = function(type) {
 	}
 }
 
-//	if(type == "mobile"){
-//
-//	}
 
-	Signup.signup = function(type) {
-		var formName = type+"_form";
-		if (Signup.validate(type)) {
-			$.ajax({
-				type : "POST",
-				//
-				url : "/b/self/AccountController/signup",
-				data : $("#"+formName).serialize(),
-				dataType : "json",
-				async : false,
-				success : function(data) {
-					if (data != null) {
-						if(data.error != ""){
-							$("#error_tip_su").text(data.error).css("visibility", "visible");
-							return;
-						}
-						window.location.href = "/b/m/home?uid="+data.uid;
+/**
+ * Sign up core function
+ * the parameter type is "email" or "mobile"
+ */
+Signup.signup = function(type) {
+	var formName = type+"_form";
+	if (Signup.validate(type)) {
+		$.ajax({
+			type : "POST",
+			//
+			url : "/b/self/AccountController/signup",
+			data : $("#"+formName).serialize(),
+			dataType : "json",
+			async : false,
+			success : function(data) {
+				if (data != null) {
+					if(data.error != ""){
+						$("#error_tip_su").text(data.error).css("visibility", "visible");
+						return;
 					}
-				},
-				error : function() {
-					alert("ajax error!");
+					window.location.href = "/b/m/home?uid="+data.uid;
 				}
-			});
-		}
+			},
+			error : function() {
+				alert("ajax error!");
+			}
+		});
 	}
+}
 
-	Signup.changeType = function(){
-		var type = $("#signup_type").val();
-		if(type == "mobile"){
-			$("#email_form").hide();
-			$("#mobile_form").show();
-		}
-		if(type == "email"){
-			$("#email_form").show();
-			$("#mobile_form").hide();
-		}
+/**
+ * switch sign up between by email and mobile 
+ */
+Signup.changeType = function(){
+	var type = $("#signup_type").val();
+	if(type == "mobile"){
+		$("#email_form").hide();
+		$("#mobile_form").show();
 	}
+	if(type == "email"){
+		$("#email_form").show();
+		$("#mobile_form").hide();
+	}
+}
