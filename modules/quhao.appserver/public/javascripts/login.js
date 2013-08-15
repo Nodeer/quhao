@@ -1,5 +1,8 @@
 Login = {};
 
+/**
+ * when click "登录", will switch with hidden and show
+ */
 Login.exchange = function() {
 	if ($("#login_div").is(":hidden")) {
 		$("#login_div").show();
@@ -8,6 +11,9 @@ Login.exchange = function() {
 	}
 }
 
+/**
+ * validate the login form
+ */
 Login.validate = function() {
 	var userName = Quhao.trim($("#userName").val());
 	var userPwd = Quhao.trim($("#userPwd").val());
@@ -31,6 +37,9 @@ Login.validate = function() {
 	return true;
 }
 
+/**
+ * core login function
+ */
 Login.login = function() {
 	if (Login.validate()) {
 		$.ajax({
