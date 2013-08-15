@@ -1,3 +1,7 @@
+/**
+ * All Common functions will be defined here
+ */
+
 Common = {};
 
 Common.REGEX_TELEPHONE = /^(0[0-9]{2,3}\/-)?([2-9][0-9]{6,7})+(\/-[0-9]{1,4})?$/;
@@ -14,6 +18,10 @@ Common.REGEX_ZIPCODE = /^[1-9]\/d{5}$/;
 Common.REGEX_ONLY_LETTER = /^[a-zA-Z]+$/;
 Common.REGEX_NO_SPECILAL_CHARS = /^[0-9a-zA-Z]+$/;
 
+/**
+ * Validate the mobile format
+ * if tel matches mobile format return true, otherwise return false
+ */
 Common.mobile = function(tel) {
 	if (Common.REGEX_MOBILE.test(tel)) {
 		return true;
@@ -22,6 +30,10 @@ Common.mobile = function(tel) {
 	}
 }
 
+/**
+ * Validate the email format
+ * if email matches mobile format return true, otherwise return false
+ */
 Common.email = function(email) {
 	if (Common.REGEX_EMAIL.test(email)) {
 		return true;
@@ -30,6 +42,10 @@ Common.email = function(email) {
 	}
 }
 
+/**
+ * Validate the number format
+ * if num matches mobile format return true, otherwise return false
+ */
 Common.number = function(num) {
 	if (Common.REGEX_ONLY_NUMBER.test(num)) {
 		return true;
@@ -38,6 +54,9 @@ Common.number = function(num) {
 	}
 }
 
+/**
+ * Popup with a Black Transparent Texture Background
+ */
 Common.popup = function(newDivID, width, height, container, callbackName) {
 	var newMaskID = "mask";
 	var newMaskWidth = document.documentElement.clientWidth;
@@ -97,6 +116,9 @@ Common.popup = function(newDivID, width, height, container, callbackName) {
 	});
 }
 
+/**
+ * remove the popup
+ */
 Common.removePopup = function(newMask, newDivID) {
 	$(newMask).remove();
 	$("#" + newDivID).hide();
