@@ -8,12 +8,12 @@
 
 #import "WithiterFirstViewController.h"
 #import "SBJson.h"
-
-@interface WithiterFirstViewController ()
-
-@end
+#import "Category.h"
+#import "QuhaoDelete.h"
 
 @implementation WithiterFirstViewController
+
+@synthesize categoryArray;
 
 @synthesize categoryLabel1;
 @synthesize searchBar1;
@@ -22,15 +22,15 @@
 @synthesize label1;
 @synthesize label2;
 @synthesize label3;
-@synthesize label4;
+//@synthesize label4;
 @synthesize label5;
-@synthesize label6;
+//@synthesize label6;
 @synthesize label7;
 @synthesize label8;
 @synthesize label9;
 @synthesize label10;
 @synthesize label11;
-@synthesize label12;
+//@synthesize label12;
 @synthesize label13;
 @synthesize label14;
 @synthesize label15;
@@ -62,10 +62,13 @@
 	// Do any additional setup after loading the view, typically from a nib.
     
     NSLog(@"first view loaded...");
-//    [WithiterFirstViewController testJsonParser : @"aaa"];
 
+    QuhaoDelete *delegate = [[UIApplication sharedApplication] delegate];
+    delegate.isLogin = false;
+    
+    
     // http request
-    NSURL *url = [NSURL URLWithString:@"http://192.168.1.2:9081/allCategories"];
+    NSURL *url = [NSURL URLWithString:@"http://192.168.1.20:9081/allCategories"];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
     [request startSynchronous];
     NSError *httpError = [request error];
@@ -73,6 +76,9 @@
     if (!httpError) {
         response = [request responseString];
 //        NSLog(@"%@", response);
+    }else{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"网络不是很好，请稍后再试" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+        [alert show];
     }
 
     // 解析Server端返回的JSON数据
@@ -89,11 +95,12 @@
 //    }
     
 
+    categoryArray = [[NSMutableArray alloc] init];
     
     for(int i=0; i < [jsonObjects count]; ){
         NSString *value1 = [[jsonObjects objectAtIndex:i] objectForKey:@"cateType"];
         NSString *value2 = [[jsonObjects objectAtIndex:i] objectForKey:@"count"];
-
+        
         if([value1 isEqualToString:@"benbangcai"]){
 //            btnTest = [[UIButton alloc] setValue:value1 forKey:@"value1"];
             value1 = @"本帮菜";
@@ -138,6 +145,10 @@
             value1 = @"自助餐";
         }
         
+        Category *c = [[Category alloc] init];
+        c.text = value1;
+        c.count = value2;
+        [categoryArray insertObject:c atIndex:i];
         
         NSLog(@"value11 is %@", value1);
         NSLog(@"value22 is %@", value2);
@@ -153,17 +164,17 @@
         if(i == 3){
             label3.text = lableText;
         }
-        if(i == 4){
-            label4.text = lableText;
-            label4.hidden = true;
-        }
+//        if(i == 4){
+//            label4.text = lableText;
+//            label4.hidden = true;
+//        }
         if(i == 5){
             label5.text = lableText;
         }
-        if(i == 6){
-            label6.text = lableText;
-            label6.hidden = true;
-        }
+//        if(i == 6){
+//            label6.text = lableText;
+//            label6.hidden = true;
+//        }
         if(i == 7){
             label7.text = lableText;
         }
@@ -179,10 +190,10 @@
         if(i == 11){
             label11.text = lableText;
         }
-        if(i == 12){
-            label12.text = lableText;
-            label12.hidden = true;
-        }
+//        if(i == 12){
+//            label12.text = lableText;
+//            label12.hidden = true;
+//        }
         if(i == 13){
             label13.text = lableText;
         }
@@ -208,20 +219,5 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-////测试json的解析
-//+ (void) testJsonParser: (NSString *) jsonString {
-//    jsonString = [[NSString alloc] initWithString:@"{\"userInfo\":{\"userName\":\"徐泽宇\",\"sex\":\"男\"}}"];
-//    NSLog(@"正在解析json字符串是：%@",jsonString);
-//    
-//    SBJsonParser * parser = [[SBJsonParser alloc] init];
-//    NSError * error = nil;
-//    NSMutableDictionary *jsonDic = [parser objectWithString:jsonString error:&error];
-//    NSMutableDictionary *dicUserInfo = [jsonDic objectForKey:@"userInfo"];
-//    
-//    NSLog(@"%@",[jsonDic objectForKey:@"userInfo" ]);
-//    NSLog(@"%@",[dicUserInfo objectForKey:@"userName"]);
-//    NSLog(@"%@",[dicUserInfo objectForKey:@"sex"]);
-//}
 
 @end

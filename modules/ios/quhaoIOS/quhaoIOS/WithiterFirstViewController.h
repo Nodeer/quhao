@@ -17,15 +17,15 @@
     UILabel *label1;
     UILabel *label2;
     UILabel *label3;
-    UILabel *label4;
+//    UILabel *label4;
     UILabel *label5;
-    UILabel *label6;
+//    UILabel *label6;
     UILabel *label7;
     UILabel *label8;
     UILabel *label9;
     UILabel *label10;
     UILabel *label11;
-    UILabel *label12;
+//    UILabel *label12;
     UILabel *label13;
     UILabel *label14;
     UILabel *label15;
@@ -49,12 +49,12 @@ IBOutlet UILabel *label2;
 @property (nonatomic, retain)
 IBOutlet UILabel *label3;
 @property (nonatomic, retain)
-IBOutlet UILabel *label4;
-@property (nonatomic, retain)
+//IBOutlet UILabel *label4;
+//@property (nonatomic, retain)
 IBOutlet UILabel *label5;
 @property (nonatomic, retain)
-IBOutlet UILabel *label6;
-@property (nonatomic, retain)
+//IBOutlet UILabel *label6;
+//@property (nonatomic, retain)
 IBOutlet UILabel *label7;
 @property (nonatomic, retain)
 IBOutlet UILabel *label8;
@@ -65,8 +65,8 @@ IBOutlet UILabel *label10;
 @property (nonatomic, retain)
 IBOutlet UILabel *label11;
 @property (nonatomic, retain)
-IBOutlet UILabel *label12;
-@property (nonatomic, retain)
+//IBOutlet UILabel *label12;
+//@property (nonatomic, retain)
 IBOutlet UILabel *label13;
 @property (nonatomic, retain)
 IBOutlet UILabel *label14;
@@ -80,8 +80,6 @@ IBOutlet UILabel *label17;
 @property (nonatomic, retain)
 IBOutlet UIButton *btnTest;
 
-//-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar;
-//
-//-(void)testJsonParser: (NSString *) jsonString;
+@property NSMutableArray *categoryArray;
 
 @end

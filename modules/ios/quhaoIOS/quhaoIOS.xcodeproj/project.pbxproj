@@ -32,10 +32,11 @@
 		CE207003179EDEC4003ECAC4 /* ASIHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = CE206FF6179EDEC4003ECAC4 /* ASIHTTPRequest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CE207004179EDEC4003ECAC4 /* ASIInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = CE206FFA179EDEC4003ECAC4 /* ASIInputStream.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CE207005179EDEC4003ECAC4 /* ASINetworkQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = CE206FFC179EDEC4003ECAC4 /* ASINetworkQueue.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		CE6A3F2317A003CF004AAF20 /* CategoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6A3F2217A003CF004AAF20 /* CategoryModel.m */; };
 		CE913BD917A16DCA00FC39E2 /* WithiterAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CE01CE84179BC3BB00090EB0 /* WithiterAppDelegate.m */; };
+		CE940C2017C1150F00C7476D /* Category.m in Sources */ = {isa = PBXBuildFile; fileRef = CE940C1F17C1150F00C7476D /* Category.m */; };
 		CEEC0732179BF021000879AE /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC0731179BF021000879AE /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CEEC0737179C22C7000879AE /* WithiterThirdViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEEC0736179C22C7000879AE /* WithiterThirdViewController.xib */; };
+		CEECC0B517C1204D00552773 /* QuhaoDelete.m in Sources */ = {isa = PBXBuildFile; fileRef = CEECC0B417C1204D00552773 /* QuhaoDelete.m */; };
 		CEFBD35E17A16BE8008B34EE /* NSObject+SBJson.m in Sources */ = {isa = PBXBuildFile; fileRef = CE206FC6179EDE54003ECAC4 /* NSObject+SBJson.m */; };
 		CEFBD36117A16BE8008B34EE /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CE206FC9179EDE54003ECAC4 /* SBJsonParser.m */; };
 		CEFBD36317A16BE8008B34EE /* SBJsonStreamParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CE206FCB179EDE54003ECAC4 /* SBJsonStreamParser.m */; };
@@ -127,13 +128,15 @@
 		CE206FFB179EDEC4003ECAC4 /* ASINetworkQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASINetworkQueue.h; path = Classes/ASIHTTPRequest/ASINetworkQueue.h; sourceTree = "<group>"; };
 		CE206FFC179EDEC4003ECAC4 /* ASINetworkQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ASINetworkQueue.m; path = Classes/ASIHTTPRequest/ASINetworkQueue.m; sourceTree = "<group>"; };
 		CE206FFD179EDEC4003ECAC4 /* ASIProgressDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIProgressDelegate.h; path = Classes/ASIHTTPRequest/ASIProgressDelegate.h; sourceTree = "<group>"; };
-		CE6A3F2117A002CA004AAF20 /* CategoryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryModel.h; sourceTree = "<group>"; };
-		CE6A3F2217A003CF004AAF20 /* CategoryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryModel.m; sourceTree = "<group>"; };
+		CE940C1E17C1150F00C7476D /* Category.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Category.h; sourceTree = "<group>"; };
+		CE940C1F17C1150F00C7476D /* Category.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Category.m; sourceTree = "<group>"; };
 		CEEC0730179BF021000879AE /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		CEEC0731179BF021000879AE /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		CEEC0733179C2011000879AE /* WithiterThirdViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WithiterThirdViewController.h; sourceTree = "<group>"; };
 		CEEC0734179C2060000879AE /* WithiterThirdViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WithiterThirdViewController.m; sourceTree = "<group>"; };
 		CEEC0736179C22C7000879AE /* WithiterThirdViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WithiterThirdViewController.xib; sourceTree = "<group>"; };
+		CEECC0B317C1204D00552773 /* QuhaoDelete.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuhaoDelete.h; sourceTree = "<group>"; };
+		CEECC0B417C1204D00552773 /* QuhaoDelete.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuhaoDelete.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -297,8 +300,10 @@
 		CE6A3F1F17A00207004AAF20 /* models */ = {
 			isa = PBXGroup;
 			children = (
-				CE6A3F2117A002CA004AAF20 /* CategoryModel.h */,
-				CE6A3F2217A003CF004AAF20 /* CategoryModel.m */,
+				CE940C1E17C1150F00C7476D /* Category.h */,
+				CE940C1F17C1150F00C7476D /* Category.m */,
+				CEECC0B317C1204D00552773 /* QuhaoDelete.h */,
+				CEECC0B417C1204D00552773 /* QuhaoDelete.m */,
 			);
 			name = models;
 			sourceTree = "<group>";
@@ -429,7 +434,8 @@
 				CE207003179EDEC4003ECAC4 /* ASIHTTPRequest.m in Sources */,
 				CE207004179EDEC4003ECAC4 /* ASIInputStream.m in Sources */,
 				CE207005179EDEC4003ECAC4 /* ASINetworkQueue.m in Sources */,
-				CE6A3F2317A003CF004AAF20 /* CategoryModel.m in Sources */,
+				CE940C2017C1150F00C7476D /* Category.m in Sources */,
+				CEECC0B517C1204D00552773 /* QuhaoDelete.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
