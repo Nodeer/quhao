@@ -170,6 +170,12 @@ public class MerchantController extends BaseController {
 	 */
 	public static void getMerchantsByName(String name) {
 		List<Merchant> merchantList = Merchant.findByName(name);
-		renderJSON(merchantList);
+		List<MerchantVO> merchantVOList = new ArrayList<MerchantVO>();
+		if (null != merchantList && !merchantList.isEmpty()) {
+			for (Merchant m : merchantList) {
+				merchantVOList.add(MerchantVO.build(m));
+			}
+		}
+		renderJSON(merchantVOList);
 	}
 }
