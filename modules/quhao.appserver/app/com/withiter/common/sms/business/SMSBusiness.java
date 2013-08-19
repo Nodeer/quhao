@@ -2,6 +2,7 @@ package com.withiter.common.sms.business;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 import org.apache.commons.httpclient.Header;
 import org.apache.commons.httpclient.HttpClient;
@@ -19,7 +20,9 @@ public class SMSBusiness {
 	private static Logger logger = LoggerFactory.getLogger(SMSBusiness.class);
 	private static final String UID = Play.configuration.getProperty("service.sms.uid");
 	private static final String KEY = Play.configuration.getProperty("service.sms.key");
-
+	
+	private static final String AUTH_CODE_FOR_SIGNUP = Play.configuration.getProperty("service.sms.authCodeForSignup");
+	
 	public static boolean isUseProxy() {
 		return useProxy;
 	}
@@ -127,6 +130,51 @@ public class SMSBusiness {
 		post.releaseConnection();
 		return statusCode;
 	}
+	
+	/**
+	 * Send SMS.
+	 * @param mobileNumbers a list of mobile numbers you want to send SMS
+	 * @return the CODE of status.<br>
+	 * 			100000 ~ 999999		随即验证码
+	 *			0 					短信发送失败<br>
+	 * @throws HttpException
+	 * @throws IOException
+	 */
+	public static int sendAuthCodeForSignup(String mobileNumber) throws HttpException, IOException{
+		logger.info(SMSBusiness.class.getName() + "sendSMS, mobileNumber is : " + mobileNumber);
+		String userHome = System.getProperty("user.home");
+		if (userHome.contains("eacfgjl")) {
+			useProxy = true;
+		}
+
+		if (useProxy) {
+			initProxy();
+		}
+		
+		HttpClient client = new HttpClient();
+		PostMethod post = new PostMethod("http://utf8.sms.webchinese.cn");
+		post.addRequestHeader("Content-Type",
+				"application/x-www-form-urlencoded;charset=utf8");// 在头文件中设置转码
+		NameValuePair[] data = { new NameValuePair("Uid", UID),
+				new NameValuePair("Key", KEY),
+				new NameValuePair("smsMob", mobileNumber),
+				new NameValuePair("smsText", AUTH_CODE_FOR_SIGNUP) };
+		post.setRequestBody(data);
+		client.executeMethod(post);
+		int statusCode = post.getStatusCode();
+		post.releaseConnection();
+		if(statusCode > 0){
+			Random r = new Random();
+			int x = r.nextInt(999999);
+			while(x < 100000){
+				x = r.nextInt(999999);
+			}
+			return x;
+		}else{
+			return 0;
+		}
+	}
+	
 	
 	/**
 	 * @param args

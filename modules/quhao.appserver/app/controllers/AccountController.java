@@ -1,23 +1,87 @@
 package controllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.lang.StringUtils;
 
 import play.Logger;
+import play.libs.Codec;
 import vo.MerchantVO;
 import vo.PersonalInfoVO;
 import vo.ReservationVO;
 import vo.account.LoginVO;
+import vo.account.SignupVO;
 
 import com.withiter.common.Constants;
+import com.withiter.common.sms.business.SMSBusiness;
 import com.withiter.models.account.Account;
 import com.withiter.models.account.Reservation;
 import com.withiter.models.merchant.Merchant;
 
 public class AccountController extends BaseController {
 
+	/**
+	 * 手机号注册生成随即6位数字验证码
+	 * @param mobile 手机号码
+	 * @param os 注册手持设备类型（Android，iOS）
+	 * @return SignupVO 返回SignupVO对象，需对errorKey进行判断，如果不是空字符串，则表示生成失败，否则生成成功。
+	 */
+	public static void GenerateAuthCode(String mobile, String os){
+		Account account = new Account();
+		SignupVO suVO = new SignupVO();
+		if(StringUtils.isEmpty(mobile)){
+			suVO.errorKey = "mobile";
+			suVO.errorText = "号码不能为空";
+			renderJSON(suVO);
+		}
+		if(Account.findByPhone(mobile) != null){
+			suVO.errorKey = "mobile";
+			suVO.errorText = "此号码已被注册";
+			renderJSON(suVO);
+		}
+		account.phone = mobile;
+		if (Constants.MobileOSType.ANDROID.toString().equalsIgnoreCase(os)) {
+			account.mobileOS = Constants.MobileOSType.ANDROID;
+		}
+		if (Constants.MobileOSType.IOS.toString().equalsIgnoreCase(os)) {
+			account.mobileOS = Constants.MobileOSType.IOS;
+		}
+		
+		try {
+			int result = SMSBusiness.sendAuthCodeForSignup(mobile);
+			if(result == 0){
+				suVO.errorKey = "mobile";
+				suVO.errorText = "发送短信出错";
+				renderJSON(suVO);
+			}else{
+				account.password = Codec.hexSHA1(String.valueOf(result)); 
+				account.save();
+				suVO.errorKey = "";
+				suVO.errorText = "";
+				renderJSON(suVO);
+			}
+		} catch (HttpException e) {
+			suVO.errorKey = "mobile";
+			suVO.errorText = e.toString();
+			e.printStackTrace();
+			renderJSON(suVO);
+		} catch (IOException e) {
+			suVO.errorKey = "mobile";
+			suVO.errorText = e.toString();
+			e.printStackTrace();
+			renderJSON(suVO);
+		}
+	}
+	
+	public static void signupWithMobile(String mobile, String code, String os){
+		if(!StringUtils.isEmpty(mobile)){
+			
+		}
+	}
+	
 	/**
 	 * Account sign up with mobile number or email address
 	 * @param phone
