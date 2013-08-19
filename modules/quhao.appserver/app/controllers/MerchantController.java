@@ -37,7 +37,11 @@ public class MerchantController extends BaseController {
 
 	public static void merchantByCategory(String cateType) {
 		List<Merchant> merchantList = Merchant.findByType(cateType);
-		renderJSON(merchantList);
+		List<MerchantVO> merchantVOList = new ArrayList<MerchantVO>();
+		for (Merchant m : merchantList) {
+			merchantVOList.add(MerchantVO.build(m));
+		}
+		renderJSON(merchantVOList);
 	}
 
 	/**
@@ -165,8 +169,8 @@ public class MerchantController extends BaseController {
 	}
 	
 	/**
-	 * 
-	 * @param x top merchant 数量
+	 * 模糊查询
+	 * @param name 商家名称 
 	 */
 	public static void getMerchantsByName(String name) {
 		List<Merchant> merchantList = Merchant.findByName(name);
