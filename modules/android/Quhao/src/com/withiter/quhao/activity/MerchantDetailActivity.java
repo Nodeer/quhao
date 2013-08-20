@@ -7,6 +7,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,8 +15,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,7 +36,11 @@ public class MerchantDetailActivity extends AppStoreActivity {
 	private final int UNLOCK_CLICK = 1000;
 	private ProgressDialogUtil progress;
 	private Merchant merchant;
-	private LinearLayout info;
+	
+	private Button btnGetNumber;
+	
+	private  LinearLayout info;
+	
 	private TextView merchantName;
 	private ImageView merchantImg;
 	private TextView merchantAddress;
@@ -105,28 +112,31 @@ public class MerchantDetailActivity extends AppStoreActivity {
 		setContentView(R.layout.merchant_detail);
 		super.onCreate(savedInstanceState);
 
-		LayoutInflater inflater = LayoutInflater.from(this);
-		info = (LinearLayout) inflater.inflate(R.layout.poiinfo, null);
-		LinearLayout scroll = (LinearLayout) findViewById(R.id.lite_list);
-
-		LayoutParams layoutParams = new LayoutParams(LayoutParams.FILL_PARENT,
-				LayoutParams.WRAP_CONTENT);
-
-		scroll.addView(info, layoutParams);
-
-		this.merchantName = (TextView) findViewById(R.id.merchantName);
-		this.merchantImg = (ImageView) info.findViewById(R.id.merchantImg);
-		this.merchantAddress = (TextView) info
-				.findViewById(R.id.merchantAddress);
-		this.merchantPhone = (TextView) info.findViewById(R.id.merchantPhone);
-		this.merchantTags = (TextView) info.findViewById(R.id.merchantTags);
-		this.merchantAverageCost = (TextView) info
-				.findViewById(R.id.merchantAverageCost);
-		this.xingjiabi = (TextView) info.findViewById(R.id.xingjiabi);
-		this.kouwei = (TextView) info.findViewById(R.id.kouwei);
-		this.fuwu = (TextView) info.findViewById(R.id.fuwu);
-		this.huanjing = (TextView) info.findViewById(R.id.huanjing);
+		
 		this.merchantId = getIntent().getStringExtra("merchantId");
+		
+		btnGetNumber = (Button) findViewById(R.id.btn_GetNumber);
+		
+		btnGetNumber.setOnClickListener(getNumberClickListener());
+		
+		LayoutInflater inflater = LayoutInflater.from(this);
+        info = (LinearLayout)inflater.inflate(R.layout.poiinfo, null);
+        LinearLayout scroll = (LinearLayout)findViewById(R.id.lite_list);
+        
+        LayoutParams layoutParams = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+        
+        scroll.addView(info, layoutParams);
+    	
+    	this.merchantName = (TextView) findViewById(R.id.merchantName);
+    	this.merchantImg = (ImageView) info.findViewById(R.id.merchantImg);
+    	this.merchantAddress = (TextView) info.findViewById(R.id.merchantAddress);
+    	this.merchantPhone = (TextView) info.findViewById(R.id.merchantPhone);
+    	this.merchantTags = (TextView) info.findViewById(R.id.merchantTags);
+    	this.merchantAverageCost = (TextView) info.findViewById(R.id.merchantAverageCost);
+    	this.xingjiabi = (TextView) info.findViewById(R.id.xingjiabi);
+    	this.kouwei = (TextView) info.findViewById(R.id.kouwei);
+    	this.fuwu = (TextView) info.findViewById(R.id.fuwu);
+    	this.huanjing = (TextView) info.findViewById(R.id.huanjing);
 
 		btnPerson.setOnClickListener(goPersonCenterListener(this));
 		btnMarchent.setOnClickListener(getMarchentListListener(this));
@@ -134,8 +144,35 @@ public class MerchantDetailActivity extends AppStoreActivity {
 		initView();
 	}
 
-	private void initView() {
-		if (isClick) {
+
+	/**
+	 * 
+	 * 取号按钮的 click listener
+	 * 
+	 * @return 取号按钮的listener R.id.btn_GetNumber
+	 */
+	private OnClickListener getNumberClickListener()
+	{
+		OnClickListener listener = new OnClickListener()
+		{
+			
+			@Override
+			public void onClick(View v)
+			{
+				Intent intent = new Intent();
+				intent.putExtra("merchantId", MerchantDetailActivity.this.merchantId);
+				intent.setClass(MerchantDetailActivity.this, GetNumberActivity.class);
+				startActivity(intent);
+				overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
+			}
+		};
+		return listener;
+	}
+
+	private void initView()
+	{
+		if(isClick)
+		{
 			return;
 		}
 		isClick = true;

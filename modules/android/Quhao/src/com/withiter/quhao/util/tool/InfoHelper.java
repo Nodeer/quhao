@@ -13,7 +13,7 @@ import android.net.ConnectivityManager;
 public class InfoHelper
 {
 	/**
-	 * ֻҪ������ݿ�������ݣ��ͱ�ʾ��¼��
+	 * 检查帐号
 	 * 
 	 * @param mContext
 	 * @return
@@ -31,6 +31,13 @@ public class InfoHelper
 		return (list != null && list.size() != 0) ? list.get(0) : null;
 	}
 
+	/**
+	 * 
+	 * 检查网络
+	 * 
+	 * @param context
+	 * @return
+	 */
 	public static boolean checkNetwork(Context context)
 	{
 		boolean flag = false;

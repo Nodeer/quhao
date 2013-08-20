@@ -10,6 +10,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,9 +19,11 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -39,8 +42,11 @@ public class MainActivity extends AppStoreActivity {
 
 	private String LOGTAG = MainActivity.class.getName();
 	protected ListView topMerchantListView;
-	protected InnerListView categorysListView;
+	
 	private GridView topMerchantsGird;
+	
+	private Button searchBtn;
+
 	private List<TopMerchant> topMerchants;
 	private GridView categorysGird;
 	private DisplayMetrics localDisplayMetrics;
@@ -104,7 +110,10 @@ public class MainActivity extends AppStoreActivity {
 		localDisplayMetrics = getResources().getDisplayMetrics();
 
 		topMerchants = new ArrayList<TopMerchant>();
-
+		
+		searchBtn = (Button) findViewById(R.id.edit_search);
+		searchBtn.setOnClickListener(goMerchantsSearch(MainActivity.this));
+		
 		topMerchantsGird = (GridView) findViewById(R.id.topMerchants);
 		getTopMerchants();
 
@@ -124,7 +133,7 @@ public class MainActivity extends AppStoreActivity {
 				long id) {
 			String topMerchantId = topMerchants.get(position).id;
 			Intent intent = new Intent();
-			intent.putExtra("id", topMerchantId);
+			intent.putExtra("merchantId", topMerchantId);
 			intent.setClass(MainActivity.this, MerchantDetailActivity.class);
 			startActivity(intent);
 			overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
@@ -143,6 +152,7 @@ public class MainActivity extends AppStoreActivity {
 			intent.putExtra("categoryTypeStr", category.categoryTypeStr);
 			intent.putExtra("categoryCount", String.valueOf(category.count));
 			intent.setClass(MainActivity.this, MerchantsActivity.class);
+			
 			startActivity(intent);
 			overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
 		}
