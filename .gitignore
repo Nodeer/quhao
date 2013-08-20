@@ -15,5 +15,13 @@ test-result/
 
 /modules/android/Quhao/bin/classes/com/withiter/quhao/*.class
 /modules/android/Quhao/bin/classes/com/withiter/quhao/activity/*.class
+/modules/android/Quhao/bin/classes/com/withiter/quhao/adapter/*.class
+/modules/android/Quhao/bin/classes/com/withiter/quhao/domain/*.class
+/modules/android/Quhao/bin/classes/com/withiter/quhao/util/*.class
+/modules/android/Quhao/bin/classes/com/withiter/quhao/util/db/*.class
+/modules/android/Quhao/bin/classes/com/withiter/quhao/util/http/*.class
+/modules/android/Quhao/bin/classes/com/withiter/quhao/util/tool/*.class
+/modules/android/Quhao/bin/classes/com/withiter/quhao/view/*.class
+/modules/android/Quhao/bin/classes/com/withiter/quhao/vo/*.class
 /modules/android/Quhao/bin/classes/com/withiter/quhao/*/*.class
 /modules/android/Quhao/bin/classes/com/withiter/quhao/*/*/*.class
