@@ -1,0 +1,1 @@
+{ "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "quhao-dev-db.Tese", "name" : "_id_" }, { "v" : 1, "key" : { "_created" : -1 }, "ns" : "quhao-dev-db.Tese", "name" : "_created_-1" }, { "v" : 1, "key" : { "_modified" : -1 }, "ns" : "quhao-dev-db.Tese", "name" : "_modified_-1" } ] }
