@@ -68,7 +68,7 @@
     
     
     // http request
-    NSURL *url = [NSURL URLWithString:@"http://192.168.1.20:9081/allCategories"];
+    NSURL *url = [NSURL URLWithString:@"http://192.168.1.8:9081/allCategories"];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
     [request startSynchronous];
     NSError *httpError = [request error];
