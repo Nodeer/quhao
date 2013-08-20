@@ -31,7 +31,7 @@ public class Account extends AccountEntityDef {
 	public static String validate(String userName, String userPwd){
 		Validation.required(Messages.get(I18nKeys.F_USERNAME), userName);
 		Validation.range(Messages.get(I18nKeys.F_USERNAME), userName.length(),
-				6, 20);
+				6, 30);
 
 		Validation.required(Messages.get(I18nKeys.F_PASSWORD), userPwd);
 		Validation.range(Messages.get(I18nKeys.F_PASSWORD), userPwd.length(),
@@ -82,7 +82,7 @@ public class Account extends AccountEntityDef {
 		}
 		if (!StringUtils.isEmpty(password)) {
 			Validation.min("At least 6 length", password.length(), 6);
-			Validation.max("At most 20 length", password.length(), 20);
+			Validation.max("At most 12 length", password.length(), 12);
 		}
 
 		if (Validation.hasErrors()) {
@@ -92,13 +92,13 @@ public class Account extends AccountEntityDef {
 		synchronized (Account.class) {
 			if (!StringUtils.isEmpty(phone)) {
 				if (Account.filter("phone", phone).count() > 0) {
-					Validation.addError("phone exists.",
+					Validation.addError("该手机号码已注册",
 							I18nKeys.V_ALREADY_EXISTS);
 				}
 			}
 			if (!StringUtils.isEmpty(email)) {
 				if (Account.filter("email", email).count() > 0) {
-					Validation.addError("email exists.",
+					Validation.addError("该邮箱已注册",
 							I18nKeys.V_ALREADY_EXISTS);
 				}
 			}

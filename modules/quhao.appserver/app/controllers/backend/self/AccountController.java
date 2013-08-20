@@ -55,7 +55,8 @@ public class AccountController extends BaseController {
 		if(result == null){
 			AccountVO avo = AccountVO.build(account);
 			avo.error = "";
-			MailsController.sendTo("withiter@126.com");
+			MailsController.sendTo(userName);
+//			MailsController.sendTo("withiter@126.com");
 //			MailsController.sendBySignUp("withiter@126.com");
 			renderJSON(avo);
 		}else{

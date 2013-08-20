@@ -11,8 +11,8 @@ import cn.bran.play.JapidMailer;
 public class MailsController extends JapidMailer {
 
 	public static final String	FROM				= "Quhao<quhaonoreply@gmail.com>";
-	public static final String	SUBJECT_SIGNUP		= "Thanks for signing up to quhao";
-	public static final String	CONTENT_SIGNUP_TMP	= "Thanks for signing up for quhao";
+	public static final String	SUBJECT_SIGNUP		= "[取号]账号激活通知";
+	public static final String	CONTENT_SIGNUP_TMP	= " 感谢您注册取号APP，您只需要点击下面链接，激活您的帐户，您便可以享受取号APP各项服务。";
 	
 	private static boolean useProxy = false;
 	

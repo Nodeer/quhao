@@ -25,12 +25,12 @@ Signup.validate = function(type) {
 			$("#error_tip_su").text("请输入密码").css("visibility","visible");
 			return false;
 		}
-		if(userPwd2 == "" || userPwd2 == null){
-			$("#error_tip_su").text("请输入确认密码").css("visibility","visible");
+		if(userPwd1.length < 6 || userPwd1.length > 12  ){
+			$("#error_tip_su").text("输入密码长度6-12位").css("visibility","visible");
 			return false;
 		}
-		if(userPwd1.length < 6 || userPwd1.length > 20  ){
-			$("#error_tip_su").text("输入密码长度6-20位").css("visibility","visible");
+		if(userPwd2 == "" || userPwd2 == null){
+			$("#error_tip_su").text("请输入确认密码").css("visibility","visible");
 			return false;
 		}
 		if(userPwd1 != userPwd2){
