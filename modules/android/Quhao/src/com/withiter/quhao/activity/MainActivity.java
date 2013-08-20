@@ -300,9 +300,7 @@ public class MainActivity extends AppStoreActivity
 					}
 					
 					categorys.addAll(ParseJson.getCategorys(buf));
-					
 					categorysUpdateHandler.obtainMessage(200,categorys).sendToTarget();
-					
 				}
 				
 				
