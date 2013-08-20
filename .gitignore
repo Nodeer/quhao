@@ -13,7 +13,7 @@ test-result/
 .classpath
 
 
-modules/android/Quhao/bin/classes/com/withiter/quhao/*.class
+/modules/android/Quhao/bin/classes/com/withiter/quhao/*.class
 /modules/android/Quhao/bin/classes/com/withiter/quhao/activity/*.class
-modules/android/Quhao/bin/classes/com/withiter/quhao/*/*.class
-modules/android/Quhao/bin/classes/com/withiter/quhao/*/*/*.class
+/modules/android/Quhao/bin/classes/com/withiter/quhao/*/*.class
+/modules/android/Quhao/bin/classes/com/withiter/quhao/*/*/*.class
