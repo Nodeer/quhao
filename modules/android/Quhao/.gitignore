@@ -9,9 +9,9 @@
 *.class
 
 # generated files
-./bin/classes/com/withiter/quhao/*.class
-./bin/classes/com/withiter/quhao/*/*.class
-./bin/classes/com/withiter/quhao/*/*/*.class
+bin/classes/com/withiter/quhao/*.class
+bin/classes/com/withiter/quhao/*/*.class
+bin/classes/com/withiter/quhao/*/*/*.class
 bin/*
 gen/
 
