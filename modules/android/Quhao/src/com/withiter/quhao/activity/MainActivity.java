@@ -312,6 +312,11 @@ public class MainActivity extends AppStoreActivity
 				// request.setHeader("User-Agent", Constant.UserAgent);
 				request.setHeader("Accept-Language", "zh-cn");
 				request.setHeader("Accept", "");*/
+				String userHome = System.getProperty("user.home");
+				System.out.println(userHome);
+				if(userHome.contains("eacfgjl")){
+					QuhaoConstant.HTTP_URL = "http://146.11.24.199:9081/";
+				}
 				HttpGet request = new HttpGet(QuhaoConstant.HTTP_URL + "MerchantController/allCategories");
 				HttpClient httpClient = new DefaultHttpClient();
 				HttpResponse response = httpClient.execute(request);
