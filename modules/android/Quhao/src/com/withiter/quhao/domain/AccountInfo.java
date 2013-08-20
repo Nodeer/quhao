@@ -1,25 +1,24 @@
 package com.withiter.quhao.domain;
 
-public class AccountInfo 
-{
+public class AccountInfo {
 	private String userId;
-	
+
 	private String phone;
-	
+
 	private String email;
-	
+
 	private String password;
-	
+
 	private String nickName;
-	
+
 	private String birthday;
-	
+
 	private String userImage;
-	
+
 	private String enable;
-	
+
 	private String mobileOS;
-	
+
 	private String lastLogin;
 
 	public String getUserId() {
@@ -30,93 +29,75 @@ public class AccountInfo
 		this.userId = userId;
 	}
 
-	public String getPhone()
-	{
+	public String getPhone() {
 		return phone;
 	}
 
-	public void setPhone(String phone)
-	{
+	public void setPhone(String phone) {
 		this.phone = phone;
 	}
 
-	public String getEmail()
-	{
+	public String getEmail() {
 		return email;
 	}
 
-	public void setEmail(String email)
-	{
+	public void setEmail(String email) {
 		this.email = email;
 	}
 
-	public String getPassword()
-	{
+	public String getPassword() {
 		return password;
 	}
 
-	public void setPassword(String password)
-	{
+	public void setPassword(String password) {
 		this.password = password;
 	}
 
-	public String getNickName()
-	{
+	public String getNickName() {
 		return nickName;
 	}
 
-	public void setNickName(String nickName)
-	{
+	public void setNickName(String nickName) {
 		this.nickName = nickName;
 	}
 
-	public String getBirthday()
-	{
+	public String getBirthday() {
 		return birthday;
 	}
 
-	public void setBirthday(String birthday)
-	{
+	public void setBirthday(String birthday) {
 		this.birthday = birthday;
 	}
 
-	public String getUserImage()
-	{
+	public String getUserImage() {
 		return userImage;
 	}
 
-	public void setUserImage(String userImage)
-	{
+	public void setUserImage(String userImage) {
 		this.userImage = userImage;
 	}
 
-	public String getEnable()
-	{
+	public String getEnable() {
 		return enable;
 	}
 
-	public void setEnable(String enable)
-	{
+	public void setEnable(String enable) {
 		this.enable = enable;
 	}
 
-	public String getMobileOS()
-	{
+	public String getMobileOS() {
 		return mobileOS;
 	}
 
-	public void setMobileOS(String mobileOS)
-	{
+	public void setMobileOS(String mobileOS) {
 		this.mobileOS = mobileOS;
 	}
 
-	public String getLastLogin()
-	{
+	public String getLastLogin() {
 		return lastLogin;
 	}
 
-	public void setLastLogin(String lastLogin)
-	{
+	public void setLastLogin(String lastLogin) {
 		this.lastLogin = lastLogin;
 	}
 
