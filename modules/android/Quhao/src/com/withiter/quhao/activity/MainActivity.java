@@ -104,21 +104,6 @@ public class MainActivity extends AppStoreActivity
 				super.handleMessage(msg);
 				
 				ListAdapter adapter = new CategoryGridAdapter(categorys, categorysGird,MainActivity.this);
-				/*
-				List<Map<String, Object>> categorysData = new ArrayList<Map<String,Object>>();
-				Category category = null;
-				for (int i = 0; i < categorys.size(); i++)
-				{
-					category = categorys.get(i);
-					Map<String, Object> map = new HashMap<String, Object>();
-					map.put("item_type", category.categoryType);
-					map.put("item_count", category.count);
-					categorysData.add(map);
-				}
-				
-				SimpleAdapter adapter = new SimpleAdapter(MainActivity.this,categorysData,R.layout.category_item,
-						new String[]{"item_type","item_count"},new int[]{R.id.item_type,R.id.item_count });
-						*/
 				categorysGird.setAdapter(adapter);
 				
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
