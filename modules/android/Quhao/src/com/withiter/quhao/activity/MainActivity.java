@@ -273,24 +273,6 @@ public class MainActivity extends AppStoreActivity
 			try
 			{
 				Log.v(LOGTAG,"get categorys data form server begin");
-				/**
-				 * 
-				SchemeRegistry schemeRegistry = new SchemeRegistry();
-				SocketFactory sf = PlainSocketFactory.getSocketFactory();
-				schemeRegistry.register(new Scheme("http", sf, 80));
-				HttpParams params = new BasicHttpParams();
-				HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-				HttpProtocolParams.setContentCharset(params, "UTF-8");
-				HttpProtocolParams.setHttpElementCharset(params, "UTF-8");
-				HttpProtocolParams.setUseExpectContinue(params, false);
-				HttpConnectionParams.setConnectionTimeout(params, 30000);
-				ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, schemeRegistry);
-				DefaultHttpClient httpClient = new DefaultHttpClient(ccm,params);
-				httpClient.setHttpRequestRetryHandler(new DefaultHttpRequestRetryHandler(3, false));
-				HttpGet request = new HttpGet(QuhaoConstant.HTTP_URL + "MerchantController/allCategories");
-				// request.setHeader("User-Agent", Constant.UserAgent);
-				request.setHeader("Accept-Language", "zh-cn");
-				request.setHeader("Accept", "");*/
 				String userHome = System.getProperty("user.home");
 				System.out.println(userHome);
 				if(userHome.contains("eacfgjl")){
