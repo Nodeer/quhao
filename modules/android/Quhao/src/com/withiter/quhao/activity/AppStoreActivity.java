@@ -16,115 +16,90 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.util.tool.InfoHelper;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 
-public abstract class AppStoreActivity extends QuhaoActivity implements OnClickListener, OnTouchListener
-{
-	
+public abstract class AppStoreActivity extends QuhaoActivity implements
+		OnClickListener, OnTouchListener {
+
 	private boolean isClick = false;
-	
 	protected String action = "";
-	
 	private final int UNLOCK_CLICK = 1000;
-	
 	protected ProgressDialogUtil progressDialogUtil;
-	
 	protected Button btnPerson;
-	
 	protected Button btnMarchent;
-	
-	private Handler unlockHandler = new Handler()
-	{
-		public void handleMessage(Message msg)
-		{
-			if(msg.what == UNLOCK_CLICK)
-			{
+
+	private Handler unlockHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			if (msg.what == UNLOCK_CLICK) {
 				isClick = false;
 			}
 		}
 	};
-	
+
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		//initData();
-		
-		//检查网络
-		//if(checkDevice() && autoLogin())
-		if(checkDevice())
-		{
-			//sendRequest();
+		// initData();
+
+		// 检查网络
+		// if(checkDevice() && autoLogin())
+		if (checkDevice()) {
+			// sendRequest();
 		}
-		
+
 		btnMarchent = (Button) findViewById(R.id.btnMerchantList);
 		btnPerson = (Button) findViewById(R.id.btnPerson);
-		
+
 	}
 
-	protected OnClickListener goPersonCenterListener(final Activity activity)
-	{
-		OnClickListener clickListener = new OnClickListener()
-		{
-			
+	protected OnClickListener goPersonCenterListener(final Activity activity) {
+		OnClickListener clickListener = new OnClickListener() {
 			@Override
-			public void onClick(View v)
-			{
+			public void onClick(View v) {
 				Intent intent = new Intent(activity, PersonCenterActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
-				//activity.finish();
+				// activity.finish();
 			}
 		};
 		return clickListener;
 	}
-	
-	protected OnClickListener getMarchentListListener(final Activity activity)
-	{
-		OnClickListener clickListener = new OnClickListener()
-		{
-			
+
+	protected OnClickListener getMarchentListListener(final Activity activity) {
+		OnClickListener clickListener = new OnClickListener() {
 			@Override
-			public void onClick(View v)
-			{
+			public void onClick(View v) {
 				Intent intent = new Intent(activity, MainActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
-				//activity.finish();
+				// activity.finish();
 			}
 		};
 		return clickListener;
 	}
-	
-	private boolean autoLogin()
-	{
-		if(QHClientApplication.getInstance().isLogined)
-		{
+
+	private boolean autoLogin() {
+		if (QHClientApplication.getInstance().isLogined) {
 			return true;
 		}
-		
-		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.logining, false);
-		
-		if(null == QHClientApplication.getInstance().accessInfo)
-		{
+
+		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty,
+				R.string.logining, false);
+
+		if (null == QHClientApplication.getInstance().accessInfo) {
 			return true;
-		}
-		else
-		{
+		} else {
 			QHClientApplication.getInstance().isAuto = true;
 			progressDialogUtil.showProgress();
 		}
 		return false;
 	}
 
-	private boolean checkDevice()
-	{
-		
-		if(!InfoHelper.checkNetwork(this))
-		{
-			Toast.makeText(this, R.string.network_error_info, Toast.LENGTH_LONG).show();
+	private boolean checkDevice() {
+		if (!InfoHelper.checkNetwork(this)) {
+			Toast.makeText(this, R.string.network_error_info, Toast.LENGTH_LONG)
+					.show();
 			return false;
 		}
-		
 		return true;
 	}
 
