@@ -11,3 +11,8 @@ test-result/
 .settings/
 .project
 .classpath
+
+
+modules/android/Quhao/bin/classes/com/withiter/quhao/*.class
+modules/android/Quhao/bin/classes/com/withiter/quhao/*/*.class
+modules/android/Quhao/bin/classes/com/withiter/quhao/*/*/*.class
