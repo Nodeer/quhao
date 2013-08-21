@@ -9,9 +9,7 @@ import com.withiter.quhao.util.db.AccountInfoHelper;
 import android.content.Context;
 import android.net.ConnectivityManager;
 
-
-public class InfoHelper
-{
+public class InfoHelper {
 	/**
 	 * 检查帐号
 	 * 
@@ -38,16 +36,13 @@ public class InfoHelper
 	 * @param context
 	 * @return
 	 */
-	public static boolean checkNetwork(Context context)
-	{
+	public static boolean checkNetwork(Context context) {
 		boolean flag = false;
-		
-		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-		if(cm.getActiveNetworkInfo() != null)
-		{
+		ConnectivityManager cm = (ConnectivityManager) context
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (cm.getActiveNetworkInfo() != null) {
 			flag = true;
 		}
-		
 		return flag;
 	}
 }

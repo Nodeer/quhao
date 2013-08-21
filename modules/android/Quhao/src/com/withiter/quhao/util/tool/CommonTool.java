@@ -5,7 +5,6 @@ import java.util.regex.Pattern;
 
 import com.withiter.quhao.R;
 
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,8 +14,7 @@ import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.widget.Toast;
 
-public class CommonTool
-{
+public class CommonTool {
 
 	public static int GetScreenWidth(Context cx) {
 		DisplayMetrics dm = new DisplayMetrics();
@@ -43,7 +41,6 @@ public class CommonTool
 		ConnectivityManager cm = (ConnectivityManager) cx
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo info = cm.getActiveNetworkInfo();
-
 		return (info != null && info.isConnected());
 	}
 
@@ -59,7 +56,6 @@ public class CommonTool
 								dialog.dismiss();
 							}
 						}).show();
-
 	}
 
 	public static String getFileNameByPath(String path) {
@@ -91,5 +87,4 @@ public class CommonTool
 		}
 		return isExist;
 	}
-
 }

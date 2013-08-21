@@ -1,17 +1,11 @@
 package com.withiter.quhao.util.tool;
 
-public class QuhaoConstant
-{
+public class QuhaoConstant {
 
-	/**
-	 * HTTP_URL
-	 */
 	public static String HTTP_URL = "http://192.168.0.11:9081/";
-
 	public static final String NEW_BODY = null;
-
 	public static final int ADVERTISE_PIC_MAX = 409600;
-	
+
 	/**
 	 * 下一頁url
 	 */

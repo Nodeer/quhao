@@ -13,309 +13,276 @@ import com.withiter.quhao.vo.Category;
 import com.withiter.quhao.vo.Merchant;
 import com.withiter.quhao.vo.TopMerchant;
 
-public class ParseJson
-{
+public class ParseJson {
 
-	public static Collection<? extends Category> getCategorys(String buf)
-	{
+	public static Collection<? extends Category> getCategorys(String buf) {
 		List<Category> categroys = new ArrayList<Category>();
-		
-		if(null == buf || "".equals(buf))
-		{
+		if (null == buf || "".equals(buf)) {
 			return categroys;
 		}
-		
-		try
-		{
-			JSONArray jsonArrays = new JSONArray(buf);
 
-			for (int i = 0; i < jsonArrays.length(); i++)
-			{
+		try {
+			JSONArray jsonArrays = new JSONArray(buf);
+			for (int i = 0; i < jsonArrays.length(); i++) {
 				JSONObject obj = jsonArrays.getJSONObject(i);
 				long count = 0L;
 				String categoryType = "";
 				String catTypeToString = "";
 				String url = "";
-				if(obj.has("count"))
-				{
+				if (obj.has("count")) {
 					count = Long.valueOf(obj.getString("count"));
 				}
-				if(obj.has("cateType"))
-				{
+				if (obj.has("cateType")) {
 					categoryType = obj.getString("cateType");
-					if(categoryType.equals("benbangcai")) catTypeToString = "本帮菜";
-					if(categoryType.equals("chuancai")) catTypeToString = "川菜";
-					if(categoryType.equals("haixian")) catTypeToString = "海鲜";
-					if(categoryType.equals("hanguoliaoli")) catTypeToString = "火锅料理";
-					if(categoryType.equals("mianbaodangao")) catTypeToString = "面包蛋糕";
-					if(categoryType.equals("dongnanyacai")) catTypeToString = "东南亚菜";
-					if(categoryType.equals("huoguo")) catTypeToString = "火锅";
-					if(categoryType.equals("ribenliaoli")) catTypeToString = "日本料理";
-					if(categoryType.equals("shaokao")) catTypeToString = "烧烤";
-					if(categoryType.equals("tianpinyinpin")) catTypeToString = "甜品饮料";
-					if(categoryType.equals("xiangcai")) catTypeToString = "湘菜";
-					if(categoryType.equals("xican")) catTypeToString = "西餐";
-					if(categoryType.equals("xinjiangqingzhen")) catTypeToString = "新疆清真";
-					if(categoryType.equals("yuecaiguan")) catTypeToString = "粤菜馆";
-					if(categoryType.equals("zhongcancaixi")) catTypeToString = "中餐西餐";
-					if(categoryType.equals("zizhucan")) catTypeToString = "自助餐";
-					if(categoryType.equals("xiaochikuaican")) catTypeToString = "小吃快餐";
+					if (categoryType.equals("benbangcai"))
+						catTypeToString = "本帮菜";
+					if (categoryType.equals("chuancai"))
+						catTypeToString = "川菜";
+					if (categoryType.equals("haixian"))
+						catTypeToString = "海鲜";
+					if (categoryType.equals("hanguoliaoli"))
+						catTypeToString = "火锅料理";
+					if (categoryType.equals("mianbaodangao"))
+						catTypeToString = "面包蛋糕";
+					if (categoryType.equals("dongnanyacai"))
+						catTypeToString = "东南亚菜";
+					if (categoryType.equals("huoguo"))
+						catTypeToString = "火锅";
+					if (categoryType.equals("ribenliaoli"))
+						catTypeToString = "日本料理";
+					if (categoryType.equals("shaokao"))
+						catTypeToString = "烧烤";
+					if (categoryType.equals("tianpinyinpin"))
+						catTypeToString = "甜品饮料";
+					if (categoryType.equals("xiangcai"))
+						catTypeToString = "湘菜";
+					if (categoryType.equals("xican"))
+						catTypeToString = "西餐";
+					if (categoryType.equals("xinjiangqingzhen"))
+						catTypeToString = "新疆清真";
+					if (categoryType.equals("yuecaiguan"))
+						catTypeToString = "粤菜馆";
+					if (categoryType.equals("zhongcancaixi"))
+						catTypeToString = "中餐西餐";
+					if (categoryType.equals("zizhucan"))
+						catTypeToString = "自助餐";
+					if (categoryType.equals("xiaochikuaican"))
+						catTypeToString = "小吃快餐";
 				}
-				
-				if(obj.has("url"))
-				{
+
+				if (obj.has("url")) {
 					url = obj.getString("url");
 				}
-				
-				Category category = new Category(count, categoryType,catTypeToString,url);
+
+				Category category = new Category(count, categoryType,
+						catTypeToString, url);
 				categroys.add(category);
 			}
-			
-		} catch (JSONException e)
-		{
+
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
+
 		return categroys;
 	}
 
-	public static Collection<? extends TopMerchant> getTopMerchants(String buf)
-	{
+	public static Collection<? extends TopMerchant> getTopMerchants(String buf) {
 		List<TopMerchant> topMerchants = new ArrayList<TopMerchant>();
-		
-		if(null == buf || "".equals(buf))
-		{
+
+		if (null == buf || "".equals(buf)) {
 			return topMerchants;
 		}
-		
-		try
-		{
+
+		try {
 			JSONArray jsonArrays = new JSONArray(buf);
 
-			for (int i = 0; i < jsonArrays.length(); i++)
-			{
+			for (int i = 0; i < jsonArrays.length(); i++) {
 				JSONObject obj = jsonArrays.getJSONObject(i);
 				String imgUrl = "";
-				
-				if(obj.has("imgUrl"))
-				{
+
+				if (obj.has("imgUrl")) {
 					imgUrl = obj.getString("imgUrl");
 				}
-				
+
 				String name = "";
-				
-				if(obj.has("name"))
-				{
+
+				if (obj.has("name")) {
 					name = obj.getString("name");
 				}
-				
+
 				String id = "";
-				
-				if(obj.has("id"))
-				{
+
+				if (obj.has("id")) {
 					id = obj.getString("id");
 				}
-				
-				TopMerchant topMerchant = new TopMerchant(id,imgUrl,name);
+
+				TopMerchant topMerchant = new TopMerchant(id, imgUrl, name);
 				topMerchants.add(topMerchant);
 			}
-			
-		} catch (JSONException e)
-		{
+
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
+
 		return topMerchants;
 	}
 
-	public static Collection<? extends Merchant> getMerchants(String buf)
-	{
+	public static Collection<? extends Merchant> getMerchants(String buf) {
 		List<Merchant> merchants = new ArrayList<Merchant>();
-		
-		if(null == buf || "".equals(buf))
-		{
+
+		if (null == buf || "".equals(buf)) {
 			return merchants;
 		}
-		
-		try
-		{
+
+		try {
 			JSONArray jsonArrays = new JSONArray(buf);
 
-			for (int i = 0; i < jsonArrays.length(); i++)
-			{
+			for (int i = 0; i < jsonArrays.length(); i++) {
 				JSONObject obj = jsonArrays.getJSONObject(i);
-				
+
 				Merchant merchant = coventMerchant(obj);
 				merchants.add(merchant);
 			}
-			
-		} catch (JSONException e)
-		{
+
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
+
 		return merchants;
 	}
 
-	public static Merchant getMerchant(String buf)
-	{
+	public static Merchant getMerchant(String buf) {
 		Merchant merchant = null;
-		if(null == buf || "".equals(buf))
-		{
+		if (null == buf || "".equals(buf)) {
 			return merchant;
 		}
-		
-		try
-		{
+
+		try {
 			JSONObject obj = new JSONObject(buf);
 
 			merchant = coventMerchant(obj);
-			
-		} catch (JSONException e)
-		{
+
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
+
 		return merchant;
 	}
 
-	private static Merchant coventMerchant(JSONObject obj) throws JSONException
-	{
+	private static Merchant coventMerchant(JSONObject obj) throws JSONException {
 		Merchant merchant;
 		String id = "";
-		
-		if(obj.has("id"))
-		{
+
+		if (obj.has("id")) {
 			id = obj.getString("id");
 		}
 		String imgUrl = "";
-		
-		if(obj.has("imgUrl"))
-		{
+
+		if (obj.has("imgUrl")) {
 			imgUrl = obj.getString("imgUrl");
 		}
-		
+
 		String name = "";
-		
-		if(obj.has("name"))
-		{
+
+		if (obj.has("name")) {
 			name = obj.getString("name");
 		}
-		
+
 		String address = "";
-		
-		if(obj.has("address"))
-		{
+
+		if (obj.has("address")) {
 			address = obj.getString("address");
 		}
-		
+
 		String phone = "";
-		if(obj.has("telephone"))
-		{
+		if (obj.has("telephone")) {
 			phone = obj.getString("telephone");
 		}
-		
+
 		String cateType = "";
-		if(obj.has("cateType"))
-		{
+		if (obj.has("cateType")) {
 			cateType = obj.getString("cateType");
 		}
-		
+
 		String grade = "";
-		if(obj.has("grade"))
-		{
+		if (obj.has("grade")) {
 			grade = obj.getString("grade");
 		}
-		
+
 		String averageCost = "";
-		if(obj.has("averageCost"))
-		{
+		if (obj.has("averageCost")) {
 			averageCost = obj.getString("averageCost");
 		}
-		
+
 		String tags = "";
-		if(obj.has("tags"))
-		{
+		if (obj.has("tags")) {
 			tags = obj.getString("tags");
 		}
-		
+
 		Integer kouwei = null;
-		if(obj.has("kouwei"))
-		{
+		if (obj.has("kouwei")) {
 			kouwei = obj.getInt("kouwei");
 		}
-		
+
 		Integer huanjing = null;
-		if(obj.has("huanjing"))
-		{
+		if (obj.has("huanjing")) {
 			huanjing = obj.getInt("huanjing");
 		}
-		
+
 		Integer fuwu = null;
-		if(obj.has("fuwu"))
-		{
+		if (obj.has("fuwu")) {
 			fuwu = obj.getInt("fuwu");
 		}
-		
+
 		Integer xingjiabi = null;
-		if(obj.has("xingjiabi"))
-		{
+		if (obj.has("xingjiabi")) {
 			xingjiabi = obj.getInt("xingjiabi");
 		}
-		
+
 		String teses = "";
-		if(obj.has("teses"))
-		{
+		if (obj.has("teses")) {
 			teses = obj.getString("teses");
 		}
-		
+
 		String nickName = "";
-		if(obj.has("nickName"))
-		{
+		if (obj.has("nickName")) {
 			nickName = obj.getString("nickName");
 		}
-		
+
 		String description = "";
-		if(obj.has("description"))
-		{
+		if (obj.has("description")) {
 			description = obj.getString("description");
 		}
-		
-		String  openTime = "";
-		if(obj.has("openTime"))
-		{
+
+		String openTime = "";
+		if (obj.has("openTime")) {
 			openTime = obj.getString("openTime");
 		}
-		
-		String  closeTime = "";
-		if(obj.has("closeTime"))
-		{
+
+		String closeTime = "";
+		if (obj.has("closeTime")) {
 			closeTime = obj.getString("closeTime");
 		}
-		
-		Integer  marketCount = null;
-		if(obj.has("marketCount"))
-		{
+
+		Integer marketCount = null;
+		if (obj.has("marketCount")) {
 			marketCount = obj.getInt("marketCount");
 		}
-		
-		boolean  enable = false;
-		if(obj.has("enable"))
-		{
+
+		boolean enable = false;
+		if (obj.has("enable")) {
 			enable = obj.getBoolean("enable");
 		}
-		
-		String  joinedDate = "";
-		if(obj.has("joinedDate"))
-		{
+
+		String joinedDate = "";
+		if (obj.has("joinedDate")) {
 			joinedDate = obj.getString("joinedDate");
 		}
-		
-		merchant = new Merchant(id,imgUrl,name,address,phone,cateType,grade,
-				averageCost,tags,kouwei, huanjing, fuwu, xingjiabi,
+
+		merchant = new Merchant(id, imgUrl, name, address, phone, cateType,
+				grade, averageCost, tags, kouwei, huanjing, fuwu, xingjiabi,
 				teses, nickName, description, openTime, closeTime, marketCount,
-				 enable, joinedDate);
+				enable, joinedDate);
 		return merchant;
 	}
-
 }
