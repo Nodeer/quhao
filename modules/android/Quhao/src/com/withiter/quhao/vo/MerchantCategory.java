@@ -1,6 +1,5 @@
 package com.withiter.quhao.vo;
 
-public class MerchantCategory
-{
+public class MerchantCategory {
 
 }
