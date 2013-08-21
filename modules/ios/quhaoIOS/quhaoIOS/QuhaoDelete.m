@@ -9,6 +9,6 @@
 #import "QuhaoDelete.h"
 
 @implementation QuhaoDelete
-@synthesize window = _window;
+//@synthesize window = _window;
 @synthesize isLogin;
 @end
