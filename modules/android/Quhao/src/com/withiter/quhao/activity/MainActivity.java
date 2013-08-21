@@ -42,11 +42,8 @@ public class MainActivity extends AppStoreActivity {
 
 	private String LOGTAG = MainActivity.class.getName();
 	protected ListView topMerchantListView;
-	
 	private GridView topMerchantsGird;
-	
 	private Button searchBtn;
-
 	private List<TopMerchant> topMerchants;
 	private GridView categorysGird;
 	private DisplayMetrics localDisplayMetrics;

@@ -68,12 +68,10 @@ public class QHClientApplication extends Application {
 			Log.d(TAG, "The table " + tableName
 					+ " already exist, create failure");
 		}
-
 	}
 
 	private void initConfig() {
 		// TODO Auto-generated method stub
 
 	}
-
 }
