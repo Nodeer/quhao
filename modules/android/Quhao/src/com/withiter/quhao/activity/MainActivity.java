@@ -3,13 +3,6 @@ package com.withiter.quhao.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,6 +25,7 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.CategoryGridAdapter;
 import com.withiter.quhao.adapter.TopMerchantGridAdapter;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
+import com.withiter.quhao.util.tool.CommonTool;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
@@ -84,20 +78,20 @@ public class MainActivity extends AppStoreActivity {
 		localDisplayMetrics = getResources().getDisplayMetrics();
 		topMerchants = new ArrayList<TopMerchant>();
 		getTopMerchants();
-//		
-//		searchBtn = (Button) findViewById(R.id.edit_search);
-//		searchBtn.setOnClickListener(goMerchantsSearch(MainActivity.this));
-//		
-//		topMerchantsGird = (GridView) findViewById(R.id.topMerchants);
-//
-//		topMerchantsGird.setOnItemClickListener(topMerchantClickListener);
-//		categorys = new ArrayList<Category>();
-//		categorysGird = (GridView) findViewById(R.id.categorys);
-//		getCateGorys();
-//
-//		categorysGird.setOnItemClickListener(categorysClickListener);
-//		btnPerson.setOnClickListener(goPersonCenterListener(this));
-//		btnMarchent.setOnClickListener(getMarchentListListener(this));
+
+		searchBtn = (Button) findViewById(R.id.edit_search);
+		searchBtn.setOnClickListener(goMerchantsSearch(MainActivity.this));
+		
+		topMerchantsGird = (GridView) findViewById(R.id.topMerchants);
+
+		topMerchantsGird.setOnItemClickListener(topMerchantClickListener);
+		categorys = new ArrayList<Category>();
+		categorysGird = (GridView) findViewById(R.id.categorys);
+		getCateGorys();
+
+		categorysGird.setOnItemClickListener(categorysClickListener);
+		btnPerson.setOnClickListener(goPersonCenterListener(this));
+		btnMarchent.setOnClickListener(getMarchentListListener(this));
 	}
 	
 	/**
@@ -204,45 +198,25 @@ public class MainActivity extends AppStoreActivity {
 				
 //				String result = CommonHTTPRequest.request(QuhaoConstant.HTTP_URL
 //						+ "MerchantController/getTopMerchants?x=6");
-				String result = CommonHTTPRequest.request(QuhaoConstant.HTTP_URL_TEST_CROSS
-						+ "MerchantController/getTopMerchants?x=6");
+				String result = CommonHTTPRequest.get("MerchantController/getTopMerchants?x=6");
 				Log.d(TAG, result);
-				if (null == topMerchants) {
-					topMerchants = new ArrayList<TopMerchant>();
+				if(CommonTool.isNull(result))
+				{
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				}
-				topMerchants.addAll(ParseJson.getTopMerchants(result));
-//				topMerchantsUpdateHandler.obtainMessage(200, topMerchants)
-//						.sendToTarget();
+				else
+				{
+					if (null == topMerchants) {
+						topMerchants = new ArrayList<TopMerchant>();
+					}
+					topMerchants.addAll(ParseJson.getTopMerchants(result));
+					topMerchantsUpdateHandler.obtainMessage(200, topMerchants)
+							.sendToTarget();
+				}
 				
-//				HttpGet request = new HttpGet(QuhaoConstant.HTTP_URL
-//						+ "MerchantController/getTopMerchants?x=6");
-//				HttpClient httpClient = new DefaultHttpClient();
-//				HttpResponse response = httpClient.execute(request);
-//				Log.i(TAG, "get top merchant data form server : "
-//						+ response.getStatusLine().getStatusCode());
-//				if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-//					String buf = EntityUtils.toString(response.getEntity());
-//					Log.v(TAG, "get top merchant data form server buf : "
-//							+ buf);
-//					// 返回HTML页面
-//					if (buf.indexOf("<html>") != -1
-//							|| buf.indexOf("<HTML>") != -1) {
-//						// mGetHandler.sendMessage(mGetHandler
-//						// .obtainMessage(-2));
-//						throw new Exception("session timeout!");
-//					}
-//
-//					if (null == topMerchants) {
-//						topMerchants = new ArrayList<TopMerchant>();
-//					}
-//
-//					topMerchants.addAll(ParseJson.getTopMerchants(buf));
-//
-//					topMerchantsUpdateHandler.obtainMessage(200, topMerchants)
-//							.sendToTarget();
-//				}
-
+				
 			} catch (Exception e) {
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				Log.e(TAG, e.getCause().toString(), e);
 				e.printStackTrace();
 			} finally {
@@ -261,33 +235,25 @@ public class MainActivity extends AppStoreActivity {
 				if (userHome.contains("eacfgjl")) {
 					QuhaoConstant.HTTP_URL = "http://146.11.24.199:9081/";
 				}
-				HttpGet request = new HttpGet(QuhaoConstant.HTTP_URL
-						+ "MerchantController/allCategories");
-				HttpClient httpClient = new DefaultHttpClient();
-				HttpResponse response = httpClient.execute(request);
-				Log.v(TAG, "get categorys data form server : "
-						+ response.getStatusLine().getStatusCode());
-				if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-					String buf = EntityUtils.toString(response.getEntity());
-					Log.v(TAG, "get categorys data form server buf : " + buf);
-					// 返回HTML页面
-					if (buf.indexOf("<html>") != -1
-							|| buf.indexOf("<HTML>") != -1) {
-						// mGetHandler.sendMessage(mGetHandler
-						// .obtainMessage(-2));
-						throw new Exception("session timeout!");
-					}
-
+				String result = CommonHTTPRequest.get("MerchantController/allCategories");
+				if(CommonTool.isNull(result))
+				{
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				}
+				else
+				{
 					if (null == categorys) {
 						categorys = new ArrayList<Category>();
 					}
 
-					categorys.addAll(ParseJson.getCategorys(buf));
+					categorys.addAll(ParseJson.getCategorys(result));
 					categorysUpdateHandler.obtainMessage(200, categorys)
 							.sendToTarget();
 				}
+				
 
 			} catch (Exception e) {
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				e.printStackTrace();
 			} finally {
 				progressCategory.closeProgress();

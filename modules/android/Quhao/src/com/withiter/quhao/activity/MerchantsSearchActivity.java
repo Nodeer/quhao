@@ -3,28 +3,17 @@ package com.withiter.quhao.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,9 +23,10 @@ import android.widget.ListView;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantAdapter;
+import com.withiter.quhao.util.http.CommonHTTPRequest;
+import com.withiter.quhao.util.tool.CommonTool;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
-import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.vo.Merchant;
 
 public class MerchantsSearchActivity extends AppStoreActivity {
@@ -180,37 +170,27 @@ public class MerchantsSearchActivity extends AppStoreActivity {
 					progressMerchants.closeProgress();
 
 				}
-				HttpGet request = new HttpGet(QuhaoConstant.HTTP_URL
-						+ "MerchantController/getMerchantsByName?name="
+				String result = CommonHTTPRequest.get("MerchantController/getMerchantsByName?name="
 						+ MerchantsSearchActivity.this.editSearch.getText()
 								.toString());
-				HttpClient httpClient = new DefaultHttpClient();
-				HttpResponse response = httpClient.execute(request);
-				Log.v(LOGTAG, "get top merchant data form server : "
-						+ response.getStatusLine().getStatusCode());
-				if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-					String buf = EntityUtils.toString(response.getEntity());
-					Log.v(LOGTAG, "get top merchant data form server buf : "
-							+ buf);
-					// 返回HTML页面
-					if (buf.indexOf("<html>") != -1
-							|| buf.indexOf("<HTML>") != -1) {
-						// mGetHandler.sendMessage(mGetHandler
-						// .obtainMessage(-2));
-						throw new Exception("session timeout!");
-					}
-
+				if(CommonTool.isNull(result))
+				{
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				}
+				else
+				{
 					if (null == merchants) {
 						merchants = new ArrayList<Merchant>();
 					}
 
-					merchants.addAll(ParseJson.getMerchants(buf));
+					merchants.addAll(ParseJson.getMerchants(result));
 
 					merchantsUpdateHandler.obtainMessage(200, merchants)
 							.sendToTarget();
 				}
 
 			} catch (Exception e) {
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				e.printStackTrace();
 			} finally {
 				progressMerchants.closeProgress();
@@ -220,7 +200,6 @@ public class MerchantsSearchActivity extends AppStoreActivity {
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 
 	}
 

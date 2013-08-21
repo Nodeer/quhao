@@ -3,13 +3,6 @@ package com.withiter.quhao.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,7 +14,6 @@ import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
@@ -29,6 +21,8 @@ import android.widget.TextView;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantAdapter;
+import com.withiter.quhao.util.http.CommonHTTPRequest;
+import com.withiter.quhao.util.tool.CommonTool;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
@@ -178,37 +172,26 @@ public class MerchantsActivity extends AppStoreActivity {
 		public void run() {
 			try {
 				Log.v(LOGTAG, "get categorys data form server begin");
-				HttpGet request = new HttpGet(QuhaoConstant.HTTP_URL
-						+ "MerchantController/nextPage?page=" + page
+				String buf = CommonHTTPRequest.get("MerchantController/nextPage?page=" + page
 						+ "&cateType=" + categoryType);
-				HttpClient httpClient = new DefaultHttpClient();
-				HttpResponse response = httpClient.execute(request);
-				Log.v(LOGTAG, "get top merchant data form server : "
-						+ response.getStatusLine().getStatusCode());
-				if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-					String buf = EntityUtils.toString(response.getEntity());
-					Log.v(LOGTAG, "get top merchant data form server buf : "
-							+ buf);
-					// 返回HTML页面
-					if (buf.indexOf("<html>") != -1
-							|| buf.indexOf("<HTML>") != -1) {
-						// mGetHandler.sendMessage(mGetHandler
-						// .obtainMessage(-2));
-						throw new Exception("session timeout!");
-					}
-
-					if (null == merchants) {
+				if(CommonTool.isNull(buf))
+				{
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				}
+				else
+				{
+					if(null == merchants)
+					{
 						merchants = new ArrayList<Merchant>();
 					}
-
 					merchants.addAll(ParseJson.getMerchants(buf));
 
 					merchantsUpdateHandler.obtainMessage(200, merchants)
 							.sendToTarget();
-
 				}
-
+				
 			} catch (Exception e) {
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				e.printStackTrace();
 			} finally {
 				progressMerchants.closeProgress();

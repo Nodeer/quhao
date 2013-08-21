@@ -1,12 +1,5 @@
 package com.withiter.quhao.activity;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,14 +9,16 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.withiter.quhao.R;
+import com.withiter.quhao.util.http.CommonHTTPRequest;
+import com.withiter.quhao.util.tool.CommonTool;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
@@ -187,33 +182,23 @@ public class MerchantDetailActivity extends AppStoreActivity {
 		public void run() {
 			try {
 				Log.v(LOGTAG, "get categorys data form server begin");
-				HttpGet request = new HttpGet(QuhaoConstant.HTTP_URL
-						+ "merchant?id="
+				String buf = CommonHTTPRequest.get("merchant?id="
 						+ MerchantDetailActivity.this.merchantId);
-				HttpClient httpClient = new DefaultHttpClient();
-				HttpResponse response = httpClient.execute(request);
-				Log.v(LOGTAG, "get top merchant data form server : "
-						+ response.getStatusLine().getStatusCode());
-				if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-					String buf = EntityUtils.toString(response.getEntity());
-					Log.v(LOGTAG, "get top merchant data form server buf : "
-							+ buf);
-					// 返回HTML页面
-					if (buf.indexOf("<html>") != -1
-							|| buf.indexOf("<HTML>") != -1) {
-						// mGetHandler.sendMessage(mGetHandler
-						// .obtainMessage(-2));
-						throw new Exception("session timeout!");
-					}
-
+				if(CommonTool.isNull(buf))
+				{
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				}
+				else
+				{
 					merchant = ParseJson.getMerchant(buf);
 
 					merchantUpdateHandler.obtainMessage(200, merchant)
 							.sendToTarget();
-
 				}
+				
 
 			} catch (Exception e) {
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				e.printStackTrace();
 			} finally {
 				progress.closeProgress();

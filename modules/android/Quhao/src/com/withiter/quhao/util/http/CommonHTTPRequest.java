@@ -7,6 +7,18 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+
+import android.util.Log;
+
+import com.withiter.quhao.util.tool.QuhaoConstant;
+
 public class CommonHTTPRequest {
 
 	private static boolean useProxy = false;
@@ -72,4 +84,49 @@ public class CommonHTTPRequest {
         
         return result;
 	}
+	
+	public static String get(String url) throws Exception
+	{
+		String result = "";
+		String httpUrl = "";
+		String userHome = System.getProperty("user.home");
+		if(userHome.contains("eacfgjl")){
+			httpUrl = QuhaoConstant.HTTP_URL_TEST_CROSS + url;
+		}
+		else if(userHome.contains("ASUS"))
+		{
+			httpUrl = QuhaoConstant.HTTP_URL + url;
+		}
+		else
+		{
+			httpUrl = QuhaoConstant.HTTP_URL + url;
+		}
+		
+		HttpGet request = new HttpGet(httpUrl);
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpResponse response;
+		try
+		{
+			response = httpClient.execute(request);
+			Log.i("", "get top merchant data form server : "
+					+ response.getStatusLine().getStatusCode());
+			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+				result = EntityUtils.toString(response.getEntity());
+				Log.v("", "get top merchant data form server buf : "
+						+ result);
+				// 返回HTML页面
+				if (result.indexOf("<html>") != -1
+						|| result.indexOf("<HTML>") != -1) {
+					// mGetHandler.sendMessage(mGetHandler
+					// .obtainMessage(-2));
+					throw new Exception("session timeout!");
+				}
+			}
+		} catch (Exception e)
+		{
+			throw new Exception(e);
+		}
+		return result;
+	}
+	
 }

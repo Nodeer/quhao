@@ -1,5 +1,7 @@
 package com.withiter.quhao.activity;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,13 +13,20 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
 import com.withiter.quhao.R;
+import com.withiter.quhao.adapter.MerchantAdapter;
+import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.CommonTool;
+import com.withiter.quhao.util.tool.ParseJson;
+import com.withiter.quhao.util.tool.ProgressDialogUtil;
+import com.withiter.quhao.vo.TopMerchant;
 
 public class LoginActivity extends AppStoreActivity {
 
@@ -33,6 +42,7 @@ public class LoginActivity extends AppStoreActivity {
 	private Button btnRegister;
 	private final int UNLOCK_CLICK = 1000;
 	private boolean isClick = false;
+	private ProgressDialogUtil progressLogin;
 
 	/**
 	 * handler处理 解锁的时候可能会关闭其他的等待提示框
@@ -46,6 +56,20 @@ public class LoginActivity extends AppStoreActivity {
 		}
 	};
 
+	private Handler loginUpdateHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.what == 200) {
+				super.handleMessage(msg);
+
+
+
+			}
+
+		}
+
+	};
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -102,18 +126,58 @@ public class LoginActivity extends AppStoreActivity {
 			finish();
 			break;
 		case R.id.login:
-			String email = radioEmail.getText().toString().trim();
-			String password = passwordText.getText().toString().trim();
-			if (!CommonTool.isNameAdressFormat(email)) {
-				CommonTool.hintDialog(LoginActivity.this,
-						getString(R.string.email_warning));
-				return;
+			progressLogin = new ProgressDialogUtil(this, R.string.empty,
+					R.string.querying, false);
+			progressLogin.showProgress();
+			String url = "AccountController/login?";
+			if(radioEmail.getId() == radioGroup.getCheckedRadioButtonId())
+			{
+				url = url + "phone="+loginNameText.getText().toString().trim() + "&";
 			}
-			if ("".equals(password)) {
-				CommonTool.hintDialog(LoginActivity.this,
-						getString(R.string.pass_warning));
-				return;
+			else
+			{
+				url = url + "phone=" + "&";
 			}
+			if(radioPhone.getId() == radioGroup.getCheckedRadioButtonId())
+			{
+				url = url + "email="+loginNameText.getText().toString().trim() + "&";
+			}
+			else
+			{
+				url = url + "email=" + "&";
+			}
+			url = url + "password=" + passwordText.getText().toString();
+			try
+			{
+				String result = CommonHTTPRequest.get(url);
+				if(CommonTool.isNull(result))
+				{
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				}
+				else
+				{
+					loginUpdateHandler.obtainMessage(200, result)
+							.sendToTarget();
+				}
+			} catch (Exception e)
+			{
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				e.printStackTrace();
+			}
+			finally
+			{
+				progressLogin.closeProgress();
+			}
+//			if (!CommonTool.isNameAdressFormat(email)) {
+//				CommonTool.hintDialog(LoginActivity.this,
+//						getString(R.string.email_warning));
+//				return;
+//			}
+//			if ("".equals(password)) {
+//				CommonTool.hintDialog(LoginActivity.this,
+//						getString(R.string.pass_warning));
+//				return;
+//			}
 
 			// http
 			break;

@@ -1,13 +1,12 @@
 package com.withiter.quhao.util.tool;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import com.withiter.quhao.domain.AccountInfo;
-import com.withiter.quhao.util.db.AccountInfoHelper;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+
+import com.withiter.quhao.domain.AccountInfo;
+import com.withiter.quhao.util.db.AccountInfoHelper;
 
 public class InfoHelper {
 	/**
