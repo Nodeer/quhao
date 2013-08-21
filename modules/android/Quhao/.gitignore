@@ -1,4 +1,5 @@
 # generated files
+bin/*
 bin/classes/com/withiter/quhao/*.class
 bin/classes/com/withiter/quhao/*/*.class
 bin/classes/com/withiter/quhao/*/*/*.class
