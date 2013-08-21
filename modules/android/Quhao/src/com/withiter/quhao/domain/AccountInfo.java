@@ -2,23 +2,14 @@ package com.withiter.quhao.domain;
 
 public class AccountInfo {
 	private String userId;
-
 	private String phone;
-
 	private String email;
-
 	private String password;
-
 	private String nickName;
-
 	private String birthday;
-
 	private String userImage;
-
 	private String enable;
-
 	private String mobileOS;
-
 	private String lastLogin;
 
 	public String getUserId() {
