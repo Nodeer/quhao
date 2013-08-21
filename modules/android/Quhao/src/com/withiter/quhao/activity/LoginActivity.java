@@ -19,31 +19,19 @@ import android.widget.TextView;
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.tool.CommonTool;
 
-public class LoginActivity extends AppStoreActivity
-{
-	
-	private final static String LOG_TAG = LoginActivity.class.getName();
+public class LoginActivity extends AppStoreActivity {
 
+	private final static String LOG_TAG = LoginActivity.class.getName();
 	private RadioGroup radioGroup;
-	
 	private RadioButton radioPhone;
-	
 	private RadioButton radioEmail;
-	
 	private TextView pannelLoginName;
-	
 	private EditText loginNameText;
-	
 	private EditText passwordText;
-	
 	private Button btnClose;
-	
 	private Button btnLogin;
-	
 	private Button btnRegister;
-	
 	private final int UNLOCK_CLICK = 1000;
-	
 	private boolean isClick = false;
 
 	/**
@@ -57,14 +45,13 @@ public class LoginActivity extends AppStoreActivity
 			}
 		}
 	};
-	
+
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.login_layout);
 		super.onCreate(savedInstanceState);
-		
+
 		radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
 		radioPhone = (RadioButton) findViewById(R.id.radioPhone);
 		radioEmail = (RadioButton) findViewById(R.id.radioEmail);
@@ -77,29 +64,23 @@ public class LoginActivity extends AppStoreActivity
 		btnLogin.setOnClickListener(this);
 		btnRegister = (Button) findViewById(R.id.zhuce);
 		btnRegister.setOnClickListener(this);
-		radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener()
-		{
-			
+		radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
 			@Override
-			public void onCheckedChanged(RadioGroup group, int checkedId)
-			{
-				if(checkedId == radioPhone.getId())
-				{
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				if (checkedId == radioPhone.getId()) {
 					pannelLoginName.setText(R.string.radioPhone);
-				}
-				else if(checkedId == radioEmail.getId())
-				{
+				} else if (checkedId == radioEmail.getId()) {
 					pannelLoginName.setText(R.string.radioEmail);
 				}
-				
+
 			}
 		});
-		
+
 	}
 
 	@Override
-	public void onClick(View v)
-	{
+	public void onClick(View v) {
 		// 隐藏软键盘
 		InputMethodManager m = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		if (m != null) {
@@ -134,7 +115,7 @@ public class LoginActivity extends AppStoreActivity
 				return;
 			}
 
-			//http 
+			// http
 			break;
 		case R.id.zhuce:
 			Intent intent = new Intent(this, RegisterActivity.class);
@@ -148,8 +129,7 @@ public class LoginActivity extends AppStoreActivity
 	}
 
 	@Override
-	public boolean onTouch(View v, MotionEvent event)
-	{
+	public boolean onTouch(View v, MotionEvent event) {
 		// TODO Auto-generated method stub
 		return false;
 	}

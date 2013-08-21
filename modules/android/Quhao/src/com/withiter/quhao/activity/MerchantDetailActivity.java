@@ -36,11 +36,8 @@ public class MerchantDetailActivity extends AppStoreActivity {
 	private final int UNLOCK_CLICK = 1000;
 	private ProgressDialogUtil progress;
 	private Merchant merchant;
-	
 	private Button btnGetNumber;
-	
 	private  LinearLayout info;
-	
 	private TextView merchantName;
 	private ImageView merchantImg;
 	private TextView merchantAddress;

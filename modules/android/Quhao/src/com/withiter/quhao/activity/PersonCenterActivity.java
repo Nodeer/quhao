@@ -7,33 +7,26 @@ import android.view.Window;
 
 import com.withiter.quhao.R;
 
-public class PersonCenterActivity extends AppStoreActivity
-{
+public class PersonCenterActivity extends AppStoreActivity {
 
-	
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.person_center_layout);
 		super.onCreate(savedInstanceState);
-		
-		
+
 		btnPerson.setOnClickListener(goPersonCenterListener(this));
 		btnMarchent.setOnClickListener(getMarchentListListener(this));
 	}
 
-
 	@Override
-	public void onClick(View v)
-	{
+	public void onClick(View v) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public boolean onTouch(View v, MotionEvent event)
-	{
+	public boolean onTouch(View v, MotionEvent event) {
 		// TODO Auto-generated method stub
 		return false;
 	}
