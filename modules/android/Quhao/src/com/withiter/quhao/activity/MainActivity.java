@@ -59,6 +59,7 @@ public class MainActivity extends AppStoreActivity {
 		setContentView(R.layout.main_layout);
 		super.onCreate(savedInstanceState);
 
+		// TODO remove below codes
 		TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         StringBuilder sb = new StringBuilder();
         sb.append("\nDeviceId(IMEI) = " + tm.getDeviceId());
