@@ -20,4 +20,8 @@
     <style name="CustomGridView" parent="@android:style/Widget.AbsListView">
         <item name="android:listSelector">@drawable/grid_selector_background</item>
     </style>
+    <style name="DialogWindowTitle">
+		<item name="android:maxLines">0</item>
+		<item name="android:scrollHorizontally">true</item>
+	</style>
 </resources>

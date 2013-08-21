@@ -1,8 +1,6 @@
 package com.withiter.quhao.vo;
 
-
-public class Merchant
-{
+public class Merchant {
 	public String id;
 	public String imgUrl = "";
 	public String name;
@@ -24,12 +22,13 @@ public class Merchant
 	public Integer marketCount;
 	public boolean enable;
 	public String joinedDate;
-	
-	public Merchant(String id,String imgUrl,String name,String address,String phone,String cateType,String grade,
-			String averageCost,String tags,Integer kouwei, Integer huanjing, Integer fuwu, Integer xingjiabi,
-			String teses, String nickName, String description, String openTime, String closeTime, Integer marketCount,
-			boolean enable, String joinedDate)
-	{
+
+	public Merchant(String id, String imgUrl, String name, String address,
+			String phone, String cateType, String grade, String averageCost,
+			String tags, Integer kouwei, Integer huanjing, Integer fuwu,
+			Integer xingjiabi, String teses, String nickName,
+			String description, String openTime, String closeTime,
+			Integer marketCount, boolean enable, String joinedDate) {
 		this.id = id;
 		this.imgUrl = imgUrl;
 		this.name = name;
@@ -52,9 +51,8 @@ public class Merchant
 		this.enable = enable;
 		this.joinedDate = joinedDate;
 	}
-	
-	public Merchant()
-	{
-		
+
+	public Merchant() {
+
 	}
 }

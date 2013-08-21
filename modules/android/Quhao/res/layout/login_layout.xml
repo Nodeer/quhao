@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:orientation="vertical">
+	<LinearLayout android:id="@+id/linear"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:background="@drawable/bg_denglu1" android:orientation="vertical"
+		android:layout_centerInParent="true" android:gravity="center">
+		<Button android:id="@+id/close" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:background="@drawable/mbtn_close"
+			android:layout_marginLeft="-122dip" />
+		<LinearLayout android:layout_height="wrap_content"
+			android:layout_width="fill_parent" android:orientation="vertical"
+			android:layout_marginLeft="45dip" android:layout_marginRight="35dip">
+			
+		    <RadioGroup android:id="@+id/radioGroup"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="horizontal">
+		        <RadioButton android:id="@+id/radioPhone" android:checked="true"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/radioPhone"/>
+		        <RadioButton android:id="@+id/radioEmail"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="@string/radioEmail"/>
+		    </RadioGroup>
+		    
+			<TextView android:id="@+id/pannel_login_name" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:text="@string/radioPhone" />
+			<EditText android:id="@+id/login_name" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:background="@drawable/shuru"
+				android:paddingLeft="4dip" android:paddingRight="4dip"
+				android:singleLine="true">
+			</EditText>
+			<ImageView android:id="@+id/password" android:layout_width="wrap_content"
+				android:layout_height="wrap_content" android:src="@drawable/mima"
+				android:layout_marginTop="10dip" />
+			<EditText android:id="@+id/edit_pass" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:password="true"
+				android:background="@drawable/shuru" android:paddingLeft="4dip"
+				android:paddingRight="4dip" android:singleLine="true">
+			</EditText>
+		</LinearLayout>
+		<RelativeLayout android:id="@+id/linebar"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:orientation="horizontal" android:paddingLeft="50dip"
+			android:paddingRight="25dip" android:layout_marginTop="8dip">
+			<Button android:id="@+id/login" android:layout_width="wrap_content"
+				android:layout_alignParentLeft="true" android:layout_height="wrap_content"
+				android:background="@drawable/mbtn_login_1"></Button>
+			<Button android:id="@+id/zhuce" android:layout_width="wrap_content"
+				android:layout_alignParentRight="true" android:layout_height="wrap_content"
+				android:background="@drawable/mbtn_register"></Button>
+		</RelativeLayout>
+	</LinearLayout>
+</LinearLayout>

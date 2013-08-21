@@ -14,16 +14,14 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 
-public class AsyncImageLoader
-{
+public class AsyncImageLoader {
 
 	private HashMap<String, SoftReference<Drawable>> imageCache;
-	
-	public AsyncImageLoader()
-	{
+
+	public AsyncImageLoader() {
 		imageCache = new HashMap<String, SoftReference<Drawable>>();
 	}
-	
+
 	public Drawable loadDrawable(final String imageUrl,
 			final ImageCallback imageCallback) {
 		// synchronized (imageUrl) {
@@ -107,6 +105,4 @@ public class AsyncImageLoader
 	public interface ImageCallback {
 		public void imageLoaded(Drawable imageDrawable, String imageUrl);
 	}
-
-	
 }

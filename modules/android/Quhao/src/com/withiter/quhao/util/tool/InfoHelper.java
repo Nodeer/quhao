@@ -9,11 +9,9 @@ import com.withiter.quhao.util.db.AccountInfoHelper;
 import android.content.Context;
 import android.net.ConnectivityManager;
 
-
-public class InfoHelper
-{
+public class InfoHelper {
 	/**
-	 * ֻҪ������ݿ�������ݣ��ͱ�ʾ��¼��
+	 * 检查帐号
 	 * 
 	 * @param mContext
 	 * @return
@@ -31,16 +29,20 @@ public class InfoHelper
 		return (list != null && list.size() != 0) ? list.get(0) : null;
 	}
 
-	public static boolean checkNetwork(Context context)
-	{
+	/**
+	 * 
+	 * 检查网络
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public static boolean checkNetwork(Context context) {
 		boolean flag = false;
-		
-		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-		if(cm.getActiveNetworkInfo() != null)
-		{
+		ConnectivityManager cm = (ConnectivityManager) context
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (cm.getActiveNetworkInfo() != null) {
 			flag = true;
 		}
-		
 		return flag;
 	}
 }

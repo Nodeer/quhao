@@ -10,22 +10,27 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantAdapter;
@@ -34,21 +39,17 @@ import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.vo.Merchant;
 
-public class MerchantsActivity extends AppStoreActivity {
+public class MerchantsSearchActivity extends AppStoreActivity {
 
-	private String LOGTAG = MerchantsActivity.class.getName();
+	private String LOGTAG = MerchantsSearchActivity.class.getName();
 	protected ListView merchantsListView;
 	private List<Merchant> merchants;
 	private MerchantAdapter merchantAdapter;
+	private EditText editSearch;
+	private Button searchBtn;
 	private final int UNLOCK_CLICK = 1000;
 	private boolean isClick = false;
 	private ProgressDialogUtil progressMerchants;
-	private int page;
-	private String categoryType;
-	private String categoryTypeStr;
-	private String categoryCount;
-	private TextView categoryTypeView;
-	private TextView categoryCountView;
 	private boolean isFirst = true;
 
 	/**
@@ -83,7 +84,7 @@ public class MerchantsActivity extends AppStoreActivity {
 				// 默认isFirst是true.
 				if (isFirst) {
 					merchantAdapter = new MerchantAdapter(
-							MerchantsActivity.this, merchantsListView,
+							MerchantsSearchActivity.this, merchantsListView,
 							merchants);
 					merchantsListView.setAdapter(merchantAdapter);
 					isFirst = false;
@@ -94,20 +95,6 @@ public class MerchantsActivity extends AppStoreActivity {
 				merchantAdapter.notifyDataSetChanged();
 				merchantsListView
 						.setOnItemClickListener(merchantItemClickListener);
-
-				/*
-				 * LinearLayout.LayoutParams topMerchantListParams =
-				 * (LayoutParams) topMerchantListView.getLayoutParams();
-				 * topMerchantListView.setLayoutParams(topMerchantListParams);
-				 * topMerchantListView.invalidate();
-				 * topMerchantListView.setVisibility(View.VISIBLE);
-				 * 
-				 * CategoryAdapter adapter1 = new
-				 * CategoryAdapter(MainActivity.this, topMerchantListView,
-				 * categorys); topMerchantListView.setAdapter(adapter1);
-				 * adapter1.notifyDataSetChanged();
-				 */
-
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 
@@ -122,7 +109,7 @@ public class MerchantsActivity extends AppStoreActivity {
 			Merchant merchant = merchants.get(position);
 			Intent intent = new Intent();
 			intent.putExtra("merchantId", merchant.id);
-			intent.setClass(MerchantsActivity.this,
+			intent.setClass(MerchantsSearchActivity.this,
 					MerchantDetailActivity.class);
 			startActivity(intent);
 			overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
@@ -132,40 +119,47 @@ public class MerchantsActivity extends AppStoreActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.merchants);
+		setContentView(R.layout.merchants_search);
 		super.onCreate(savedInstanceState);
 
-		this.page = getIntent().getIntExtra("page", 1);
-		this.categoryType = getIntent().getStringExtra("categoryType");
+		editSearch = (EditText) findViewById(R.id.edit_search);
+		// editSearch.addTextChangedListener(searchWatcher);
 
-		this.categoryTypeStr = getIntent().getStringExtra("categoryTypeStr");
-		this.categoryTypeView = (TextView) findViewById(R.id.categoryType);
-		this.categoryTypeView.setText(categoryTypeStr);
+		searchBtn = (Button) findViewById(R.id.search_btn);
+		searchBtn.setOnClickListener(goSearchMerchantsListener(this));
 
-		this.categoryCount = getIntent().getStringExtra("categoryCount");
-		this.categoryCountView = (TextView) findViewById(R.id.categoryCount);
-		this.categoryCountView.setText("[共" + categoryCount + "家]");
-		btnPerson.setOnClickListener(goPersonCenterListener(this));
-		btnMarchent.setOnClickListener(getMarchentListListener(this));
-		initView();
-	}
-
-	private void initView() {
 		merchantsListView = (ListView) findViewById(R.id.merchantsListView);
 
 		merchantsListView.setNextFocusDownId(R.id.merchantsListView);
-		merchantsListView.setOnScrollListener(merchantsListScrollListener);
 		merchantsListView.setVisibility(View.GONE);
 
-		getMerchants();
+		btnPerson.setOnClickListener(goPersonCenterListener(this));
+		btnMarchent.setOnClickListener(getMarchentListListener(this));
+		// initView();
+	}
+
+	private OnClickListener goSearchMerchantsListener(
+			MerchantsSearchActivity merchantsSearchActivity) {
+		OnClickListener listener = new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (isClick) {
+					return;
+				}
+				isClick = true;
+				editSearch.clearFocus();
+
+				// 让软键盘消失
+				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);
+				getMerchants();
+
+			}
+		};
+		return listener;
 	}
 
 	private void getMerchants() {
-		if (isClick) {
-			return;
-		}
-		isClick = true;
-
 		progressMerchants = new ProgressDialogUtil(this, R.string.empty,
 				R.string.querying, false);
 		progressMerchants.showProgress();
@@ -177,10 +171,19 @@ public class MerchantsActivity extends AppStoreActivity {
 		@Override
 		public void run() {
 			try {
-				Log.v(LOGTAG, "get categorys data form server begin");
+				Log.v(LOGTAG, "search merchants data form server begin : "
+						+ MerchantsSearchActivity.this.editSearch.getText());
+				if (null == MerchantsSearchActivity.this.editSearch.getText()
+						|| "".equals(MerchantsSearchActivity.this.editSearch
+								.getText().toString())) {
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+					progressMerchants.closeProgress();
+
+				}
 				HttpGet request = new HttpGet(QuhaoConstant.HTTP_URL
-						+ "MerchantController/nextPage?page=" + page
-						+ "&cateType=" + categoryType);
+						+ "MerchantController/getMerchantsByName?name="
+						+ MerchantsSearchActivity.this.editSearch.getText()
+								.toString());
 				HttpClient httpClient = new DefaultHttpClient();
 				HttpResponse response = httpClient.execute(request);
 				Log.v(LOGTAG, "get top merchant data form server : "
@@ -205,7 +208,6 @@ public class MerchantsActivity extends AppStoreActivity {
 
 					merchantsUpdateHandler.obtainMessage(200, merchants)
 							.sendToTarget();
-
 				}
 
 			} catch (Exception e) {
@@ -213,22 +215,6 @@ public class MerchantsActivity extends AppStoreActivity {
 			} finally {
 				progressMerchants.closeProgress();
 			}
-		}
-	};
-	private OnScrollListener merchantsListScrollListener = new OnScrollListener() {
-		@Override
-		public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-		}
-
-		@Override
-		public void onScroll(AbsListView view, int firstVisibleItem,
-				int visibleItemCount, int totalItemCount) {
-			if (view.getLastVisiblePosition() == totalItemCount - 1) {
-				MerchantsActivity.this.page += 1;
-				getMerchants();
-			}
-
 		}
 	};
 
