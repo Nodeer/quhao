@@ -53,6 +53,33 @@ public class MainActivity extends AppStoreActivity {
 	private boolean isClick = false;
 	private List<Category> categorys = null;
 
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.main_layout);
+		super.onCreate(savedInstanceState);
+
+		// initView();
+//		localDisplayMetrics = getResources().getDisplayMetrics();
+//
+//		topMerchants = new ArrayList<TopMerchant>();
+//		
+//		searchBtn = (Button) findViewById(R.id.edit_search);
+//		searchBtn.setOnClickListener(goMerchantsSearch(MainActivity.this));
+//		
+//		topMerchantsGird = (GridView) findViewById(R.id.topMerchants);
+//		getTopMerchants();
+//
+//		topMerchantsGird.setOnItemClickListener(topMerchantClickListener);
+//		categorys = new ArrayList<Category>();
+//		categorysGird = (GridView) findViewById(R.id.categorys);
+//		getCateGorys();
+//
+//		categorysGird.setOnItemClickListener(categorysClickListener);
+//		btnPerson.setOnClickListener(goPersonCenterListener(this));
+//		btnMarchent.setOnClickListener(getMarchentListListener(this));
+	}
+	
 	/**
 	 * handler处理 解锁的时候可能会关闭其他的等待提示框
 	 */
@@ -75,9 +102,7 @@ public class MainActivity extends AppStoreActivity {
 				topMerchantsGird.setAdapter(adapter);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
-
 		}
-
 	};
 
 	private Handler categorysUpdateHandler = new Handler() {
@@ -92,37 +117,10 @@ public class MainActivity extends AppStoreActivity {
 
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
-
 		}
-
 	};
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.main_layout);
-		super.onCreate(savedInstanceState);
-
-		// initView();
-		localDisplayMetrics = getResources().getDisplayMetrics();
-
-		topMerchants = new ArrayList<TopMerchant>();
-		
-		searchBtn = (Button) findViewById(R.id.edit_search);
-		searchBtn.setOnClickListener(goMerchantsSearch(MainActivity.this));
-		
-		topMerchantsGird = (GridView) findViewById(R.id.topMerchants);
-		getTopMerchants();
-
-		topMerchantsGird.setOnItemClickListener(topMerchantClickListener);
-		categorys = new ArrayList<Category>();
-		categorysGird = (GridView) findViewById(R.id.categorys);
-		getCateGorys();
-
-		categorysGird.setOnItemClickListener(categorysClickListener);
-		btnPerson.setOnClickListener(goPersonCenterListener(this));
-		btnMarchent.setOnClickListener(getMarchentListListener(this));
-	}
+	
 
 	private OnItemClickListener topMerchantClickListener = new OnItemClickListener() {
 		@Override

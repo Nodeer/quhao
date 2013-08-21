@@ -11,20 +11,29 @@ import com.withiter.quhao.util.tool.InfoHelper;
 
 public class QHClientApplication extends Application {
 
-	private static final String TAG = "QHClientApplication";
+	private static final String TAG = QHClientApplication.class.getName();
 	public boolean isLogined = false;
 	public AccountInfo accessInfo = null;
 	public boolean isAuto = false;
-	private static final String CREATE_ACCOUNT_TABLE = "CREATE TABLE "
-			+ " accountinfo (" + AccountInfoColumn._ID
-			+ " integer primary key autoincrement," + AccountInfoColumn.PHONE
-			+ " text," + AccountInfoColumn.EMAIL + " text,"
-			+ AccountInfoColumn.PASSWORD + " text,"
-			+ AccountInfoColumn.NICKNAME + " text,"
-			+ AccountInfoColumn.BIRTHDAY + " text,"
-			+ AccountInfoColumn.USERIMAGE + " text," + AccountInfoColumn.ENABLE
-			+ " text," + AccountInfoColumn.MOBILEOS + " text,"
-			+ " isAuto text," + AccountInfoColumn.LASTLOGIN + " text)";
+	private static String CREATE_ACCOUNT_TABLE = "";
+
+	static {
+		StringBuilder sb = new StringBuilder("");
+		sb.append("CREATE TABLE ").append(" accountinfo (")
+				.append(AccountInfoColumn._ID)
+				.append(" integer primary key autoincrement,")
+				.append(AccountInfoColumn.PHONE).append(" text,")
+				.append(AccountInfoColumn.EMAIL).append(" text,")
+				.append(AccountInfoColumn.PASSWORD).append(" text,")
+				.append(AccountInfoColumn.NICKNAME).append(" text,")
+				.append(AccountInfoColumn.BIRTHDAY).append(" text,")
+				.append(AccountInfoColumn.USERIMAGE).append(" text,")
+				.append(AccountInfoColumn.ENABLE).append(" text,")
+				.append(AccountInfoColumn.MOBILEOS).append(" text,")
+				.append(" isAuto text,").append(AccountInfoColumn.LASTLOGIN)
+				.append(" text)");
+		CREATE_ACCOUNT_TABLE = sb.toString();
+	}
 
 	/**
 	 * 单例
@@ -44,7 +53,7 @@ public class QHClientApplication extends Application {
 
 	@Override
 	public void onCreate() {
-		Log.d(TAG, "onCreate");
+		Log.i(TAG, "onCreate method is called");
 		isLogined = false;
 		instance = this;
 		initDBConfig();
@@ -53,12 +62,22 @@ public class QHClientApplication extends Application {
 	}
 
 	private void initDBConfig() {
-		Log.d(TAG, "init database config");
+		Log.i(TAG, "init database config");
 		accessInfo = InfoHelper.getAccountInfo(this);
-		DBTools.init(instance);
-		String sql = CREATE_ACCOUNT_TABLE;
-		createTable("accountinfo", sql);
-		sql = null;
+		boolean flag = false;
+		try {
+			flag = DBTools.getInstance().tabbleIsExist("accountinfo");
+			Log.i(TAG, "accountinfo table exists : " + flag);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.e(TAG, e.getCause().toString());
+		}
+		if (!flag) {
+			DBTools.init(instance);
+			String sql = CREATE_ACCOUNT_TABLE;
+			createTable("accountinfo", sql);
+			sql = null;
+		}
 	}
 
 	private void createTable(String tableName, String sql) {
@@ -72,6 +91,5 @@ public class QHClientApplication extends Application {
 
 	private void initConfig() {
 		// TODO Auto-generated method stub
-
 	}
 }
