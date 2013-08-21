@@ -2,9 +2,6 @@ package com.withiter.quhao.util.db;
 
 /**
  * 数据库操作异常处理类
- * 
- * @author sy
- * 
  */
 public class DBException extends Exception {
 	/**
@@ -13,9 +10,7 @@ public class DBException extends Exception {
 	private static final long serialVersionUID = -3051748715160422241L;
 
 	/**
-	 * 
-	 * 构�?函数，实现初始化对象
-	 * 
+	 * 构造函数，实现初始化对象
 	 * @param message
 	 *            异常信息
 	 */
@@ -25,7 +20,7 @@ public class DBException extends Exception {
 
 	/**
 	 * 
-	 * 构�?函数，实现初始化对象
+	 * 构造函数，实现初始化对象
 	 * 
 	 * @param message
 	 *            异常信息
@@ -38,7 +33,7 @@ public class DBException extends Exception {
 
 	/**
 	 * 
-	 * 构�?函数，实现初始化对象
+	 * 构造函数，实现初始化对象
 	 * 
 	 * @param cause
 	 *            异常原因

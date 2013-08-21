@@ -2,11 +2,10 @@ package com.withiter.quhao.util.db;
 
 import android.provider.BaseColumns;
 
-public class AccountInfoColumn implements BaseColumns
-{
-	public AccountInfoColumn(){}
-	
-	//列名
+public class AccountInfoColumn implements BaseColumns {
+	public AccountInfoColumn() {
+	}
+
 	public static final String PHONE = "PHONE";
 	public static final String EMAIL = "EMAIL";
 	public static final String PASSWORD = "PASSWORD";
@@ -17,7 +16,6 @@ public class AccountInfoColumn implements BaseColumns
 	public static final String MOBILEOS = "MOBILEOS";
 	public static final String LASTLOGIN = "LASTLOGIN";
 
-	//索引值
 	public static final int _ID_ACCOUNT = 0;
 	public static final int PHONE_COLUMN = 1;
 	public static final int EMAIL_COLUMN = 2;
@@ -29,18 +27,15 @@ public class AccountInfoColumn implements BaseColumns
 	public static final int MOBILEOS_COLUMN = 8;
 	public static final int LASTLOGIN_COLUMN = 9;
 
-	//查询结果集
-	public static final String[] PROJECTION = 
-	{
-		_ID,					//0
-		PHONE,					//1
-		EMAIL,					//2
-		PASSWORD,				//3
-		NICKNAME,				//4
-		BIRTHDAY,				//5
-		USERIMAGE,				//6
-		ENABLE,					//7
-		MOBILEOS,				//8
-		LASTLOGIN,				//9
+	public static final String[] PROJECTION = { _ID, // 0
+			PHONE, // 1
+			EMAIL, // 2
+			PASSWORD, // 3
+			NICKNAME, // 4
+			BIRTHDAY, // 5
+			USERIMAGE, // 6
+			ENABLE, // 7
+			MOBILEOS, // 8
+			LASTLOGIN, // 9
 	};
 }
