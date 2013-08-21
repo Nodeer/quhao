@@ -64,6 +64,7 @@ public class QHClientApplication extends Application {
 	private void initDBConfig() {
 		Log.i(TAG, "init database config");
 		accessInfo = InfoHelper.getAccountInfo(this);
+		DBTools.init(instance);
 		boolean flag = false;
 		try {
 			flag = DBTools.getInstance().tabbleIsExist("accountinfo");
@@ -73,7 +74,6 @@ public class QHClientApplication extends Application {
 			Log.e(TAG, e.getCause().toString());
 		}
 		if (!flag) {
-			DBTools.init(instance);
 			String sql = CREATE_ACCOUNT_TABLE;
 			createTable("accountinfo", sql);
 			sql = null;
