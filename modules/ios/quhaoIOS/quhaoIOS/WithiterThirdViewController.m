@@ -14,6 +14,13 @@
 
 @implementation WithiterThirdViewController
 
+@synthesize mobileLabel;
+@synthesize passwordLabel;
+@synthesize mobile;
+@synthesize password;
+@synthesize signupBTN;
+@synthesize loginBTN;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -24,10 +31,33 @@
     return self;
 }
 
+/*
+ * Sign up click function
+ */
+-(IBAction)onClickSignUpBTN:(id)sender{
+    UIAlertView *alert =
+    [[UIAlertView alloc] initWithTitle:@"Alert" message:@"注册!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
+}
+
+/**
+ * Login click function
+ */
+-(IBAction)onClickLoginBTN:(id)sender{
+    UIAlertView *alert =
+    [[UIAlertView alloc] initWithTitle:@"Alert" message:@"登陆!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     NSLog(@"aaaaa");
+    
+    [loginBTN addTarget:self action:@selector(onClickLoginBTN:) forControlEvents:UIControlEventTouchUpInside];
+    [signupBTN addTarget:self action:@selector(onClickSignUpBTN:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
 	// Do any additional setup after loading the view, typically from a nib.
 }
 

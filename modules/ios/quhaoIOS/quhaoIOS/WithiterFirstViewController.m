@@ -63,8 +63,8 @@
     
     NSLog(@"first view loaded...");
 
-    QuhaoDelete *delegate = [[UIApplication sharedApplication] delegate];
-    delegate.isLogin = false;
+//    QuhaoDelete *delegate = [[UIApplication sharedApplication] delegate];
+//    delegate.isLogin = false;
     
     
     // http request

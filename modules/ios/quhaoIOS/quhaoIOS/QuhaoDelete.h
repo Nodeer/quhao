@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @interface QuhaoDelete : UIResponder <UIApplicationDelegate>
-@property UIWindow *window;
+//@property UIWindow *window;
 @property BOOL isLogin;
 @end
