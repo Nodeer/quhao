@@ -72,10 +72,11 @@ public class AccountController extends BaseController {
 		if(hexedUid.equals(hid)){
 			Account account = Account.findById(oid);
 			account.enable=true;
-			renderJSON(true);
+			account.save();
+			renderJapidWith("japidviews.backend.self.SelfManagementController.index", true);
 		}
 		else{
-			renderJSON(false);
+			renderJapidWith("japidviews.backend.self.SelfManagementController.index", false);
 		}
 			
 		

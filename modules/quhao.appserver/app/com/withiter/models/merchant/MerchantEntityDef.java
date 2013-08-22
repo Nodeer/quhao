@@ -19,6 +19,7 @@ public abstract class MerchantEntityDef extends BaseModel {
 	public String[] telephone = {""};
 	
 	public String cateType;
+	public String merchantImage = "";
 	
 	// 百度坐标
 	public String x;

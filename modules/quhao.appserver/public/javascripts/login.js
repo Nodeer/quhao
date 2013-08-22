@@ -55,7 +55,7 @@ Login.login = function() {
 						return;
 					}
 					
-					window.location.href = "/b/m/home?uid="+data.uid;
+					window.location.href = "/b/w?uid="+data.uid;
 				}
 			},
 			error : function() {
