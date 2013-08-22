@@ -3,6 +3,7 @@ package com.withiter.quhao.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -43,8 +44,8 @@ public class MainActivity extends AppStoreActivity {
 	private DisplayMetrics localDisplayMetrics;
 	protected ProgressDialogUtil progressCategory;
 	protected ProgressDialogUtil progressTopMerchant;
-	private final int UNLOCK_CLICK = 1000;
-	private boolean isClick = false;
+	private static final int UNLOCK_CLICK = 1000;
+	private static boolean isClick = false;
 	private List<Category> categorys = null;
 
 	@Override
@@ -53,51 +54,32 @@ public class MainActivity extends AppStoreActivity {
 		setContentView(R.layout.main_layout);
 		super.onCreate(savedInstanceState);
 
-		// TODO remove below codes
-		TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-        StringBuilder sb = new StringBuilder();
-        sb.append("\nDeviceId(IMEI) = " + tm.getDeviceId());
-        sb.append("\nDeviceSoftwareVersion = " + tm.getDeviceSoftwareVersion());
-        sb.append("\nLine1Number = " + tm.getLine1Number());
-        sb.append("\nNetworkCountryIso = " + tm.getNetworkCountryIso());
-        sb.append("\nNetworkOperator = " + tm.getNetworkOperator());
-        sb.append("\nNetworkOperatorName = " + tm.getNetworkOperatorName());
-        sb.append("\nNetworkType = " + tm.getNetworkType());
-        sb.append("\nPhoneType = " + tm.getPhoneType());
-        sb.append("\nSimCountryIso = " + tm.getSimCountryIso());
-        sb.append("\nSimOperator = " + tm.getSimOperator());
-        sb.append("\nSimOperatorName = " + tm.getSimOperatorName());
-        sb.append("\nSimSerialNumber = " + tm.getSimSerialNumber());
-        sb.append("\nSimState = " + tm.getSimState());
-        sb.append("\nSubscriberId(IMSI) = " + tm.getSubscriberId());
-        sb.append("\nVoiceMailNumber = " + tm.getVoiceMailNumber());
-        Log.i(TAG, sb.toString()); 
-        
-		
 		// initView();
+		topMerchantsGird = (GridView) findViewById(R.id.topMerchants);
+		
 		localDisplayMetrics = getResources().getDisplayMetrics();
 		topMerchants = new ArrayList<TopMerchant>();
 		getTopMerchants();
 
 		searchBtn = (Button) findViewById(R.id.edit_search);
 		searchBtn.setOnClickListener(goMerchantsSearch(MainActivity.this));
+
 		
-		topMerchantsGird = (GridView) findViewById(R.id.topMerchants);
-
-		topMerchantsGird.setOnItemClickListener(topMerchantClickListener);
-		categorys = new ArrayList<Category>();
-		categorysGird = (GridView) findViewById(R.id.categorys);
-		getCateGorys();
-
-		categorysGird.setOnItemClickListener(categorysClickListener);
-		btnPerson.setOnClickListener(goPersonCenterListener(this));
-		btnMarchent.setOnClickListener(getMarchentListListener(this));
+//
+//		topMerchantsGird.setOnItemClickListener(topMerchantClickListener);
+//		categorys = new ArrayList<Category>();
+//		categorysGird = (GridView) findViewById(R.id.categorys);
+//		getCateGorys();
+//
+//		categorysGird.setOnItemClickListener(categorysClickListener);
+//		btnPerson.setOnClickListener(goPersonCenterListener(this));
+//		btnMarchent.setOnClickListener(getMarchentListListener(this));
 	}
-	
+
 	/**
 	 * handler处理 解锁的时候可能会关闭其他的等待提示框
 	 */
-	private Handler unlockHandler = new Handler() {
+	private static Handler unlockHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what == UNLOCK_CLICK) {
 				// 解锁
@@ -134,8 +116,6 @@ public class MainActivity extends AppStoreActivity {
 		}
 	};
 
-	
-
 	private OnItemClickListener topMerchantClickListener = new OnItemClickListener() {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
@@ -161,7 +141,7 @@ public class MainActivity extends AppStoreActivity {
 			intent.putExtra("categoryTypeStr", category.categoryTypeStr);
 			intent.putExtra("categoryCount", String.valueOf(category.count));
 			intent.setClass(MainActivity.this, MerchantsActivity.class);
-			
+
 			startActivity(intent);
 			overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
 		}
@@ -190,22 +170,20 @@ public class MainActivity extends AppStoreActivity {
 		categoryThread.start();
 	}
 
+	/**
+	 * 获取top merchant线程
+	 */
 	private Runnable topMerchantsRunnable = new Runnable() {
 		@Override
 		public void run() {
 			try {
 				Log.i(TAG, "Start to get categorys data form server.");
-				
-//				String result = CommonHTTPRequest.request(QuhaoConstant.HTTP_URL
-//						+ "MerchantController/getTopMerchants?x=6");
-				String result = CommonHTTPRequest.get("MerchantController/getTopMerchants?x=6");
+				String result = CommonHTTPRequest
+						.get("MerchantController/getTopMerchants?x=6");
 				Log.d(TAG, result);
-				if(CommonTool.isNull(result))
-				{
+				if (CommonTool.isNull(result)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				}
-				else
-				{
+				} else {
 					if (null == topMerchants) {
 						topMerchants = new ArrayList<TopMerchant>();
 					}
@@ -213,8 +191,7 @@ public class MainActivity extends AppStoreActivity {
 					topMerchantsUpdateHandler.obtainMessage(200, topMerchants)
 							.sendToTarget();
 				}
-				
-				
+
 			} catch (Exception e) {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				Log.e(TAG, e.getCause().toString(), e);
@@ -235,13 +212,11 @@ public class MainActivity extends AppStoreActivity {
 				if (userHome.contains("eacfgjl")) {
 					QuhaoConstant.HTTP_URL = "http://146.11.24.199:9081/";
 				}
-				String result = CommonHTTPRequest.get("MerchantController/allCategories");
-				if(CommonTool.isNull(result))
-				{
+				String result = CommonHTTPRequest
+						.get("MerchantController/allCategories");
+				if (CommonTool.isNull(result)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				}
-				else
-				{
+				} else {
 					if (null == categorys) {
 						categorys = new ArrayList<Category>();
 					}
@@ -250,7 +225,6 @@ public class MainActivity extends AppStoreActivity {
 					categorysUpdateHandler.obtainMessage(200, categorys)
 							.sendToTarget();
 				}
-				
 
 			} catch (Exception e) {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);

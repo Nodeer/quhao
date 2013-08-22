@@ -9,7 +9,6 @@ import java.net.URL;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -22,7 +21,8 @@ import com.withiter.quhao.util.tool.QuhaoConstant;
 public class CommonHTTPRequest {
 
 	private static boolean useProxy = false;
-	
+	private static String TAG = CommonHTTPRequest.class.getName();
+
 	public static boolean isUseProxy() {
 		return useProxy;
 	}
@@ -31,40 +31,35 @@ public class CommonHTTPRequest {
 		CommonHTTPRequest.useProxy = useProxy;
 	}
 
-	private static void initProxy(){
+	private static void initProxy() {
 		System.getProperties().setProperty("proxySet", "true");
-		System.getProperties().setProperty("http.proxyHost", "www-proxy.ericsson.se");
+		System.getProperties().setProperty("http.proxyHost",
+				"www-proxy.ericsson.se");
 		System.getProperties().setProperty("http.proxyPort", "8080");
 	}
-	
+
 	/**
 	 * a http request with given url
-	 * @param strUrl the url you want to request
+	 * 
+	 * @param strUrl
+	 *            the url you want to request
 	 * @return
 	 */
-	public static String request(String strUrl){
-
-		String userHome = System.getProperty("user.home");
-		if(userHome.contains("eacfgjl")){
-			useProxy = true;
-		}
-		
-		if(useProxy){
-			initProxy();
-		}
-        URL url = null;
-        String result = "";
-        HttpURLConnection urlConn = null;
-        InputStreamReader in = null;
-        try {
+	public static String request(String strUrl) {
+		strUrl = QuhaoConstant.HTTP_URL + strUrl;
+		URL url = null;
+		String result = "";
+		HttpURLConnection urlConn = null;
+		InputStreamReader in = null;
+		try {
 			url = new URL(strUrl);
 			urlConn = (HttpURLConnection) url.openConnection();
-			urlConn.setConnectTimeout(1000*30);
+			urlConn.setConnectTimeout(1000 * 30);
 			in = new InputStreamReader(urlConn.getInputStream());
 			BufferedReader br = new BufferedReader(in);
-			
+
 			String readerLine = null;
-			while((readerLine=br.readLine())!=null){
+			while ((readerLine = br.readLine()) != null) {
 				result += readerLine;
 			}
 			in.close();
@@ -81,52 +76,32 @@ public class CommonHTTPRequest {
 			}
 			urlConn.disconnect();
 		}
-        
-        return result;
+		return result;
 	}
-	
-	public static String get(String url) throws Exception
-	{
+
+	public static String get(String url) throws Exception {
 		String result = "";
-		String httpUrl = "";
-		String userHome = System.getProperty("user.home");
-		if(userHome.contains("eacfgjl")){
-			httpUrl = QuhaoConstant.HTTP_URL_TEST_CROSS + url;
-		}
-		else if(userHome.contains("ASUS"))
-		{
-			httpUrl = QuhaoConstant.HTTP_URL + url;
-		}
-		else
-		{
-			httpUrl = QuhaoConstant.HTTP_URL + url;
-		}
-		
+		String httpUrl = QuhaoConstant.HTTP_URL + url;
+
 		HttpGet request = new HttpGet(httpUrl);
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpResponse response;
-		try
-		{
+		try {
 			response = httpClient.execute(request);
-			Log.i("", "get top merchant data form server : "
+			Log.i(TAG, "get top merchant data form server : "
 					+ response.getStatusLine().getStatusCode());
 			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 				result = EntityUtils.toString(response.getEntity());
-				Log.v("", "get top merchant data form server buf : "
-						+ result);
+				Log.v(TAG, "get top merchant data form server buf : " + result);
 				// 返回HTML页面
 				if (result.indexOf("<html>") != -1
 						|| result.indexOf("<HTML>") != -1) {
-					// mGetHandler.sendMessage(mGetHandler
-					// .obtainMessage(-2));
 					throw new Exception("session timeout!");
 				}
 			}
-		} catch (Exception e)
-		{
+		} catch (Exception e) {
 			throw new Exception(e);
 		}
 		return result;
 	}
-	
 }
