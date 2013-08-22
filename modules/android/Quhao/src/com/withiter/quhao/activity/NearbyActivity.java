@@ -1,9 +1,12 @@
 package com.withiter.quhao.activity;
 
+import com.withiter.quhao.R;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 
 public class NearbyActivity extends AppStoreActivity {
 
@@ -11,6 +14,9 @@ public class NearbyActivity extends AppStoreActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+//		setContentView(R.layout.merchants_search);
+		super.onCreate(savedInstanceState);
 		Log.i(TAG, "NearbyActivity is displayed");
 	}
 	
