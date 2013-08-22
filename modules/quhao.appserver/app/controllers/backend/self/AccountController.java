@@ -1,9 +1,10 @@
 package controllers.backend.self;
 
 import notifiers.MailsController;
+import play.Play;
+import play.libs.Codec;
 import play.mvc.Scope.Session;
 import vo.account.AccountVO;
-
 import cn.bran.japid.util.StringUtils;
 
 import com.withiter.common.Constants;
@@ -55,14 +56,28 @@ public class AccountController extends BaseController {
 		if(result == null){
 			AccountVO avo = AccountVO.build(account);
 			avo.error = "";
-			MailsController.sendTo(userName);
-//			MailsController.sendTo("withiter@126.com");
-//			MailsController.sendBySignUp("withiter@126.com");
+			String hexedUid = Codec.hexSHA1(account.id());
+			String url = Play.configuration.getProperty("application.domain")+"/b/self/AccountController/active?hid="+hexedUid+"&oid="+account.id();
+			MailsController.sendTo(account.email, url);
 			renderJSON(avo);
 		}else{
 			AccountVO avo = new AccountVO();
 			avo.error = result;
 			renderJSON(avo);
 		}
+	}
+	
+	public static void active(String oid, String hid){
+		String hexedUid = Codec.hexSHA1(oid);
+		if(hexedUid.equals(hid)){
+			Account account = Account.findById(oid);
+			account.enable=true;
+			renderJSON(true);
+		}
+		else{
+			renderJSON(false);
+		}
+			
+		
 	}
 }
