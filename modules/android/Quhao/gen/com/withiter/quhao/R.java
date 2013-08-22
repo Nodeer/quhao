@@ -235,7 +235,8 @@ public final class R {
         public static final int btnMerchantDetail=0x7f0a0005;
         public static final int btnMerchantLayout=0x7f0a0034;
         public static final int btnMerchantList=0x7f0a0030;
-        public static final int btnNear=0x7f0a0031;
+        public static final int btnMore=0x7f0a0033;
+        public static final int btnNearby=0x7f0a0031;
         public static final int btnPerson=0x7f0a0032;
         public static final int btnPersonLayout=0x7f0a0035;
         public static final int btn_GetNumber=0x7f0a0036;
@@ -277,7 +278,6 @@ public final class R {
         public static final int merchantTags=0x7f0a004c;
         public static final int merchantsLayout=0x7f0a0039;
         public static final int merchantsListView=0x7f0a003a;
-        public static final int more=0x7f0a0033;
         public static final int pannel_login_name=0x7f0a0015;
         public static final int parent=0x7f0a001f;
         public static final int parent1=0x7f0a0025;

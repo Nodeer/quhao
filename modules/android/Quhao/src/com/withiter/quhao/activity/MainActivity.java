@@ -71,8 +71,10 @@ public class MainActivity extends AppStoreActivity {
 		categorysGird.setOnItemClickListener(categorysClickListener);
 		
 		// bind menu button function
-		btnMarchent.setOnClickListener(goCategoryListener(this));
-		btnPerson.setOnClickListener(goPersonCenterListener(this));
+		btnCategory.setOnClickListener(goCategory(this));
+		btnNearby.setOnClickListener(goNearby(this));
+		btnPerson.setOnClickListener(goPersonCenter(this));
+		btnMore.setOnClickListener(goMore(this));
 	}
 
 	/**

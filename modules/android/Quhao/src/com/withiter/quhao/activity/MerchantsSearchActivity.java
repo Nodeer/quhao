@@ -123,8 +123,11 @@ public class MerchantsSearchActivity extends AppStoreActivity {
 		merchantsListView.setNextFocusDownId(R.id.merchantsListView);
 		merchantsListView.setVisibility(View.GONE);
 
-		btnPerson.setOnClickListener(goPersonCenterListener(this));
-		btnMarchent.setOnClickListener(goCategoryListener(this));
+		// bind menu button function
+		btnCategory.setOnClickListener(goCategory(this));
+		btnNearby.setOnClickListener(goNearby(this));
+		btnPerson.setOnClickListener(goPersonCenter(this));
+		btnMore.setOnClickListener(goMore(this));
 		// initView();
 	}
 

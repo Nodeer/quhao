@@ -130,8 +130,11 @@ public class MerchantDetailActivity extends AppStoreActivity {
     	this.fuwu = (TextView) info.findViewById(R.id.fuwu);
     	this.huanjing = (TextView) info.findViewById(R.id.huanjing);
 
-		btnPerson.setOnClickListener(goPersonCenterListener(this));
-		btnMarchent.setOnClickListener(goCategoryListener(this));
+    	// bind menu button function
+		btnCategory.setOnClickListener(goCategory(this));
+		btnNearby.setOnClickListener(goNearby(this));
+		btnPerson.setOnClickListener(goPersonCenter(this));
+		btnMore.setOnClickListener(goMore(this));
 
 		initView();
 	}

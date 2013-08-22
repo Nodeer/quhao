@@ -15,8 +15,11 @@ public class PersonCenterActivity extends AppStoreActivity {
 		setContentView(R.layout.person_center_layout);
 		super.onCreate(savedInstanceState);
 
-		btnPerson.setOnClickListener(goPersonCenterListener(this));
-		btnMarchent.setOnClickListener(goCategoryListener(this));
+		// bind menu button function
+		btnCategory.setOnClickListener(goCategory(this));
+		btnNearby.setOnClickListener(goNearby(this));
+		btnPerson.setOnClickListener(goPersonCenter(this));
+		btnMore.setOnClickListener(goMore(this));
 	}
 
 	@Override

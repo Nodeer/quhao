@@ -142,8 +142,11 @@ public class MerchantListActivity extends AppStoreActivity {
 		this.categoryCountView = (TextView) findViewById(R.id.categoryCount);
 		this.categoryCountView.setText("[共" + categoryCount + "家]");
 		
-		btnPerson.setOnClickListener(goPersonCenterListener(this));
-		btnMarchent.setOnClickListener(goCategoryListener(this));
+		// bind menu button function
+		btnCategory.setOnClickListener(goCategory(this));
+		btnNearby.setOnClickListener(goNearby(this));
+		btnPerson.setOnClickListener(goPersonCenter(this));
+		btnMore.setOnClickListener(goMore(this));
 		initView();
 	}
 
