@@ -30,9 +30,9 @@ import com.withiter.quhao.vo.Merchant;
 /**
  * 商家列表页面
  */
-public class MerchantActivity extends AppStoreActivity {
+public class MerchantListActivity extends AppStoreActivity {
 
-	private String LOGTAG = MerchantActivity.class.getName();
+	private String LOGTAG = MerchantListActivity.class.getName();
 	protected ListView merchantsListView;
 	private List<Merchant> merchants;
 	private MerchantAdapter merchantAdapter;
@@ -79,7 +79,7 @@ public class MerchantActivity extends AppStoreActivity {
 				// 默认isFirst是true.
 				if (isFirst) {
 					merchantAdapter = new MerchantAdapter(
-							MerchantActivity.this, merchantsListView,
+							MerchantListActivity.this, merchantsListView,
 							merchants);
 					merchantsListView.setAdapter(merchantAdapter);
 					isFirst = false;
@@ -118,7 +118,7 @@ public class MerchantActivity extends AppStoreActivity {
 			Merchant merchant = merchants.get(position);
 			Intent intent = new Intent();
 			intent.putExtra("merchantId", merchant.id);
-			intent.setClass(MerchantActivity.this,
+			intent.setClass(MerchantListActivity.this,
 					MerchantDetailActivity.class);
 			startActivity(intent);
 			overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
@@ -210,7 +210,7 @@ public class MerchantActivity extends AppStoreActivity {
 		public void onScroll(AbsListView view, int firstVisibleItem,
 				int visibleItemCount, int totalItemCount) {
 			if (view.getLastVisiblePosition() == totalItemCount - 1) {
-				MerchantActivity.this.page += 1;
+				MerchantListActivity.this.page += 1;
 				getMerchants();
 			}
 
