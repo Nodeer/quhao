@@ -25,12 +25,14 @@ import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.CommonTool;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
-import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.vo.Merchant;
 
-public class MerchantsActivity extends AppStoreActivity {
+/**
+ * 商家列表页面
+ */
+public class MerchantActivity extends AppStoreActivity {
 
-	private String LOGTAG = MerchantsActivity.class.getName();
+	private String LOGTAG = MerchantActivity.class.getName();
 	protected ListView merchantsListView;
 	private List<Merchant> merchants;
 	private MerchantAdapter merchantAdapter;
@@ -77,7 +79,7 @@ public class MerchantsActivity extends AppStoreActivity {
 				// 默认isFirst是true.
 				if (isFirst) {
 					merchantAdapter = new MerchantAdapter(
-							MerchantsActivity.this, merchantsListView,
+							MerchantActivity.this, merchantsListView,
 							merchants);
 					merchantsListView.setAdapter(merchantAdapter);
 					isFirst = false;
@@ -116,7 +118,7 @@ public class MerchantsActivity extends AppStoreActivity {
 			Merchant merchant = merchants.get(position);
 			Intent intent = new Intent();
 			intent.putExtra("merchantId", merchant.id);
-			intent.setClass(MerchantsActivity.this,
+			intent.setClass(MerchantActivity.this,
 					MerchantDetailActivity.class);
 			startActivity(intent);
 			overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
@@ -208,7 +210,7 @@ public class MerchantsActivity extends AppStoreActivity {
 		public void onScroll(AbsListView view, int firstVisibleItem,
 				int visibleItemCount, int totalItemCount) {
 			if (view.getLastVisiblePosition() == totalItemCount - 1) {
-				MerchantsActivity.this.page += 1;
+				MerchantActivity.this.page += 1;
 				getMerchants();
 			}
 

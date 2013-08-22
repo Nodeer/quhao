@@ -138,12 +138,12 @@ public class MainActivity extends AppStoreActivity {
 				long id) {
 			Category category = categorys.get(position);
 			Log.d(TAG, "the category is : " + category.categoryType
-					+ "the count is : " + category.count);
+					+ ", the count is : " + category.count);
 			Intent intent = new Intent();
 			intent.putExtra("categoryType", category.categoryType);
 			intent.putExtra("categoryTypeStr", category.categoryTypeStr);
 			intent.putExtra("categoryCount", String.valueOf(category.count));
-			intent.setClass(MainActivity.this, MerchantsActivity.class);
+			intent.setClass(MainActivity.this, MerchantActivity.class);
 
 			startActivity(intent);
 			overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
