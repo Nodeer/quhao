@@ -1,6 +1,12 @@
 package com.withiter.quhao.domain;
 
-public class AccountInfo {
+import java.io.Serializable;
+
+public class AccountInfo implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9060527069391618394L;
 	private String userId;
 	private String phone;
 	private String email;

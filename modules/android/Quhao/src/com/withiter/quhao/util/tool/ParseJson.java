@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.withiter.quhao.vo.Category;
+import com.withiter.quhao.vo.LoginInfo;
 import com.withiter.quhao.vo.Merchant;
 import com.withiter.quhao.vo.TopMerchant;
 
@@ -283,5 +284,72 @@ public class ParseJson {
 				teses, nickName, description, openTime, closeTime, marketCount,
 				enable, joinedDate);
 		return merchant;
+	}
+
+	public static LoginInfo getLoginInfo(String result)
+	{
+		LoginInfo loginInfo = new LoginInfo();
+		if (null == result || "".equals(result)) {
+			return loginInfo;
+		}
+
+		try {
+			JSONObject obj = new JSONObject(result);
+
+			String phone = "";
+
+			if (obj.has("phone")) {
+				phone = obj.getString("phone");
+			}
+			String email = "";
+
+			if (obj.has("email")) {
+				email = obj.getString("email");
+			}
+
+			String password = "";
+
+			if (obj.has("password")) {
+				password = obj.getString("password");
+			}
+
+			String nickName = "";
+
+			if (obj.has("nickname")) {
+				nickName = obj.getString("nickname");
+			}
+
+			String birthday = "";
+			if (obj.has("birthDay")) {
+				birthday = obj.getString("birthDay");
+			}
+
+			String userImage = "";
+			if (obj.has("userImage")) {
+				userImage = obj.getString("userImage");
+			}
+
+			String enable = "";
+			if (obj.has("enable")) {
+				enable = obj.getString("enable");
+			}
+
+			String mobileOS = "";
+			if (obj.has("mobileOS")) {
+				mobileOS = obj.getString("mobileOS");
+			}
+
+			String lastLogin = "";
+			if (obj.has("lastLogin")) {
+				lastLogin = obj.getString("lastLogin");
+			}
+
+			loginInfo = new LoginInfo(phone, email, password, nickName, birthday, userImage, enable, mobileOS, lastLogin);
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		return loginInfo;
 	}
 }

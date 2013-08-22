@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
+import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.tool.InfoHelper;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 
@@ -100,6 +101,10 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 				if (QHClientApplication.getInstance().isLogined) {
 					Intent intent = new Intent(activity,
 							PersonCenterActivity.class);
+					AccountInfo account = QHClientApplication.getInstance().accessInfo;
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("account", account);
+					intent.putExtras(bundle);
 					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);
 				} else {

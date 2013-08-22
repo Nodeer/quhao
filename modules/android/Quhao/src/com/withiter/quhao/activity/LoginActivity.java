@@ -20,12 +20,16 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
+import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantAdapter;
+import com.withiter.quhao.domain.AccountInfo;
+import com.withiter.quhao.util.db.AccountInfoHelper;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.CommonTool;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
+import com.withiter.quhao.vo.LoginInfo;
 import com.withiter.quhao.vo.TopMerchant;
 
 public class LoginActivity extends AppStoreActivity {
@@ -61,9 +65,19 @@ public class LoginActivity extends AppStoreActivity {
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
-
-
-
+				
+				Intent intent = new Intent();
+				AccountInfo account = (AccountInfo) msg.obj;
+				Bundle bundle = new Bundle();
+				bundle.putSerializable("account", account);
+				intent.putExtras(bundle);
+				//intent.pute
+				intent.setClass(LoginActivity.this, PersonCenterActivity.class);
+				startActivity(intent);
+				
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				finish();
+				
 			}
 
 		}
@@ -130,7 +144,7 @@ public class LoginActivity extends AppStoreActivity {
 					R.string.querying, false);
 			progressLogin.showProgress();
 			String url = "AccountController/login?";
-			if(radioEmail.getId() == radioGroup.getCheckedRadioButtonId())
+			if(radioPhone.getId() == radioGroup.getCheckedRadioButtonId())
 			{
 				url = url + "phone="+loginNameText.getText().toString().trim() + "&";
 			}
@@ -138,7 +152,7 @@ public class LoginActivity extends AppStoreActivity {
 			{
 				url = url + "phone=" + "&";
 			}
-			if(radioPhone.getId() == radioGroup.getCheckedRadioButtonId())
+			if(radioEmail.getId() == radioGroup.getCheckedRadioButtonId())
 			{
 				url = url + "email="+loginNameText.getText().toString().trim() + "&";
 			}
@@ -156,7 +170,20 @@ public class LoginActivity extends AppStoreActivity {
 				}
 				else
 				{
-					loginUpdateHandler.obtainMessage(200, result)
+					LoginInfo loginInfo = ParseJson.getLoginInfo(result);
+					AccountInfo account = new AccountInfo();
+					account.setPhone(loginInfo.phone);
+					account.setEmail(loginInfo.email);
+					account.setPassword(loginInfo.password);
+					account.setNickName(loginInfo.nickName);
+					account.setBirthday(loginInfo.birthday);
+					account.setUserImage(loginInfo.userImage);
+					account.setEnable(loginInfo.enable);
+					account.setMobileOS(loginInfo.mobileOS);
+					account.setLastLogin(loginInfo.lastLogin);
+					QHClientApplication.getInstance().accessInfo = account;
+					QHClientApplication.getInstance().isLogined = true;
+					loginUpdateHandler.obtainMessage(200, account)
 							.sendToTarget();
 				}
 			} catch (Exception e)
