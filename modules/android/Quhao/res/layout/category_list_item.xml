@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"  android:layout_height="94dp"
-	 android:layout_marginTop="3dp" android:id="@+id/frameLayout1">
-	<RelativeLayout android:layout_width="fill_parent"
+    android:id="@+id/frameLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="94dp"
+    android:layout_marginTop="3dp" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
         android:layout_height="94dp"
         android:orientation="vertical" >
-	    <ImageView
+
+        <ImageView
             android:id="@+id/img"
-            android:focusable="false"
             android:layout_width="76dp"
             android:layout_height="93dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:focusable="false"
             android:src="@drawable/title_img" />
-	    <LinearLayout
+
+        <LinearLayout
             android:id="@+id/linearLayout1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -21,18 +27,20 @@
             android:orientation="vertical"
             android:paddingLeft="4dp"
             android:paddingTop="10dp" >
+
             <Button
                 android:id="@+id/btnMerchantDetail"
-                android:focusable="false"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
+                android:focusable="false"
                 android:gravity="right"
                 android:text="详情"
                 android:textColor="#666666"
                 android:textSize="17sp"
                 android:textStyle="bold" />
-         </LinearLayout>
-         <LinearLayout
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/linearLayout2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -62,5 +70,6 @@
                 android:textColor="#666666"
                 android:textSize="13sp" />
         </LinearLayout>
-	</RelativeLayout>
+    </RelativeLayout>
+
 </FrameLayout>

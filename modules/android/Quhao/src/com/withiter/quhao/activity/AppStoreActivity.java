@@ -171,5 +171,4 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 		}
 		return true;
 	}
-
 }
