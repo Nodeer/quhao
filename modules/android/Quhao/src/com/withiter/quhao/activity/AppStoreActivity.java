@@ -123,17 +123,9 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 		OnClickListener clickListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (QHClientApplication.getInstance().isLogined) {
-					Intent intent = new Intent(activity,
-							MoreActivity.class);
-					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(intent);
-				} else {
-					Intent intent = new Intent(activity, LoginActivity.class);
-					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(intent);
-				}
-				
+				Intent intent = new Intent(activity, MoreActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
 				overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
 			}
 		};
