@@ -19,10 +19,12 @@ import org.slf4j.LoggerFactory;
 
 import play.Play;
 import play.modules.morphia.Model.MorphiaQuery;
+import vo.CategoryVO;
 
 import com.withiter.common.httprequest.CommonHTTPRequest;
 import com.withiter.common.lbs.bean.Location;
 import com.withiter.common.lbs.business.LocationBusiness;
+import com.withiter.models.merchant.Category;
 import com.withiter.models.merchant.Merchant;
 import com.withiter.models.merchant.Tese;
 import com.withiter.models.merchant.TopMerchant;
@@ -103,6 +105,16 @@ public class Patches extends BaseController {
 		}
 		
 		renderJSON(i);
+	}
+	
+	public static void updateCounts(){
+		Category.updateCounts();
+		List<Category> categories = Category.getAll();
+		List<CategoryVO> categoriesVO = new ArrayList<CategoryVO>();
+		for (Category c : categories) {
+			categoriesVO.add(CategoryVO.build(c));
+		}
+		renderJSON(categoriesVO);
 	}
 	
 	private static void importTopMerchantFromCSV(File file) throws IOException {

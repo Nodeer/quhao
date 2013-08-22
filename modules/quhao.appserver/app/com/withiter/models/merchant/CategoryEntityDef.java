@@ -7,5 +7,6 @@ public abstract class CategoryEntityDef extends BaseModel {
 
 	public long count = 0;
 	public String cateType;
+	public boolean enable = true;
 	
 }

@@ -26,6 +26,9 @@ public class Category extends CategoryEntityDef {
 			}
 			long count = count(cate.toString());
 			c.count = count;
+			if(cate == CateType.mianbaodangao || cate == CateType.tianpinyinpin || cate == CateType.xiaochikuaican){
+				c.enable = false;
+			}
 			c.save();
 		}
 	}
@@ -42,6 +45,7 @@ public class Category extends CategoryEntityDef {
 	 */
 	public static List<Category> getAll() {
 		MorphiaQuery q = Category.q();
+		q.filter("enable", true);
 		return q.asList();
 	}
 	

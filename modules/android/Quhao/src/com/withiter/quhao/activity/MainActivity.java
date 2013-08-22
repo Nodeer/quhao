@@ -58,20 +58,23 @@ public class MainActivity extends AppStoreActivity {
 		topMerchantsGird = (GridView) findViewById(R.id.topMerchants);
 		
 		localDisplayMetrics = getResources().getDisplayMetrics();
+
+		// top merchant function
 		topMerchants = new ArrayList<TopMerchant>();
 		getTopMerchants();
+		topMerchantsGird.setOnItemClickListener(topMerchantClickListener);
 
+		// search function
 		searchBtn = (Button) findViewById(R.id.edit_search);
+		//AppStoreActivity 什么意思
 		searchBtn.setOnClickListener(goMerchantsSearch(MainActivity.this));
 
+		// all categories
+		categorys = new ArrayList<Category>();
+		categorysGird = (GridView) findViewById(R.id.categorys);
+		getCateGorys();
+		categorysGird.setOnItemClickListener(categorysClickListener);
 		
-//
-//		topMerchantsGird.setOnItemClickListener(topMerchantClickListener);
-//		categorys = new ArrayList<Category>();
-//		categorysGird = (GridView) findViewById(R.id.categorys);
-//		getCateGorys();
-//
-//		categorysGird.setOnItemClickListener(categorysClickListener);
 //		btnPerson.setOnClickListener(goPersonCenterListener(this));
 //		btnMarchent.setOnClickListener(getMarchentListListener(this));
 	}
@@ -207,11 +210,6 @@ public class MainActivity extends AppStoreActivity {
 		public void run() {
 			try {
 				Log.v(TAG, "get categorys data form server begin");
-				String userHome = System.getProperty("user.home");
-				System.out.println(userHome);
-				if (userHome.contains("eacfgjl")) {
-					QuhaoConstant.HTTP_URL = "http://146.11.24.199:9081/";
-				}
 				String result = CommonHTTPRequest
 						.get("MerchantController/allCategories");
 				if (CommonTool.isNull(result)) {

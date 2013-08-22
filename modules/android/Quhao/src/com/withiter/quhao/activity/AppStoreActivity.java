@@ -54,24 +54,21 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 	protected OnClickListener goPersonCenterListener(final Activity activity) {
 		OnClickListener clickListener = new OnClickListener() {
 			@Override
-			public void onClick(View v)
-			{
-				if(QHClientApplication.getInstance().isLogined)
-				{
-					Intent intent = new Intent(activity, PersonCenterActivity.class);
+			public void onClick(View v) {
+				if (QHClientApplication.getInstance().isLogined) {
+					Intent intent = new Intent(activity,
+							PersonCenterActivity.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);
-					
-				}
-				else
-				{
+
+				} else {
 					Intent intent = new Intent(activity, LoginActivity.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);
 				}
-				
+
 				overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
-				//activity.finish();
+				// activity.finish();
 
 			}
 		};
@@ -86,24 +83,21 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 				overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
-				//activity.finish();
+				// activity.finish();
 			}
 		};
 		return clickListener;
 	}
-	
-	protected OnClickListener goMerchantsSearch(final Activity activity)
-	{
-		OnClickListener clickListener = new OnClickListener()
-		{
-			
+
+	protected OnClickListener goMerchantsSearch(final Activity activity) {
+		OnClickListener clickListener = new OnClickListener() {
 			@Override
-			public void onClick(View v)
-			{
-				Intent intent = new Intent(activity, MerchantsSearchActivity.class);
+			public void onClick(View v) {
+				Intent intent = new Intent(activity,
+						MerchantsSearchActivity.class);
 				startActivity(intent);
 				overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
-				//activity.finish();
+				// activity.finish();
 			}
 		};
 		return clickListener;
