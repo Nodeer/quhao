@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WithiterThirdViewController : UIViewController{
+@interface WithiterThirdViewController : UIViewController <UITextFieldDelegate>{
     UILabel *mobileLabel;
     UILabel *passwordLabel;
     UITextField *mobile;
