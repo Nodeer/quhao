@@ -124,7 +124,7 @@ public class MerchantsSearchActivity extends AppStoreActivity {
 		merchantsListView.setVisibility(View.GONE);
 
 		btnPerson.setOnClickListener(goPersonCenterListener(this));
-		btnMarchent.setOnClickListener(getMarchentListListener(this));
+		btnMarchent.setOnClickListener(goCategoryListener(this));
 		// initView();
 	}
 

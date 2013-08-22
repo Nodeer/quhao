@@ -131,7 +131,7 @@ public class MerchantDetailActivity extends AppStoreActivity {
     	this.huanjing = (TextView) info.findViewById(R.id.huanjing);
 
 		btnPerson.setOnClickListener(goPersonCenterListener(this));
-		btnMarchent.setOnClickListener(getMarchentListListener(this));
+		btnMarchent.setOnClickListener(goCategoryListener(this));
 
 		initView();
 	}

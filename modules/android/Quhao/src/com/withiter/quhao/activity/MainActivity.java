@@ -62,7 +62,6 @@ public class MainActivity extends AppStoreActivity {
 
 		// search function
 		searchBtn = (Button) findViewById(R.id.edit_search);
-		//AppStoreActivity 什么意思
 		searchBtn.setOnClickListener(goMerchantsSearch(MainActivity.this));
 
 		// all categories
@@ -71,8 +70,9 @@ public class MainActivity extends AppStoreActivity {
 		getCateGorys();
 		categorysGird.setOnItemClickListener(categorysClickListener);
 		
-//		btnPerson.setOnClickListener(goPersonCenterListener(this));
-//		btnMarchent.setOnClickListener(getMarchentListListener(this));
+		// bind menu button function
+		btnMarchent.setOnClickListener(goCategoryListener(this));
+		btnPerson.setOnClickListener(goPersonCenterListener(this));
 	}
 
 	/**

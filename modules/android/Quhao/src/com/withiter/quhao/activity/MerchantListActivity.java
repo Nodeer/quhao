@@ -141,8 +141,9 @@ public class MerchantListActivity extends AppStoreActivity {
 		this.categoryCount = getIntent().getStringExtra("categoryCount");
 		this.categoryCountView = (TextView) findViewById(R.id.categoryCount);
 		this.categoryCountView.setText("[共" + categoryCount + "家]");
+		
 		btnPerson.setOnClickListener(goPersonCenterListener(this));
-		btnMarchent.setOnClickListener(getMarchentListListener(this));
+		btnMarchent.setOnClickListener(goCategoryListener(this));
 		initView();
 	}
 

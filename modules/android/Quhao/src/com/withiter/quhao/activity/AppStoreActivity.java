@@ -23,8 +23,10 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 	protected String action = "";
 	private final int UNLOCK_CLICK = 1000;
 	protected ProgressDialogUtil progressDialogUtil;
+	
 	protected Button btnPerson;
 	protected Button btnMarchent;
+	protected Button btnNearby;
 
 	private Handler unlockHandler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -36,10 +38,7 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		// initData();
-
 		// 检查网络
 		// if(checkDevice() && autoLogin())
 		if (checkDevice()) {
@@ -48,7 +47,6 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 
 		btnMarchent = (Button) findViewById(R.id.btnMerchantList);
 		btnPerson = (Button) findViewById(R.id.btnPerson);
-
 	}
 
 	protected OnClickListener goPersonCenterListener(final Activity activity) {
@@ -75,7 +73,7 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 		return clickListener;
 	}
 
-	protected OnClickListener getMarchentListListener(final Activity activity) {
+	protected OnClickListener goCategoryListener(final Activity activity) {
 		OnClickListener clickListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -83,7 +81,6 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 				overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
-				// activity.finish();
 			}
 		};
 		return clickListener;
@@ -97,7 +94,6 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 						MerchantsSearchActivity.class);
 				startActivity(intent);
 				overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
-				// activity.finish();
 			}
 		};
 		return clickListener;

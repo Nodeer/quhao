@@ -16,7 +16,7 @@ public class PersonCenterActivity extends AppStoreActivity {
 		super.onCreate(savedInstanceState);
 
 		btnPerson.setOnClickListener(goPersonCenterListener(this));
-		btnMarchent.setOnClickListener(getMarchentListListener(this));
+		btnMarchent.setOnClickListener(goCategoryListener(this));
 	}
 
 	@Override
