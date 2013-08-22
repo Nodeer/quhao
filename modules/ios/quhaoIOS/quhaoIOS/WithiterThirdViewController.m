@@ -21,6 +21,54 @@
 @synthesize signupBTN;
 @synthesize loginBTN;
 
+//UITextField的协议方法，当开始编辑时监听
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    NSTimeInterval animationDuration=0.30f;
+    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
+    [UIView setAnimationDuration:animationDuration];
+    float width = self.view.frame.size.width;
+    float height = self.view.frame.size.height;
+    //上移30个单位，按实际情况设置
+    CGRect rect=CGRectMake(0.0f,-30,width,height);
+    self.view.frame=rect;
+    [UIView commitAnimations];
+    return YES;
+}
+
+//恢复原始视图位置
+-(void)resumeView
+{
+    NSTimeInterval animationDuration=0.30f;
+    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
+    [UIView setAnimationDuration:animationDuration];
+    float width = self.view.frame.size.width;
+    float height = self.view.frame.size.height;
+    //如果当前View是父视图，则Y为20个像素高度，如果当前View为其他View的子视图，则动态调节Y的高度
+    float Y = 20.0f;
+    CGRect rect=CGRectMake(0.0f,Y,width,height);
+    self.view.frame=rect;
+    [UIView commitAnimations];
+}
+
+//隐藏键盘的方法
+-(void)hidenKeyboard
+{
+    [self.mobile resignFirstResponder];
+    [self.password resignFirstResponder];
+    [self resumeView];
+}
+
+//点击键盘上的Return按钮响应的方法
+-(IBAction)nextOnKeyboard:(UITextField *)sender
+{
+    if (sender == self.mobile) {
+        [self.password becomeFirstResponder];
+    }else if (sender == self.password){
+        [self hidenKeyboard];
+    }
+}
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -44,6 +92,13 @@
  * Login click function
  */
 -(IBAction)onClickLoginBTN:(id)sender{
+    NSString *mobileValue = mobile.text;
+    NSString *passwordValue = password.text;
+    
+    NSLog(@"mobile is : %@", mobileValue);
+    NSLog(@"password is : %@", passwordValue);
+    
+    
     UIAlertView *alert =
     [[UIAlertView alloc] initWithTitle:@"Alert" message:@"登陆!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
@@ -52,7 +107,22 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"aaaaa");
+    
+    //指定本身为代理
+    self.mobile.delegate = self;
+    self.password.delegate = self;
+    //指定编辑时键盘的return键类型
+    self.mobile.returnKeyType = UIReturnKeyNext;
+    self.password.returnKeyType = UIReturnKeyDefault;
+    
+    //注册键盘响应事件方法
+    [self.mobile addTarget:self action:@selector(nextOnKeyboard:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [self.password addTarget:self action:@selector(nextOnKeyboard:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    
+    //添加手势，点击屏幕其他区域关闭键盘的操作
+    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hidenKeyboard)];
+    gesture.numberOfTapsRequired = 1;
+    [self.view addGestureRecognizer:gesture];
     
     [loginBTN addTarget:self action:@selector(onClickLoginBTN:) forControlEvents:UIControlEventTouchUpInside];
     [signupBTN addTarget:self action:@selector(onClickSignUpBTN:) forControlEvents:UIControlEventTouchUpInside];
