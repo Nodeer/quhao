@@ -55,7 +55,7 @@ public class MainActivity extends AppStoreActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.main_layout);
 		super.onCreate(savedInstanceState);
-		
+
 		// TODO add default view here
 		if (!networkOK) {
 			Builder dialog = new AlertDialog.Builder(MainActivity.this);
@@ -167,13 +167,13 @@ public class MainActivity extends AppStoreActivity {
 	/**
 	 * get top merchants from server side and display
 	 */
-	private void getTopMerchantsFromServerAndDisplay(){
+	private void getTopMerchantsFromServerAndDisplay() {
 		progressTopMerchant = new ProgressDialogUtil(this, R.string.empty,
 				R.string.querying, false);
 		progressTopMerchant.showProgress();
-		Thread t = new Thread(){
+		Thread t = new Thread() {
 			@Override
-			public void run(){
+			public void run() {
 				Looper.prepare();
 				try {
 					Log.i(TAG, "Start to get categorys data form server.");
@@ -181,32 +181,35 @@ public class MainActivity extends AppStoreActivity {
 							.get("MerchantController/getTopMerchants?x=6");
 					Log.d(TAG, result);
 					if (CommonTool.isNull(result)) {
-						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
+								1000);
 					} else {
 						if (null == topMerchants) {
 							topMerchants = new ArrayList<TopMerchant>();
 						}
 						topMerchants.addAll(ParseJson.getTopMerchants(result));
-						topMerchantsUpdateHandler.obtainMessage(200, topMerchants)
-								.sendToTarget();
+						topMerchantsUpdateHandler.obtainMessage(200,
+								topMerchants).sendToTarget();
 					}
 				} catch (ClientProtocolException e) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					e.printStackTrace();
-//					Builder dialog = new AlertDialog.Builder(MainActivity.this);
-//					dialog.setTitle("温馨提示")
-//							.setMessage("使用\"取号\"人数火爆，服务器处理不过来了，亲，稍等片刻")
-//							.setPositiveButton("确定", null);
-//					dialog.show();
+					// Builder dialog = new
+					// AlertDialog.Builder(MainActivity.this);
+					// dialog.setTitle("温馨提示")
+					// .setMessage("使用\"取号\"人数火爆，服务器处理不过来了，亲，稍等片刻")
+					// .setPositiveButton("确定", null);
+					// dialog.show();
 				} catch (IOException e) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-//					Log.e(TAG, e.getCause().toString(), e);
+					// Log.e(TAG, e.getCause().toString(), e);
 					e.printStackTrace();
-//					Builder dialog = new AlertDialog.Builder(MainActivity.this);
-//					dialog.setTitle("温馨提示")
-//							.setMessage("使用\"取号\"人数火爆，服务器处理不过来了，亲，稍等片刻")
-//							.setPositiveButton("确定", null);
-//					dialog.show();
+					// Builder dialog = new
+					// AlertDialog.Builder(MainActivity.this);
+					// dialog.setTitle("温馨提示")
+					// .setMessage("使用\"取号\"人数火爆，服务器处理不过来了，亲，稍等片刻")
+					// .setPositiveButton("确定", null);
+					// dialog.show();
 				} finally {
 					progressTopMerchant.closeProgress();
 				}
@@ -215,7 +218,7 @@ public class MainActivity extends AppStoreActivity {
 		};
 		t.start();
 	}
-	
+
 	/**
 	 * get all categories from server and display them
 	 */
@@ -228,16 +231,17 @@ public class MainActivity extends AppStoreActivity {
 		progressCategory = new ProgressDialogUtil(this, R.string.empty,
 				R.string.querying, false);
 		progressCategory.showProgress();
-		Thread t = new Thread(){
+		Thread t = new Thread() {
 			@Override
-			public void run(){
+			public void run() {
 				Looper.prepare();
 				try {
 					Log.v(TAG, "get categorys data form server begin");
 					String result = CommonHTTPRequest
 							.get("MerchantController/allCategories");
 					if (CommonTool.isNull(result)) {
-						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
+								1000);
 					} else {
 						if (null == categorys) {
 							categorys = new ArrayList<Category>();
@@ -263,7 +267,7 @@ public class MainActivity extends AppStoreActivity {
 	private Runnable categoryRunnable = new Runnable() {
 		@Override
 		public void run() {
-			
+
 		}
 	};
 
