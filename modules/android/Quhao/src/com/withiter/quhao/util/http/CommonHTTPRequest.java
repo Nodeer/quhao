@@ -9,9 +9,13 @@ import java.net.URL;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
 import android.util.Log;
@@ -54,7 +58,7 @@ public class CommonHTTPRequest {
 		try {
 			url = new URL(strUrl);
 			urlConn = (HttpURLConnection) url.openConnection();
-			urlConn.setConnectTimeout(1000 * 30);
+			urlConn.setConnectTimeout(1000 * 20);
 			in = new InputStreamReader(urlConn.getInputStream());
 			BufferedReader br = new BufferedReader(in);
 
@@ -79,29 +83,37 @@ public class CommonHTTPRequest {
 		return result;
 	}
 
-	public static String get(String url) throws Exception {
+	public static String get(String url) throws ClientProtocolException, IOException {
 		String result = "";
 		String httpUrl = QuhaoConstant.HTTP_URL + url;
 
 		HttpGet request = new HttpGet(httpUrl);
-		HttpClient httpClient = new DefaultHttpClient();
+
+		HttpParams httpParameters = new BasicHttpParams();
+		// Set the timeout in milliseconds until a connection is established.
+		int timeoutConnection = 10 * 1000;
+		// Set the default socket timeout (SO_TIMEOUT) in milliseconds which is
+		// the timeout for waiting for data.
+		int timeoutSocket = 10 * 1000;
+		HttpConnectionParams.setConnectionTimeout(httpParameters,
+				timeoutConnection);
+		HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+
+		HttpClient httpClient = new DefaultHttpClient(httpParameters);
 		HttpResponse response;
-		try {
-			response = httpClient.execute(request);
-			Log.i(TAG, "get top merchant data form server : "
-					+ response.getStatusLine().getStatusCode());
-			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-				result = EntityUtils.toString(response.getEntity());
-				Log.v(TAG, "get top merchant data form server buf : " + result);
-				// 返回HTML页面
-				if (result.indexOf("<html>") != -1
-						|| result.indexOf("<HTML>") != -1) {
-					throw new Exception("session timeout!");
-				}
-			}
-		} catch (Exception e) {
-			throw new Exception(e);
+		response = httpClient.execute(request);
+		Log.i(TAG, "get top merchant data form server : "
+				+ response.getStatusLine().getStatusCode());
+		if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+			result = EntityUtils.toString(response.getEntity());
+			Log.v(TAG, "get top merchant data form server buf : " + result);
+			// 返回HTML页面
+//			if (result.indexOf("<html>") != -1
+//					|| result.indexOf("<HTML>") != -1) {
+//				throw new Exception("session timeout!");
+//			}
 		}
+
 		return result;
 	}
 }

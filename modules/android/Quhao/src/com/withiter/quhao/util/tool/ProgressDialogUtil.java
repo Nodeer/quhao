@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 public class ProgressDialogUtil {
 
 	private ProgressDialog pd;
+	private static final String TAG = ProgressDialog.class.getName();
 
 	public ProgressDialogUtil(final Context context, int title, int res,
 			final boolean permitClose) {
@@ -50,7 +51,7 @@ public class ProgressDialogUtil {
 			try {
 				pd.show();
 			} catch (Exception e) {
-				Log.e("ProgressDialogUtil", "show progress error");
+				Log.e(TAG, "show progress error");
 			}
 		}
 	}
@@ -60,7 +61,7 @@ public class ProgressDialogUtil {
 			try {
 				pd.dismiss();
 			} catch (Exception e) {
-				Log.e("ProgressDialogUtil", "close progress error");
+				Log.e(TAG, "close progress error");
 			}
 		}
 	}

@@ -1,6 +1,8 @@
 package com.withiter.quhao.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
+import com.withiter.quhao.util.tool.CommonTool;
 import com.withiter.quhao.util.tool.InfoHelper;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 
@@ -29,6 +32,8 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 	protected Button btnNearby;
 	protected Button btnPerson;
 	protected Button btnMore;
+	
+	protected static boolean networkOK = false;
 
 	private Handler unlockHandler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -42,6 +47,7 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// 检查网络
+		networkOK = CommonTool.isNetworkAvailable(this);
 		// if(checkDevice() && autoLogin())
 		if (checkDevice()) {
 			// sendRequest();

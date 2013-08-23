@@ -1,11 +1,17 @@
 package com.withiter.quhao.activity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.client.ClientProtocolException;
+
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -50,9 +56,16 @@ public class MainActivity extends AppStoreActivity {
 		setContentView(R.layout.main_layout);
 		super.onCreate(savedInstanceState);
 
+		if (!networkOK) {
+			Builder dialog = new AlertDialog.Builder(MainActivity.this);
+			dialog.setTitle("温馨提示").setMessage("Wifi/蜂窝网络未打开，或者网络情况不是很好哟")
+					.setPositiveButton("确定", null);
+			dialog.show();
+			return;
+		}
+
 		// initView();
 		topMerchantsGird = (GridView) findViewById(R.id.topMerchants);
-		
 		localDisplayMetrics = getResources().getDisplayMetrics();
 
 		// top merchant function
@@ -69,7 +82,7 @@ public class MainActivity extends AppStoreActivity {
 		categorysGird = (GridView) findViewById(R.id.categorys);
 		getCateGorys();
 		categorysGird.setOnItemClickListener(categorysClickListener);
-		
+
 		// bind menu button function
 		btnCategory.setOnClickListener(goCategory(this));
 		btnNearby.setOnClickListener(goNearby(this));
@@ -184,7 +197,9 @@ public class MainActivity extends AppStoreActivity {
 						.get("MerchantController/getTopMerchants?x=6");
 				Log.d(TAG, result);
 				if (CommonTool.isNull(result)) {
+					Looper.prepare();
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+					Looper.loop();
 				} else {
 					if (null == topMerchants) {
 						topMerchants = new ArrayList<TopMerchant>();
@@ -193,11 +208,28 @@ public class MainActivity extends AppStoreActivity {
 					topMerchantsUpdateHandler.obtainMessage(200, topMerchants)
 							.sendToTarget();
 				}
-
-			} catch (Exception e) {
+			} catch (ClientProtocolException e) {
+//				Looper.prepare();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				Log.e(TAG, e.getCause().toString(), e);
+//				Log.e(TAG, e.getCause().toString(), e);
 				e.printStackTrace();
+//				Builder dialog = new AlertDialog.Builder(MainActivity.this);
+//				dialog.setTitle("温馨提示")
+//						.setMessage("使用\"取号\"人数火爆，服务器处理不过来了，亲，稍等片刻")
+//						.setPositiveButton("确定", null);
+//				dialog.show();
+//				Looper.loop();
+			} catch (IOException e) {
+//				Looper.prepare();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+//				Log.e(TAG, e.getCause().toString(), e);
+				e.printStackTrace();
+//				Builder dialog = new AlertDialog.Builder(MainActivity.this);
+//				dialog.setTitle("温馨提示")
+//						.setMessage("使用\"取号\"人数火爆，服务器处理不过来了，亲，稍等片刻")
+//						.setPositiveButton("确定", null);
+//				dialog.show();
+//				Looper.loop();
 			} finally {
 				progressTopMerchant.closeProgress();
 			}
