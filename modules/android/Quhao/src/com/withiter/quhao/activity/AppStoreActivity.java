@@ -33,6 +33,7 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 	protected Button btnPerson;
 	protected Button btnMore;
 	
+	// 网络是否可用
 	protected static boolean networkOK = false;
 
 	private Handler unlockHandler = new Handler() {
@@ -49,9 +50,6 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 		// 检查网络
 		networkOK = CommonTool.isNetworkAvailable(this);
 		// if(checkDevice() && autoLogin())
-		if (checkDevice()) {
-			// sendRequest();
-		}
 
 		btnCategory = (Button) findViewById(R.id.btnMerchantList);
 		btnNearby = (Button) findViewById(R.id.btnNearby);
@@ -174,12 +172,12 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 		return false;
 	}
 
-	private boolean checkDevice() {
-		if (!InfoHelper.checkNetwork(this)) {
-			Toast.makeText(this, R.string.network_error_info, Toast.LENGTH_LONG)
-					.show();
-			return false;
-		}
-		return true;
-	}
+//	private boolean checkDevice() {
+//		if (!InfoHelper.checkNetwork(this)) {
+//			Toast.makeText(this, R.string.network_error_info, Toast.LENGTH_LONG)
+//					.show();
+//			return false;
+//		}
+//		return true;
+//	}
 }
