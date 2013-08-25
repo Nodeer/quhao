@@ -16,7 +16,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
+import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.CommonTool;
 import com.withiter.quhao.util.tool.ParseJson;
@@ -27,7 +29,6 @@ import com.withiter.quhao.vo.Merchant;
 public class MerchantDetailActivity extends AppStoreActivity {
 	private String LOGTAG = MerchantDetailActivity.class.getName();
 	private String merchantId;
-	private boolean isClick;
 	private final int UNLOCK_CLICK = 1000;
 	private ProgressDialogUtil progress;
 	private Merchant merchant;
@@ -43,18 +44,6 @@ public class MerchantDetailActivity extends AppStoreActivity {
 	private TextView kouwei;
 	private TextView huanjing;
 	private TextView fuwu;
-
-	/**
-	 * handler处理 解锁的时候可能会关闭其他的等待提示框
-	 */
-	private Handler unlockHandler = new Handler() {
-		public void handleMessage(Message msg) {
-			if (msg.what == UNLOCK_CLICK) {
-				// 解锁
-				isClick = false;
-			}
-		}
-	};
 
 	private Handler merchantUpdateHandler = new Handler() {
 		@Override
@@ -105,7 +94,9 @@ public class MerchantDetailActivity extends AppStoreActivity {
 		super.onCreate(savedInstanceState);
 
 		
+		
 		this.merchantId = getIntent().getStringExtra("merchantId");
+		
 		
 		btnGetNumber = (Button) findViewById(R.id.btn_GetNumber);
 		
@@ -130,12 +121,7 @@ public class MerchantDetailActivity extends AppStoreActivity {
     	this.fuwu = (TextView) info.findViewById(R.id.fuwu);
     	this.huanjing = (TextView) info.findViewById(R.id.huanjing);
 
-    	// bind menu button function
-		btnCategory.setOnClickListener(goCategory(this));
-		btnNearby.setOnClickListener(goNearby(this));
-		btnPerson.setOnClickListener(goPersonCenter(this));
-		btnMore.setOnClickListener(goMore(this));
-
+		btnBack.setOnClickListener(goBack(this));
 		initView();
 	}
 
@@ -154,10 +140,19 @@ public class MerchantDetailActivity extends AppStoreActivity {
 			@Override
 			public void onClick(View v)
 			{
-				Intent intent = new Intent();
-				intent.putExtra("merchantId", MerchantDetailActivity.this.merchantId);
-				intent.setClass(MerchantDetailActivity.this, GetNumberActivity.class);
-				startActivity(intent);
+				if (QHClientApplication.getInstance().isLogined) {
+					Intent intent = new Intent();
+					intent.putExtra("merchantId", MerchantDetailActivity.this.merchantId);
+					intent.setClass(MerchantDetailActivity.this, GetNumberActivity.class);
+					startActivity(intent);
+					
+				} else {
+					Intent intent = new Intent(MerchantDetailActivity.this, LoginActivity.class);
+					intent.putExtra("activityName", MerchantDetailActivity.class.getName());
+					intent.putExtra("merchantId", MerchantDetailActivity.this.merchantId);
+					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivity(intent);
+				}
 				overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
 			}
 		};

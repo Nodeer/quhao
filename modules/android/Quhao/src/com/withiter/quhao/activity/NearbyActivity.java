@@ -15,9 +15,16 @@ public class NearbyActivity extends AppStoreActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-//		setContentView(R.layout.merchants_search);
+		setContentView(R.layout.nearby_layout);
 		super.onCreate(savedInstanceState);
 		Log.i(TAG, "NearbyActivity is displayed");
+		
+		btnCategory.setOnClickListener(goCategory(this));
+		btnNearby.setOnClickListener(goNearby(this));
+		btnPerson.setOnClickListener(goPersonCenter(this));
+		btnMore.setOnClickListener(goMore(this));
+		btnBack.setOnClickListener(goBack(this));
+		
 	}
 	
 	@Override

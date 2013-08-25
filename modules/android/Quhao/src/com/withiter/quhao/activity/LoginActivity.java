@@ -1,6 +1,7 @@
 package com.withiter.quhao.activity;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,24 +14,19 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
-import com.withiter.quhao.adapter.MerchantAdapter;
 import com.withiter.quhao.domain.AccountInfo;
-import com.withiter.quhao.util.db.AccountInfoHelper;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.CommonTool;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.vo.LoginInfo;
-import com.withiter.quhao.vo.TopMerchant;
 
 public class LoginActivity extends AppStoreActivity {
 
@@ -45,20 +41,11 @@ public class LoginActivity extends AppStoreActivity {
 	private Button btnLogin;
 	private Button btnRegister;
 	private final int UNLOCK_CLICK = 1000;
-	private boolean isClick = false;
 	private ProgressDialogUtil progressLogin;
 
-	/**
-	 * handler处理 解锁的时候可能会关闭其他的等待提示框
-	 */
-	private Handler unlockHandler = new Handler() {
-		public void handleMessage(Message msg) {
-			if (msg.what == UNLOCK_CLICK) {
-				// 解锁
-				isClick = false;
-			}
-		}
-	};
+	private String activityName;
+	
+	private Map<String, Object> transfortParams = new HashMap<String, Object>();
 
 	private Handler loginUpdateHandler = new Handler() {
 		@Override
@@ -66,14 +53,25 @@ public class LoginActivity extends AppStoreActivity {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
 				
-				Intent intent = new Intent();
-				AccountInfo account = (AccountInfo) msg.obj;
-				Bundle bundle = new Bundle();
-				bundle.putSerializable("account", account);
-				intent.putExtras(bundle);
 				//intent.pute
-				intent.setClass(LoginActivity.this, PersonCenterActivity.class);
-				startActivity(intent);
+				if(CommonTool.isNotNull(activityName))
+				{
+					Intent intent = new Intent();
+					if("com.withiter.quhao.activity.MerchantDetailActivity".equals(activityName))
+					{
+						intent.putExtra("merchantId", (String)transfortParams.get("merchantId"));
+						intent.setClass(LoginActivity.this, GetNumberActivity.class);
+					}
+					else if("com.withiter.quhao.activity.PersonCenterActivity".equals(activityName))
+					{
+						intent.setClass(LoginActivity.this, PersonCenterActivity.class);
+					}
+					else
+					{
+						intent.setClass(LoginActivity.this, PersonCenterActivity.class);
+					}
+					startActivity(intent);
+				}
 				
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				finish();
@@ -90,6 +88,15 @@ public class LoginActivity extends AppStoreActivity {
 		setContentView(R.layout.login_layout);
 		super.onCreate(savedInstanceState);
 
+		activityName = getIntent().getStringExtra("activityName");
+		if(CommonTool.isNotNull(activityName))
+		{
+			if("com.withiter.quhao.activity.MerchantDetailActivity".equals(activityName))
+			{
+				String merchantId = getIntent().getStringExtra("merchantId");
+				transfortParams.put("merchantId", merchantId);
+			}
+		}
 		radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
 		radioPhone = (RadioButton) findViewById(R.id.radioPhone);
 		radioEmail = (RadioButton) findViewById(R.id.radioEmail);

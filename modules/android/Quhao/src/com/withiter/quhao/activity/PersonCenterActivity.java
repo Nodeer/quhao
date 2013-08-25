@@ -1,13 +1,11 @@
 package com.withiter.quhao.activity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 
 import com.withiter.quhao.R;
-import com.withiter.quhao.domain.AccountInfo;
 
 public class PersonCenterActivity extends AppStoreActivity {
 
@@ -18,13 +16,14 @@ public class PersonCenterActivity extends AppStoreActivity {
 		setContentView(R.layout.person_center_layout);
 		super.onCreate(savedInstanceState);
 
-		AccountInfo account = (AccountInfo) getIntent().getSerializableExtra("account");
-		Log.d(TAG, account.getPhone());
+		//AccountInfo account = QHClientApplication.getInstance().accessInfo;
+		//Log.d(TAG, account.getPhone());
 		// bind menu button function
 		btnCategory.setOnClickListener(goCategory(this));
 		btnNearby.setOnClickListener(goNearby(this));
 		btnPerson.setOnClickListener(goPersonCenter(this));
 		btnMore.setOnClickListener(goMore(this));
+		btnBack.setOnClickListener(goBack(this));
 	}
 
 	@Override

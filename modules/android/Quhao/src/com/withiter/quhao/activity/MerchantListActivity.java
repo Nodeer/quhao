@@ -37,7 +37,6 @@ public class MerchantListActivity extends AppStoreActivity {
 	private List<Merchant> merchants;
 	private MerchantAdapter merchantAdapter;
 	private final int UNLOCK_CLICK = 1000;
-	private boolean isClick = false;
 	private ProgressDialogUtil progressMerchants;
 	private int page;
 	private String categoryType;
@@ -46,18 +45,6 @@ public class MerchantListActivity extends AppStoreActivity {
 	private TextView categoryTypeView;
 	private TextView categoryCountView;
 	private boolean isFirst = true;
-
-	/**
-	 * handler处理 解锁的时候可能会关闭其他的等待提示框
-	 */
-	private Handler unlockHandler = new Handler() {
-		public void handleMessage(Message msg) {
-			if (msg.what == UNLOCK_CLICK) {
-				// 解锁
-				isClick = false;
-			}
-		}
-	};
 
 	private Handler merchantsUpdateHandler = new Handler() {
 		@Override
@@ -142,11 +129,7 @@ public class MerchantListActivity extends AppStoreActivity {
 		this.categoryCountView = (TextView) findViewById(R.id.categoryCount);
 		this.categoryCountView.setText("[共" + categoryCount + "家]");
 		
-		// bind menu button function
-		btnCategory.setOnClickListener(goCategory(this));
-		btnNearby.setOnClickListener(goNearby(this));
-		btnPerson.setOnClickListener(goPersonCenter(this));
-		btnMore.setOnClickListener(goMore(this));
+		btnBack.setOnClickListener(goBack(this));
 		initView();
 	}
 

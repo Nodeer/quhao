@@ -38,21 +38,8 @@ public class MerchantsSearchActivity extends AppStoreActivity {
 	private EditText editSearch;
 	private Button searchBtn;
 	private final int UNLOCK_CLICK = 1000;
-	private boolean isClick = false;
 	private ProgressDialogUtil progressMerchants;
 	private boolean isFirst = true;
-
-	/**
-	 * handler处理 解锁的时候可能会关闭其他的等待提示框
-	 */
-	private Handler unlockHandler = new Handler() {
-		public void handleMessage(Message msg) {
-			if (msg.what == UNLOCK_CLICK) {
-				// 解锁
-				isClick = false;
-			}
-		}
-	};
 
 	private Handler merchantsUpdateHandler = new Handler() {
 		@Override
@@ -123,11 +110,7 @@ public class MerchantsSearchActivity extends AppStoreActivity {
 		merchantsListView.setNextFocusDownId(R.id.merchantsListView);
 		merchantsListView.setVisibility(View.GONE);
 
-		// bind menu button function
-		btnCategory.setOnClickListener(goCategory(this));
-		btnNearby.setOnClickListener(goNearby(this));
-		btnPerson.setOnClickListener(goPersonCenter(this));
-		btnMore.setOnClickListener(goMore(this));
+		btnBack.setOnClickListener(goBack(this));
 		// initView();
 	}
 

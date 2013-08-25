@@ -47,7 +47,6 @@ public class MainActivity extends AppStoreActivity {
 	protected ProgressDialogUtil progressCategory;
 	protected ProgressDialogUtil progressTopMerchant;
 	private static final int UNLOCK_CLICK = 1000;
-	private boolean isClick = false;
 	private List<Category> categorys = null;
 
 	@Override
@@ -89,20 +88,8 @@ public class MainActivity extends AppStoreActivity {
 		btnNearby.setOnClickListener(goNearby(this));
 		btnPerson.setOnClickListener(goPersonCenter(this));
 		btnMore.setOnClickListener(goMore(this));
+		
 	}
-
-	/**
-	 * handler处理 解锁的时候可能会关闭其他的等待提示框
-	 */
-	private Handler unlockHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			if (msg.what == UNLOCK_CLICK) {
-				// 解锁
-				MainActivity.this.isClick = false;
-			}
-		}
-	};
 
 	private Handler topMerchantsUpdateHandler = new Handler() {
 		@Override

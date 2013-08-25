@@ -1,5 +1,7 @@
 package com.withiter.quhao.activity;
 
+import com.withiter.quhao.R;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -14,8 +16,15 @@ public class MoreActivity extends AppStoreActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		Log.i(TAG, "MoreActivity is displayed");
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-//		setContentView(R.layout.merchants_search);
+		setContentView(R.layout.more_layout);
 		super.onCreate(savedInstanceState);
+		
+		btnCategory.setOnClickListener(goCategory(this));
+		btnNearby.setOnClickListener(goNearby(this));
+		btnPerson.setOnClickListener(goPersonCenter(this));
+		btnMore.setOnClickListener(goMore(this));
+		btnBack.setOnClickListener(goBack(this));
+		
 	}
 	
 	@Override

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
@@ -23,7 +24,7 @@ import com.withiter.quhao.util.tool.ProgressDialogUtil;
 public abstract class AppStoreActivity extends QuhaoActivity implements
 		OnClickListener, OnTouchListener {
 
-	private boolean isClick = false;
+	protected boolean isClick = false;
 	protected String action = "";
 	private final int UNLOCK_CLICK = 1000;
 	protected ProgressDialogUtil progressDialogUtil;
@@ -32,11 +33,13 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 	protected Button btnNearby;
 	protected Button btnPerson;
 	protected Button btnMore;
+	protected Button btnBack;
 	
+	protected static final int FIRST_REQUEST_CODE = 1;
 	// 网络是否可用
 	protected static boolean networkOK = false;
 
-	private Handler unlockHandler = new Handler() {
+	protected Handler unlockHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what == UNLOCK_CLICK) {
 				isClick = false;
@@ -50,13 +53,29 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 		// 检查网络
 		networkOK = CommonTool.isNetworkAvailable(this);
 		// if(checkDevice() && autoLogin())
-
 		btnCategory = (Button) findViewById(R.id.btnMerchantList);
 		btnNearby = (Button) findViewById(R.id.btnNearby);
 		btnPerson = (Button) findViewById(R.id.btnPerson);
 		btnMore = (Button) findViewById(R.id.btnMore);
+		btnBack = (Button) findViewById(R.id.back_btn);
+		
 	}
 
+	/**
+	 * 商家列表按钮绑定事件，点击进入商家列表页面
+	 * @param activity 需要跳转到的页面
+	 * @return 绑定事件
+	 */
+	protected OnClickListener goBack(final Activity activity) {
+		OnClickListener clickListener = new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				onBackPressed();
+			}
+		};
+		return clickListener;
+	}
+	
 	/**
 	 * 商家列表按钮绑定事件，点击进入商家列表页面
 	 * @param activity 需要跳转到的页面
@@ -67,7 +86,7 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(activity, MainActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(intent);
 				overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
 			}
@@ -85,7 +104,7 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(activity, NearbyActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(intent);
 				overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
 			}
@@ -105,15 +124,13 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 				if (QHClientApplication.getInstance().isLogined) {
 					Intent intent = new Intent(activity,
 							PersonCenterActivity.class);
-					AccountInfo account = QHClientApplication.getInstance().accessInfo;
-					Bundle bundle = new Bundle();
-					bundle.putSerializable("account", account);
-					intent.putExtras(bundle);
-					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 					startActivity(intent);
 				} else {
 					Intent intent = new Intent(activity, LoginActivity.class);
-					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					intent.putExtra("activityName", activity.getClass().getName());
+					Log.d("ok", " activity.getClass().getName() : " + activity.getClass().getName());
+					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 					startActivity(intent);
 				}
 
@@ -133,7 +150,7 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(activity, MoreActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(intent);
 				overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
 			}

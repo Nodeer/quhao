@@ -3,6 +3,9 @@
   xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout android:gravity="center" android:orientation="horizontal" android:background="@drawable/search_bar_background" android:padding="6.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <Button android:gravity="left|center" android:id="@+id/back_btn" 
+           	android:layout_width="wrap_content" android:layout_height="wrap_content" 
+            android:background="@drawable/backbutton_background" />
         <EditText android:textAppearance="?android:textAppearanceMedium" 
             android:gravity="left|center" android:id="@+id/edit_search" 
             android:background="@android:drawable/edit_text" android:layout_width="0.0dip" 
@@ -20,9 +23,5 @@
 		    android:headerDividersEnabled="true"  android:listSelector="@drawable/list_item_trans"
 		    android:scrollbarThumbVertical="@drawable/scrollbar"
 		    android:scrollbars="vertical" />
-	</LinearLayout>
-    <LinearLayout android:layout_width="fill_parent"
-		android:id="@+id/menuLayout" android:layout_height="wrap_content">
-		<include android:id="@+id/menu" layout="@layout/menu_bar" />
 	</LinearLayout>
 </LinearLayout> 
