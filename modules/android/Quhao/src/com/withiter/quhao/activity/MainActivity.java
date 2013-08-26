@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -43,7 +42,6 @@ public class MainActivity extends AppStoreActivity {
 	private Button searchBtn;
 	private List<TopMerchant> topMerchants;
 	private GridView categorysGird;
-	private DisplayMetrics localDisplayMetrics;
 	protected ProgressDialogUtil progressCategory;
 	protected ProgressDialogUtil progressTopMerchant;
 	private static final int UNLOCK_CLICK = 1000;
@@ -66,7 +64,6 @@ public class MainActivity extends AppStoreActivity {
 
 		// initView();
 		topMerchantsGird = (GridView) findViewById(R.id.topMerchants);
-		localDisplayMetrics = getResources().getDisplayMetrics();
 
 		// top merchant function
 		topMerchants = new ArrayList<TopMerchant>();
@@ -96,7 +93,6 @@ public class MainActivity extends AppStoreActivity {
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
-				Object obj = msg.obj;
 				ListAdapter adapter = new TopMerchantGridAdapter(topMerchants,
 						topMerchantsGird, MainActivity.this);
 				topMerchantsGird.setAdapter(adapter);
@@ -110,11 +106,9 @@ public class MainActivity extends AppStoreActivity {
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
-
 				ListAdapter adapter = new CategoryGridAdapter(categorys,
 						categorysGird, MainActivity.this);
 				categorysGird.setAdapter(adapter);
-
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 		}
@@ -154,7 +148,7 @@ public class MainActivity extends AppStoreActivity {
 	/**
 	 * get top merchants from server side and display
 	 */
-	private void getTopMerchantsFromServerAndDisplay() {
+	public void getTopMerchantsFromServerAndDisplay() {
 		progressTopMerchant = new ProgressDialogUtil(this, R.string.empty,
 				R.string.querying, false);
 		progressTopMerchant.showProgress();
@@ -181,22 +175,22 @@ public class MainActivity extends AppStoreActivity {
 				} catch (ClientProtocolException e) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					e.printStackTrace();
-					// Builder dialog = new
-					// AlertDialog.Builder(MainActivity.this);
-					// dialog.setTitle("温馨提示")
-					// .setMessage("使用\"取号\"人数火爆，服务器处理不过来了，亲，稍等片刻")
-					// .setPositiveButton("确定", null);
-					// dialog.show();
+					 Builder dialog = new
+					 AlertDialog.Builder(MainActivity.this);
+					 dialog.setTitle("温馨提示1")
+					 .setMessage("使用\"取号\"人数火爆，服务器处理不过来了，亲，稍等片刻")
+					 .setPositiveButton("确定", null);
+					 dialog.show();
 				} catch (IOException e) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					// Log.e(TAG, e.getCause().toString(), e);
 					e.printStackTrace();
-					// Builder dialog = new
-					// AlertDialog.Builder(MainActivity.this);
-					// dialog.setTitle("温馨提示")
-					// .setMessage("使用\"取号\"人数火爆，服务器处理不过来了，亲，稍等片刻")
-					// .setPositiveButton("确定", null);
-					// dialog.show();
+					 Builder dialog = new
+					 AlertDialog.Builder(MainActivity.this);
+					 dialog.setTitle("温馨提示2")
+					 .setMessage("使用\"取号\"人数火爆，服务器处理不过来了，亲，稍等片刻")
+					 .setPositiveButton("确定", null);
+					 dialog.show();
 				} finally {
 					progressTopMerchant.closeProgress();
 				}
@@ -209,7 +203,7 @@ public class MainActivity extends AppStoreActivity {
 	/**
 	 * get all categories from server and display them
 	 */
-	private void getCategoriesFromServerAndDisplay() {
+	public void getCategoriesFromServerAndDisplay() {
 		if (isClick) {
 			return;
 		}

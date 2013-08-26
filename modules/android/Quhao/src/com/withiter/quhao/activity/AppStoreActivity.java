@@ -24,6 +24,8 @@ import com.withiter.quhao.util.tool.ProgressDialogUtil;
 public abstract class AppStoreActivity extends QuhaoActivity implements
 		OnClickListener, OnTouchListener {
 
+	private final String TAG = AppStoreActivity.class.getName();
+	
 	protected boolean isClick = false;
 	protected String action = "";
 	private final int UNLOCK_CLICK = 1000;
@@ -85,10 +87,18 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 		OnClickListener clickListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(activity, MainActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				startActivity(intent);
-				overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
+				// 判断是否在当前页面
+				if(activity instanceof MainActivity){
+					Log.i(TAG, "refresh category page");
+					((MainActivity) activity).getTopMerchantsFromServerAndDisplay();
+					((MainActivity) activity).getCategoriesFromServerAndDisplay();
+//					((MainActivity) activity).onCreate(null);
+				}
+				
+//				Intent intent = new Intent(activity, MainActivity.class);
+//				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//				startActivity(intent);
+//				overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
 			}
 		};
 		return clickListener;
