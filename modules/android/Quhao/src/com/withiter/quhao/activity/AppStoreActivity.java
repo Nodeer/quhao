@@ -92,7 +92,6 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 					Log.i(TAG, "refresh category page");
 					((MainActivity) activity).getTopMerchantsFromServerAndDisplay();
 					((MainActivity) activity).getCategoriesFromServerAndDisplay();
-//					((MainActivity) activity).onCreate(null);
 				}
 				
 //				Intent intent = new Intent(activity, MainActivity.class);

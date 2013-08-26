@@ -168,6 +168,7 @@ public class MainActivity extends AppStoreActivity {
 						if (null == topMerchants) {
 							topMerchants = new ArrayList<TopMerchant>();
 						}
+						topMerchants.clear();
 						topMerchants.addAll(ParseJson.getTopMerchants(result));
 						topMerchantsUpdateHandler.obtainMessage(200,
 								topMerchants).sendToTarget();
@@ -227,7 +228,7 @@ public class MainActivity extends AppStoreActivity {
 						if (null == categorys) {
 							categorys = new ArrayList<Category>();
 						}
-
+						categorys.clear();
 						categorys.addAll(ParseJson.getCategorys(result));
 						categorysUpdateHandler.obtainMessage(200, categorys)
 								.sendToTarget();
