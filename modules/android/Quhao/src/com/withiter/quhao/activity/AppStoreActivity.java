@@ -82,17 +82,12 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 		OnClickListener clickListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// 判断是否在当前页面
-				if(activity instanceof MainActivity){
-					Log.i(TAG, "refresh category page");
-					((MainActivity) activity).getTopMerchantsFromServerAndDisplay();
-					((MainActivity) activity).getCategoriesFromServerAndDisplay();
-				}
 				
-//				Intent intent = new Intent(activity, MainActivity.class);
-//				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-//				startActivity(intent);
-//				overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
+				// do not change the code below
+				Intent intent = new Intent(activity, MainActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				startActivity(intent);
+				overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
 			}
 		};
 		return clickListener;
