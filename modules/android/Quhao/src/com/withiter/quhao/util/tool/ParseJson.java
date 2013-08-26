@@ -2,15 +2,20 @@ package com.withiter.quhao.util.tool;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.withiter.quhao.vo.Category;
+import com.withiter.quhao.vo.Haoma;
 import com.withiter.quhao.vo.LoginInfo;
 import com.withiter.quhao.vo.Merchant;
+import com.withiter.quhao.vo.Paidui;
 import com.withiter.quhao.vo.TopMerchant;
 
 public class ParseJson {
@@ -351,5 +356,98 @@ public class ParseJson {
 		}
 
 		return loginInfo;
+	}
+
+	/**
+	 * parse string to haoma object
+	 * 
+	 * @param buf the string from server
+	 * @return haoma object
+	 */
+	public static Haoma getHaoma(String result)
+	{
+		Haoma haoma = new Haoma();
+		if (null == result || "".equals(result)) {
+			return haoma;
+		}
+
+		try {
+			JSONObject obj = new JSONObject(result);
+
+			String merchantId = "";
+
+			if (obj.has("merchantId")) {
+				merchantId = obj.getString("merchantId");
+				haoma.merchantId = merchantId;
+			}
+			
+			JSONObject jsonMaps = null;
+			Map<Integer, Paidui> haomaMap = null;
+			if (obj.has("haomaVOMap")) {
+				haomaMap = new HashMap<Integer, Paidui>();
+				jsonMaps = obj.getJSONObject("haomaVOMap");
+				
+				Iterator<String> keyIter = jsonMaps.keys();
+				
+				while(keyIter.hasNext())
+				{
+					String key = keyIter.next();
+					JSONObject obj1 = jsonMaps.getJSONObject(key);
+					Paidui paidu = coventPaidui(obj1);
+					haomaMap.put(Integer.parseInt(key), paidu);
+				}
+				
+				haoma.haomaMap = haomaMap;
+			}
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		return haoma;
+	}
+
+	private static Paidui coventPaidui(JSONObject obj)
+	{
+		Paidui paidu = null;
+		
+		try
+		{
+			Integer currentNumber = null;
+	
+			if (obj.has("currentNumber")) {
+				currentNumber = obj.getInt("currentNumber");
+			}
+			
+			Integer canceled = null;
+			
+			if (obj.has("canceled")) {
+				canceled = obj.getInt("canceled");
+			}
+			
+			Integer expired = null;
+			
+			if (obj.has("expired")) {
+				expired = obj.getInt("expired");
+			}
+			
+			Integer finished = null;
+			
+			if (obj.has("finished")) {
+				finished = obj.getInt("finished");
+			}
+			
+			boolean enable = false;
+			
+			if (obj.has("enable")) {
+				enable = obj.getBoolean("enable");
+			}
+
+			paidu = new Paidui(currentNumber, canceled, expired, finished, enable);
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return paidu;
 	}
 }

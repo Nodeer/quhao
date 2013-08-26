@@ -53,7 +53,6 @@ public class SelectSeatNo extends PopupWindow implements OnClickListener
 	public SelectSeatNo(Activity context){
 		super(context);
 		mContext = context;
-		this.seatNo= "2";
 		
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		selectView = inflater.inflate(R.layout.seat_select, null);
@@ -84,8 +83,8 @@ public class SelectSeatNo extends PopupWindow implements OnClickListener
 		}
 		seatType = mContext.getResources().getStringArray(R.array.seat);
 		
-		seats = new String[]{"1w","2w","3w","4w","5w","6w","7w","8w","9w","10w",
-				"11w","12w","13w","14w","15w","16w","17zz","18","19","110"};
+		seats = new String[]{"1w","2w","3w","6w","7w","8w","9w","10w",
+				"14w","15w","16w","17zz","18","19","110"};
 		seatNoAdapter = new SeatNumericAdapter(mContext, seats, 0);
 		seatNoAdapter.setTextType(seatType[0]);
 		seatView.setViewAdapter(seatNoAdapter);
@@ -97,7 +96,7 @@ public class SelectSeatNo extends PopupWindow implements OnClickListener
 		viewfipper.addView(selectView);
 		viewfipper.setFlipInterval(6000000);
 		this.setContentView(viewfipper);
-		this.setWidth(LayoutParams.FILL_PARENT);
+		this.setWidth(LayoutParams.MATCH_PARENT);
 		this.setHeight(LayoutParams.WRAP_CONTENT);
 		this.setFocusable(true);
 		ColorDrawable dw = new ColorDrawable(0x00000000);
@@ -113,7 +112,7 @@ public class SelectSeatNo extends PopupWindow implements OnClickListener
 	
 	private void updateSeatNo(WheelView seatView)
 	{
-		seatNo = seats[mCurSeatNo];
+		seatNo = seats[seatView.getCurrentItem()];
 	}
 	
 	private class SeatNumericAdapter extends ArrayWheelAdapter<String>{

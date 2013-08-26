@@ -1,5 +1,7 @@
 package com.withiter.quhao.activity;
 
+import java.util.Map;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,7 +19,9 @@ import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.CommonTool;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.view.SelectSeatNo;
+import com.withiter.quhao.vo.Haoma;
 import com.withiter.quhao.vo.Merchant;
+import com.withiter.quhao.vo.Paidui;
 
 /***
  * 取号activity
@@ -50,6 +54,10 @@ public class GetNumberActivity extends AppStoreActivity {
 	
 	private SelectSeatNo selectSeatNo;
 	
+	private String[] seatNos;
+	
+	private Haoma haoma;
+	
 	/**
 	 * 根据merchant显示在界面上的handler
 	 */
@@ -63,6 +71,32 @@ public class GetNumberActivity extends AppStoreActivity {
 				if (null != GetNumberActivity.this.merchant) {
 					merchantName.setText(GetNumberActivity.this.merchant.name);
 				}
+				GetNumberActivity.this.findViewById(R.id.loadingbar).setVisibility(View.GONE);
+				GetNumberActivity.this.findViewById(R.id.merchantNameLayout).setVisibility(View.VISIBLE);
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			}
+
+		}
+
+	};
+	
+	/**
+	 * 根据seat numbers 显示在界面上的handler
+	 */
+	private Handler seatNosUpdateHandler = new Handler()
+	{
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.what == 200) {
+				super.handleMessage(msg);
+
+				
+				if(null != haoma)
+				{
+					Map<Integer, Paidui> paiduis = haoma.haomaMap;
+					//seatNos = paiduis.
+				}
+				
 				GetNumberActivity.this.findViewById(R.id.loadingbar).setVisibility(View.GONE);
 				GetNumberActivity.this.findViewById(R.id.merchantNameLayout).setVisibility(View.VISIBLE);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -89,7 +123,6 @@ public class GetNumberActivity extends AppStoreActivity {
 		btnSeatNo = (Button) findViewById(R.id.btn_seatNo);
 		btnSeatNo.setOnClickListener(new OnClickListener()
 		{
-			
 			@Override
 			public void onClick(View v)
 			{
@@ -100,7 +133,51 @@ public class GetNumberActivity extends AppStoreActivity {
 		});
 		getMerchantInfo();
 		
+		getSeatNos();
 	}
+
+	/**
+	 * 
+	 * get seat numbers by merchant ID from server
+	 * 
+	 */
+	private void getSeatNos()
+	{
+		Thread merchantThread = new Thread(getSeatNosRunnable);
+		merchantThread.start();
+		
+	}
+	
+	/***
+	 * 获取merchant信息的线程
+	 */
+	private Runnable getSeatNosRunnable = new Runnable()
+	{
+		
+		@Override
+		public void run()
+		{
+			try {
+				Log.v(LOG_TAG, "get seat numbers data form server begin");
+				String buf = CommonHTTPRequest.get("quhao?id=51efe7d8ae4dca7b4c281754");
+					//	+ GetNumberActivity.this.merchantId);
+				if(CommonTool.isNull(buf))
+				{
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				}
+				else
+				{
+					haoma = ParseJson.getHaoma(buf);
+
+					seatNosUpdateHandler.obtainMessage(200, haoma)
+							.sendToTarget();
+				}
+			} catch (Exception e) {
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				e.printStackTrace();
+			}
+		}
+	};
 
 	/***
 	 * 获取merchant信息
