@@ -171,6 +171,8 @@ public class AccountController extends BaseController {
 			} else {
 				loginVO.msg = "fail";
 			}
+		}else{
+			loginVO.msg = "fail";
 		}
 		renderJSON(loginVO);
 	}

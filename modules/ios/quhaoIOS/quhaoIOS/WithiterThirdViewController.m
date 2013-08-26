@@ -7,6 +7,7 @@
 //
 
 #import "WithiterThirdViewController.h"
+#import "SBJson.h"
 
 @interface WithiterThirdViewController ()
 
@@ -98,9 +99,24 @@
     NSLog(@"mobile is : %@", mobileValue);
     NSLog(@"password is : %@", passwordValue);
     
+    NSString *urlStr = [NSString stringWithFormat:@"http://192.168.1.20:9081/login?phone=%@&password=%@",mobileValue, passwordValue];
+    NSURL *url = [NSURL URLWithString:urlStr];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+    [request startSynchronous];
+    NSError *httpError = [request error];
+    NSString *response = @"";
+    if (!httpError) {
+        response = [request responseString];
+        NSLog(@"%@", response);
+    }else{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"网络不是很好，请稍后再试" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+
+    
     
     UIAlertView *alert =
-    [[UIAlertView alloc] initWithTitle:@"Alert" message:@"登陆!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [[UIAlertView alloc] initWithTitle:@"Alert" message:response delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
 }
 

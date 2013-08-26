@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ASIHTTPRequest.h"
 
 @interface WithiterThirdViewController : UIViewController <UITextFieldDelegate>{
     UILabel *mobileLabel;

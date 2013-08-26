@@ -37,6 +37,7 @@
 		CEEC0732179BF021000879AE /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC0731179BF021000879AE /* Reachability.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CEEC0737179C22C7000879AE /* WithiterThirdViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEEC0736179C22C7000879AE /* WithiterThirdViewController.xib */; };
 		CEECC0B517C1204D00552773 /* QuhaoDelete.m in Sources */ = {isa = PBXBuildFile; fileRef = CEECC0B417C1204D00552773 /* QuhaoDelete.m */; };
+		CEF220A417CBA4BC006A5ACB /* CommonHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF220A317CBA4BC006A5ACB /* CommonHTTPRequest.m */; };
 		CEFBD35E17A16BE8008B34EE /* NSObject+SBJson.m in Sources */ = {isa = PBXBuildFile; fileRef = CE206FC6179EDE54003ECAC4 /* NSObject+SBJson.m */; };
 		CEFBD36117A16BE8008B34EE /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CE206FC9179EDE54003ECAC4 /* SBJsonParser.m */; };
 		CEFBD36317A16BE8008B34EE /* SBJsonStreamParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CE206FCB179EDE54003ECAC4 /* SBJsonStreamParser.m */; };
@@ -137,6 +138,8 @@
 		CEEC0736179C22C7000879AE /* WithiterThirdViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WithiterThirdViewController.xib; sourceTree = "<group>"; };
 		CEECC0B317C1204D00552773 /* QuhaoDelete.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuhaoDelete.h; sourceTree = "<group>"; };
 		CEECC0B417C1204D00552773 /* QuhaoDelete.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuhaoDelete.m; sourceTree = "<group>"; };
+		CEF220A217CBA4BC006A5ACB /* CommonHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonHTTPRequest.h; sourceTree = "<group>"; };
+		CEF220A317CBA4BC006A5ACB /* CommonHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonHTTPRequest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,6 +196,7 @@
 		CE01CE7A179BC3BB00090EB0 /* quhaoIOS */ = {
 			isa = PBXGroup;
 			children = (
+				CEF220A117CBA463006A5ACB /* util */,
 				CE6A3F1F17A00207004AAF20 /* models */,
 				CE01CE83179BC3BB00090EB0 /* WithiterAppDelegate.h */,
 				CE01CE84179BC3BB00090EB0 /* WithiterAppDelegate.m */,
@@ -317,6 +321,15 @@
 			path = Reachability;
 			sourceTree = "<group>";
 		};
+		CEF220A117CBA463006A5ACB /* util */ = {
+			isa = PBXGroup;
+			children = (
+				CEF220A217CBA4BC006A5ACB /* CommonHTTPRequest.h */,
+				CEF220A317CBA4BC006A5ACB /* CommonHTTPRequest.m */,
+			);
+			name = util;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -436,6 +449,7 @@
 				CE207005179EDEC4003ECAC4 /* ASINetworkQueue.m in Sources */,
 				CE940C2017C1150F00C7476D /* Category.m in Sources */,
 				CEECC0B517C1204D00552773 /* QuhaoDelete.m in Sources */,
+				CEF220A417CBA4BC006A5ACB /* CommonHTTPRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
