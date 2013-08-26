@@ -99,7 +99,7 @@
     NSLog(@"mobile is : %@", mobileValue);
     NSLog(@"password is : %@", passwordValue);
     
-    NSString *urlStr = [NSString stringWithFormat:@"http://192.168.1.20:9081/login?phone=%@&password=%@",mobileValue, passwordValue];
+    NSString *urlStr = [NSString stringWithFormat:@"http://192.168.1.8:9081/login?phone=%@&password=%@",mobileValue, passwordValue];
     NSURL *url = [NSURL URLWithString:urlStr];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
     [request startSynchronous];
