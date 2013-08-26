@@ -1,29 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="#ffffffff"
+<LinearLayout android:id="@+id/root" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="#ffffffff"
   xmlns:android="http://schemas.android.com/apk/res/android">
    
-    <LinearLayout 
-		android:layout_width="fill_parent"    
-    	android:layout_height="wrap_content"    
-    	android:background="@drawable/title_background"    
-    	android:paddingLeft="5dip"    
-    	android:paddingRight="5dip" 
-    	android:paddingTop="5dip"
-    	android:paddingBottom="5dip" 
-    	android:gravity="center_vertical" 
-    	>
-    	<Button android:gravity="left|center" android:id="@+id/back_btn" 
-           	android:layout_width="wrap_content" android:layout_height="wrap_content" 
-            android:background="@drawable/backbutton_background" />
-		<TextView android:id="@+id/merchantName"
-			android:textAppearance="?android:textAppearanceMedium"
-			android:layout_gravity="center_vertical" 
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="搜索 - 美食"
-			android:textColor="#ffffffff"
-			/>
+    <LinearLayout android:layout_width="wrap_content" 
+	    	android:layout_height="wrap_content"    
+	    	android:background="@drawable/title_background"    
+	    	android:gravity="center_vertical" 
+	    	android:orientation="vertical"
+   		 	>
+	    <LinearLayout 
+	    	android:id="@+id/loadingbar"
+	    		android:orientation="horizontal"
+	    		android:layout_width="fill_parent"
+	    		android:layout_height="fill_parent"
+	    		android:background="#ffffffff"
+	    		android:gravity="center"
+	    		android:padding="10dip"
+	   		 	>
+	    		
+	    		<ProgressBar 
+	    			android:layout_width="wrap_content" 
+	    			android:layout_height="wrap_content"
+	    			/>
+	    	
+	   			<View 
+	   				android:layout_width="10dip" 
+	   				android:layout_height="10dip"
+	   			/>
+	    
+	    		<TextView 
+	    			android:layout_width="wrap_content" 
+	    			android:layout_height="wrap_content"
+	    			android:textColor="#ff000000"
+	    			android:text="载入中..."
+	    		/>
 	
+		</LinearLayout>
+	    <LinearLayout android:id="@+id/merchantNameLayout"
+			android:layout_width="fill_parent"    
+	    	android:layout_height="wrap_content"    
+	    	android:background="@drawable/title_background"    
+	    	android:paddingLeft="5dip"    
+	    	android:paddingRight="5dip" 
+	    	android:paddingTop="5dip"
+	    	android:paddingBottom="5dip" 
+	    	android:gravity="center_vertical" 
+	    	android:visibility="gone" >
+	    	<Button android:gravity="left|center" android:id="@+id/back_btn" 
+	           	android:layout_width="wrap_content" android:layout_height="wrap_content" 
+	            android:background="@drawable/btn_back_background" />
+			<TextView android:id="@+id/merchantName"
+				android:textAppearance="?android:textAppearanceMedium"
+				android:layout_gravity="center_vertical" 
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="取号"
+				android:textColor="#ffffffff"
+				/>
+		
+		</LinearLayout>
 	</LinearLayout>
     <FrameLayout android:layout_width="fill_parent"
 	    android:layout_height="0.0dip" android:layout_weight="1.0">
@@ -32,9 +67,48 @@
             	android:id="@+id/lite_list" 
             	android:layout_width="fill_parent" 
             	android:layout_height="fill_parent" 
-            	android:background="#ffffffff"
-            >
-            
+            	android:background="#ffffffff">
+            	<LinearLayout 
+		    		android:gravity="center_vertical" 
+		    		android:orientation="horizontal" 
+		    		android:padding="10.0dip" 
+		    		android:layout_width="fill_parent" 
+		    		android:layout_height="wrap_content"
+		    		android:background="@drawable/list_item_border"
+		    		android:clickable="true"
+		  			>
+		    		
+					<TextView 
+		    			android:textAppearance="?android:textAppearanceMedium" 
+		    			android:textSize="16.0sp" 
+		    			android:paddingRight="6.0dip" 
+		    			android:layout_width="0.0px" 
+		    			android:layout_height="wrap_content" 
+		    			android:layout_marginLeft="6.0dip" 
+		    			android:maxLines="2" 
+		    			android:layout_weight="1.0" 
+		    			android:text="座位人数："
+		    			android:textColor="#ff000000"
+		    			/>
+					
+					<TextView android:id="@+id/seatNo"
+		    			android:textAppearance="?android:textAppearanceMedium" 
+		    			android:textSize="16.0sp" 
+		    			android:paddingRight="6.0dip" 
+		    			android:layout_width="0.0px" 
+		    			android:layout_height="wrap_content" 
+		    			android:layout_marginLeft="6.0dip" 
+		    			android:maxLines="2" 
+		    			android:layout_weight="1.0" 
+		    			android:text="2"
+		    			android:textColor="#ff000000"
+		    			/>
+					
+					<Button android:gravity="right|center" android:id="@+id/btn_seatNo" 
+			           	android:layout_width="wrap_content" android:layout_height="wrap_content" 
+			            android:background="@drawable/btn_expand_background" />
+		    		
+				</LinearLayout> 
             </LinearLayout>
             
         </ScrollView>

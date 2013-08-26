@@ -1,6 +1,12 @@
 package com.withiter.quhao.vo;
 
-public class Merchant {
+import java.io.Serializable;
+
+public class Merchant implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7382528714008315975L;
 	public String id;
 	public String imgUrl = "";
 	public String name;

@@ -18,12 +18,10 @@ import android.widget.TextView;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
-import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.CommonTool;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
-import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.vo.Merchant;
 
 public class MerchantDetailActivity extends AppStoreActivity {
@@ -140,7 +138,8 @@ public class MerchantDetailActivity extends AppStoreActivity {
 			@Override
 			public void onClick(View v)
 			{
-				if (QHClientApplication.getInstance().isLogined) {
+				//if (QHClientApplication.getInstance().isLogined) {
+				if (true) {
 					Intent intent = new Intent();
 					intent.putExtra("merchantId", MerchantDetailActivity.this.merchantId);
 					intent.setClass(MerchantDetailActivity.this, GetNumberActivity.class);
@@ -170,8 +169,8 @@ public class MerchantDetailActivity extends AppStoreActivity {
 		progress = new ProgressDialogUtil(this, R.string.empty,
 				R.string.querying, false);
 		progress.showProgress();
-		Thread merchantsThread = new Thread(merchantDetailRunnable);
-		merchantsThread.start();
+		Thread merchantThread = new Thread(merchantDetailRunnable);
+		merchantThread.start();
 
 	}
 

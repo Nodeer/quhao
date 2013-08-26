@@ -5,7 +5,7 @@
     <LinearLayout android:gravity="center" android:orientation="horizontal" android:background="@drawable/search_bar_background" android:padding="6.0dip" android:layout_width="fill_parent" android:layout_height="wrap_content">
         <Button android:gravity="left|center" android:id="@+id/back_btn" 
            	android:layout_width="wrap_content" android:layout_height="wrap_content" 
-            android:background="@drawable/backbutton_background" />
+            android:background="@drawable/btn_back_background" />
         <EditText android:textAppearance="?android:textAppearanceMedium" 
             android:gravity="left|center" android:id="@+id/edit_search" 
             android:background="@android:drawable/edit_text" android:layout_width="0.0dip" 

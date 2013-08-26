@@ -1,8 +1,6 @@
 package com.withiter.quhao.activity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,13 +10,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
-import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.tool.CommonTool;
-import com.withiter.quhao.util.tool.InfoHelper;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 
 public abstract class AppStoreActivity extends QuhaoActivity implements
@@ -26,7 +21,7 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 
 	protected boolean isClick = false;
 	protected String action = "";
-	private final int UNLOCK_CLICK = 1000;
+	protected final int UNLOCK_CLICK = 1000;
 	protected ProgressDialogUtil progressDialogUtil;
 	
 	protected Button btnCategory;
