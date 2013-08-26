@@ -14,7 +14,7 @@
 	<string name="network_error_info">网络连接失败，请检查网络设置！</string>
 	<string name="logining">登录中...</string>
 	<string name="net_error">网络异常，请重试!</string>
-	<string name="querying">查询中...</string>
+	<string name="querying">正努力帮您加载美味信息...</string>
 	<string name="radioPhone">手机</string>
 	<string name="radioEmail">邮箱</string>
 	<string name="warning">警告</string>
