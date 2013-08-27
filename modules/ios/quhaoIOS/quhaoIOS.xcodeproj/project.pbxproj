@@ -333,9 +333,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		CE01CE70179BC3BB00090EB0 /* quhaoIOS */ = {
+		CE01CE70179BC3BB00090EB0 /* 取号 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CE01CEA2179BC3BB00090EB0 /* Build configuration list for PBXNativeTarget "quhaoIOS" */;
+			buildConfigurationList = CE01CEA2179BC3BB00090EB0 /* Build configuration list for PBXNativeTarget "取号" */;
 			buildPhases = (
 				CE01CE6D179BC3BB00090EB0 /* Sources */,
 				CE01CE6E179BC3BB00090EB0 /* Frameworks */,
@@ -346,7 +346,7 @@
 			);
 			dependencies = (
 			);
-			name = quhaoIOS;
+			name = "取号";
 			productName = quhaoIOS;
 			productReference = CE01CE71179BC3BB00090EB0 /* quhaoIOS.app */;
 			productType = "com.apple.product-type.application";
@@ -374,7 +374,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				CE01CE70179BC3BB00090EB0 /* quhaoIOS */,
+				CE01CE70179BC3BB00090EB0 /* 取号 */,
 			);
 		};
 /* End PBXProject section */
@@ -583,7 +583,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CE01CEA2179BC3BB00090EB0 /* Build configuration list for PBXNativeTarget "quhaoIOS" */ = {
+		CE01CEA2179BC3BB00090EB0 /* Build configuration list for PBXNativeTarget "取号" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CE01CEA3179BC3BB00090EB0 /* Debug */,

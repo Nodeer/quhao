@@ -15,12 +15,18 @@
 
 @implementation WithiterThirdViewController
 
-@synthesize mobileLabel;
-@synthesize passwordLabel;
-@synthesize mobile;
-@synthesize password;
-@synthesize signupBTN;
+@synthesize mobileLabelForLogin;
+@synthesize passwordLabelForLogin;
+@synthesize mobileForLogin;
+@synthesize passwordForLogin;
 @synthesize loginBTN;
+
+@synthesize mobileLabelForSignup;
+@synthesize mobileForSignup;
+@synthesize dynamicPwdBTN;
+@synthesize passwordLabelForSignup;
+@synthesize passwordForSignup;
+@synthesize signupBTN;
 
 //UITextField的协议方法，当开始编辑时监听
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
@@ -55,17 +61,26 @@
 //隐藏键盘的方法
 -(void)hidenKeyboard
 {
-    [self.mobile resignFirstResponder];
-    [self.password resignFirstResponder];
+    [self.mobileForLogin resignFirstResponder];
+    [self.passwordForLogin resignFirstResponder];
+    [self.mobileForSignup resignFirstResponder];
+    [self.mobileForSignup resignFirstResponder];
+
     [self resumeView];
 }
 
 //点击键盘上的Return按钮响应的方法
 -(IBAction)nextOnKeyboard:(UITextField *)sender
 {
-    if (sender == self.mobile) {
-        [self.password becomeFirstResponder];
-    }else if (sender == self.password){
+    if (sender == self.mobileForLogin) {
+        [self.passwordForLogin becomeFirstResponder];
+    }else if (sender == self.passwordForLogin){
+        [self hidenKeyboard];
+    }
+
+    if (sender == self.mobileForSignup) {
+        [self.passwordForSignup becomeFirstResponder];
+    }else if (sender == self.passwordForSignup){
         [self hidenKeyboard];
     }
 }
@@ -93,8 +108,8 @@
  * Login click function
  */
 -(IBAction)onClickLoginBTN:(id)sender{
-    NSString *mobileValue = mobile.text;
-    NSString *passwordValue = password.text;
+    NSString *mobileValue = mobileForLogin.text;
+    NSString *passwordValue = passwordForLogin.text;
     
     NSLog(@"mobile is : %@", mobileValue);
     NSLog(@"password is : %@", passwordValue);
@@ -112,7 +127,7 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"网络不是很好，请稍后再试" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
         [alert show];
     }
-
+    
     
     
     UIAlertView *alert =
@@ -124,16 +139,27 @@
 {
     [super viewDidLoad];
     
+    [self hideAll];
+    [self showLogin];
+    
     //指定本身为代理
-    self.mobile.delegate = self;
-    self.password.delegate = self;
+    self.mobileForLogin.delegate = self;
+    self.passwordForLogin.delegate = self;
+    self.mobileForSignup.delegate = self;
+    self.passwordForSignup.delegate = self;
+    
     //指定编辑时键盘的return键类型
-    self.mobile.returnKeyType = UIReturnKeyNext;
-    self.password.returnKeyType = UIReturnKeyDefault;
+    self.mobileForLogin.returnKeyType = UIReturnKeyNext;
+    self.passwordForLogin.returnKeyType = UIReturnKeyDefault;
+    self.mobileForSignup.returnKeyType = UIReturnKeyNext;
+    self.passwordForSignup.returnKeyType = UIReturnKeyDefault;
+    
     
     //注册键盘响应事件方法
-    [self.mobile addTarget:self action:@selector(nextOnKeyboard:) forControlEvents:UIControlEventEditingDidEndOnExit];
-    [self.password addTarget:self action:@selector(nextOnKeyboard:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [self.mobileForLogin addTarget:self action:@selector(nextOnKeyboard:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [self.passwordForLogin addTarget:self action:@selector(nextOnKeyboard:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [self.mobileForSignup addTarget:self action:@selector(nextOnKeyboard:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [self.passwordForSignup addTarget:self action:@selector(nextOnKeyboard:) forControlEvents:UIControlEventEditingDidEndOnExit];
     
     //添加手势，点击屏幕其他区域关闭键盘的操作
     UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hidenKeyboard)];
@@ -141,10 +167,46 @@
     [self.view addGestureRecognizer:gesture];
     
     [loginBTN addTarget:self action:@selector(onClickLoginBTN:) forControlEvents:UIControlEventTouchUpInside];
+    [dynamicPwdBTN addTarget:self action:@selector(onClickLoginBTN:) forControlEvents:UIControlEventTouchUpInside];
+    
     [signupBTN addTarget:self action:@selector(onClickSignUpBTN:) forControlEvents:UIControlEventTouchUpInside];
     
     
 	// Do any additional setup after loading the view, typically from a nib.
+}
+
+- (void)hideAll{
+    mobileLabelForLogin.hidden = YES;
+    passwordLabelForLogin.hidden = YES;
+    mobileForLogin.hidden = YES;
+    passwordForLogin.hidden = YES;
+    loginBTN.hidden = YES;
+    
+    mobileLabelForSignup.hidden = YES;
+    passwordLabelForSignup.hidden = YES;
+    dynamicPwdBTN.hidden = YES;
+    mobileForSignup.hidden = YES;
+    passwordForSignup.hidden = YES;
+    signupBTN.hidden = YES;
+}
+
+/*show login label and button*/
+- (void)showLogin{
+    mobileLabelForLogin.hidden = FALSE;
+    passwordLabelForLogin.hidden = FALSE;
+    mobileForLogin.hidden = FALSE;
+    passwordForLogin.hidden = FALSE;
+    loginBTN.hidden = FALSE;
+}
+
+/*show signup label and button*/
+- (void)showSignup{    
+    mobileLabelForSignup.hidden = FALSE;
+    passwordLabelForSignup.hidden = FALSE;
+    dynamicPwdBTN.hidden = FALSE;
+    mobileForSignup.hidden = FALSE;
+    passwordForSignup.hidden = FALSE;
+    signupBTN.hidden = FALSE;
 }
 
 - (void)didReceiveMemoryWarning

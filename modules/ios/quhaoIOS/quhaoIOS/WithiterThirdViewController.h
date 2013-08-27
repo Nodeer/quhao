@@ -10,19 +10,31 @@
 #import "ASIHTTPRequest.h"
 
 @interface WithiterThirdViewController : UIViewController <UITextFieldDelegate>{
-    UILabel *mobileLabel;
-    UILabel *passwordLabel;
-    UITextField *mobile;
-    UITextField *password;
-    UIButton *signupBTN;
+    UILabel *mobileLabelForLogin;
+    UITextField *mobileForLogin;    
+    UILabel *passwordLabelForLogin;
+    UITextField *passwordForLogin;
     UIButton *loginBTN;
+    
+    UILabel *mobileLabelForSignup;
+    UITextField *mobileForSignup;
+    UIButton *dynamicPwdBTN;
+    UILabel *passwordLabelForSignup;
+    UITextField *passwordForSignup;
+    UIButton *signupBTN;
 }
 
-@property(nonatomic, retain) IBOutlet UILabel *mobileLabel;
-@property(nonatomic, retain) IBOutlet UILabel *passwordLabel;
-@property(nonatomic, retain) IBOutlet UITextField *mobile;
-@property(nonatomic, retain) IBOutlet UITextField *password;
-@property(nonatomic, retain) IBOutlet UIButton *signupBTN;
+@property(nonatomic, retain) IBOutlet UILabel *mobileLabelForLogin;
+@property(nonatomic, retain) IBOutlet UITextField *mobileForLogin;
+@property(nonatomic, retain) IBOutlet UILabel *passwordLabelForLogin;
+@property(nonatomic, retain) IBOutlet UITextField *passwordForLogin;
 @property(nonatomic, retain) IBOutlet UIButton *loginBTN;
+
+@property(nonatomic, retain) IBOutlet UILabel *mobileLabelForSignup;
+@property(nonatomic, retain) IBOutlet UITextField *mobileForSignup;
+@property(nonatomic, retain) IBOutlet UIButton *dynamicPwdBTN;
+@property(nonatomic, retain) IBOutlet UILabel *passwordLabelForSignup;
+@property(nonatomic, retain) IBOutlet UITextField *passwordForSignup;
+@property(nonatomic, retain) IBOutlet UIButton *signupBTN;
 
 @end

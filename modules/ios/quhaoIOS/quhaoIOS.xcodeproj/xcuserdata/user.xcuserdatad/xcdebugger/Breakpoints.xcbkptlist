@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "quhaoIOS/WithiterThirdViewController.m"
-         timestampString = "399224106.34736"
+         timestampString = "399312715.297622"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "101"
-         endingLineNumber = "101"
+         startingLineNumber = "116"
+         endingLineNumber = "116"
          landmarkName = "-onClickLoginBTN:"
          landmarkType = "5">
       </FileBreakpoint>
