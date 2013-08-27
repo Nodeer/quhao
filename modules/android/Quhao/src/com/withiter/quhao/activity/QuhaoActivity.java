@@ -19,6 +19,7 @@ public abstract class QuhaoActivity extends Activity {
 	private final static String TAG = QuhaoActivity.class.getName();
 	public static String uid = "";
 	public static boolean autoLogin = false;
+	private static boolean inited = false;
 
 	/*
 	 * (non-Javadoc)
@@ -30,8 +31,10 @@ public abstract class QuhaoActivity extends Activity {
 		try {
 			super.onCreate(savedInstanceState);
 			QuhaoLog.i(TAG, "QuhaoActivity onCreate invoked");
-			initConfig();
-			initLogin();
+			if(!inited){
+				initAll();
+				inited = true;
+			}
 			
 		} catch (NotFoundException e) {
 			// TODO Auto-generated catch block
@@ -42,6 +45,11 @@ public abstract class QuhaoActivity extends Activity {
 		}
 	}
 
+	private void initAll() throws IOException{
+		initConfig();
+		initLogin();
+	}
+	
 	private void initConfig() throws IOException{
 		QuhaoLog.i(TAG,
 				"start to init configurations from application.properties");
