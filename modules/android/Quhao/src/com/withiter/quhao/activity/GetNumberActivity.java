@@ -99,6 +99,11 @@ public class GetNumberActivity extends AppStoreActivity {
 						seatNos[j] = haoma.paiduiList.get(j).seatNo;
 					}
 					
+					currentIndex = 0;
+					currentPaidui = haoma.paiduiList.get(currentIndex);
+					seatNoView.setText(currentPaidui.seatNo);
+					currentNumberView.setText(String.valueOf(currentPaidui.currentNumber));
+					
 					btnSeatNo.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {

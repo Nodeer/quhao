@@ -394,8 +394,12 @@ public class ParseJson {
 				{
 					String key = keyIter.next();
 					JSONObject obj1 = jsonMaps.getJSONObject(key);
-					Paidui paidu = coventPaidui(key,obj1);
-					paiduiList.add(paidu);
+					Paidui paidui = coventPaidui(key,obj1);
+					if(paidui.enable == true)
+					{
+						paiduiList.add(paidui);
+					}
+					
 				}
 				
 				Collections.sort(paiduiList);
