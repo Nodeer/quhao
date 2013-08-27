@@ -39,8 +39,9 @@
         </activity>
         <!-- category page -->
 
+
         <!-- nearby page -->
-		<activity
+        <activity
             android:name="com.withiter.quhao.activity.NearbyActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/app_name"
@@ -48,7 +49,8 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <!-- nearby page -->
-        
+
+
         <!-- personal page -->
         <activity
             android:name="com.withiter.quhao.activity.PersonCenterActivity"
@@ -58,7 +60,8 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <!-- personal page -->
-        
+
+
         <!-- more page -->
         <activity
             android:name="com.withiter.quhao.activity.MoreActivity"
@@ -68,7 +71,8 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <!-- more page -->
-        
+
+
         <!-- merchant list page -->
         <activity
             android:name="com.withiter.quhao.activity.MerchantListActivity"
@@ -78,7 +82,8 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <!-- merchant list page -->
-        
+
+
         <!-- merchant details page -->
         <activity
             android:name="com.withiter.quhao.activity.MerchantDetailActivity"
@@ -88,7 +93,8 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <!-- merchant details page -->
-        
+
+
         <!-- search page -->
         <!-- TODO remove search page -->
         <activity
@@ -99,7 +105,8 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <!-- search page -->
-        
+
+
         <!-- get number page? -->
         <activity
             android:name="com.withiter.quhao.activity.GetNumberActivity"
@@ -109,7 +116,8 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <!-- get number page? page -->
-        
+
+
         <!-- login page -->
         <activity
             android:name="com.withiter.quhao.activity.LoginActivity"
@@ -119,7 +127,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.CustomDialog" />
         <!-- login page -->
-        
+
+
         <!-- sign up page -->
         <activity
             android:name="com.withiter.quhao.activity.RegisterActivity"
@@ -129,7 +138,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.CustomDialog" />
         <!-- sign up page -->
-        
+
     </application>
 
 </manifest>
