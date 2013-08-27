@@ -2,8 +2,8 @@ package com.withiter.quhao.util.tool;
 
 public class QuhaoConstant {
 
-//	public static String HTTP_URL = "http://192.168.0.12:9081/";
-	public static String HTTP_URL = "http://10.0.2.2:9081/";
+	public static String HTTP_URL = "http://192.168.0.12:9081/";
+//	public static String HTTP_URL = "http://10.0.2.2:9081/";
 //	public static String HTTP_URL_TEST_CROSS = "http://192.168.0.11:9081/";
 //	public static String HTTP_URL_TEST_CROSS = "http://146.11.24.186:9081/";
 	public static final String NEW_BODY = null;
