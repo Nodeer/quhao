@@ -20,18 +20,18 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 		OnClickListener, OnTouchListener {
 
 	private final String TAG = AppStoreActivity.class.getName();
-	
+
 	protected boolean isClick = false;
 	protected String action = "";
 	protected final int UNLOCK_CLICK = 1000;
 	protected ProgressDialogUtil progressDialogUtil;
-	
+
 	protected Button btnCategory;
 	protected Button btnNearby;
 	protected Button btnPerson;
 	protected Button btnMore;
 	protected Button btnBack;
-	
+
 	protected static final int FIRST_REQUEST_CODE = 1;
 	// 网络是否可用
 	protected static boolean networkOK = false;
@@ -55,12 +55,14 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 		btnPerson = (Button) findViewById(R.id.btnPerson);
 		btnMore = (Button) findViewById(R.id.btnMore);
 		btnBack = (Button) findViewById(R.id.back_btn);
-		
+
 	}
 
 	/**
 	 * 商家列表按钮绑定事件，点击进入商家列表页面
-	 * @param activity 需要跳转到的页面
+	 * 
+	 * @param activity
+	 *            需要跳转到的页面
 	 * @return 绑定事件
 	 */
 	protected OnClickListener goBack(final Activity activity) {
@@ -72,30 +74,43 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 		};
 		return clickListener;
 	}
-	
+
 	/**
 	 * 商家列表按钮绑定事件，点击进入商家列表页面
-	 * @param activity 需要跳转到的页面
+	 * 
+	 * @param activity
+	 *            需要跳转到的页面
 	 * @return 绑定事件
 	 */
 	protected OnClickListener goCategory(final Activity activity) {
 		OnClickListener clickListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				
+
 				// do not change the code below
-				Intent intent = new Intent(activity, MainActivity.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				startActivity(intent);
-				overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
+				// 判断是否在当前页面, 需要刷新页面，重新加载数据，而不是activity的显示顺序。
+				if (activity instanceof MainActivity) {
+					Log.i(TAG, "refresh category page");
+					((MainActivity) activity)
+							.getTopMerchantsFromServerAndDisplay();
+					((MainActivity) activity)
+							.getCategoriesFromServerAndDisplay();
+				}else{
+					Intent intent = new Intent(activity, MainActivity.class);
+					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+					startActivity(intent);
+					overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
+				}
 			}
 		};
 		return clickListener;
 	}
-	
+
 	/**
 	 * 附近商家按钮绑定事件，点击进入附近页面
-	 * @param activity 需要跳转到的页面
+	 * 
+	 * @param activity
+	 *            需要跳转到的页面
 	 * @return 绑定事件
 	 */
 	protected OnClickListener goNearby(final Activity activity) {
@@ -110,10 +125,12 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 		};
 		return clickListener;
 	}
-	
+
 	/**
 	 * 个人中心按钮绑定事件，点击进入个人中心页面
-	 * @param activity 需要跳转到的页面
+	 * 
+	 * @param activity
+	 *            需要跳转到的页面
 	 * @return 绑定事件
 	 */
 	protected OnClickListener goPersonCenter(final Activity activity) {
@@ -127,8 +144,10 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 					startActivity(intent);
 				} else {
 					Intent intent = new Intent(activity, LoginActivity.class);
-					intent.putExtra("activityName", activity.getClass().getName());
-					Log.d("ok", " activity.getClass().getName() : " + activity.getClass().getName());
+					intent.putExtra("activityName", activity.getClass()
+							.getName());
+					Log.d("ok", " activity.getClass().getName() : "
+							+ activity.getClass().getName());
 					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 					startActivity(intent);
 				}
@@ -138,10 +157,12 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 		};
 		return clickListener;
 	}
-	
+
 	/**
 	 * 更多按钮绑定事件，点击进入更多页面
-	 * @param activity 需要跳转到的页面
+	 * 
+	 * @param activity
+	 *            需要跳转到的页面
 	 * @return 绑定事件
 	 */
 	protected OnClickListener goMore(final Activity activity) {
@@ -188,12 +209,12 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 		return false;
 	}
 
-//	private boolean checkDevice() {
-//		if (!InfoHelper.checkNetwork(this)) {
-//			Toast.makeText(this, R.string.network_error_info, Toast.LENGTH_LONG)
-//					.show();
-//			return false;
-//		}
-//		return true;
-//	}
+	// private boolean checkDevice() {
+	// if (!InfoHelper.checkNetwork(this)) {
+	// Toast.makeText(this, R.string.network_error_info, Toast.LENGTH_LONG)
+	// .show();
+	// return false;
+	// }
+	// return true;
+	// }
 }
