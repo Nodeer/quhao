@@ -1,12 +1,12 @@
 package com.withiter.quhao.activity;
 
-import com.withiter.quhao.R;
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+
+import com.withiter.quhao.R;
+import com.withiter.quhao.util.QuhaoLog;
 
 public class NearbyActivity extends AppStoreActivity {
 
@@ -17,7 +17,7 @@ public class NearbyActivity extends AppStoreActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.nearby_layout);
 		super.onCreate(savedInstanceState);
-		Log.i(TAG, "NearbyActivity is displayed");
+		QuhaoLog.i(TAG, "NearbyActivity is displayed");
 		
 		btnCategory.setOnClickListener(goCategory(this));
 		btnNearby.setOnClickListener(goNearby(this));

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
@@ -13,6 +12,7 @@ import android.widget.Button;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
+import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.tool.CommonTool;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 
@@ -90,7 +90,7 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 				// do not change the code below
 				// 判断是否在当前页面, 需要刷新页面，重新加载数据，而不是调整activity的显示顺序。 Add by Cross
 				if (activity instanceof MainActivity) {
-					Log.i(TAG, "refresh category page");
+					QuhaoLog.i(TAG, "refresh category page");
 					((MainActivity) activity)
 							.getTopMerchantsFromServerAndDisplay();
 					((MainActivity) activity)
@@ -146,7 +146,7 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 					Intent intent = new Intent(activity, LoginActivity.class);
 					intent.putExtra("activityName", activity.getClass()
 							.getName());
-					Log.d("ok", " activity.getClass().getName() : "
+					QuhaoLog.d("ok", " activity.getClass().getName() : "
 							+ activity.getClass().getName());
 					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 					startActivity(intent);

@@ -2,7 +2,7 @@ package com.withiter.quhao.vo;
 
 import java.io.Serializable;
 
-public class Merchant implements Serializable{
+public class Merchant implements Serializable {
 	/**
 	 * 
 	 */

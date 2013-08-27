@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,8 +15,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
+import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.CommonTool;
 import com.withiter.quhao.util.tool.ParseJson;
@@ -31,7 +30,7 @@ public class MerchantDetailActivity extends AppStoreActivity {
 	private ProgressDialogUtil progress;
 	private Merchant merchant;
 	private Button btnGetNumber;
-	private  LinearLayout info;
+	private LinearLayout info;
 	private TextView merchantName;
 	private ImageView merchantImg;
 	private TextView merchantAddress;
@@ -91,38 +90,37 @@ public class MerchantDetailActivity extends AppStoreActivity {
 		setContentView(R.layout.merchant_detail);
 		super.onCreate(savedInstanceState);
 
-		
-		
 		this.merchantId = getIntent().getStringExtra("merchantId");
-		
-		
+
 		btnGetNumber = (Button) findViewById(R.id.btn_GetNumber);
-		
+
 		btnGetNumber.setOnClickListener(getNumberClickListener());
-		
+
 		LayoutInflater inflater = LayoutInflater.from(this);
-        info = (LinearLayout)inflater.inflate(R.layout.poiinfo, null);
-        LinearLayout scroll = (LinearLayout)findViewById(R.id.lite_list);
-        
-        LayoutParams layoutParams = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-        
-        scroll.addView(info, layoutParams);
-    	
-    	this.merchantName = (TextView) findViewById(R.id.merchantName);
-    	this.merchantImg = (ImageView) info.findViewById(R.id.merchantImg);
-    	this.merchantAddress = (TextView) info.findViewById(R.id.merchantAddress);
-    	this.merchantPhone = (TextView) info.findViewById(R.id.merchantPhone);
-    	this.merchantTags = (TextView) info.findViewById(R.id.merchantTags);
-    	this.merchantAverageCost = (TextView) info.findViewById(R.id.merchantAverageCost);
-    	this.xingjiabi = (TextView) info.findViewById(R.id.xingjiabi);
-    	this.kouwei = (TextView) info.findViewById(R.id.kouwei);
-    	this.fuwu = (TextView) info.findViewById(R.id.fuwu);
-    	this.huanjing = (TextView) info.findViewById(R.id.huanjing);
+		info = (LinearLayout) inflater.inflate(R.layout.poiinfo, null);
+		LinearLayout scroll = (LinearLayout) findViewById(R.id.lite_list);
+
+		LayoutParams layoutParams = new LayoutParams(LayoutParams.FILL_PARENT,
+				LayoutParams.WRAP_CONTENT);
+
+		scroll.addView(info, layoutParams);
+
+		this.merchantName = (TextView) findViewById(R.id.merchantName);
+		this.merchantImg = (ImageView) info.findViewById(R.id.merchantImg);
+		this.merchantAddress = (TextView) info
+				.findViewById(R.id.merchantAddress);
+		this.merchantPhone = (TextView) info.findViewById(R.id.merchantPhone);
+		this.merchantTags = (TextView) info.findViewById(R.id.merchantTags);
+		this.merchantAverageCost = (TextView) info
+				.findViewById(R.id.merchantAverageCost);
+		this.xingjiabi = (TextView) info.findViewById(R.id.xingjiabi);
+		this.kouwei = (TextView) info.findViewById(R.id.kouwei);
+		this.fuwu = (TextView) info.findViewById(R.id.fuwu);
+		this.huanjing = (TextView) info.findViewById(R.id.huanjing);
 
 		btnBack.setOnClickListener(goBack(this));
 		initView();
 	}
-
 
 	/**
 	 * 
@@ -130,25 +128,27 @@ public class MerchantDetailActivity extends AppStoreActivity {
 	 * 
 	 * @return 取号按钮的listener R.id.btn_GetNumber
 	 */
-	private OnClickListener getNumberClickListener()
-	{
-		OnClickListener listener = new OnClickListener()
-		{
-			
+	private OnClickListener getNumberClickListener() {
+		OnClickListener listener = new OnClickListener() {
+
 			@Override
-			public void onClick(View v)
-			{
-				//if (QHClientApplication.getInstance().isLogined) {
+			public void onClick(View v) {
+				// if (QHClientApplication.getInstance().isLogined) {
 				if (true) {
 					Intent intent = new Intent();
-					intent.putExtra("merchantId", MerchantDetailActivity.this.merchantId);
-					intent.setClass(MerchantDetailActivity.this, GetNumberActivity.class);
+					intent.putExtra("merchantId",
+							MerchantDetailActivity.this.merchantId);
+					intent.setClass(MerchantDetailActivity.this,
+							GetNumberActivity.class);
 					startActivity(intent);
-					
+
 				} else {
-					Intent intent = new Intent(MerchantDetailActivity.this, LoginActivity.class);
-					intent.putExtra("activityName", MerchantDetailActivity.class.getName());
-					intent.putExtra("merchantId", MerchantDetailActivity.this.merchantId);
+					Intent intent = new Intent(MerchantDetailActivity.this,
+							LoginActivity.class);
+					intent.putExtra("activityName",
+							MerchantDetailActivity.class.getName());
+					intent.putExtra("merchantId",
+							MerchantDetailActivity.this.merchantId);
 					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);
 				}
@@ -158,10 +158,8 @@ public class MerchantDetailActivity extends AppStoreActivity {
 		return listener;
 	}
 
-	private void initView()
-	{
-		if(isClick)
-		{
+	private void initView() {
+		if (isClick) {
 			return;
 		}
 		isClick = true;
@@ -178,21 +176,17 @@ public class MerchantDetailActivity extends AppStoreActivity {
 		@Override
 		public void run() {
 			try {
-				Log.v(LOGTAG, "get categorys data form server begin");
+				QuhaoLog.v(LOGTAG, "get categorys data form server begin");
 				String buf = CommonHTTPRequest.get("merchant?id="
 						+ MerchantDetailActivity.this.merchantId);
-				if(CommonTool.isNull(buf))
-				{
+				if (CommonTool.isNull(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				}
-				else
-				{
+				} else {
 					merchant = ParseJson.getMerchant(buf);
 
 					merchantUpdateHandler.obtainMessage(200, merchant)
 							.sendToTarget();
 				}
-				
 
 			} catch (Exception e) {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);

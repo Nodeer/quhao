@@ -2,10 +2,11 @@ package com.withiter.quhao.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ListView;
 import android.widget.ScrollView;
+
+import com.withiter.quhao.util.QuhaoLog;
 
 public class InnerListView extends ListView {
 
@@ -27,14 +28,14 @@ public class InnerListView extends ListView {
 		case MotionEvent.ACTION_DOWN:
 			setParentScrollAble(false);// 当手指触到listview的时候，让父ScrollView交出ontouch权限，也就是让父scrollview
 										// 停住不能滚动
-			Log.d(TAG, "onInterceptTouchEvent down");
+			QuhaoLog.d(TAG, "onInterceptTouchEvent down");
 		case MotionEvent.ACTION_MOVE:
-			Log.d(TAG, "onInterceptTouchEvent move");
+			QuhaoLog.d(TAG, "onInterceptTouchEvent move");
 			break;
 		case MotionEvent.ACTION_UP:
-			Log.d(TAG, "onInterceptTouchEvent up");
+			QuhaoLog.d(TAG, "onInterceptTouchEvent up");
 		case MotionEvent.ACTION_CANCEL:
-			Log.d(TAG, "onInterceptTouchEvent cancel");
+			QuhaoLog.d(TAG, "onInterceptTouchEvent cancel");
 			setParentScrollAble(true);// 当手指松开时，让父ScrollView重新拿到onTouch权限
 			break;
 		default:

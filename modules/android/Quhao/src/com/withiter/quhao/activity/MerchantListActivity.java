@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -21,6 +20,7 @@ import android.widget.TextView;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantAdapter;
+import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.CommonTool;
 import com.withiter.quhao.util.tool.ParseJson;
@@ -160,7 +160,7 @@ public class MerchantListActivity extends AppStoreActivity {
 		@Override
 		public void run() {
 			try {
-				Log.v(LOGTAG, "get categorys data form server begin");
+				QuhaoLog.v(LOGTAG, "get categorys data form server begin");
 				String buf = CommonHTTPRequest.get("MerchantController/nextPage?page=" + page
 						+ "&cateType=" + categoryType);
 				if(CommonTool.isNull(buf))

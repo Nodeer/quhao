@@ -17,27 +17,27 @@ import android.util.Log;
  * @author Cross
  */
 public class QuhaoLog {
-	private static Boolean MYLOG_SWITCH = true; // 日志文件总开关
-	private static Boolean MYLOG_WRITE_TO_FILE = true; // 日志写入文件开关
-	private static char MYLOG_TYPE = 'v'; // 输入日志类型，w代表只输出告警信息等，v代表输出所有信息
+	private static Boolean MYLOG_SWITCH = true; 						// 日志文件总开关
+	private static Boolean MYLOG_WRITE_TO_FILE = true; 					// 日志写入文件开关
+	private static char MYLOG_TYPE = 'v'; 								// 输入日志类型，w代表只输出告警信息等，v代表输出所有信息
 	private static String MYLOG_PATH_SDCARD_DIR = Environment
-			.getExternalStorageDirectory().getPath(); // 日志文件在sdcard中的路径
-	private static int SDCARD_LOG_FILE_SAVE_DAYS = 0; // sd卡中日志文件的最多保存天数
-	private static String MYLOGFILEName = "QuhaoLog.txt";// 本类输出的日志文件名称
+			.getExternalStorageDirectory().getPath(); 					// 日志文件在sdcard中的路径
+	private static int SDCARD_LOG_FILE_SAVE_DAYS = 0; 					// sd卡中日志文件的最多保存天数
+	private static String MYLOGFILEName = "QuhaoLog.txt";				// 本类输出的日志文件名称
 
-	public static void w(String tag, Object msg) { // 警告信息
+	public static void w(String tag, Object msg) {
 		log(tag, msg.toString(), 'w');
 	}
 
-	public static void e(String tag, Object msg) { // 错误信息
+	public static void e(String tag, Object msg) {
 		log(tag, msg.toString(), 'e');
 	}
 
-	public static void d(String tag, Object msg) {// 调试信息
+	public static void d(String tag, Object msg) {
 		log(tag, msg.toString(), 'd');
 	}
 
-	public static void i(String tag, Object msg) {//
+	public static void i(String tag, Object msg) {
 		log(tag, msg.toString(), 'i');
 	}
 
@@ -90,7 +90,7 @@ public class QuhaoLog {
 
 			boolean sdCardExist = Environment.getExternalStorageState().equals(
 					android.os.Environment.MEDIA_MOUNTED); // 判断sd卡是否存在
-			if (MYLOG_WRITE_TO_FILE && sdCardExist){
+			if (MYLOG_WRITE_TO_FILE && sdCardExist) {
 				writeLogtoFile(String.valueOf(level), tag, msg);
 			}
 		}

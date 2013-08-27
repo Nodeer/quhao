@@ -2,8 +2,9 @@ package com.withiter.quhao.util.tool;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.util.Log;
 import android.view.KeyEvent;
+
+import com.withiter.quhao.util.QuhaoLog;
 
 public class ProgressDialogUtil {
 
@@ -51,7 +52,7 @@ public class ProgressDialogUtil {
 			try {
 				pd.show();
 			} catch (Exception e) {
-				Log.e(TAG, "show progress error");
+				QuhaoLog.e(TAG, "show progress error");
 			}
 		}
 	}
@@ -61,7 +62,7 @@ public class ProgressDialogUtil {
 			try {
 				pd.dismiss();
 			} catch (Exception e) {
-				Log.e(TAG, "close progress error");
+				QuhaoLog.e(TAG, "close progress error");
 			}
 		}
 	}

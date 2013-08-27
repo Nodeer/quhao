@@ -18,8 +18,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
-import android.util.Log;
-
+import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 
 public class CommonHTTPRequest {
@@ -102,11 +101,11 @@ public class CommonHTTPRequest {
 		HttpClient httpClient = new DefaultHttpClient(httpParameters);
 		HttpResponse response;
 		response = httpClient.execute(request);
-		Log.i(TAG, "get top merchant data form server : "
+		QuhaoLog.i(TAG, "get top merchant data form server : "
 				+ response.getStatusLine().getStatusCode());
 		if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 			result = EntityUtils.toString(response.getEntity());
-			Log.v(TAG, "get top merchant data form server buf : " + result);
+			QuhaoLog.v(TAG, "get top merchant data form server buf : " + result);
 			// 返回HTML页面
 //			if (result.indexOf("<html>") != -1
 //					|| result.indexOf("<HTML>") != -1) {

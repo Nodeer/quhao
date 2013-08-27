@@ -1,12 +1,12 @@
 package com.withiter.quhao.activity;
 
-import com.withiter.quhao.R;
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+
+import com.withiter.quhao.R;
+import com.withiter.quhao.util.QuhaoLog;
 
 public class MoreActivity extends AppStoreActivity {
 
@@ -14,7 +14,7 @@ public class MoreActivity extends AppStoreActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Log.i(TAG, "MoreActivity is displayed");
+		QuhaoLog.i(TAG, "MoreActivity is displayed");
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.more_layout);
 		super.onCreate(savedInstanceState);

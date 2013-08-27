@@ -44,7 +44,7 @@ public class LoginActivity extends AppStoreActivity {
 	private ProgressDialogUtil progressLogin;
 
 	private String activityName;
-	
+
 	private Map<String, Object> transfortParams = new HashMap<String, Object>();
 
 	private Handler loginUpdateHandler = new Handler() {
@@ -52,36 +52,36 @@ public class LoginActivity extends AppStoreActivity {
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
-				
-				//intent.pute
-				if(CommonTool.isNotNull(activityName))
-				{
+
+				// intent.pute
+				if (CommonTool.isNotNull(activityName)) {
 					Intent intent = new Intent();
-					if("com.withiter.quhao.activity.MerchantDetailActivity".equals(activityName))
-					{
-						intent.putExtra("merchantId", (String)transfortParams.get("merchantId"));
-						intent.setClass(LoginActivity.this, GetNumberActivity.class);
-					}
-					else if("com.withiter.quhao.activity.PersonCenterActivity".equals(activityName))
-					{
-						intent.setClass(LoginActivity.this, PersonCenterActivity.class);
-					}
-					else
-					{
-						intent.setClass(LoginActivity.this, PersonCenterActivity.class);
+					if ("com.withiter.quhao.activity.MerchantDetailActivity"
+							.equals(activityName)) {
+						intent.putExtra("merchantId",
+								(String) transfortParams.get("merchantId"));
+						intent.setClass(LoginActivity.this,
+								GetNumberActivity.class);
+					} else if ("com.withiter.quhao.activity.PersonCenterActivity"
+							.equals(activityName)) {
+						intent.setClass(LoginActivity.this,
+								PersonCenterActivity.class);
+					} else {
+						intent.setClass(LoginActivity.this,
+								PersonCenterActivity.class);
 					}
 					startActivity(intent);
 				}
-				
+
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				finish();
-				
+
 			}
 
 		}
 
 	};
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -89,10 +89,9 @@ public class LoginActivity extends AppStoreActivity {
 		super.onCreate(savedInstanceState);
 
 		activityName = getIntent().getStringExtra("activityName");
-		if(CommonTool.isNotNull(activityName))
-		{
-			if("com.withiter.quhao.activity.MerchantDetailActivity".equals(activityName))
-			{
+		if (CommonTool.isNotNull(activityName)) {
+			if ("com.withiter.quhao.activity.MerchantDetailActivity"
+					.equals(activityName)) {
 				String merchantId = getIntent().getStringExtra("merchantId");
 				transfortParams.put("merchantId", merchantId);
 			}
@@ -151,32 +150,24 @@ public class LoginActivity extends AppStoreActivity {
 					R.string.querying, false);
 			progressLogin.showProgress();
 			String url = "AccountController/login?";
-			if(radioPhone.getId() == radioGroup.getCheckedRadioButtonId())
-			{
-				url = url + "phone="+loginNameText.getText().toString().trim() + "&";
-			}
-			else
-			{
+			if (radioPhone.getId() == radioGroup.getCheckedRadioButtonId()) {
+				url = url + "phone="
+						+ loginNameText.getText().toString().trim() + "&";
+			} else {
 				url = url + "phone=" + "&";
 			}
-			if(radioEmail.getId() == radioGroup.getCheckedRadioButtonId())
-			{
-				url = url + "email="+loginNameText.getText().toString().trim() + "&";
-			}
-			else
-			{
+			if (radioEmail.getId() == radioGroup.getCheckedRadioButtonId()) {
+				url = url + "email="
+						+ loginNameText.getText().toString().trim() + "&";
+			} else {
 				url = url + "email=" + "&";
 			}
 			url = url + "password=" + passwordText.getText().toString();
-			try
-			{
+			try {
 				String result = CommonHTTPRequest.get(url);
-				if(CommonTool.isNull(result))
-				{
+				if (CommonTool.isNull(result)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				}
-				else
-				{
+				} else {
 					LoginInfo loginInfo = ParseJson.getLoginInfo(result);
 					AccountInfo account = new AccountInfo();
 					account.setPhone(loginInfo.phone);
@@ -193,25 +184,22 @@ public class LoginActivity extends AppStoreActivity {
 					loginUpdateHandler.obtainMessage(200, account)
 							.sendToTarget();
 				}
-			} catch (Exception e)
-			{
+			} catch (Exception e) {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				e.printStackTrace();
-			}
-			finally
-			{
+			} finally {
 				progressLogin.closeProgress();
 			}
-//			if (!CommonTool.isNameAdressFormat(email)) {
-//				CommonTool.hintDialog(LoginActivity.this,
-//						getString(R.string.email_warning));
-//				return;
-//			}
-//			if ("".equals(password)) {
-//				CommonTool.hintDialog(LoginActivity.this,
-//						getString(R.string.pass_warning));
-//				return;
-//			}
+			// if (!CommonTool.isNameAdressFormat(email)) {
+			// CommonTool.hintDialog(LoginActivity.this,
+			// getString(R.string.email_warning));
+			// return;
+			// }
+			// if ("".equals(password)) {
+			// CommonTool.hintDialog(LoginActivity.this,
+			// getString(R.string.pass_warning));
+			// return;
+			// }
 
 			// http
 			break;

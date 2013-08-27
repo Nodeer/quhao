@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -27,6 +26,7 @@ import android.widget.ListView;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.CategoryGridAdapter;
 import com.withiter.quhao.adapter.TopMerchantGridAdapter;
+import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.CommonTool;
 import com.withiter.quhao.util.tool.ParseJson;
@@ -132,7 +132,7 @@ public class MainActivity extends AppStoreActivity {
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			Category category = categorys.get(position);
-			Log.d(TAG, "the category is : " + category.categoryType
+			QuhaoLog.d(TAG, "the category is : " + category.categoryType
 					+ ", the count is : " + category.count);
 			Intent intent = new Intent();
 			intent.putExtra("categoryType", category.categoryType);
@@ -157,10 +157,10 @@ public class MainActivity extends AppStoreActivity {
 			public void run() {
 				Looper.prepare();
 				try {
-					Log.i(TAG, "Start to get categorys data form server.");
+					QuhaoLog.i(TAG, "Start to get categorys data form server.");
 					String result = CommonHTTPRequest
 							.get("MerchantController/getTopMerchants?x=6");
-					Log.d(TAG, result);
+					QuhaoLog.d(TAG, result);
 					if (CommonTool.isNull(result)) {
 						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
 								1000);
@@ -218,7 +218,7 @@ public class MainActivity extends AppStoreActivity {
 			public void run() {
 				Looper.prepare();
 				try {
-					Log.v(TAG, "get categorys data form server begin");
+					QuhaoLog.v(TAG, "get categorys data form server begin");
 					String result = CommonHTTPRequest
 							.get("MerchantController/allCategories");
 					if (CommonTool.isNull(result)) {

@@ -11,9 +11,9 @@ public class LoginInfo {
 	public String mobileOS;
 	public String lastLogin;
 
-	public LoginInfo(String phone,String email,String password,String nickName,
-			String birthday,String userImage,String enable,String mobileOS,String lastLogin)
-	{
+	public LoginInfo(String phone, String email, String password,
+			String nickName, String birthday, String userImage, String enable,
+			String mobileOS, String lastLogin) {
 		this.phone = phone;
 		this.email = email;
 		this.password = password;
@@ -25,8 +25,7 @@ public class LoginInfo {
 		this.lastLogin = lastLogin;
 	}
 
-	public LoginInfo()
-	{
+	public LoginInfo() {
 		// TODO Auto-generated constructor stub
 	}
 }
