@@ -10,7 +10,7 @@ import android.content.res.Resources.NotFoundException;
 import android.os.Bundle;
 
 import com.withiter.quhao.R;
-import com.withiter.quhao.util.log.QuhaoLog;
+import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 
 public abstract class QuhaoActivity extends Activity {
