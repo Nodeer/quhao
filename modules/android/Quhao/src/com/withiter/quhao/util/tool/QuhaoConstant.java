@@ -8,6 +8,7 @@ public class QuhaoConstant {
 //	public static String HTTP_URL_TEST_CROSS = "http://146.11.24.186:9081/";
 	public static final String NEW_BODY = null;
 	public static final int ADVERTISE_PIC_MAX = 409600;
+	public static final String SHARED_PREFERENCES = "SHARED_PREFERENCES";
 
 	/**
 	 * 下一頁url
