@@ -88,7 +88,7 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 			public void onClick(View v) {
 
 				// do not change the code below
-				// 判断是否在当前页面, 需要刷新页面，重新加载数据，而不是activity的显示顺序。
+				// 判断是否在当前页面, 需要刷新页面，重新加载数据，而不是调整activity的显示顺序。 Add by Cross
 				if (activity instanceof MainActivity) {
 					Log.i(TAG, "refresh category page");
 					((MainActivity) activity)
