@@ -1,10 +1,15 @@
 package com.withiter.quhao.activity;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -46,13 +51,17 @@ public class GetNumberActivity extends AppStoreActivity {
 	/**
 	 * merchant 名字组件
 	 */
-	private TextView merchantName;
-	private TextView seatNo;
+	private TextView merchantNameView;
+	private TextView seatNoView;
+	private TextView currentNumberView;
 	private Button btnSeatNo;
 	private SelectSeatNo selectSeatNo;
 	private String[] seatNos;
 	private Haoma haoma;
+	private int currentIndex = 0;
 
+	private Paidui currentPaidui;
+	
 	/**
 	 * 根据merchant显示在界面上的handler
 	 */
@@ -63,7 +72,7 @@ public class GetNumberActivity extends AppStoreActivity {
 				super.handleMessage(msg);
 
 				if (null != GetNumberActivity.this.merchant) {
-					merchantName.setText(GetNumberActivity.this.merchant.name);
+					merchantNameView.setText(GetNumberActivity.this.merchant.name);
 				}
 				GetNumberActivity.this.findViewById(R.id.loadingbar)
 						.setVisibility(View.GONE);
@@ -83,14 +92,70 @@ public class GetNumberActivity extends AppStoreActivity {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
 				if (null != haoma) {
-					Map<Integer, Paidui> paiduis = haoma.haomaMap;
-					// seatNos = paiduis.
+					
+					seatNos = new String[haoma.paiduiList.size()];
+					for (int j = 0; j < haoma.paiduiList.size(); j++)
+					{
+						seatNos[j] = haoma.paiduiList.get(j).seatNo;
+					}
+					
+					btnSeatNo.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							String str = String.valueOf(seatNoView.getText());
+							for (int i = 0; i < seatNos.length; i++)
+							{
+								if(str == seatNos[i])
+								{
+									currentIndex = i;
+									currentPaidui = haoma.paiduiList.get(currentIndex);
+								}
+							}
+							selectSeatNo = new SelectSeatNo(GetNumberActivity.this,seatNos, currentIndex);
+							selectSeatNo.showAtLocation(
+									GetNumberActivity.this.findViewById(R.id.root),
+									Gravity.BOTTOM, 0, 0);
+						}
+					});
+					
+					seatNoView.addTextChangedListener(new TextWatcher()
+					{
+						
+						@Override
+						public void onTextChanged(CharSequence s, int start, int before, int count)
+						{
+							
+							
+						}
+						
+						@Override
+						public void beforeTextChanged(CharSequence s, int start, int count,
+								int after)
+						{
+							
+							
+						}
+						
+						@Override
+						public void afterTextChanged(Editable s)
+						{
+							String str = String.valueOf(seatNoView.getText());
+							
+							for (int j = 0; j < seatNos.length; j++)
+							{
+								if(seatNos[j].equals(str))
+								{
+									currentIndex = j;
+									currentPaidui = haoma.paiduiList.get(currentIndex);
+									currentNumberView.setText(String.valueOf(currentPaidui.currentNumber));
+								}
+							}
+							
+							
+						}
+					});
 				}
 
-				GetNumberActivity.this.findViewById(R.id.loadingbar)
-						.setVisibility(View.GONE);
-				GetNumberActivity.this.findViewById(R.id.merchantNameLayout)
-						.setVisibility(View.VISIBLE);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 		}
@@ -108,19 +173,11 @@ public class GetNumberActivity extends AppStoreActivity {
 		btnBack.setOnClickListener(goBack(this));
 
 		// 获取merchant名称组件
-		merchantName = (TextView) findViewById(R.id.merchantName);
-		seatNo = (TextView) findViewById(R.id.seatNo);
+		merchantNameView = (TextView) findViewById(R.id.merchantName);
+		seatNoView = (TextView) findViewById(R.id.seatNo);
+		currentNumberView = (TextView) findViewById(R.id.currentNumber);
 		btnSeatNo = (Button) findViewById(R.id.btn_seatNo);
-		btnSeatNo.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				selectSeatNo = new SelectSeatNo(GetNumberActivity.this);
-				selectSeatNo.showAtLocation(
-						GetNumberActivity.this.findViewById(R.id.root),
-						Gravity.BOTTOM, 0, 0);
-
-			}
-		});
+		
 		getMerchantInfo();
 		getSeatNos();
 	}

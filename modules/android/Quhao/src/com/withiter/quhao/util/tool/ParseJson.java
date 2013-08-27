@@ -2,6 +2,7 @@ package com.withiter.quhao.util.tool;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -382,9 +383,9 @@ public class ParseJson {
 			}
 			
 			JSONObject jsonMaps = null;
-			Map<Integer, Paidui> haomaMap = null;
+			List<Paidui> paiduiList = null;
 			if (obj.has("haomaVOMap")) {
-				haomaMap = new HashMap<Integer, Paidui>();
+				paiduiList = new ArrayList<Paidui>();
 				jsonMaps = obj.getJSONObject("haomaVOMap");
 				
 				Iterator<String> keyIter = jsonMaps.keys();
@@ -393,11 +394,12 @@ public class ParseJson {
 				{
 					String key = keyIter.next();
 					JSONObject obj1 = jsonMaps.getJSONObject(key);
-					Paidui paidu = coventPaidui(obj1);
-					haomaMap.put(Integer.parseInt(key), paidu);
+					Paidui paidu = coventPaidui(key,obj1);
+					paiduiList.add(paidu);
 				}
 				
-				haoma.haomaMap = haomaMap;
+				Collections.sort(paiduiList);
+				haoma.paiduiList = paiduiList;
 			}
 
 		} catch (JSONException e) {
@@ -407,12 +409,13 @@ public class ParseJson {
 		return haoma;
 	}
 
-	private static Paidui coventPaidui(JSONObject obj)
+	private static Paidui coventPaidui(String key,JSONObject obj)
 	{
 		Paidui paidu = null;
 		
 		try
 		{
+			
 			Integer currentNumber = null;
 	
 			if (obj.has("currentNumber")) {
@@ -443,7 +446,7 @@ public class ParseJson {
 				enable = obj.getBoolean("enable");
 			}
 
-			paidu = new Paidui(currentNumber, canceled, expired, finished, enable);
+			paidu = new Paidui(key,currentNumber, canceled, expired, finished, enable);
 			
 		} catch (JSONException e) {
 			e.printStackTrace();

@@ -1,6 +1,7 @@
 package com.withiter.quhao.view;
 
 import com.withiter.quhao.R;
+import com.withiter.quhao.activity.GetNumberActivity;
 import com.withiter.quhao.util.tool.CommonTool;
 import com.withiter.quhao.view.adapter.ArrayWheelAdapter;
 import com.withiter.quhao.view.adapter.NumericWheelAdapter;
@@ -11,6 +12,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -40,10 +42,11 @@ public class SelectSeatNo extends PopupWindow implements OnClickListener {
 	private String[] seats;
 	private String[] seatType;
 
-	public SelectSeatNo(Activity context) {
+	public SelectSeatNo(Activity context, String[] seatNos,int mCurSeatNo) {
 		super(context);
-		mContext = context;
-
+		this.mContext = context;
+		this.seats = seatNos;
+		this.mCurSeatNo = mCurSeatNo;
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		selectView = inflater.inflate(R.layout.seat_select, null);
@@ -62,24 +65,20 @@ public class SelectSeatNo extends PopupWindow implements OnClickListener {
 
 			@Override
 			public void onChanged(WheelView wheel, int oldValue, int newValue) {
-				updateSeatNo(seatView);
+				Log.d("", "oldValue : " + oldValue + " , newValue : " + newValue);
+				updateSeatNo(seatView,newValue);
 			}
 
 		};
 
-		if (CommonTool.isNotNull(seatNo)) {
-			mCurSeatNo = Integer.parseInt(seatNo);
-		}
 		seatType = mContext.getResources().getStringArray(R.array.seat);
 
-		seats = new String[] { "1w", "2w", "3w", "6w", "7w", "8w", "9w", "10w",
-				"14w", "15w", "16w", "17zz", "18", "19", "110" };
 		seatNoAdapter = new SeatNumericAdapter(mContext, seats, 0);
 		seatNoAdapter.setTextType(seatType[0]);
 		seatView.setViewAdapter(seatNoAdapter);
 		seatView.setCurrentItem(mCurSeatNo);
 		seatView.addChangingListener(listener);
-		updateSeatNo(seatView);
+		updateSeatNo(seatView,this.mCurSeatNo);
 
 		viewfipper.addView(selectView);
 		viewfipper.setFlipInterval(6000000);
@@ -98,7 +97,9 @@ public class SelectSeatNo extends PopupWindow implements OnClickListener {
 		viewfipper.startFlipping();
 	}
 
-	private void updateSeatNo(WheelView seatView) {
+	private void updateSeatNo(WheelView seatView, int mCurSeatNo) {
+		
+		seatView.setCurrentItem(mCurSeatNo);
 		seatNo = seats[seatView.getCurrentItem()];
 	}
 
@@ -131,10 +132,13 @@ public class SelectSeatNo extends PopupWindow implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
+		
+		
+		
 		TextView text = (TextView) mContext.findViewById(R.id.seatNo);
 		text.setText(seatNo);
+		
 		this.dismiss();
-
 	}
 
 }
