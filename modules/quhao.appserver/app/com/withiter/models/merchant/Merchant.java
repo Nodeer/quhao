@@ -1,14 +1,16 @@
 package com.withiter.models.merchant;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import org.joda.time.DateTime;
 
 import cn.bran.japid.util.StringUtils;
 
 import com.google.code.morphia.annotations.Entity;
 import com.withiter.common.Constants.CateType;
-import com.withiter.common.Constants.SortBy;
 import com.withiter.models.account.Reservation;
 
 @Entity
@@ -60,6 +62,25 @@ public class Merchant extends MerchantEntityDef {
 		Pattern pattern = Pattern.compile("^.*" + name + ".*$", Pattern.CASE_INSENSITIVE);
 		q.filter("name", pattern).limit(DEFAULT_PAGE_ITEMS_NUMBER);
 		return q.asList();
+	}
+	
+	/**
+	 * 
+	 * @param date joinedDate Of Merchant
+	 * @return the newest merchants
+	 */
+	public static List<Merchant> findByDate(int page,String date,String sortBy) {
+		MorphiaQuery q = Merchant.q();
+		if(null!=date){
+			q.filter("joinedDate >",date);
+		}else{
+			q.filter("joinedDate >",new Date().toString());
+		}
+		if (!StringUtils.isEmpty(sortBy)) {
+			q = sortBy(q, sortBy);
+		}
+		return paginate(q, page);
+
 	}
 	
 	@Override

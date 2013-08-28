@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import vo.CategoryVO;
@@ -169,8 +170,9 @@ public class MerchantController extends BaseController {
 	}
 	
 	/**
-	 * 模糊查询
-	 * @param name 商家名称 
+	 * 模糊查询 
+	 * @return 返回匹配的商家列表
+	 * @param  name 商家名称 
 	 */
 	public static void getMerchantsByName(String name) {
 		List<Merchant> merchantList = Merchant.findByName(name);
@@ -181,5 +183,21 @@ public class MerchantController extends BaseController {
 			}
 		}
 		renderJSON(merchantVOList);
+	}
+	
+	/**
+	 * @return 返回新加入的商家列表
+	 * @param  date 日期
+	 */
+	public static void getLastMerchants(int page,String date,String sortBy) {
+		page = (page == 0) ? 1 : page;
+
+		List<Merchant> merchantList = Merchant.findByDate(page,date,sortBy);
+		List<MerchantVO> merchantVOList = new ArrayList<MerchantVO>();
+		for (Merchant m : merchantList) {
+			merchantVOList.add(MerchantVO.build(m));
+		}
+		renderJSON(merchantVOList);
+		
 	}
 }
