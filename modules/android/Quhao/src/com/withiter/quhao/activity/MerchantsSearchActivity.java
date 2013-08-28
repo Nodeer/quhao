@@ -23,8 +23,8 @@ import android.widget.ListView;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantAdapter;
+import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
-import com.withiter.quhao.util.tool.CommonTool;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.vo.Merchant;
@@ -159,7 +159,7 @@ public class MerchantsSearchActivity extends AppStoreActivity {
 				String result = CommonHTTPRequest.get("MerchantController/getMerchantsByName?name="
 						+ MerchantsSearchActivity.this.editSearch.getText()
 								.toString());
-				if(CommonTool.isNull(result))
+				if(StringUtils.isNull(result))
 				{
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				}

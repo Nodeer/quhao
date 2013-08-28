@@ -21,8 +21,8 @@ import android.widget.TextView;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantAdapter;
 import com.withiter.quhao.util.QuhaoLog;
+import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
-import com.withiter.quhao.util.tool.CommonTool;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.vo.Merchant;
@@ -163,7 +163,7 @@ public class MerchantListActivity extends AppStoreActivity {
 				QuhaoLog.v(LOGTAG, "get categorys data form server begin");
 				String buf = CommonHTTPRequest.get("MerchantController/nextPage?page=" + page
 						+ "&cateType=" + categoryType);
-				if(CommonTool.isNull(buf))
+				if(StringUtils.isNull(buf))
 				{
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				}

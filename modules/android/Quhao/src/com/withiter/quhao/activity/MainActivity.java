@@ -27,8 +27,8 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.CategoryGridAdapter;
 import com.withiter.quhao.adapter.TopMerchantGridAdapter;
 import com.withiter.quhao.util.QuhaoLog;
+import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
-import com.withiter.quhao.util.tool.CommonTool;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.vo.Category;
@@ -161,7 +161,7 @@ public class MainActivity extends AppStoreActivity {
 					String result = CommonHTTPRequest
 							.get("MerchantController/getTopMerchants?x=6");
 					QuhaoLog.d(TAG, result);
-					if (CommonTool.isNull(result)) {
+					if (StringUtils.isNull(result)) {
 						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
 								1000);
 					} else {
@@ -221,7 +221,7 @@ public class MainActivity extends AppStoreActivity {
 					QuhaoLog.v(TAG, "get categorys data form server begin");
 					String result = CommonHTTPRequest
 							.get("MerchantController/allCategories");
-					if (CommonTool.isNull(result)) {
+					if (StringUtils.isNull(result)) {
 						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
 								1000);
 					} else {

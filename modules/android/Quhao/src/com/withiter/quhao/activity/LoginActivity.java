@@ -22,8 +22,8 @@ import android.widget.TextView;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
+import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
-import com.withiter.quhao.util.tool.CommonTool;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.vo.LoginInfo;
@@ -54,7 +54,7 @@ public class LoginActivity extends AppStoreActivity {
 				super.handleMessage(msg);
 
 				// intent.pute
-				if (CommonTool.isNotNull(activityName)) {
+				if (StringUtils.isNotNull(activityName)) {
 					Intent intent = new Intent();
 					if ("com.withiter.quhao.activity.MerchantDetailActivity"
 							.equals(activityName)) {
@@ -72,14 +72,10 @@ public class LoginActivity extends AppStoreActivity {
 					}
 					startActivity(intent);
 				}
-
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				finish();
-
 			}
-
 		}
-
 	};
 
 	@Override
@@ -89,7 +85,7 @@ public class LoginActivity extends AppStoreActivity {
 		super.onCreate(savedInstanceState);
 
 		activityName = getIntent().getStringExtra("activityName");
-		if (CommonTool.isNotNull(activityName)) {
+		if (StringUtils.isNotNull(activityName)) {
 			if ("com.withiter.quhao.activity.MerchantDetailActivity"
 					.equals(activityName)) {
 				String merchantId = getIntent().getStringExtra("merchantId");
@@ -165,7 +161,7 @@ public class LoginActivity extends AppStoreActivity {
 			url = url + "password=" + passwordText.getText().toString();
 			try {
 				String result = CommonHTTPRequest.get(url);
-				if (CommonTool.isNull(result)) {
+				if (StringUtils.isNull(result)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
 					LoginInfo loginInfo = ParseJson.getLoginInfo(result);

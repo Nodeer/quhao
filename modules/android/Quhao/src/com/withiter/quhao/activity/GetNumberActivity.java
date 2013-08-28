@@ -1,10 +1,5 @@
 package com.withiter.quhao.activity;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,6 +15,7 @@ import android.widget.TextView;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.QuhaoLog;
+import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.CommonTool;
 import com.withiter.quhao.util.tool.ParseJson;
@@ -210,7 +206,7 @@ public class GetNumberActivity extends AppStoreActivity {
 				String buf = CommonHTTPRequest
 						.get("quhao?id=51efe7d8ae4dca7b4c281754");
 				// + GetNumberActivity.this.merchantId);
-				if (CommonTool.isNull(buf)) {
+				if (StringUtils.isNull(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
 					haoma = ParseJson.getHaoma(buf);
@@ -245,7 +241,7 @@ public class GetNumberActivity extends AppStoreActivity {
 				QuhaoLog.v(LOG_TAG, "get merchant data form server begin");
 				String buf = CommonHTTPRequest.get("merchant?id="
 						+ GetNumberActivity.this.merchantId);
-				if (CommonTool.isNull(buf)) {
+				if (StringUtils.isNull(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
 					merchant = ParseJson.getMerchant(buf);
