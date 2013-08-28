@@ -96,14 +96,17 @@ public class LoginActivity extends AppStoreActivity {
 		radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
 		radioPhone = (RadioButton) findViewById(R.id.radioPhone);
 		radioEmail = (RadioButton) findViewById(R.id.radioEmail);
+		
 		pannelLoginName = (TextView) findViewById(R.id.pannel_login_name);
 		loginNameText = (EditText) findViewById(R.id.login_name);
 		passwordText = (EditText) findViewById(R.id.edit_pass);
+		
 		btnClose = (Button) findViewById(R.id.close);
-		btnClose.setOnClickListener(this);
 		btnLogin = (Button) findViewById(R.id.login);
-		btnLogin.setOnClickListener(this);
 		btnRegister = (Button) findViewById(R.id.zhuce);
+		
+		btnClose.setOnClickListener(this);
+		btnLogin.setOnClickListener(this);
 		btnRegister.setOnClickListener(this);
 		
 		radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -117,7 +120,6 @@ public class LoginActivity extends AppStoreActivity {
 
 			}
 		});
-
 	}
 
 	@Override

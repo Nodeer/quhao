@@ -101,11 +101,11 @@ public class CommonHTTPRequest {
 		HttpClient httpClient = new DefaultHttpClient(httpParameters);
 		HttpResponse response;
 		response = httpClient.execute(request);
-		QuhaoLog.i(TAG, "get data form server, the status code is  : "
+		QuhaoLog.i(TAG, "get data from server, the status code is  : "
 				+ response.getStatusLine().getStatusCode());
 		if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 			result = EntityUtils.toString(response.getEntity());
-			QuhaoLog.v(TAG, "get data form server : " + result);
+			QuhaoLog.v(TAG, "get data from server : " + result);
 		}
 
 		return result;

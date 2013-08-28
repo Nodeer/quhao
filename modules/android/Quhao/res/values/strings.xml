@@ -10,14 +10,19 @@
 
     <!--提示信息 -->
 	<string name="empty" />
-	<string name="connecting">连接中...</string>
+	<string name="connecting">连接中&#8230;</string>
 	<string name="network_error_info">网络连接失败，请检查网络设置！</string>
-	<string name="logining">登录中...</string>
+	<string name="logining">登录中&#8230;</string>
 	<string name="net_error">网络异常，请重试!</string>
-	<string name="querying">正努力帮您加载美味信息...</string>
+	<string name="querying">正努力帮您加载美味信息&#8230;</string>
 	<string name="radioPhone">手机</string>
 	<string name="radioEmail">邮箱</string>
 	<string name="warning">警告</string>
 	<string name="email_warning">无效邮件地址</string>
 	<string name="pass_warning">无效密码</string>
+	
+	<!-- 个人中心 -->
+	<string name="gerenzhongxin">个人中心</string>
+	<string name="avatar">头像</string>
+	<!-- 个人中心 -->
 </resources>

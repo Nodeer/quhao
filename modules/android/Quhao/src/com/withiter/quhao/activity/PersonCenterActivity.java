@@ -16,8 +16,6 @@ public class PersonCenterActivity extends AppStoreActivity {
 		setContentView(R.layout.person_center_layout);
 		super.onCreate(savedInstanceState);
 
-		//AccountInfo account = QHClientApplication.getInstance().accessInfo;
-		//Log.d(TAG, account.getPhone());
 		// bind menu button function
 		btnCategory.setOnClickListener(goCategory(this));
 		btnNearby.setOnClickListener(goNearby(this));

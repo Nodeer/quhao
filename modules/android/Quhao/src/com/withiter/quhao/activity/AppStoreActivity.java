@@ -95,11 +95,12 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 							.getTopMerchantsFromServerAndDisplay();
 					((MainActivity) activity)
 							.getCategoriesFromServerAndDisplay();
-				}else{
+				} else {
 					Intent intent = new Intent(activity, MainActivity.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 					startActivity(intent);
-					overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
+					overridePendingTransition(R.anim.main_enter,
+							R.anim.main_exit);
 				}
 			}
 		};
@@ -137,22 +138,31 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 		OnClickListener clickListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (QHClientApplication.getInstance().isLogined) {
-					Intent intent = new Intent(activity,
-							PersonCenterActivity.class);
-					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-					startActivity(intent);
+				if (activity instanceof PersonCenterActivity) {
+					QuhaoLog.i(TAG, "refresh personal center page");
+					// TODO add refresh personal page
 				} else {
-					Intent intent = new Intent(activity, LoginActivity.class);
-					intent.putExtra("activityName", activity.getClass()
-							.getName());
-					QuhaoLog.d(TAG, " activity.getClass().getName() : "
-							+ activity.getClass().getName());
+					Intent intent = new Intent(activity, PersonCenterActivity.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 					startActivity(intent);
+					overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
 				}
 
-				overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
+				// if (QHClientApplication.getInstance().isLogined) {
+				// Intent intent = new Intent(activity,
+				// PersonCenterActivity.class);
+				// intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				// startActivity(intent);
+				// } else {
+				// Intent intent = new Intent(activity, LoginActivity.class);
+				// intent.putExtra("activityName", activity.getClass()
+				// .getName());
+				// QuhaoLog.d(TAG, " activity.getClass().getName() : "
+				// + activity.getClass().getName());
+				// intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				// startActivity(intent);
+				// }
+
 			}
 		};
 		return clickListener;

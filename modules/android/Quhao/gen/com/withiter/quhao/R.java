@@ -360,12 +360,16 @@ public final class R {
     public static final class string {
         public static final int action_settings=0x7f090001;
         public static final int app_name=0x7f090000;
+        public static final int avatar=0x7f090010;
         public static final int btn_ok=0x7f090003;
         public static final int connecting=0x7f090005;
         public static final int email_warning=0x7f09000d;
         /** 提示信息 
          */
         public static final int empty=0x7f090004;
+        /**  个人中心 
+         */
+        public static final int gerenzhongxin=0x7f09000f;
         public static final int hello_world=0x7f090002;
         public static final int logining=0x7f090007;
         public static final int net_error=0x7f090008;
