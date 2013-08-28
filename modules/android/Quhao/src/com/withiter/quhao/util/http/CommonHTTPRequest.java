@@ -101,16 +101,11 @@ public class CommonHTTPRequest {
 		HttpClient httpClient = new DefaultHttpClient(httpParameters);
 		HttpResponse response;
 		response = httpClient.execute(request);
-		QuhaoLog.i(TAG, "get top merchant data form server : "
+		QuhaoLog.i(TAG, "get data form server, the status code is  : "
 				+ response.getStatusLine().getStatusCode());
 		if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 			result = EntityUtils.toString(response.getEntity());
-			QuhaoLog.v(TAG, "get top merchant data form server buf : " + result);
-			// 返回HTML页面
-//			if (result.indexOf("<html>") != -1
-//					|| result.indexOf("<HTML>") != -1) {
-//				throw new Exception("session timeout!");
-//			}
+			QuhaoLog.v(TAG, "get data form server : " + result);
 		}
 
 		return result;

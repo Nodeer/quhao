@@ -146,7 +146,7 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 					Intent intent = new Intent(activity, LoginActivity.class);
 					intent.putExtra("activityName", activity.getClass()
 							.getName());
-					QuhaoLog.d("ok", " activity.getClass().getName() : "
+					QuhaoLog.d(TAG, " activity.getClass().getName() : "
 							+ activity.getClass().getName());
 					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 					startActivity(intent);

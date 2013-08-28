@@ -2,6 +2,8 @@ package com.withiter.quhao.domain;
 
 import java.io.Serializable;
 
+import com.withiter.quhao.vo.LoginInfo;
+
 public class AccountInfo implements Serializable{
 	/**
 	 * 
@@ -96,6 +98,18 @@ public class AccountInfo implements Serializable{
 
 	public void setLastLogin(String lastLogin) {
 		this.lastLogin = lastLogin;
+	}
+	
+	public void build(LoginInfo loginInfo){
+		this.setPhone(loginInfo.phone);
+		this.setEmail(loginInfo.email);
+		this.setPassword(loginInfo.password);
+		this.setNickName(loginInfo.nickName);
+		this.setBirthday(loginInfo.birthday);
+		this.setUserImage(loginInfo.userImage);
+		this.setEnable(loginInfo.enable);
+		this.setMobileOS(loginInfo.mobileOS);
+		this.setLastLogin(loginInfo.lastLogin);
 	}
 
 }

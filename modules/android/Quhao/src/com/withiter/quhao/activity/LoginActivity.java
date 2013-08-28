@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
+import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
@@ -30,7 +31,7 @@ import com.withiter.quhao.vo.LoginInfo;
 
 public class LoginActivity extends AppStoreActivity {
 
-	private final static String LOG_TAG = LoginActivity.class.getName();
+	private final static String TAG = LoginActivity.class.getName();
 	private RadioGroup radioGroup;
 	private RadioButton radioPhone;
 	private RadioButton radioEmail;
@@ -104,8 +105,8 @@ public class LoginActivity extends AppStoreActivity {
 		btnLogin.setOnClickListener(this);
 		btnRegister = (Button) findViewById(R.id.zhuce);
 		btnRegister.setOnClickListener(this);
+		
 		radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
 				if (checkedId == radioPhone.getId()) {
@@ -159,22 +160,16 @@ public class LoginActivity extends AppStoreActivity {
 				url = url + "email=" + "&";
 			}
 			url = url + "password=" + passwordText.getText().toString();
+			QuhaoLog.i(TAG, "the login url is : " + url);
 			try {
 				String result = CommonHTTPRequest.get(url);
+				QuhaoLog.i(TAG, result);
 				if (StringUtils.isNull(result)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
 					LoginInfo loginInfo = ParseJson.getLoginInfo(result);
 					AccountInfo account = new AccountInfo();
-					account.setPhone(loginInfo.phone);
-					account.setEmail(loginInfo.email);
-					account.setPassword(loginInfo.password);
-					account.setNickName(loginInfo.nickName);
-					account.setBirthday(loginInfo.birthday);
-					account.setUserImage(loginInfo.userImage);
-					account.setEnable(loginInfo.enable);
-					account.setMobileOS(loginInfo.mobileOS);
-					account.setLastLogin(loginInfo.lastLogin);
+					account.build(loginInfo);
 					QHClientApplication.getInstance().accessInfo = account;
 					QHClientApplication.getInstance().isLogined = true;
 					loginUpdateHandler.obtainMessage(200, account)
@@ -186,18 +181,6 @@ public class LoginActivity extends AppStoreActivity {
 			} finally {
 				progressLogin.closeProgress();
 			}
-			// if (!CommonTool.isNameAdressFormat(email)) {
-			// CommonTool.hintDialog(LoginActivity.this,
-			// getString(R.string.email_warning));
-			// return;
-			// }
-			// if ("".equals(password)) {
-			// CommonTool.hintDialog(LoginActivity.this,
-			// getString(R.string.pass_warning));
-			// return;
-			// }
-
-			// http
 			break;
 		case R.id.zhuce:
 			Intent intent = new Intent(this, RegisterActivity.class);
