@@ -24,7 +24,11 @@
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="#000000" 
             android:gravity="center" 
-            android:shadowColor="#D9D9D9"
+            android:shadowColor="#B8860B"
+            android:shadowDx="1"
+            android:shadowDy="2"
+            android:shadowRadius="3.0"
+            android:background="@drawable/shadow"
             />
         <!-- 
         <Button
