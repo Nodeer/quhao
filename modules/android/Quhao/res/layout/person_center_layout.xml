@@ -28,7 +28,7 @@
             android:shadowDx="1"
             android:shadowDy="2"
             android:shadowRadius="3.0"
-            android:background="@drawable/shadow"
+            android:background="@drawable/common_layout_shadow"
             />
         <!-- 
         <Button
