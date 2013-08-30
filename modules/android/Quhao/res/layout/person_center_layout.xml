@@ -72,7 +72,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:paddingLeft="2.0dip"
+                        android:paddingLeft="10.0dip"
                         android:paddingTop="8.0dip" >
 
                         <!-- nickname -->
