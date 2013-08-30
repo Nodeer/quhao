@@ -258,10 +258,10 @@ public final class R {
         public static final int zhuce2=0x7f0200b4;
     }
     public static final class id {
-        public static final int action_settings=0x7f0c004d;
+        public static final int action_settings=0x7f0c004e;
         public static final int avatar=0x7f0c003f;
         public static final int back_btn=0x7f0c0010;
-        public static final int bithday_layout=0x7f0c0047;
+        public static final int bithday_layout=0x7f0c0048;
         public static final int btnMerchantDetail=0x7f0c0005;
         public static final int btnMerchantList=0x7f0c0027;
         public static final int btnMore=0x7f0c002a;
@@ -270,7 +270,7 @@ public final class R {
         public static final int btn_GetNumber=0x7f0c002b;
         public static final int btn_enter=0x7f0c000c;
         public static final int btn_seatNo=0x7f0c0013;
-        public static final int cancel=0x7f0c0048;
+        public static final int cancel=0x7f0c0049;
         public static final int categoryCount=0x7f0c002d;
         public static final int categoryType=0x7f0c002c;
         public static final int category_item_count=0x7f0c0001;
@@ -284,13 +284,14 @@ public final class R {
         public static final int fuwu=0x7f0c003c;
         public static final int huanjing=0x7f0c003b;
         public static final int img=0x7f0c0003;
+        public static final int jifen=0x7f0c0042;
         public static final int kouwei=0x7f0c0039;
         public static final int linear=0x7f0c0015;
         public static final int linearLayout1=0x7f0c0004;
         public static final int linearLayout2=0x7f0c0006;
         public static final int linearLayout3=0x7f0c000b;
         public static final int linebar=0x7f0c001e;
-        public static final int listview_item=0x7f0c004c;
+        public static final int listview_item=0x7f0c004d;
         public static final int lite_list=0x7f0c0011;
         public static final int loadingbar=0x7f0c000e;
         public static final int login=0x7f0c001f;
@@ -301,11 +302,11 @@ public final class R {
         public static final int menuLayout=0x7f0c0024;
         public static final int merchantAddress=0x7f0c0008;
         public static final int merchantAverageCost=0x7f0c0034;
-        public static final int merchantImg=0x7f0c0042;
+        public static final int merchantImg=0x7f0c0043;
         public static final int merchantName=0x7f0c0007;
         public static final int merchantNameLayout=0x7f0c000f;
-        public static final int merchantPhone=0x7f0c0043;
-        public static final int merchantTags=0x7f0c0044;
+        public static final int merchantPhone=0x7f0c0044;
+        public static final int merchantTags=0x7f0c0045;
         public static final int merchantsLayout=0x7f0c002e;
         public static final int merchantsListView=0x7f0c002f;
         public static final int mobile=0x7f0c0041;
@@ -317,16 +318,16 @@ public final class R {
         public static final int radioGroup=0x7f0c0017;
         public static final int radioPhone=0x7f0c0018;
         public static final int relativeLayout1=0x7f0c0009;
-        public static final int requestroute=0x7f0c0046;
+        public static final int requestroute=0x7f0c0047;
         public static final int root=0x7f0c000d;
         public static final int search_btn=0x7f0c0030;
-        public static final int seat=0x7f0c004a;
+        public static final int seat=0x7f0c004b;
         public static final int seatNo=0x7f0c0012;
-        public static final int serverdata=0x7f0c0045;
+        public static final int serverdata=0x7f0c0046;
         public static final int stars=0x7f0c0031;
-        public static final int submit=0x7f0c0049;
+        public static final int submit=0x7f0c004a;
         public static final int tex2_lay1=0x7f0c0032;
-        public static final int text=0x7f0c004b;
+        public static final int text=0x7f0c004c;
         public static final int text2_lay2=0x7f0c0037;
         public static final int text2_renjun=0x7f0c0033;
         public static final int text2_shop_score1=0x7f0c0038;
@@ -377,6 +378,8 @@ public final class R {
          */
         public static final int gerenzhongxin=0x7f09000f;
         public static final int hello_world=0x7f090002;
+        public static final int jifen_default=0x7f090014;
+        public static final int jifen_label=0x7f090013;
         public static final int logining=0x7f090007;
         public static final int net_error=0x7f090008;
         public static final int network_error_info=0x7f090006;
