@@ -6,33 +6,27 @@
     android:orientation="vertical" >
 
     <!-- title -->
+
     <FrameLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="#FFFAFA"
+        android:layout_height="50dip"
+        android:background="@drawable/common_top_bar_bg"
         android:gravity="center_vertical"
         android:paddingBottom="5dip"
         android:paddingLeft="5dip"
         android:paddingRight="5dip"
-        android:paddingTop="5dip" 
-        >
+        android:paddingTop="5dip" >
+
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:gravity="center"
             android:text="@string/gerenzhongxin"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="#000000" 
-            android:gravity="center" 
-            android:shadowColor="#B8860B"
-            android:shadowDx="1"
-            android:shadowDy="2"
-            android:shadowRadius="3.0"
-            android:background="@drawable/common_layout_shadow"
-            />
+            android:textColor="#000000" />
     </FrameLayout>
-	<!-- title -->
-    
+    <!-- title -->
+
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="0.0dip"
@@ -41,7 +35,6 @@
         <ScrollView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="1.0"
             android:fillViewport="true" >
 
             <LinearLayout
@@ -56,39 +49,30 @@
                     android:background="#ffffffff"
                     android:orientation="horizontal" >
 
+                    <!-- avatar -->
                     <LinearLayout
-                        android:layout_width="fill_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3"
                         android:orientation="vertical"
                         android:padding="8.0dip" >
+
                         <ImageView
-                            android:id="@+id/img"
+                            android:id="@+id/avatar"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:adjustViewBounds="true"
-                            android:src="@drawable/upload" 
-                            android:contentDescription="@string/avatar" />
+                            android:contentDescription="@string/avatar"
+                            android:src="@drawable/person_avatar" />
                     </LinearLayout>
+                    <!-- avatar -->
 
                     <LinearLayout
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2"
                         android:orientation="vertical"
                         android:paddingLeft="2.0dip"
                         android:paddingTop="8.0dip" >
 
-                        <ImageView
-                            android:id="@+id/stars"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:adjustViewBounds="true"
-                            android:src="@drawable/star50" 
-                            android:contentDescription="" />
-
                         <LinearLayout
-                            android:id="@+id/tex2_lay1"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="0.0dip"
@@ -215,8 +199,7 @@
                                 android:textColor="#ff000000"
                                 android:textSize="16.0sp" />
                         </LinearLayout>
-                    </LinearLayout>
-                </LinearLayout>
+                    </LinearLayout>                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="fill_parent"
@@ -293,6 +276,7 @@
         </ScrollView>
     </FrameLayout>
 
+    <!-- menu bar -->
     <LinearLayout
         android:id="@+id/menuLayout"
         android:layout_width="fill_parent"
@@ -302,5 +286,5 @@
             android:id="@+id/menu"
             layout="@layout/menu_bar" />
     </LinearLayout>
-
+	<!-- menu bar -->
 </LinearLayout>
