@@ -24,5 +24,7 @@
 	<!-- 个人中心 -->
 	<string name="gerenzhongxin">个人中心</string>
 	<string name="avatar">您的优雅头像</string>
+	<string name="noname">无名人士</string>
+	<string name="nomobile">无号码</string>
 	<!-- 个人中心 -->
 </resources>
