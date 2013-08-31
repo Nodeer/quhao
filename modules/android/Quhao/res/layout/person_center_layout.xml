@@ -157,7 +157,9 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_address_big" />
+                        android:src="@drawable/person_current_paidui" 
+                        android:contentDescription="@string/person_current_paidui_icon"
+                        />
 
                     <TextView
                         android:id="@+id/phone"
@@ -167,7 +169,7 @@
                         android:layout_weight="1.0"
                         android:maxLines="2"
                         android:paddingRight="6.0dip"
-                        android:text="陕西南路35号红房子2楼"
+                        android:text="@string/current_paidui"
                         android:textAppearance="?android:textAppearanceMedium"
                         android:textColor="#ff000000"
                         android:textSize="16.0sp" />
@@ -193,7 +195,9 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_address_big" />
+                        android:src="@drawable/person_history_paidui"
+                        android:contentDescription="@string/person_history_paidui_icon"
+                         />
 
                     <TextView
                         android:id="@+id/mail"
@@ -203,7 +207,7 @@
                         android:layout_weight="1.0"
                         android:maxLines="2"
                         android:paddingRight="6.0dip"
-                        android:text="陕西南路35号红房子2楼"
+                        android:text="@string/history_paidui"
                         android:textAppearance="?android:textAppearanceMedium"
                         android:textColor="#ff000000"
                         android:textSize="16.0sp" />

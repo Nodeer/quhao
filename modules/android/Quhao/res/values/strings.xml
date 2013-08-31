@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Quhao</string>
+    <string name="app_name">取号</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
     
     <string name="btn_ok">确定</string>
 	
+    <!-- 加载页面 -->
+    <string name="startup">排队不用等</string>
+    <!-- 加载页面 -->
 
     <!--提示信息 -->
 	<string name="empty" />
@@ -28,5 +30,9 @@
 	<string name="nomobile">无号码</string>
 	<string name="jifen_label">剩余积分</string>
 	<string name="jifen_default">5</string>
+	<string name="person_current_paidui_icon">当前取号情况</string>
+	<string name="person_history_paidui_icon">历史取号情况</string>
+	<string name="current_paidui">当前取号情况</string>
+	<string name="history_paidui">历史取号情况</string>
 	<!-- 个人中心 -->
 </resources>

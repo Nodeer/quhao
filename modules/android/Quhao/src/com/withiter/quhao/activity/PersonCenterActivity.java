@@ -22,8 +22,6 @@ public class PersonCenterActivity extends AppStoreActivity {
 		btnPerson.setOnClickListener(goPersonCenter(this));
 		btnMore.setOnClickListener(goMore(this));
 		
-		// comment below function, no need back button for the first screen of each menu.
-//		btnBack.setOnClickListener(goBack(this));
 	}
 
 	@Override
