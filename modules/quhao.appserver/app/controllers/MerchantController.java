@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import vo.CategoryVO;
@@ -9,12 +10,14 @@ import vo.HaomaVO;
 import vo.MerchantVO;
 import vo.ReservationVO;
 import vo.TopMerchantVO;
+import vo.HaomaVO.PaiduiVO;
 
 import com.withiter.models.account.Account;
 import com.withiter.models.account.Reservation;
 import com.withiter.models.merchant.Category;
 import com.withiter.models.merchant.Haoma;
 import com.withiter.models.merchant.Merchant;
+import com.withiter.models.merchant.Paidui;
 import com.withiter.models.merchant.TopMerchant;
 
 /**
@@ -88,6 +91,30 @@ public class MerchantController extends BaseController {
 		Haoma haoma = Haoma.findByMerchantId(id);
 		HaomaVO vo = HaomaVO.build(haoma);
 		renderJSON(vo);
+	}
+	
+	/**
+	 * 根据merchant id 和 座位号 查看 当前排队情况
+	 * 
+	 * @param merchantId
+	 *            商家id
+	 * @param seatNo 座位号
+	 * 
+	 * @return json 座位号
+	 */
+	public static void getCurrentNo(String id,String seatNo) {
+		Haoma haoma = Haoma.findByMerchantId(id);
+		//HaomaVO vo = HaomaVO.build(haoma);
+		Iterator ite = haoma.haomaMap.keySet().iterator();
+		while(ite.hasNext()){
+			Integer key = (Integer)ite.next();
+			if(key.equals(Integer.valueOf(seatNo)))
+			{
+				renderJSON(haoma.haomaMap.get(key).currentNumber);
+				
+			}
+		}
+		//renderJSON(vo);
 	}
 
 	/**
