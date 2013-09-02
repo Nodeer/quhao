@@ -147,7 +147,7 @@ public class MerchantsSearchActivity extends AppStoreActivity {
 		@Override
 		public void run() {
 			try {
-				Log.v(LOGTAG, "search merchants data form server begin : "
+				Log.v(LOGTAG, "search merchants data from server begin : "
 						+ MerchantsSearchActivity.this.editSearch.getText());
 				if (null == MerchantsSearchActivity.this.editSearch.getText()
 						|| "".equals(MerchantsSearchActivity.this.editSearch

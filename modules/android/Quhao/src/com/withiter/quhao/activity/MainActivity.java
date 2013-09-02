@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -72,8 +74,41 @@ public class MainActivity extends AppStoreActivity {
 
 		// search function
 		searchTextView = (TextView) findViewById(R.id.edit_search);
-//		searchTextView.addTextChangedListener(watcher)
-		searchTextView.setOnClickListener(goMerchantsSearch(MainActivity.this));
+		searchTextView.addTextChangedListener(new TextWatcher(){
+			@Override
+			public void afterTextChanged(Editable arg0) {
+				String keyword = searchTextView.getText().toString().trim();
+				QuhaoLog.i(TAG, keyword);
+				try {
+					String result = CommonHTTPRequest.get("MerchantController/getMerchantsByName?name=" + keyword);
+					if(result.equalsIgnoreCase("null")){
+						QuhaoLog.i(TAG, "no result");
+					}else{
+						QuhaoLog.i(TAG, result);
+					}
+				} catch (ClientProtocolException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence arg0, int arg1,
+					int arg2, int arg3) {
+				// TODO Auto-generated method stub
+			}
+
+			@Override
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+					int arg3) {
+				// TODO Auto-generated method stub
+			}
+			
+		});
+//		searchTextView.setOnClickListener(goMerchantsSearch(MainActivity.this));
 
 		// all categories
 		categorys = new ArrayList<Category>();
