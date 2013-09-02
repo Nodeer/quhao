@@ -18,10 +18,10 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.CategoryGridAdapter;
@@ -39,7 +39,7 @@ public class MainActivity extends AppStoreActivity {
 	private String TAG = MainActivity.class.getName();
 	protected ListView topMerchantListView;
 	private GridView topMerchantsGird;
-	private Button searchBtn;
+	private TextView searchTextView;
 	private List<TopMerchant> topMerchants;
 	private GridView categorysGird;
 	protected ProgressDialogUtil progressCategory;
@@ -71,8 +71,9 @@ public class MainActivity extends AppStoreActivity {
 		topMerchantsGird.setOnItemClickListener(topMerchantClickListener);
 
 		// search function
-		searchBtn = (Button) findViewById(R.id.edit_search);
-		searchBtn.setOnClickListener(goMerchantsSearch(MainActivity.this));
+		searchTextView = (TextView) findViewById(R.id.edit_search);
+//		searchTextView.addTextChangedListener(watcher)
+		searchTextView.setOnClickListener(goMerchantsSearch(MainActivity.this));
 
 		// all categories
 		categorys = new ArrayList<Category>();

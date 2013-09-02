@@ -7,21 +7,20 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/search_bar_background"
+        android:layout_height="50dip"
+        android:background="@drawable/common_top_bar_bg"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="6dip" >
+        >
 
-        <Button
+        <EditText 
             android:id="@+id/edit_search"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@android:drawable/edit_text"
-            android:drawableLeft="@drawable/ic_btn_search"
+            android:drawableLeft="@drawable/category_search_btn"
             android:gravity="left|center"
-            android:hint="\u0020商户名,地址等..."
+            android:hint="@string/search_placeholder"
             android:textAppearance="?android:textAppearanceMedium" />
     </LinearLayout>
 
