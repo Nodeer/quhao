@@ -1,0 +1,12 @@
+`import vo.BackendMerchantInfoVO
+
+`args BackendMerchantInfoVO bmivo
+
+<form action="/b/w/editMerchant" method="post">
+	<input type="hidden" name="uid" value="${bmivo.aid}" />
+	<input type="hidden" name="mid" value="${bmivo.mid}" />
+	商家名称：<input type="text" name="merchantName" id="" value="${bmivo.name}"/><br/>
+	商家地址：<input type="text" name="address" id="" value="${bmivo.address}"/><br/>
+	联系方式：<input type="text" name="tel" id="" value="${bmivo.telephone}"/><br/>
+	<input type="submit" value="submit" />
+</form>

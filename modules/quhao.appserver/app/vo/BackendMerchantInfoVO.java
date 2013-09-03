@@ -11,12 +11,12 @@ import com.withiter.models.merchant.Merchant;
  * 
  * */
 public class BackendMerchantInfoVO {
-	public String id;
+	public String mid;
 	public String name = "";
 	public String nickName;
 	public String merchantImage = "";
 	public String address = "";
-	public String[] telephone = {""};
+	public String telephone = "";
 	public String cateType = "";
 	public String description;
 	public String openTime;
@@ -27,6 +27,9 @@ public class BackendMerchantInfoVO {
 	public String x;
 	public String y;
 	
+	public boolean merchantExist = false;
+	
+	public String aid;
 	public String phone = "";
 	public String email = "";
 	public String password = "";
@@ -38,23 +41,28 @@ public class BackendMerchantInfoVO {
 	public static BackendMerchantInfoVO build(Merchant m, Account a) {
 		BackendMerchantInfoVO vo = new BackendMerchantInfoVO();
 		//merchant info
-		vo.id = m.id();
-		vo.address = m.address;
-		vo.merchantImage = m.merchantImage;
-		vo.cateType = m.cateType;
-		vo.closeTime = m.closeTime;
-		vo.description = m.description;
-		vo.enable = m.enable;
-		vo.joinedDate = m.joinedDate;
-		vo.markedCount = m.markedCount;
-		vo.name = m.name;
-		vo.nickName = m.nickName;
-		vo.openTime = m.openTime;
-		vo.telephone = m.telephone;
-		vo.x = m.x;
-		vo.y = m.y;
+		if(m != null){
+			vo.merchantExist = true;
+			vo.mid = m.id();
+			vo.address = m.address;
+			vo.merchantImage = m.merchantImage;
+			vo.cateType = m.cateType;
+			vo.closeTime = m.closeTime;
+			vo.description = m.description;
+			vo.enable = m.enable;
+			vo.joinedDate = m.joinedDate;
+			vo.markedCount = m.markedCount;
+			vo.name = m.name;
+			vo.nickName = m.nickName;
+			vo.openTime = m.openTime;
+			vo.telephone = m.getTelephone();
+			vo.x = m.x;
+			vo.y = m.y;
+		}
+		
 		
 		//account info
+		vo.aid = a.id();
 		vo.phone = a.phone;
 		vo.email = a.email;
 		vo.password = a.password;

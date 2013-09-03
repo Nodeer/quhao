@@ -32,7 +32,7 @@ public abstract class MerchantEntityDef extends BaseModel {
 	public int kouwei;
 	public int huanjing;
 	public int fuwu;
-	public int xingjiabi;;
+	public int xingjiabi;
 	
 	@Reference
 	public List<Tese> teses;
@@ -43,5 +43,17 @@ public abstract class MerchantEntityDef extends BaseModel {
 	public int markedCount;
 	public boolean enable = false;
 	public String joinedDate = new Date().toString();
+	
+	public String getTelephone(){
+		StringBuilder sb = new StringBuilder();
+		String tels = "";
+		for(String s : telephone){
+			sb.append(s).append(",");
+		}
+		if(sb.length() - 1 == sb.lastIndexOf(",")){
+			tels = sb.substring(0,sb.length() - 1);
+		}
+		return tels;
+	}
 	
 }
