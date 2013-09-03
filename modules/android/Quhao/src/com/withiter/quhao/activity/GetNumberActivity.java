@@ -1,26 +1,38 @@
 package com.withiter.quhao.activity;
 
+import java.io.IOException;
+
+import org.apache.http.client.ClientProtocolException;
+
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
+import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.CommonTool;
 import com.withiter.quhao.util.tool.ParseJson;
+import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.view.SelectSeatNo;
 import com.withiter.quhao.vo.Haoma;
+import com.withiter.quhao.vo.LoginInfo;
 import com.withiter.quhao.vo.Merchant;
 import com.withiter.quhao.vo.Paidui;
 
@@ -51,13 +63,16 @@ public class GetNumberActivity extends AppStoreActivity {
 	private TextView seatNoView;
 	private TextView currentNumberView;
 	private Button btnSeatNo;
+	private Button btnGetNo;
 	private SelectSeatNo selectSeatNo;
 	private String[] seatNos;
 	private Haoma haoma;
 	private int currentIndex = 0;
+	private String currentNo;
 
 	private Paidui currentPaidui;
 	
+	private ProgressDialogUtil progress;
 	/**
 	 * 根据merchant显示在界面上的handler
 	 */
@@ -78,6 +93,40 @@ public class GetNumberActivity extends AppStoreActivity {
 			}
 		}
 	};
+	
+	/**
+	 * 根据merchant显示在界面上的handler
+	 */
+	private Handler currentNoUpdateHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.what == 200) {
+				super.handleMessage(msg);
+
+				String currentNo = (String) msg.obj;
+				currentNumberView.setText(currentNo);
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				
+			}
+		}
+	};
+	
+	/**
+	 * 根据merchant显示在界面上的handler
+	 */
+	private Handler getNoUpdateHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.what == 200) {
+				super.handleMessage(msg);
+
+				String buf = (String) msg.obj;
+				Log.d(LOG_TAG, buf);
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				
+			}
+		}
+	};
 
 	/**
 	 * 根据seat numbers 显示在界面上的handler
@@ -95,29 +144,31 @@ public class GetNumberActivity extends AppStoreActivity {
 						seatNos[j] = haoma.paiduiList.get(j).seatNo;
 					}
 					
-					currentIndex = 0;
-					currentPaidui = haoma.paiduiList.get(currentIndex);
+
+					if(null != currentPaidui)
+					{
+						for (int i = 0; i < haoma.paiduiList.size(); i++)
+						{
+							if(currentPaidui.seatNo.equals(haoma.paiduiList.get(i).seatNo))
+							{
+								currentIndex = i;
+								currentPaidui = haoma.paiduiList.get(i);
+								currentNo = String.valueOf(currentPaidui.currentNumber);
+								break;
+							}
+						}
+					}
+					else
+					{
+						//currentIndex = 0;
+						currentPaidui = haoma.paiduiList.get(currentIndex);
+						currentNo = String.valueOf(currentPaidui.currentNumber);
+					}
+					
 					seatNoView.setText(currentPaidui.seatNo);
 					currentNumberView.setText(String.valueOf(currentPaidui.currentNumber));
 					
-					btnSeatNo.setOnClickListener(new OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							String str = String.valueOf(seatNoView.getText());
-							for (int i = 0; i < seatNos.length; i++)
-							{
-								if(str == seatNos[i])
-								{
-									currentIndex = i;
-									currentPaidui = haoma.paiduiList.get(currentIndex);
-								}
-							}
-							selectSeatNo = new SelectSeatNo(GetNumberActivity.this,seatNos, currentIndex);
-							selectSeatNo.showAtLocation(
-									GetNumberActivity.this.findViewById(R.id.root),
-									Gravity.BOTTOM, 0, 0);
-						}
-					});
+					btnSeatNo.setOnClickListener(GetNumberActivity.this);
 					
 					seatNoView.addTextChangedListener(new TextWatcher()
 					{
@@ -148,7 +199,11 @@ public class GetNumberActivity extends AppStoreActivity {
 								{
 									currentIndex = j;
 									currentPaidui = haoma.paiduiList.get(currentIndex);
-									currentNumberView.setText(String.valueOf(currentPaidui.currentNumber));
+									currentNo = String.valueOf(currentPaidui.currentNumber);
+									Thread getCurrentNoThread = new Thread(getCurrentNoRunnable);
+									getCurrentNoThread.start();
+									//getSeatNos();
+									//currentNumberView.setText(String.valueOf(currentPaidui.currentNumber));
 								}
 							}
 							
@@ -157,17 +212,78 @@ public class GetNumberActivity extends AppStoreActivity {
 					});
 				}
 
+				btnGetNo.setOnClickListener(GetNumberActivity.this);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 		}
 	};
 
+	/***
+	 * 获取merchant信息的线程
+	 */
+	private Runnable getNoRunnable = new Runnable() {
+
+		@Override
+		public void run() {
+			try {
+				QuhaoLog.v(LOG_TAG, "get seat numbers data form server begin");
+				String buf = CommonHTTPRequest
+						.get("nahao?accountId=51e563feae4d165869fda38c&mid=51efe7d8ae4dca7b4c281754&seatNumber=" + currentPaidui.seatNo); //TODO : need to change wjzwjz
+				// + GetNumberActivity.this.merchantId);
+				if (StringUtils.isNull(buf)) {
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				} else {
+					//String currentNo = buf;
+
+					getNoUpdateHandler.obtainMessage(200, buf)
+							.sendToTarget();
+				}
+			} catch (Exception e) {
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				e.printStackTrace();
+			}
+			finally
+			{
+				progress.closeProgress();
+			}
+		}
+	};
+	
+	/***
+	 * 获取merchant信息的线程
+	 */
+	private Runnable getCurrentNoRunnable = new Runnable() {
+
+		@Override
+		public void run() {
+			try {
+				QuhaoLog.v(LOG_TAG, "get seat numbers data form server begin");
+				String buf = CommonHTTPRequest
+						.get("getCurrentNo?id=51efe7d8ae4dca7b4c281754&seatNo=" + currentPaidui.seatNo); //TODO : need to change wjzwjz
+				// + GetNumberActivity.this.merchantId);
+				if (StringUtils.isNull(buf)) {
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				} else {
+					//String currentNo = buf;
+
+					currentNoUpdateHandler.obtainMessage(200, buf)
+							.sendToTarget();
+				}
+			} catch (Exception e) {
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				e.printStackTrace();
+			}
+		}
+	};
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.get_number);
 		super.onCreate(savedInstanceState);
 
+		progress = new ProgressDialogUtil(this, R.string.empty,
+				R.string.querying, false);
 		merchantId = getIntent().getStringExtra("merchantId");
 
 		// 设置回退
@@ -178,7 +294,7 @@ public class GetNumberActivity extends AppStoreActivity {
 		seatNoView = (TextView) findViewById(R.id.seatNo);
 		currentNumberView = (TextView) findViewById(R.id.currentNumber);
 		btnSeatNo = (Button) findViewById(R.id.btn_seatNo);
-		
+		btnGetNo = (Button) findViewById(R.id.btn_GetNumber);
 		getMerchantInfo();
 		getSeatNos();
 	}
@@ -189,6 +305,7 @@ public class GetNumberActivity extends AppStoreActivity {
 	 * 
 	 */
 	private void getSeatNos() {
+		progress.showProgress();
 		Thread merchantThread = new Thread(getSeatNosRunnable);
 		merchantThread.start();
 
@@ -204,7 +321,7 @@ public class GetNumberActivity extends AppStoreActivity {
 			try {
 				QuhaoLog.v(LOG_TAG, "get seat numbers data form server begin");
 				String buf = CommonHTTPRequest
-						.get("quhao?id=51efe7d8ae4dca7b4c281754");
+						.get("quhao?id=51efe7d8ae4dca7b4c281754"); //TODO : need to change wjzwjz
 				// + GetNumberActivity.this.merchantId);
 				if (StringUtils.isNull(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -215,8 +332,13 @@ public class GetNumberActivity extends AppStoreActivity {
 							.sendToTarget();
 				}
 			} catch (Exception e) {
+				
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				e.printStackTrace();
+			}
+			finally
+			{
+				progress.closeProgress();
 			}
 		}
 	};
@@ -260,6 +382,43 @@ public class GetNumberActivity extends AppStoreActivity {
 	@Override
 	public void onClick(View v) {
 
+		// 已经点过，直接返回
+		if (isClick) {
+			return;
+		}
+
+		// 设置已点击标志，避免快速重复点击
+		isClick = true;
+		
+		switch (v.getId()) {
+		case R.id.btn_seatNo:
+			
+			String str = String.valueOf(seatNoView.getText());
+			for (int i = 0; i < seatNos.length; i++)
+			{
+				if(str == seatNos[i])
+				{
+					currentIndex = i;
+					currentPaidui = haoma.paiduiList.get(currentIndex);
+					currentNo = String.valueOf(currentPaidui.currentNumber);
+				}
+			}
+			selectSeatNo = new SelectSeatNo(GetNumberActivity.this,seatNos, currentIndex);
+			selectSeatNo.showAtLocation(
+					GetNumberActivity.this.findViewById(R.id.root),
+					Gravity.BOTTOM, 0, 0);
+			
+			break;
+		case R.id.btn_GetNumber:
+			progress.showProgress();
+			Thread getNoThread = new Thread(getNoRunnable);
+			getNoThread.start();
+			
+			break;
+		default:
+			break;
+		}
+	
 	}
 
 	@Override
