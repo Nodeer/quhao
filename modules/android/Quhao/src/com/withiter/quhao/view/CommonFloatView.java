@@ -29,32 +29,37 @@ public class CommonFloatView extends ListView {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
+//	@Override
+//	public boolean onTouchEvent(MotionEvent event) {
+//		return move(event);
+//	}
+	
+	
+	private boolean move(MotionEvent event){
 		// getRawX()获取相对屏幕的坐标，即以屏幕左上角为原点
-		x = event.getRawX();
-		y = event.getRawY() - 25; // 25是系统状态栏的高度
-		QuhaoLog.i(TAG, "currX" + x + "====currY" + y);
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			// getX()获取相对View的坐标，即以此View左上角为原点
-			mTouchStartX = event.getX();
-			mTouchStartY = event.getY();
+				x = event.getRawX();
+				y = event.getRawY() - 25; // 25是系统状态栏的高度
+				QuhaoLog.i(TAG, "currX" + x + "====currY" + y);
+				switch (event.getAction()) {
+				case MotionEvent.ACTION_DOWN:
+					// getX()获取相对View的坐标，即以此View左上角为原点
+					mTouchStartX = event.getX();
+					mTouchStartY = event.getY();
 
-			QuhaoLog.i(TAG, "startX" + mTouchStartX + "====startY"
-					+ mTouchStartY);
+					QuhaoLog.i(TAG, "startX" + mTouchStartX + "====startY"
+							+ mTouchStartY);
 
-			break;
-		case MotionEvent.ACTION_MOVE:
-			updateViewPosition();
-			break;
+					break;
+				case MotionEvent.ACTION_MOVE:
+					updateViewPosition();
+					break;
 
-		case MotionEvent.ACTION_UP:
-			updateViewPosition();
-			mTouchStartX = mTouchStartY = 0;
-			break;
-		}
-		return true;
+				case MotionEvent.ACTION_UP:
+					updateViewPosition();
+					mTouchStartX = mTouchStartY = 0;
+					break;
+				}
+				return true;
 	}
 
 	private void updateViewPosition() {
