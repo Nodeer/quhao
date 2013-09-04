@@ -36,6 +36,7 @@ public class MerchantDetailActivity extends AppStoreActivity {
 	private TextView merchantAddress;
 	private TextView merchantPhone;
 	private TextView merchantTags;
+	private TextView merchantDesc;
 	private TextView merchantAverageCost;
 	private TextView xingjiabi;
 	private TextView kouwei;
@@ -62,6 +63,8 @@ public class MerchantDetailActivity extends AppStoreActivity {
 							.setText(MerchantDetailActivity.this.merchant.phone);
 					MerchantDetailActivity.this.merchantTags
 							.setText(MerchantDetailActivity.this.merchant.tags);
+					MerchantDetailActivity.this.merchantDesc
+							.setText(MerchantDetailActivity.this.merchant.description);
 					MerchantDetailActivity.this.merchantAverageCost
 							.setText(MerchantDetailActivity.this.merchant.averageCost);
 					MerchantDetailActivity.this.xingjiabi
@@ -111,13 +114,14 @@ public class MerchantDetailActivity extends AppStoreActivity {
 				.findViewById(R.id.merchantAddress);
 		this.merchantPhone = (TextView) info.findViewById(R.id.merchantPhone);
 		this.merchantTags = (TextView) info.findViewById(R.id.merchantTags);
+		this.merchantDesc = (TextView) info.findViewById(R.id.description);
 		this.merchantAverageCost = (TextView) info
 				.findViewById(R.id.merchantAverageCost);
 		this.xingjiabi = (TextView) info.findViewById(R.id.xingjiabi);
 		this.kouwei = (TextView) info.findViewById(R.id.kouwei);
 		this.fuwu = (TextView) info.findViewById(R.id.fuwu);
 		this.huanjing = (TextView) info.findViewById(R.id.huanjing);
-
+		
 		btnBack.setOnClickListener(goBack(this));
 		initView();
 	}
