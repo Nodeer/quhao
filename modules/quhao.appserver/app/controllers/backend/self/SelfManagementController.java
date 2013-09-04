@@ -41,18 +41,25 @@ public class SelfManagementController extends BaseController {
 	
 	public static void editMerchant(String uid, String mid){
 		String merchantName = params.get("merchantName");
+		String description = params.get("description");
 		String address = params.get("address");
 		String tel = params.get("tel");
+		String cateType = params.get("cateType");
+		String closeTime = params.get("closeTime");
 		
 		System.out.println(merchantName);
 		System.out.println(address);
 		System.out.println(tel);
+		System.out.println(cateType);
 		
 		if(StringUtils.isEmpty(mid)){
 			Merchant m = new Merchant();
 			m.name = merchantName;
+			m.description = description;
 			m.address = address;
 			m.telephone = tel.split(",");
+			m.cateType = cateType;
+			m.closeTime = closeTime;
 			m.save();
 			
 			MerchantAccountRel rel = new MerchantAccountRel();
@@ -64,8 +71,11 @@ public class SelfManagementController extends BaseController {
 		}else{
 			Merchant m = Merchant.findById(mid);
 			m.name = merchantName;
+			m.description = description;
 			m.address = address;
 			m.telephone = tel.split(",");
+			m.cateType = cateType;
+			m.closeTime = closeTime;
 			m.save();
 		}
 		index(uid);
