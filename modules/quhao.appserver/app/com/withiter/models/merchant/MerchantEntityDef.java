@@ -44,7 +44,7 @@ public abstract class MerchantEntityDef extends BaseModel {
 	public boolean enable = false;
 	public String joinedDate = new Date().toString();
 	
-	public String getTelephone(){
+	public String gTelephone(){
 		StringBuilder sb = new StringBuilder();
 		String tels = "";
 		for(String s : telephone){

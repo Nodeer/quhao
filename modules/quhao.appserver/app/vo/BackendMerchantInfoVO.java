@@ -55,7 +55,7 @@ public class BackendMerchantInfoVO {
 			vo.name = m.name;
 			vo.nickName = m.nickName;
 			vo.openTime = m.openTime;
-			vo.telephone = m.getTelephone();
+			vo.telephone = m.gTelephone();
 			vo.x = m.x;
 			vo.y = m.y;
 		}
