@@ -6,18 +6,23 @@ import java.util.List;
 
 import org.apache.http.client.ClientProtocolException;
 
+import android.app.ActionBar.LayoutParams;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
@@ -25,6 +30,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.CategoryGridAdapter;
 import com.withiter.quhao.adapter.TopMerchantGridAdapter;
@@ -33,7 +39,9 @@ import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
+import com.withiter.quhao.view.CommonFloatView;
 import com.withiter.quhao.vo.Category;
+import com.withiter.quhao.vo.Merchant;
 import com.withiter.quhao.vo.TopMerchant;
 
 public class MainActivity extends AppStoreActivity {
@@ -48,6 +56,60 @@ public class MainActivity extends AppStoreActivity {
 	protected ProgressDialogUtil progressTopMerchant;
 	private static final int UNLOCK_CLICK = 1000;
 	private List<Category> categorys = null;
+
+	/** Called when the activity is first created. */
+	private WindowManager wm = null;
+	private WindowManager.LayoutParams wmParams = null;
+
+	private CommonFloatView searchResultView = null;
+
+	private void createView() {
+		// get the absolute position of searchTextView
+		int[] location = new int[2];
+		searchTextView.getLocationOnScreen(location);
+		int x = location[0];
+		int y = location[1];
+		int height = searchTextView.getHeight();
+		QuhaoLog.i(TAG, "x: "+x);
+		QuhaoLog.i(TAG, "y: "+y);
+
+		searchResultView = new CommonFloatView(getApplicationContext());
+		searchResultView.setBackgroundColor(Color.RED);
+		searchResultView.getBackground().setAlpha(80);
+//		searchResultView.setLeft(left)
+		// searchResultView.setImageResource(R.drawable.icon);
+		// 获取WindowManager
+		wm = (WindowManager) getApplicationContext().getSystemService("window");
+		// 设置LayoutParams(全局变量）相关参数
+		wmParams = ((QHClientApplication) getApplication()).getMywmParams();
+
+		/**
+		 * 以下都是WindowManager.LayoutParams的相关属性 具体用途可参考SDK文档
+		 */
+		wmParams.type = LayoutParams.MATCH_PARENT; // 设置window type
+		wmParams.format = PixelFormat.RGBA_8888; // 设置图片格式，效果为背景透明
+
+		/**
+		 * 下面的flags属性的效果形同“锁定”。 悬浮窗不可触摸，不接受任何事件,同时不影响后面的事件响应。
+		 * wmParams.flags=LayoutParams.FLAG_NOT_TOUCH_MODAL |
+		 * LayoutParams.FLAG_NOT_FOCUSABLE | LayoutParams.FLAG_NOT_TOUCHABLE;
+		 */
+
+		wmParams.gravity = Gravity.LEFT | Gravity.TOP; // 调整悬浮窗口至左上角
+		// 以屏幕左上角为原点，设置x、y初始值
+		wmParams.x = 0;
+		wmParams.y = height;
+
+		QuhaoLog.i(TAG, "float y: " + wmParams.y);
+		
+		// 设置悬浮窗口长宽数据
+		wmParams.width = LayoutParams.MATCH_PARENT;
+		wmParams.height = 500;
+
+		// 显示myFloatView图像
+		wm.addView(searchResultView, wmParams);
+
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,17 +136,26 @@ public class MainActivity extends AppStoreActivity {
 
 		// search function
 		searchTextView = (TextView) findViewById(R.id.edit_search);
-		searchTextView.addTextChangedListener(new TextWatcher(){
+		searchTextView.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void afterTextChanged(Editable arg0) {
 				String keyword = searchTextView.getText().toString().trim();
 				QuhaoLog.i(TAG, keyword);
 				try {
-					String result = CommonHTTPRequest.get("MerchantController/getMerchantsByName?name=" + keyword);
-					if(result.equalsIgnoreCase("null")){
+					String result = CommonHTTPRequest
+							.get("MerchantController/getMerchantsByName?name="
+									+ keyword);
+					if (result.equalsIgnoreCase("null")) {
 						QuhaoLog.i(TAG, "no result");
-					}else{
+					} else {
 						QuhaoLog.i(TAG, result);
+						@SuppressWarnings("unchecked")
+						List<Merchant> mList = (List<Merchant>) ParseJson
+								.getMerchants(result);
+						for (Merchant m : mList) {
+							QuhaoLog.i(TAG, m.name);
+						}
+						createView();
 					}
 				} catch (ClientProtocolException e) {
 					// TODO Auto-generated catch block
@@ -106,9 +177,9 @@ public class MainActivity extends AppStoreActivity {
 					int arg3) {
 				// TODO Auto-generated method stub
 			}
-			
+
 		});
-//		searchTextView.setOnClickListener(goMerchantsSearch(MainActivity.this));
+		// searchTextView.setOnClickListener(goMerchantsSearch(MainActivity.this));
 
 		// all categories
 		categorys = new ArrayList<Category>();
@@ -121,7 +192,7 @@ public class MainActivity extends AppStoreActivity {
 		btnNearby.setOnClickListener(goNearby(this));
 		btnPerson.setOnClickListener(goPersonCenter(this));
 		btnMore.setOnClickListener(goMore(this));
-		
+
 	}
 
 	private Handler topMerchantsUpdateHandler = new Handler() {
@@ -212,22 +283,20 @@ public class MainActivity extends AppStoreActivity {
 				} catch (ClientProtocolException e) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					e.printStackTrace();
-					 Builder dialog = new
-					 AlertDialog.Builder(MainActivity.this);
-					 dialog.setTitle("温馨提示1")
-					 .setMessage("使用\"取号\"人数火爆，服务器处理不过来了，亲，稍等片刻")
-					 .setPositiveButton("确定", null);
-					 dialog.show();
+					Builder dialog = new AlertDialog.Builder(MainActivity.this);
+					dialog.setTitle("温馨提示1")
+							.setMessage("使用\"取号\"人数火爆，服务器处理不过来了，亲，稍等片刻")
+							.setPositiveButton("确定", null);
+					dialog.show();
 				} catch (IOException e) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					// Log.e(TAG, e.getCause().toString(), e);
 					e.printStackTrace();
-					 Builder dialog = new
-					 AlertDialog.Builder(MainActivity.this);
-					 dialog.setTitle("温馨提示2")
-					 .setMessage("使用\"取号\"人数火爆，服务器处理不过来了，亲，稍等片刻")
-					 .setPositiveButton("确定", null);
-					 dialog.show();
+					Builder dialog = new AlertDialog.Builder(MainActivity.this);
+					dialog.setTitle("温馨提示2")
+							.setMessage("使用\"取号\"人数火爆，服务器处理不过来了，亲，稍等片刻")
+							.setPositiveButton("确定", null);
+					dialog.show();
 				} finally {
 					progressTopMerchant.closeProgress();
 				}

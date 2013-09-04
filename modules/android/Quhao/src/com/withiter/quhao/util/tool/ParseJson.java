@@ -3,10 +3,8 @@ package com.withiter.quhao.util.tool;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -292,8 +290,7 @@ public class ParseJson {
 		return merchant;
 	}
 
-	public static LoginInfo getLoginInfo(String result)
-	{
+	public static LoginInfo getLoginInfo(String result) {
 		LoginInfo loginInfo = new LoginInfo();
 		if (null == result || "".equals(result)) {
 			return loginInfo;
@@ -350,7 +347,8 @@ public class ParseJson {
 				lastLogin = obj.getString("lastLogin");
 			}
 
-			loginInfo = new LoginInfo(phone, email, password, nickName, birthday, userImage, enable, mobileOS, lastLogin);
+			loginInfo = new LoginInfo(phone, email, password, nickName,
+					birthday, userImage, enable, mobileOS, lastLogin);
 
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -362,11 +360,11 @@ public class ParseJson {
 	/**
 	 * parse string to haoma object
 	 * 
-	 * @param buf the string from server
+	 * @param buf
+	 *            the string from server
 	 * @return haoma object
 	 */
-	public static Haoma getHaoma(String result)
-	{
+	public static Haoma getHaoma(String result) {
 		Haoma haoma = new Haoma();
 		if (null == result || "".equals(result)) {
 			return haoma;
@@ -381,27 +379,25 @@ public class ParseJson {
 				merchantId = obj.getString("merchantId");
 				haoma.merchantId = merchantId;
 			}
-			
+
 			JSONObject jsonMaps = null;
 			List<Paidui> paiduiList = null;
 			if (obj.has("haomaVOMap")) {
 				paiduiList = new ArrayList<Paidui>();
 				jsonMaps = obj.getJSONObject("haomaVOMap");
-				
+
 				Iterator<String> keyIter = jsonMaps.keys();
-				
-				while(keyIter.hasNext())
-				{
+
+				while (keyIter.hasNext()) {
 					String key = keyIter.next();
 					JSONObject obj1 = jsonMaps.getJSONObject(key);
-					Paidui paidui = coventPaidui(key,obj1);
-					if(paidui.enable == true)
-					{
+					Paidui paidui = coventPaidui(key, obj1);
+					if (paidui.enable == true) {
 						paiduiList.add(paidui);
 					}
-					
+
 				}
-				
+
 				Collections.sort(paiduiList);
 				haoma.paiduiList = paiduiList;
 			}
@@ -413,48 +409,48 @@ public class ParseJson {
 		return haoma;
 	}
 
-	private static Paidui coventPaidui(String key,JSONObject obj)
-	{
+	private static Paidui coventPaidui(String key, JSONObject obj) {
 		Paidui paidu = null;
-		
-		try
-		{
-			
+
+		try {
+
 			Integer currentNumber = null;
-	
+
 			if (obj.has("currentNumber")) {
 				currentNumber = obj.getInt("currentNumber");
 			}
-			
+
 			Integer canceled = null;
-			
+
 			if (obj.has("canceled")) {
 				canceled = obj.getInt("canceled");
 			}
-			
+
 			Integer expired = null;
-			
+
 			if (obj.has("expired")) {
 				expired = obj.getInt("expired");
 			}
-			
+
 			Integer finished = null;
-			
+
 			if (obj.has("finished")) {
 				finished = obj.getInt("finished");
 			}
-			
+
 			boolean enable = false;
-			
+
 			if (obj.has("enable")) {
 				enable = obj.getBoolean("enable");
 			}
 
-			paidu = new Paidui(key,currentNumber, canceled, expired, finished, enable);
-			
+			paidu = new Paidui(key, currentNumber, canceled, expired, finished,
+					enable);
+
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return paidu;
 	}
+	
 }

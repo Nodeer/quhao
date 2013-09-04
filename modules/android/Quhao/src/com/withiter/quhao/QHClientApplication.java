@@ -2,6 +2,7 @@ package com.withiter.quhao;
 
 import android.app.Application;
 import android.util.Log;
+import android.view.WindowManager;
 
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.db.AccountInfoColumn;
@@ -10,6 +11,18 @@ import com.withiter.quhao.util.tool.DBTools;
 import com.withiter.quhao.util.tool.InfoHelper;
 
 public class QHClientApplication extends Application {
+
+	/**
+	 * 创建全局变量 全局变量一般都比较倾向于创建一个单独的数据类文件，并使用static静态变量
+	 * 
+	 * 这里使用了在Application中添加数据的方法实现全局变量
+	 * 
+	 */
+	private WindowManager.LayoutParams wmParams = new WindowManager.LayoutParams();
+
+	public WindowManager.LayoutParams getMywmParams() {
+		return wmParams;
+	}
 
 	private static final String TAG = QHClientApplication.class.getName();
 	public boolean isLogined = false;
