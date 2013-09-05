@@ -104,8 +104,8 @@
 	    </LinearLayout>
     	
 		<LinearLayout android:id="@+id/currentNoLayout"
-		    android:visibility="invisible"
-        	android:orientation="horizontal" 
+		    android:visibility="gone"
+        	android:orientation="vertical" 
         	android:layout_width="fill_parent" 
         	android:layout_height="wrap_content" 
         	android:layout_marginTop="0.0dip"

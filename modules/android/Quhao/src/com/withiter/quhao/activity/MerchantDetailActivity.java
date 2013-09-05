@@ -1,6 +1,7 @@
 package com.withiter.quhao.activity;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import android.content.Intent;
@@ -98,7 +99,7 @@ public class MerchantDetailActivity extends AppStoreActivity {
 
 	};
 
-	private Handler paiduiUpdateHandler = new Handler() {
+	private Handler reservationUpdateHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {
@@ -106,12 +107,12 @@ public class MerchantDetailActivity extends AppStoreActivity {
 
 				
 				currentNoLayout.setVisibility(View.VISIBLE);
-				LinearLayout.LayoutParams merchantsParams = (LayoutParams) reservationListView
+				LinearLayout.LayoutParams reservationsParams = (LayoutParams) reservationListView
 						.getLayoutParams();
 
 				// 设置自定义的layout
 
-				reservationListView.setLayoutParams(merchantsParams);
+				reservationListView.setLayoutParams(reservationsParams);
 				reservationListView.invalidate();
 				reservationListView.setVisibility(View.VISIBLE);
 				List<ReservationVO> rvos = (List<ReservationVO>) msg.obj;
@@ -194,8 +195,7 @@ public class MerchantDetailActivity extends AppStoreActivity {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
 					List<ReservationVO> rvos = ParseJson.getReservations(buf);
-
-					paiduiUpdateHandler.obtainMessage(200, rvos)
+					reservationUpdateHandler.obtainMessage(200, rvos)
 							.sendToTarget();
 				}
 
