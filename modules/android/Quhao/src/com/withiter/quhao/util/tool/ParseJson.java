@@ -15,6 +15,7 @@ import com.withiter.quhao.vo.Haoma;
 import com.withiter.quhao.vo.LoginInfo;
 import com.withiter.quhao.vo.Merchant;
 import com.withiter.quhao.vo.Paidui;
+import com.withiter.quhao.vo.ReservationVO;
 import com.withiter.quhao.vo.TopMerchant;
 
 public class ParseJson {
@@ -451,6 +452,86 @@ public class ParseJson {
 			e.printStackTrace();
 		}
 		return paidu;
+	}
+
+	public static List<ReservationVO> getReservations(String buf)
+	{
+		List<ReservationVO> rvos = new ArrayList<ReservationVO>();
+
+		if (null == buf || "".equals(buf)) {
+			return rvos;
+		}
+
+		try {
+			JSONArray jsonArrays = new JSONArray(buf);
+
+			for (int i = 0; i < jsonArrays.length(); i++) {
+				JSONObject obj = jsonArrays.getJSONObject(i);
+
+				ReservationVO rvo = coventReservationVO(obj);
+				rvos.add(rvo);
+			}
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		return rvos;
+	}
+
+	private static ReservationVO coventReservationVO(JSONObject obj) throws JSONException
+	{
+		ReservationVO rvo;
+		String accountId = "";
+
+		if (obj.has("accountId")) {
+			accountId = obj.getString("accountId");
+		}
+		String merchantId = "";
+
+		if (obj.has("merchantId")) {
+			merchantId = obj.getString("merchantId");
+		}
+
+		String seatNumber = "";
+
+		if (obj.has("seatNumber")) {
+			seatNumber = obj.getString("seatNumber");
+		}
+
+		String myNumber = "";
+
+		if (obj.has("myNumber")) {
+			myNumber = obj.getString("myNumber");
+		}
+
+		String phone = "";
+		if (obj.has("telephone")) {
+			phone = obj.getString("telephone");
+		}
+
+		String beforeYou = "";
+		if (obj.has("beforeYou")) {
+			beforeYou = obj.getString("beforeYou");
+		}
+
+		boolean valid = false;
+		if (obj.has("valid")) {
+			valid = obj.getBoolean("valid");
+		}
+
+		boolean tipKey = false;
+		if (obj.has("tipKey")) {
+			tipKey = obj.getBoolean("tipKey");
+		}
+
+		String tipValue = "";
+		if (obj.has("tipValue")) {
+			tipValue = obj.getString("tipValue");
+		}
+
+		rvo = new ReservationVO(accountId, merchantId, seatNumber, myNumber, beforeYou, valid, tipKey, tipValue);
+		return rvo;
 	}
 	
 }

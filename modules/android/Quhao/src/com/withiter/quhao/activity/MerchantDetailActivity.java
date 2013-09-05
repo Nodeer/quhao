@@ -1,5 +1,8 @@
 package com.withiter.quhao.activity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,20 +11,24 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
+import android.widget.LinearLayout.LayoutParams;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
+import com.withiter.quhao.adapter.ReservationAdapter;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.vo.Merchant;
+import com.withiter.quhao.vo.ReservationVO;
 
 public class MerchantDetailActivity extends AppStoreActivity {
 	private String LOGTAG = MerchantDetailActivity.class.getName();
@@ -42,6 +49,10 @@ public class MerchantDetailActivity extends AppStoreActivity {
 	private TextView kouwei;
 	private TextView huanjing;
 	private TextView fuwu;
+	
+	private LinearLayout currentNoLayout;
+	private ListView reservationListView;
+	private ReservationAdapter reservationAdapter;
 
 	private Handler merchantUpdateHandler = new Handler() {
 		@Override
@@ -87,6 +98,33 @@ public class MerchantDetailActivity extends AppStoreActivity {
 
 	};
 
+	private Handler paiduiUpdateHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.what == 200) {
+				super.handleMessage(msg);
+
+				
+				currentNoLayout.setVisibility(View.VISIBLE);
+				LinearLayout.LayoutParams merchantsParams = (LayoutParams) reservationListView
+						.getLayoutParams();
+
+				// 设置自定义的layout
+
+				reservationListView.setLayoutParams(merchantsParams);
+				reservationListView.invalidate();
+				reservationListView.setVisibility(View.VISIBLE);
+				List<ReservationVO> rvos = (List<ReservationVO>) msg.obj;
+				reservationAdapter = new ReservationAdapter(MerchantDetailActivity.this, reservationListView, rvos);
+				reservationListView.setAdapter(reservationAdapter);
+				reservationAdapter.notifyDataSetChanged();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			}
+
+		}
+
+	};
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -121,11 +159,55 @@ public class MerchantDetailActivity extends AppStoreActivity {
 		this.kouwei = (TextView) info.findViewById(R.id.kouwei);
 		this.fuwu = (TextView) info.findViewById(R.id.fuwu);
 		this.huanjing = (TextView) info.findViewById(R.id.huanjing);
+		currentNoLayout = (LinearLayout) info.findViewById(R.id.currentNoLayout);
+		reservationListView = (ListView) info.findViewById(R.id.reservationListView);
+		
+		
+		//if(QHClientApplication.getInstance().isLogined)
+		if(true)
+		{
+			getCurrentNo();
+		}
 		
 		btnBack.setOnClickListener(goBack(this));
 		initView();
 	}
 
+	/**
+	 * 根据帐号ID，和merchant ID 获取当前的号码， 如果用户已经取号， 则显示当前号码，
+	 * 如果没有取号，则不显示
+	 */
+	private void getCurrentNo()
+	{
+		Thread currentNoThread = new Thread(paiduiRunnable);
+		currentNoThread.start();
+	}
+
+	private Runnable paiduiRunnable = new Runnable() {
+		@Override
+		public void run() {
+			try {
+				QuhaoLog.v(LOGTAG, "get categorys data form server begin");
+				String buf = CommonHTTPRequest.get("getReservations?accountId=51e563feae4d165869fda38c&mid=51efe7d8ae4dca7b4c281754");
+						//+ MerchantDetailActivity.this.merchantId);
+				if (StringUtils.isNull(buf) && "[]".equals(buf)) {
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				} else {
+					List<ReservationVO> rvos = ParseJson.getReservations(buf);
+
+					paiduiUpdateHandler.obtainMessage(200, rvos)
+							.sendToTarget();
+				}
+
+			} catch (Exception e) {
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				e.printStackTrace();
+			} finally {
+				progress.closeProgress();
+			}
+		}
+	};
+	
 	/**
 	 * 
 	 * 取号按钮的 click listener

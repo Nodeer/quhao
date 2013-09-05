@@ -116,7 +116,30 @@ public class MerchantController extends BaseController {
 		}
 		//renderJSON(vo);
 	}
-
+	
+	/**
+	 * 获取用户的座位号码情况
+	 * 
+	 * @param id 商家id
+	 * @param set 几人桌
+	 */
+	public static void getReservations(String accountId, String mid) {
+		List<ReservationVO> rvos = new ArrayList<ReservationVO>();
+		ReservationVO rvo = null;
+		List<Reservation> reservations = Reservation.getReservationsByMerchantIdAndAccountId(accountId, mid);
+		if(null != reservations && reservations.size()>0)
+		{
+			for(Reservation r : reservations)
+			{
+				rvo = new ReservationVO();
+				rvo.build(r);
+				rvos.add(rvo);
+			}
+		}
+		
+		renderJSON(rvos);
+	}
+	
 	/**
 	 * 用户拿号了
 	 * 

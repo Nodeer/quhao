@@ -127,4 +127,22 @@ public class Reservation extends ReservationEntityDef {
 			r.save();
 		}
 	}
+
+	/**
+	 * 
+	 * query reservations by merchant id and account id
+	 * 
+	 * @param accountId account id
+	 * @param mid merchant id
+	 * @return the reservations 
+	 */
+	public static List<Reservation> getReservationsByMerchantIdAndAccountId(
+			String accountId, String mid)
+	{
+		MorphiaQuery q = Reservation.q();
+		q.filter("accountId", accountId).filter("merchantId", mid)
+				.filter("valid", true);
+		return q.asList();
+	}
+	
 }
