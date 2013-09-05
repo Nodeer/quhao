@@ -6,11 +6,13 @@ import java.util.List;
 
 import org.apache.http.client.ClientProtocolException;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -44,6 +46,7 @@ import com.withiter.quhao.vo.Category;
 import com.withiter.quhao.vo.Merchant;
 import com.withiter.quhao.vo.TopMerchant;
 
+@SuppressLint("InlinedApi")
 public class MainActivity extends AppStoreActivity {
 
 	private String TAG = MainActivity.class.getName();
@@ -60,13 +63,12 @@ public class MainActivity extends AppStoreActivity {
 	private WindowManager wm = null;
 	private WindowManager.LayoutParams wmParams = null;
 	private CommonFloatView searchResultView = null;
-
+	private List<Merchant> mList = null;
 	/**
 	 * called when user input something in search box
 	 * @param mList
 	 */
-	private void createView(List<Merchant> mList) {
-		// get the absolute position of searchTextView
+	private void createView() {
 		int[] location = new int[2];
 		searchTextView.getLocationOnScreen(location);
 		int height = searchTextView.getHeight();
@@ -78,24 +80,26 @@ public class MainActivity extends AppStoreActivity {
 		searchResultView.setAdapter(new SearchAdapter(searchResultView, mList));
 		searchResultView.setOnItemClickListener(new OnItemClickListener(){
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+			public void onItemClick(AdapterView<?> arg0, View arg1, int index,
 					long arg3) {
-				// TODO Auto-generated method stub
-				
+				destroyView();
+				Merchant merchant = mList.get(index);
+				QuhaoLog.i(TAG, "merchant.name: "+merchant.name);
+				Intent intent = new Intent();
+				intent.putExtra("merchantId", merchant.id);
+				intent.setClass(MainActivity.this,
+						MerchantDetailActivity.class);
+				startActivity(intent);
 			}
 		});
 
 		// 获取WindowManager
 		wm = (WindowManager) getApplicationContext().getSystemService("window");
-		// 设置LayoutParams(全局变量）相关参数
 		wmParams = ((QHClientApplication) getApplication()).getMywmParams();
 
-//		/**
-//		 * 以下都是WindowManager.LayoutParams的相关属性 具体用途可参考SDK文档
-//		 */
-//		wmParams.type = LayoutParams.MATCH_PARENT; // 设置window type
-//		wmParams.format = PixelFormat.RGBA_8888; // 设置图片格式，效果为背景透明
-
+		// 设置LayoutParams(全局变量）相关参数
+		wmParams.type = LayoutParams.MATCH_PARENT; // 设置window type
+		wmParams.format = PixelFormat.RGBA_8888; // 设置图片格式，效果为背景透明
 		wmParams.gravity = Gravity.LEFT | Gravity.TOP; // 调整悬浮窗口至左上角
 		// 以屏幕左上角为原点，设置x、y初始值
 		wmParams.x = 0;
@@ -108,9 +112,14 @@ public class MainActivity extends AppStoreActivity {
 
 		// 显示myFloatView图像
 		wm.addView(searchResultView, wmParams);
-
 	}
 
+	private void destroyView(){
+		// 获取WindowManager
+		wm = (WindowManager) getApplicationContext().getSystemService("window");
+		wm.removeView(searchResultView);
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -137,6 +146,7 @@ public class MainActivity extends AppStoreActivity {
 		// search function
 		searchTextView = (TextView) findViewById(R.id.edit_search);
 		searchTextView.addTextChangedListener(new TextWatcher() {
+			@SuppressWarnings("unchecked")
 			@Override
 			public void afterTextChanged(Editable arg0) {
 				String keyword = searchTextView.getText().toString().trim();
@@ -149,13 +159,12 @@ public class MainActivity extends AppStoreActivity {
 						QuhaoLog.i(TAG, "no result");
 					} else {
 						QuhaoLog.i(TAG, result);
-						@SuppressWarnings("unchecked")
-						List<Merchant> mList = (List<Merchant>) ParseJson
+						mList = (List<Merchant>) ParseJson
 								.getMerchants(result);
 						for (Merchant m : mList) {
 							QuhaoLog.i(TAG, m.name);
 						}
-						createView(mList);
+						createView();
 					}
 				} catch (ClientProtocolException e) {
 					// TODO Auto-generated catch block
