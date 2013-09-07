@@ -478,6 +478,26 @@ public class ParseJson {
 
 		return rvos;
 	}
+	
+	public static ReservationVO getReservation(String buf)
+	{
+		ReservationVO rvo = null;
+		if (null == buf || "".equals(buf)) {
+			return rvo;
+		}
+
+		try {
+			JSONObject json = new JSONObject(buf);
+
+
+				rvo = coventReservationVO(json);
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		return rvo;
+	}
 
 	private static ReservationVO coventReservationVO(JSONObject obj) throws JSONException
 	{
@@ -503,11 +523,6 @@ public class ParseJson {
 
 		if (obj.has("myNumber")) {
 			myNumber = obj.getString("myNumber");
-		}
-
-		String phone = "";
-		if (obj.has("telephone")) {
-			phone = obj.getString("telephone");
 		}
 
 		String beforeYou = "";

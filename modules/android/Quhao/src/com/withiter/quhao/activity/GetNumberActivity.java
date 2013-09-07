@@ -1,40 +1,29 @@
 package com.withiter.quhao.activity;
 
-import java.io.IOException;
-
-import org.apache.http.client.ClientProtocolException;
-
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
-import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
-import com.withiter.quhao.util.tool.CommonTool;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.view.SelectSeatNo;
 import com.withiter.quhao.vo.Haoma;
-import com.withiter.quhao.vo.LoginInfo;
 import com.withiter.quhao.vo.Merchant;
 import com.withiter.quhao.vo.Paidui;
+import com.withiter.quhao.vo.ReservationVO;
 
 /***
  * 取号activity
@@ -62,8 +51,14 @@ public class GetNumberActivity extends AppStoreActivity {
 	private TextView merchantNameView;
 	private TextView seatNoView;
 	private TextView currentNumberView;
+	private LinearLayout currentNoLayout;
 	private Button btnSeatNo;
 	private Button btnGetNo;
+	private TextView beforeYouView;
+	private TextView myNumberView;
+	private LinearLayout beforeYouLayout;
+	private LinearLayout btnGetNumberLayout;
+	private LinearLayout myNumberLayout;
 	private SelectSeatNo selectSeatNo;
 	private String[] seatNos;
 	private Haoma haoma;
@@ -73,6 +68,8 @@ public class GetNumberActivity extends AppStoreActivity {
 	private Paidui currentPaidui;
 	
 	private ProgressDialogUtil progress;
+	
+	private ReservationVO reservation;
 	/**
 	 * 根据merchant显示在界面上的handler
 	 */
@@ -119,9 +116,14 @@ public class GetNumberActivity extends AppStoreActivity {
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
-
-				String buf = (String) msg.obj;
-				Log.d(LOG_TAG, buf);
+				
+				btnSeatNo.setVisibility(View.GONE);
+				currentNoLayout.setVisibility(View.GONE);
+				btnGetNumberLayout.setVisibility(View.GONE);
+				myNumberLayout.setVisibility(View.VISIBLE);
+				myNumberView.setText(reservation.myNumber);
+				beforeYouLayout.setVisibility(View.VISIBLE);
+				beforeYouView.setText(reservation.beforeYou);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				
 			}
@@ -234,8 +236,8 @@ public class GetNumberActivity extends AppStoreActivity {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
 					//String currentNo = buf;
-
-					getNoUpdateHandler.obtainMessage(200, buf)
+					reservation = ParseJson.getReservation(buf);
+					getNoUpdateHandler.obtainMessage(200, reservation)
 							.sendToTarget();
 				}
 			} catch (Exception e) {
@@ -292,7 +294,13 @@ public class GetNumberActivity extends AppStoreActivity {
 		// 获取merchant名称组件
 		merchantNameView = (TextView) findViewById(R.id.merchantName);
 		seatNoView = (TextView) findViewById(R.id.seatNo);
+		currentNoLayout = (LinearLayout) findViewById(R.id.currentNoLayout);
 		currentNumberView = (TextView) findViewById(R.id.currentNumber);
+		beforeYouView = (TextView) findViewById(R.id.beforeYou);
+		beforeYouLayout = (LinearLayout) findViewById(R.id.beforeYouLayout);
+		myNumberLayout = (LinearLayout) findViewById(R.id.myNoLayout);
+		myNumberView = (TextView) findViewById(R.id.myNumber);
+		btnGetNumberLayout = (LinearLayout) findViewById(R.id.btn_GetNumberLayout);
 		btnSeatNo = (Button) findViewById(R.id.btn_seatNo);
 		btnGetNo = (Button) findViewById(R.id.btn_GetNumber);
 		getMerchantInfo();
