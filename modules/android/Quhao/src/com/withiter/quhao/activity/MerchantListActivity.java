@@ -198,7 +198,8 @@ public class MerchantListActivity extends AppStoreActivity {
 				int visibleItemCount, int totalItemCount) {
 			if (view.getLastVisiblePosition() == totalItemCount - 1) {
 				MerchantListActivity.this.page += 1;
-				getMerchants();
+				Thread merchantsThread = new Thread(merchantsRunnable);
+				merchantsThread.start();
 			}
 
 		}

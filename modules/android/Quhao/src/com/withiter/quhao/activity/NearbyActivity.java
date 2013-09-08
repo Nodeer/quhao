@@ -23,7 +23,6 @@ public class NearbyActivity extends AppStoreActivity {
 		btnNearby.setOnClickListener(goNearby(this));
 		btnPerson.setOnClickListener(goPersonCenter(this));
 		btnMore.setOnClickListener(goMore(this));
-		btnBack.setOnClickListener(goBack(this));
 		
 	}
 	

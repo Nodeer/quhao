@@ -12,15 +12,12 @@
     	android:paddingBottom="5dip" 
     	android:gravity="center_vertical" 
     	>
-    	<Button android:gravity="left|center" android:id="@+id/back_btn" 
-           	android:layout_width="wrap_content" android:layout_height="wrap_content" 
-            android:background="@drawable/btn_back_background" />
 		<TextView 
 			android:textAppearance="?android:textAppearanceMedium"
 			android:layout_gravity="center_vertical" 
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="个人中心"
+			android:text="附近商家"
 			android:textColor="#ffffffff"
 			/>
 	
@@ -32,8 +29,7 @@
 			    android:orientation="vertical"
 			    android:layout_width="fill_parent" 
 			    android:layout_height="wrap_content" 
-			    android:background="#ffffffff"
-			    >
+			    android:background="#ffffffff">
             <LinearLayout 
 			    android:orientation="horizontal"
 			    android:layout_width="fill_parent" 
