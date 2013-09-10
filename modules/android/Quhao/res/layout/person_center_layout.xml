@@ -180,7 +180,8 @@
                         android:layout_gravity="center_vertical"
                         android:duplicateParentState="true"
                         android:paddingRight="6.0dip"
-                        android:src="@drawable/arrow" />
+                        android:src="@drawable/arrow" 
+                        android:contentDescription="@null"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -218,7 +219,8 @@
                         android:layout_gravity="center_vertical"
                         android:duplicateParentState="true"
                         android:paddingRight="6.0dip"
-                        android:src="@drawable/arrow" />
+                        android:src="@drawable/arrow" 
+                        android:contentDescription="@null"/>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
