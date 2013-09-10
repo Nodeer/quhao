@@ -293,8 +293,8 @@ public class MainActivity extends AppStoreActivity {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					e.printStackTrace();
 					Builder dialog = new AlertDialog.Builder(MainActivity.this);
-					dialog.setTitle("温馨提示1")
-							.setMessage("使用\"取号\"人数火爆，服务器处理不过来了，亲，稍等片刻")
+					dialog.setTitle("温馨提示")
+							.setMessage("使用\"取号\"人数火爆，亲，稍等片刻")
 							.setPositiveButton("确定", null);
 					dialog.show();
 				} catch (IOException e) {
@@ -302,8 +302,8 @@ public class MainActivity extends AppStoreActivity {
 					// Log.e(TAG, e.getCause().toString(), e);
 					e.printStackTrace();
 					Builder dialog = new AlertDialog.Builder(MainActivity.this);
-					dialog.setTitle("温馨提示2")
-							.setMessage("使用\"取号\"人数火爆，服务器处理不过来了，亲，稍等片刻")
+					dialog.setTitle("温馨提示")
+							.setMessage("使用\"取号\"人数火爆，亲，稍等片刻")
 							.setPositiveButton("确定", null);
 					dialog.show();
 				} finally {
