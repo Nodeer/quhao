@@ -393,7 +393,7 @@ public final class R {
         public static final int avatar=0x7f090011;
         public static final int btn_ok=0x7f090002;
         public static final int connecting=0x7f090006;
-        public static final int current_paidui=0x7f090018;
+        public static final int current_paidui=0x7f09001e;
         public static final int email_warning=0x7f09000e;
         /**  分类页面 
  提示信息 
@@ -403,25 +403,28 @@ public final class R {
  个人中心 
          */
         public static final int gerenzhongxin=0x7f090010;
-        public static final int history_jifen=0x7f09001a;
-        public static final int history_paidui=0x7f090019;
+        public static final int history_jifen=0x7f090020;
+        public static final int history_paidui=0x7f09001f;
         public static final int jifen_default=0x7f090015;
         public static final int jifen_label=0x7f090014;
+        public static final int label_dianpin=0x7f090018;
+        public static final int label_qiandao=0x7f090016;
+        public static final int label_zhaopian=0x7f09001a;
         public static final int logining=0x7f090008;
         /**  个人中心 
  menu bar 
          */
-        public static final int menu_category_list=0x7f09001b;
-        public static final int menu_more=0x7f09001e;
-        public static final int menu_nearby_merchant=0x7f09001c;
-        public static final int menu_person_center=0x7f09001d;
+        public static final int menu_category_list=0x7f090021;
+        public static final int menu_more=0x7f090024;
+        public static final int menu_nearby_merchant=0x7f090022;
+        public static final int menu_person_center=0x7f090023;
         public static final int net_error=0x7f090009;
         public static final int network_error_info=0x7f090007;
         public static final int nomobile=0x7f090013;
         public static final int noname=0x7f090012;
         public static final int pass_warning=0x7f09000f;
-        public static final int person_current_paidui_icon=0x7f090016;
-        public static final int person_history_paidui_icon=0x7f090017;
+        public static final int person_current_paidui_icon=0x7f09001c;
+        public static final int person_history_paidui_icon=0x7f09001d;
         public static final int querying=0x7f09000a;
         public static final int radioEmail=0x7f09000c;
         public static final int radioPhone=0x7f09000b;
@@ -432,6 +435,9 @@ public final class R {
         /**  加载页面 
          */
         public static final int startup=0x7f090003;
+        public static final int value_dianpin=0x7f090019;
+        public static final int value_qiandao=0x7f090017;
+        public static final int value_zhaopian=0x7f09001b;
         public static final int warning=0x7f09000d;
     }
     public static final class style {

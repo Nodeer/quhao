@@ -173,7 +173,7 @@
                     android:layout_height="fill_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="签到"
+                    android:text="@string/label_qiandao"
                     android:textAlignment="center" />
 
                 <TextView
@@ -181,34 +181,7 @@
                     android:layout_height="fill_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="0"
-                    android:textAlignment="center" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:clickable="true"
-                android:gravity="center_vertical"
-                android:orientation="vertical"
-                android:padding="10.0dip"
-                android:textAlignment="center" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="点评"
-                    android:textAlignment="center" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="0"
+                    android:text="@string/value_qiandao"
                     android:textAlignment="center" />
             </LinearLayout>
 
@@ -227,7 +200,7 @@
                     android:layout_height="fill_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="照片"
+                    android:text="@string/label_dianpin"
                     android:textAlignment="center" />
 
                 <TextView
@@ -235,7 +208,34 @@
                     android:layout_height="fill_parent"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="0"
+                    android:text="@string/value_dianpin"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:padding="10.0dip"
+                android:textAlignment="center" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/label_zhaopian"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/value_zhaopian"
                     android:textAlignment="center" />
             </LinearLayout>
         </LinearLayout>

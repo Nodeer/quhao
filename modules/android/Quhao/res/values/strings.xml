@@ -35,6 +35,12 @@
 	<string name="nomobile">无号码</string>
 	<string name="jifen_label">剩余积分</string>
 	<string name="jifen_default">5</string>
+	<string name="label_qiandao">签到</string>
+	<string name="value_qiandao">0</string>
+	<string name="label_dianpin">点评</string>
+	<string name="value_dianpin">0</string>
+	<string name="label_zhaopian">照片</string>
+	<string name="value_zhaopian">0</string>
 	<string name="person_current_paidui_icon">当前取号情况</string>
 	<string name="person_history_paidui_icon">历史取号情况</string>
 	<string name="current_paidui">当前取号情况</string>
