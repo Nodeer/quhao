@@ -153,8 +153,10 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:gravity="center_vertical"
+            android:textAlignment="center"
             android:orientation="horizontal"
-            android:padding="10.0dip" >
+            android:padding="10.0dip" 
+            android:baselineAligned="false">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -163,21 +165,23 @@
                 android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:padding="10.0dip" 
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:textAlignment="center">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
-                    android:layout_weight="1"
                     android:gravity="center_horizontal"
+                    android:textAlignment="center"
                     android:text="签到" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
-                    android:layout_weight="1"
                     android:gravity="center_horizontal"
-                    android:text="0" />
+                    android:textAlignment="center"
+                    android:text="0" 
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -187,21 +191,23 @@
                 android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:padding="10.0dip" 
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:textAlignment="center">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
-                    android:layout_weight="1"
                     android:gravity="center_horizontal"
+                    android:textAlignment="center"
                     android:text="点评" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
-                    android:layout_weight="1"
                     android:gravity="center_horizontal"
-                    android:text="0" />
+                    android:textAlignment="center"
+                    android:text="0" 
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -211,20 +217,21 @@
                 android:gravity="center_vertical"
                 android:orientation="vertical"
                 android:padding="10.0dip" 
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:textAlignment="center">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
-                    android:layout_weight="1"
                     android:gravity="center_horizontal"
+                    android:textAlignment="center"
                     android:text="照片" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
-                    android:layout_weight="1"
                     android:gravity="center_horizontal"
+                    android:textAlignment="center"
                     android:text="0" />
             </LinearLayout>
         </LinearLayout>
