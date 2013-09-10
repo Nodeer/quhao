@@ -32,7 +32,42 @@
         android:icon="@drawable/application_icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        
+         <!-- 您从百度网站获取的APP KEY -->
+        <meta-data
+            android:name="BaiduMobAd_STAT_ID"
+            android:value="f2a4e8c72a" />
+        <!-- abcd1234 -->
+        <!-- 渠道商编号 -->
+        <meta-data
+            android:name="BaiduMobAd_CHANNEL"
+            android:value="google" />
 
+        <!-- 是否开启错误日志统计，默认为false -->
+        <meta-data
+            android:name="BaiduMobAd_EXCEPTION_LOG"
+            android:value="true" />
+        <!-- 日志发送策略，可选值：APP_START、ONCE_A_DAY、SET_TIME_INTERVAL，默认为APP_START -->
+        <meta-data
+            android:name="BaiduMobAd_SEND_STRATEGY"
+            android:value="APP_START" />
+        <!-- 日志发送策略 为SET_TIME_INTERVAL时，需设定时间间隔(取消下行注释)。取值为1-24的整数，默认为1 -->
+        <meta-data
+            android:name="BaiduMobAd_TIME_INTERVAL"
+            android:value="24" />
+        <!-- 日志仅在wifi网络下发送，默认为false -->
+        <meta-data
+            android:name="BaiduMobAd_ONLY_WIFI"
+            android:value="false" />
+        <!-- 是否获取基站位置信息 -->
+        <meta-data
+            android:name="BaiduMobAd_CELL_LOCATION"
+            android:value="true" />
+        
+        
+		<service android:name="com.baidu.location.f" android:enabled="true" 
+		    android:process=":remote">
+		</service>
         <!-- startup page -->
         <activity
             android:name="com.withiter.quhao.activity.LaunchActivity"
@@ -157,6 +192,15 @@
             android:theme="@style/Theme.CustomDialog" />
         <!-- sign up page -->
 
+		<!-- get number page -->
+        <activity
+            android:name="com.withiter.quhao.activity.MerchantLBSActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <!-- get number page -->
     </application>
 
 </manifest>

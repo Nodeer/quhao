@@ -14,6 +14,7 @@ import com.withiter.quhao.vo.Category;
 import com.withiter.quhao.vo.Haoma;
 import com.withiter.quhao.vo.LoginInfo;
 import com.withiter.quhao.vo.Merchant;
+import com.withiter.quhao.vo.MerchantLocation;
 import com.withiter.quhao.vo.Paidui;
 import com.withiter.quhao.vo.ReservationVO;
 import com.withiter.quhao.vo.TopMerchant;
@@ -549,4 +550,59 @@ public class ParseJson {
 		return rvo;
 	}
 	
+	public static List<MerchantLocation> getMerchantLocations(String buf)
+	{
+		List<MerchantLocation> locations = new ArrayList<MerchantLocation>();
+
+		if (null == buf || "".equals(buf)) {
+			return locations;
+		}
+
+		try {
+			JSONArray jsonArrays = new JSONArray(buf);
+
+			for (int i = 0; i < jsonArrays.length(); i++) {
+				JSONObject obj = jsonArrays.getJSONObject(i);
+
+				MerchantLocation location = coventMerchantLocation(obj);
+				locations.add(location);
+			}
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		return locations;
+	}
+
+	private static MerchantLocation coventMerchantLocation(JSONObject obj) throws JSONException
+	{
+		MerchantLocation location;
+		String accountId = "";
+
+
+		String id = "";
+		if (obj.has("id")) {
+			id = obj.getString("id");
+		}
+		String name = "";
+		if (obj.has("name")) {
+			name = obj.getString("name");
+		}
+		double lat = 0L;
+		if (obj.has("lat")) {
+			lat = obj.getDouble("lat");
+		}
+		double lng = 0L;
+		if (obj.has("lng")) {
+			lng = obj.getDouble("lng");
+		}
+		String address = "";
+		if (obj.has("address")) {
+			address = obj.getString("address");
+		}
+	
+		location = new MerchantLocation(id, name, lat, lng, address);
+		return location;
+	}
 }

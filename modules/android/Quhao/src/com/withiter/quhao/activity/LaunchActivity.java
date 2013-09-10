@@ -20,7 +20,7 @@ public class LaunchActivity extends Activity {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.launch);
         Handler x = new Handler();
-        x.postDelayed(new splashhandler(), 300000);
+        x.postDelayed(new splashhandler(), 3000);
 	}
 
 	class splashhandler implements Runnable{

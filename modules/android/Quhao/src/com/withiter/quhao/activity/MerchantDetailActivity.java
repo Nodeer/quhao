@@ -39,6 +39,7 @@ public class MerchantDetailActivity extends AppStoreActivity {
 	private Merchant merchant;
 	private Button btnGetNumber;
 	private LinearLayout info;
+	private LinearLayout mapLayout;
 	private TextView merchantName;
 	private ImageView merchantImg;
 	private TextView merchantAddress;
@@ -147,6 +148,24 @@ public class MerchantDetailActivity extends AppStoreActivity {
 
 		scroll.addView(info, layoutParams);
 
+		this.mapLayout = (LinearLayout) findViewById(R.id.mapLayout);
+		mapLayout.setOnClickListener(new OnClickListener()
+		{
+			
+			@Override
+			public void onClick(View v)
+			{
+				Intent intent = new Intent(MerchantDetailActivity.this, MerchantLBSActivity.class);
+				intent.putExtra("merchantId",
+						MerchantDetailActivity.this.merchantId);
+				intent.putExtra("merchantName",
+						"jiu dian 1");
+				startActivity(intent);
+				overridePendingTransition(R.anim.main_enter,
+						R.anim.main_exit);
+				
+			}
+		});
 		this.merchantName = (TextView) findViewById(R.id.merchantName);
 		this.merchantImg = (ImageView) info.findViewById(R.id.merchantImg);
 		this.merchantAddress = (TextView) info

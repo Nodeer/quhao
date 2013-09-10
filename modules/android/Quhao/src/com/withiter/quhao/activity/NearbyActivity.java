@@ -28,7 +28,7 @@ public class NearbyActivity extends AppStoreActivity {
 	
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
+		
 
 	}
 

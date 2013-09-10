@@ -1,6 +1,7 @@
 package com.withiter.quhao;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 import android.view.WindowManager;
 
@@ -29,6 +30,8 @@ public class QHClientApplication extends Application {
 	public AccountInfo accessInfo = null;
 	public boolean isAuto = false;
 	private static String CREATE_ACCOUNT_TABLE = "";
+	
+	public static Context mContext;
 
 	static {
 		StringBuilder sb = new StringBuilder("");
@@ -66,6 +69,7 @@ public class QHClientApplication extends Application {
 
 	@Override
 	public void onCreate() {
+		this.mContext = this;
 		Log.i(TAG, "onCreate method is called");
 		isLogined = false;
 		instance = this;

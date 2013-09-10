@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="#ffffffff"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+   
+    <RelativeLayout
+        android:id="@+id/base_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"  
+    	android:background="@drawable/title_background"    
+    	>
+    	<Button android:gravity="left|center" android:id="@+id/back_btn" 
+    	    android:layout_centerVertical="true"
+           	android:layout_width="wrap_content" android:layout_height="wrap_content" 
+            android:background="@drawable/btn_back_background" />
+		<TextView android:id="@+id/name"
+			android:textAppearance="?android:textAppearanceMedium"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_centerInParent="true"
+			android:text="name"
+			android:textColor="#ffffffff"
+			android:textSize="22sp"/>
+	
+	</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <com.baidu.mapapi.MapView
+            android:id="@+id/mapView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:clickable="true" >
+        </com.baidu.mapapi.MapView>
+        
+    </RelativeLayout>
+</LinearLayout> 
