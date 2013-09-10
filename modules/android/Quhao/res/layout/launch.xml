@@ -13,7 +13,8 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:contentDescription="@string/avatar"
-        android:src="@drawable/person_avatar" />
+        android:src="@drawable/lanching_bg" 
+        android:scaleType="fitXY"/>
 
     <TextView
         android:layout_width="fill_parent"
