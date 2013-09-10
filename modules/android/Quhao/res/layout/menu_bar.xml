@@ -7,7 +7,8 @@
     android:layout_gravity="bottom"
     android:background="@drawable/tool_bar"
     android:gravity="center_vertical"
-    android:orientation="horizontal" >
+    android:orientation="horizontal" 
+    >
 
     <Button
         android:id="@+id/btnMerchantList"
@@ -17,7 +18,7 @@
         android:background="@drawable/imagebutton_background"
         android:drawableTop="@drawable/menu_merchant_list"
         android:paddingTop="10.0dip"
-        android:text="商家列表"
+        android:text="@string/menu_category_list"
         android:textColor="#ffffffff"
         android:textSize="10.0sp" />
 
@@ -29,7 +30,7 @@
         android:background="@drawable/imagebutton_background"
         android:drawableTop="@drawable/menu_merchant_nearby"
         android:paddingTop="10.0dip"
-        android:text="附近商家"
+        android:text="@string/menu_nearby_merchant"
         android:textColor="#ffffffff"
         android:textSize="10.0sp" />
 
@@ -41,7 +42,7 @@
         android:background="@drawable/imagebutton_background"
         android:drawableTop="@drawable/menu_personal_center"
         android:paddingTop="10.0dip"
-        android:text="个人中心"
+        android:text="@string/menu_person_center"
         android:textColor="#ffffffff"
         android:textSize="10.0sp" />
 
@@ -53,7 +54,7 @@
         android:background="@drawable/imagebutton_background"
         android:drawableTop="@drawable/toolbar_more"
         android:paddingTop="10.0dip"
-        android:text="更多"
+        android:text="@string/menu_more"
         android:textColor="#ffffffff"
         android:textSize="10.0sp" />
 

@@ -39,5 +39,13 @@
 	<string name="person_history_paidui_icon">历史取号情况</string>
 	<string name="current_paidui">当前取号情况</string>
 	<string name="history_paidui">历史取号情况</string>
+	<string name="history_jifen">积分消费情况</string>
 	<!-- 个人中心 -->
+	
+	<!-- menu bar -->
+	<string name="menu_category_list">商家列表</string>
+	<string name="menu_nearby_merchant">附近商家</string>
+	<string name="menu_person_center">个人中心</string>
+	<string name="menu_more">更多</string>
+	<!-- menu bar -->
 </resources>
