@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.vo.Category;
 import com.withiter.quhao.vo.Haoma;
 import com.withiter.quhao.vo.LoginInfo;
@@ -202,7 +203,19 @@ public class ParseJson {
 
 		String phone = "";
 		if (obj.has("telephone")) {
-			phone = obj.getString("telephone");
+
+			JSONArray array = obj.getJSONArray("telephone");
+			for (int i = 0; i < array.length(); i++)
+			{
+				if(i == array.length()-1)
+				{
+					phone = phone + array.get(i).toString();
+					break;
+				}
+				phone = phone + array.get(i).toString() + ",";
+			}
+			
+		
 		}
 
 		String cateType = "";
@@ -222,7 +235,17 @@ public class ParseJson {
 
 		String tags = "";
 		if (obj.has("tags")) {
-			tags = obj.getString("tags");
+			JSONArray array = obj.getJSONArray("tags");
+			for (int i = 0; i < array.length(); i++)
+			{
+				if(i == array.length()-1)
+				{
+					tags = tags + array.get(i).toString();
+					break;
+				}
+				tags = tags + array.get(i).toString() + ",";
+			}
+			
 		}
 
 		Integer kouwei = null;
@@ -253,21 +276,37 @@ public class ParseJson {
 		String nickName = "";
 		if (obj.has("nickName")) {
 			nickName = obj.getString("nickName");
+			if(StringUtils.isNull(nickName)||"null".equals(nickName))
+			{
+				nickName = "";
+			}
 		}
 
 		String description = "";
 		if (obj.has("description")) {
 			description = obj.getString("description");
+			if(StringUtils.isNull(description)||"null".equals(description))
+			{
+				description = "";
+			}
 		}
 
 		String openTime = "";
 		if (obj.has("openTime")) {
 			openTime = obj.getString("openTime");
+			if(StringUtils.isNull(openTime)||"null".equals(openTime))
+			{
+				openTime = "";
+			}
 		}
 
 		String closeTime = "";
 		if (obj.has("closeTime")) {
 			closeTime = obj.getString("closeTime");
+			if(StringUtils.isNull(closeTime)||"null".equals(closeTime))
+			{
+				closeTime = "";
+			}
 		}
 
 		Integer marketCount = null;
@@ -530,7 +569,12 @@ public class ParseJson {
 		if (obj.has("beforeYou")) {
 			beforeYou = obj.getString("beforeYou");
 		}
-
+		
+		String currentNumber = "";
+		if (obj.has("currentNumber")) {
+			currentNumber = obj.getString("currentNumber");
+		}
+		
 		boolean valid = false;
 		if (obj.has("valid")) {
 			valid = obj.getBoolean("valid");
@@ -546,7 +590,7 @@ public class ParseJson {
 			tipValue = obj.getString("tipValue");
 		}
 
-		rvo = new ReservationVO(accountId, merchantId, seatNumber, myNumber, beforeYou, valid, tipKey, tipValue);
+		rvo = new ReservationVO(accountId, merchantId, seatNumber, myNumber, beforeYou, currentNumber,valid, tipKey, tipValue);
 		return rvo;
 	}
 	

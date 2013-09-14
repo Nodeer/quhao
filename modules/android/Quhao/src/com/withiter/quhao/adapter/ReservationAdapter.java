@@ -59,17 +59,22 @@ public class ReservationAdapter extends BaseAdapter {
 						.findViewById(R.id.myNumber);
 				holder.seatNo = (TextView) convertView
 						.findViewById(R.id.seatNo);
+				holder.beforeYou = (TextView) convertView.findViewById(R.id.beforeYou);
+				holder.currentNumber = (TextView) convertView.findViewById(R.id.currentNumber);
 
 			}
 			if (holder == null) {
 				holder = (ViewHolder) convertView.getTag();
 			}
 
-			holder.myNumber.setTag("content_" + position);
-
-			holder.seatNo.setTag("btnEnter_" + position);
+			holder.myNumber.setTag("myNumber_" + position);
 			holder.myNumber.setText(rvo.myNumber);
+			holder.seatNo.setTag("seatNo_" + position);
 			holder.seatNo.setText(rvo.seatNumber);
+			holder.beforeYou.setTag("beforeYou_" + position);
+			holder.beforeYou.setText(rvo.beforeYou);
+			holder.currentNumber.setTag("currentNumber_" + position);
+			holder.currentNumber.setText(rvo.currentNumber);
 			convertView.setTag(holder);
 			return convertView;
 		}
@@ -79,5 +84,7 @@ public class ReservationAdapter extends BaseAdapter {
 	class ViewHolder {
 		TextView myNumber;
 		TextView seatNo;
+		TextView beforeYou;
+		TextView currentNumber;
 	}
 }

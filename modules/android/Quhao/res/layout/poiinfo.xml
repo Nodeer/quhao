@@ -137,7 +137,7 @@
 	            android:scrollbars="vertical" />
 		</LinearLayout>
 		
-		<LinearLayout 
+		<LinearLayout android:id="@+id/mapLayout"
     		android:gravity="center_vertical" 
     		android:orientation="horizontal" 
     		android:padding="10.0dip" 
@@ -530,7 +530,7 @@
 		</LinearLayout>
     	
     	
-    	<LinearLayout android:id="@+id/mapLayout"
+    	<LinearLayout 
     		android:gravity="center_vertical" 
     		android:orientation="horizontal" 
     		android:paddingLeft="10.0dip" 

@@ -144,7 +144,6 @@
 		    			android:text="0"
 		    			android:textColor="#ff000000"
 		    			/>
-		    		
 				</LinearLayout>
 				<LinearLayout android:id="@+id/myNoLayout"
 				    android:visibility="gone"
@@ -221,6 +220,7 @@
 		    			android:textColor="#ff000000"
 		    			/>
 				</LinearLayout>
+				
 				<LinearLayout android:id="@+id/btn_GetNumberLayout"
 		    		android:gravity="center_vertical" 
 		    		android:orientation="horizontal" 

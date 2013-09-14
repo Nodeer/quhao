@@ -74,10 +74,23 @@ public class MerchantDetailActivity extends AppStoreActivity {
 							.setText(MerchantDetailActivity.this.merchant.address);
 					MerchantDetailActivity.this.merchantPhone
 							.setText(MerchantDetailActivity.this.merchant.phone);
+					
 					MerchantDetailActivity.this.merchantTags
-							.setText(MerchantDetailActivity.this.merchant.tags);
+					.setText(MerchantDetailActivity.this.merchant.tags);
+					if(StringUtils.isNull(MerchantDetailActivity.this.merchant.tags))
+					{
+						MerchantDetailActivity.this.merchantTags
+						.setText(R.string.no_tags);
+					}
+					
 					MerchantDetailActivity.this.merchantDesc
 							.setText(MerchantDetailActivity.this.merchant.description);
+					if(StringUtils.isNull(MerchantDetailActivity.this.merchant.description))
+					{
+						MerchantDetailActivity.this.merchantDesc
+						.setText(R.string.no_desc);
+					}
+					
 					MerchantDetailActivity.this.merchantAverageCost
 							.setText(MerchantDetailActivity.this.merchant.averageCost);
 					MerchantDetailActivity.this.xingjiabi
@@ -112,9 +125,12 @@ public class MerchantDetailActivity extends AppStoreActivity {
 						.getLayoutParams();
 
 				// 设置自定义的layout
-
+				
 				reservationListView.setLayoutParams(reservationsParams);
 				reservationListView.invalidate();
+				
+				//btnGetNumber.setVisibility(View.GONE); TODO:
+				
 				reservationListView.setVisibility(View.VISIBLE);
 				List<ReservationVO> rvos = (List<ReservationVO>) msg.obj;
 				reservationAdapter = new ReservationAdapter(MerchantDetailActivity.this, reservationListView, rvos);

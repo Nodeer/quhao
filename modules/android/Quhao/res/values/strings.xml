@@ -14,6 +14,10 @@
 	<string name="search_placeholder">商户名,地址等&#8230;</string>
 	<!-- 分类页面 -->
 
+	<string name="no_tags">暂无推荐</string>
+	<string name="no_desc">暂无描述</string>
+	
+	
     <!-- 提示信息 -->
 	<string name="empty" />
 	<string name="connecting">连接中&#8230;</string>

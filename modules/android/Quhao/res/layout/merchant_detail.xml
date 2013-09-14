@@ -12,7 +12,7 @@
     	android:paddingBottom="5dip" 
     	android:gravity="center_vertical" 
     	>
-    	<Button android:gravity="left|center" android:id="@+id/back_btn" 
+    	<Button android:gravity="left|center_vertical" android:id="@+id/back_btn" 
            	android:layout_width="wrap_content" android:layout_height="wrap_content" 
             android:background="@drawable/btn_back_background" />
 		<TextView android:id="@+id/merchantName"
@@ -23,28 +23,23 @@
 			android:text="搜索 - 美食"
 			android:textColor="#ffffffff"
 			/>
-		<FrameLayout 
-			android:layout_width="match_parent"
+		<Button android:id="@+id/btn_GetNumber"
+			android:textAppearance="?android:textAppearanceMediumInverse"
+			android:layout_gravity="right|center_vertical"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_weight="5"
-			>
-			<Button android:id="@+id/btn_GetNumber"
-				android:textAppearance="?android:textAppearanceMediumInverse"
-				android:layout_gravity="right|center_vertical"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="取号"
-				android:textColor="#ffffffff"
-				android:background="@drawable/btn_weight"
-				android:textSize="14.0sp"
-				/>
-		</FrameLayout>
+			android:text="取号"
+			android:textColor="#ffffffff"
+			android:background="@drawable/btn_weight"
+			android:textSize="14.0sp"
+			/>
 	</LinearLayout>
     <FrameLayout android:layout_width="fill_parent"
 	    android:layout_height="0.0dip" android:layout_weight="1.0">
 		<ScrollView android:layout_width="fill_parent" android:layout_height="fill_parent" android:fillViewport="true" android:layout_weight="1.0">
             <LinearLayout 
             	android:id="@+id/lite_list" 
+            	android:orientation="vertical"
             	android:layout_width="fill_parent" 
             	android:layout_height="fill_parent" 
             	android:background="#ffffffff"

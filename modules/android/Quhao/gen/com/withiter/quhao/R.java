@@ -297,7 +297,7 @@ public final class R {
         public static final int currentNoLayout=0x7f0c0018;
         public static final int currentNumber=0x7f0c0019;
         public static final int current_paidui=0x7f0c0052;
-        public static final int description=0x7f0c0059;
+        public static final int description=0x7f0c005a;
         public static final int edit_pass=0x7f0c0029;
         public static final int edit_search=0x7f0c002d;
         public static final int frameLayout1=0x7f0c0002;
@@ -318,7 +318,7 @@ public final class R {
         public static final int login=0x7f0c002b;
         public static final int login_name=0x7f0c0027;
         public static final int mail=0x7f0c004e;
-        public static final int mapLayout=0x7f0c005a;
+        public static final int mapLayout=0x7f0c0056;
         public static final int mapView=0x7f0c003a;
         public static final int menu=0x7f0c0031;
         public static final int menuBar=0x7f0c0032;
@@ -328,8 +328,8 @@ public final class R {
         public static final int merchantImg=0x7f0c0054;
         public static final int merchantName=0x7f0c0007;
         public static final int merchantNameLayout=0x7f0c0014;
-        public static final int merchantPhone=0x7f0c0056;
-        public static final int merchantTags=0x7f0c0057;
+        public static final int merchantPhone=0x7f0c0057;
+        public static final int merchantTags=0x7f0c0058;
         public static final int merchantsLayout=0x7f0c003e;
         public static final int merchantsListView=0x7f0c003f;
         public static final int mobile=0x7f0c0050;
@@ -351,7 +351,7 @@ public final class R {
         public static final int search_btn=0x7f0c0040;
         public static final int seat=0x7f0c005f;
         public static final int seatNo=0x7f0c0016;
-        public static final int serverdata=0x7f0c0058;
+        public static final int serverdata=0x7f0c0059;
         public static final int stars=0x7f0c0041;
         public static final int submit=0x7f0c005e;
         public static final int tex2_lay1=0x7f0c0042;
@@ -400,44 +400,47 @@ public final class R {
     public static final class string {
         public static final int action_settings=0x7f090001;
         public static final int app_name=0x7f090000;
-        public static final int avatar=0x7f090011;
+        public static final int avatar=0x7f090013;
         public static final int btn_ok=0x7f090002;
-        public static final int connecting=0x7f090006;
-        public static final int current_paidui=0x7f09001e;
-        public static final int email_warning=0x7f09000e;
-        /**  分类页面 
- 提示信息 
+        public static final int connecting=0x7f090008;
+        public static final int current_paidui=0x7f090020;
+        public static final int email_warning=0x7f090010;
+        /**  提示信息 
          */
-        public static final int empty=0x7f090005;
+        public static final int empty=0x7f090007;
         /**  提示信息 
  个人中心 
          */
-        public static final int gerenzhongxin=0x7f090010;
-        public static final int history_jifen=0x7f090020;
-        public static final int history_paidui=0x7f09001f;
-        public static final int jifen_default=0x7f090015;
-        public static final int jifen_label=0x7f090014;
-        public static final int label_dianpin=0x7f090018;
-        public static final int label_qiandao=0x7f090016;
-        public static final int label_zhaopian=0x7f09001a;
-        public static final int logining=0x7f090008;
+        public static final int gerenzhongxin=0x7f090012;
+        public static final int history_jifen=0x7f090022;
+        public static final int history_paidui=0x7f090021;
+        public static final int jifen_default=0x7f090017;
+        public static final int jifen_label=0x7f090016;
+        public static final int label_dianpin=0x7f09001a;
+        public static final int label_qiandao=0x7f090018;
+        public static final int label_zhaopian=0x7f09001c;
+        public static final int logining=0x7f09000a;
         /**  个人中心 
  menu bar 
          */
-        public static final int menu_category_list=0x7f090021;
-        public static final int menu_more=0x7f090024;
-        public static final int menu_nearby_merchant=0x7f090022;
-        public static final int menu_person_center=0x7f090023;
-        public static final int net_error=0x7f090009;
-        public static final int network_error_info=0x7f090007;
-        public static final int nomobile=0x7f090013;
-        public static final int noname=0x7f090012;
-        public static final int pass_warning=0x7f09000f;
-        public static final int person_current_paidui_icon=0x7f09001c;
-        public static final int person_history_paidui_icon=0x7f09001d;
-        public static final int querying=0x7f09000a;
-        public static final int radioEmail=0x7f09000c;
-        public static final int radioPhone=0x7f09000b;
+        public static final int menu_category_list=0x7f090023;
+        public static final int menu_more=0x7f090026;
+        public static final int menu_nearby_merchant=0x7f090024;
+        public static final int menu_person_center=0x7f090025;
+        public static final int net_error=0x7f09000b;
+        public static final int network_error_info=0x7f090009;
+        public static final int no_desc=0x7f090006;
+        /**  分类页面 
+         */
+        public static final int no_tags=0x7f090005;
+        public static final int nomobile=0x7f090015;
+        public static final int noname=0x7f090014;
+        public static final int pass_warning=0x7f090011;
+        public static final int person_current_paidui_icon=0x7f09001e;
+        public static final int person_history_paidui_icon=0x7f09001f;
+        public static final int querying=0x7f09000c;
+        public static final int radioEmail=0x7f09000e;
+        public static final int radioPhone=0x7f09000d;
         /**  加载页面 
  分类页面 
          */
@@ -445,10 +448,10 @@ public final class R {
         /**  加载页面 
          */
         public static final int startup=0x7f090003;
-        public static final int value_dianpin=0x7f090019;
-        public static final int value_qiandao=0x7f090017;
-        public static final int value_zhaopian=0x7f09001b;
-        public static final int warning=0x7f09000d;
+        public static final int value_dianpin=0x7f09001b;
+        public static final int value_qiandao=0x7f090019;
+        public static final int value_zhaopian=0x7f09001d;
+        public static final int warning=0x7f09000f;
     }
     public static final class style {
         /** 
