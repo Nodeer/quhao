@@ -201,6 +201,16 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <!-- get number page -->
+        
+        <!-- critiques page -->
+        <activity
+            android:name="com.withiter.quhao.activity.CritiquesActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <!-- critiques page -->
     </application>
 
 </manifest>

@@ -325,7 +325,7 @@
 	      	/>	
 	    	
 	    	
-	    	<LinearLayout
+	    	<LinearLayout android:id="@+id/critiqueLayout"
 	    		android:gravity="center_vertical" 
 	    		android:orientation="vertical" 
 	    		android:layout_width="fill_parent" 

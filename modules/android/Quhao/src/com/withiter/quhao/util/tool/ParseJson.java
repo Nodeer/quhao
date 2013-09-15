@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.vo.Category;
+import com.withiter.quhao.vo.Critique;
 import com.withiter.quhao.vo.Haoma;
 import com.withiter.quhao.vo.LoginInfo;
 import com.withiter.quhao.vo.Merchant;
@@ -622,8 +623,6 @@ public class ParseJson {
 	private static MerchantLocation coventMerchantLocation(JSONObject obj) throws JSONException
 	{
 		MerchantLocation location;
-		String accountId = "";
-
 
 		String id = "";
 		if (obj.has("id")) {
@@ -648,5 +647,77 @@ public class ParseJson {
 	
 		location = new MerchantLocation(id, name, lat, lng, address);
 		return location;
+	}
+
+	/**
+	 * 
+	 * parse json string to critiques
+	 * 
+	 * @param buf json string
+	 * @return critiques
+	 */
+	public static List<Critique> getCritiques(String buf) {
+		
+		List<Critique> critiques = new ArrayList<Critique>();
+		if(StringUtils.isNull(buf)){
+			return critiques;
+		}
+		
+		try {
+			JSONArray array = new JSONArray(buf);
+			for (int i = 0; i < array.length(); i++) {
+				
+				JSONObject obj = array.getJSONObject(i);
+				Critique critique = coventCritique(obj);
+				critiques.add(critique);
+				
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		return critiques;
+	}
+
+	private static Critique coventCritique(JSONObject obj) throws JSONException {
+
+		Critique critique;
+
+		String accountId = "";
+		if (obj.has("accountId")) {
+			accountId = obj.getString("accountId");
+		}
+		String nickName = "";
+		if (obj.has("nickName")) {
+			nickName = obj.getString("nickName");
+		}
+		
+		int level = 0;
+		if(obj.has("level")){
+			level = obj.getInt("level");
+		}
+		
+		int star = 0;
+		if(obj.has("star")){
+			star = obj.getInt("star");
+		}
+		
+		double average = 0L;
+		if (obj.has("average")) {
+			average = obj.getDouble("average");
+		}
+		
+		String desc = "";
+		if (obj.has("desc")) {
+			desc = obj.getString("desc");
+		}
+
+		String updateDate = "";
+		if (obj.has("updateDate")) {
+			updateDate = obj.getString("updateDate");
+		}
+		
+		critique = new Critique(accountId, nickName, level, star, average, desc, updateDate);
+		return critique;
 	}
 }

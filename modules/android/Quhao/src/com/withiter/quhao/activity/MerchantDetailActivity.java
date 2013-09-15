@@ -53,6 +53,7 @@ public class MerchantDetailActivity extends AppStoreActivity {
 	private TextView fuwu;
 	
 	private LinearLayout currentNoLayout;
+	private LinearLayout critiqueLayout;
 	private ListView reservationListView;
 	private ReservationAdapter reservationAdapter;
 
@@ -105,6 +106,8 @@ public class MerchantDetailActivity extends AppStoreActivity {
 					MerchantDetailActivity.this.huanjing
 							.setText(String
 									.valueOf(MerchantDetailActivity.this.merchant.huanjing));
+					critiqueLayout = (LinearLayout) info.findViewById(R.id.critiqueLayout);
+					critiqueLayout.setOnClickListener(MerchantDetailActivity.this);
 				}
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
@@ -198,7 +201,6 @@ public class MerchantDetailActivity extends AppStoreActivity {
 		currentNoLayout = (LinearLayout) info.findViewById(R.id.currentNoLayout);
 		reservationListView = (ListView) info.findViewById(R.id.reservationListView);
 		
-		
 		//if(QHClientApplication.getInstance().isLogined)
 		if(true)
 		{
@@ -226,7 +228,7 @@ public class MerchantDetailActivity extends AppStoreActivity {
 				QuhaoLog.v(LOGTAG, "get categorys data form server begin");
 				String buf = CommonHTTPRequest.get("getReservations?accountId=51e563feae4d165869fda38c&mid=51efe7d8ae4dca7b4c281754");
 						//+ MerchantDetailActivity.this.merchantId);
-				if (StringUtils.isNull(buf) && "[]".equals(buf)) {
+				if (StringUtils.isNull(buf) || "[]".equals(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
 					List<ReservationVO> rvos = ParseJson.getReservations(buf);
@@ -321,6 +323,18 @@ public class MerchantDetailActivity extends AppStoreActivity {
 	@Override
 	public void onClick(View v) {
 
+		switch (v.getId()) {
+		case R.id.critiqueLayout:
+			
+			Intent intent = new Intent(this, CritiquesActivity.class);
+			intent.putExtra("merchantName", this.merchant.name);
+			intent.putExtra("merchantId", this.merchant.id);
+			startActivity(intent);
+			break;
+		default:
+			break;
+		}
+		
 	}
 
 	@Override
