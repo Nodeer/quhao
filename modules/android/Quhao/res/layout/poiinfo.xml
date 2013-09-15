@@ -4,8 +4,7 @@
     android:orientation="vertical"
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
-    android:background="#ffffffff"
-    >
+    android:background="#ffffffff">
 
 	<LinearLayout 
 	    android:orientation="horizontal"
@@ -121,12 +120,13 @@
 		    	android:paddingRight="10.0dip" 
 		    	android:paddingBottom="1.0dip" 
 		    	android:layout_width="fill_parent" 
-		    	android:layout_height="wrap_content"
+		    	android:layout_height="fill_parent"
 		      	android:text="取号情况:"
 	      	/>
-			<ListView android:id="@+id/reservationListView"
+			<ListView
+	            android:id="@+id/reservationListView"
 	            android:layout_width="fill_parent"
-	            android:layout_height="fill_parent"
+	            android:layout_height="wrap_content"
 	            android:layout_gravity="center_horizontal"
 	            android:cacheColorHint="@null"
 	            android:divider="@null"
@@ -642,11 +642,6 @@
     			/>
     			
 		</LinearLayout>
-    	
-    	<View 
-    		android:layout_width="2.0dip"
-    		android:layout_height="10.0dip"
-    		/>
     	
     </LinearLayout>
     
