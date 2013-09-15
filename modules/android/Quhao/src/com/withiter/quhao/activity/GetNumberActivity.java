@@ -118,6 +118,8 @@ public class GetNumberActivity extends AppStoreActivity {
 				super.handleMessage(msg);
 				
 				btnSeatNo.setVisibility(View.GONE);
+				seatNoView.setText(reservation.seatNumber);
+				currentNumberView.setText(reservation.currentNumber);
 				//currentNoLayout.setVisibility(View.GONE);
 				btnGetNumberLayout.setVisibility(View.GONE);
 				myNumberLayout.setVisibility(View.VISIBLE);

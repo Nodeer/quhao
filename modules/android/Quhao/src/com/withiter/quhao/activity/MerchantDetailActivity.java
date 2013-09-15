@@ -179,7 +179,7 @@ public class MerchantDetailActivity extends AppStoreActivity {
 				startActivity(intent);
 				overridePendingTransition(R.anim.main_enter,
 						R.anim.main_exit);
-				
+
 			}
 		});
 		this.merchantName = (TextView) findViewById(R.id.merchantName);
