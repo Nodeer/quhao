@@ -1,5 +1,6 @@
 package com.withiter.quhao.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.tool.CommonTool;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 
+@SuppressLint("NewApi") 
 public abstract class AppStoreActivity extends QuhaoActivity implements
 		OnClickListener, OnTouchListener {
 
@@ -140,6 +142,7 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 			public void onClick(View v) {
 				if (activity instanceof PersonCenterActivity) {
 					QuhaoLog.i(TAG, "refresh personal center page");
+					activity.recreate();
 					// TODO add refresh personal page
 				} else {
 					Intent intent = new Intent(activity, PersonCenterActivity.class);

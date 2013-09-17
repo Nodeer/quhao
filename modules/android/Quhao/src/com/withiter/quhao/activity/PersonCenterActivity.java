@@ -32,8 +32,12 @@ public class PersonCenterActivity extends AppStoreActivity {
 
 		SharedPreferences settings = getSharedPreferences(
 				QuhaoConstant.SHARED_PREFERENCES, 0);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putString(QuhaoConstant.IS_LOGIN, "false");
+		editor.commit();
 		String isLogin = settings.getString(QuhaoConstant.IS_LOGIN, "false");
 
+		
 		// check already login or not
 		if (StringUtils.isNull(isLogin) || "false".equalsIgnoreCase(isLogin)) {
 			// TODO add not login business here
@@ -53,11 +57,6 @@ public class PersonCenterActivity extends AppStoreActivity {
 			ad.setTitle("账号登陆");
 			ad.show();
 
-			SharedPreferences sharedPreferences = getSharedPreferences(
-					QuhaoConstant.SHARED_PREFERENCES, 0);
-			SharedPreferences.Editor editor = sharedPreferences.edit();
-			editor.putString(QuhaoConstant.IS_LOGIN, "true");
-			editor.commit();
 
 		} else {
 			// TODO add already login business here
