@@ -1,11 +1,14 @@
 package com.withiter.quhao.activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 
 import com.withiter.quhao.R;
+import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.util.tool.QuhaoConstant;
 
 public class PersonCenterActivity extends AppStoreActivity {
 
@@ -21,6 +24,16 @@ public class PersonCenterActivity extends AppStoreActivity {
 		btnNearby.setOnClickListener(goNearby(this));
 		btnPerson.setOnClickListener(goPersonCenter(this));
 		btnMore.setOnClickListener(goMore(this));
+		
+		SharedPreferences settings = getSharedPreferences(QuhaoConstant.SHARED_PREFERENCES, 0);
+		String isLogin = settings.getString(QuhaoConstant.IS_LOGIN,"false");
+		
+		// check already login or not
+		if(StringUtils.isNull(isLogin) || "false".equalsIgnoreCase(isLogin)){
+			// TODO add not login business here
+		}else{
+			// TODO add already login business here
+		}
 		
 	}
 

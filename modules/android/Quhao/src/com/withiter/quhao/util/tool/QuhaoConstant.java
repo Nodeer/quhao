@@ -7,6 +7,7 @@ public class QuhaoConstant {
 	public static final String NEW_BODY = null;
 	public static final int ADVERTISE_PIC_MAX = 409600;
 	public static final String SHARED_PREFERENCES = "SHARED_PREFERENCES";
+	public static final String IS_LOGIN = "IS_LOGIN";
 
 	/**
 	 * 下一頁url
