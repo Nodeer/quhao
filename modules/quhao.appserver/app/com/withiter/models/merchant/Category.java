@@ -25,7 +25,7 @@ public class Category extends CategoryEntityDef {
 				c.cateType = cate.toString();
 			}
 			long count = count(cate.toString());
-			c.count = count + 1;
+//			c.count = count + 1;
 			if(cate == CateType.mianbaodangao || cate == CateType.tianpinyinpin || cate == CateType.xiaochikuaican){
 				c.enable = false;
 			}
