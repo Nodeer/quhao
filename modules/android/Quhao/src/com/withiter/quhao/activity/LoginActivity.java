@@ -93,9 +93,9 @@ public class LoginActivity extends AppStoreActivity {
 				transfortParams.put("merchantId", merchantId);
 			}
 		}
-		radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
-		radioPhone = (RadioButton) findViewById(R.id.radioPhone);
-		radioEmail = (RadioButton) findViewById(R.id.radioEmail);
+//		radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+//		radioPhone = (RadioButton) findViewById(R.id.radioPhone);
+//		radioEmail = (RadioButton) findViewById(R.id.radioEmail);
 		
 		pannelLoginName = (TextView) findViewById(R.id.pannel_login_name);
 		loginNameText = (EditText) findViewById(R.id.login_name);

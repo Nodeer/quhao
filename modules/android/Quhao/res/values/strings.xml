@@ -26,6 +26,7 @@
 	<string name="net_error">网络异常，请重试!</string>
 	<string name="querying">正努力帮您加载美味信息&#8230;</string>
 	<string name="radioPhone">手机</string>
+	<string name="radioPassword">密码</string>
 	<string name="radioEmail">邮箱</string>
 	<string name="warning">警告</string>
 	<string name="email_warning">无效邮件地址</string>
