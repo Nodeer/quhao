@@ -35,6 +35,8 @@ public class PersonCenterActivity extends AppStoreActivity {
 
 	private final int UNLOCK_CLICK = 1000;
 	private ProgressDialogUtil progressLogin;
+	
+	AlertDialog ad;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,11 +71,13 @@ public class PersonCenterActivity extends AppStoreActivity {
 			// .findViewById(R.id.txt_password);
 			// username.setText("3001");
 			// password.setText("3001");
-			AlertDialog.Builder ad = new AlertDialog.Builder(
-					PersonCenterActivity.this);
-			ad.setView(view);
-			ad.setTitle("账号登陆");
-			ad.show();
+//			ad = new AlertDialog.Builder(
+//					PersonCenterActivity.this);
+			ad = new AlertDialog.Builder(
+					PersonCenterActivity.this).setView(view).setTitle("账号登陆").show();
+//			ad.setView(view);
+//			ad.setTitle("账号登陆");
+//			ad.show();
 
 			loginNameText = (EditText) view.findViewById(R.id.login_name);
 			passwordText = (EditText) view.findViewById(R.id.edit_pass);
@@ -136,7 +140,8 @@ public class PersonCenterActivity extends AppStoreActivity {
 					account.build(loginInfo);
 					QHClientApplication.getInstance().accessInfo = account;
 					QHClientApplication.getInstance().isLogined = true;
-					v.setVisibility(View.INVISIBLE);
+//					v.setVisibility(View.INVISIBLE);
+					ad.dismiss();
 				}
 			} catch (Exception e) {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
