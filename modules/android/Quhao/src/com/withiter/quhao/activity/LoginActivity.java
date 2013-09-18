@@ -109,17 +109,17 @@ public class LoginActivity extends AppStoreActivity {
 		btnLogin.setOnClickListener(this);
 		btnRegister.setOnClickListener(this);
 		
-		radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			@Override
-			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				if (checkedId == radioPhone.getId()) {
-					pannelLoginName.setText(R.string.radioPhone);
-				} else if (checkedId == radioEmail.getId()) {
-					pannelLoginName.setText(R.string.radioEmail);
-				}
-
-			}
-		});
+//		radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+//			@Override
+//			public void onCheckedChanged(RadioGroup group, int checkedId) {
+//				if (checkedId == radioPhone.getId()) {
+//					pannelLoginName.setText(R.string.radioPhone);
+//				} else if (checkedId == radioEmail.getId()) {
+//					pannelLoginName.setText(R.string.radioEmail);
+//				}
+//
+//			}
+//		});
 	}
 
 	@Override
@@ -145,6 +145,7 @@ public class LoginActivity extends AppStoreActivity {
 			finish();
 			break;
 		case R.id.login:
+			QuhaoLog.i(TAG, "login clcick");
 			progressLogin = new ProgressDialogUtil(this, R.string.empty,
 					R.string.querying, false);
 			progressLogin.showProgress();
