@@ -136,6 +136,7 @@ public class PersonCenterActivity extends AppStoreActivity {
 					account.build(loginInfo);
 					QHClientApplication.getInstance().accessInfo = account;
 					QHClientApplication.getInstance().isLogined = true;
+					v.setVisibility(View.INVISIBLE);
 				}
 			} catch (Exception e) {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
