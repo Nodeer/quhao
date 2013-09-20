@@ -21,6 +21,11 @@ public class LoginVO {
 	public Constants.MobileOSType mobileOS;
 	public Date lastLogin = null;
 	
+	public String jifen;
+	public String qiandao;
+	public String dianpin;
+	public String zhaopian;
+	
 	public LoginVO(){
 		super();
 	}

@@ -12,6 +12,7 @@ public class AccountInfo implements Serializable {
 	public String msg;
 	public String userId;
 	public String phone;
+	public String jifen;
 	public String email;
 	public String password;
 	public String nickName;
@@ -21,6 +22,10 @@ public class AccountInfo implements Serializable {
 	public String mobileOS;
 	public String lastLogin;
 
+	public String qiandao = "0";
+	public String dianpin = "0";
+	public String zhaopian = "0";
+	
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
@@ -64,10 +69,15 @@ public class AccountInfo implements Serializable {
 	public void setLastLogin(String lastLogin) {
 		this.lastLogin = lastLogin;
 	}
+	
+	public void setJifen(String jifen){
+		this.jifen = jifen;
+	}
 
 	public void build(LoginInfo loginInfo) {
 		this.msg = loginInfo.msg;
 		this.phone = loginInfo.phone;
+		this.jifen = loginInfo.jifen;
 		this.email = loginInfo.email;
 		this.password = loginInfo.password;
 		this.nickName = loginInfo.nickName;

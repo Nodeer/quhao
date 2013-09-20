@@ -31,6 +31,7 @@ public class PersonCenterActivity extends AppStoreActivity {
 	private TextView mobile;
 	private TextView jifen;
 	private TextView value_qiandao;
+	private TextView value_dianpin;
 	private TextView value_zhaopian;
 	
 	
@@ -58,6 +59,12 @@ public class PersonCenterActivity extends AppStoreActivity {
 		btnPerson.setOnClickListener(goPersonCenter(this));
 		btnMore.setOnClickListener(goMore(this));
 		
+		nickName = (TextView) findViewById(R.id.nickName);
+		mobile = (TextView) findViewById(R.id.mobile);
+		jifen = (TextView) findViewById(R.id.jifen);
+		value_qiandao = (TextView) findViewById(R.id.value_qiandao);
+		value_dianpin = (TextView) findViewById(R.id.value_dianpin);
+		value_zhaopian = (TextView) findViewById(R.id.value_zhaopian);
 		
 
 		SharedPreferences settings = getSharedPreferences(
@@ -146,6 +153,16 @@ public class PersonCenterActivity extends AppStoreActivity {
 					}
 					if(account.msg.equals("success")){
 						loginResult.setText("登陆成功");
+						nickName.setText(account.nickName);
+						mobile.setText(account.phone);
+						
+						// TODO add jifen from backend
+						jifen.setText(account.jifen);
+						
+						value_qiandao.setText(account.qiandao);
+						value_dianpin.setText(account.dianpin);
+						value_zhaopian.setText(account.zhaopian);
+						
 						QHClientApplication.getInstance().accessInfo = account;
 						QHClientApplication.getInstance().isLogined = true;
 						ad.dismiss();
