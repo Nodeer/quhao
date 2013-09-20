@@ -21,10 +21,10 @@ public class LoginVO {
 	public Constants.MobileOSType mobileOS;
 	public Date lastLogin = null;
 	
-	public String jifen;
-	public String qiandao;
-	public String dianpin;
-	public String zhaopian;
+	public int jifen;
+	public int qiandao;
+	public int dianpin;
+	public int zhaopian;
 	
 	public LoginVO(){
 		super();
@@ -43,5 +43,10 @@ public class LoginVO {
 		this.userImage = account.userImage;
 		this.mobileOS = account.mobileOS;
 		this.lastLogin = account.lastLogin;
+		
+		this.jifen = account.jifen;
+		this.qiandao = account.qiandao;
+		this.dianpin = account.dianpin;
+		this.zhaopian = account.zhaopian;
 	}
 }
