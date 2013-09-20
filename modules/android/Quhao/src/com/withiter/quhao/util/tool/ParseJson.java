@@ -341,6 +341,11 @@ public class ParseJson {
 		try {
 			JSONObject obj = new JSONObject(result);
 
+			String msg = "";
+			if(obj.has("msg")){
+				msg = obj.getString("msg");
+			}
+			
 			String phone = "";
 
 			if (obj.has("phone")) {
@@ -389,7 +394,7 @@ public class ParseJson {
 				lastLogin = obj.getString("lastLogin");
 			}
 
-			loginInfo = new LoginInfo(phone, email, password, nickName,
+			loginInfo = new LoginInfo(msg, phone, email, password, nickName,
 					birthday, userImage, enable, mobileOS, lastLogin);
 
 		} catch (JSONException e) {

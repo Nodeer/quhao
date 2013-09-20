@@ -1,7 +1,6 @@
 package com.withiter.quhao.activity;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,9 +8,9 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
@@ -27,6 +26,15 @@ import com.withiter.quhao.vo.LoginInfo;
 public class PersonCenterActivity extends AppStoreActivity {
 
 	private final static String TAG = PersonCenterActivity.class.getName();
+	
+	private TextView nickName;
+	private TextView mobile;
+	private TextView jifen;
+	private TextView value_qiandao;
+	private TextView value_zhaopian;
+	
+	
+	private TextView loginResult;
 	private EditText loginNameText;
 	private EditText passwordText;
 	private Button btnClose;
@@ -49,6 +57,8 @@ public class PersonCenterActivity extends AppStoreActivity {
 		btnNearby.setOnClickListener(goNearby(this));
 		btnPerson.setOnClickListener(goPersonCenter(this));
 		btnMore.setOnClickListener(goMore(this));
+		
+		
 
 		SharedPreferences settings = getSharedPreferences(
 				QuhaoConstant.SHARED_PREFERENCES, 0);
@@ -65,20 +75,10 @@ public class PersonCenterActivity extends AppStoreActivity {
 					.getSystemService(LAYOUT_INFLATER_SERVICE);
 			View view = inflater.inflate(R.layout.login_layout, null);
 
-			// final EditText username = (EditText) view
-			// .findViewById(R.id.txt_username);
-			// final EditText password = (EditText) view
-			// .findViewById(R.id.txt_password);
-			// username.setText("3001");
-			// password.setText("3001");
-//			ad = new AlertDialog.Builder(
-//					PersonCenterActivity.this);
 			ad = new AlertDialog.Builder(
 					PersonCenterActivity.this).setView(view).setTitle("账号登陆").show();
-//			ad.setView(view);
-//			ad.setTitle("账号登陆");
-//			ad.show();
 
+			loginResult = (TextView) view.findViewById(R.id.person_center_login_result);
 			loginNameText = (EditText) view.findViewById(R.id.login_name);
 			passwordText = (EditText) view.findViewById(R.id.edit_pass);
 
@@ -120,7 +120,7 @@ public class PersonCenterActivity extends AppStoreActivity {
 			finish();
 			break;
 		case R.id.login:
-			QuhaoLog.i(TAG, "login clcick");
+			QuhaoLog.i(TAG, "login clicked");
 			progressLogin = new ProgressDialogUtil(this, R.string.empty,
 					R.string.querying, false);
 			progressLogin.showProgress();
@@ -138,10 +138,19 @@ public class PersonCenterActivity extends AppStoreActivity {
 					LoginInfo loginInfo = ParseJson.getLoginInfo(result);
 					AccountInfo account = new AccountInfo();
 					account.build(loginInfo);
-					QHClientApplication.getInstance().accessInfo = account;
-					QHClientApplication.getInstance().isLogined = true;
-//					v.setVisibility(View.INVISIBLE);
-					ad.dismiss();
+					QuhaoLog.i(TAG, account.msg);
+					if(account.msg.equals("fail")){
+						loginResult.setText("用户名或密码错误，登陆失败");
+						passwordText.setText("");
+						return;
+					}
+					if(account.msg.equals("success")){
+						loginResult.setText("登陆成功");
+						QHClientApplication.getInstance().accessInfo = account;
+						QHClientApplication.getInstance().isLogined = true;
+						ad.dismiss();
+						return;
+					}
 				}
 			} catch (Exception e) {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -167,4 +176,7 @@ public class PersonCenterActivity extends AppStoreActivity {
 		return false;
 	}
 
+	private void displayAccountInfo(){
+//		TextView nickName = (TextView) findViewById("nickName");
+	}
 }
