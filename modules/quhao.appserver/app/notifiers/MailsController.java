@@ -48,6 +48,14 @@ public class MailsController extends JapidMailer {
 	}
 
 	public static void sendTo(String mailsTo, String url) {
+		String userHome = System.getProperty("user.home");
+		if (userHome.contains("eacfgjl")) {
+			useProxy = true;
+		}
+
+		if (useProxy) {
+			initProxy();
+		}
 		setFrom(FROM);
 		setCharset("UTF-8");
 		setSubject(SUBJECT_SIGNUP);

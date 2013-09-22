@@ -58,7 +58,12 @@ public class AccountController extends BaseController {
 			avo.error = "";
 			String hexedUid = Codec.hexSHA1(account.id());
 			String url = Play.configuration.getProperty("application.domain")+"/b/self/AccountController/active?hid="+hexedUid+"&oid="+account.id();
-			MailsController.sendTo(account.email, url);
+			try {
+				MailsController.sendTo(account.email, url);
+			} catch (Exception e) {
+				avo.error = "内部错误，请联系管理员";
+				e.printStackTrace();
+			}
 			renderJSON(avo);
 		}else{
 			AccountVO avo = new AccountVO();
