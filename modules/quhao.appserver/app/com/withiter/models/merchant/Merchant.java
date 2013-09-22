@@ -27,6 +27,12 @@ public class Merchant extends MerchantEntityDef {
 		q.filter("cateType", cateType);
 		return q.asList();
 	}
+	
+	public static Merchant findByMid(String mid){
+		MorphiaQuery q = Merchant.q();
+		q.filter("id", mid);
+		return (Merchant) q.asList().get(0);
+	}
 
 	/**
 	 * get next page merchants

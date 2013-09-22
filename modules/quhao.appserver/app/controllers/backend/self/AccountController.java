@@ -1,14 +1,19 @@
 package controllers.backend.self;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import notifiers.MailsController;
 import play.Play;
 import play.libs.Codec;
 import play.mvc.Scope.Session;
+import vo.MerchantVO;
 import vo.account.AccountVO;
-import cn.bran.japid.util.StringUtils;
 
 import com.withiter.common.Constants;
 import com.withiter.models.account.Account;
+import com.withiter.models.backendMerchant.MerchantAccountRel;
+import com.withiter.models.merchant.Merchant;
 
 import controllers.BaseController;
 
@@ -38,6 +43,17 @@ public class AccountController extends BaseController {
 			}
 			avo = AccountVO.build(account);
 			avo.error = "";
+			
+			// add merchant list into account view object
+			List<Merchant> mList = MerchantAccountRel.getMerchantByUid(avo.uid);
+			if(mList == null || mList.isEmpty()){
+				
+			}else{
+				for(Merchant m : mList){
+					avo.mList.add(MerchantVO.build(m));
+				}
+			}
+			
 			Session.current().put(Constants.SESSION_USERNAME, account);
 			renderJSON(avo);
 		}

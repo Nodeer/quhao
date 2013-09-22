@@ -1,8 +1,10 @@
 package com.withiter.models.backendMerchant;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.code.morphia.annotations.Entity;
+import com.withiter.models.merchant.Merchant;
 
 
 @Entity
@@ -18,5 +20,18 @@ public class MerchantAccountRel extends MerchantAccountRelEntityDef{
 		q.filter("uid", uid);
 		relList = q.asList();
 		return relList;
+	}
+	
+	public static List<Merchant> getMerchantByUid(String uid){
+		List<Merchant> mList = new ArrayList<Merchant>();
+		List<MerchantAccountRel> relList = getMerchantAccountRelList(uid);
+		if(relList == null || relList.size() == 0){
+			return null;
+		}
+		
+		for(MerchantAccountRel rel : relList){
+			mList.add((Merchant) Merchant.findById(rel.mid));
+		}
+		return mList;
 	}
 }

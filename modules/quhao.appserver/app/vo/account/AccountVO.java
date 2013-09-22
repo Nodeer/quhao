@@ -1,8 +1,11 @@
 package vo.account;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import com.withiter.common.Constants;
+import vo.MerchantVO;
+
 import com.withiter.common.Constants.MobileOSType;
 import com.withiter.models.account.Account;
 
@@ -23,6 +26,8 @@ public class AccountVO {
 	public Date lastLogin;
 	
 	public String error;
+	
+	public List<MerchantVO> mList = new ArrayList<MerchantVO>();
 	
 	public static AccountVO build(Account account) {
 		AccountVO avo = new AccountVO();
