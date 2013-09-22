@@ -1,12 +1,12 @@
 package com.withiter.models.merchant;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.google.code.morphia.annotations.Indexed;
 import com.google.code.morphia.annotations.Reference;
-import com.withiter.common.Constants;
-import com.withiter.common.Constants.CateType;
 import com.withiter.models.BaseModel;
 
 
@@ -20,6 +20,8 @@ public abstract class MerchantEntityDef extends BaseModel {
 	
 	public String cateType;
 	public String merchantImage = "";
+	
+	public Set merchantImageSet = new HashSet<String>();
 	
 	// 百度坐标
 	public String x;

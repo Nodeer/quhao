@@ -1,19 +1,26 @@
 `import vo.BackendMerchantInfoVO 
 `args BackendMerchantInfoVO bmivo
 
-<form action="/b/w/editMerchant" method="post">
+
+<form action="/b/w/editMerchant" enctype="multipart/form-data" method="post">
 	<input type="hidden" name="uid" value="${bmivo.aid}" /> 
 	<input type="hidden" name="mid" value="${bmivo.mid}" /> 
 	商家名称：<input type="text" name="merchantName" id="" value="${bmivo.name}" /><br />
 	<br />
-	 商家描述：<textarea name="description" cols="20" rows="10" value="${bmivo.description}"></textarea><br />
+	 商家描述：<textarea id="description" name="description" cols="20" rows="10"></textarea><br />
 	<br /> 
+	展示图片：<input id="merchantImage" name="merchantImage" type="file" />
+	<br />
+	`for(String srcStr : bmivo.imgSrc){
+		${srcStr}
+		<img alt="" src="${srcStr}" /><br/>
+	`}
 	商家地址：<input type="text" name="address" id="" value="${bmivo.address}" /><br />
 	<br /> 
 	联系方式：<input type="text" name="tel" id="" value="${bmivo.telephone}" /><br />
 	<br /> 
-	商家口味：<select name="cateType">
-		<option value=""></option>
+	商家口味：<select id="cateType" name="cateType">
+		<option value="">请选择</option>
 		<option value="benbangcai">本帮菜</option>
 		<option value="chuancai">川菜</option>
 		<option value="dongnanyacai">东南亚菜</option>
@@ -30,20 +37,26 @@
 		<option value="zizhucan">自助餐</option>
 	</select><br />
 	<br /> 
-	开门时间： <select name="openTime"> 
-		<option value="${bmivo.openTime}"></option>
-	`for(int i=1;i<=24;i++){
-		<option value="${bmivo.openTime}">$i:00</option>
-		<option value="${bmivo.openTime}">$i:30</option> 
+	开门时间： <select id="openTime" name="openTime"> 
+		<option value="">请选择</option>
+	`for(int i=0;i<24;i++){
+		<option value="${i}:00">$i:00</option>
 	`}
 	</select><br />
 	<br /> 
-	关门时间： <select name="closeTime"> 
-	<option value="${bmivo.closeTime}"></option>
-	`for(int i=1;i<=24;i++){
-		<option value="${bmivo.closeTime}">$i:00</option>
-		<option value="${bmivo.closeTime}">$i:30</option> 
+	关门时间： <select id="closeTime" name="closeTime"> 
+	<option value="">请选择</option>
+	`for(int i=0;i<24;i++){
+		<option value="${i}:00">$i:00</option>
 	`}
 	</select><br />
 	<br /> <input type="submit" value="submit" />
 </form>
+`if(bmivo.merchantExist){
+<script>
+$("#cateType").val("${bmivo.cateType}");
+$("#openTime").val("${bmivo.openTime}");
+$("#closeTime").val("${bmivo.closeTime}");
+$("#description").val("${bmivo.description}");
+</script>
+`}

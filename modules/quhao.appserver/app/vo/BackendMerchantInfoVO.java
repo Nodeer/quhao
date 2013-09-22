@@ -1,9 +1,12 @@
 package vo;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
-import com.google.code.morphia.annotations.Indexed;
-import com.withiter.common.Constants;
+import play.Play;
+
 import com.withiter.models.account.Account;
 import com.withiter.models.merchant.Merchant;
 /*make up with two parts:1) account information
@@ -38,6 +41,8 @@ public class BackendMerchantInfoVO {
 //	public Constants.MobileOSType mobileOS;
 	public Date lastLogin = new Date();
 	
+	public List<String> imgSrc = new ArrayList<String>();
+	
 	public static BackendMerchantInfoVO build(Merchant m, Account a) {
 		BackendMerchantInfoVO vo = new BackendMerchantInfoVO();
 		//merchant info
@@ -58,6 +63,16 @@ public class BackendMerchantInfoVO {
 			vo.telephone = m.gTelephone();
 			vo.x = m.x;
 			vo.y = m.y;
+			
+			String server = Play.configuration.getProperty("application.domain");
+			String imageStorePath = Play.configuration.getProperty("image.store.path");
+			// generate merchant image list
+			if(!m.merchantImageSet.isEmpty()){
+				Iterator it = m.merchantImageSet.iterator();
+				while(it.hasNext()){
+					vo.imgSrc.add(server+imageStorePath+it.next().toString());
+				}
+			}
 		}
 		
 		

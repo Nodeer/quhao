@@ -44,6 +44,10 @@ GET		/p        							Patches.index
 *		/b/w/editMerchant					backend.self.SelfManagementController.editMerchant
 # backend management
 
+# image display
+*		/image/f							UploadController.find
+# image display
+
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                            staticDir:public
 
