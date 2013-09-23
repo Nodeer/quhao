@@ -1,7 +1,7 @@
 `import vo.BackendMerchantInfoVO 
 `args BackendMerchantInfoVO bmivo
 
-
+<div align="left" style="margin-left: 300px;">
 <form action="/b/w/editMerchant" enctype="multipart/form-data" method="post">
 	<input type="hidden" name="uid" value="${bmivo.aid}" /> 
 	<input type="hidden" name="mid" value="${bmivo.mid}" /> 
@@ -52,6 +52,8 @@
 	</select><br />
 	<br /> <input type="submit" value="submit" />
 </form>
+</div>
+
 `if(bmivo.merchantExist){
 <script>
 $("#cateType").val("${bmivo.cateType}");
