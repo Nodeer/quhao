@@ -2,24 +2,25 @@
 `args BackendMerchantInfoVO bmivo
 
 <div class="pop_logIn edit_merchant">
-	<h2 align="center">编辑/新增商家信息</h2>
+	<h2>编辑/新增&nbsp;商家信息</h2>
 
-<form action="/b/w/editMerchant" enctype="multipart/form-data" method="post">
+<form action="/b/w/editMerchant" enctype="multipart/form-data" method="post" class="editmerchantForm">
 	<input type="hidden" name="uid" value="${bmivo.aid}" /> 
 	<input type="hidden" name="mid" value="${bmivo.mid}" /> 
 	<fieldset class="fieldset">
 		<ul>
-			<li>商家名称：<input type="text" name="merchantName" id="" value="${bmivo.name}" placeHolder="商家名称" class="textInput"/></li>
-			<li>商家描述：<textarea id="description" name="description" cols="20" rows="10" placeHolder="商家描述" class="textInput"></textarea></li>
-			<li>上传图片：<input id="merchantImage" name="merchantImage" size="20" type="file" /></li>
-			<li>展示图片：</li>
+			<li><div class="w200">商家名称：</div><input type="text" name="merchantName" id="" value="${bmivo.name}" placeHolder="商家名称" class="textInput"/></li>
+			<li><div class="w200">商家描述：</div><textarea id="description" name="description" cols="20" rows="10" placeHolder="商家描述" class="textInput"></textarea></li>
+			<li><div class="w200">上传图片：</div><input id="merchantImage" name="merchantImage" size="20" type="file" /></li>
+			<li><div class="w200">展示图片：</div></li>
 			`for(String srcStr : bmivo.imgSrc){
 				<li><img alt="" class="backendImg" src="${srcStr}" /></li>
 			`}
-			<li>商家地址：<input type="text" name="address" id="" value="${bmivo.address}" placeHolder="商家地址" class="textInput"/></li>
-			<li>联系方式：<input type="text" name="tel" id="" value="${bmivo.telephone}" placeHolder="联系方式" class="textInput"/></li>
+			<li><div class="w200">商家地址：</div><input type="text" name="address" id="" value="${bmivo.address}" placeHolder="商家地址" class="textInput"/></li>
+			<li><div class="w200">联系方式：</div><input type="text" name="tel" id="" value="${bmivo.telephone}" placeHolder="联系方式" class="textInput"/></li>
 			
 			<li>
+			<div class="w200">商家风味：</div>
 			<span class="select">
 				<select id="cateType" name="cateType" class="select" style="width: 198px;">
 					<option value="">请选择风味</option>
@@ -41,6 +42,7 @@
 			</span>
 			</li>
 			<li>
+			<div class="w200">营业时间（开始）：</div>
 			<span class="select">
 				<select id="openTime" name="openTime" class="select" style="width: 198px;">
 					<option value="">请选择营业时间（开始）</option>
@@ -51,6 +53,7 @@
 			</span>
 			</li>
 			<li>
+			<div class="w200">营业时间（结束）：</div>
 			<span class="select">
 				<select id="closeTime" name="closeTime" class="select" style="width: 198px;">
 					<option value="">请选择营业时间（结束）</option>
@@ -60,7 +63,7 @@
 				</select>
 			</span>
 			</li>
-			<li class="buttonBox"><input type="button" name="" class="styleBtn corner lgoinBtn" value="提交" onclick="Login.login();"/></li>
+			<li class="buttonBox"><input type="button" name="" style="margin-left: 60px; margin-right: 100px;" class="styleBtn corner " value="重&nbsp;&nbsp;&nbsp;&nbsp;置" onclick="Login.login();"/><input type="button" name="" class="styleBtn corner " value="提&nbsp;&nbsp;&nbsp;&nbsp;交" onclick="Login.login();"/></li>
 		</ul>
 	</fieldset>
 </form>
