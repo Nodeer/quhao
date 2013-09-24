@@ -17,3 +17,8 @@
 	/*-moz-opacity: 0.5; /*MOZ , FF*/
 	/*opacity: 0.5; /*CSS3, FF1.5*/
 }
+
+.backendImg{
+	max-height: 100px;
+	max-width: 300px;
+}
