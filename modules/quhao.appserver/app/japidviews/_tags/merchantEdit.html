@@ -2,6 +2,7 @@
 `args BackendMerchantInfoVO bmivo
 
 <div class="pop_logIn edit_merchant">
+	<h2 align="center">编辑/新增商家信息</h2>
 
 <form action="/b/w/editMerchant" enctype="multipart/form-data" method="post">
 	<input type="hidden" name="uid" value="${bmivo.aid}" /> 
@@ -10,7 +11,7 @@
 		<ul>
 			<li>商家名称：<input type="text" name="merchantName" id="" value="${bmivo.name}" placeHolder="商家名称" class="textInput"/></li>
 			<li>商家描述：<textarea id="description" name="description" cols="20" rows="10" placeHolder="商家描述" class="textInput"></textarea></li>
-			<li>上传图片：<input id="merchantImage" name="merchantImage" type="file" /></li>
+			<li>上传图片：<input id="merchantImage" name="merchantImage" size="20" type="file" /></li>
 			<li>展示图片：</li>
 			`for(String srcStr : bmivo.imgSrc){
 				<li><img alt="" src="${srcStr}" /></li>

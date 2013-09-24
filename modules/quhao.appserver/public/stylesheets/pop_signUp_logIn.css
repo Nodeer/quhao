@@ -180,16 +180,4 @@
 	top: 10%;
 }
 
-.edit_merchant {
-	position: absolute;
-	left: 0%;
-	ritht: 100%;
-	top: 10%;
-	width: 600px;
-	background:none;
-	/*filter: alpha(opacity = 50); /*IE*/
-	/*-moz-opacity: 0.5; /*MOZ , FF*/
-	/*opacity: 0.5; /*CSS3, FF1.5*/
-}
-
 /* override by cross */
