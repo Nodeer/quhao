@@ -94,10 +94,12 @@ public class AccountController extends BaseController {
 			Account account = Account.findById(oid);
 			account.enable=true;
 			account.save();
-			renderJapidWith("japidviews.backend.self.SelfManagementController.index", true);
+			SelfManagementController.index(account.id());
+//			renderJapidWith("japidviews.backend.self.SelfManagementController.index", account.id());
 		}
 		else{
-			renderJapidWith("japidviews.backend.self.SelfManagementController.index", false);
+			// TODO update active filed page
+//			renderJapidWith("japidviews.backend.self.SelfManagementController.index", "");
 		}
 			
 		
