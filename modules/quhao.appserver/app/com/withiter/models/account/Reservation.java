@@ -24,7 +24,10 @@ import com.withiter.common.Constants.ReservationStatus;
 import com.withiter.common.ContentType;
 import com.withiter.models.merchant.Haoma;
 import com.google.code.morphia.annotations.Entity;
+import com.google.code.morphia.query.Criteria;
+import com.google.code.morphia.query.CriteriaContainerImpl;
 import com.mongodb.DB;
+import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
@@ -143,6 +146,39 @@ public class Reservation extends ReservationEntityDef {
 		q.filter("accountId", accountId).filter("merchantId", mid)
 				.filter("valid", true);
 		return q.asList();
+	}
+
+	/**
+	 * 
+	 * query previous number
+	 * 
+	 * @param accountId 
+	 * @param mid 
+	 * @return
+	 */
+	public static long findPreviousNo(String mid,int seatNumber)
+	{
+		MorphiaQuery q = Reservation.q();
+		q.filter("merchantId", mid).filter("seatNumber", seatNumber);
+		return q.max("myNumber");
+	}
+	
+	/**
+	 * 
+	 * query previous number
+	 * 
+	 * @param accountId 
+	 * @param mid 
+	 * @return
+	 */
+	public static long findCountBetweenCurrentNoAndMyNumber(String mid,int currentNo, int myNumber,int seatNumber)
+	{
+		MorphiaQuery q = Reservation.q();
+		
+		q.filter("seatNumber", seatNumber).filter("merchantId", mid).filter("status", "canceled")
+			.filter("myNumber", "<"+myNumber).filter("myNumber", ">" + currentNo);
+		
+		return q.count();
 	}
 	
 }

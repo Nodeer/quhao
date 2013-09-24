@@ -125,13 +125,23 @@ public class MerchantController extends BaseController {
 	 */
 	public static void getReservations(String accountId, String mid) {
 		List<ReservationVO> rvos = new ArrayList<ReservationVO>();
+		Haoma haoma = Haoma.findByMerchantId(mid);
+		
 		ReservationVO rvo = null;
 		List<Reservation> reservations = Reservation.getReservationsByMerchantIdAndAccountId(accountId, mid);
 		if(null != reservations && reservations.size()>0)
 		{
+			
 			for(Reservation r : reservations)
 			{
+				Paidui paidui = haoma.haomaMap.get(r.seatNumber);
+				
 				rvo = new ReservationVO();
+				
+				int canclCount = (int) Reservation.findCountBetweenCurrentNoAndMyNumber(mid, paidui.currentNumber, r.myNumber,r.seatNumber);
+				
+				rvo.beforeYou =  r.myNumber - (paidui.currentNumber + canclCount);
+				rvo.currentNumber = paidui.currentNumber;
 				rvo.build(r);
 				rvos.add(rvo);
 			}
@@ -151,8 +161,16 @@ public class MerchantController extends BaseController {
 	public static void nahao(String accountId, String mid, int seatNumber) {
 		ReservationVO rvo = new ReservationVO();
 		Reservation r = Reservation.reservationExist(accountId, mid, seatNumber);
+		Haoma haoma = Haoma.findByMerchantId(mid);
 		if(r != null){
+			Paidui paidui = haoma.haomaMap.get(seatNumber);
+			//rvo.beforeYou = paidui.currentNumber - (paidui.canceled + paidui.expired + paidui.finished);
 			rvo.tipValue = "ALREADY_HAVE";
+			int canclCount = (int) Reservation.findCountBetweenCurrentNoAndMyNumber(mid, paidui.currentNumber, r.myNumber,seatNumber);
+			
+			rvo.beforeYou =  r.myNumber - (paidui.currentNumber + canclCount);
+			//rvo.beforeYou =  reservation.myNumber-( paidui.currentNumber + paidui.canceled);
+			rvo.currentNumber = paidui.currentNumber;
 			rvo.build(r);
 			renderJSON(rvo);
 		}
@@ -160,6 +178,9 @@ public class MerchantController extends BaseController {
 		Account account = Account.findById(accountId);
 		int left = account.jifen;
 		if(left < 1){
+			Paidui paidui = haoma.haomaMap.get(seatNumber);
+			//rvo.beforeYou = paidui.currentNumber - (paidui.canceled + paidui.expired + paidui.finished);
+			rvo.currentNumber = paidui.currentNumber;
 			rvo.tipValue = "NO_MORE_JIFEN";
 			rvo.accountId = accountId;
 			rvo.merchantId = mid;
@@ -169,7 +190,16 @@ public class MerchantController extends BaseController {
 		}
 		if(left >= 1){
 			Reservation reservation = Haoma.nahao(accountId, mid, seatNumber);
-			reservation.save();
+			
+			Haoma haomaNew = Haoma.findByMerchantId(mid);
+			
+			rvo.currentNumber = haomaNew.haomaMap.get(seatNumber).currentNumber;
+			
+			int cancelCount = (int) Reservation.findCountBetweenCurrentNoAndMyNumber( mid, haomaNew.haomaMap.get(seatNumber).currentNumber, reservation.myNumber,seatNumber);
+			
+			rvo.beforeYou =  reservation.myNumber - (haomaNew.haomaMap.get(seatNumber).currentNumber + cancelCount);
+			//rvo.beforeYou =  reservation.myNumber-( paidui.currentNumber + paidui.canceled);
+			
 			rvo.tipKey = true;
 			rvo.tipValue = "NAHAO_SUCCESS";
 			rvo.build(reservation);

@@ -43,17 +43,19 @@ public class Haoma extends HaomaEntityDef {
 		
 		Haoma haoma = Haoma.findByMerchantId(mid);
 		Paidui paidui = haoma.haomaMap.get(seatNumber);
-		paidui.enable = true;
-		paidui.currentNumber += 1;
+		//paidui.enable = true;
+		paidui.maxNumber += 1;
 		haoma.save();
 		
 		Reservation reservation = new Reservation();
 		reservation.accountId = accountId;
 		reservation.merchantId = mid;
-		reservation.myNumber = paidui.currentNumber;
+		reservation.myNumber = paidui.maxNumber;
 		reservation.seatNumber = seatNumber;
-		reservation.beforeYou = paidui.currentNumber - (paidui.canceled + paidui.expired + paidui.finished);
+		//reservation.beforeYou = paidui.currentNumber - (paidui.canceled + paidui.expired + paidui.finished);
 		reservation.valid = true;
+		
+		reservation.save();
 		
 		return reservation;
 	}
@@ -71,13 +73,24 @@ public class Haoma extends HaomaEntityDef {
 		Paidui p = haoma.haomaMap.get(seatNumber);
 		switch(status){
 			case canceled : 
-				p.canceled += 1;
+				if(myNumber>=p.currentNumber)
+				{
+					p.canceled += 1;
+				}
+				
 				break;
 			case finished : 
-				p.finished += 1;
+				if(myNumber==p.currentNumber)
+				{
+					p.currentNumber += 1;
+				}
+				
 				break;
 			case expired : 
-				p.expired += 1;
+				if(myNumber==p.currentNumber)
+				{
+					p.currentNumber += 1;
+				}
 				break;
 		}
 		haoma.save();
