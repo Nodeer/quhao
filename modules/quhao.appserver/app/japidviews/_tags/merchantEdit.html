@@ -9,7 +9,11 @@
 	<input type="hidden" name="mid" value="${bmivo.mid}" /> 
 	<fieldset class="fieldset">
 		<ul>
+			`if(bmivo.merchantExist){
 			<li><div class="w200">商家名称：</div><input type="text" disabled="disabled" name="merchantName" id="merchantName" value="${bmivo.name}" placeHolder="商家名称" class="textInput"/></li>
+			`}else{
+			<li><div class="w200">商家名称：</div><input type="text" name="merchantName" id="merchantName" value="${bmivo.name}" placeHolder="商家名称" class="textInput"/></li>
+			`}
 			<li><div class="w200">商家描述：</div><textarea id="description" name="description" cols="20" rows="10" placeHolder="商家描述" class="textInput"></textarea></li>
 			<li><div class="w200">上传图片：</div><input id="merchantImage" name="merchantImage" size="20" type="file" /></li>
 			<li><div class="w200">展示图片：</div></li>

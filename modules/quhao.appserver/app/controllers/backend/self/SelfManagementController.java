@@ -76,8 +76,10 @@ public class SelfManagementController extends BaseController {
 			m.save();
 			if (!StringUtils.isEmpty(merchantImage)) {
 				GridFSInputFile file = uploadFirst(merchantImage, m.id());
-				m.merchantImageSet.add(file.getFilename());
-				m.save();
+				if(file != null){
+					m.merchantImageSet.add(file.getFilename());
+					m.save();
+				}
 			}
 
 			MerchantAccountRel rel = new MerchantAccountRel();
