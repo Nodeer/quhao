@@ -4,7 +4,7 @@
 <div class="pop_logIn edit_merchant">
 	<h2>编辑/新增&nbsp;商家信息</h2>
 
-<form action="/b/w/editMerchant" enctype="multipart/form-data" method="post" class="editmerchantForm">
+<form id="merchantForm" action="/b/w/editMerchant" enctype="multipart/form-data" method="post" class="editmerchantForm">
 	<input type="hidden" name="uid" value="${bmivo.aid}" /> 
 	<input type="hidden" name="mid" value="${bmivo.mid}" /> 
 	<fieldset class="fieldset">
@@ -63,7 +63,10 @@
 				</select>
 			</span>
 			</li>
-			<li class="buttonBox"><input type="button" name="" style="margin-left: 60px; margin-right: 100px;" class="styleBtn corner " value="重&nbsp;&nbsp;&nbsp;&nbsp;置" onclick="Merchant.reset();"/><input type="button" name="" class="styleBtn corner " value="提&nbsp;&nbsp;&nbsp;&nbsp;交" onclick="Login.login();"/></li>
+			<li class="buttonBox">
+				<input type="button" name="" style="margin-left: 60px; margin-right: 100px;" class="styleBtn corner " value="重&nbsp;&nbsp;&nbsp;&nbsp;置" onclick="Merchant.reset();"/>
+				<input type="button" name="" class="styleBtn corner " value="提&nbsp;&nbsp;&nbsp;&nbsp;交" onclick="Merchant.update();"/>
+			</li>
 		</ul>
 	</fieldset>
 </form>

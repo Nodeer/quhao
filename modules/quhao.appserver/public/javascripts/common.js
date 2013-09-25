@@ -123,3 +123,20 @@ Common.removePopup = function(newMask, newDivID) {
 	$(newMask).remove();
 	$("#" + newDivID).hide();
 }
+
+/**
+ * check str is null or empty string
+ */
+Common.isEmpty = function(str){
+	if(str == null){
+		return true;
+	}
+	if(str == ""){
+		return true;
+	}
+	if(Quhao.trim(str) == ""){
+		return true;
+	}
+	
+	return false;
+}
