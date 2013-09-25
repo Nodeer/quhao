@@ -9,15 +9,15 @@
 	<input type="hidden" name="mid" value="${bmivo.mid}" /> 
 	<fieldset class="fieldset">
 		<ul>
-			<li><div class="w200">商家名称：</div><input type="text" name="merchantName" id="" value="${bmivo.name}" placeHolder="商家名称" class="textInput"/></li>
+			<li><div class="w200">商家名称：</div><input type="text" disabled="disabled" name="merchantName" id="merchantName" value="${bmivo.name}" placeHolder="商家名称" class="textInput"/></li>
 			<li><div class="w200">商家描述：</div><textarea id="description" name="description" cols="20" rows="10" placeHolder="商家描述" class="textInput"></textarea></li>
 			<li><div class="w200">上传图片：</div><input id="merchantImage" name="merchantImage" size="20" type="file" /></li>
 			<li><div class="w200">展示图片：</div></li>
 			`for(String srcStr : bmivo.imgSrc){
 				<li><img alt="" class="backendImg" src="${srcStr}" /></li>
 			`}
-			<li><div class="w200">商家地址：</div><input type="text" name="address" id="" value="${bmivo.address}" placeHolder="商家地址" class="textInput"/></li>
-			<li><div class="w200">联系方式：</div><input type="text" name="tel" id="" value="${bmivo.telephone}" placeHolder="联系方式" class="textInput"/></li>
+			<li><div class="w200">商家地址：</div><input type="text" name="address" id="address" value="${bmivo.address}" placeHolder="商家地址" class="textInput"/></li>
+			<li><div class="w200">联系方式：</div><input type="text" name="tel" id="tel" value="${bmivo.telephone}" placeHolder="联系方式" class="textInput"/></li>
 			
 			<li>
 			<div class="w200">商家风味：</div>
@@ -63,7 +63,7 @@
 				</select>
 			</span>
 			</li>
-			<li class="buttonBox"><input type="button" name="" style="margin-left: 60px; margin-right: 100px;" class="styleBtn corner " value="重&nbsp;&nbsp;&nbsp;&nbsp;置" onclick="Login.login();"/><input type="button" name="" class="styleBtn corner " value="提&nbsp;&nbsp;&nbsp;&nbsp;交" onclick="Login.login();"/></li>
+			<li class="buttonBox"><input type="button" name="" style="margin-left: 60px; margin-right: 100px;" class="styleBtn corner " value="重&nbsp;&nbsp;&nbsp;&nbsp;置" onclick="Merchant.reset();"/><input type="button" name="" class="styleBtn corner " value="提&nbsp;&nbsp;&nbsp;&nbsp;交" onclick="Login.login();"/></li>
 		</ul>
 	</fieldset>
 </form>
