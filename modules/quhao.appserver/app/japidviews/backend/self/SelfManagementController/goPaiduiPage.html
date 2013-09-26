@@ -51,6 +51,7 @@ $addCSS("backend.css", true)
 		<div class="dataHeader">消费操作</div>
 		<div class="dataHeader">过期操作</div>
 	</div>
+	<div id="dataDetailsDiv">
 	`for(PaiduiVO paiduiVO : haomaVO.paiduiVOList){
 	<div>
 		<div class="dataElement">${paiduiVO.numberOfSeat}</div>
@@ -63,5 +64,9 @@ $addCSS("backend.css", true)
 		<div class="dataElement"><input type="button" name="" class="styleBtn corner " value="过期" onclick=""/></div>
 	</div>
 	`}
+	</div>
 </body>
+<script type="text/javascript">
+	Merchant.autoRefresh('${haomaVO.merchantId}');
+</script>
 </html>

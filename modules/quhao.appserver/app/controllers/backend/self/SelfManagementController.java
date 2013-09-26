@@ -125,6 +125,13 @@ public class SelfManagementController extends BaseController {
 		String aid = params.get("aid");
 		System.out.println(aid);
 	}
+	
+	public static void paiduiPageAutoRefresh(){
+		String mid = params.get("mid");
+		Haoma haoma = Haoma.findByMerchantId(mid);
+		HaomaVO haomaVO = HaomaVO.build(haoma);
+		renderJapidWith("japidviews.backend.self.SelfManagementController.goPaiduiPageRefresh", haomaVO);
+	}
 
 	private static GridFSInputFile uploadFirst(String param, String mid) {
 		GridFSInputFile gfsFile = null;

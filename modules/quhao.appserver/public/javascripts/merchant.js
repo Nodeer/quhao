@@ -69,3 +69,43 @@ Merchant.goPaiduiPage = function(mid){
 Merchant.goPersonalPage = function(aid){
 	window.location.href="/b/w/goPersonalPage?aid="+aid;
 }
+
+Merchant.autoRefresh = function(mid){
+	window.setInterval(refresh,3000,mid);
+}
+
+function refresh(mid){
+	$.ajax({
+		type:"POST",
+		url:"/b/w/paiduiPageAutoRefresh",
+		dataType:"HTML",
+		data:{"mid":mid},
+		success:function(data){
+			$("#dataDetailsDiv").html(data);
+		},
+		error:function(){
+			alert("服务器维护中，马上就好。");
+		}
+	});
+}
+
+//<!--
+//根据用户名显示欢迎信息
+function hello(_name){
+       alert("hello,"+_name);
+}
+//*=============================================================
+//*   功能： 修改 window.setInterval ，使之可以传递参数和对象参数   
+//*   方法： setInterval (回调函数,时间,参数1,,参数n)  参数可为对象:如数组等
+//*============================================================= 
+
+var __sto = setInterval;    
+window.setInterval = function(callback,timeout,param){    
+    var args = Array.prototype.slice.call(arguments,2);    
+    var _cb = function(){    
+        callback.apply(null,args);    
+    }    
+    __sto(_cb,timeout);    
+}
+
+//-->

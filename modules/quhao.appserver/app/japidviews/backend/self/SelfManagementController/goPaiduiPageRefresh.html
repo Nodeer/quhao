@@ -1,0 +1,17 @@
+`import vo.HaomaVO;
+`import vo.PaiduiVO;
+
+`args HaomaVO haomaVO
+
+`for(PaiduiVO paiduiVO : haomaVO.paiduiVOList){
+<div>
+	<div class="dataElement">${paiduiVO.numberOfSeat}</div>
+	<div class="dataElement">${paiduiVO.canceled}</div>
+	<div class="dataElement">${paiduiVO.expired}</div>
+	<div class="dataElement">${paiduiVO.finished}</div>
+	<div class="dataElement">${paiduiVO.maxNumber}</div>
+	<div class="dataElement">${paiduiVO.currentNumber}</div>
+	<div class="dataElement"><input type="button" name="" class="styleBtn corner " value="消费" onclick=""/></div>
+	<div class="dataElement"><input type="button" name="" class="styleBtn corner " value="过期" onclick=""/></div>
+</div>
+`}
