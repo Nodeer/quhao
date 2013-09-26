@@ -12,13 +12,13 @@ $addCSS("backend.css", true)
 `args BackendMerchantInfoVO bmivo
 
 <!DOCTYPE html>
-<html lang="cn"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link href="/public/images/common/quhao_favicon.jpg" type="image/png" rel="shortcut icon">
-
 <title>取号啦 - 商家后台管理</title>
 </head>
 <body class="backendBG" id="fatherDIV">
-
 	`if(bmivo.merchantExist){
 	<div style="margin: 50px 0px 50px 50px; float: left;"><input type="button" name="" style="margin-left: 60px; margin-right: 100px;" class="styleBtn corner " value="用户排队管理" onclick="Merchant.goPaidui('${bmivo.mid}');"/></div>
 	
@@ -27,6 +27,5 @@ $addCSS("backend.css", true)
 	<div style="margin: 50px; margin-top:100px; float: left;">
 	`t merchantEdit(bmivo)
 	</div>
-		
 </body>
 </html>

@@ -2,14 +2,18 @@
 `args BackendMerchantInfoVO bmivo
 
 <div class="pop_logIn edit_merchant">
-	<h2>编辑/新增&nbsp;商家信息</h2>
+<h2>编辑/新增&nbsp;商家信息</h2>
 
 <form id="merchantForm" action="/b/w/editMerchant" enctype="multipart/form-data" method="post" class="editmerchantForm">
 	<input type="hidden" name="uid" value="${bmivo.aid}" /> 
 	<input type="hidden" name="mid" value="${bmivo.mid}" /> 
 	<fieldset class="fieldset">
 		<ul>
+			`if(bmivo.merchantExist){
 			<li><div class="w200">商家名称：</div><input type="text" disabled="disabled" name="merchantName" id="merchantName" value="${bmivo.name}" placeHolder="商家名称" class="textInput"/></li>
+			`}else{
+			<li><div class="w200">商家名称：</div><input type="text" name="merchantName" id="merchantName" value="${bmivo.name}" placeHolder="商家名称" class="textInput"/></li>
+			`}
 			<li><div class="w200">商家描述：</div><textarea id="description" name="description" cols="20" rows="10" placeHolder="商家描述" class="textInput"></textarea></li>
 			<li><div class="w200">上传图片：</div><input id="merchantImage" name="merchantImage" size="20" type="file" /></li>
 			<li><div class="w200">展示图片：</div></li>
