@@ -14,12 +14,18 @@ Merchant.reset = function(){
 	$("#closeTime").val("");
 }
 
+/**
+ * update merchant information
+ */
 Merchant.update = function(){
 	if(Merchant.validate()){
 		$("#merchantForm").submit();
 	}
 }
 
+/**
+ * validate form
+ */
 Merchant.validate = function(){
 	var description = $("#description").val();
 	var merchantImage = $("#merchantImage").val();
@@ -54,4 +60,12 @@ Merchant.validate = function(){
 		return false;
 	}
 	return true;
+}
+
+Merchant.goPaidui = function(mid){
+	alert(mid);
+}
+
+Merchant.goPersonal = function(aid){
+	alert(aid);
 }
