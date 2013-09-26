@@ -71,7 +71,7 @@ Merchant.goPersonalPage = function(aid){
 }
 
 Merchant.autoRefresh = function(mid){
-	window.setInterval(refresh,3000,mid);
+	window.setInterval(refresh,1000 * 60,mid);
 }
 
 function refresh(mid){
@@ -90,7 +90,6 @@ function refresh(mid){
 }
 
 //<!--
-//根据用户名显示欢迎信息
 function hello(_name){
        alert("hello,"+_name);
 }
@@ -100,11 +99,11 @@ function hello(_name){
 //*============================================================= 
 
 var __sto = setInterval;    
-window.setInterval = function(callback,timeout,param){    
+window.setInterval = function(callback,timeout,param){
     var args = Array.prototype.slice.call(arguments,2);    
     var _cb = function(){    
         callback.apply(null,args);    
-    }    
+    }
     __sto(_cb,timeout);    
 }
 
