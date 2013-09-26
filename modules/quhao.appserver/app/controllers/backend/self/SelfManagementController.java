@@ -5,12 +5,14 @@ import java.io.IOException;
 import java.util.List;
 
 import vo.BackendMerchantInfoVO;
+import vo.HaomaVO;
 import cn.bran.japid.util.StringUtils;
 
 import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSInputFile;
 import com.withiter.models.account.Account;
 import com.withiter.models.backendMerchant.MerchantAccountRel;
+import com.withiter.models.merchant.Haoma;
 import com.withiter.models.merchant.Merchant;
 
 import controllers.BaseController;
@@ -76,7 +78,7 @@ public class SelfManagementController extends BaseController {
 			m.save();
 			if (!StringUtils.isEmpty(merchantImage)) {
 				GridFSInputFile file = uploadFirst(merchantImage, m.id());
-				if(file != null){
+				if (file != null) {
 					m.merchantImageSet.add(file.getFilename());
 					m.save();
 				}
@@ -103,13 +105,25 @@ public class SelfManagementController extends BaseController {
 			m.save();
 			if (!StringUtils.isEmpty(merchantImage)) {
 				GridFSInputFile file = uploadFirst(merchantImage, m.id());
-				if(file != null){
+				if (file != null) {
 					m.merchantImageSet.add(file.getFilename());
 					m.save();
 				}
 			}
 		}
 		index(uid);
+	}
+
+	public static void goPaiduiPage() {
+		String mid = params.get("mid");
+		Haoma haoma = Haoma.findByMerchantId(mid);
+		HaomaVO haomaVO = HaomaVO.build(haoma);
+		renderJapid(haomaVO);
+	}
+
+	public static void goPersonalPage() {
+		String aid = params.get("aid");
+		System.out.println(aid);
 	}
 
 	private static GridFSInputFile uploadFirst(String param, String mid) {

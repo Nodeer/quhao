@@ -62,10 +62,10 @@ Merchant.validate = function(){
 	return true;
 }
 
-Merchant.goPaidui = function(mid){
-	alert(mid);
+Merchant.goPaiduiPage = function(mid){
+	window.location.href="/b/w/goPaiduiPage?mid="+mid;
 }
 
-Merchant.goPersonal = function(aid){
-	alert(aid);
+Merchant.goPersonalPage = function(aid){
+	window.location.href="/b/w/goPersonalPage?aid="+aid;
 }

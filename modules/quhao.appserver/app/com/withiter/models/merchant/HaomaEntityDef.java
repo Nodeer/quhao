@@ -14,6 +14,3 @@ public abstract class HaomaEntityDef extends BaseModel {
 	public String merchantId;
 	public Map<Integer, Paidui> haomaMap = new HashMap<Integer, Paidui>();
 }
-
-
-

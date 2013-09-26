@@ -1,5 +1,5 @@
 `import static press.Plugin.*;
-`import vo.BackendMerchantInfoVO
+`import vo.HaomaVO;
 `extends base_layout
 `set cssAndJs
 $addJS("merchant.js", true)
@@ -9,7 +9,7 @@ $addCSS("backend.css", true)
 `
 `set title:i18n("取号啦 - 商家后台管理")
 
-`args BackendMerchantInfoVO bmivo
+`args HaomaVO haomaVO
 
 <!DOCTYPE html>
 <html lang="cn">
@@ -19,12 +19,9 @@ $addCSS("backend.css", true)
 <title>取号啦 - 商家后台管理</title>
 </head>
 <body class="backendBG" id="fatherDIV">
-	`if(bmivo.merchantExist){
-	<div style="margin: 50px 0px 50px 50px; float: left;"><input type="button" name="" style="margin-left: 60px; margin-right: 100px;" class="styleBtn corner " value="用户排队管理" onclick="Merchant.goPaiduiPage('${bmivo.mid}');"/></div>
-	`}
-	<div style="margin: 50px 0px 50px 50px; float: left;"><input type="button" name="" style="margin-left: 60px; margin-right: 100px;" class="styleBtn corner " value="个人信息管理" onclick="Merchant.goPersonalPage('${bmivo.aid}');"/></div>
+	<div style="margin: 50px 0px 50px 50px; float: left;"><input type="button" name="" style="margin-left: 60px; margin-right: 100px;" class="styleBtn corner " value="消费" onclick=""/></div>
+	<div style="margin: 50px 0px 50px 50px; float: left;"><input type="button" name="" style="margin-left: 60px; margin-right: 100px;" class="styleBtn corner " value="过期" onclick=""/></div>
 	<div style="margin: 50px; margin-top:100px; float: left;">
-	`t merchantEdit(bmivo)
 	</div>
 </body>
 </html>
