@@ -1,5 +1,6 @@
 `import static press.Plugin.*;
 `import vo.HaomaVO;
+`import vo.PaiduiVO;
 `extends base_layout
 `set cssAndJs
 $addJS("merchant.js", true)
@@ -19,6 +20,10 @@ $addCSS("backend.css", true)
 <title>取号啦 - 商家后台管理</title>
 </head>
 <body class="backendBG" id="fatherDIV">
+	`for(PaiduiVO paiduiVO : haomaVO.paiduiVOList){
+		${paiduiVO.numberOfSeat}
+	`}
+
 	<div style="margin: 50px 0px 50px 50px; float: left;"><input type="button" name="" style="margin-left: 60px; margin-right: 100px;" class="styleBtn corner " value="消费" onclick=""/></div>
 	<div style="margin: 50px 0px 50px 50px; float: left;"><input type="button" name="" style="margin-left: 60px; margin-right: 100px;" class="styleBtn corner " value="过期" onclick=""/></div>
 	<div style="margin: 50px; margin-top:100px; float: left;">
