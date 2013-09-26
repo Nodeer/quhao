@@ -2,12 +2,14 @@ package com.withiter.quhao.adapter;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.withiter.quhao.R;
@@ -15,10 +17,14 @@ import com.withiter.quhao.vo.Critique;
 
 public class CritiqueAdapter extends BaseAdapter {
 
+	private ListView listView;
+	private Activity activity;
 	public List<Critique> critiques;
 
-	public CritiqueAdapter(List<Critique> critiques) {
+	public CritiqueAdapter(Activity activity, ListView listView,List<Critique> critiques) {
 		super();
+		this.activity = activity;
+		this.listView= listView;
 		this.critiques = critiques;
 
 	}
@@ -73,7 +79,9 @@ public class CritiqueAdapter extends BaseAdapter {
 
 			holder.nickName.setText(critique.nickName);
 			holder.average.setText(String.valueOf(critique.average));
+			
 			holder.critiqueDesc.setText(critique.desc);
+			
 			holder.updateDate.setText(critique.updateDate);
 			holder.level.setTag("btnEnter_" + position);
 			
@@ -122,7 +130,6 @@ public class CritiqueAdapter extends BaseAdapter {
 			default:
 				break;
 			}
-			
 			convertView.setTag(holder);
 			return convertView;
 		}
@@ -130,7 +137,6 @@ public class CritiqueAdapter extends BaseAdapter {
 	}
 
 	class ViewHolder {
-		
 		TextView nickName;
 		ImageView level;
 		ImageView star;

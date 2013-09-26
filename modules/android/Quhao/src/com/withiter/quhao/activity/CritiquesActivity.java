@@ -1,33 +1,28 @@
 package com.withiter.quhao.activity;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.client.ClientProtocolException;
-
-import com.withiter.quhao.QHClientApplication;
-import com.withiter.quhao.R;
-import com.withiter.quhao.adapter.CritiqueAdapter;
-import com.withiter.quhao.domain.AccountInfo;
-import com.withiter.quhao.util.QuhaoLog;
-import com.withiter.quhao.util.StringUtils;
-import com.withiter.quhao.util.http.CommonHTTPRequest;
-import com.withiter.quhao.util.tool.ParseJson;
-import com.withiter.quhao.util.tool.ProgressDialogUtil;
-import com.withiter.quhao.vo.Critique;
-import com.withiter.quhao.vo.LoginInfo;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.withiter.quhao.R;
+import com.withiter.quhao.adapter.CritiqueAdapter;
+import com.withiter.quhao.util.QuhaoLog;
+import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.util.http.CommonHTTPRequest;
+import com.withiter.quhao.vo.Critique;
 
 public class CritiquesActivity extends AppStoreActivity {
 
@@ -71,17 +66,17 @@ public class CritiquesActivity extends AppStoreActivity {
 			
 			super.handleMessage(msg);
 			
+			
 			if(msg.what == 200){
 				
 				if(isFirstLoad){
 					
 					findViewById(R.id.loadingbar).setVisibility(View.GONE);
 					findViewById(R.id.critiquesLayout).setVisibility(View.VISIBLE);
-					critiqueAdapter = new CritiqueAdapter(critiques);
+					critiqueAdapter = new CritiqueAdapter(CritiquesActivity.this,critiquesView,critiques);
 					critiquesView.setAdapter(critiqueAdapter);
 					isFirstLoad = false;
 				}else{
-					
 					critiqueAdapter.critiques = critiques;
 				}
 				critiqueAdapter.notifyDataSetChanged();
@@ -91,7 +86,6 @@ public class CritiquesActivity extends AppStoreActivity {
 		}
 		
 	};
-	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

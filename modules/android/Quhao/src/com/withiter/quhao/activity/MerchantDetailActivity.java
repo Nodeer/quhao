@@ -1,7 +1,5 @@
 package com.withiter.quhao.activity;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import android.content.Intent;
@@ -12,15 +10,14 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.LinearLayout.LayoutParams;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.ReservationAdapter;
 import com.withiter.quhao.util.QuhaoLog;
