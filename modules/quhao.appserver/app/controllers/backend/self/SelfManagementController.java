@@ -132,6 +132,13 @@ public class SelfManagementController extends BaseController {
 		HaomaVO haomaVO = HaomaVO.build(haoma);
 		renderJapidWith("japidviews.backend.self.SelfManagementController.goPaiduiPageRefresh", haomaVO);
 	}
+	
+	/**
+	 * finish one reservation by merchant
+	 */
+	public static void finishByMerchant(){
+		
+	}
 
 	private static GridFSInputFile uploadFirst(String param, String mid) {
 		GridFSInputFile gfsFile = null;

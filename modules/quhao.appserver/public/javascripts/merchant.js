@@ -112,13 +112,24 @@ window.setInterval = function(callback,timeout,param){
 /**
  * finish one reservation
  */
-Merchant.finish = function(mid){
-	
+Merchant.finish = function(seatNumber, currentNumber, mid){
+	$.ajax({
+		type:"POST",
+		url:"/b/w/paiduiPageAutoRefresh",
+		dataType:"HTML",
+		data:{"mid":mid},
+		success:function(data){
+			$("#dataDetailsDiv").html(data);
+		},
+		error:function(){
+			alert("服务器维护中，马上就好。");
+		}
+	});
 }
 
 /**
  * expire one reservation
  */
-Merchant.expired = function(mid){
+Merchant.expired = function(seatNumber, currentNumber, mid){
 	
 }
