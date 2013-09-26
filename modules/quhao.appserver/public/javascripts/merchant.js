@@ -108,3 +108,17 @@ window.setInterval = function(callback,timeout,param){
 }
 
 //-->
+
+/**
+ * finish one reservation
+ */
+Merchant.finish = function(mid){
+	
+}
+
+/**
+ * expire one reservation
+ */
+Merchant.expired = function(mid){
+	
+}

@@ -29,6 +29,7 @@ $addCSS("backend.css", true)
 	padding-bottom: 20px;
 	border: 1px solid;
 	margin-left: 15px;
+	vertical-align: middle;
 }
 
 .dataElement{
@@ -38,6 +39,13 @@ $addCSS("backend.css", true)
 	border: 1px solid;
 	height: 38px;
 	margin-left: 15px;
+	vertical-align: middle;
+}
+
+.color_red{
+	border-color: inherit;
+	color: red;
+	font: bolder;
 }
 </style>
 
@@ -61,9 +69,9 @@ $addCSS("backend.css", true)
 		<div class="dataElement">${paiduiVO.expired}</div>
 		<div class="dataElement">${paiduiVO.finished}</div>
 		<div class="dataElement">${paiduiVO.maxNumber}</div>
-		<div class="dataElement">${paiduiVO.currentNumber}</div>
-		<div class="dataElement"><input type="button" name="" class="styleBtn corner " value="消费" onclick=""/></div>
-		<div class="dataElement"><input type="button" name="" class="styleBtn corner " value="过期" onclick=""/></div>
+		<div class="dataElement color_red">${paiduiVO.currentNumber}</div>
+		<div class="dataElement"><input type="button" name="" class="styleBtn corner " value="消费" onclick="Merchant.finish('${haomaVO.merchantId}');"/></div>
+		<div class="dataElement"><input type="button" name="" class="styleBtn corner " value="过期" onclick="Merchant.expired('${haomaVO.merchantId}')"/></div>
 	</div>
 	`}
 	</div>
