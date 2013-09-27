@@ -25,10 +25,12 @@ public class Haoma extends HaomaEntityDef {
 	}
 	
 	private void initPaidui(){
+		Merchant m = Merchant.findById(this.merchantId);
+		String[] seatType = m.seatType;
 		Paidui p = null;
-		for(int i=1; i <= 20; i++){
+		for(String i : seatType){
 			p = new Paidui();
-			this.haomaMap.put(i, p);
+			this.haomaMap.put(Integer.parseInt(i), p);
 		}
 	}
 	
