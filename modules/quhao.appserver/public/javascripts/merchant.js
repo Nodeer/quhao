@@ -119,7 +119,11 @@ Merchant.finish = function(seatNumber, currentNumber, mid){
 		dataType:"HTML",
 		data:{"currentNumber":currentNumber,"seatNumber":seatNumber,"mid":mid},
 		success:function(data){
-			$("#dataDetailsDiv").html(data);
+			if(data == true){
+				alert("success");
+			}else{
+				alert("操作失败");
+			}
 		},
 		error:function(){
 			alert("服务器维护中，马上就好。");
