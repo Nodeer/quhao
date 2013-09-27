@@ -11,7 +11,12 @@
 	<div class="dataElement">${paiduiVO.finished}</div>
 	<div class="dataElement">${paiduiVO.maxNumber}</div>
 	<div class="dataElement color_red">${paiduiVO.currentNumber}</div>
-	<div class="dataElement"><input type="button" name="" class="styleBtn corner " value="消费" onclick=""/></div>
-	<div class="dataElement"><input type="button" name="" class="styleBtn corner " value="过期" onclick=""/></div>
+	`if(paiduiVO.currentNumber == 0){
+		<div class="dataElement"><input type="button" disabled="disabled" name="" style="color: gray;" class="styleBtn corner " value="消费" onclick="Merchant.finish('${paiduiVO.numberOfSeat}','${paiduiVO.currentNumber}','${haomaVO.merchantId}');"/></div>
+		<div class="dataElement"><input type="button" disabled="disabled" name="" style="color: gray;" class="styleBtn corner " value="过期" onclick="Merchant.expired('${paiduiVO.numberOfSeat}','${paiduiVO.currentNumber}','${haomaVO.merchantId}');"/></div>
+	`}else{
+		<div class="dataElement"><input type="button" name="" class="styleBtn corner " value="消费" onclick="Merchant.finish('${paiduiVO.numberOfSeat}','${paiduiVO.currentNumber}','${haomaVO.merchantId}');"/></div>
+		<div class="dataElement"><input type="button" name="" class="styleBtn corner " value="过期" onclick="Merchant.expired('${paiduiVO.numberOfSeat}','${paiduiVO.currentNumber}','${haomaVO.merchantId}');"/></div>
+	`}
 </div>
 `}
