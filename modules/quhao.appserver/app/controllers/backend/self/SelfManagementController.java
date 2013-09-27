@@ -57,7 +57,14 @@ public class SelfManagementController extends BaseController {
 		String openTime = params.get("openTime");
 		String closeTime = params.get("closeTime");
 		String merchantImage = params.get("merchantImage");
+		
+		String[] seatType = params.getAll("seatType");
+		for(int i=0; i< seatType.length; i++){
+			System.out.print(seatType[i]+",");
+		}
 
+		System.out.println("==========");
+		
 		System.out.println(merchantName);
 		System.out.println(address);
 		System.out.println(tel);

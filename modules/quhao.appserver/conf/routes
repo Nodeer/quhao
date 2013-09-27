@@ -41,6 +41,7 @@ GET		/p        							Patches.index
 *		/b/m								backend.merchant.MerchantManagementController.index
 
 *		/b/w								backend.self.SelfManagementController.index
+*		/b/w/editMerchant					backend.self.SelfManagementController.editMerchant
 *		/b/w/goPaiduiPage					backend.self.SelfManagementController.goPaiduiPage
 *		/b/w/goPersonalPage					backend.self.SelfManagementController.goPersonalPage
 *		/b/w/paiduiPageAutoRefresh			backend.self.SelfManagementController.paiduiPageAutoRefresh

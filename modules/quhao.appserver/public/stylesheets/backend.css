@@ -31,3 +31,22 @@
 	width: 200px;
 	float: left;
 }
+
+.w300{
+	width: 300px;
+	float: left;
+}
+
+.w350{
+	width: 350px;
+	float: left;
+}
+
+.w400{
+	width: 400px;
+	float: left;
+}
+
+.rmargin20{
+	margin-right: 20px;
+}
