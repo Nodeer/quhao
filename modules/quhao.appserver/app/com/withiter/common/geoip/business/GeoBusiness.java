@@ -13,7 +13,6 @@ public class GeoBusiness {
 	 * @throws IOException
 	 */
 	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
 		System.out.println(getLocationByIp("220.181.111.147").getCity());
 	}
 
