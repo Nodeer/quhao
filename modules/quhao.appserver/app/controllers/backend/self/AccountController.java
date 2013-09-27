@@ -19,61 +19,63 @@ import controllers.BaseController;
 
 public class AccountController extends BaseController {
 
-	public static void test(){
+	public static void test() {
 		renderJSON("aaa");
 	}
-	
+
 	/**
 	 * merchant login function
 	 */
-	public static void login(){
+	public static void login() {
 		String userName = params.get("userName");
 		String userPwd = params.get("userPwd");
 		String result = Account.validate(userName, userPwd);
 		AccountVO avo = new AccountVO();
-		if(result != null){
+		if (result != null) {
 			avo.error = result;
 			renderJSON(avo);
-		}else{
+		} else {
 			Account account = null;
-			if(userName.contains("@")){
+			if (userName.contains("@")) {
 				account = Account.findByEmail(userName);
-			}else{
+			} else {
 				account = Account.findByPhone(userName);
 			}
 			avo = AccountVO.build(account);
 			avo.error = "";
-			
+
 			// add merchant list into account view object
 			List<Merchant> mList = MerchantAccountRel.getMerchantByUid(avo.uid);
-			if(mList == null || mList.isEmpty()){
-				
-			}else{
-				for(Merchant m : mList){
+			if (mList == null || mList.isEmpty()) {
+
+			} else {
+				for (Merchant m : mList) {
 					avo.mList.add(MerchantVO.build(m));
 				}
 			}
-			
+
 			Session.current().put(Constants.SESSION_USERNAME, account);
 			renderJSON(avo);
 		}
 	}
-	
+
 	/**
 	 * merchant sign up function
 	 */
-	public static void signup(){
+	public static void signup() {
 		String userName = params.get("userName_su");
 		String userPwd1 = params.get("userPwd1_su");
 		String userPwd2 = params.get("userPwd2_su");
-		
+
 		Account account = new Account();
 		String result = account.signupValidate(userName, userPwd1, userPwd2);
-		if(result == null){
+		if (result == null) {
 			AccountVO avo = AccountVO.build(account);
 			avo.error = "";
 			String hexedUid = Codec.hexSHA1(account.id());
-			String url = Play.configuration.getProperty("application.domain")+"/b/self/AccountController/active?hid="+hexedUid+"&oid="+account.id();
+			String url = Play.configuration.getProperty("application.domain")
+					+ "/b/self/AccountController/active?hid=" + hexedUid
+					+ "&oid=" + account.id();
 			try {
 				MailsController.sendTo(account.email, url);
 			} catch (Exception e) {
@@ -81,27 +83,23 @@ public class AccountController extends BaseController {
 				e.printStackTrace();
 			}
 			renderJSON(avo);
-		}else{
+		} else {
 			AccountVO avo = new AccountVO();
 			avo.error = result;
 			renderJSON(avo);
 		}
 	}
-	
-	public static void active(String oid, String hid){
+
+	public static void active(String oid, String hid) {
 		String hexedUid = Codec.hexSHA1(oid);
-		if(hexedUid.equals(hid)){
+		if (hexedUid.equals(hid)) {
 			Account account = Account.findById(oid);
-			account.enable=true;
+			account.enable = true;
 			account.save();
 			SelfManagementController.index(account.id());
-//			renderJapidWith("japidviews.backend.self.SelfManagementController.index", account.id());
+		} else {
+			renderJapidWith("japidviews.backend.self.AccountController.activeFailed");
 		}
-		else{
-			// TODO update active filed page
-//			renderJapidWith("japidviews.backend.self.SelfManagementController.index", "");
-		}
-			
-		
+
 	}
 }
