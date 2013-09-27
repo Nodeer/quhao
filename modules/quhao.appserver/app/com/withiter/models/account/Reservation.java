@@ -6,6 +6,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Calendar;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -39,7 +40,9 @@ public class Reservation extends ReservationEntityDef {
 
 	/**
 	 * Find valid reservation list by account id
-	 * @param accountId user account id
+	 * 
+	 * @param accountId
+	 *            user account id
 	 * @return the list of valid reservation
 	 */
 	public static List<Reservation> findValidReservations(String accountId) {
@@ -49,10 +52,15 @@ public class Reservation extends ReservationEntityDef {
 	}
 
 	/**
-	 * Check whether does the reservation exist by account id, merchant id and seat number
-	 * @param accountId user account id
-	 * @param mid merchant id
-	 * @param seatNumber the number of seat
+	 * Check whether does the reservation exist by account id, merchant id and
+	 * seat number
+	 * 
+	 * @param accountId
+	 *            user account id
+	 * @param mid
+	 *            merchant id
+	 * @param seatNumber
+	 *            the number of seat
 	 * @return Reservation object
 	 */
 	public static Reservation reservationExist(String accountId, String mid,
@@ -65,7 +73,9 @@ public class Reservation extends ReservationEntityDef {
 
 	/**
 	 * Find the history reservations by account id
-	 * @param accountId user account id
+	 * 
+	 * @param accountId
+	 *            user account id
 	 * @return the list of history reservations (valid == false)
 	 */
 	public static List<Reservation> findHistroyReservations(String accountId) {
@@ -75,11 +85,11 @@ public class Reservation extends ReservationEntityDef {
 	}
 
 	/**
-	 * 当排队情况有变化时，需要推送到所有关联的用户
-	 * when current object updated, this function will automatically invoked.
+	 * 当排队情况有变化时，需要推送到所有关联的用户 when current object updated, this function will
+	 * automatically invoked.
 	 */
 	@OnUpdate
-	private void updateHaoma(){
+	private void updateHaoma() {
 		String mid = this.merchantId;
 		int myNumber = this.myNumber;
 		int seatNumber = this.seatNumber;
@@ -87,31 +97,35 @@ public class Reservation extends ReservationEntityDef {
 		Haoma.updateByXmethod(haoma, mid, myNumber, seatNumber, this.status);
 		pushToClient();
 	}
-	
-	private void pushToClient(){
+
+	private void pushToClient() {
 		// TODO add push to client.
 	}
 
 	/**
 	 * Cancel one reservation by reservation id
-	 * @param reservationId the id of reservation
+	 * 
+	 * @param reservationId
+	 *            the id of reservation
 	 */
 	public static void cancel(String reservationId) {
 		Reservation r = Reservation.findById(reservationId);
-		if(r != null){
+		if (r != null) {
 			r.status = ReservationStatus.canceled;
 			r.valid = false;
 			r.save();
 		}
 	}
-	
+
 	/**
 	 * Finish one reservation by reservation id
-	 * @param reservationId the id of reservation
+	 * 
+	 * @param reservationId
+	 *            the id of reservation
 	 */
 	public static void finish(String reservationId) {
 		Reservation r = Reservation.findById(reservationId);
-		if(r != null){
+		if (r != null) {
 			r.status = ReservationStatus.finished;
 			r.valid = false;
 			r.save();
@@ -120,11 +134,13 @@ public class Reservation extends ReservationEntityDef {
 
 	/**
 	 * Expire one reservation by reservation id
-	 * @param reservationId the id of reservation
+	 * 
+	 * @param reservationId
+	 *            the id of reservation
 	 */
 	public static void expire(String reservationId) {
 		Reservation r = Reservation.findById(reservationId);
-		if(r != null){
+		if (r != null) {
 			r.status = ReservationStatus.expired;
 			r.valid = false;
 			r.save();
@@ -135,13 +151,14 @@ public class Reservation extends ReservationEntityDef {
 	 * 
 	 * query reservations by merchant id and account id
 	 * 
-	 * @param accountId account id
-	 * @param mid merchant id
-	 * @return the reservations 
+	 * @param accountId
+	 *            account id
+	 * @param mid
+	 *            merchant id
+	 * @return the reservations
 	 */
 	public static List<Reservation> getReservationsByMerchantIdAndAccountId(
-			String accountId, String mid)
-	{
+			String accountId, String mid) {
 		MorphiaQuery q = Reservation.q();
 		q.filter("accountId", accountId).filter("merchantId", mid)
 				.filter("valid", true);
@@ -152,33 +169,45 @@ public class Reservation extends ReservationEntityDef {
 	 * 
 	 * query previous number
 	 * 
-	 * @param accountId 
-	 * @param mid 
+	 * @param accountId
+	 * @param mid
 	 * @return
 	 */
-	public static long findPreviousNo(String mid,int seatNumber)
-	{
+	public static long findPreviousNo(String mid, int seatNumber) {
 		MorphiaQuery q = Reservation.q();
 		q.filter("merchantId", mid).filter("seatNumber", seatNumber);
 		return q.max("myNumber");
 	}
-	
+
 	/**
 	 * 
 	 * query previous number
 	 * 
-	 * @param accountId 
-	 * @param mid 
+	 * @param accountId
+	 * @param mid
 	 * @return
 	 */
-	public static long findCountBetweenCurrentNoAndMyNumber(String mid,int currentNo, int myNumber,int seatNumber)
-	{
+	public static long findCountBetweenCurrentNoAndMyNumber(String mid,
+			int currentNo, int myNumber, int seatNumber) {
 		MorphiaQuery q = Reservation.q();
-		
-		q.filter("seatNumber", seatNumber).filter("merchantId", mid).filter("status", "canceled")
-			.filter("myNumber", "<"+myNumber).filter("myNumber", ">" + currentNo);
-		
+
+		q.filter("seatNumber", seatNumber).filter("merchantId", mid)
+				.filter("status", "canceled")
+				.filter("myNumber", "<" + myNumber)
+				.filter("myNumber", ">" + currentNo);
+
 		return q.count();
 	}
 	
+	public static Reservation findReservationFinishByMerchant(int seatNumber, int currentNumber, String mid){
+		MorphiaQuery q = Reservation.q();
+		q.filter("created", ">" + (System.currentTimeMillis() - 1000l*60*60*24))
+		.filter("merchantId", mid)
+		.filter("status", "active")
+		.filter("seatNumber", seatNumber)
+		.filter("myNumber", currentNumber);
+		
+		return q.first();
+	}
+
 }

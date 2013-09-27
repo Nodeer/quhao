@@ -115,9 +115,9 @@ window.setInterval = function(callback,timeout,param){
 Merchant.finish = function(seatNumber, currentNumber, mid){
 	$.ajax({
 		type:"POST",
-		url:"/b/w/paiduiPageAutoRefresh",
+		url:"/b/w/finishByMerchant",
 		dataType:"HTML",
-		data:{"mid":mid},
+		data:{"currentNumber":currentNumber,"seatNumber":seatNumber,"mid":mid},
 		success:function(data){
 			$("#dataDetailsDiv").html(data);
 		},

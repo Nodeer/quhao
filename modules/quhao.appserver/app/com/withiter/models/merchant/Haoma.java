@@ -52,6 +52,7 @@ public class Haoma extends HaomaEntityDef {
 		reservation.merchantId = mid;
 		reservation.myNumber = paidui.maxNumber;
 		reservation.seatNumber = seatNumber;
+		reservation.status = ReservationStatus.active;
 		//reservation.beforeYou = paidui.currentNumber - (paidui.canceled + paidui.expired + paidui.finished);
 		reservation.valid = true;
 		

@@ -44,6 +44,7 @@ GET		/p        							Patches.index
 *		/b/w/goPaiduiPage					backend.self.SelfManagementController.goPaiduiPage
 *		/b/w/goPersonalPage					backend.self.SelfManagementController.goPersonalPage
 *		/b/w/paiduiPageAutoRefresh			backend.self.SelfManagementController.paiduiPageAutoRefresh
+*		/b/w/finishByMerchant				backend.self.SelfManagementController.finishByMerchant
 # backend management
 
 # image display

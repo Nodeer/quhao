@@ -8,14 +8,15 @@ import vo.BackendMerchantInfoVO;
 import vo.HaomaVO;
 import cn.bran.japid.util.StringUtils;
 
-import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSInputFile;
 import com.withiter.models.account.Account;
+import com.withiter.models.account.Reservation;
 import com.withiter.models.backendMerchant.MerchantAccountRel;
 import com.withiter.models.merchant.Haoma;
 import com.withiter.models.merchant.Merchant;
 
 import controllers.BaseController;
+import controllers.MerchantController;
 import controllers.UploadController;
 
 public class SelfManagementController extends BaseController {
@@ -137,7 +138,19 @@ public class SelfManagementController extends BaseController {
 	 * finish one reservation by merchant
 	 */
 	public static void finishByMerchant(){
+		String cNumber = params.get("currentNumber");
+		String sNumber = params.get("seatNumber");
+		String mid = params.get("mid");
+		int currentNumber = Integer.parseInt(cNumber);
+		int seatNumber = Integer.parseInt(sNumber);
 		
+		Reservation r = Reservation.findReservationFinishByMerchant(seatNumber, currentNumber, mid);
+		if(r != null){
+			Reservation.finish(r.id());
+			renderJSON(true);
+		}else{
+			renderJSON(false);
+		}
 	}
 
 	private static GridFSInputFile uploadFirst(String param, String mid) {
