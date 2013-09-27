@@ -83,6 +83,7 @@ public class SelfManagementController extends BaseController {
 			m.openTime = openTime;
 			m.closeTime = closeTime;
 			m.enable = true;
+			m.seatType = seatType;
 			m.save();
 			if (!StringUtils.isEmpty(merchantImage)) {
 				GridFSInputFile file = uploadFirst(merchantImage, m.id());
@@ -109,6 +110,7 @@ public class SelfManagementController extends BaseController {
 			m.cateType = cateType;
 			m.openTime = openTime;
 			m.closeTime = closeTime;
+			m.seatType = seatType;
 			m.enable = true;
 			m.save();
 			if (!StringUtils.isEmpty(merchantImage)) {

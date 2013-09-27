@@ -72,7 +72,7 @@
 			<div class="w350">
 			`for(int i = 1; i <= 20; i++){
 				<div style="width: 80px; float: left;">
-				<input name="seatType" value="${i}" type="checkbox"><font class="rmargin20" >${i}人桌</font>
+				<input id="seat${i}" name="seatType" value="${i}" type="checkbox"><font class="rmargin20" >${i}人桌</font>
 				</div>
 			`}
 			</div>
@@ -93,4 +93,12 @@ $("#openTime").val("${bmivo.openTime}");
 $("#closeTime").val("${bmivo.closeTime}");
 $("#description").val("${bmivo.description}");
 </script>
+`}
+
+`if(bmivo.seatType != null){
+	`for(String s : bmivo.seatType){
+		<script>
+		$("#seat"+${s}).attr("checked","true");
+		</script>
+	`}
 `}

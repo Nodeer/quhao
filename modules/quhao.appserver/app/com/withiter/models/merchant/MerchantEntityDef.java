@@ -46,6 +46,12 @@ public abstract class MerchantEntityDef extends BaseModel {
 	public boolean enable = false;
 	public String joinedDate = new Date().toString();
 	
+	/**
+	 * add by CROSS 2013-9-27
+	 * eg: {2,4,6,8} 此商家有2人，4人，6人，8人桌
+	 */
+	public String[] seatType;
+	
 	public String gTelephone(){
 		StringBuilder sb = new StringBuilder();
 		String tels = "";

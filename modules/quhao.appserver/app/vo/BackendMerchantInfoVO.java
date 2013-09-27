@@ -32,6 +32,12 @@ public class BackendMerchantInfoVO {
 	
 	public boolean merchantExist = false;
 	
+	/**
+	 * add by CROSS 2013-9-27
+	 * eg: {2,4,6,8} 此商家有2人，4人，6人，8人桌
+	 */
+	public String[] seatType;
+	
 	public String aid;
 	public String phone = "";
 	public String email = "";
@@ -63,6 +69,9 @@ public class BackendMerchantInfoVO {
 			vo.telephone = m.gTelephone();
 			vo.x = m.x;
 			vo.y = m.y;
+			
+			vo.seatType = m.seatType;
+			
 			
 			String server = Play.configuration.getProperty("application.domain");
 			String imageStorePath = Play.configuration.getProperty("image.store.path");
