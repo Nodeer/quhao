@@ -28,6 +28,9 @@ public class Haoma extends HaomaEntityDef {
 		Merchant m = Merchant.findById(this.merchantId);
 		String[] seatType = m.seatType;
 		Paidui p = null;
+		if(seatType == null){
+			return;
+		}
 		for(String i : seatType){
 			p = new Paidui();
 			this.haomaMap.put(Integer.parseInt(i), p);
