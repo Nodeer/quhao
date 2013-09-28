@@ -108,7 +108,7 @@ public class QuhaoLog {
 		SimpleDateFormat myLogSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String needWriteMessage = myLogSdf.format(nowtime) + "    " + mylogtype
 				+ "    " + tag + "    " + text;
-		File file = new File(MYLOG_PATH_SDCARD_DIR, needWriteFiel
+		File file = new File(MYLOG_PATH_SDCARD_DIR + "/quhao", needWriteFiel
 				+ MYLOGFILEName);
 		try {
 			FileWriter filerWriter = new FileWriter(file, true);// 后面这个参数代表是不是要接上文件中原来的数据，不进行覆盖

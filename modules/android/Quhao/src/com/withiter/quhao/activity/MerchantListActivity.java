@@ -78,19 +78,6 @@ public class MerchantListActivity extends AppStoreActivity {
 				merchantsListView
 						.setOnItemClickListener(merchantItemClickListener);
 
-				/*
-				 * LinearLayout.LayoutParams topMerchantListParams =
-				 * (LayoutParams) topMerchantListView.getLayoutParams();
-				 * topMerchantListView.setLayoutParams(topMerchantListParams);
-				 * topMerchantListView.invalidate();
-				 * topMerchantListView.setVisibility(View.VISIBLE);
-				 * 
-				 * CategoryAdapter adapter1 = new
-				 * CategoryAdapter(MainActivity.this, topMerchantListView,
-				 * categorys); topMerchantListView.setAdapter(adapter1);
-				 * adapter1.notifyDataSetChanged();
-				 */
-
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 

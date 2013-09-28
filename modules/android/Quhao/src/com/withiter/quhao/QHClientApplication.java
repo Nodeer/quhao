@@ -1,7 +1,10 @@
 package com.withiter.quhao;
 
+import java.io.File;
+
 import android.app.Application;
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 import android.view.WindowManager;
 
@@ -107,6 +110,28 @@ public class QHClientApplication extends Application {
 	}
 
 	private void initConfig() {
-		// TODO Auto-generated method stub
+		createSDCardDir();
+	}
+	
+	/**
+	 * 在SD卡上创建一个文件夹
+	 * 
+	 */
+	public void createSDCardDir() {
+		if (Environment.MEDIA_MOUNTED.equals(Environment
+				.getExternalStorageState())) {
+			// 创建一个文件夹对象，赋值为外部存储器的目录
+			File sdcardDir = Environment.getExternalStorageDirectory();
+			// 得到一个路径，内容是sdcard的文件夹路径和名字
+			String path = sdcardDir.getPath() + "/quhao";
+			File path1 = new File(path);
+			if (!path1.exists()) {
+				// 若不存在，创建目录，可以在应用启动的时候创建
+				path1.mkdirs();
+			}
+		} else {
+			return;
+		}
+
 	}
 }

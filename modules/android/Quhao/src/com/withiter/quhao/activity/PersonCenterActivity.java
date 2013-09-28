@@ -21,6 +21,7 @@ import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
+import com.withiter.quhao.util.tool.SharedprefUtil;
 import com.withiter.quhao.vo.LoginInfo;
 
 public class PersonCenterActivity extends AppStoreActivity {
@@ -66,13 +67,8 @@ public class PersonCenterActivity extends AppStoreActivity {
 		value_dianpin = (TextView) findViewById(R.id.value_dianpin);
 		value_zhaopian = (TextView) findViewById(R.id.value_zhaopian);
 		
-
-		SharedPreferences settings = getSharedPreferences(
-				QuhaoConstant.SHARED_PREFERENCES, 0);
-		SharedPreferences.Editor editor = settings.edit();
-		editor.putString(QuhaoConstant.IS_LOGIN, "false");
-		editor.commit();
-		String isLogin = settings.getString(QuhaoConstant.IS_LOGIN, "false");
+		SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
+		String isLogin = SharedprefUtil.get(this,QuhaoConstant.IS_LOGIN, "false");
 
 		// check already login or not
 		if (StringUtils.isNull(isLogin) || "false".equalsIgnoreCase(isLogin)) {

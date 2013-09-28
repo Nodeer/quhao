@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
@@ -24,12 +25,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
@@ -52,7 +54,7 @@ public class MainActivity extends AppStoreActivity {
 	private String TAG = MainActivity.class.getName();
 	protected ListView topMerchantListView;
 	private GridView topMerchantsGird;
-	private TextView searchTextView;
+	private EditText searchTextView;
 	private List<TopMerchant> topMerchants;
 	private GridView categorysGird;
 	protected ProgressDialogUtil progressCategory;
@@ -141,10 +143,10 @@ public class MainActivity extends AppStoreActivity {
 		// top merchant function
 		topMerchants = new ArrayList<TopMerchant>();
 		getTopMerchantsFromServerAndDisplay();
-		topMerchantsGird.setOnItemClickListener(topMerchantClickListener);
+		//topMerchantsGird.setOnItemClickListener(topMerchantClickListener);
 
 		// search function
-		searchTextView = (TextView) findViewById(R.id.edit_search);
+		searchTextView = (EditText) findViewById(R.id.edit_search);
 		searchTextView.addTextChangedListener(new TextWatcher() {
 			@SuppressWarnings("unchecked")
 			@Override
@@ -167,10 +169,8 @@ public class MainActivity extends AppStoreActivity {
 						createView();
 					}
 				} catch (ClientProtocolException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -178,13 +178,11 @@ public class MainActivity extends AppStoreActivity {
 			@Override
 			public void beforeTextChanged(CharSequence arg0, int arg1,
 					int arg2, int arg3) {
-				// TODO Auto-generated method stub
 			}
 
 			@Override
 			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
 					int arg3) {
-				// TODO Auto-generated method stub
 			}
 
 		});
@@ -360,13 +358,6 @@ public class MainActivity extends AppStoreActivity {
 		t.start();
 	}
 
-	private Runnable categoryRunnable = new Runnable() {
-		@Override
-		public void run() {
-
-		}
-	};
-
 	@Override
 	public void onClick(View v) {
 
@@ -375,5 +366,19 @@ public class MainActivity extends AppStoreActivity {
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		return false;
+	}
+
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		
+		InputMethodManager imm= (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		
+		if(ev.getAction() == MotionEvent.ACTION_DOWN){
+			if(MainActivity.this.getCurrentFocus()!=null && MainActivity.this.getCurrentFocus().getWindowToken()!=null){
+				imm.hideSoftInputFromWindow(MainActivity.this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+			}
+		}
+		
+		return super.dispatchTouchEvent(ev);
 	}
 }

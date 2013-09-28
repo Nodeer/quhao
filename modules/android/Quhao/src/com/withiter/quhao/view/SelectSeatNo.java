@@ -1,13 +1,5 @@
 package com.withiter.quhao.view;
 
-import com.withiter.quhao.R;
-import com.withiter.quhao.activity.GetNumberActivity;
-import com.withiter.quhao.util.tool.CommonTool;
-import com.withiter.quhao.view.adapter.ArrayWheelAdapter;
-import com.withiter.quhao.view.adapter.NumericWheelAdapter;
-import com.withiter.quhao.view.adapter.OnWheelChangedListener;
-import com.withiter.quhao.view.adapter.WheelView;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -21,6 +13,11 @@ import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+
+import com.withiter.quhao.R;
+import com.withiter.quhao.view.adapter.ArrayWheelAdapter;
+import com.withiter.quhao.view.adapter.OnWheelChangedListener;
+import com.withiter.quhao.view.adapter.WheelView;
 
 public class SelectSeatNo extends PopupWindow implements OnClickListener {
 	/**

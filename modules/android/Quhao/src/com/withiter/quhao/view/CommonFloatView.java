@@ -1,7 +1,6 @@
 package com.withiter.quhao.view;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.widget.ListView;

@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.AsyncImageLoader;
 import com.withiter.quhao.util.AsyncImageLoader.ImageCallback;
-import com.withiter.quhao.vo.Category;
 import com.withiter.quhao.vo.TopMerchant;
 
 public class TopMerchantGridAdapter extends BaseAdapter {

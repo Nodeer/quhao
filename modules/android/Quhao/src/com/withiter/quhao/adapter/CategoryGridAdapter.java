@@ -9,14 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.AsyncImageLoader;
 import com.withiter.quhao.util.AsyncImageLoader.ImageCallback;
 import com.withiter.quhao.vo.Category;
-import com.withiter.quhao.vo.TopMerchant;
 
 public class CategoryGridAdapter extends BaseAdapter {
 
