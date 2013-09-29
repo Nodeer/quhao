@@ -1,5 +1,6 @@
 package com.withiter.quhao.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
+import android.widget.ImageView;
 
 import com.withiter.quhao.util.tool.ImageUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
@@ -32,6 +34,7 @@ public class AsyncImageLoader {
 						.get(imageUrl);
 				Drawable drawable = softReference.get();
 				if (drawable != null) {
+					
 					return drawable;
 				}
 			}
@@ -40,12 +43,14 @@ public class AsyncImageLoader {
 			
 			if(null != drawable)
 			{
+				
 				return drawable;
 			}
 			
 			final Handler handler = new Handler() {
 				public void handleMessage(Message message) {
 					if (message != null && imageCallback != null) {
+						
 						imageCallback.imageLoaded((Drawable) message.obj,
 								imageUrl,position);
 					}
@@ -90,8 +95,9 @@ public class AsyncImageLoader {
 				return d;
 			}
 			is = conn.getInputStream();
-			ImageUtil.getInstance().saveFile(url,is);
-			d = Drawable.createFromStream(is, "src");
+			File file = ImageUtil.getInstance().saveFile(url,is);
+			d = Drawable.createFromPath(file.getPath());
+			//d = Drawable.createFromStream(is, "src");
 		} catch (MalformedURLException e1) {
 			e1.printStackTrace();
 			return d;

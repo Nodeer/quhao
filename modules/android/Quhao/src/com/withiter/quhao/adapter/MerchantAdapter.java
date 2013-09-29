@@ -111,7 +111,7 @@ public class MerchantAdapter extends BaseAdapter {
 						});
 
 			}
-			// 设置图片给imageView 对象
+//			// 设置图片给imageView 对象
 			if (null != cachedImage) {
 				holder.img.setImageDrawable(cachedImage);
 				holder.img.invalidate();
