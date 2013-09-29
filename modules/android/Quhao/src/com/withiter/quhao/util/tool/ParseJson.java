@@ -184,7 +184,7 @@ public class ParseJson {
 		if (obj.has("id")) {
 			id = obj.getString("id");
 		}
-		String imgUrl = "";
+		String imgUrl = "";//"http://tuan.cs090.com/static/team/2013/0924/13799987621497_200x120.jpg";
 
 		if (obj.has("imgUrl")) {
 			imgUrl = obj.getString("imgUrl");

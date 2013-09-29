@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.withiter.quhao.util.tool.QuhaoConstant;
+
 import android.os.Environment;
 import android.util.Log;
 
@@ -108,9 +110,18 @@ public class QuhaoLog {
 		SimpleDateFormat myLogSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String needWriteMessage = myLogSdf.format(nowtime) + "    " + mylogtype
 				+ "    " + tag + "    " + text;
-		File file = new File(MYLOG_PATH_SDCARD_DIR + "/quhao", needWriteFiel
+		File fileDir = new File(MYLOG_PATH_SDCARD_DIR + "/"+QuhaoConstant.LOGS_SD_URL);
+		if(!fileDir.exists()){
+			fileDir.mkdirs();
+		}
+		File file = new File(MYLOG_PATH_SDCARD_DIR + "/"+QuhaoConstant.LOGS_SD_URL, needWriteFiel
 				+ MYLOGFILEName);
+		
 		try {
+			if(!file.exists())
+			{
+				file.createNewFile();
+			}
 			FileWriter filerWriter = new FileWriter(file, true);// 后面这个参数代表是不是要接上文件中原来的数据，不进行覆盖
 			BufferedWriter bufWriter = new BufferedWriter(filerWriter);
 			bufWriter.write(needWriteMessage);

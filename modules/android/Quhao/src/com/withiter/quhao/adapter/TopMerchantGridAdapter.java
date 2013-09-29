@@ -74,12 +74,12 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 			imageUrl = topMerchant.url;
 			holder.img.setTag(imageUrl);
 			if (null != imageUrl && !"".equals(imageUrl)) {
-				cachedImage = asyncImageLoader.loadDrawable(imageUrl,
+				cachedImage = asyncImageLoader.loadDrawable(imageUrl,position,
 						new ImageCallback() {
 
 							@Override
 							public void imageLoaded(Drawable imageDrawable,
-									String imageUrl) {
+									String imageUrl,int position) {
 								TextView imageViewByTag = (TextView) grid
 										.findViewWithTag(imageUrl);
 								if (null != imageViewByTag

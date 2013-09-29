@@ -10,6 +10,22 @@ public class QuhaoConstant {
 	public static final String IS_LOGIN = "IS_LOGIN";
 
 	/**
+	 * 共享缓存文件名称
+	 */
+	public static final String CONFIG_CACHE = "QUHAO_CACHE";
+	
+	/**
+	 * 存储卡上存储图片目录
+	 */
+	public static final String IMAGES_SD_URL = "quhao/images";
+	
+	/**
+	 * 存储卡上存储日志目录
+	 */
+	public static final String LOGS_SD_URL = "quhao/logs";
+	
+	
+	/**
 	 * 下一頁url
 	 */
 	public static String NEXT_CMD = "";
@@ -19,4 +35,5 @@ public class QuhaoConstant {
 	 */
 	public static long TIME_STAMP = 0;
 	public static long TIME_STAMP_OLD = 0;
+	
 }

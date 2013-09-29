@@ -88,16 +88,16 @@ public class MerchantAdapter extends BaseAdapter {
 
 			String imageUrl = merchant.imgUrl;
 
-			holder.img.setTag(imageUrl);
+			holder.img.setTag(imageUrl + position);
 			if (null != imageUrl && !"".equals(imageUrl)) {
-				cachedImage = asyncImageLoader.loadDrawable(imageUrl,
+				cachedImage = asyncImageLoader.loadDrawable(imageUrl,position,
 						new ImageCallback() {
 
 							@Override
 							public void imageLoaded(Drawable imageDrawable,
-									String imageUrl) {
+									String imageUrl,int position) {
 								ImageView imageViewByTag = (ImageView) listView
-										.findViewWithTag(imageUrl);
+										.findViewWithTag(imageUrl + position);
 								if (null != imageViewByTag
 										&& null != imageDrawable) {
 									imageViewByTag

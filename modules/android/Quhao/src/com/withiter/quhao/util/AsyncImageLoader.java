@@ -8,11 +8,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
-import com.withiter.quhao.util.tool.QuhaoConstant;
-
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
+
+import com.withiter.quhao.util.tool.ImageUtil;
+import com.withiter.quhao.util.tool.QuhaoConstant;
 
 public class AsyncImageLoader {
 
@@ -22,7 +23,7 @@ public class AsyncImageLoader {
 		imageCache = new HashMap<String, SoftReference<Drawable>>();
 	}
 
-	public Drawable loadDrawable(final String imageUrl,
+	public Drawable loadDrawable(final String imageUrl,final int position,
 			final ImageCallback imageCallback) {
 		// synchronized (imageUrl) {
 		try {
@@ -34,11 +35,19 @@ public class AsyncImageLoader {
 					return drawable;
 				}
 			}
+			
+			Drawable drawable = Drawable.createFromPath(ImageUtil.getInstance().getFilePath(imageUrl));
+			
+			if(null != drawable)
+			{
+				return drawable;
+			}
+			
 			final Handler handler = new Handler() {
 				public void handleMessage(Message message) {
 					if (message != null && imageCallback != null) {
 						imageCallback.imageLoaded((Drawable) message.obj,
-								imageUrl);
+								imageUrl,position);
 					}
 				}
 			};
@@ -60,6 +69,9 @@ public class AsyncImageLoader {
 	}
 
 	public static Drawable loadImageFromUrl(String url) {
+		
+		
+		
 		URL picUrl;
 		Drawable d = null;
 		HttpURLConnection conn = null;
@@ -78,6 +90,7 @@ public class AsyncImageLoader {
 				return d;
 			}
 			is = conn.getInputStream();
+			ImageUtil.getInstance().saveFile(url,is);
 			d = Drawable.createFromStream(is, "src");
 		} catch (MalformedURLException e1) {
 			e1.printStackTrace();
@@ -103,6 +116,7 @@ public class AsyncImageLoader {
 	}
 
 	public interface ImageCallback {
-		public void imageLoaded(Drawable imageDrawable, String imageUrl);
+		public void imageLoaded(Drawable imageDrawable, String imageUrl, int position);
+
 	}
 }

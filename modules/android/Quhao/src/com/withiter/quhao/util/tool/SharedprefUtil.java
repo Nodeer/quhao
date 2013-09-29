@@ -12,8 +12,6 @@ import android.content.SharedPreferences.Editor;
  */
 public class SharedprefUtil {
 	
-	private static final String CONFIG_CACHE = "QUHAO_CACHE";
-	
 	/**
 	 * 
 	 * 根据key移除共享属性
@@ -23,7 +21,7 @@ public class SharedprefUtil {
 	 */
 	public static void remove(Context context, String key)
 	{
-		SharedPreferences settings = context.getSharedPreferences(CONFIG_CACHE, Context.MODE_PRIVATE);
+		SharedPreferences settings = context.getSharedPreferences(QuhaoConstant.CONFIG_CACHE, Context.MODE_PRIVATE);
 		Editor editor = settings.edit();
 		editor.remove(key);
 		editor.commit();
@@ -38,7 +36,7 @@ public class SharedprefUtil {
 	 */
 	public static void put(Context context, String key, String value)
 	{
-		SharedPreferences settings = context.getSharedPreferences(CONFIG_CACHE, Context.MODE_PRIVATE);
+		SharedPreferences settings = context.getSharedPreferences(QuhaoConstant.CONFIG_CACHE, Context.MODE_PRIVATE);
 		Editor editor = settings.edit();
 		editor.putString(key, value);
 		editor.commit();
@@ -52,7 +50,7 @@ public class SharedprefUtil {
 	 */
 	public static String get(Context context, String key,String defaultValue)
 	{
-		SharedPreferences settings = context.getSharedPreferences(CONFIG_CACHE, Context.MODE_PRIVATE);
+		SharedPreferences settings = context.getSharedPreferences(QuhaoConstant.CONFIG_CACHE, Context.MODE_PRIVATE);
 		return settings.getString(key, defaultValue);
 	}
 	
@@ -63,7 +61,7 @@ public class SharedprefUtil {
 	 */
 	public static void clear(Context context)
 	{
-		SharedPreferences settings = context.getSharedPreferences(CONFIG_CACHE, Context.MODE_PRIVATE);
+		SharedPreferences settings = context.getSharedPreferences(QuhaoConstant.CONFIG_CACHE, Context.MODE_PRIVATE);
 		Editor editor = settings.edit();
 		editor.clear();
 		editor.commit();
