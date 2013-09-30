@@ -19,12 +19,23 @@ $addCSS("backend.css", true)
 <title>取号啦 - 商家后台管理</title>
 </head>
 <body class="backendBG" id="fatherDIV">
-	<div style="margin-left: 300px;">
+	<div class="lmargin300">
 		`if(bmivo.merchantExist){
 			<div style="margin: 50px 0px 50px 0px; padding: 35px 25px; float: left;"><input type="button" name="" style=" margin-right: 30px;" class="styleBtn corner " value="用户排队管理" onclick="Merchant.goPaiduiPage('${bmivo.mid}');"/></div>
 		`}
 		<div style="margin: 50px 0px 50px 0px; padding: 35px 25px; float: left;"><input type="button" name="" style=" margin-right: 30px;" class="styleBtn corner " value="个人信息管理" onclick="Merchant.goPersonalPage('${bmivo.aid}');"/></div>
 	</div>
+	
+	<div class="lmargin300 fl" style="margin-top: 100px;">
+		<div class="fl" style="margin-bottom: 20px;">关注数：${bmivo.markedCount}</div>
+		<div class="" style="margin-bottom: 20px;">评分：${bmivo.grade}</div>
+		<div class="" style="margin-bottom: 20px;">人均消费：${bmivo.averageCost}</div>
+		<div class="" style="margin-bottom: 20px;">口味：${bmivo.kouwei}</div>
+		<div class="" style="margin-bottom: 20px;">环境：${bmivo.huanjing}</div>
+		<div class="" style="margin-bottom: 20px;">服务：${bmivo.fuwu}</div>
+		<div class="" style="margin-bottom: 20px;">性价比：${bmivo.xingjiabi}</div>
+	</div>
+	
 	`t merchantEdit(bmivo)
 </body>
 </html>

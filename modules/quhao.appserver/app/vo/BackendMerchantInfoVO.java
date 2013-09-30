@@ -47,6 +47,15 @@ public class BackendMerchantInfoVO {
 //	public Constants.MobileOSType mobileOS;
 	public Date lastLogin = new Date();
 	
+	public String grade = "";
+	public String averageCost = "";
+	public List<String> tags = null;
+	
+	public int kouwei;
+	public int huanjing;
+	public int fuwu;
+	public int xingjiabi;
+	
 	public List<String> imgSrc = new ArrayList<String>();
 	
 	public static BackendMerchantInfoVO build(Merchant m, Account a) {
@@ -69,6 +78,13 @@ public class BackendMerchantInfoVO {
 			vo.telephone = m.gTelephone();
 			vo.x = m.x;
 			vo.y = m.y;
+			
+			vo.grade = m.grade;
+			vo.averageCost = m.averageCost;
+			vo.kouwei = m.kouwei;
+			vo.huanjing = m.huanjing;
+			vo.fuwu = m.fuwu;
+			vo.xingjiabi = m.xingjiabi;
 			
 			vo.seatType = m.seatType;
 			
