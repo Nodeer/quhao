@@ -1,0 +1,53 @@
+`import static press.Plugin.*;
+`import vo.ReservationVO;
+`extends base_layout
+`set cssAndJs
+$addJS("merchant.js", true)
+$addCSS("landing.css", true)
+$addCSS("pop_signUp_logIn.css", true)
+$addCSS("backend.css", true)
+`
+`set title:i18n("取号啦 - 消费统计管理")
+
+`args List<ReservationVO> voList
+
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="/public/images/common/quhao_favicon.jpg" type="image/png" rel="shortcut icon">
+
+<style type="text/css">
+.dataHeader{
+	float: left;
+	width: 150px;
+	text-align: center;
+	font-size: large;
+	color: black;
+	padding-bottom: 20px;
+	border: 1px solid;
+	margin-left: 15px;
+	vertical-align: middle;
+}
+
+.dataElement{
+	float: left;
+	width: 150px;
+	text-align: center;
+	border: 1px solid;
+	height: 38px;
+	margin-left: 15px;
+	vertical-align: middle;
+}
+
+.color_red{
+	border-color: inherit;
+	color: red;
+	font: bolder;
+}
+</style>
+
+</head>
+<body class="backendBG" id="fatherDIV">
+</body>
+</html>

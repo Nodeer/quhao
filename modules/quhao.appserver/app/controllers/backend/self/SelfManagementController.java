@@ -6,6 +6,7 @@ import java.util.List;
 
 import vo.BackendMerchantInfoVO;
 import vo.HaomaVO;
+import vo.ReservationVO;
 import cn.bran.japid.util.StringUtils;
 
 import com.mongodb.gridfs.GridFSInputFile;
@@ -16,7 +17,6 @@ import com.withiter.models.merchant.Haoma;
 import com.withiter.models.merchant.Merchant;
 
 import controllers.BaseController;
-import controllers.MerchantController;
 import controllers.UploadController;
 
 public class SelfManagementController extends BaseController {
@@ -49,6 +49,8 @@ public class SelfManagementController extends BaseController {
 
 	public static void editMerchant(String uid, String mid) {
 
+		Merchant m = null;
+		
 		String merchantName = params.get("merchantName");
 		String description = params.get("description");
 		String address = params.get("address");
@@ -74,57 +76,35 @@ public class SelfManagementController extends BaseController {
 		System.out.println(merchantImage);
 
 		if (StringUtils.isEmpty(mid)) {
-			Merchant m = new Merchant();
-			if(!StringUtils.isEmpty(merchantName)){
-				m.name = merchantName;
-			}
-			m.description = description;
-			m.address = address;
-			m.telephone = tel.split(",");
-			m.cateType = cateType;
-			m.openTime = openTime;
-			m.closeTime = closeTime;
-			m.enable = true;
-			m.seatType = seatType;
+			m = new Merchant();
 			m.save();
-			if (!StringUtils.isEmpty(merchantImage)) {
-				GridFSInputFile file = uploadFirst(merchantImage, m.id());
-				if (file != null) {
-					m.merchantImageSet.add(file.getFilename());
-					m.save();
-				}
-			}
-
 			MerchantAccountRel rel = new MerchantAccountRel();
 			rel.mid = m.id();
 			rel.uid = uid;
 			rel.save();
-			// BackendMerchantInfoVO bmivo =
-			// BackendMerchantInfoVO.build(merchant, account);
-			// renderJapidWith("japidviews.backend.self.SelfManagementController.index",
-			// args);
 		} else {
-			Merchant m = Merchant.findById(mid);
-			if(!StringUtils.isEmpty(merchantName)){
-				m.name = merchantName;
-			}
-			m.description = description;
-			m.address = address;
-			m.telephone = tel.split(",");
-			m.cateType = cateType;
-			m.openTime = openTime;
-			m.closeTime = closeTime;
-			m.seatType = seatType;
-			m.enable = true;
-			m.save();
-			if (!StringUtils.isEmpty(merchantImage)) {
-				GridFSInputFile file = uploadFirst(merchantImage, m.id());
-				if (file != null) {
-					m.merchantImageSet.add(file.getFilename());
-					m.save();
-				}
+			m = Merchant.findById(mid);
+		}
+		if(!StringUtils.isEmpty(merchantName)){
+			m.name = merchantName;
+		}
+		m.description = description;
+		m.address = address;
+		m.telephone = tel.split(",");
+		m.cateType = cateType;
+		m.openTime = openTime;
+		m.closeTime = closeTime;
+		m.enable = true;
+		m.seatType = seatType;
+		m.save();
+		if (!StringUtils.isEmpty(merchantImage)) {
+			GridFSInputFile file = uploadFirst(merchantImage, m.id());
+			if (file != null) {
+				m.merchantImageSet.add(file.getFilename());
+				m.save();
 			}
 		}
+		
 		index(uid);
 	}
 
@@ -135,9 +115,21 @@ public class SelfManagementController extends BaseController {
 		renderJapid(haomaVO);
 	}
 
+	// TODO add personal page
 	public static void goPersonalPage() {
 		String aid = params.get("aid");
 		System.out.println(aid);
+	}
+	
+	// TODO add statistic report here
+	public static void goStatisticPage() {
+		String mid = params.get("mid");
+		List<Reservation> rList = Reservation.findReservationsByMerchantIdandDate(mid);
+		List<ReservationVO> voList = ReservationVO.build(rList);
+		
+		System.out.println(voList.size());
+		
+		renderJapid(voList);
 	}
 	
 	public static void paiduiPageAutoRefresh(){

@@ -69,6 +69,9 @@ Merchant.goPaiduiPage = function(mid){
 Merchant.goPersonalPage = function(aid){
 	window.location.href="/b/w/goPersonalPage?aid="+aid;
 }
+Merchant.goStatisticPage = function(mid){
+	window.location.href="/b/w/goStatisticPage?mid="+mid;
+}
 
 Merchant.autoRefresh = function(mid){
 	window.setInterval(refresh,1000 * 60,mid);
@@ -133,7 +136,9 @@ Merchant.finish = function(seatNumber, currentNumber, mid){
 
 /**
  * expire one reservation
+ *
  */
+// TODO add expire function here
 Merchant.expired = function(seatNumber, currentNumber, mid){
 	
 }

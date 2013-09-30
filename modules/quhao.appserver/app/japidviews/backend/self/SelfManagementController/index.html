@@ -24,9 +24,13 @@ $addCSS("backend.css", true)
 			<div style="margin: 50px 0px 50px 0px; padding: 35px 25px; float: left;"><input type="button" name="" style=" margin-right: 30px;" class="styleBtn corner " value="用户排队管理" onclick="Merchant.goPaiduiPage('${bmivo.mid}');"/></div>
 		`}
 		<div style="margin: 50px 0px 50px 0px; padding: 35px 25px; float: left;"><input type="button" name="" style=" margin-right: 30px;" class="styleBtn corner " value="个人信息管理" onclick="Merchant.goPersonalPage('${bmivo.aid}');"/></div>
+		`if(bmivo.merchantExist){
+		<div style="margin: 50px 0px 50px 0px; padding: 35px 25px; float: left;"><input type="button" name="" style=" margin-right: 30px;" class="styleBtn corner " value="消费统计管理" onclick="Merchant.goStatisticPage('${bmivo.mid}');"/></div>
+		`}
 	</div>
 	
-	<div class="lmargin300 fl" style="margin-top: 100px;">
+	`if(bmivo.merchantExist){
+	<div class="lmargin100 fl" style="margin-top: 100px;">
 		<div class="fl" style="margin-bottom: 20px;">关注数：${bmivo.markedCount}</div>
 		<div class="" style="margin-bottom: 20px;">评分：${bmivo.grade}</div>
 		<div class="" style="margin-bottom: 20px;">人均消费：${bmivo.averageCost}</div>
@@ -35,7 +39,7 @@ $addCSS("backend.css", true)
 		<div class="" style="margin-bottom: 20px;">服务：${bmivo.fuwu}</div>
 		<div class="" style="margin-bottom: 20px;">性价比：${bmivo.xingjiabi}</div>
 	</div>
-	
+	`}
 	`t merchantEdit(bmivo)
 </body>
 </html>

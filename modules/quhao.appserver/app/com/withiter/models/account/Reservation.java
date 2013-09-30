@@ -1,38 +1,14 @@
 package com.withiter.models.account;
 
-import japidviews._javatags.I18nKeys;
-
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import org.bson.types.ObjectId;
-
-import play.Play;
-import play.data.validation.Validation;
-import play.i18n.Messages;
-import play.libs.Codec;
-import play.modules.morphia.Model.MorphiaQuery;
 import play.modules.morphia.Model.NoAutoTimestamp;
 
-import cn.bran.japid.util.StringUtils;
-
-import com.withiter.common.Constants;
-import com.withiter.common.Constants.ReservationStatus;
-import com.withiter.common.ContentType;
-import com.withiter.models.merchant.Haoma;
 import com.google.code.morphia.annotations.Entity;
-import com.google.code.morphia.query.Criteria;
-import com.google.code.morphia.query.CriteriaContainerImpl;
-import com.mongodb.DB;
-import com.mongodb.DBObject;
-import com.mongodb.Mongo;
-import com.mongodb.gridfs.GridFS;
-import com.mongodb.gridfs.GridFSDBFile;
-import com.mongodb.gridfs.GridFSInputFile;
+import com.withiter.common.Constants.ReservationStatus;
+import com.withiter.models.merchant.Haoma;
 
 @Entity
 @NoAutoTimestamp
@@ -199,6 +175,13 @@ public class Reservation extends ReservationEntityDef {
 		return q.count();
 	}
 	
+	/**
+	 * Get the reservations which finished by merchant author
+	 * @param seatNumber
+	 * @param currentNumber
+	 * @param mid
+	 * @return
+	 */
 	public static Reservation findReservationFinishByMerchant(int seatNumber, int currentNumber, String mid){
 		MorphiaQuery q = Reservation.q();
 		q.filter("created", ">" + (System.currentTimeMillis() - 1000l*60*60*24))
@@ -208,6 +191,23 @@ public class Reservation extends ReservationEntityDef {
 		.filter("myNumber", currentNumber);
 		
 		return q.first();
+	}
+	
+	public static List<Reservation> findReservationsByMerchantIdandDate(String mid, Date beforeDate){
+		List<Reservation> rList = new ArrayList<Reservation>();
+		MorphiaQuery q = Reservation.q();
+		q.filter("created", ">"+ beforeDate.getTime())
+		.filter("merchantId", mid);
+		rList = q.asList();
+		return rList;
+	}
+	
+	public static List<Reservation> findReservationsByMerchantIdandDate(String mid){
+		List<Reservation> rList = new ArrayList<Reservation>();
+		long duration = System.currentTimeMillis() - 1000l*60*60*24*365;
+		Date d = new Date(duration);
+		findReservationsByMerchantIdandDate(mid, d);
+		return rList;
 	}
 
 }
