@@ -75,7 +75,9 @@ public class SelfManagementController extends BaseController {
 
 		if (StringUtils.isEmpty(mid)) {
 			Merchant m = new Merchant();
-			m.name = merchantName;
+			if(!StringUtils.isEmpty(merchantName)){
+				m.name = merchantName;
+			}
 			m.description = description;
 			m.address = address;
 			m.telephone = tel.split(",");
@@ -103,7 +105,9 @@ public class SelfManagementController extends BaseController {
 			// args);
 		} else {
 			Merchant m = Merchant.findById(mid);
-			m.name = merchantName;
+			if(!StringUtils.isEmpty(merchantName)){
+				m.name = merchantName;
+			}
 			m.description = description;
 			m.address = address;
 			m.telephone = tel.split(",");
