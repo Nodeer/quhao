@@ -64,3 +64,9 @@ Login.login = function() {
 		});
 	}
 }
+
+Login.entered = function(e){
+	if(Quhao.getEntryKey(e) == 1){
+		Login.login();
+	}
+}
