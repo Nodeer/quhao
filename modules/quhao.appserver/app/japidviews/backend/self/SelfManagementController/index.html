@@ -30,10 +30,18 @@ $addCSS("backend.css", true)
 	</div>
 	
 	`if(bmivo.merchantExist){
-	<div class="lmargin100 fl" style="margin-top: 100px;">
-		<div class="fl" style="margin-bottom: 20px;">关注数：${bmivo.markedCount}</div>
-		<div class="" style="margin-bottom: 20px;">评分：${bmivo.grade}</div>
-		<div class="" style="margin-bottom: 20px;">人均消费：${bmivo.averageCost}</div>
+	<div class="lmargin100 fl" style="margin-top: 100px;width: 200px;">
+		<div class="" style="margin-bottom: 20px;">关注数：${bmivo.markedCount}</div>
+		`if(!asBoolean(bmivo.grade)){
+			<div class="" style="margin-bottom: 20px;">评分：N/A</div>
+		`}else{
+			<div class="" style="margin-bottom: 20px;">评分：${bmivo.grade}</div>
+		`}
+		`if(!asBoolean(bmivo.averageCost)){
+			<div class="" style="margin-bottom: 20px;">人均消费：N/A</div>
+		`}else{
+			<div class="" style="margin-bottom: 20px;">人均消费：${bmivo.averageCost}</div>
+		`}
 		<div class="" style="margin-bottom: 20px;">口味：${bmivo.kouwei}</div>
 		<div class="" style="margin-bottom: 20px;">环境：${bmivo.huanjing}</div>
 		<div class="" style="margin-bottom: 20px;">服务：${bmivo.fuwu}</div>
