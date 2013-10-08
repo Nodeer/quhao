@@ -1,0 +1,13 @@
+`import static press.Plugin.*;
+`import vo.account.AccountVO;
+`extends base_layout
+`set cssAndJs
+$addCSS("landing.css", true)
+$addCSS("pop_signUp_logIn.css", true)
+$addCSS("backend.css", true)
+`
+`set title:i18n("取号啦 - 消费统计管理")
+
+`args AccountVO avo
+
+${avo}

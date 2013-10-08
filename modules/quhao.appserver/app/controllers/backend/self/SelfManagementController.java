@@ -7,6 +7,7 @@ import java.util.List;
 import vo.BackendMerchantInfoVO;
 import vo.HaomaVO;
 import vo.ReservationVO;
+import vo.account.AccountVO;
 import cn.bran.japid.util.StringUtils;
 
 import com.mongodb.gridfs.GridFSInputFile;
@@ -118,7 +119,9 @@ public class SelfManagementController extends BaseController {
 	// TODO add personal page
 	public static void goPersonalPage() {
 		String aid = params.get("aid");
-		System.out.println(aid);
+		Account account = Account.findById(aid);
+		AccountVO avo = AccountVO.build(account);
+		renderJapid(avo);
 	}
 	
 	// TODO add statistic report here
