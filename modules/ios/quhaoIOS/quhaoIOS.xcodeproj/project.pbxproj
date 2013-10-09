@@ -57,7 +57,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		CE01CE71179BC3BB00090EB0 /* quhaoIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = quhaoIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE01CE71179BC3BB00090EB0 /* 取号.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "取号.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE01CE74179BC3BB00090EB0 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		CE01CE76179BC3BB00090EB0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		CE01CE78179BC3BB00090EB0 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -174,7 +174,7 @@
 		CE01CE72179BC3BB00090EB0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CE01CE71179BC3BB00090EB0 /* quhaoIOS.app */,
+				CE01CE71179BC3BB00090EB0 /* 取号.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -348,7 +348,7 @@
 			);
 			name = "取号";
 			productName = quhaoIOS;
-			productReference = CE01CE71179BC3BB00090EB0 /* quhaoIOS.app */;
+			productReference = CE01CE71179BC3BB00090EB0 /* 取号.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */

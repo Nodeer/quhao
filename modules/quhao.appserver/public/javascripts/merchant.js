@@ -35,6 +35,15 @@ Merchant.validate = function(){
 	var openTime = $("#openTime").val();
 	var closeTime = $("#closeTime").val();
 	
+	// check if at least one checkbox is selected
+	var i = 1;
+	for(;i<=20; i++){
+		var obj = $("#seat"+i);
+		if(obj.attr("checked")=="checked"){
+			break;
+		}
+	}
+	
 	if(Common.isEmpty(description)){
 		alert("请输入商家描述");
 		return false;
@@ -57,6 +66,10 @@ Merchant.validate = function(){
 	}
 	if(Common.isEmpty(closeTime)){
 		alert("请选择营业时间（结束）");
+		return false;
+	}
+	if(i == 21){
+		alert("请至少选择一个桌位类型");
 		return false;
 	}
 	return true;
