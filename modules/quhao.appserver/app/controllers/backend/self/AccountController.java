@@ -100,6 +100,20 @@ public class AccountController extends BaseController {
 		} else {
 			renderJapidWith("japidviews.backend.self.AccountController.activeFailed");
 		}
-
+	}
+	
+	/**
+	 * validate the old password
+	 */
+	public static void updatePwd(){
+		String uid = params.get("uid");
+		String oPwd = params.get("oPwd");
+		String nPwd = params.get("nPwd");
+		String nPwdR = params.get("nPwdR");
+		System.out.println(uid);
+		System.out.println(oPwd);
+		System.out.println(nPwd);
+		System.out.println(nPwdR);
+		renderJSON(true);
 	}
 }
