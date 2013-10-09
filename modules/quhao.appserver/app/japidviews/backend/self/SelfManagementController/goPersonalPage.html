@@ -6,8 +6,18 @@ $addCSS("landing.css", true)
 $addCSS("pop_signUp_logIn.css", true)
 $addCSS("backend.css", true)
 `
-`set title:i18n("取号啦 - 消费统计管理")
+`set title:i18n("取号啦 - 个人信息管理")
 
 `args AccountVO avo
 
-${avo}
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="/public/images/common/quhao_favicon.jpg" type="image/png" rel="shortcut icon">
+<title>取号啦 - 商家后台管理</title>
+</head>
+<body class="backendBG" id="fatherDIV">
+	`t personEdit(avo)
+</body>
+</html>
