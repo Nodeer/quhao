@@ -20,7 +20,7 @@ public class TopMerchant extends TopMerchantEntityDef {
 	
 	public static List<TopMerchant> topX(int x){
 		MorphiaQuery q = TopMerchant.q();
-		q.limit(x);
+		q.filter("enable", true).limit(x);
 		return q.asList();
 	}
 
@@ -83,7 +83,7 @@ public class TopMerchant extends TopMerchantEntityDef {
 		MorphiaQuery q = TopMerchant.q();
 		if(q.countAll() == 0){
 			MorphiaQuery mq = Merchant.q();
-			List<Merchant> mList = mq.limit(4).asList();
+			List<Merchant> mList = mq.limit(6).asList();
 			for(Merchant m : mList){
 				TopMerchant tm = TopMerchant.build(m);
 				tm.save();

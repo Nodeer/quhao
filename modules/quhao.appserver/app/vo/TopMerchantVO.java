@@ -41,7 +41,10 @@ public class TopMerchantVO {
 		vo.cateType = m.cateType;
 		vo.closeTime = m.closeTime;
 		vo.description = m.description;
-		vo.enable = m.enable;
+		
+		// TODO update the top merchant enable attribute
+//		vo.enable = m.enable;
+		vo.enable = true;
 		vo.fuwu = m.fuwu;
 		vo.grade = m.grade;
 		vo.huanjing = m.huanjing;
