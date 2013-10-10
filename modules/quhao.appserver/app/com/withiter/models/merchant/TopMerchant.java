@@ -103,7 +103,9 @@ public class TopMerchant extends TopMerchantEntityDef {
 		tm.cateType = m.cateType;
 		tm.closeTime = m.closeTime;
 		tm.description = m.description;
-		tm.enable = m.enable;
+//		tm.enable = m.enable;
+		// TODO update the top merchant enable attribute
+		tm.enable = true;
 		tm.fuwu = m.fuwu;
 		tm.grade = m.grade;
 		tm.huanjing = m.huanjing;
