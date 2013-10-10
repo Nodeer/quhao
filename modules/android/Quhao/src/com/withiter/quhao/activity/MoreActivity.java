@@ -29,6 +29,7 @@ public class MoreActivity extends AppStoreActivity {
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
