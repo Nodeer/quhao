@@ -1,14 +1,17 @@
 package controllers.backend.self;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import notifiers.MailsController;
+
+import org.apache.commons.lang.StringUtils;
+
 import play.Play;
 import play.libs.Codec;
 import play.mvc.Scope.Session;
 import vo.MerchantVO;
 import vo.account.AccountVO;
+import vo.account.CommonVO;
 
 import com.withiter.common.Constants;
 import com.withiter.models.account.Account;
@@ -114,6 +117,30 @@ public class AccountController extends BaseController {
 		System.out.println(oPwd);
 		System.out.println(nPwd);
 		System.out.println(nPwdR);
-		renderJSON(true);
+		
+		Account account = Account.findById(uid);
+		CommonVO cvo = new CommonVO();
+		if(account == null){
+			cvo.success = false;
+			cvo.value = "用户不存在";
+			renderJSON(cvo);
+		}
+		
+		boolean flag = account.validatePassword(oPwd);
+		if(!flag){
+			cvo.success = false;
+			cvo.value = "旧密码不正确";
+			renderJSON(cvo);
+		}
+		
+		if(StringUtils.isEmpty(nPwd) || nPwd.length() < 6 || nPwd.length() > 12){
+			cvo.success = false;
+			cvo.value = "新密码长度6-12个字符";
+			renderJSON(cvo);
+		}
+		
+		account.updatePassword(account, nPwd);
+		cvo.success = true;
+		renderJSON(cvo);
 	}
 }

@@ -213,7 +213,7 @@ public class Account extends AccountEntityDef {
 	/**
 	 * Validate the password
 	 * @param password
-	 * @return
+	 * @return true if the password is right
 	 */
 	public boolean validatePassword(String password) {
 		boolean flag = false;

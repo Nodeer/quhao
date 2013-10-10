@@ -36,7 +36,11 @@ Account.updatePwd = function(){
 			dataType:"json",
 			data:{"uid":uid, "oPwd":oPwd, "nPwd":nPwd ,"nPwdR":nPwdR},
 			success:function(data){
-				alert(data);
+				if(data.success){
+					alert("密码修改成功");
+				}else{
+					alert(data.value);
+				}
 			},
 			error:function(){
 				alert("服务器维护中，马上就好。");
