@@ -61,6 +61,17 @@
 	<string name="menu_more">更多</string>
 	<!-- menu bar -->
 	
+	<!-- get number begin -->
 	<string name="get_number">取号</string>
+	<!-- get number end -->
+	
+	<!-- more begin -->
+	<string name="more_setting">系统设置</string>
+	<string name="more_new_version">检查更新</string>
+	<string name="more_opinion">意见反馈</string>
+	<string name="more_share">推荐</string>
+	<string name="more_aboutus">关于我们</string>
+	<string name="more_help">帮助</string>
+	<!-- more end -->
 	
 </resources>

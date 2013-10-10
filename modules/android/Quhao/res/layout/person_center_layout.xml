@@ -283,7 +283,7 @@
                 android:contentDescription="@null"
                 android:duplicateParentState="true"
                 android:paddingRight="6.0dip"
-                android:src="@drawable/arrow" />
+                android:src="@drawable/arrow_right" />
         </LinearLayout>
 
         <LinearLayout
@@ -321,7 +321,7 @@
                 android:contentDescription="@null"
                 android:duplicateParentState="true"
                 android:paddingRight="6.0dip"
-                android:src="@drawable/arrow" />
+                android:src="@drawable/arrow_right" />
         </LinearLayout>
 
         <LinearLayout
@@ -359,7 +359,7 @@
                 android:contentDescription="@null"
                 android:duplicateParentState="true"
                 android:paddingRight="6.0dip"
-                android:src="@drawable/arrow" />
+                android:src="@drawable/arrow_right" />
         </LinearLayout>
         <!-- current/history quhao, history jifen -->
 
