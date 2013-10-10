@@ -17,15 +17,6 @@
             android:background="@drawable/btn_back_background"
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true" />
-		<TextView android:id="@+id/merchantName"
-			android:textAppearance="?android:textAppearanceMedium"
-			android:layout_centerVertical="true"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="搜索 - 美食"
-			android:textColor="#ff000000"
-			android:layout_toRightOf="@id/back_btn"
-			/>
 		<Button android:id="@+id/btn_GetNumber"
 			android:textAppearance="?android:textAppearanceMediumInverse"
 			android:layout_centerVertical="true"
@@ -37,6 +28,17 @@
 			android:background="@drawable/btn_weight"
 			android:textSize="14.0sp"
 			/>
+
+		<TextView
+		    android:id="@+id/merchantName"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_centerHorizontal="true"
+		    android:layout_centerVertical="true"
+		    android:text="搜索 - 美食"
+		    android:textAppearance="?android:textAppearanceMedium"
+		    android:textColor="#ff000000" />
+
 	</RelativeLayout>
 	<ScrollView android:layout_width="fill_parent" android:layout_height="0dip" android:fillViewport="true" android:layout_weight="1.0">
            <LinearLayout 

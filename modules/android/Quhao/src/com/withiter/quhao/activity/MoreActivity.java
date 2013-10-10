@@ -23,14 +23,12 @@ public class MoreActivity extends AppStoreActivity {
 		btnNearby.setOnClickListener(goNearby(this));
 		btnPerson.setOnClickListener(goPersonCenter(this));
 		btnMore.setOnClickListener(goMore(this));
-		btnBack.setOnClickListener(goBack(this));
 		
 	}
 	
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override

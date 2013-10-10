@@ -14,6 +14,7 @@
 	<string name="search_placeholder">商户名,地址等&#8230;</string>
 	<!-- 分类页面 -->
 
+	<string name="imageDesc">图片描述</string>
 	<string name="no_tags">暂无推荐</string>
 	<string name="no_desc">暂无描述</string>
 	
@@ -59,4 +60,7 @@
 	<string name="menu_person_center">个人中心</string>
 	<string name="menu_more">更多</string>
 	<!-- menu bar -->
+	
+	<string name="get_number">取号</string>
+	
 </resources>
