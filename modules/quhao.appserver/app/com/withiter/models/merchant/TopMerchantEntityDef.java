@@ -18,6 +18,8 @@ public abstract class TopMerchantEntityDef extends BaseModel {
 	@Indexed
 	public String[] telephone = {""};
 	
+	public String mid;
+	
 	public String cateType;
 	
 	public String grade = "";

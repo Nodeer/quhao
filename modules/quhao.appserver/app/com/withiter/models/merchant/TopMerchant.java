@@ -78,4 +78,46 @@ public class TopMerchant extends TopMerchantEntityDef {
 				+ "],[this.joinedDate:" + this.joinedDate + "],[this.tags:"
 				+ this.tags + "],[this.teses:" + this.teses + "]";
 	}
+	
+	public static void updateTopMerchantForTest(){
+		MorphiaQuery q = TopMerchant.q();
+		if(q.countAll() == 0){
+			MorphiaQuery mq = Merchant.q();
+			List<Merchant> mList = mq.limit(4).asList();
+			for(Merchant m : mList){
+				TopMerchant tm = TopMerchant.build(m);
+				tm.save();
+			}
+		}
+	}
+	
+	public static TopMerchant build(Merchant m){
+		TopMerchant tm = new TopMerchant();
+		if(m == null){
+			return null;
+		}
+		
+		tm.mid = m.id();
+		tm.address = m.address;
+		tm.averageCost = m.averageCost;
+		tm.cateType = m.cateType;
+		tm.closeTime = m.closeTime;
+		tm.description = m.description;
+		tm.enable = m.enable;
+		tm.fuwu = m.fuwu;
+		tm.grade = m.grade;
+		tm.huanjing = m.huanjing;
+		tm.joinedDate = m.joinedDate;
+		tm.kouwei = m.kouwei;
+		tm.markedCount = m.markedCount;
+		tm.name = m.name;
+		tm.nickName = m.nickName;
+		tm.openTime = m.openTime;
+		tm.tags = m.tags;
+		tm.telephone = m.telephone;
+		tm.teses = m.teses;
+		tm.xingjiabi = m.xingjiabi;
+		
+		return tm;
+	}
 }
