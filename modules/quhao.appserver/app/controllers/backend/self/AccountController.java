@@ -129,7 +129,7 @@ public class AccountController extends BaseController {
 		boolean flag = account.validatePassword(oPwd);
 		if(!flag){
 			cvo.success = false;
-			cvo.value = "旧密码不正确";
+			cvo.value = "原始密码不正确";
 			renderJSON(cvo);
 		}
 		
