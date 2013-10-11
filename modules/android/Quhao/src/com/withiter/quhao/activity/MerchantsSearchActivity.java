@@ -3,6 +3,7 @@ package com.withiter.quhao.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -99,7 +100,7 @@ public class MerchantsSearchActivity extends AppStoreActivity {
 		setContentView(R.layout.merchants_search);
 		super.onCreate(savedInstanceState);
 
-		editSearch = (EditText) findViewById(R.id.edit_search);
+		editSearch = (EditText) findViewById(R.id.edit_search1);
 		// editSearch.addTextChangedListener(searchWatcher);
 
 		searchBtn = (Button) findViewById(R.id.search_btn);
