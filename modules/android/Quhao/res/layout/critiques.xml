@@ -1,58 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="#ffffffff"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-   
-    <RelativeLayout 
-		android:layout_width="fill_parent"    
-    	android:layout_height="wrap_content"    
-    	android:background="@drawable/common_top_bar_bg1"    
-    	android:paddingLeft="5dip"    
-    	android:paddingRight="5dip" 
-    	android:paddingTop="5dip"
-    	android:paddingBottom="5dip" 
-    	android:gravity="center_vertical">
-    	<Button android:gravity="left|center_vertical" android:id="@+id/back_btn" 
-           	android:layout_width="wrap_content" android:layout_height="wrap_content" 
-            android:background="@drawable/btn_back_background"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffffff"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/common_top_bar_bg1"
+        android:gravity="center_vertical"
+        android:paddingBottom="5dip"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
+        android:paddingTop="5dip" >
+
+        <Button
+            android:id="@+id/back_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true" />
+            android:background="@drawable/btn_back_background"
+            android:gravity="left|center_vertical" />
 
-		<TextView
-		    android:id="@+id/merchantName"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_centerHorizontal="true"
-		    android:layout_centerVertical="true"
-		    android:text="搜索 - 美食"
-		    android:textAppearance="?android:textAppearanceMedium"
-		    android:textColor="#ff000000" />
+        <TextView
+            android:id="@+id/merchantName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="搜索 - 美食"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="#ff000000" />
+    </RelativeLayout>
 
-	</RelativeLayout>
-	<LinearLayout android:id="@+id/loadingbar"
-   		android:orientation="horizontal"
-   		android:layout_width="fill_parent"
-   		android:layout_height="fill_parent"
-   		android:background="#ffffffff"
-   		android:gravity="center"
-   		android:padding="10dip"
-   		android:layout_weight="1.0">
-   		
-   		<ProgressBar 
-   			android:layout_width="wrap_content" 
-   			android:layout_height="wrap_content"/>
-   	
-  			<View 
-  				android:layout_width="10dip" 
-  				android:layout_height="10dip"/>
-   
-   		<TextView 
-   			android:layout_width="wrap_content" 
-   			android:layout_height="wrap_content"
-   			android:textColor="#ff000000"
-   			android:text="载入中..."/>
+    <LinearLayout
+        android:id="@+id/loadingbar"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.0"
+        android:background="#ffffffff"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dip" >
 
-	</LinearLayout>
-	<LinearLayout android:id="@+id/critiquesLayout"
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="10dip"
+            android:layout_height="10dip" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="载入中..."
+            android:textColor="#ff000000" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/critiquesLayout"
         android:layout_width="fill_parent"
         android:layout_height="0dip"
         android:layout_weight="1.0" >
@@ -70,4 +79,5 @@
             android:scrollbarThumbVertical="@drawable/scrollbar"
             android:scrollbars="vertical" />
     </LinearLayout>
-</LinearLayout> 
+
+</LinearLayout>

@@ -89,7 +89,7 @@ public class MerchantsSearchActivity extends AppStoreActivity {
 			intent.setClass(MerchantsSearchActivity.this,
 					MerchantDetailActivity.class);
 			startActivity(intent);
-			overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
+			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 		}
 	};
 
@@ -156,15 +156,13 @@ public class MerchantsSearchActivity extends AppStoreActivity {
 					progressMerchants.closeProgress();
 
 				}
-				String result = CommonHTTPRequest.get("MerchantController/getMerchantsByName?name="
-						+ MerchantsSearchActivity.this.editSearch.getText()
-								.toString());
-				if(StringUtils.isNull(result))
-				{
+				String result = CommonHTTPRequest
+						.get("MerchantController/getMerchantsByName?name="
+								+ MerchantsSearchActivity.this.editSearch
+										.getText().toString());
+				if (StringUtils.isNull(result)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				}
-				else
-				{
+				} else {
 					if (null == merchants) {
 						merchants = new ArrayList<Merchant>();
 					}
