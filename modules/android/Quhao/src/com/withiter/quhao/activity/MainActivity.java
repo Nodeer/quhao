@@ -147,46 +147,48 @@ public class MainActivity extends AppStoreActivity {
 
 		// search function
 		searchTextView = (EditText) findViewById(R.id.edit_search);
-		searchTextView.addTextChangedListener(new TextWatcher() {
-			@SuppressWarnings("unchecked")
-			@Override
-			public void afterTextChanged(Editable arg0) {
-				String keyword = searchTextView.getText().toString().trim();
-				QuhaoLog.i(TAG, keyword);
-				try {
-					String result = CommonHTTPRequest
-							.get("MerchantController/getMerchantsByName?name="
-									+ keyword);
-					if (result.equalsIgnoreCase("null")) {
-						QuhaoLog.i(TAG, "no result");
-					} else {
-						QuhaoLog.i(TAG, result);
-						mList = (List<Merchant>) ParseJson
-								.getMerchants(result);
-						for (Merchant m : mList) {
-							QuhaoLog.i(TAG, m.name);
-						}
-						createView();
-					}
-				} catch (ClientProtocolException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence arg0, int arg1,
-					int arg2, int arg3) {
-			}
-
-			@Override
-			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
-					int arg3) {
-			}
-
-		});
-		// searchTextView.setOnClickListener(goMerchantsSearch(MainActivity.this));
+		
+		// TODO need to check witch way will be used
+//		searchTextView.addTextChangedListener(new TextWatcher() {
+//			@SuppressWarnings("unchecked")
+//			@Override
+//			public void afterTextChanged(Editable arg0) {
+//				String keyword = searchTextView.getText().toString().trim();
+//				QuhaoLog.i(TAG, keyword);
+//				try {
+//					String result = CommonHTTPRequest
+//							.get("MerchantController/getMerchantsByName?name="
+//									+ keyword);
+//					if (result.equalsIgnoreCase("null")) {
+//						QuhaoLog.i(TAG, "no result");
+//					} else {
+//						QuhaoLog.i(TAG, result);
+//						mList = (List<Merchant>) ParseJson
+//								.getMerchants(result);
+//						for (Merchant m : mList) {
+//							QuhaoLog.i(TAG, m.name);
+//						}
+//						createView();
+//					}
+//				} catch (ClientProtocolException e) {
+//					e.printStackTrace();
+//				} catch (IOException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//
+//			@Override
+//			public void beforeTextChanged(CharSequence arg0, int arg1,
+//					int arg2, int arg3) {
+//			}
+//
+//			@Override
+//			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
+//					int arg3) {
+//			}
+//
+//		});
+		searchTextView.setOnClickListener(goMerchantsSearch(MainActivity.this));
 
 		// all categories
 		categorys = new ArrayList<Category>();

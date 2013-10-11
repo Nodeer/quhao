@@ -20,19 +20,21 @@ public final class R {
         public static final int grow_from_top=0x7f040008;
         public static final int grow_from_topleft_to_bottomright=0x7f040009;
         public static final int grow_from_topright_to_bottomleft=0x7f04000a;
-        public static final int main_enter=0x7f04000b;
-        public static final int main_exit=0x7f04000c;
-        public static final int rack=0x7f04000d;
-        public static final int shrink_from_bottom=0x7f04000e;
-        public static final int shrink_from_bottomleft_to_topright=0x7f04000f;
-        public static final int shrink_from_bottomright_to_topleft=0x7f040010;
-        public static final int shrink_from_top=0x7f040011;
-        public static final int shrink_from_topleft_to_bottomright=0x7f040012;
-        public static final int shrink_from_topright_to_bottomleft=0x7f040013;
-        public static final int splash_screen_fade=0x7f040014;
-        public static final int splash_screen_hold=0x7f040015;
-        public static final int tip_back_show=0x7f040016;
-        public static final int tip_enter=0x7f040017;
+        public static final int in_from_right=0x7f04000b;
+        public static final int main_enter=0x7f04000c;
+        public static final int main_exit=0x7f04000d;
+        public static final int out_to_left=0x7f04000e;
+        public static final int rack=0x7f04000f;
+        public static final int shrink_from_bottom=0x7f040010;
+        public static final int shrink_from_bottomleft_to_topright=0x7f040011;
+        public static final int shrink_from_bottomright_to_topleft=0x7f040012;
+        public static final int shrink_from_top=0x7f040013;
+        public static final int shrink_from_topleft_to_bottomright=0x7f040014;
+        public static final int shrink_from_topright_to_bottomleft=0x7f040015;
+        public static final int splash_screen_fade=0x7f040016;
+        public static final int splash_screen_hold=0x7f040017;
+        public static final int tip_back_show=0x7f040018;
+        public static final int tip_enter=0x7f040019;
     }
     public static final class array {
         public static final int seat=0x7f060000;

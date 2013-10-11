@@ -199,7 +199,7 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 				Intent intent = new Intent(activity,
 						MerchantsSearchActivity.class);
 				startActivity(intent);
-				overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
+				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			}
 		};
 		return clickListener;
