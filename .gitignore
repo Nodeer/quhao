@@ -6,6 +6,8 @@ eclipse/
 modules/**/modules/
 test-result/
 
+*/gen/
+
 # Eclipse Files #
 #################
 .settings/
