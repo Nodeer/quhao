@@ -17,7 +17,7 @@ import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.tool.CommonTool;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 
-@SuppressLint("NewApi") 
+@SuppressLint("NewApi")
 public abstract class AppStoreActivity extends QuhaoActivity implements
 		OnClickListener, OnTouchListener {
 
@@ -77,6 +77,11 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 		return clickListener;
 	}
 
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+	}
+	
 	/**
 	 * 商家列表按钮绑定事件，点击进入商家列表页面
 	 * 
@@ -145,10 +150,12 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 					activity.recreate();
 					// TODO add refresh personal page
 				} else {
-					Intent intent = new Intent(activity, PersonCenterActivity.class);
+					Intent intent = new Intent(activity,
+							PersonCenterActivity.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 					startActivity(intent);
-					overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
+					overridePendingTransition(R.anim.main_enter,
+							R.anim.main_exit);
 				}
 
 				// if (QHClientApplication.getInstance().isLogined) {
@@ -199,7 +206,8 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 				Intent intent = new Intent(activity,
 						MerchantsSearchActivity.class);
 				startActivity(intent);
-				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+				overridePendingTransition(R.anim.in_from_right,
+						R.anim.out_to_left);
 			}
 		};
 		return clickListener;

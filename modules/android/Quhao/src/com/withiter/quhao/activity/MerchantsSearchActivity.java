@@ -113,6 +113,12 @@ public class MerchantsSearchActivity extends AppStoreActivity {
 		btnBack.setOnClickListener(goBack(this));
 		// initView();
 	}
+	
+	protected void onPause() {  
+	    super.onPause();  
+	    overridePendingTransition(R.anim.in_from_left,
+				R.anim.out_to_right);
+	}
 
 	private OnClickListener goSearchMerchantsListener(
 			MerchantsSearchActivity merchantsSearchActivity) {
