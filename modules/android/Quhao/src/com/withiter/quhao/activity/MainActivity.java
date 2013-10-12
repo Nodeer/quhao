@@ -7,24 +7,17 @@ import java.util.List;
 import org.apache.http.client.ClientProtocolException;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar.LayoutParams;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -33,19 +26,15 @@ import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.CategoryGridAdapter;
-import com.withiter.quhao.adapter.SearchAdapter;
 import com.withiter.quhao.adapter.TopMerchantGridAdapter;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
-import com.withiter.quhao.view.CommonFloatView;
 import com.withiter.quhao.vo.Category;
-import com.withiter.quhao.vo.Merchant;
 import com.withiter.quhao.vo.TopMerchant;
 
 @SuppressLint("InlinedApi")
@@ -62,66 +51,6 @@ public class MainActivity extends AppStoreActivity {
 	private static final int UNLOCK_CLICK = 1000;
 	private List<Category> categorys = null;
 
-	private WindowManager wm = null;
-	private WindowManager.LayoutParams wmParams = null;
-	private CommonFloatView searchResultView = null;
-	private List<Merchant> mList = null;
-	/**
-	 * called when user input something in search box
-	 * @param mList
-	 */
-	private void createView() {
-		int[] location = new int[2];
-		searchTextView.getLocationOnScreen(location);
-		int height = searchTextView.getHeight();
-
-		searchResultView = new CommonFloatView(getApplicationContext());
-		searchResultView.setBackgroundColor(Color.RED);
-		searchResultView.getBackground().setAlpha(80);
-		searchResultView.setVerticalScrollBarEnabled(true);
-		searchResultView.setAdapter(new SearchAdapter(searchResultView, mList));
-		searchResultView.setOnItemClickListener(new OnItemClickListener(){
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int index,
-					long arg3) {
-				destroyView();
-				Merchant merchant = mList.get(index);
-				QuhaoLog.i(TAG, "merchant.name: "+merchant.name);
-				Intent intent = new Intent();
-				intent.putExtra("merchantId", merchant.id);
-				intent.setClass(MainActivity.this,
-						MerchantDetailActivity.class);
-				startActivity(intent);
-			}
-		});
-
-		// 获取WindowManager
-		wm = (WindowManager) getApplicationContext().getSystemService("window");
-		wmParams = ((QHClientApplication) getApplication()).getMywmParams();
-
-		// 设置LayoutParams(全局变量）相关参数
-		wmParams.type = LayoutParams.MATCH_PARENT; // 设置window type
-		wmParams.format = PixelFormat.RGBA_8888; // 设置图片格式，效果为背景透明
-		wmParams.gravity = Gravity.LEFT | Gravity.TOP; // 调整悬浮窗口至左上角
-		// 以屏幕左上角为原点，设置x、y初始值
-		wmParams.x = 0;
-		wmParams.y = height;
-		QuhaoLog.i(TAG, "float y: " + wmParams.y);
-		
-		// 设置悬浮窗口长宽数据
-		wmParams.width = LayoutParams.MATCH_PARENT;
-		wmParams.height = 500;
-
-		// 显示myFloatView图像
-		wm.addView(searchResultView, wmParams);
-	}
-
-	private void destroyView(){
-		// 获取WindowManager
-		wm = (WindowManager) getApplicationContext().getSystemService("window");
-		wm.removeView(searchResultView);
-	}
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -143,51 +72,10 @@ public class MainActivity extends AppStoreActivity {
 		// top merchant function
 		topMerchants = new ArrayList<TopMerchant>();
 		getTopMerchantsFromServerAndDisplay();
-		//topMerchantsGird.setOnItemClickListener(topMerchantClickListener);
+		topMerchantsGird.setOnItemClickListener(topMerchantClickListener);
 
 		// search function
 		searchTextView = (EditText) findViewById(R.id.edit_search);
-		
-		// TODO need to check witch way will be used
-//		searchTextView.addTextChangedListener(new TextWatcher() {
-//			@SuppressWarnings("unchecked")
-//			@Override
-//			public void afterTextChanged(Editable arg0) {
-//				String keyword = searchTextView.getText().toString().trim();
-//				QuhaoLog.i(TAG, keyword);
-//				try {
-//					String result = CommonHTTPRequest
-//							.get("MerchantController/getMerchantsByName?name="
-//									+ keyword);
-//					if (result.equalsIgnoreCase("null")) {
-//						QuhaoLog.i(TAG, "no result");
-//					} else {
-//						QuhaoLog.i(TAG, result);
-//						mList = (List<Merchant>) ParseJson
-//								.getMerchants(result);
-//						for (Merchant m : mList) {
-//							QuhaoLog.i(TAG, m.name);
-//						}
-//						createView();
-//					}
-//				} catch (ClientProtocolException e) {
-//					e.printStackTrace();
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//
-//			@Override
-//			public void beforeTextChanged(CharSequence arg0, int arg1,
-//					int arg2, int arg3) {
-//			}
-//
-//			@Override
-//			public void onTextChanged(CharSequence arg0, int arg1, int arg2,
-//					int arg3) {
-//			}
-//
-//		});
 		searchTextView.setOnClickListener(goMerchantsSearch(MainActivity.this));
 
 		// all categories
@@ -273,7 +161,7 @@ public class MainActivity extends AppStoreActivity {
 			public void run() {
 				Looper.prepare();
 				try {
-					QuhaoLog.i(TAG, "Start to get categorys data form server.");
+					QuhaoLog.i(TAG, "Start to get Top Merchants data form server.");
 					String result = CommonHTTPRequest
 							.get("MerchantController/getTopMerchants?x=6");
 					QuhaoLog.d(TAG, result);

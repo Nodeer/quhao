@@ -83,6 +83,7 @@ public class TopMerchant extends TopMerchantEntityDef {
 		MorphiaQuery q = TopMerchant.q();
 		if(q.countAll() == 0){
 			MorphiaQuery mq = Merchant.q();
+			mq.filter("merchantImage", "!="+"");
 			List<Merchant> mList = mq.limit(6).asList();
 			for(Merchant m : mList){
 				TopMerchant tm = TopMerchant.build(m);
@@ -119,6 +120,9 @@ public class TopMerchant extends TopMerchantEntityDef {
 		tm.telephone = m.telephone;
 		tm.teses = m.teses;
 		tm.xingjiabi = m.xingjiabi;
+		
+		tm.merchantImage = m.merchantImage;
+		tm.merchantImageSet = m.merchantImageSet;
 		
 		return tm;
 	}

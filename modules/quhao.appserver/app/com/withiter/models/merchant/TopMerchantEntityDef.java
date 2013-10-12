@@ -1,7 +1,9 @@
 package com.withiter.models.merchant;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.google.code.morphia.annotations.Indexed;
 import com.google.code.morphia.annotations.Reference;
@@ -17,6 +19,9 @@ public abstract class TopMerchantEntityDef extends BaseModel {
 	public String address = "";
 	@Indexed
 	public String[] telephone = {""};
+	
+	public String merchantImage = "";
+	public Set merchantImageSet = new HashSet<String>();
 	
 	public String mid;
 	

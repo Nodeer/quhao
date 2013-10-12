@@ -1,12 +1,20 @@
 package vo;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.withiter.jobs.CategoryJob;
 import com.withiter.models.merchant.Tese;
 import com.withiter.models.merchant.TopMerchant;
 
 public class TopMerchantVO {
+	
+	private static Logger logger = LoggerFactory.getLogger(TopMerchantVO.class);
 
 	public String id;
 	public String name = "";
@@ -33,6 +41,8 @@ public class TopMerchantVO {
 	public boolean enable = false;
 	public String joinedDate = new Date().toString();
 	
+	public String merchantImage;
+	
 	public static TopMerchantVO build(TopMerchant m) {
 		TopMerchantVO vo = new TopMerchantVO();
 		vo.id = m.id();
@@ -55,6 +65,18 @@ public class TopMerchantVO {
 		vo.telephone = m.telephone;
 		vo.teses = m.teses;
 		vo.xingjiabi = m.xingjiabi;
+		
+		if(StringUtils.isEmpty(m.merchantImage)){
+			Iterator it = m.merchantImageSet.iterator();
+			while(it.hasNext()){
+				vo.merchantImage = it.next().toString();
+				break;
+			}
+		}else{
+			vo.merchantImage = m.merchantImage;
+		}
+		
+		logger.info(TopMerchantVO.class.getName() + " vo.merchantImage : " + vo.merchantImage);
 		
 		return vo;
 	}

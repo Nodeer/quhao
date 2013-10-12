@@ -107,19 +107,16 @@ public class ParseJson {
 			for (int i = 0; i < jsonArrays.length(); i++) {
 				JSONObject obj = jsonArrays.getJSONObject(i);
 				String imgUrl = "";
-
-				if (obj.has("imgUrl")) {
-					imgUrl = obj.getString("imgUrl");
+				if (obj.has("merchantImage")) {
+					imgUrl = obj.getString("merchantImage");
 				}
 
 				String name = "";
-
 				if (obj.has("name")) {
 					name = obj.getString("name");
 				}
 
 				String id = "";
-
 				if (obj.has("id")) {
 					id = obj.getString("id");
 				}
@@ -206,17 +203,14 @@ public class ParseJson {
 		if (obj.has("telephone")) {
 
 			JSONArray array = obj.getJSONArray("telephone");
-			for (int i = 0; i < array.length(); i++)
-			{
-				if(i == array.length()-1)
-				{
+			for (int i = 0; i < array.length(); i++) {
+				if (i == array.length() - 1) {
 					phone = phone + array.get(i).toString();
 					break;
 				}
 				phone = phone + array.get(i).toString() + ",";
 			}
-			
-		
+
 		}
 
 		String cateType = "";
@@ -237,16 +231,14 @@ public class ParseJson {
 		String tags = "";
 		if (obj.has("tags")) {
 			JSONArray array = obj.getJSONArray("tags");
-			for (int i = 0; i < array.length(); i++)
-			{
-				if(i == array.length()-1)
-				{
+			for (int i = 0; i < array.length(); i++) {
+				if (i == array.length() - 1) {
 					tags = tags + array.get(i).toString();
 					break;
 				}
 				tags = tags + array.get(i).toString() + ",";
 			}
-			
+
 		}
 
 		Integer kouwei = null;
@@ -277,8 +269,7 @@ public class ParseJson {
 		String nickName = "";
 		if (obj.has("nickName")) {
 			nickName = obj.getString("nickName");
-			if(StringUtils.isNull(nickName)||"null".equals(nickName))
-			{
+			if (StringUtils.isNull(nickName) || "null".equals(nickName)) {
 				nickName = "";
 			}
 		}
@@ -286,8 +277,7 @@ public class ParseJson {
 		String description = "";
 		if (obj.has("description")) {
 			description = obj.getString("description");
-			if(StringUtils.isNull(description)||"null".equals(description))
-			{
+			if (StringUtils.isNull(description) || "null".equals(description)) {
 				description = "";
 			}
 		}
@@ -295,8 +285,7 @@ public class ParseJson {
 		String openTime = "";
 		if (obj.has("openTime")) {
 			openTime = obj.getString("openTime");
-			if(StringUtils.isNull(openTime)||"null".equals(openTime))
-			{
+			if (StringUtils.isNull(openTime) || "null".equals(openTime)) {
 				openTime = "";
 			}
 		}
@@ -304,8 +293,7 @@ public class ParseJson {
 		String closeTime = "";
 		if (obj.has("closeTime")) {
 			closeTime = obj.getString("closeTime");
-			if(StringUtils.isNull(closeTime)||"null".equals(closeTime))
-			{
+			if (StringUtils.isNull(closeTime) || "null".equals(closeTime)) {
 				closeTime = "";
 			}
 		}
@@ -342,17 +330,17 @@ public class ParseJson {
 			JSONObject obj = new JSONObject(result);
 
 			String msg = "";
-			if(obj.has("msg")){
+			if (obj.has("msg")) {
 				msg = obj.getString("msg");
 			}
-			
+
 			String phone = "";
 
 			if (obj.has("phone")) {
 				phone = obj.getString("phone");
 			}
 			String jifen = "";
-			
+
 			if (obj.has("jifen")) {
 				jifen = obj.getString("jifen");
 			}
@@ -399,8 +387,8 @@ public class ParseJson {
 				lastLogin = obj.getString("lastLogin");
 			}
 
-			loginInfo = new LoginInfo(msg, phone, jifen, email, password, nickName,
-					birthday, userImage, enable, mobileOS, lastLogin);
+			loginInfo = new LoginInfo(msg, phone, jifen, email, password,
+					nickName, birthday, userImage, enable, mobileOS, lastLogin);
 
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -505,8 +493,7 @@ public class ParseJson {
 		return paidu;
 	}
 
-	public static List<ReservationVO> getReservations(String buf)
-	{
+	public static List<ReservationVO> getReservations(String buf) {
 		List<ReservationVO> rvos = new ArrayList<ReservationVO>();
 
 		if (null == buf || "".equals(buf)) {
@@ -529,9 +516,8 @@ public class ParseJson {
 
 		return rvos;
 	}
-	
-	public static ReservationVO getReservation(String buf)
-	{
+
+	public static ReservationVO getReservation(String buf) {
 		ReservationVO rvo = null;
 		if (null == buf || "".equals(buf)) {
 			return rvo;
@@ -540,8 +526,7 @@ public class ParseJson {
 		try {
 			JSONObject json = new JSONObject(buf);
 
-
-				rvo = coventReservationVO(json);
+			rvo = coventReservationVO(json);
 
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -550,8 +535,8 @@ public class ParseJson {
 		return rvo;
 	}
 
-	private static ReservationVO coventReservationVO(JSONObject obj) throws JSONException
-	{
+	private static ReservationVO coventReservationVO(JSONObject obj)
+			throws JSONException {
 		ReservationVO rvo;
 		String accountId = "";
 
@@ -580,12 +565,12 @@ public class ParseJson {
 		if (obj.has("beforeYou")) {
 			beforeYou = obj.getString("beforeYou");
 		}
-		
+
 		String currentNumber = "";
 		if (obj.has("currentNumber")) {
 			currentNumber = obj.getString("currentNumber");
 		}
-		
+
 		boolean valid = false;
 		if (obj.has("valid")) {
 			valid = obj.getBoolean("valid");
@@ -601,12 +586,12 @@ public class ParseJson {
 			tipValue = obj.getString("tipValue");
 		}
 
-		rvo = new ReservationVO(accountId, merchantId, seatNumber, myNumber, beforeYou, currentNumber,valid, tipKey, tipValue);
+		rvo = new ReservationVO(accountId, merchantId, seatNumber, myNumber,
+				beforeYou, currentNumber, valid, tipKey, tipValue);
 		return rvo;
 	}
-	
-	public static List<MerchantLocation> getMerchantLocations(String buf)
-	{
+
+	public static List<MerchantLocation> getMerchantLocations(String buf) {
 		List<MerchantLocation> locations = new ArrayList<MerchantLocation>();
 
 		if (null == buf || "".equals(buf)) {
@@ -630,8 +615,8 @@ public class ParseJson {
 		return locations;
 	}
 
-	private static MerchantLocation coventMerchantLocation(JSONObject obj) throws JSONException
-	{
+	private static MerchantLocation coventMerchantLocation(JSONObject obj)
+			throws JSONException {
 		MerchantLocation location;
 
 		String id = "";
@@ -654,7 +639,7 @@ public class ParseJson {
 		if (obj.has("address")) {
 			address = obj.getString("address");
 		}
-	
+
 		location = new MerchantLocation(id, name, lat, lng, address);
 		return location;
 	}
@@ -663,29 +648,30 @@ public class ParseJson {
 	 * 
 	 * parse json string to critiques
 	 * 
-	 * @param buf json string
+	 * @param buf
+	 *            json string
 	 * @return critiques
 	 */
 	public static List<Critique> getCritiques(String buf) {
-		
+
 		List<Critique> critiques = new ArrayList<Critique>();
-		if(StringUtils.isNull(buf)){
+		if (StringUtils.isNull(buf)) {
 			return critiques;
 		}
-		
+
 		try {
 			JSONArray array = new JSONArray(buf);
 			for (int i = 0; i < array.length(); i++) {
-				
+
 				JSONObject obj = array.getJSONObject(i);
 				Critique critique = coventCritique(obj);
 				critiques.add(critique);
-				
+
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
+
 		return critiques;
 	}
 
@@ -701,22 +687,22 @@ public class ParseJson {
 		if (obj.has("nickName")) {
 			nickName = obj.getString("nickName");
 		}
-		
+
 		int level = 0;
-		if(obj.has("level")){
+		if (obj.has("level")) {
 			level = obj.getInt("level");
 		}
-		
+
 		int star = 0;
-		if(obj.has("star")){
+		if (obj.has("star")) {
 			star = obj.getInt("star");
 		}
-		
+
 		double average = 0L;
 		if (obj.has("average")) {
 			average = obj.getDouble("average");
 		}
-		
+
 		String desc = "";
 		if (obj.has("desc")) {
 			desc = obj.getString("desc");
@@ -726,8 +712,9 @@ public class ParseJson {
 		if (obj.has("updateDate")) {
 			updateDate = obj.getString("updateDate");
 		}
-		
-		critique = new Critique(accountId, nickName, level, star, average, desc, updateDate);
+
+		critique = new Critique(accountId, nickName, level, star, average,
+				desc, updateDate);
 		return critique;
 	}
 }
