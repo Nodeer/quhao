@@ -40,18 +40,17 @@ public class MerchantsSearchActivity extends AppStoreActivity {
 	private final int UNLOCK_CLICK = 1000;
 	private ProgressDialogUtil progressMerchants;
 	private boolean isFirst = true;
+	public static boolean backClicked = false;
 
 	private Handler merchantsUpdateHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
-
 				LinearLayout.LayoutParams merchantsParams = (LayoutParams) merchantsListView
 						.getLayoutParams();
 
 				// 设置自定义的layout
-
 				merchantsListView.setLayoutParams(merchantsParams);
 				merchantsListView.invalidate();
 				merchantsListView.setVisibility(View.VISIBLE);
@@ -74,9 +73,7 @@ public class MerchantsSearchActivity extends AppStoreActivity {
 						.setOnItemClickListener(merchantItemClickListener);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
-
 		}
-
 	};
 
 	private AdapterView.OnItemClickListener merchantItemClickListener = new AdapterView.OnItemClickListener() {
@@ -93,6 +90,8 @@ public class MerchantsSearchActivity extends AppStoreActivity {
 		}
 	};
 
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -100,24 +99,32 @@ public class MerchantsSearchActivity extends AppStoreActivity {
 		super.onCreate(savedInstanceState);
 
 		editSearch = (EditText) findViewById(R.id.edit_search1);
-		// editSearch.addTextChangedListener(searchWatcher);
-
 		searchBtn = (Button) findViewById(R.id.search_btn);
 		searchBtn.setOnClickListener(goSearchMerchantsListener(this));
 
 		merchantsListView = (ListView) findViewById(R.id.merchantsListView);
-
 		merchantsListView.setNextFocusDownId(R.id.merchantsListView);
 		merchantsListView.setVisibility(View.GONE);
 
 		btnBack.setOnClickListener(goBack(this));
 		// initView();
 	}
+
 	
-	protected void onPause() {  
-	    super.onPause();  
-	    overridePendingTransition(R.anim.in_from_left,
-				R.anim.out_to_right);
+	
+	@Override
+	protected void onResume() {
+		backClicked = false;
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		Log.i(LOGTAG, "backClicked: " + backClicked);
+		if(backClicked){
+			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+		}
 	}
 
 	private OnClickListener goSearchMerchantsListener(
