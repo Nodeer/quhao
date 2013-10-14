@@ -119,8 +119,11 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 			holder.img.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 			// 设置图片给imageView 对象
 			if (null != cachedImage) {
-				cachedImage.setBounds(0, 0, cachedImage.getIntrinsicWidth(),
-						cachedImage.getIntrinsicHeight());
+				int width = context.getResources().getDrawable(
+						R.drawable.default_icon1).getIntrinsicWidth();
+				int height = context.getResources().getDrawable(
+						R.drawable.default_icon1).getIntrinsicWidth();
+				cachedImage.setBounds(0, 0, width, height);
 				holder.img.setImageDrawable(cachedImage);
 				cachedImage.setCallback(null);
 				cachedImage = null;
