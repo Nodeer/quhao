@@ -108,7 +108,11 @@ public class ParseJson {
 				JSONObject obj = jsonArrays.getJSONObject(i);
 				String imgUrl = "";
 				if (obj.has("merchantImage")) {
-					imgUrl = obj.getString("merchantImage");
+					if(QuhaoConstant.test){
+						imgUrl = obj.getString("merchantImage").replace("localhost", "10.0.2.2");
+					}else{
+						imgUrl = obj.getString("merchantImage");
+					}
 				}
 
 				String name = "";

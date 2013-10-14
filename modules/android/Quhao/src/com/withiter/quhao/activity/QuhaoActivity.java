@@ -7,6 +7,9 @@ import java.io.InputStreamReader;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources.NotFoundException;
 import android.os.Bundle;
 
@@ -31,11 +34,11 @@ public abstract class QuhaoActivity extends Activity {
 		try {
 			super.onCreate(savedInstanceState);
 			QuhaoLog.i(TAG, "QuhaoActivity onCreate invoked");
-			if(!inited){
+			if (!inited) {
 				initAll();
 				inited = true;
 			}
-			
+
 		} catch (NotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -45,18 +48,16 @@ public abstract class QuhaoActivity extends Activity {
 		}
 	}
 
-	private void initAll() throws IOException{
+	private void initAll() throws IOException {
 		initConfig();
 		initLogin();
 	}
-	
-	private void initConfig() throws IOException{
+
+	private void initConfig() throws IOException {
 		QuhaoLog.i(TAG,
 				"start to init configurations from application.properties");
-		InputStream input = getResources().openRawResource(
-				R.raw.application);
-		BufferedReader read = new BufferedReader(new InputStreamReader(
-				input));
+		InputStream input = getResources().openRawResource(R.raw.application);
+		BufferedReader read = new BufferedReader(new InputStreamReader(input));
 		String line = "";
 		while ((line = read.readLine()) != null) {
 			if (line.contains("app.server")) {
@@ -64,18 +65,31 @@ public abstract class QuhaoActivity extends Activity {
 				QuhaoLog.i(TAG, "server url is : " + QuhaoConstant.HTTP_URL);
 			}
 		}
+
+		// Get the value of test from AndroidManifest.xml
+		try {
+			ApplicationInfo appInfo = this.getPackageManager().getApplicationInfo(
+					getPackageName(), PackageManager.GET_META_DATA);
+			boolean msg = appInfo.metaData.getBoolean("test");
+			QuhaoConstant.test = msg;
+			QuhaoLog.i(TAG, "current deployment is test mode : " + msg);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+
 	}
-	
-	private void initLogin(){
-		SharedPreferences settings = getSharedPreferences(QuhaoConstant.SHARED_PREFERENCES, 0);
+
+	private void initLogin() {
+		SharedPreferences settings = getSharedPreferences(
+				QuhaoConstant.SHARED_PREFERENCES, 0);
 		String uidStr = settings.getString("uid", "");
 		String autoLogin = settings.getString("autoLogin", "false");
-		if(uidStr.length() > 0){
+		if (uidStr.length() > 0) {
 			QuhaoActivity.uid = uidStr;
 			QuhaoActivity.autoLogin = Boolean.valueOf(autoLogin);
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -86,9 +100,9 @@ public abstract class QuhaoActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onPause();
 
-//		SharedPreferences prefs = getSharedPreferences("X", MODE_PRIVATE);
-//		Editor editor = prefs.edit();
-//		editor.putString("lastActivity", getClass().getName());
-//		editor.commit();
+		// SharedPreferences prefs = getSharedPreferences("X", MODE_PRIVATE);
+		// Editor editor = prefs.edit();
+		// editor.putString("lastActivity", getClass().getName());
+		// editor.commit();
 	}
 }

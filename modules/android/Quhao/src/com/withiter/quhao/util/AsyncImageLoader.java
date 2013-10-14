@@ -12,7 +12,6 @@ import java.util.HashMap;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
-import android.widget.ImageView;
 
 import com.withiter.quhao.util.tool.ImageUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
@@ -25,37 +24,36 @@ public class AsyncImageLoader {
 		imageCache = new HashMap<String, SoftReference<Drawable>>();
 	}
 
-	public Drawable loadDrawable(final String imageUrl,final int position,
+	public Drawable loadDrawable(final String imageUrl, final int position,
 			final ImageCallback imageCallback) {
-		// synchronized (imageUrl) {
 		try {
+			
+			// get cached image from memory
 			if (imageCache.containsKey(imageUrl)) {
 				SoftReference<Drawable> softReference = imageCache
 						.get(imageUrl);
 				Drawable drawable = softReference.get();
 				if (drawable != null) {
-					
 					return drawable;
 				}
 			}
-			
-			Drawable drawable = Drawable.createFromPath(ImageUtil.getInstance().getFilePath(imageUrl));
-			
-			if(null != drawable)
-			{
-				
+
+			// get cached image from SD card
+			Drawable drawable = Drawable.createFromPath(ImageUtil.getInstance()
+					.getFilePath(imageUrl));
+			if (null != drawable) {
 				return drawable;
 			}
-			
+
 			final Handler handler = new Handler() {
 				public void handleMessage(Message message) {
 					if (message != null && imageCallback != null) {
-						
 						imageCallback.imageLoaded((Drawable) message.obj,
-								imageUrl,position);
+								imageUrl, position);
 					}
 				}
 			};
+			
 			new Thread() {
 				@Override
 				public void run() {
@@ -69,14 +67,10 @@ public class AsyncImageLoader {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		// }
 		return null;
 	}
 
 	public static Drawable loadImageFromUrl(String url) {
-		
-		
-		
 		URL picUrl;
 		Drawable d = null;
 		HttpURLConnection conn = null;
@@ -95,9 +89,9 @@ public class AsyncImageLoader {
 				return d;
 			}
 			is = conn.getInputStream();
-			File file = ImageUtil.getInstance().saveFile(url,is);
+			File file = ImageUtil.getInstance().saveFile(url, is);
 			d = Drawable.createFromPath(file.getPath());
-			//d = Drawable.createFromStream(is, "src");
+			// d = Drawable.createFromStream(is, "src");
 		} catch (MalformedURLException e1) {
 			e1.printStackTrace();
 			return d;
@@ -115,14 +109,12 @@ public class AsyncImageLoader {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
 		}
-
 		return d;
 	}
 
 	public interface ImageCallback {
-		public void imageLoaded(Drawable imageDrawable, String imageUrl, int position);
-
+		public void imageLoaded(Drawable imageDrawable, String imageUrl,
+				int position);
 	}
 }

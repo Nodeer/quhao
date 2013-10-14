@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import play.Play;
+
 import vo.BackendMerchantInfoVO;
 import vo.HaomaVO;
 import vo.ReservationVO;
@@ -51,7 +53,7 @@ public class SelfManagementController extends BaseController {
 	public static void editMerchant(String uid, String mid) {
 
 		Merchant m = null;
-		
+
 		String merchantName = params.get("merchantName");
 		String description = params.get("description");
 		String address = params.get("address");
@@ -60,14 +62,14 @@ public class SelfManagementController extends BaseController {
 		String openTime = params.get("openTime");
 		String closeTime = params.get("closeTime");
 		String merchantImage = params.get("merchantImage");
-		
+
 		String[] seatType = params.getAll("seatType");
-		for(int i=0; i< seatType.length; i++){
-			System.out.print(seatType[i]+",");
+		for (int i = 0; i < seatType.length; i++) {
+			System.out.print(seatType[i] + ",");
 		}
 
 		System.out.println("==========");
-		
+
 		System.out.println(merchantName);
 		System.out.println(address);
 		System.out.println(tel);
@@ -86,7 +88,7 @@ public class SelfManagementController extends BaseController {
 		} else {
 			m = Merchant.findById(mid);
 		}
-		if(!StringUtils.isEmpty(merchantName)){
+		if (!StringUtils.isEmpty(merchantName)) {
 			m.name = merchantName;
 		}
 		m.description = description;
@@ -102,10 +104,18 @@ public class SelfManagementController extends BaseController {
 			GridFSInputFile file = uploadFirst(merchantImage, m.id());
 			if (file != null) {
 				m.merchantImageSet.add(file.getFilename());
+				if (StringUtils.isEmpty(m.merchantImage)) {
+					String server = Play.configuration
+							.getProperty("application.domain");
+					String imageStorePath = Play.configuration
+							.getProperty("image.store.path");
+					m.merchantImage = server + imageStorePath
+							+ file.getFilename();
+				}
 				m.save();
 			}
 		}
-		
+
 		index(uid);
 	}
 
@@ -123,40 +133,44 @@ public class SelfManagementController extends BaseController {
 		AccountVO avo = AccountVO.build(account);
 		renderJapid(avo);
 	}
-	
+
 	// TODO add statistic report here
 	public static void goStatisticPage() {
 		String mid = params.get("mid");
-		List<Reservation> rList = Reservation.findReservationsByMerchantIdandDate(mid);
+		List<Reservation> rList = Reservation
+				.findReservationsByMerchantIdandDate(mid);
 		List<ReservationVO> voList = ReservationVO.build(rList);
-		
+
 		System.out.println(voList.size());
-		
+
 		renderJapid(voList);
 	}
-	
-	public static void paiduiPageAutoRefresh(){
+
+	public static void paiduiPageAutoRefresh() {
 		String mid = params.get("mid");
 		Haoma haoma = Haoma.findByMerchantId(mid);
 		HaomaVO haomaVO = HaomaVO.build(haoma);
-		renderJapidWith("japidviews.backend.self.SelfManagementController.goPaiduiPageRefresh", haomaVO);
+		renderJapidWith(
+				"japidviews.backend.self.SelfManagementController.goPaiduiPageRefresh",
+				haomaVO);
 	}
-	
+
 	/**
 	 * finish one reservation by merchant
 	 */
-	public static void finishByMerchant(){
+	public static void finishByMerchant() {
 		String cNumber = params.get("currentNumber");
 		String sNumber = params.get("seatNumber");
 		String mid = params.get("mid");
 		int currentNumber = Integer.parseInt(cNumber);
 		int seatNumber = Integer.parseInt(sNumber);
-		
-		Reservation r = Reservation.findReservationFinishByMerchant(seatNumber, currentNumber, mid);
-		if(r != null){
+
+		Reservation r = Reservation.findReservationFinishByMerchant(seatNumber,
+				currentNumber, mid);
+		if (r != null) {
 			Reservation.finish(r.id());
 			renderJSON(true);
-		}else{
+		} else {
 			renderJSON(false);
 		}
 	}

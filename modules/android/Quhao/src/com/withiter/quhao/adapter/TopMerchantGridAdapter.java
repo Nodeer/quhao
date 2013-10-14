@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.AsyncImageLoader;
 import com.withiter.quhao.util.AsyncImageLoader.ImageCallback;
+import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.vo.TopMerchant;
 
 public class TopMerchantGridAdapter extends BaseAdapter {
@@ -24,6 +25,8 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 	private GridView grid;
 	private Context context;
 
+	private String TAG = TopMerchantGridAdapter.class.getName();
+	
 	public TopMerchantGridAdapter(List<? extends Object> list, GridView grid,
 			Context context) {
 		this.list = list;
@@ -73,10 +76,10 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 			String imageUrl = "";
 			imageUrl = topMerchant.url;
 			holder.img.setTag(imageUrl);
+			QuhaoLog.i(TAG, "the imageUrl is : " + imageUrl);
 			if (null != imageUrl && !"".equals(imageUrl)) {
 				cachedImage = asyncImageLoader.loadDrawable(imageUrl,position,
 						new ImageCallback() {
-
 							@Override
 							public void imageLoaded(Drawable imageDrawable,
 									String imageUrl,int position) {
