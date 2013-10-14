@@ -51,13 +51,13 @@ public class TestJob extends Job {
 			for(int i=0; i < 10; i++){
 				Account a = new Account();
 				a.birthDay = new Date().toString();
-				a.email = "test"+i+"@126.com";
+				a.email = "111111"+i+"@126.com";
 				a.enable = true;
 				a.lastLogin = new Date();
 				a.mobileOS = Constants.MobileOSType.IOS;
 				a.nickname = "Cross"+i;
-				a.password = Codec.hexSHA1("test"+i);
-				a.phone = "1888888888"+i;
+				a.password = Codec.hexSHA1("111111");
+				a.phone = "1868888888"+i;
 				a.save();
 			}
 		}
