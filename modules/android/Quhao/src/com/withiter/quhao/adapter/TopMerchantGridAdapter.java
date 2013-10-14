@@ -52,6 +52,9 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		
+		QuhaoLog.i(TAG,"getView " + position + " " + convertView);
+		
 		Drawable cachedImage = null;
 		TopMerchant topMerchant = null;
 		Object item = getItem(position);
@@ -83,15 +86,15 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 							@Override
 							public void imageLoaded(Drawable imageDrawable,
 									String imageUrl,int position) {
-								TextView imageViewByTag = (TextView) grid
+								ImageView imageViewByTag = (ImageView) grid
 										.findViewWithTag(imageUrl);
 								if (null != imageViewByTag
 										&& null != imageDrawable) {
 									imageDrawable.setBounds(0, 0,
 											imageDrawable.getIntrinsicWidth(),
 											imageDrawable.getIntrinsicHeight());
-									imageViewByTag.setCompoundDrawables(null,
-											imageDrawable, null, null);
+//									imageViewByTag.setCompoundDrawables(null,
+//											imageDrawable, null, null);
 									imageDrawable.setCallback(null);
 									imageDrawable = null;
 								}

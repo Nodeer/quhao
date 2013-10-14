@@ -81,14 +81,15 @@ public class TopMerchant extends TopMerchantEntityDef {
 	
 	public static void updateTopMerchantForTest(){
 		MorphiaQuery q = TopMerchant.q();
-		if(q.countAll() == 0){
+		if(q.countAll() < 6){
 			MorphiaQuery mq = Merchant.q();
 			mq.criteria("merchantImage").notEqual("");
-//			mq.filter("merchantImage", "!="+"");
 			List<Merchant> mList = mq.limit(6).asList();
 			for(Merchant m : mList){
-				TopMerchant tm = TopMerchant.build(m);
-				tm.save();
+				if(q.filter("mid", m.id()).count() <= 0){
+					TopMerchant tm = TopMerchant.build(m);
+					tm.save();
+				}
 			}
 		}
 	}
