@@ -16,6 +16,7 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.util.AsyncImageLoader;
 import com.withiter.quhao.util.AsyncImageLoader.ImageCallback;
 import com.withiter.quhao.util.QuhaoLog;
+import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.vo.TopMerchant;
 
 public class TopMerchantGridAdapter extends BaseAdapter {
@@ -24,6 +25,8 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 	private AsyncImageLoader asyncImageLoader;
 	private GridView grid;
 	private Context context;
+	
+	private static int getViewTimes = 0;
 
 	private String TAG = TopMerchantGridAdapter.class.getName();
 	
@@ -53,6 +56,7 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
+		QuhaoLog.i(TAG,"getView times : " + (getViewTimes++));
 		QuhaoLog.i(TAG,"getView " + position + " " + convertView);
 		
 		Drawable cachedImage = null;
@@ -68,19 +72,27 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				convertView = inflator.inflate(R.layout.topmerchant_item, null);
 				holder.img = (ImageView) convertView.findViewById(R.id.img);
-				// holder.itemView = (TextView)
-				// convertView.findViewById(R.id.text);
 			}
 
 			if (holder == null) {
 				holder = (ViewHolder) convertView.getTag();
 			}
 
+			if(StringUtils.isNull(topMerchant.id)){
+				cachedImage = context.getResources().getDrawable(
+						R.drawable.default_icon1);
+				cachedImage.setBounds(0, 0, cachedImage.getIntrinsicWidth(),
+						cachedImage.getIntrinsicHeight());
+				holder.img.setImageDrawable(cachedImage);
+				convertView.setTag(holder);
+				return convertView;
+			}
+			
 			String imageUrl = "";
 			imageUrl = topMerchant.url;
 			holder.img.setTag(imageUrl);
 			QuhaoLog.i(TAG, "the imageUrl is : " + imageUrl);
-			if (null != imageUrl && !"".equals(imageUrl)) {
+			if (StringUtils.isNotNull(imageUrl)) {
 				cachedImage = asyncImageLoader.loadDrawable(imageUrl,position,
 						new ImageCallback() {
 							@Override
@@ -103,19 +115,12 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 						});
 			}
 
-			/* 重新设置图片的宽高 */
+			// 重新设置图片的宽高
 			holder.img.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-			/*
-			 * 重新设置Layout 的宽高 holder.img.setLayoutParams(new
-			 * LinearLayout.LayoutParams( LayoutParams.WRAP_CONTENT,
-			 * LayoutParams.WRAP_CONTENT));
-			 */
 			// 设置图片给imageView 对象
 			if (null != cachedImage) {
 				cachedImage.setBounds(0, 0, cachedImage.getIntrinsicWidth(),
 						cachedImage.getIntrinsicHeight());
-				// holder.img.setCompoundDrawables(null, cachedImage, null,
-				// null);
 				holder.img.setImageDrawable(cachedImage);
 				cachedImage.setCallback(null);
 				cachedImage = null;
@@ -124,11 +129,8 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 						R.drawable.default_icon1);
 				cachedImage.setBounds(0, 0, cachedImage.getIntrinsicWidth(),
 						cachedImage.getIntrinsicHeight());
-				// holder.img.setCompoundDrawables(null, cachedImage, null,
-				// null);
 				holder.img.setImageDrawable(cachedImage);
 			}
-			// holder.itemView.setText(topMerchant.name);
 
 			convertView.setTag(holder);
 			return convertView;

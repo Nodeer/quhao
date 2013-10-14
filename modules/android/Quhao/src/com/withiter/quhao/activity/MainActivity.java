@@ -166,6 +166,7 @@ public class MainActivity extends AppStoreActivity {
 							.get("MerchantController/getTopMerchants?x=6");
 					QuhaoLog.d(TAG, result);
 					if (StringUtils.isNull(result)) {
+						// TODO display error page here
 						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
 								1000);
 					} else {
@@ -174,10 +175,20 @@ public class MainActivity extends AppStoreActivity {
 						}
 						topMerchants.clear();
 						topMerchants.addAll(ParseJson.getTopMerchants(result));
+						
+						// check the numbers of top merchant
+						int topMerchantCount = topMerchants.size();
+						if(topMerchantCount < 6){
+							for(int i=0; i< 6 - topMerchantCount; i++){
+								TopMerchant topMerchant = new TopMerchant();
+								topMerchants.add(topMerchant);
+							}
+						}
 						topMerchantsUpdateHandler.obtainMessage(200,
 								topMerchants).sendToTarget();
 					}
 				} catch (ClientProtocolException e) {
+					// TODO display error page here
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					e.printStackTrace();
 					Builder dialog = new AlertDialog.Builder(MainActivity.this);
@@ -186,6 +197,7 @@ public class MainActivity extends AppStoreActivity {
 							.setPositiveButton("确定", null);
 					dialog.show();
 				} catch (IOException e) {
+					// TODO display error page here
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					// Log.e(TAG, e.getCause().toString(), e);
 					e.printStackTrace();
