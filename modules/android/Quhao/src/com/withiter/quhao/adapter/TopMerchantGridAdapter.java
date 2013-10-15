@@ -82,7 +82,7 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 				cachedImage = context.getResources().getDrawable(
 						R.drawable.default_icon1);
 				cachedImage.setBounds(0, 0, cachedImage.getIntrinsicWidth(),
-						cachedImage.getIntrinsicHeight());
+						50);
 				holder.img.setImageDrawable(cachedImage);
 				convertView.setTag(holder);
 				return convertView;
@@ -98,13 +98,17 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 							@Override
 							public void imageLoaded(Drawable imageDrawable,
 									String imageUrl,int position) {
+								int width = context.getResources().getDrawable(
+										R.drawable.default_icon1).getIntrinsicWidth();
+								int height = context.getResources().getDrawable(
+										R.drawable.default_icon1).getIntrinsicWidth();
 								ImageView imageViewByTag = (ImageView) grid
 										.findViewWithTag(imageUrl);
 								if (null != imageViewByTag
 										&& null != imageDrawable) {
 									imageDrawable.setBounds(0, 0,
-											imageDrawable.getIntrinsicWidth(),
-											imageDrawable.getIntrinsicHeight());
+											width,
+											50);
 //									imageViewByTag.setCompoundDrawables(null,
 //											imageDrawable, null, null);
 									imageDrawable.setCallback(null);
@@ -123,7 +127,7 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 						R.drawable.default_icon1).getIntrinsicWidth();
 				int height = context.getResources().getDrawable(
 						R.drawable.default_icon1).getIntrinsicWidth();
-				cachedImage.setBounds(0, 0, width, height);
+				cachedImage.setBounds(0, 0, width, 50);
 				holder.img.setImageDrawable(cachedImage);
 				cachedImage.setCallback(null);
 				cachedImage = null;
@@ -131,7 +135,7 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 				cachedImage = context.getResources().getDrawable(
 						R.drawable.default_icon1);
 				cachedImage.setBounds(0, 0, cachedImage.getIntrinsicWidth(),
-						cachedImage.getIntrinsicHeight());
+						50);
 				holder.img.setImageDrawable(cachedImage);
 			}
 

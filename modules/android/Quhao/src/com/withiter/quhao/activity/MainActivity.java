@@ -122,12 +122,20 @@ public class MainActivity extends AppStoreActivity {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
-			String topMerchantId = topMerchants.get(position).id;
+			String mid = topMerchants.get(position).mid;
+			if(StringUtils.isNull(mid)){
+				Builder dialog = new AlertDialog.Builder(MainActivity.this);
+				dialog.setTitle("温馨提示")
+						.setMessage("商家管理中，稍等片刻就好")
+						.setPositiveButton("确定", null);
+				dialog.show();
+				return;
+			}
 			Intent intent = new Intent();
-			intent.putExtra("merchantId", topMerchantId);
+			intent.putExtra("merchantId", mid);
 			intent.setClass(MainActivity.this, MerchantDetailActivity.class);
 			startActivity(intent);
-			overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
+			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
 		}
 	};
 

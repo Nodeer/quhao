@@ -83,9 +83,12 @@ public class TopMerchant extends TopMerchantEntityDef {
 		MorphiaQuery q = TopMerchant.q();
 		if(q.countAll() < 6){
 			MorphiaQuery mq = Merchant.q();
-			mq.criteria("merchantImage").notEqual("").criteria("merchantImage").notEqual(null);
+			mq.criteria("merchantImage").notEqual("");
 			List<Merchant> mList = mq.limit(6).asList();
 			for(Merchant m : mList){
+				
+				System.out.println(q.filter("mid", m.id()).count());
+				
 				if(q.filter("mid", m.id()).count() <= 0){
 					TopMerchant tm = TopMerchant.build(m);
 					tm.save();

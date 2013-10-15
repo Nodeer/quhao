@@ -33,6 +33,7 @@ public class TopMerchant {
 	public String joinedDate = new Date().toString();
 	
 	public String merchantImage;
+	public String mid;
 	
 	public TopMerchant() {
 

@@ -124,8 +124,14 @@ public class ParseJson {
 				if (obj.has("id")) {
 					id = obj.getString("id");
 				}
+				
+				String mid = "";
+				if(obj.has("mid")){
+					mid = obj.getString("mid");
+				}
 
 				TopMerchant topMerchant = new TopMerchant(id, imgUrl, name);
+				topMerchant.mid = mid;
 				topMerchants.add(topMerchant);
 			}
 
