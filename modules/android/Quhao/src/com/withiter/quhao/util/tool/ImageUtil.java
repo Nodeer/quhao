@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.withiter.quhao.util.StringUtils;
+
 import android.os.Environment;
 
 /**
@@ -44,7 +46,7 @@ public class ImageUtil {
 	}
 
 	public File getFile(String imageUrl) {
-		String fileName = String.valueOf(imageUrl.hashCode());
+		String fileName = imageUrl.split("\\?fileName=")[1];
 		File file = new File(cacheDir, fileName);
 		if (file.exists()) {
 			return file;
@@ -54,12 +56,15 @@ public class ImageUtil {
 
 	public String getFilePath(String imageUrl) {
 		String path = cacheDir.getPath() + "/"
-				+ String.valueOf(imageUrl.hashCode());
+				+ imageUrl.split("\\?fileName=")[1];
 		return path;
 	}
 
 	public File saveFile(String imageUrl, InputStream is) {
-		String fileName = String.valueOf(imageUrl.hashCode());
+		if(StringUtils.isNull(imageUrl)){
+			return null;
+		}
+		String fileName = imageUrl.split("\\?fileName=")[1];
 		File file = null;
 		try {
 			file = new File(cacheDir, fileName);
