@@ -39,8 +39,9 @@ public class TopMerchant {
 
 	}
 
-	public TopMerchant(String id, String imgUrl, String name) {
+	public TopMerchant(String id, String mid, String imgUrl, String name) {
 		this.id = id;
+		this.mid = mid;
 		this.url = imgUrl;
 		this.name = name;
 	}

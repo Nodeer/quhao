@@ -42,6 +42,8 @@ public class MerchantVO {
 	public String x;
 	public String y;
 	
+	public String merchantImage;
+	
 	public static MerchantVO build(Merchant m) {
 		MerchantVO vo = new MerchantVO();
 		vo.id = m.id();
@@ -67,6 +69,8 @@ public class MerchantVO {
 		vo.x = m.x;
 		vo.y = m.y;
 		vo.seatType = m.seatType;
+		
+		vo.merchantImage = m.merchantImage;
 		
 		return vo;
 	}

@@ -123,10 +123,11 @@ public class MainActivity extends AppStoreActivity {
 		public void onItemClick(AdapterView<?> parent, View view, int position,
 				long id) {
 			String mid = topMerchants.get(position).mid;
+			QuhaoLog.d(TAG, "mid:" + mid);
 			if(StringUtils.isNull(mid)){
 				Builder dialog = new AlertDialog.Builder(MainActivity.this);
 				dialog.setTitle("温馨提示")
-						.setMessage("商家管理中，稍等片刻就好")
+						.setMessage("推荐商家虚席以待")
 						.setPositiveButton("确定", null);
 				dialog.show();
 				return;
@@ -135,7 +136,7 @@ public class MainActivity extends AppStoreActivity {
 			intent.putExtra("merchantId", mid);
 			intent.setClass(MainActivity.this, MerchantDetailActivity.class);
 			startActivity(intent);
-			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_left);
+			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 		}
 	};
 

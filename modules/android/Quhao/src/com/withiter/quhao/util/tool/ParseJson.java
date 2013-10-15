@@ -130,8 +130,7 @@ public class ParseJson {
 					mid = obj.getString("mid");
 				}
 
-				TopMerchant topMerchant = new TopMerchant(id, imgUrl, name);
-				topMerchant.mid = mid;
+				TopMerchant topMerchant = new TopMerchant(id, mid, imgUrl, name);
 				topMerchants.add(topMerchant);
 			}
 
@@ -193,8 +192,8 @@ public class ParseJson {
 		}
 		String imgUrl = "http://tuan.cs090.com/static/team/2013/0924/13799987621497_200x120.jpg";
 
-		if (obj.has("imgUrl")) {
-			imgUrl = obj.getString("imgUrl");
+		if (obj.has("merchantImage")) {
+			imgUrl = obj.getString("merchantImage");
 		}
 
 		String name = "";
