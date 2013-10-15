@@ -57,15 +57,29 @@ public class SettingsActivity extends AppStoreActivity {
 	@Override
 	public void onClick(View v) {
 		
+		if(isClick)
+		{
+			return;
+		}
 		switch(v.getId())
 		{
 			case R.id.more_settings_cleanpicture:
 				new CleanPicTask().execute();
 				break;
 			case R.id.more_settings_cleancache:
-					
+				progressDialogUtil = new ProgressDialogUtil(SettingsActivity.this, R.string.empty,
+						R.string.deleting, false);
+				progressDialogUtil.showProgress();
+				
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				
 				break;
 			case R.id.more_settings_imageshow:
+				progressDialogUtil = new ProgressDialogUtil(SettingsActivity.this, R.string.empty,
+						R.string.deleting, false);
+				progressDialogUtil.showProgress();
+				
 				
 				String isWifi = SharedprefUtil.get(this, "com.withiter.settings.wifi", "false");
 				if("true".equals(isWifi))
@@ -81,7 +95,8 @@ public class SettingsActivity extends AppStoreActivity {
 				
 				SharedprefUtil.put(SettingsActivity.this,
 						"com.withiter.settings.wifi", isWifi);
-				
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				break;
 			default:
 				break;
@@ -112,6 +127,7 @@ public class SettingsActivity extends AppStoreActivity {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			progress.closeProgress();
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			if (result) {
 				Toast.makeText(SettingsActivity.this, "清除成功", Toast.LENGTH_LONG).show();
 			} else {

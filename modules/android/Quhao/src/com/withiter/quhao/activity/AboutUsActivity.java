@@ -18,14 +18,16 @@ public class AboutUsActivity extends AppStoreActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.more_about_us);
 		super.onCreate(savedInstanceState);
-		
+		btnBack.setOnClickListener(goBack(this));
 		TextView version = (TextView) findViewById(R.id.about_us_version);
 		version.setText(ActivityUtil.getVersionName(this));
+		
 	}
 
 	@Override
 	public void onClick(View v) {
 
+		
 	}
 
 	@Override

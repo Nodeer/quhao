@@ -25,7 +25,7 @@
 	
     <!-- 提示信息 -->
 	<string name="empty" />
-	<string name="deleting">删除中请稍后....</string>
+	<string name="deleting">清空中请稍后....</string>
 	<string name="connecting">连接中&#8230;</string>
 	<string name="network_error_info">网络连接失败，请检查网络设置！</string>
 	<string name="logining">登录中&#8230;</string>
@@ -85,6 +85,9 @@
     <string name="more_versioncode">软件版本：</string>
     <string name="super_detail_service_phone">客服电话：</string>
     <string name="more_web_location">网\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020址：</string>
+    <string name="more_option_hint">留下您的宝贵意见，我们将持续改进产品（最多不能超过500字）</string>
+    <string name="more_option_phone_hint">手机号码或邮箱地址</string>
+    <string name="committing">正在提交中&#8230;&#8230;&#8230;</string>
 	<!-- more end -->
 	
 </resources>
