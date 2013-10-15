@@ -2,6 +2,7 @@ package com.withiter.quhao.util.tool;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -82,5 +83,27 @@ public class ImageUtil {
 			e.printStackTrace();
 		}
 		return file;
+	}
+	
+	/**
+	 * 删除SD卡文件信息
+	 */
+	public void cleanPictureCache() throws IOException {
+		/**
+		 * 遍历所有的然后删除
+		 */
+		if (cacheDir.exists()) {
+			File files[] = cacheDir.listFiles();
+			if (files != null) {
+				for (File f : files) {
+					if (f.isDirectory()) {
+
+					} else {
+						f.delete();
+					}
+				}
+			}
+			// fFile.delete();
+		}
 	}
 }

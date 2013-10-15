@@ -27,26 +27,30 @@
 	    android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content" 
 	    android:background="#ffffffff"
-	    android:gravity="center_horizontal">
-	    <LinearLayout android:layout_width="fill_parent"
-		    android:layout_height="0dip"
-		    android:layout_weight="1.5"
-		    android:gravity="center_horizontal|bottom"
-		    android:orientation="vertical">
-		    <ImageView android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:src="@drawable/application_icon"/>
-		</LinearLayout>
+	    android:gravity="center">
+
 		<LinearLayout
-            android:id="@+id/more_settings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dip"
-            android:background="@drawable/form_border_top"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="20dip"
-            android:paddingRight="20dip" >
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:gravity="center_horizontal|bottom"
+		    android:orientation="vertical" >
+
+		    <ImageView
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:src="@drawable/launch_logo" />
+		</LinearLayout>
+
+		<LinearLayout
+		    android:id="@+id/more_settings"
+		    android:layout_width="288dp"
+		    android:layout_height="42dp"
+		    android:layout_marginTop="20dip"
+		    android:background="@drawable/form_border_top"
+		    android:gravity="center_vertical"
+		    android:orientation="horizontal"
+		    android:paddingLeft="20dip"
+		    android:paddingRight="20dip" >
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -73,8 +77,8 @@
 
         <LinearLayout
             android:id="@+id/more_version"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="288dp"
+            android:layout_height="42dp"
             android:background="@drawable/form_border_middle"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -105,9 +109,9 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/more_option"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/more_opinion"
+            android:layout_height="42dp"
+            android:layout_width="288dp"
             android:background="@drawable/form_border_middle"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -118,7 +122,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:src="@drawable/option" />
+                android:src="@drawable/opinion" />
 
             <TextView
                 android:layout_width="0dip"
@@ -139,8 +143,8 @@
 
         <LinearLayout
             android:id="@+id/more_share"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="42dp"
+            android:layout_width="288dp"
             android:background="@drawable/form_border_middle"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -171,8 +175,8 @@
         </LinearLayout>
 		<LinearLayout
             android:id="@+id/more_help"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="42dp"
+            android:layout_width="288dp"
             android:background="@drawable/form_border_middle"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -183,7 +187,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:src="@drawable/about_us" />
+                android:src="@drawable/help" />
 
             <TextView
                 android:layout_width="0dip"
@@ -203,8 +207,8 @@
         </LinearLayout>
         <LinearLayout
             android:id="@+id/more_aboutus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="42dp"
+            android:layout_width="288dp"
             android:background="@drawable/form_border_bottom"
             android:gravity="center_vertical"
             android:orientation="horizontal"

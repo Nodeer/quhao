@@ -217,6 +217,56 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <!-- critiques page -->
+        
+        <!-- settings page -->
+        <activity
+            android:name="com.withiter.quhao.activity.SettingsActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <!-- settings page -->
+        
+        <!-- opinion page -->
+        <activity
+            android:name="com.withiter.quhao.activity.OpinionActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <!-- opinion page -->
+        
+        <!-- about us page -->
+        <activity
+            android:name="com.withiter.quhao.activity.AboutUsActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <!-- about us page -->
+        
+        <!-- help page -->
+        <activity
+            android:name="com.withiter.quhao.activity.HelpActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <!-- help page -->
+        
+        <!-- share page -->
+        <activity
+            android:name="com.withiter.quhao.activity.ShareDialogActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.CustomDialog" />
+        <!-- share page -->
     </application>
 
 </manifest>

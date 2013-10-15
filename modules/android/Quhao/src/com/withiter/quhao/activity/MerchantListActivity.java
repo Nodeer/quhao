@@ -104,7 +104,7 @@ public class MerchantListActivity extends AppStoreActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.merchants);
 		super.onCreate(savedInstanceState);
-
+		this.merchants = new ArrayList<Merchant>();
 		this.page = getIntent().getIntExtra("page", 1);
 		this.categoryType = getIntent().getStringExtra("categoryType");
 
