@@ -81,6 +81,10 @@
     <string name="more_setting_cleancache">清除本地缓存数据</string>
     <string name="more_setting_showimage">2G/3G网络无图浏览(节省流量)</string>
     <string name="sys_option">无图浏览:为节省流量,2G/3G网络状态下不加载图片,使用WIFI网络正常显示图片.</string>
+    <string name="more_company_intro">取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。</string>
+    <string name="more_versioncode">软件版本：</string>
+    <string name="super_detail_service_phone">客服电话：</string>
+    <string name="more_web_location">网\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020址：</string>
 	<!-- more end -->
 	
 </resources>
