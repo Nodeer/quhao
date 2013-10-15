@@ -18,6 +18,10 @@
 	<string name="no_tags">暂无推荐</string>
 	<string name="no_desc">暂无描述</string>
 	
+	<!-- 详细页面 -->
+	<string name="get_reservation">取号</string>
+	<string name="search_merchant">搜索 - 美食</string>
+	<!-- 详细页面 -->
 	
     <!-- 提示信息 -->
 	<string name="empty" />

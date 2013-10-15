@@ -42,6 +42,7 @@ public class TopMerchantVO {
 	public String joinedDate = new Date().toString();
 	
 	public String merchantImage;
+	public String mid;
 	
 	public static TopMerchantVO build(TopMerchant m) {
 		TopMerchantVO vo = new TopMerchantVO();
@@ -65,6 +66,7 @@ public class TopMerchantVO {
 		vo.telephone = m.telephone;
 		vo.teses = m.teses;
 		vo.xingjiabi = m.xingjiabi;
+		vo.mid = m.mid;
 		
 		if(StringUtils.isEmpty(m.merchantImage)){
 			Iterator it = m.merchantImageSet.iterator();

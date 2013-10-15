@@ -37,7 +37,9 @@
         android:numColumns="3"
         android:paddingTop="5dip"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="5dip" />
+        android:verticalSpacing="5dip" 
+        android:minHeight="50dip"
+        />
 
     <GridView
         android:id="@+id/categorys"

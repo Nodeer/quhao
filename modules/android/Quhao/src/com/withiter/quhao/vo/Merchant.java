@@ -8,7 +8,7 @@ public class Merchant implements Serializable {
 	 */
 	private static final long serialVersionUID = -7382528714008315975L;
 	public String id;
-	public String imgUrl = "";
+	public String merchantImage = "";
 	public String name;
 	public String address;
 	public String phone;
@@ -29,14 +29,14 @@ public class Merchant implements Serializable {
 	public boolean enable;
 	public String joinedDate;
 
-	public Merchant(String id, String imgUrl, String name, String address,
+	public Merchant(String id, String merchantImage, String name, String address,
 			String phone, String cateType, String grade, String averageCost,
 			String tags, Integer kouwei, Integer huanjing, Integer fuwu,
 			Integer xingjiabi, String teses, String nickName,
 			String description, String openTime, String closeTime,
 			Integer marketCount, boolean enable, String joinedDate) {
 		this.id = id;
-		this.imgUrl = imgUrl;
+		this.merchantImage = merchantImage;
 		this.name = name;
 		this.address = address;
 		this.phone = phone;

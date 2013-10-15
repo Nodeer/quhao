@@ -24,10 +24,18 @@ public class AsyncImageLoader {
 		imageCache = new HashMap<String, SoftReference<Drawable>>();
 	}
 
+	/**
+	 * load drawable only for topmerchant
+	 * 
+	 * @param imageUrl
+	 * @param position
+	 * @param imageCallback
+	 * @return
+	 */
 	public Drawable loadDrawable(final String imageUrl, final int position,
 			final ImageCallback imageCallback) {
 		try {
-			
+
 			// get cached image from memory
 			if (imageCache.containsKey(imageUrl)) {
 				SoftReference<Drawable> softReference = imageCache
@@ -53,7 +61,7 @@ public class AsyncImageLoader {
 					}
 				}
 			};
-			
+
 			new Thread() {
 				@Override
 				public void run() {
@@ -68,6 +76,36 @@ public class AsyncImageLoader {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	/**
+	 * load drawable from imageUrl
+	 * 
+	 * @param imageUrl
+	 * @param imageCallback
+	 * @return
+	 */
+	public Drawable loadDrawable(final String imageUrl) {
+
+		// get cached image from memory
+		if (imageCache.containsKey(imageUrl)) {
+			SoftReference<Drawable> softReference = imageCache.get(imageUrl);
+			Drawable drawable = softReference.get();
+			if (drawable != null) {
+				return drawable;
+			}
+		}
+
+		// get cached image from SD card
+		Drawable drawable = Drawable.createFromPath(ImageUtil.getInstance()
+				.getFilePath(imageUrl));
+		if (null != drawable) {
+			return drawable;
+		}
+
+		drawable = loadImageFromUrl(imageUrl);
+		imageCache.put(imageUrl, new SoftReference<Drawable>(drawable));
+		return drawable;
 	}
 
 	public static Drawable loadImageFromUrl(String url) {

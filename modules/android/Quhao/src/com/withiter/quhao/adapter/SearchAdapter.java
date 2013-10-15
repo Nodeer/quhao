@@ -82,7 +82,7 @@ public class SearchAdapter extends BaseAdapter {
 				holder = (ViewHolder) convertView.getTag();
 			}
 
-			String imageUrl = merchant.imgUrl;
+			String imageUrl = merchant.merchantImage;
 
 			holder.img.setTag(imageUrl);
 			if (null != imageUrl && !"".equals(imageUrl)) {

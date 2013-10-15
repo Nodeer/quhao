@@ -86,7 +86,7 @@ public class MerchantAdapter extends BaseAdapter {
 				holder = (ViewHolder) convertView.getTag();
 			}
 
-			String imageUrl = merchant.imgUrl;
+			String imageUrl = merchant.merchantImage;
 
 			holder.img.setTag(imageUrl + position);
 			if (null != imageUrl && !"".equals(imageUrl)) {

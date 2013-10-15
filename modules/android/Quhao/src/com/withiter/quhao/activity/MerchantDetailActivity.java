@@ -3,6 +3,7 @@ package com.withiter.quhao.activity;
 import java.util.List;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.ReservationAdapter;
+import com.withiter.quhao.util.AsyncImageLoader;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
@@ -29,6 +31,7 @@ import com.withiter.quhao.vo.Merchant;
 import com.withiter.quhao.vo.ReservationVO;
 
 public class MerchantDetailActivity extends AppStoreActivity {
+	
 	private String LOGTAG = MerchantDetailActivity.class.getName();
 	private String merchantId;
 	private final int UNLOCK_CLICK = 1000;
@@ -41,108 +44,19 @@ public class MerchantDetailActivity extends AppStoreActivity {
 	private ImageView merchantImg;
 	private TextView merchantAddress;
 	private TextView merchantPhone;
-	private TextView merchantTags;
+//	private TextView merchantTags;
 	private TextView merchantDesc;
 	private TextView merchantAverageCost;
 	private TextView xingjiabi;
 	private TextView kouwei;
 	private TextView huanjing;
 	private TextView fuwu;
-	
+
 	private LinearLayout currentNoLayout;
 	private LinearLayout critiqueLayout;
 	private ListView reservationListView;
 	private ReservationAdapter reservationAdapter;
 
-	private Handler merchantUpdateHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			if (msg.what == 200) {
-				super.handleMessage(msg);
-
-				info.findViewById(R.id.loadingbar).setVisibility(View.GONE);
-				info.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
-
-				if (null != MerchantDetailActivity.this.merchant) {
-					MerchantDetailActivity.this.merchantName
-							.setText(MerchantDetailActivity.this.merchant.name);
-					// MerchantDetailActivity.this.merchantImg = (ImageView)
-					// info.findViewById(R.id.merchantImg);
-					MerchantDetailActivity.this.merchantAddress
-							.setText(MerchantDetailActivity.this.merchant.address);
-					MerchantDetailActivity.this.merchantPhone
-							.setText(MerchantDetailActivity.this.merchant.phone);
-					
-					MerchantDetailActivity.this.merchantTags
-					.setText(MerchantDetailActivity.this.merchant.tags);
-					if(StringUtils.isNull(MerchantDetailActivity.this.merchant.tags))
-					{
-						MerchantDetailActivity.this.merchantTags
-						.setText(R.string.no_tags);
-					}
-					
-					MerchantDetailActivity.this.merchantDesc
-							.setText(MerchantDetailActivity.this.merchant.description);
-					if(StringUtils.isNull(MerchantDetailActivity.this.merchant.description))
-					{
-						MerchantDetailActivity.this.merchantDesc
-						.setText(R.string.no_desc);
-					}
-					
-					MerchantDetailActivity.this.merchantAverageCost
-							.setText(MerchantDetailActivity.this.merchant.averageCost);
-					MerchantDetailActivity.this.xingjiabi
-							.setText(String
-									.valueOf(MerchantDetailActivity.this.merchant.xingjiabi));
-					MerchantDetailActivity.this.kouwei
-							.setText(String
-									.valueOf(MerchantDetailActivity.this.merchant.kouwei));
-					MerchantDetailActivity.this.fuwu
-							.setText(String
-									.valueOf(MerchantDetailActivity.this.merchant.fuwu));
-					MerchantDetailActivity.this.huanjing
-							.setText(String
-									.valueOf(MerchantDetailActivity.this.merchant.huanjing));
-					critiqueLayout = (LinearLayout) info.findViewById(R.id.critiqueLayout);
-					critiqueLayout.setOnClickListener(MerchantDetailActivity.this);
-				}
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			}
-
-		}
-
-	};
-
-	private Handler reservationUpdateHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			if (msg.what == 200) {
-				super.handleMessage(msg);
-
-				
-				currentNoLayout.setVisibility(View.VISIBLE);
-				LinearLayout.LayoutParams reservationsParams = (LayoutParams) reservationListView
-						.getLayoutParams();
-
-				// 设置自定义的layout
-				
-				reservationListView.setLayoutParams(reservationsParams);
-				reservationListView.invalidate();
-				
-				//btnGetNumber.setVisibility(View.GONE); TODO:
-				
-				reservationListView.setVisibility(View.VISIBLE);
-				List<ReservationVO> rvos = (List<ReservationVO>) msg.obj;
-				reservationAdapter = new ReservationAdapter(MerchantDetailActivity.this, reservationListView, rvos);
-				reservationListView.setAdapter(reservationAdapter);
-				reservationAdapter.notifyDataSetChanged();
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			}
-
-		}
-
-	};
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -150,70 +64,63 @@ public class MerchantDetailActivity extends AppStoreActivity {
 		super.onCreate(savedInstanceState);
 
 		this.merchantId = getIntent().getStringExtra("merchantId");
-
+		this.merchantName = (TextView) findViewById(R.id.merchant_detail_merchantName);
+		btnBack.setOnClickListener(goBack(this));
 		btnGetNumber = (Button) findViewById(R.id.btn_GetNumber);
-
 		btnGetNumber.setOnClickListener(getNumberClickListener());
 
 		LayoutInflater inflater = LayoutInflater.from(this);
-		info = (LinearLayout) inflater.inflate(R.layout.poiinfo, null);
+		info = (LinearLayout) inflater.inflate(R.layout.merchant_detail_info, null);
 		LinearLayout scroll = (LinearLayout) findViewById(R.id.lite_list);
-
 		LayoutParams layoutParams = new LayoutParams(LayoutParams.FILL_PARENT,
 				LayoutParams.WRAP_CONTENT);
 
 		scroll.addView(info, layoutParams);
 
 		this.mapLayout = (LinearLayout) findViewById(R.id.mapLayout);
-		mapLayout.setOnClickListener(new OnClickListener()
-		{
-			
+		mapLayout.setOnClickListener(new OnClickListener() {
 			@Override
-			public void onClick(View v)
-			{
-				Intent intent = new Intent(MerchantDetailActivity.this, MerchantLBSActivity.class);
+			public void onClick(View v) {
+				Intent intent = new Intent(MerchantDetailActivity.this,
+						MerchantLBSActivity.class);
 				intent.putExtra("merchantId",
 						MerchantDetailActivity.this.merchantId);
-				intent.putExtra("merchantName",
-						"jiu dian 1");
+				intent.putExtra("merchantName", "jiu dian 1");
 				startActivity(intent);
-				overridePendingTransition(R.anim.main_enter,
-						R.anim.main_exit);
+				overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
 
 			}
 		});
-		this.merchantName = (TextView) findViewById(R.id.merchantName);
+		
 		this.merchantImg = (ImageView) info.findViewById(R.id.merchantImg);
-		this.merchantAddress = (TextView) info
-				.findViewById(R.id.merchantAddress);
+		this.merchantAddress = (TextView) info.findViewById(R.id.merchantAddress);
 		this.merchantPhone = (TextView) info.findViewById(R.id.merchantPhone);
-		this.merchantTags = (TextView) info.findViewById(R.id.merchantTags);
+//		this.merchantTags = (TextView) info.findViewById(R.id.merchantTags);
 		this.merchantDesc = (TextView) info.findViewById(R.id.description);
-		this.merchantAverageCost = (TextView) info
-				.findViewById(R.id.merchantAverageCost);
+		this.merchantAverageCost = (TextView) info.findViewById(R.id.merchant_details_AverageCost);
 		this.xingjiabi = (TextView) info.findViewById(R.id.xingjiabi);
 		this.kouwei = (TextView) info.findViewById(R.id.kouwei);
 		this.fuwu = (TextView) info.findViewById(R.id.fuwu);
 		this.huanjing = (TextView) info.findViewById(R.id.huanjing);
-		currentNoLayout = (LinearLayout) info.findViewById(R.id.currentNoLayout);
-		reservationListView = (ListView) info.findViewById(R.id.reservationListView);
 		
-		//if(QHClientApplication.getInstance().isLogined)
-		if(true)
-		{
+		currentNoLayout = (LinearLayout) info
+				.findViewById(R.id.currentNoLayout);
+		reservationListView = (ListView) info
+				.findViewById(R.id.reservationListView);
+
+		// TODO add login check here
+		// if(QHClientApplication.getInstance().isLogined)
+		if (true) {
 			getCurrentNo();
 		}
-		
-		btnBack.setOnClickListener(goBack(this));
+
 		initView();
 	}
 
 	/**
-	 * 根据帐号ID，和merchant ID 获取当前的号码， 如果用户已经取号， 则显示当前号码，
-	 * 如果没有取号，则不显示
+	 * 根据帐号ID，和merchant ID 获取当前的号码， 如果用户已经取号， 则显示当前号码， 如果没有取号，则不显示
 	 */
-	private void getCurrentNo()
-	{
+	private void getCurrentNo() {
 		Thread currentNoThread = new Thread(paiduiRunnable);
 		currentNoThread.start();
 	}
@@ -223,8 +130,9 @@ public class MerchantDetailActivity extends AppStoreActivity {
 		public void run() {
 			try {
 				QuhaoLog.v(LOGTAG, "get categorys data form server begin");
-				String buf = CommonHTTPRequest.get("getReservations?accountId=51e563feae4d165869fda38c&mid=51efe7d8ae4dca7b4c281754");
-						//+ MerchantDetailActivity.this.merchantId);
+				String buf = CommonHTTPRequest
+						.get("getReservations?accountId=51e563feae4d165869fda38c&mid=51efe7d8ae4dca7b4c281754");
+				// + MerchantDetailActivity.this.merchantId);
 				if (StringUtils.isNull(buf) || "[]".equals(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
@@ -241,7 +149,7 @@ public class MerchantDetailActivity extends AppStoreActivity {
 			}
 		}
 	};
-	
+
 	/**
 	 * 
 	 * 取号按钮的 click listener
@@ -303,7 +211,6 @@ public class MerchantDetailActivity extends AppStoreActivity {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
 					merchant = ParseJson.getMerchant(buf);
-
 					merchantUpdateHandler.obtainMessage(200, merchant)
 							.sendToTarget();
 				}
@@ -317,12 +224,106 @@ public class MerchantDetailActivity extends AppStoreActivity {
 		}
 	};
 
+	private Handler merchantUpdateHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.what == 200) {
+				super.handleMessage(msg);
+
+				info.findViewById(R.id.loadingbar).setVisibility(View.GONE);
+				info.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
+
+				if (null != MerchantDetailActivity.this.merchant) {
+					AsyncImageLoader asynImageLoader = new AsyncImageLoader();
+					Drawable drawable = asynImageLoader.loadDrawable(merchant.merchantImage);
+					if(drawable != null){
+						MerchantDetailActivity.this.merchantImg.setImageDrawable(drawable);
+					}
+					MerchantDetailActivity.this.merchantName
+							.setText(MerchantDetailActivity.this.merchant.name);
+					MerchantDetailActivity.this.merchantAddress
+							.setText(MerchantDetailActivity.this.merchant.address);
+					MerchantDetailActivity.this.merchantPhone
+							.setText(MerchantDetailActivity.this.merchant.phone);
+
+//					MerchantDetailActivity.this.merchantTags
+//							.setText(MerchantDetailActivity.this.merchant.tags);
+//					if (StringUtils
+//							.isNull(MerchantDetailActivity.this.merchant.tags)) {
+//						MerchantDetailActivity.this.merchantTags
+//								.setText(R.string.no_tags);
+//					}
+
+					MerchantDetailActivity.this.merchantDesc
+							.setText(MerchantDetailActivity.this.merchant.description);
+					if (StringUtils
+							.isNull(MerchantDetailActivity.this.merchant.description)) {
+						MerchantDetailActivity.this.merchantDesc
+								.setText(R.string.no_desc);
+					}
+
+					MerchantDetailActivity.this.merchantAverageCost
+							.setText(MerchantDetailActivity.this.merchant.averageCost);
+					MerchantDetailActivity.this.xingjiabi
+							.setText(String
+									.valueOf(MerchantDetailActivity.this.merchant.xingjiabi));
+					MerchantDetailActivity.this.kouwei
+							.setText(String
+									.valueOf(MerchantDetailActivity.this.merchant.kouwei));
+					MerchantDetailActivity.this.fuwu
+							.setText(String
+									.valueOf(MerchantDetailActivity.this.merchant.fuwu));
+					MerchantDetailActivity.this.huanjing
+							.setText(String
+									.valueOf(MerchantDetailActivity.this.merchant.huanjing));
+					critiqueLayout = (LinearLayout) info
+							.findViewById(R.id.critiqueLayout);
+					critiqueLayout
+							.setOnClickListener(MerchantDetailActivity.this);
+				}
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			}
+
+		}
+
+	};
+
+	private Handler reservationUpdateHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.what == 200) {
+				super.handleMessage(msg);
+
+				currentNoLayout.setVisibility(View.VISIBLE);
+				LinearLayout.LayoutParams reservationsParams = (LayoutParams) reservationListView
+						.getLayoutParams();
+
+				// 设置自定义的layout
+
+				reservationListView.setLayoutParams(reservationsParams);
+				reservationListView.invalidate();
+
+				// btnGetNumber.setVisibility(View.GONE); TODO:
+
+				reservationListView.setVisibility(View.VISIBLE);
+				List<ReservationVO> rvos = (List<ReservationVO>) msg.obj;
+				reservationAdapter = new ReservationAdapter(
+						MerchantDetailActivity.this, reservationListView, rvos);
+				reservationListView.setAdapter(reservationAdapter);
+				reservationAdapter.notifyDataSetChanged();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			}
+
+		}
+
+	};
+
 	@Override
 	public void onClick(View v) {
 
 		switch (v.getId()) {
 		case R.id.critiqueLayout:
-			
+
 			Intent intent = new Intent(this, CritiquesActivity.class);
 			intent.putExtra("merchantName", this.merchant.name);
 			intent.putExtra("merchantId", this.merchant.id);
@@ -331,7 +332,7 @@ public class MerchantDetailActivity extends AppStoreActivity {
 		default:
 			break;
 		}
-		
+
 	}
 
 	@Override
