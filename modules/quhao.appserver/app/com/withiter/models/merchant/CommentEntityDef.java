@@ -9,11 +9,13 @@ public abstract class CommentEntityDef extends BaseModel {
 	public String uid;
 	public String mid;
 	public String averageCost;
-	public int xingjiabi;
-	public int kouwei;
-	public int huanjing;
-	public int fuwu;
+	public int xingjiabi = 0;
+	public int kouwei = 0;
+	public int huanjing = 0;
+	public int fuwu = 0;
 	
-	public Date date;
+	public String content;
+	
+	public Date date = new Date();
 	public String location;
 }

@@ -1,6 +1,7 @@
 package com.withiter.quhao.vo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class Merchant implements Serializable {
 	/**
@@ -28,6 +29,16 @@ public class Merchant implements Serializable {
 	public Integer marketCount;
 	public boolean enable;
 	public String joinedDate;
+	
+	/** latest one comment **/
+	public String commentAverageCost;
+	public int commentXingjiabi;
+	public int commentKouwei;
+	public int commentHuanjing;
+	public int commentFuwu;
+	public String commentContent;
+	public String commentDate;
+	/** latest one comment **/
 
 	public Merchant(String id, String merchantImage, String name, String address,
 			String phone, String cateType, String grade, String averageCost,

@@ -236,17 +236,19 @@ public class MerchantDetailActivity extends AppStoreActivity {
 				info.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
 
 				if (null != MerchantDetailActivity.this.merchant) {
+					
+					Merchant m = MerchantDetailActivity.this.merchant;
 					AsyncImageLoader asynImageLoader = new AsyncImageLoader();
 					Drawable drawable = asynImageLoader.loadDrawable(merchant.merchantImage);
 					if(drawable != null){
 						MerchantDetailActivity.this.merchantImg.setImageDrawable(drawable);
 					}
 					MerchantDetailActivity.this.merchantName
-							.setText(MerchantDetailActivity.this.merchant.name);
+							.setText(m.name);
 					MerchantDetailActivity.this.merchantAddress
-							.setText(MerchantDetailActivity.this.merchant.address);
+							.setText(m.address);
 					MerchantDetailActivity.this.merchantPhone
-							.setText(MerchantDetailActivity.this.merchant.phone);
+							.setText(m.phone);
 
 //					MerchantDetailActivity.this.merchantTags
 //							.setText(MerchantDetailActivity.this.merchant.tags);
@@ -257,29 +259,39 @@ public class MerchantDetailActivity extends AppStoreActivity {
 //					}
 
 					MerchantDetailActivity.this.merchantDesc
-							.setText(MerchantDetailActivity.this.merchant.description);
+							.setText(m.description);
 					if (StringUtils
-							.isNull(MerchantDetailActivity.this.merchant.description)) {
+							.isNull(m.description)) {
 						MerchantDetailActivity.this.merchantDesc
 								.setText(R.string.no_desc);
 					}
 
 					MerchantDetailActivity.this.merchantAverageCost
-							.setText(MerchantDetailActivity.this.merchant.averageCost);
+							.setText(m.averageCost);
 					MerchantDetailActivity.this.xingjiabi
 							.setText(String
-									.valueOf(MerchantDetailActivity.this.merchant.xingjiabi));
+									.valueOf(m.xingjiabi));
 					MerchantDetailActivity.this.kouwei
 							.setText(String
-									.valueOf(MerchantDetailActivity.this.merchant.kouwei));
+									.valueOf(m.kouwei));
 					MerchantDetailActivity.this.fuwu
 							.setText(String
-									.valueOf(MerchantDetailActivity.this.merchant.fuwu));
+									.valueOf(m.fuwu));
 					MerchantDetailActivity.this.huanjing
 							.setText(String
-									.valueOf(MerchantDetailActivity.this.merchant.huanjing));
+									.valueOf(m.huanjing));
+					
 					critiqueLayout = (LinearLayout) info
 							.findViewById(R.id.critiqueLayout);
+					QuhaoLog.i(LOGTAG, m.commentAverageCost);
+					QuhaoLog.i(LOGTAG, m.commentContent);
+					QuhaoLog.i(LOGTAG, m.commentDate);
+					QuhaoLog.i(LOGTAG, m.commentFuwu);
+					QuhaoLog.i(LOGTAG, m.commentHuanjing);
+					QuhaoLog.i(LOGTAG, m.commentKouwei);
+					QuhaoLog.i(LOGTAG, m.commentXingjiabi);
+					
+					
 					critiqueLayout
 							.setOnClickListener(MerchantDetailActivity.this);
 				}

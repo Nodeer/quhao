@@ -319,6 +319,25 @@ public class ParseJson {
 				grade, averageCost, tags, kouwei, huanjing, fuwu, xingjiabi,
 				teses, nickName, description, openTime, closeTime, marketCount,
 				enable, joinedDate);
+		
+		String commentAverageCost = obj.optString("commentAverageCost");
+		int commentXingjiabi = obj.optInt("commentXingjiabi");
+		int commentKouwei = obj.optInt("commentHuanjing");
+		int commentFuwu = obj.optInt("commentFuwu");
+		int commentHuanjing = obj.optInt("commentHuanjing");
+		String commentContent = obj.optString("commentContent");
+		String commentDate = obj.optString("commentDate");
+		
+		merchant.commentAverageCost = commentAverageCost;
+		
+		merchant.commentXingjiabi = commentXingjiabi;
+		merchant.commentKouwei = commentKouwei;
+		merchant.commentHuanjing = commentHuanjing;
+		merchant.commentFuwu = commentFuwu;
+		
+		merchant.commentContent = commentContent;
+		merchant.commentDate = commentDate;
+		
 		return merchant;
 	}
 

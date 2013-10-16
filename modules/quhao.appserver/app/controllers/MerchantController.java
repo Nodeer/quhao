@@ -13,6 +13,7 @@ import vo.TopMerchantVO;
 import com.withiter.models.account.Account;
 import com.withiter.models.account.Reservation;
 import com.withiter.models.merchant.Category;
+import com.withiter.models.merchant.Comment;
 import com.withiter.models.merchant.Haoma;
 import com.withiter.models.merchant.Merchant;
 import com.withiter.models.merchant.Paidui;
@@ -77,7 +78,11 @@ public class MerchantController extends BaseController {
 	public static void merchant(String id) {
 		System.out.println("merchant:" + id);
 		Merchant m = Merchant.findByMid(id);
-		renderJSON(MerchantVO.build(m));
+		Comment c = Comment.latestOne();
+		if(c == null){
+			c = new Comment();
+		}
+		renderJSON(MerchantVO.build(m,c));
 	}
 
 	/**
