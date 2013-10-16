@@ -173,7 +173,6 @@ public class ParseJson {
 
 		try {
 			JSONObject obj = new JSONObject(buf);
-
 			merchant = coventMerchant(obj);
 
 		} catch (JSONException e) {
@@ -190,27 +189,23 @@ public class ParseJson {
 		if (obj.has("id")) {
 			id = obj.getString("id");
 		}
-		String imgUrl = "http://tuan.cs090.com/static/team/2013/0924/13799987621497_200x120.jpg";
-
+		String imgUrl = "";
 		if (obj.has("merchantImage")) {
 			imgUrl = obj.getString("merchantImage");
 		}
 
 		String name = "";
-
 		if (obj.has("name")) {
 			name = obj.getString("name");
 		}
 
 		String address = "";
-
 		if (obj.has("address")) {
 			address = obj.getString("address");
 		}
 
 		String phone = "";
 		if (obj.has("telephone")) {
-
 			JSONArray array = obj.getJSONArray("telephone");
 			for (int i = 0; i < array.length(); i++) {
 				if (i == array.length() - 1) {
@@ -219,7 +214,6 @@ public class ParseJson {
 				}
 				phone = phone + array.get(i).toString() + ",";
 			}
-
 		}
 
 		String cateType = "";
@@ -247,7 +241,6 @@ public class ParseJson {
 				}
 				tags = tags + array.get(i).toString() + ",";
 			}
-
 		}
 
 		Integer kouwei = null;

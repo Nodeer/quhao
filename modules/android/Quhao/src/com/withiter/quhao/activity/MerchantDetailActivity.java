@@ -193,7 +193,6 @@ public class MerchantDetailActivity extends AppStoreActivity {
 			return;
 		}
 		isClick = true;
-
 		progress = new ProgressDialogUtil(this, R.string.empty,
 				R.string.querying, false);
 		progress.showProgress();
