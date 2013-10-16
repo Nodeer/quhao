@@ -47,25 +47,25 @@ public class TopMerchantVO {
 	public static TopMerchantVO build(TopMerchant m) {
 		TopMerchantVO vo = new TopMerchantVO();
 		vo.id = m.id();
-		vo.address = m.address;
-		vo.averageCost = m.averageCost;
-		vo.cateType = m.cateType;
-		vo.closeTime = m.closeTime;
-		vo.description = m.description;
+//		vo.address = m.address;
+//		vo.averageCost = m.averageCost;
+//		vo.cateType = m.cateType;
+//		vo.closeTime = m.closeTime;
+//		vo.description = m.description;
 		vo.enable = m.enable;
-		vo.fuwu = m.fuwu;
-		vo.grade = m.grade;
-		vo.huanjing = m.huanjing;
-		vo.joinedDate = m.joinedDate;
-		vo.kouwei = m.kouwei;
-		vo.markedCount = m.markedCount;
+//		vo.fuwu = m.fuwu;
+//		vo.grade = m.grade;
+//		vo.huanjing = m.huanjing;
+//		vo.joinedDate = m.joinedDate;
+//		vo.kouwei = m.kouwei;
+//		vo.markedCount = m.markedCount;
 		vo.name = m.name;
-		vo.nickName = m.nickName;
-		vo.openTime = m.openTime;
-		vo.tags = m.tags;
-		vo.telephone = m.telephone;
-		vo.teses = m.teses;
-		vo.xingjiabi = m.xingjiabi;
+//		vo.nickName = m.nickName;
+//		vo.openTime = m.openTime;
+//		vo.tags = m.tags;
+//		vo.telephone = m.telephone;
+//		vo.teses = m.teses;
+//		vo.xingjiabi = m.xingjiabi;
 		vo.mid = m.mid;
 		
 		if(StringUtils.isEmpty(m.merchantImage)){
