@@ -24,9 +24,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:src="@drawable/upload" 
                 android:contentDescription="@string/empty"
                 />
+                <!-- 
+                android:src="@drawable/upload"
+                 --> 
             <!-- merchant logo -->
         </LinearLayout>
 
@@ -37,7 +39,8 @@
             android:orientation="vertical"
             android:paddingLeft="2.0dip"
             android:paddingTop="8.0dip" >
-
+			
+            <!-- 
             <ImageView
                 android:id="@+id/stars"
                 android:layout_width="wrap_content"
@@ -46,6 +49,7 @@
                 android:src="@drawable/star50" 
                 android:contentDescription="@string/empty"
                 />
+             -->
             <LinearLayout
                 android:id="@+id/tex2_lay1"
                 android:layout_width="fill_parent"
@@ -59,7 +63,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3.0dip"
                     android:singleLine="true"
-                    android:text="人均￥"
+                    android:text="@string/renjun"
                     android:textAppearance="?android:textAppearanceMedium"
                     android:textColor="#ff000000"
                     android:textSize="16.0sp" />
@@ -70,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3.0dip"
                     android:singleLine="true"
-                    android:text="0"
+                    android:text="@string/zero"
                     android:textAppearance="?android:textAppearanceMedium"
                     android:textColor="#ff000000"
                     android:textSize="16.0sp" />
@@ -82,7 +86,7 @@
                     android:layout_marginLeft="3.0dip"
                     android:layout_marginTop="3.0dip"
                     android:singleLine="true"
-                    android:text="   性价比:"
+                    android:text="@string/xingjiabi"
                     android:textAppearance="?android:textAppearanceMedium"
                     android:textColor="#ff999999"
                     android:textSize="16.0sp" />
@@ -93,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3.0dip"
                     android:singleLine="true"
-                    android:text="25"
+                    android:text="@string/zero"
                     android:textAppearance="?android:textAppearanceMedium"
                     android:textColor="#ff000000"
                     android:textSize="16.0sp" />
@@ -112,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3.0dip"
                     android:singleLine="true"
-                    android:text="口味:"
+                    android:text="@string/kouwei"
                     android:textAppearance="?android:textAppearanceMedium"
                     android:textColor="#ff999999"
                     android:textSize="16.0sp" />
@@ -123,7 +127,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3.0dip"
                     android:singleLine="true"
-                    android:text="27"
+                    android:text="@string/zero"
                     android:textAppearance="?android:textAppearanceMedium"
                     android:textColor="#ff000000"
                     android:textSize="16.0sp" />
@@ -135,7 +139,7 @@
                     android:layout_marginLeft="3.0dip"
                     android:layout_marginTop="3.0dip"
                     android:singleLine="true"
-                    android:text="环境:"
+                    android:text="@string/huanjing"
                     android:textAppearance="?android:textAppearanceMedium"
                     android:textColor="#ff999999"
                     android:textSize="16.0sp" />
@@ -146,19 +150,19 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3.0dip"
                     android:singleLine="true"
-                    android:text="25"
+                    android:text="@string/zero"
                     android:textAppearance="?android:textAppearanceMedium"
                     android:textColor="#ff000000"
                     android:textSize="16.0sp" />
 
                 <TextView
-                    android:id="@+id/text2_shop_score3"
+                    android:id="@+id/merchant_detail_label_fuwu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="3.0dip"
                     android:layout_marginTop="3.0dip"
                     android:singleLine="true"
-                    android:text="服务:"
+                    android:text="@string/fuwu"
                     android:textAppearance="?android:textAppearanceMedium"
                     android:textColor="#ff999999"
                     android:textSize="16.0sp" />
@@ -169,7 +173,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3.0dip"
                     android:singleLine="true"
-                    android:text="25"
+                    android:text="@string/zero"
                     android:textAppearance="?android:textAppearanceMedium"
                     android:textColor="#ff000000"
                     android:textSize="16.0sp" />
@@ -194,7 +198,7 @@
             android:paddingLeft="10.0dip"
             android:paddingRight="10.0dip"
             android:paddingTop="1.0dip"
-            android:text="取号情况:"
+            android:text="@string/quhaoqingkuang"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="#ff000000"
             android:textSize="16.0sp" />
@@ -238,7 +242,7 @@
             android:layout_weight="1.0"
             android:maxLines="2"
             android:paddingRight="6.0dip"
-            android:text="陕西南路35号红房子2楼"
+            android:text="@string/empty"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="#ff000000"
             android:textSize="16.0sp" />
@@ -278,7 +282,7 @@
             android:layout_weight="1.0"
             android:maxLines="2"
             android:paddingRight="6.0dip"
-            android:text="32553256"
+            android:text="@string/empty"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="#ff000000"
             android:textSize="16.0sp" />
@@ -364,27 +368,28 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="载入中..."
+            android:text="@string/loading"
             android:textColor="#ff000000" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/serverdata"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:visibility="gone" >
 
+        <!-- merchant description -->
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dip"
             android:background="@drawable/text_background"
             android:gravity="center_vertical"
             android:paddingBottom="1.0dip"
             android:paddingLeft="10.0dip"
             android:paddingRight="10.0dip"
             android:paddingTop="1.0dip"
-            android:text="商户描述:"
+            android:text="@string/merchant_description"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="#ff000000"
             android:textSize="16.0sp" />
@@ -392,30 +397,34 @@
         <TextView
             android:id="@+id/description"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dip"
             android:layout_marginTop="3.0dip"
             android:layout_weight="1.0"
             android:lineSpacingMultiplier="1.3"
             android:padding="8.0dip"
-            android:text="“很像日本的居酒屋”。服务态度超赞，点餐的时候都“半蹲”着，上菜的时候“会提醒你”趁热吃或小心烫。菜都“很精致”，不过量“很小”，种类也“不是很多”。环境挺好，座位空间比较大，也“不是那么嘈杂”，“两三个人小聚、随便聊聊，挺合适的”。"
+            android:text="@string/empty"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="@color/deep_gray"
             android:textSize="16.0sp" />
-
+		<!-- merchant description -->
+        
+        <!-- comments title -->
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dip"
             android:background="@drawable/text_background"
             android:gravity="center_vertical"
             android:paddingBottom="1.0dip"
             android:paddingLeft="10.0dip"
             android:paddingRight="10.0dip"
             android:paddingTop="1.0dip"
-            android:text="点评(共5341条):"
+            android:text="@string/comment"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="#ff000000"
             android:textSize="16.0sp" />
+        <!-- comments title -->
 
+		<!-- TODO need use java code to repeat the comments  -->
         <LinearLayout
             android:id="@+id/critiqueLayout"
             android:layout_width="fill_parent"
@@ -425,6 +434,7 @@
             android:gravity="center_vertical"
             android:orientation="vertical" >
 
+            <!-- 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -446,7 +456,9 @@
                     android:contentDescription="@string/empty"
                     />
             </LinearLayout>
+			 -->
 
+			
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -454,21 +466,48 @@
                 android:orientation="horizontal"
                 android:paddingLeft="10.0dip" >
 
+                <!-- 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/star45" 
                     android:contentDescription="@string/empty"
                     />
+                 -->
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="8dip"
-                    android:text="人均￥ 150"
+                    android:text="@string/renjun"
+                    android:textColor="#ff000000" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dip"
+                    android:text="@string/xingjiabi"
+                    android:textColor="#ff000000" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dip"
+                    android:text="@string/kouwei"
+                    android:textColor="#ff000000" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dip"
+                    android:text="@string/huanjing"
+                    android:textColor="#ff000000" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dip"
+                    android:text="@string/fuwu"
                     android:textColor="#ff000000" />
             </LinearLayout>
 
+            <!-- comment content -->
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -484,21 +523,12 @@
                     android:layout_marginTop="3.0dip"
                     android:layout_weight="1.0"
                     android:lineSpacingMultiplier="1.3"
-                    android:text="比我想象中便宜一点。。。牛肉火锅很好吃~不过不管哪家店的这种豆腐肥牛锅我都很喜欢~一口牛肉也是我觉得最好吃的~还没撒胡椒粉什么的就已经觉得味道满进去了~而且肉不老不塞牙~三文鱼刺身没什么大感觉。。。倒是芥末酱给的好少。。而且感觉干掉了芝士焗年糕。。。筷子弄起来困难。。。而且其实并没什么好吃的~"
+                    android:text="@string/empty"
                     android:textAppearance="?android:textAppearanceMedium"
                     android:textColor="@color/deep_gray"
                     android:textSize="16.0sp" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:duplicateParentState="true"
-                    android:paddingRight="6.0dip"
-                    android:src="@drawable/arrow_right" 
-                    android:contentDescription="@string/empty"
-                    />
             </LinearLayout>
+            <!-- comment content -->
 
             <FrameLayout
                 android:layout_width="fill_parent"
@@ -517,6 +547,7 @@
                     android:textColor="@color/light_gray"
                     android:textSize="14.0sp" />
 
+                <!-- 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -527,9 +558,12 @@
                     android:textAppearance="?android:textAppearanceMedium"
                     android:textColor="#ff000000"
                     android:textSize="14.0sp" />
+                     -->
             </FrameLayout>
         </LinearLayout>
+        <!-- TODO need use java code to repeat the comments  -->
 
+		<!-- 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -609,6 +643,7 @@
                 android:contentDescription="@string/empty"
                 />
         </LinearLayout>
+         -->
     </LinearLayout>
 
     <LinearLayout

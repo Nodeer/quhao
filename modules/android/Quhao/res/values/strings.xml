@@ -20,7 +20,17 @@
 	
 	<!-- 详细页面 -->
 	<string name="get_reservation">取号</string>
+	<string name="renjun">人均￥</string>
+	<string name="zero">0</string>
+	<string name="xingjiabi">性价比:</string>
+	<string name="kouwei">口味:</string>
+	<string name="huanjing">环境:</string>
+	<string name="fuwu">服务:</string>
+	<string name="quhaoqingkuang">取号情况:</string>
 	<string name="search_merchant">搜索 - 美食</string>
+	<string name="loading">载入中&#8230;&#8230;&#8230;</string>
+	<string name="merchant_description">商户描述:</string>
+	<string name="comment">网友点评:</string>
 	<!-- 详细页面 -->
 	
     <!-- 提示信息 -->
