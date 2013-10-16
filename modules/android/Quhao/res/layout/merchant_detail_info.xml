@@ -434,31 +434,6 @@
             android:gravity="center_vertical"
             android:orientation="vertical" >
 
-            <!-- 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingLeft="10.0dip" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="smell"
-                    android:textColor="#ff000000" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8.0dip"
-                    android:src="@drawable/level30" 
-                    android:contentDescription="@string/empty"
-                    />
-            </LinearLayout>
-			 -->
-
-			
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -476,30 +451,34 @@
                  -->
 
                 <TextView
+                    android:id="@+id/comment_renjun"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="8dip"
                     android:text="@string/renjun"
                     android:textColor="#ff000000" />
                 <TextView
+                    android:id="@+id/comment_xingjiabi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="8dip"
                     android:text="@string/xingjiabi"
                     android:textColor="#ff000000" />
                 <TextView
+                    android:id="@+id/comment_kouwei"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="8dip"
                     android:text="@string/kouwei"
                     android:textColor="#ff000000" />
                 <TextView
+                    android:id="@+id/comment_huanjing"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="8dip"
                     android:text="@string/huanjing"
                     android:textColor="#ff000000" />
                 <TextView
+                    android:id="@+id/comment_fuwu"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="8dip"
@@ -518,6 +497,7 @@
                 android:paddingTop="4.0dip" >
 
                 <TextView
+                    android:id="@+id/comment_content"
                     android:layout_width="0.0px"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3.0dip"
@@ -538,11 +518,12 @@
                 android:paddingRight="8.0dip" >
 
                 <TextView
+                    android:id="@+id/comment_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left|center"
                     android:singleLine="true"
-                    android:text="12-02-27 14:55"
+                    android:text="@string/empty"
                     android:textAppearance="?android:textAppearanceSmall"
                     android:textColor="@color/light_gray"
                     android:textSize="14.0sp" />

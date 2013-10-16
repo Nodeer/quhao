@@ -291,6 +291,22 @@ public class MerchantDetailActivity extends AppStoreActivity {
 					QuhaoLog.i(LOGTAG, m.commentKouwei);
 					QuhaoLog.i(LOGTAG, m.commentXingjiabi);
 					
+					TextView commentRenjun = (TextView)critiqueLayout.findViewById(R.id.comment_renjun);
+					TextView commentFuwu = (TextView)critiqueLayout.findViewById(R.id.comment_fuwu);
+					TextView commentHuanjing = (TextView)critiqueLayout.findViewById(R.id.comment_huanjing);
+					TextView commentKouwei = (TextView)critiqueLayout.findViewById(R.id.comment_kouwei);
+					TextView commentXingjiabi = (TextView)critiqueLayout.findViewById(R.id.comment_xingjiabi);
+					TextView commentContent = (TextView)critiqueLayout.findViewById(R.id.comment_content);
+					TextView commentDate = (TextView)info.findViewById(R.id.comment_date);
+					
+					commentRenjun.setText(commentRenjun.getText()+m.commentAverageCost);
+					commentFuwu.setText(commentFuwu.getText()+String.valueOf(m.commentFuwu));
+					commentHuanjing.setText(commentHuanjing.getText()+String.valueOf(m.commentHuanjing));
+					commentKouwei.setText(commentKouwei.getText()+String.valueOf(m.commentKouwei));
+					commentXingjiabi.setText(commentXingjiabi.getText()+String.valueOf(m.commentXingjiabi));
+					commentContent.setText(m.commentContent);
+					commentDate.setText(m.commentDate);
+					
 					
 					critiqueLayout
 							.setOnClickListener(MerchantDetailActivity.this);

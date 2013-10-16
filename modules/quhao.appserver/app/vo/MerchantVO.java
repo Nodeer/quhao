@@ -1,5 +1,6 @@
 package vo;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class MerchantVO {
 	public int commentHuanjing;
 	public int commentFuwu;
 	public String commentContent;
-	public Date commentDate;
+	public String commentDate;
 	
 	public static MerchantVO build(Merchant m) {
 		MerchantVO vo = new MerchantVO();
@@ -115,7 +116,7 @@ public class MerchantVO {
 		
 		vo.commentAverageCost = c.averageCost;
 		vo.commentContent = c.content;
-		vo.commentDate = c.date;
+		vo.commentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(c.date);
 		vo.commentFuwu = c.fuwu;
 		vo.commentHuanjing = c.huanjing;
 		vo.commentKouwei = c.kouwei;
