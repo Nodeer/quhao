@@ -131,8 +131,8 @@ public class MerchantDetailActivity extends AppStoreActivity {
 			try {
 				QuhaoLog.v(LOGTAG, "get categorys data form server begin");
 				String buf = CommonHTTPRequest
-						.get("getReservations?accountId=51e563feae4d165869fda38c&mid=51efe7d8ae4dca7b4c281754");
-				// + MerchantDetailActivity.this.merchantId);
+						.get("getReservations?accountId=51e563feae4d165869fda38c&mid="
+				 + MerchantDetailActivity.this.merchantId);
 				if (StringUtils.isNull(buf) || "[]".equals(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
@@ -161,6 +161,8 @@ public class MerchantDetailActivity extends AppStoreActivity {
 
 			@Override
 			public void onClick(View v) {
+				
+				// TODO add login check
 				// if (QHClientApplication.getInstance().isLogined) {
 				if (true) {
 					Intent intent = new Intent();
@@ -204,7 +206,8 @@ public class MerchantDetailActivity extends AppStoreActivity {
 		@Override
 		public void run() {
 			try {
-				QuhaoLog.v(LOGTAG, "get categorys data form server begin");
+				QuhaoLog.v(LOGTAG, "get merchant details form server begin");
+				QuhaoLog.v(LOGTAG, "MerchantDetailActivity.this.merchantId : " + MerchantDetailActivity.this.merchantId);
 				String buf = CommonHTTPRequest.get("merchant?id="
 						+ MerchantDetailActivity.this.merchantId);
 				if (StringUtils.isNull(buf)) {

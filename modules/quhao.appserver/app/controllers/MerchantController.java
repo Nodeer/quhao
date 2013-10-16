@@ -75,7 +75,8 @@ public class MerchantController extends BaseController {
 	 *            商家id
 	 */
 	public static void merchant(String id) {
-		Merchant m = Merchant.findById(id);
+		System.out.println("merchant:" + id);
+		Merchant m = Merchant.findByMid(id);
 		renderJSON(MerchantVO.build(m));
 	}
 

@@ -25,7 +25,7 @@ public class Haoma extends HaomaEntityDef {
 	}
 	
 	private void initPaidui(){
-		Merchant m = Merchant.findById(this.merchantId);
+		Merchant m = Merchant.findByMid(this.merchantId);
 		String[] seatType = m.seatType;
 		Paidui p = null;
 		if(seatType == null){

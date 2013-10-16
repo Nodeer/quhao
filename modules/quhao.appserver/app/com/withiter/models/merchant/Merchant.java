@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 
 import cn.bran.japid.util.StringUtils;
@@ -29,8 +30,9 @@ public class Merchant extends MerchantEntityDef {
 	}
 	
 	public static Merchant findByMid(String mid){
+		System.out.println(mid);
 		MorphiaQuery q = Merchant.q();
-		q.filter("id", mid);
+		q.filter("_id", new ObjectId(mid));
 		return (Merchant) q.asList().get(0);
 	}
 
