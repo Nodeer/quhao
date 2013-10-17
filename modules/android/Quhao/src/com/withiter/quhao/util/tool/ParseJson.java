@@ -23,6 +23,8 @@ import com.withiter.quhao.vo.TopMerchant;
 
 public class ParseJson {
 
+	// TODO need to optimize these methods
+	
 	public static Collection<? extends Category> getCategorys(String buf) {
 		List<Category> categroys = new ArrayList<Category>();
 		if (null == buf || "".equals(buf)) {
