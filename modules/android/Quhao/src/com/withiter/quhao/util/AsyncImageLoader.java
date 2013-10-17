@@ -14,7 +14,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.withiter.quhao.util.tool.ImageUtil;
-import com.withiter.quhao.util.tool.QuhaoConstant;
+import com.withiter.quhao.util.tool.SDTool;
 
 public class AsyncImageLoader {
 
@@ -47,31 +47,41 @@ public class AsyncImageLoader {
 			}
 
 			// get cached image from SD card
-			Drawable drawable = Drawable.createFromPath(ImageUtil.getInstance()
-					.getFilePath(imageUrl));
-			if (null != drawable) {
-				return drawable;
+			if (SDTool.instance().SD_EXIST) {
+				Drawable drawable = Drawable.createFromPath(ImageUtil
+						.getInstance().getFilePath(imageUrl));
+				if (null != drawable) {
+					return drawable;
+				}
 			}
 
-			final Handler handler = new Handler() {
-				public void handleMessage(Message message) {
-					if (message != null && imageCallback != null) {
-						imageCallback.imageLoaded((Drawable) message.obj,
-								imageUrl, position);
-					}
-				}
-			};
+			// get image from URL
+			// Drawable drawable = loadImageFromUrl(imageUrl);
+			// imageCache.put(imageUrl, new SoftReference<Drawable>(
+			// drawable));
+			// return drawable;
+			
 
-			new Thread() {
-				@Override
-				public void run() {
-					Drawable drawable = loadImageFromUrl(imageUrl);
-					imageCache.put(imageUrl, new SoftReference<Drawable>(
-							drawable));
-					Message message = handler.obtainMessage(0, drawable);
-					handler.sendMessage(message);
-				}
-			}.start();
+			final Handler handler = new Handler() {
+                public void handleMessage(Message message) {
+                        if (message != null && imageCallback != null) {
+                                imageCallback.imageLoaded((Drawable) message.obj,
+                                                imageUrl, position);
+                        }
+                }
+	        };
+	
+	        new Thread() {
+	                @Override
+	                public void run() {
+	                        Drawable drawable = loadImageFromUrl(imageUrl);
+	                        imageCache.put(imageUrl, new SoftReference<Drawable>(
+	                                        drawable));
+	                        Message message = handler.obtainMessage(0, drawable);
+	                        handler.sendMessage(message);
+	                }
+	        }.start();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -97,12 +107,14 @@ public class AsyncImageLoader {
 		}
 
 		// get cached image from SD card
-		Drawable drawable = Drawable.createFromPath(ImageUtil.getInstance()
-				.getFilePath(imageUrl));
-		if (null != drawable) {
-			return drawable;
+		Drawable drawable = null;
+		if (SDTool.instance().SD_EXIST) {
+			drawable = Drawable.createFromPath(ImageUtil.getInstance().getFilePath(
+					imageUrl));
+			if (null != drawable) {
+				return drawable;
+			}
 		}
-
 		drawable = loadImageFromUrl(imageUrl);
 		imageCache.put(imageUrl, new SoftReference<Drawable>(drawable));
 		return drawable;
@@ -121,15 +133,16 @@ public class AsyncImageLoader {
 			conn.connect();
 			// 获取图片大小
 			int picSize = conn.getContentLength();
-
-			// 如果图片大于限定大小，则不下载
-			if (picSize > QuhaoConstant.ADVERTISE_PIC_MAX) {
+			is = conn.getInputStream();
+			
+			if(SDTool.instance().SD_EXIST && picSize < SDTool.instance().getSDFreeSize()){
+				File file = ImageUtil.getInstance().saveFile(url, is);
+				d = Drawable.createFromPath(file.getPath());
 				return d;
 			}
-			is = conn.getInputStream();
-			File file = ImageUtil.getInstance().saveFile(url, is);
-			d = Drawable.createFromPath(file.getPath());
-			// d = Drawable.createFromStream(is, "src");
+			
+			d = Drawable.createFromStream(is, "image");
+			return d;
 		} catch (MalformedURLException e1) {
 			e1.printStackTrace();
 			return d;
@@ -148,7 +161,6 @@ public class AsyncImageLoader {
 				e.printStackTrace();
 			}
 		}
-		return d;
 	}
 
 	public interface ImageCallback {

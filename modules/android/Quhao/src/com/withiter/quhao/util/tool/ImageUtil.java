@@ -34,12 +34,10 @@ public class ImageUtil {
 
 	private ImageUtil() {
 		// 判断SD卡是否存在
-		if (Environment.MEDIA_MOUNTED.equals(Environment
-				.getExternalStorageState())) {
+		if (SDTool.instance().SD_EXIST) {
 			// 在sd卡上建立图片存放空间
 			cacheDir = new File(Environment.getExternalStorageDirectory(),
 					QuhaoConstant.IMAGES_SD_URL);
-
 			if (!cacheDir.exists()) {
 				cacheDir.mkdirs();
 			}
@@ -62,7 +60,7 @@ public class ImageUtil {
 	}
 
 	public File saveFile(String imageUrl, InputStream is) {
-		if(StringUtils.isNull(imageUrl)){
+		if (StringUtils.isNull(imageUrl)) {
 			return null;
 		}
 		String fileName = imageUrl.split("\\?fileName=")[1];
@@ -89,7 +87,7 @@ public class ImageUtil {
 		}
 		return file;
 	}
-	
+
 	/**
 	 * 删除SD卡文件信息
 	 */
@@ -97,7 +95,7 @@ public class ImageUtil {
 		/**
 		 * 遍历所有的然后删除
 		 */
-		if (cacheDir.exists()) {
+		if (SDTool.instance().SD_EXIST && cacheDir.exists()) {
 			File files[] = cacheDir.listFiles();
 			if (files != null) {
 				for (File f : files) {
