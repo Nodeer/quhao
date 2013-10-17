@@ -14,11 +14,13 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.withiter.quhao.util.tool.ImageUtil;
+import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SDTool;
 
 public class AsyncImageLoader {
 
 	private HashMap<String, SoftReference<Drawable>> imageCache;
+	private static String TAG = AsyncImageLoader.class.getName();
 
 	public AsyncImageLoader() {
 		imageCache = new HashMap<String, SoftReference<Drawable>>();
@@ -95,8 +97,14 @@ public class AsyncImageLoader {
 	 * @param imageCallback
 	 * @return
 	 */
-	public Drawable loadDrawable(final String imageUrl) {
+	public Drawable loadDrawable(String imageUrl) {
 
+		if(QuhaoConstant.test){
+			imageUrl = imageUrl.replace("localhost", QuhaoConstant.HTTP_URL);
+		}
+		
+		QuhaoLog.i(TAG, "imageUrl: " + imageUrl);
+		
 		// get cached image from memory
 		if (imageCache.containsKey(imageUrl)) {
 			SoftReference<Drawable> softReference = imageCache.get(imageUrl);
@@ -128,8 +136,8 @@ public class AsyncImageLoader {
 		try {
 			picUrl = new URL(url);
 			conn = (HttpURLConnection) picUrl.openConnection();
-			conn.setConnectTimeout(3000);
-			conn.setReadTimeout(3000);
+			conn.setConnectTimeout(20000);
+			conn.setReadTimeout(20000);
 			conn.connect();
 			// 获取图片大小
 			int picSize = conn.getContentLength();

@@ -44,7 +44,6 @@ public class MerchantDetailActivity extends AppStoreActivity {
 	private ImageView merchantImg;
 	private TextView merchantAddress;
 	private TextView merchantPhone;
-//	private TextView merchantTags;
 	private TextView merchantDesc;
 	private TextView merchantAverageCost;
 	private TextView xingjiabi;
@@ -88,14 +87,12 @@ public class MerchantDetailActivity extends AppStoreActivity {
 				intent.putExtra("merchantName", "jiu dian 1");
 				startActivity(intent);
 				overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
-
 			}
 		});
 		
 		this.merchantImg = (ImageView) info.findViewById(R.id.merchantImg);
 		this.merchantAddress = (TextView) info.findViewById(R.id.merchantAddress);
 		this.merchantPhone = (TextView) info.findViewById(R.id.merchantPhone);
-//		this.merchantTags = (TextView) info.findViewById(R.id.merchantTags);
 		this.merchantDesc = (TextView) info.findViewById(R.id.description);
 		this.merchantAverageCost = (TextView) info.findViewById(R.id.merchant_details_AverageCost);
 		this.xingjiabi = (TextView) info.findViewById(R.id.xingjiabi);
@@ -249,14 +246,6 @@ public class MerchantDetailActivity extends AppStoreActivity {
 							.setText(m.address);
 					MerchantDetailActivity.this.merchantPhone
 							.setText(m.phone);
-
-//					MerchantDetailActivity.this.merchantTags
-//							.setText(MerchantDetailActivity.this.merchant.tags);
-//					if (StringUtils
-//							.isNull(MerchantDetailActivity.this.merchant.tags)) {
-//						MerchantDetailActivity.this.merchantTags
-//								.setText(R.string.no_tags);
-//					}
 
 					MerchantDetailActivity.this.merchantDesc
 							.setText(m.description);
