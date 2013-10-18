@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.withiter.quhao.util.AsyncImageLoader;
 import com.withiter.quhao.util.AsyncImageLoader.ImageCallback;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.util.tool.PhoneTool;
 import com.withiter.quhao.vo.TopMerchant;
 
 public class TopMerchantGridAdapter extends BaseAdapter {
@@ -64,6 +66,11 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 		Object item = getItem(position);
 		topMerchant = (TopMerchant) item;
 
+		if(convertView != null){
+			int defaultHight = PhoneTool.getScreenHeight()/6;
+			convertView.setMinimumHeight(defaultHight);
+		}
+		
 		synchronized (item) {
 			ViewHolder holder = null;
 			if (null == convertView) {

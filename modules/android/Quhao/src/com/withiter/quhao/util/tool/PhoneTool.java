@@ -8,26 +8,55 @@ import com.withiter.quhao.R;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
 import android.util.DisplayMetrics;
+import android.view.Display;
 import android.widget.Toast;
 
-public class CommonTool {
+public class PhoneTool {
+	
+	private static int screenHeight;
+	private static int screenwidth;
 
-	public static int GetScreenWidth(Context cx) {
+	/**
+	 * Get the device height
+	 * @param cx
+	 * @return
+	 */
+	public static int getDeviceWidth(Context cx) {
 		DisplayMetrics dm = new DisplayMetrics();
 		dm = cx.getApplicationContext().getResources().getDisplayMetrics();
 		return dm.widthPixels;
 	}
 
-	public static int GetScreenHeight(Context cx) {
+	/**
+	 * Get the device width
+	 * @param cx
+	 * @return
+	 */
+	public static int getDeviceHeight(Context cx) {
 		DisplayMetrics dm = new DisplayMetrics();
 		dm = cx.getApplicationContext().getResources().getDisplayMetrics();
 		return dm.heightPixels;
 	}
 
+	public static void setScreenHeight(int height){
+		screenHeight = height;
+	}
+	public static void setScreenWidth(int width){
+		screenwidth = width;
+	}
+	
+	public static int getScreenHeight(){
+		return screenHeight;
+	}
+	public static int getScreenWidth(){
+		return screenwidth;
+	}
+	
 	// SD卡的判断，如果没有SD卡，则对任务进行操作前给用户提示
 	public static Boolean isSDCardisAvailable() {
 		String state = Environment.getExternalStorageState();

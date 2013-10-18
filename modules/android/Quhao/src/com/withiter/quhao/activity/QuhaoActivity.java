@@ -5,16 +5,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources.NotFoundException;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.QuhaoLog;
+import com.withiter.quhao.util.tool.PhoneTool;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 
 public abstract class QuhaoActivity extends Activity {
@@ -53,6 +57,7 @@ public abstract class QuhaoActivity extends Activity {
 		initLogin();
 	}
 
+	@SuppressLint("NewApi")
 	private void initConfig() throws IOException {
 		QuhaoLog.i(TAG,
 				"start to init configurations from application.properties");
@@ -76,7 +81,15 @@ public abstract class QuhaoActivity extends Activity {
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
 		}
-
+		
+		// Get the screen size
+		Display display = getWindowManager().getDefaultDisplay();
+		Point size = new Point();
+		display.getSize(size);
+		int width = size.x;
+		int height = size.y;
+		PhoneTool.setScreenWidth(width);
+		PhoneTool.setScreenHeight(height);
 	}
 
 	private void initLogin() {

@@ -15,7 +15,7 @@ import android.widget.Button;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.QuhaoLog;
-import com.withiter.quhao.util.tool.CommonTool;
+import com.withiter.quhao.util.tool.PhoneTool;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 
 @SuppressLint("NewApi")
@@ -51,7 +51,7 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// 检查网络
-		networkOK = CommonTool.isNetworkAvailable(this);
+		networkOK = PhoneTool.isNetworkAvailable(this);
 		// if(checkDevice() && autoLogin())
 		btnCategory = (Button) findViewById(R.id.btnMerchantList);
 		btnNearby = (Button) findViewById(R.id.btnNearby);
