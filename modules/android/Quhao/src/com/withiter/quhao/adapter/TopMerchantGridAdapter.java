@@ -66,8 +66,8 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 		topMerchant = (TopMerchant) item;
 
 		// set the default height
+		final int defaultHight = PhoneTool.getScreenHeight()/6;
 		if(convertView != null){
-			int defaultHight = PhoneTool.getScreenHeight()/6;
 			convertView.setMinimumHeight(defaultHight);
 		}
 		
@@ -89,7 +89,7 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 				cachedImage = context.getResources().getDrawable(
 						R.drawable.default_icon1);
 				cachedImage.setBounds(0, 0, cachedImage.getIntrinsicWidth(),
-						cachedImage.getIntrinsicHeight());
+						defaultHight);
 				holder.img.setImageDrawable(cachedImage);
 				convertView.setTag(holder);
 				return convertView;
@@ -111,7 +111,7 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 										&& null != imageDrawable) {
 									imageDrawable.setBounds(0, 0,
 											imageDrawable.getIntrinsicWidth(),
-											imageDrawable.getIntrinsicHeight());
+											defaultHight);
 									imageDrawable.setCallback(null);
 									imageDrawable = null;
 								}
@@ -124,7 +124,7 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 			holder.img.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 			// 设置图片给imageView 对象
 			if (null != cachedImage) {
-				cachedImage.setBounds(0, 0, cachedImage.getIntrinsicWidth(),cachedImage.getIntrinsicHeight());
+				cachedImage.setBounds(0, 0, cachedImage.getIntrinsicWidth(),defaultHight);
 				holder.img.setImageDrawable(cachedImage);
 				cachedImage.setCallback(null);
 				cachedImage = null;
