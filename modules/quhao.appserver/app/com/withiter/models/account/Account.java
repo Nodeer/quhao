@@ -299,4 +299,14 @@ public class Account extends AccountEntityDef {
 		}
 		return null;
 	}
+
+	public static void cleanSignUp() {
+		
+		List<Account> allAccounts = findAll();
+		for (Account account : allAccounts) {
+			account.isSignIn = false;
+			account.save();
+		}
+		
+	}
 }

@@ -19,6 +19,10 @@ public abstract class AccountEntityDef extends BaseModel {
 	public String password = "";
 	@Indexed
 	public String nickname = "";
+	
+	public int signIn;
+	
+	public boolean isSignIn = false;
 
 	public int jifen = 5;
 	

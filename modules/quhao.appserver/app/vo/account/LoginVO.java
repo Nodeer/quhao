@@ -8,6 +8,8 @@ import com.withiter.models.account.Account;
 
 public class LoginVO {
 
+	public int errorCode;
+	
 	public String msg;
 	
 	public String phone = "";
@@ -20,6 +22,10 @@ public class LoginVO {
 	public boolean enable = false;
 	public Constants.MobileOSType mobileOS;
 	public Date lastLogin = null;
+	
+	public int signIn;
+	
+	public boolean isSignIn = false;
 	
 	public int jifen;
 	public int qiandao;
@@ -44,6 +50,8 @@ public class LoginVO {
 		this.mobileOS = account.mobileOS;
 		this.lastLogin = account.lastLogin;
 		
+		this.signIn = account.signIn;
+		this.isSignIn = account.isSignIn;
 		this.jifen = account.jifen;
 		this.qiandao = account.qiandao;
 		this.dianpin = account.dianpin;

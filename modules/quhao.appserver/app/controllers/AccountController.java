@@ -182,14 +182,12 @@ public class AccountController extends BaseController {
 	}
 
 	/**
-	 * Get personal info by mobile number or email address
-	 * @param phone the mobile number
-	 * @param email the email address
-	 * @throws Exception
+	 * sign in
+	 * @param phone
+	 * @param email
 	 */
-	public static void getPersonalInfo(String phone, String email)
-			throws Exception {
-		PersonalInfoVO personalInfo = new PersonalInfoVO();
+	public static void signIn(String phone, String email)
+	{
 		Account account = null;
 		if (null != phone) {
 			account = Account.findByPhone(phone);
@@ -197,16 +195,35 @@ public class AccountController extends BaseController {
 			account = Account.findByEmail(email);
 		}
 
-		if (null == account) {
-			personalInfo.errorCode = -1;
-			personalInfo.msg = "account is not exsit";
-		}
-
 		LoginVO loginVO = new LoginVO();
-		loginVO.build(account);
-
+		
+		if (null == account) {
+			loginVO.errorCode = -1;
+			loginVO.msg = "account is not exsit";
+		}
+		else
+		{
+			account.signIn = account.signIn + 1;
+			account.isSignIn = true;
+			account.save();
+			loginVO.errorCode = 1;
+			loginVO.msg = "success";
+			loginVO.build(account);
+		}
+		
+		renderJSON(loginVO);
+	}
+	
+	/**
+	 * 
+	 * get current merchants by account id 
+	 * 
+	 * @param accountId account id
+	 */
+	public static void getCurrentMerchants(String accountId)
+	{
 		List<Reservation> currentReservations = Reservation
-				.findValidReservations(String.valueOf(account.getId()));
+				.findValidReservations(accountId);
 
 		List<ReservationVO> currentReservationVOs = new ArrayList<ReservationVO>();
 		ReservationVO reservationVO = null;
@@ -223,11 +240,23 @@ public class AccountController extends BaseController {
 			currentMerchantVOs.add(MerchantVO.build(merchant));
 
 		}
-
+		
+		renderJSON(currentMerchantVOs);
+	}
+	
+	/**
+	 * 
+	 * get history merchants by account id 
+	 * 
+	 * @param accountId account id
+	 */
+	public static void getHistoryMerchants(String accountId)
+	{
 		List<Reservation> histroyReservations = Reservation
-				.findHistroyReservations(String.valueOf(account.getId()));
+				.findHistroyReservations(accountId);
 
 		List<ReservationVO> histroytReservationVOs = new ArrayList<ReservationVO>();
+		ReservationVO reservationVO = null;
 		for (Reservation reservation : histroyReservations) {
 			reservationVO = new ReservationVO();
 			reservationVO.build(reservation);
@@ -242,10 +271,43 @@ public class AccountController extends BaseController {
 			histroyMerchantVOs.add(MerchantVO.build(merchant));
 
 		}
+		
+		renderJSON(histroyMerchantVOs);
+	}
+	
+	public static void getIntegralCost(String accountId)
+	{
+		
+	}
+	
+	/**
+	 * Get personal info by mobile number or email address
+	 * @param phone the mobile number
+	 * @param email the email address
+	 * @throws Exception
+	 */
+	public static void getPersonalInfo(String phone, String email)
+			throws Exception {
+		Account account = null;
+		if (null != phone) {
+			account = Account.findByPhone(phone);
+		} else if (null != email) {
+			account = Account.findByEmail(email);
+		}
 
-		personalInfo.build(loginVO, currentReservationVOs, currentMerchantVOs,
-				histroytReservationVOs, histroyMerchantVOs);
-
-		renderJSON(personalInfo);
+		LoginVO loginVO = new LoginVO();
+		
+		if (null == account) {
+			loginVO.errorCode = -1;
+			loginVO.msg = "account is not exsit";
+		}
+		else
+		{
+			loginVO.errorCode = 1;
+			loginVO.msg = "success";
+			loginVO.build(account);
+		}
+		
+		renderJSON(loginVO);
 	}
 }
