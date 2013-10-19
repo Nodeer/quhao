@@ -83,13 +83,13 @@ public abstract class QuhaoActivity extends Activity {
 		}
 		
 		// Get the screen size
-		Display display = getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		int width = size.x;
-		int height = size.y;
-		PhoneTool.setScreenWidth(width);
-		PhoneTool.setScreenHeight(height);
+//		Display display = getWindowManager().getDefaultDisplay();
+//		Point size = new Point();
+//		display.getSize(size);
+//		int width = size.x;
+//		int height = size.y;
+//		PhoneTool.setScreenWidth(width);
+//		PhoneTool.setScreenHeight(height);
 	}
 
 	private void initLogin() {

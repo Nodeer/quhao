@@ -25,7 +25,22 @@ public class QuhaoConstant {
 	 */
 	public static final String LOGS_SD_URL = "quhao/logs";
 	
+	/**
+	 * 新浪的应用key， 在官方申请的
+	 */
+	public static final String SINA_APP_KEY = "3183077347";
 	
+	/**
+	 * 开发者的REDIRECT URL
+	 */
+	public static final String SINA_REDIRECT_URL = "http://www.sina.com";
+	
+	/**
+	 * 新支持的scope,支持传入多个scope权限，用逗号分隔
+	 */
+	public static final String SINA_SCOPE = "email,direct_messages_read,direct_messages_write," +
+			"friendships_groups_read,friendships_groups_write,statuses_to_me_read," +
+			"follow_app_official_microblog,invitation_write";
 	/**
 	 * 下一頁url
 	 */

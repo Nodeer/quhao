@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg_share"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <GridView
+        android:id="@+id/share_icon"
+        android:layout_width="300dip"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dip"
+        android:gravity="center"
+        android:numColumns="3"
+        android:verticalSpacing="3dip" >
+    </GridView>
+
+    <Button
+        android:id="@+id/share_btn_copy"
+        android:layout_width="250dip"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dip"
+        android:layout_marginTop="30dip"
+        android:background="@drawable/btn_copy"
+        android:text="复制到剪贴板"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/share_btn_cancel"
+        android:layout_width="250dip"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dip"
+        android:layout_marginTop="10dip"
+        android:background="@drawable/share_btn_cancel"
+        android:text="取消"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
+</LinearLayout>

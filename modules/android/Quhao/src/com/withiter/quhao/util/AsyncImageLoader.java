@@ -116,7 +116,7 @@ public class AsyncImageLoader {
 
 		// get cached image from SD card
 		Drawable drawable = null;
-		if (SDTool.instance().SD_EXIST) {
+		if (SDTool.instance().SD_EXIST && StringUtils.isNotNull(imageUrl)) {
 			drawable = Drawable.createFromPath(ImageUtil.getInstance().getFilePath(
 					imageUrl));
 			if (null != drawable) {

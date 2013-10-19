@@ -51,7 +51,6 @@ public class GetNumberActivity extends AppStoreActivity {
 	private TextView merchantNameView;
 	private TextView seatNoView;
 	private TextView currentNumberView;
-	private LinearLayout currentNoLayout;
 	private Button btnSeatNo;
 	private Button btnGetNo;
 	private TextView beforeYouView;
@@ -232,7 +231,7 @@ public class GetNumberActivity extends AppStoreActivity {
 			try {
 				QuhaoLog.v(LOG_TAG, "get seat numbers data form server begin");
 				String buf = CommonHTTPRequest
-						.get("nahao?accountId=51e563feae4d165869fda38c&mid=51efe7d8ae4dca7b4c281754&seatNumber=" + currentPaidui.seatNo); //TODO : need to change wjzwjz
+						.get("nahao?accountId=51e563feae4d165869fda38c&mid="+ merchantId+"&seatNumber=" + currentPaidui.seatNo); //TODO : need to change wjzwjz
 				// + GetNumberActivity.this.merchantId);
 				if (StringUtils.isNull(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -296,7 +295,6 @@ public class GetNumberActivity extends AppStoreActivity {
 		// 获取merchant名称组件
 		merchantNameView = (TextView) findViewById(R.id.merchantName);
 		seatNoView = (TextView) findViewById(R.id.seatNo);
-		currentNoLayout = (LinearLayout) findViewById(R.id.currentNoLayout);
 		currentNumberView = (TextView) findViewById(R.id.currentNumber);
 		beforeYouView = (TextView) findViewById(R.id.beforeYou);
 		beforeYouLayout = (LinearLayout) findViewById(R.id.beforeYouLayout);

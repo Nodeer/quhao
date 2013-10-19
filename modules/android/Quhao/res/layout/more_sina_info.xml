@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="#ffffffff"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+   
+    <RelativeLayout 
+		android:layout_width="fill_parent"    
+    	android:layout_height="wrap_content"    
+    	android:background="@drawable/common_top_bar_bg1"    
+    	android:paddingLeft="5dip"    
+    	android:paddingRight="5dip" 
+    	android:paddingTop="5dip"
+    	android:paddingBottom="5dip" 
+    	android:gravity="center_vertical" 
+    	>
+    	<Button android:gravity="left|center_vertical" android:id="@+id/back_btn" 
+           	android:layout_width="wrap_content" android:layout_height="wrap_content" 
+            android:background="@drawable/btn_back_background"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true" />
+
+		<TextView
+		    android:id="@+id/merchantName"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_centerHorizontal="true"
+		    android:layout_centerVertical="true"
+		    android:text="分享到新浪微博"
+		    android:textAppearance="?android:textAppearanceMedium"
+		    android:textColor="#ff000000" />
+
+	</RelativeLayout>
+	<ScrollView android:layout_width="fill_parent" android:layout_height="wrap_content" android:fillViewport="true" android:layout_weight="1.0">
+	<LinearLayout 
+	    android:orientation="vertical"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content" 
+	    android:background="#ffffffff"
+	    android:gravity="center">
+
+		<EditText
+	        android:id="@+id/share_edit"
+	        android:layout_width="fill_parent"
+	        android:layout_height="200dip"
+	        android:gravity="top"
+	        android:minLines="3"
+	        android:paddingBottom="10dip"
+	        android:paddingLeft="15dip"
+	        android:paddingRight="10dip"
+	        android:paddingTop="10dip"
+	        android:textSize="17sp" />
+	
+	    <Button
+	        android:id="@+id/share_sina_btn"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="center_horizontal"
+	        android:layout_marginTop="20dip"
+	        android:background="@drawable/btn_weight"
+	        android:gravity="center"
+	        android:text="分享"
+	        android:textColor="@color/white"
+	        android:textSize="20sp" />
+	</LinearLayout>
+	</ScrollView>
+</LinearLayout> 
