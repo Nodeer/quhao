@@ -89,6 +89,7 @@ public class Reservation extends ReservationEntityDef {
 		if (r != null) {
 			r.status = ReservationStatus.canceled;
 			r.valid = false;
+			r.modified = new Date();
 			r.save();
 		}
 	}
@@ -104,7 +105,13 @@ public class Reservation extends ReservationEntityDef {
 		if (r != null) {
 			r.status = ReservationStatus.finished;
 			r.valid = false;
+			r.modified = new Date();
 			r.save();
+			
+			String accountId = r.accountId;
+			Account account = Account.findById(accountId);
+			account.jifen = account.jifen + 1;
+			account.save();
 		}
 	}
 
@@ -119,6 +126,7 @@ public class Reservation extends ReservationEntityDef {
 		if (r != null) {
 			r.status = ReservationStatus.expired;
 			r.valid = false;
+			r.modified = new Date();
 			r.save();
 		}
 	}

@@ -1,5 +1,7 @@
 package com.withiter.models.merchant;
 
+import java.util.Date;
+
 import com.withiter.common.Constants.ReservationStatus;
 import com.withiter.models.account.Reservation;
 
@@ -60,7 +62,8 @@ public class Haoma extends HaomaEntityDef {
 		reservation.status = ReservationStatus.active;
 		//reservation.beforeYou = paidui.currentNumber - (paidui.canceled + paidui.expired + paidui.finished);
 		reservation.valid = true;
-		
+		reservation.created = new Date();
+		reservation.modified = new Date();
 		reservation.save();
 		
 		return reservation;
