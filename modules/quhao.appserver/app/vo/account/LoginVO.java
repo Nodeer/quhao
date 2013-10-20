@@ -11,7 +11,7 @@ public class LoginVO {
 	public int errorCode;
 	
 	public String msg;
-	
+	public String accountId;
 	public String phone = "";
 	public String email = "";
 	public String password = "";
@@ -42,6 +42,7 @@ public class LoginVO {
 	}
 	
 	public void build(Account account){
+		this.accountId = account.id();
 		this.phone = account.phone;
 		this.email = account.email;
 		this.nickname = account.nickname;
