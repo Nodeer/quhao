@@ -167,11 +167,14 @@ public class AccountController extends BaseController {
 			boolean flag = account.validatePassword(password);
 			if (flag) {
 				loginVO.msg = "success";
+				loginVO.errorCode=0;
 				loginVO.build(account);
 			} else {
+				loginVO.errorCode=-2;
 				loginVO.msg = "fail";
 			}
 		}else{
+			loginVO.errorCode=-1;
 			loginVO.msg = "fail";
 		}
 		renderJSON(loginVO);
