@@ -18,7 +18,7 @@
 			android:layout_height="wrap_content"
 			android:layout_centerInParent="true"
 			android:text="name"
-			android:textColor="#ffffffff"
+			android:textColor="#ff000000"
 			android:textSize="22sp"/>
 	
 	</RelativeLayout>
@@ -26,12 +26,22 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
 
-        <com.baidu.mapapi.MapView
-            android:id="@+id/mapView"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:clickable="true" >
-        </com.baidu.mapapi.MapView>
+        <TextView
+	        android:id="@+id/mark_listenter_text"
+	        android:layout_width="match_parent"
+	        android:layout_height="50dp"
+	        android:text="拖动marker1" />
+
+	    <FrameLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent" >
+	
+	        <com.amap.api.maps.MapView
+	            android:id="@+id/mapView"
+	            android:layout_width="match_parent"
+	            android:layout_height="match_parent" />
+	
+	    </FrameLayout>
         
     </RelativeLayout>
 </LinearLayout> 

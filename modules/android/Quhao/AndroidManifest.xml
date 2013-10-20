@@ -20,7 +20,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-	
+	<uses-permission android:name="android.permission.CHANGE_CONFIGURATION"/>
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
 	<supports-screens android:largeScreens="true"
@@ -39,10 +39,10 @@
         	android:value="true" />
         <!-- TODO: WARNING 部署时请修改test的值为false -->	
         	
-         <!-- 您从百度网站获取的APP KEY -->
+         <!-- 您从高德网站获取的APP KEY -->
         <meta-data
-            android:name="BaiduMobAd_STAT_ID"
-            android:value="f2a4e8c72a" />
+            android:name="com.amap.api.v2.apikey"
+            android:value="9e01e3340b4c35140eaa1a334c2a20c3" />
         <!-- abcd1234 -->
         <!-- 渠道商编号 -->
         <meta-data
