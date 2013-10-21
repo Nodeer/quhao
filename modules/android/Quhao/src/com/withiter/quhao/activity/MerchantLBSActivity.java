@@ -26,6 +26,7 @@ import com.amap.api.maps.AMap.InfoWindowAdapter;
 import com.amap.api.maps.AMap.OnInfoWindowClickListener;
 import com.amap.api.maps.AMap.OnMapLoadedListener;
 import com.amap.api.maps.AMap.OnMarkerClickListener;
+import com.amap.api.maps.CameraUpdate;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
@@ -60,26 +61,10 @@ public class MerchantLBSActivity extends AppStoreActivity implements OnMarkerCli
 	
 	private TextView markerText;
 	
-	private RadioGroup radioOption;
+	private CameraUpdate update = null;
 	
 	private List<LatLng> latLngs = new ArrayList<LatLng>();
 	
-	private Marker XIAN;
-	private Marker CHENGDU;
-	private static final LatLng marker1 = new LatLng(39.24426, 100.18322);
-	private static final LatLng marker2 = new LatLng(39.24426, 104.18322);
-	private static final LatLng marker3 = new LatLng(39.24426, 108.18322);
-	private static final LatLng marker4 = new LatLng(39.24426, 112.18322);
-	private static final LatLng marker5 = new LatLng(39.24426, 116.18322);
-	private static final LatLng marker6 = new LatLng(36.24426, 100.18322);
-	private static final LatLng marker7 = new LatLng(36.24426, 104.18322);
-	private static final LatLng marker8 = new LatLng(36.24426, 108.18322);
-	private static final LatLng marker9 = new LatLng(36.24426, 112.18322);
-	private static final LatLng marker10 = new LatLng(36.24426, 116.18322);
-	
-	public static final LatLng CHENGDU1 = new LatLng(30.679879, 104.064855);// 成都市经纬度
-	public static final LatLng XIAN1 = new LatLng(34.341568, 108.940174);// 西安市经纬度
-	private MarkerOptions markerOption;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -165,30 +150,28 @@ public class MerchantLBSActivity extends AppStoreActivity implements OnMarkerCli
 			if (msg.what == 200) {
 				super.handleMessage(msg);
 
-				addMarkersToMap();// 往地图上添加marker
-//				CameraUpdate update = null;
-//				MerchantLocation location = null;
+				MerchantLocation location = null;
 				
-//				for (int i = 0; i < locations.size(); i++) {
-//					location = locations.get(i);
-//					LatLng latLng = new LatLng(location.lat, location.lng);
-//					MarkerOptions options = new MarkerOptions();
-//					options.position(latLng).title(location.name).snippet(location.address)
-//						.icon(BitmapDescriptorFactory.defaultMarker()).perspective(true);
-//					
-//					mAMap.addMarker(options);
-//					if(!latLngs.contains(latLng))
-//					{
-//						latLngs.add(latLng);
-//					}
-////					if (i==0) {
-////						update = CameraUpdateFactory.changeLatLng(latLng);
-////					}
-//				}
-//				if(null != update)
-//				{
-//					mAMap.moveCamera(update);
-//				}
+				for (int i = 0; i < locations.size(); i++) {
+					location = locations.get(i);
+					LatLng latLng = new LatLng(location.lat, location.lng);
+					MarkerOptions options = new MarkerOptions();
+					options.position(latLng).title(location.name).snippet(location.address)
+						.icon(BitmapDescriptorFactory.fromResource(R.drawable.menu_merchant_nearby)).perspective(true);
+					
+					mAMap.addMarker(options);
+					if(!latLngs.contains(latLng))
+					{
+						latLngs.add(latLng);
+					}
+					if (i==0) {
+						update = CameraUpdateFactory.changeLatLng(latLng);
+					}
+				}
+				if(null != update)
+				{
+					mAMap.moveCamera(update);
+				}
 				
 			}
 
@@ -196,103 +179,6 @@ public class MerchantLBSActivity extends AppStoreActivity implements OnMarkerCli
 
 	};
 
-	/**
-	 * 在地图上添加marker
-	 */
-	private void addMarkersToMap() {
-		CHENGDU = mAMap.addMarker(new MarkerOptions()
-				.position(CHENGDU1)
-				.title("成都市")
-				.snippet("成都市:30.679879, 104.064855")
-				.icon(BitmapDescriptorFactory.fromBitmap(getViewBitmap(getView(
-						"AMap地图", "对marker自定义view")))).perspective(true)
-				.draggable(true));// 设置远小近大效果,2.1.0版本新增
-		CHENGDU.showInfoWindow();// 设置默认显示一个infowinfow
-		markerOption = new MarkerOptions();
-		markerOption.position(XIAN1);
-		markerOption.title("西安市").snippet("西安市：34.341568, 108.940174");
-		markerOption.perspective(true);
-		markerOption.draggable(true);
-		markerOption.icon(BitmapDescriptorFactory
-				.fromResource(R.drawable.menu_merchant_nearby));
-		XIAN = mAMap.addMarker(markerOption);
-		drawMarkers();// 添加10个带有系统默认icon的marker
-	}
-	
-	/**
-	 * 绘制系统默认的10种marker背景图片
-	 */
-	public void drawMarkers() {
-		mAMap.addMarker(new MarkerOptions()
-				.position(marker1)
-				.title("Marker1 ")
-				.icon(BitmapDescriptorFactory
-						.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-				.perspective(true).draggable(true)); // 设置此marker可以拖拽
-		mAMap.addMarker(new MarkerOptions()
-				.position(marker2)
-				.title("Marker2 ")
-				.perspective(true)
-				.draggable(true)
-				.icon(BitmapDescriptorFactory
-						.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
-		mAMap.addMarker(new MarkerOptions()
-				.position(marker3)
-				.title("Marker3 ")
-				.perspective(true)
-				.draggable(true)
-				.icon(BitmapDescriptorFactory
-						.defaultMarker(BitmapDescriptorFactory.HUE_CYAN)));
-		mAMap.addMarker(new MarkerOptions()
-				.position(marker4)
-				.title("Marker4 ")
-				.perspective(true)
-				.draggable(true)
-				.icon(BitmapDescriptorFactory
-						.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
-		mAMap.addMarker(new MarkerOptions()
-				.position(marker5)
-				.title("Marker5 ")
-				.perspective(true)
-				.draggable(true)
-				.icon(BitmapDescriptorFactory
-						.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
-		mAMap.addMarker(new MarkerOptions()
-				.position(marker6)
-				.title("Marker6 ")
-				.perspective(true)
-				.draggable(true)
-				.icon(BitmapDescriptorFactory
-						.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)));
-		mAMap.addMarker(new MarkerOptions()
-				.position(marker7)
-				.title("Marker7 ")
-				.perspective(true)
-				.draggable(true)
-				.icon(BitmapDescriptorFactory
-						.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
-		mAMap.addMarker(new MarkerOptions()
-				.position(marker8)
-				.title("Marker8 ")
-				.perspective(true)
-				.draggable(true)
-				.icon(BitmapDescriptorFactory
-						.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
-		mAMap.addMarker(new MarkerOptions()
-				.position(marker9)
-				.title("Marker9 ")
-				.perspective(true)
-				.draggable(true)
-				.icon(BitmapDescriptorFactory
-						.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
-		mAMap.addMarker(new MarkerOptions()
-				.position(marker10)
-				.title("Marker10 ")
-				.perspective(true)
-				.draggable(true)
-				.icon(BitmapDescriptorFactory
-						.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
-	}
 	
 	@Override
 	public void finish() {
@@ -302,6 +188,7 @@ public class MerchantLBSActivity extends AppStoreActivity implements OnMarkerCli
 	/**
 	 * 把一个xml布局文件转化成view
 	 */
+	/*
 	public View getView(String title, String text) {
 		View view = getLayoutInflater().inflate(R.layout.marker, null);
 		TextView text_title = (TextView) view.findViewById(R.id.marker_title);
@@ -310,10 +197,12 @@ public class MerchantLBSActivity extends AppStoreActivity implements OnMarkerCli
 		text_text.setText(text);
 		return view;
 	}
+	*/
 
 	/**
 	 * 把一个view转化成bitmap对象
 	 */
+	/*
 	public static Bitmap getViewBitmap(View view) {
 		view.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
 				MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
@@ -322,6 +211,7 @@ public class MerchantLBSActivity extends AppStoreActivity implements OnMarkerCli
 		Bitmap bitmap = view.getDrawingCache();
 		return bitmap;
 	}
+	*/
 	
 	@Override
 	public void onClick(View v) {
@@ -370,13 +260,10 @@ public class MerchantLBSActivity extends AppStoreActivity implements OnMarkerCli
 	@Override
 	public void onMapLoaded() {
 		// 设置所有maker显示在View中
-		LatLngBounds bounds = new LatLngBounds.Builder()
-				.include(XIAN1).include(CHENGDU1)
-				.include(marker1).include(marker2).include(marker3)
-				.include(marker4).include(marker5).include(marker6)
-				.include(marker7).include(marker8).include(marker9)
-				.include(marker10).build();
-		mAMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10));
+		if(null != update)
+		{
+			mAMap.moveCamera(update);
+		}
 	}
 
 	/**
@@ -404,15 +291,12 @@ public class MerchantLBSActivity extends AppStoreActivity implements OnMarkerCli
 	 * 自定义infowinfow窗口
 	 */
 	public void render(Marker marker, View view) {
-			((ImageView) view.findViewById(R.id.badge))
-					.setImageResource(R.drawable.badge_sa);
 		String title = marker.getTitle();
 		TextView titleUi = ((TextView) view.findViewById(R.id.title));
 		if (title != null) {
 			SpannableString titleText = new SpannableString(title);
 			titleText.setSpan(new ForegroundColorSpan(Color.RED), 0,
 					titleText.length(), 0);
-			titleUi.setTextSize(15);
 			titleUi.setText(titleText);
 
 		} else {
@@ -424,7 +308,6 @@ public class MerchantLBSActivity extends AppStoreActivity implements OnMarkerCli
 			SpannableString snippetText = new SpannableString(snippet);
 			snippetText.setSpan(new ForegroundColorSpan(Color.GREEN), 0,
 					snippetText.length(), 0);
-			snippetUi.setTextSize(20);
 			snippetUi.setText(snippetText);
 		} else {
 			snippetUi.setText("");
@@ -435,7 +318,6 @@ public class MerchantLBSActivity extends AppStoreActivity implements OnMarkerCli
 	public View getInfoWindow(Marker marker) {
 		View infoWindow = getLayoutInflater().inflate(
 				R.layout.custom_info_window, null);
-
 		render(marker, infoWindow);
 		return infoWindow;
 	}
