@@ -89,9 +89,11 @@ public class MainActivity extends AppStoreActivity {
 		btnNearby.setOnClickListener(goNearby(this));
 		btnPerson.setOnClickListener(goPersonCenter(this));
 		btnMore.setOnClickListener(goMore(this));
-
 	}
 
+	/**
+	 * 处理top merchant的UI更新
+	 */
 	private Handler topMerchantsUpdateHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
