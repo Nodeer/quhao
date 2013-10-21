@@ -44,6 +44,7 @@ public class MerchantDetailActivity extends AppStoreActivity {
 	private ImageView merchantImg;
 	private TextView merchantAddress;
 	private TextView merchantPhone;
+	private TextView merchantBusinessTime;
 	private TextView merchantDesc;
 	private TextView merchantAverageCost;
 	private TextView xingjiabi;
@@ -93,6 +94,7 @@ public class MerchantDetailActivity extends AppStoreActivity {
 		this.merchantImg = (ImageView) info.findViewById(R.id.merchantImg);
 		this.merchantAddress = (TextView) info.findViewById(R.id.merchantAddress);
 		this.merchantPhone = (TextView) info.findViewById(R.id.merchantPhone);
+		this.merchantBusinessTime = (TextView) info.findViewById(R.id.merchantBusinessTime);
 		this.merchantDesc = (TextView) info.findViewById(R.id.description);
 		this.merchantAverageCost = (TextView) info.findViewById(R.id.merchant_details_AverageCost);
 		this.xingjiabi = (TextView) info.findViewById(R.id.xingjiabi);
@@ -246,6 +248,8 @@ public class MerchantDetailActivity extends AppStoreActivity {
 							.setText(m.address);
 					MerchantDetailActivity.this.merchantPhone
 							.setText(m.phone);
+					MerchantDetailActivity.this.merchantBusinessTime
+					.setText(m.openTime + "~" + m.closeTime);
 
 					MerchantDetailActivity.this.merchantDesc
 							.setText(m.description);
