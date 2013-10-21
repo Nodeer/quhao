@@ -3,18 +3,16 @@ package com.withiter.quhao.util.tool;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.withiter.quhao.R;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
 import android.util.DisplayMetrics;
-import android.view.Display;
 import android.widget.Toast;
+
+import com.withiter.quhao.R;
 
 public class PhoneTool {
 	
