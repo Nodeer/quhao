@@ -221,7 +221,14 @@
             android:src="@drawable/ic_address_big" 
             android:contentDescription="@string/empty"
             />
-
+  		<TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6.0dip"
+            android:maxLines="2"
+            android:text="@string/address"
+            android:textColor="#ff000000"
+            android:textSize="16.0sp" />
         <TextView
             android:id="@+id/merchantAddress"
             android:layout_width="0.0px"
@@ -263,7 +270,14 @@
             android:src="@drawable/ic_phone_big" 
             android:contentDescription="@string/empty"
             />
-
+  		<TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6.0dip"
+            android:maxLines="2"
+            android:text="@string/contact"
+            android:textColor="#ff000000"
+            android:textSize="16.0sp" />
         <TextView
             android:id="@+id/merchantPhone"
             android:layout_width="0.0px"
@@ -276,7 +290,7 @@
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="#ff000000"
             android:textSize="16.0sp" />
-
+        
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -32,6 +32,8 @@
 	<string name="merchant_description">商户描述:</string>
 	<string name="comment">网友点评:</string>
 	<string name="opentime">营业时间:</string>
+	<string name="contact">联系方式:</string>
+	<string name="address">地址:</string>
 	<!-- 详细页面 -->
 	
     <!-- 提示信息 -->
