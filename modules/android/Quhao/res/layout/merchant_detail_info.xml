@@ -306,7 +306,14 @@
             android:src="@drawable/clock" 
             android:contentDescription="@string/empty"
             />
-
+		<TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6.0dip"
+            android:maxLines="2"
+            android:text="@string/opentime"
+            android:textColor="#ff000000"
+            android:textSize="16.0sp" />
         <TextView
             android:id="@+id/merchantBusinessTime"
             android:layout_width="0.0px"
@@ -319,16 +326,6 @@
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="#ff000000"
             android:textSize="16.0sp" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:duplicateParentState="true"
-            android:paddingRight="6.0dip"
-            android:src="@drawable/arrow_right" 
-            android:contentDescription="@string/empty"
-            />
     </LinearLayout>
     <!-- 营业时间 -->
     
