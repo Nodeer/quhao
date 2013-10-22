@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.ReservationAdapter;
@@ -94,6 +96,27 @@ public class MerchantDetailActivity extends AppStoreActivity {
 		this.merchantImg = (ImageView) info.findViewById(R.id.merchantImg);
 		this.merchantAddress = (TextView) info.findViewById(R.id.merchantAddress);
 		this.merchantPhone = (TextView) info.findViewById(R.id.merchantPhone);
+		
+		this.merchantPhone.setClickable(true);
+		this.merchantPhone.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				// 取得输入的电话号码串
+				String phoneNO = MerchantDetailActivity.this.merchantPhone
+						.getText().toString();
+				// 如果输入不为空创建打电话的Intent
+				if (StringUtils.isNotNull(phoneNO)) {
+					Intent phoneIntent = new Intent(
+							"android.intent.action.CALL", Uri.parse("tel:"
+									+ phoneNO));
+					startActivity(phoneIntent);
+				}
+				else {
+					Toast.makeText(MerchantDetailActivity.this, "此商家还未添加联系方式", Toast.LENGTH_LONG).show(); 
+				}
+			}
+		});
+		
 		this.merchantBusinessTime = (TextView) info.findViewById(R.id.merchantBusinessTime);
 		this.merchantDesc = (TextView) info.findViewById(R.id.description);
 		this.merchantAverageCost = (TextView) info.findViewById(R.id.merchant_details_AverageCost);
