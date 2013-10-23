@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import cn.bran.japid.util.StringUtils;
+
 import com.withiter.models.merchant.Comment;
 import com.withiter.models.merchant.Merchant;
 import com.withiter.models.merchant.Tese;
@@ -90,7 +92,7 @@ public class MerchantVO {
 		MerchantVO vo = new MerchantVO();
 		vo.id = m.id();
 		vo.address = m.address;
-		vo.averageCost = m.averageCost;
+		vo.averageCost = StringUtils.isEmpty(m.averageCost) ? "0" : m.averageCost;
 		vo.cateType = m.cateType;
 		vo.closeTime = m.closeTime;
 		vo.description = m.description;
@@ -115,8 +117,8 @@ public class MerchantVO {
 		vo.merchantImage = m.merchantImage;
 		
 		vo.commentAverageCost = c.averageCost;
-		vo.commentContent = c.content;
-		vo.commentDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(c.date);
+		vo.commentContent = StringUtils.isEmpty(c.content) ? "暂无评论" : c.content;
+		vo.commentDate = StringUtils.isEmpty(c.content) ? "" : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(c.date);
 		vo.commentFuwu = c.fuwu;
 		vo.commentHuanjing = c.huanjing;
 		vo.commentKouwei = c.kouwei;

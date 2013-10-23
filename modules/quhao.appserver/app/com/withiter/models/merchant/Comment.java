@@ -40,4 +40,15 @@ public class Comment extends CommentEntityDef {
 		q.order("date");
 		return q.first();
 	}
+	
+	/**
+	 * get the latest comment one
+	 * @return latest comment object
+	 */
+	public static Comment latestOne(String mid) {
+		MorphiaQuery q = Comment.q();
+		q.filter("mid", mid);
+		q.order("date");
+		return q.first();
+	}
 }

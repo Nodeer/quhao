@@ -78,9 +78,10 @@ public class MerchantController extends BaseController {
 	public static void merchant(String id) {
 		System.out.println("merchant:" + id);
 		Merchant m = Merchant.findByMid(id);
-		Comment c = Comment.latestOne();
+		Comment c = Comment.latestOne(id);
 		if(c == null){
 			c = new Comment();
+			c.mid = id;
 		}
 		renderJSON(MerchantVO.build(m,c));
 	}
