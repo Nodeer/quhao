@@ -182,7 +182,7 @@ public class SelfManagementController extends BaseController {
 		for (File file : files) {
 			try {
 				File desFile = Play.getFile("public/upload/" + file.getName());
-				Images.resize(file, desFile, 30, 20);
+				Images.resize(file, desFile, 100, 60);
 				gfsFile = UploadController.saveBinary(desFile, mid);
 				desFile.delete();
 				break;

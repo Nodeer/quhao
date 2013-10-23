@@ -12,16 +12,16 @@
         android:orientation="horizontal" >
 
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="100dip"
+            android:layout_height="60dip"
             android:layout_weight="3"
             android:orientation="vertical"
-            android:padding="8.0dip" >
+            android:padding="1.0dip" >
 			
             <!-- merchant logo -->
             <ImageView
                 android:id="@+id/merchantImg"
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/empty"
