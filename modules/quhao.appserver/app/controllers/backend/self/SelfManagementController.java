@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 import play.Play;
+import play.libs.Images;
 
 import vo.BackendMerchantInfoVO;
 import vo.HaomaVO;
@@ -180,7 +181,10 @@ public class SelfManagementController extends BaseController {
 		File[] files = params.get(param, File[].class);
 		for (File file : files) {
 			try {
-				gfsFile = UploadController.saveBinary(file, mid);
+				File desFile = Play.getFile("public/upload/" + file.getName());
+				Images.resize(file, desFile, 30, 20);
+				gfsFile = UploadController.saveBinary(desFile, mid);
+				desFile.delete();
 				break;
 			} catch (IOException e) {
 				e.printStackTrace();

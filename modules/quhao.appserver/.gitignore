@@ -18,3 +18,5 @@ morphia-1.2.9a/
 press-1.0.25/
 
 *.log
+
+public/upload/
