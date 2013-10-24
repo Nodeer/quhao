@@ -90,6 +90,8 @@ public abstract class QuhaoActivity extends Activity {
 		int height = size.y;
 		PhoneTool.setScreenWidth(width);
 		PhoneTool.setScreenHeight(height);
+		QuhaoLog.i(TAG, "device's screen width is: " + width);
+		QuhaoLog.i(TAG, "device's screen height is: " + height);
 	}
 
 	private void initLogin() {
