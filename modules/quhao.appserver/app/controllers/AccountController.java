@@ -204,13 +204,19 @@ public class AccountController extends BaseController {
 			loginVO.errorCode = -1;
 			loginVO.msg = "account is not exsit";
 		}
-		else
+		else if(account.isSignIn == false)
 		{
 			account.signIn = account.signIn + 1;
 			account.isSignIn = true;
 			account.save();
 			loginVO.errorCode = 1;
 			loginVO.msg = "success";
+			loginVO.build(account);
+		}
+		else if(account.isSignIn == true)
+		{
+			loginVO.errorCode = -2;
+			loginVO.msg = "you have signed in";
 			loginVO.build(account);
 		}
 		

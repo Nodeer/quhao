@@ -13,6 +13,7 @@ import play.modules.morphia.Model.NoAutoTimestamp;
 import cn.bran.japid.util.StringUtils;
 
 import com.google.code.morphia.annotations.Entity;
+import com.mongodb.DB;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSInputFile;
@@ -301,6 +302,8 @@ public class Account extends AccountEntityDef {
 	}
 
 	public static void cleanSignUp() {
+//		DB db =  Account.db();
+//		db.command("db.Account.update({\"className\":\"com.withiter.models.account.Account\"},{$set:{\"isSignIn\":\"true\"}},false,true)");
 		
 		List<Account> allAccounts = findAll();
 		for (Account account : allAccounts) {
