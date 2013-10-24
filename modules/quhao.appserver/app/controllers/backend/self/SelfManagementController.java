@@ -17,6 +17,7 @@ import com.mongodb.gridfs.GridFSInputFile;
 import com.withiter.models.account.Account;
 import com.withiter.models.account.Reservation;
 import com.withiter.models.backendMerchant.MerchantAccountRel;
+import com.withiter.models.merchant.Category;
 import com.withiter.models.merchant.Haoma;
 import com.withiter.models.merchant.Merchant;
 
@@ -101,6 +102,9 @@ public class SelfManagementController extends BaseController {
 		m.enable = true;
 		m.seatType = seatType;
 		m.save();
+		// update the category counts
+		Category.updateCounts();
+		
 		if (!StringUtils.isEmpty(merchantImage)) {
 			GridFSInputFile file = uploadFirst(merchantImage, m.id());
 			if (file != null) {

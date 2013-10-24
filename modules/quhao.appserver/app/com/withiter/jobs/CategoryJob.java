@@ -12,21 +12,23 @@ import play.jobs.OnApplicationStart;
 @OnApplicationStart
 @Every("1min")
 public class CategoryJob extends Job {
-
-	private static Logger logger = LoggerFactory.getLogger(CategoryJob.class);
 	
-	@Override
-	public void doJob() throws Exception {
-		
-		Thread t = new Thread(new Runnable() {
-			public void run() {
-				long start = System.currentTimeMillis();
-				logger.info(CategoryJob.class.getName() + " started.");
-				Category.updateCounts();
-				logger.info(CategoryJob.class.getName() + " finished, elapsed time " + (System.currentTimeMillis() - start) + "ms.");
-			}
-		});
-		
-		t.start();
-	}
+	// TODO remove this job
+
+//	private static Logger logger = LoggerFactory.getLogger(CategoryJob.class);
+//	
+//	@Override
+//	public void doJob() throws Exception {
+//		
+//		Thread t = new Thread(new Runnable() {
+//			public void run() {
+//				long start = System.currentTimeMillis();
+//				logger.info(CategoryJob.class.getName() + " started.");
+//				Category.updateCounts();
+//				logger.info(CategoryJob.class.getName() + " finished, elapsed time " + (System.currentTimeMillis() - start) + "ms.");
+//			}
+//		});
+//		
+//		t.start();
+//	}
 }
