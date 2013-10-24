@@ -316,11 +316,21 @@ public class ParseJson {
 		if (obj.has("joinedDate")) {
 			joinedDate = obj.getString("joinedDate");
 		}
-
+		
+		long lat = 0L;
+		if (obj.has("lat")) {
+			lat = obj.getLong("lat");
+		}
+		
+		long lng = 0L;
+		if (obj.has("lng")) {
+			lng = obj.getLong("lng");
+		}
+		
 		merchant = new Merchant(id, imgUrl, name, address, phone, cateType,
 				grade, averageCost, tags, kouwei, huanjing, fuwu, xingjiabi,
 				teses, nickName, description, openTime, closeTime, marketCount,
-				enable, joinedDate);
+				enable, joinedDate,lat,lng);
 		
 		String commentAverageCost = obj.optString("commentAverageCost");
 		int commentXingjiabi = obj.optInt("commentXingjiabi");

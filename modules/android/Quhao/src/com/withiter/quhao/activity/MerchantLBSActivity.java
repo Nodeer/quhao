@@ -3,7 +3,6 @@ package com.withiter.quhao.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,12 +11,9 @@ import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,12 +27,14 @@ import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.util.http.CommonHTTPRequest;
+import com.withiter.quhao.util.tool.ParseJson;
+import com.withiter.quhao.vo.Merchant;
 import com.withiter.quhao.vo.MerchantLocation;
 
 public class MerchantLBSActivity extends AppStoreActivity implements OnMarkerClickListener,
@@ -52,6 +50,8 @@ public class MerchantLBSActivity extends AppStoreActivity implements OnMarkerCli
 	private String merchantName;
 	
 	private String merchantId;
+	
+	private Merchant merchant;
 	
 	private List<MerchantLocation> locations;
 	
@@ -81,7 +81,7 @@ public class MerchantLBSActivity extends AppStoreActivity implements OnMarkerCli
 		
 		mMapView = (MapView) findViewById(R.id.mapView);
 		mMapView.onCreate(savedInstanceState);
-		markerText = (TextView) findViewById(R.id.mark_listenter_text);
+		//markerText = (TextView) findViewById(R.id.mark_listenter_text);
 		init();
 	}
 
@@ -120,18 +120,22 @@ public class MerchantLBSActivity extends AppStoreActivity implements OnMarkerCli
 		{
 			try {
 				QuhaoLog.v(TAG, "get categorys data form server begin");
-				String buf = "success";//CommonHTTPRequest.get("getReservations?accountId=51e563feae4d165869fda38c&mid=51efe7d8ae4dca7b4c281754");
+				String buf = CommonHTTPRequest.get("merchant?id="
+						+ MerchantLBSActivity.this.merchantId);
 						//+ MerchantDetailActivity.this.merchantId);
 				if (StringUtils.isNull(buf) && "[]".equals(buf)) {
 				} else {
 					
+					merchant = ParseJson.getMerchant(buf);
+					merchant.lat = 31.678109;
+					merchant.lng = 31.678109;
 					//List<ReservationVO> rvos = ParseJson.getReservations(buf);
-					locations = new ArrayList<MerchantLocation>();
-					MerchantLocation location = new MerchantLocation("51e563feae4d165869fda38c", "name111", 31.678109, 31.678109, "address11");
-					MerchantLocation location2 = new MerchantLocation("51e563feae4d165869fda382", "name222", 31.678109, 50.678109, "address22");
-					locations.add(location);
-					locations.add(location2);
-					getLocationUpdateHandler.obtainMessage(200, locations)
+//					locations = new ArrayList<MerchantLocation>();
+//					MerchantLocation location = new MerchantLocation("51e563feae4d165869fda38c", "name111", 31.678109, 31.678109, "address11");
+//					MerchantLocation location2 = new MerchantLocation("51e563feae4d165869fda382", "name222", 31.678109, 50.678109, "address22");
+//					locations.add(location);
+//					locations.add(location2);
+					getLocationUpdateHandler.obtainMessage(200, merchant)
 							.sendToTarget();
 				}
 
@@ -150,8 +154,10 @@ public class MerchantLBSActivity extends AppStoreActivity implements OnMarkerCli
 			if (msg.what == 200) {
 				super.handleMessage(msg);
 
-				MerchantLocation location = null;
+				merchantNameView.setText(merchant.name);
 				
+				/*
+				MerchantLocation location = null;
 				for (int i = 0; i < locations.size(); i++) {
 					location = locations.get(i);
 					LatLng latLng = new LatLng(location.lat, location.lng);
@@ -168,6 +174,16 @@ public class MerchantLBSActivity extends AppStoreActivity implements OnMarkerCli
 						update = CameraUpdateFactory.changeLatLng(latLng);
 					}
 				}
+				*/
+				
+				LatLng latLng = new LatLng(merchant.lat, merchant.lng);
+				MarkerOptions options = new MarkerOptions();
+				options.position(latLng).title(merchant.name).snippet(merchant.address)
+					.icon(BitmapDescriptorFactory.fromResource(R.drawable.menu_merchant_nearby)).perspective(true);
+				
+				mAMap.addMarker(options);
+				update = CameraUpdateFactory.changeLatLng(latLng);
+				
 				if(null != update)
 				{
 					mAMap.moveCamera(update);
@@ -271,7 +287,7 @@ public class MerchantLBSActivity extends AppStoreActivity implements OnMarkerCli
 	 */
 	@Override
 	public boolean onMarkerClick(Marker marker) {
-		markerText.setText("你点击的是" + marker.getTitle());
+		//markerText.setText("你点击的是" + marker.getTitle());
 		return false;
 
 	}

@@ -4,8 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.sina.weibo.sdk.WeiboSDK;
+import com.sina.weibo.sdk.api.BaseMediaObject;
 import com.sina.weibo.sdk.api.IWeiboAPI;
 import com.sina.weibo.sdk.api.SendMessageToWeiboRequest;
+import com.sina.weibo.sdk.api.TextObject;
+import com.sina.weibo.sdk.api.WeiboMessage;
 import com.weibo.sdk.android.Oauth2AccessToken;
 import com.weibo.sdk.android.Weibo;
 import com.weibo.sdk.android.WeiboAuthListener;
@@ -37,6 +40,8 @@ public class SinaInfoActivity extends AppStoreActivity {
 	private Weibo mWeibo;
 	
 	private Oauth2AccessToken mAccessToken;
+	
+	private IWeiboAPI mIweiboAPI = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +91,7 @@ public class SinaInfoActivity extends AppStoreActivity {
 
 	private void sendSina() {
 		mWeibo = Weibo.getInstance(QuhaoConstant.SINA_APP_KEY, QuhaoConstant.SINA_REDIRECT_URL, QuhaoConstant.SINA_SCOPE);
-		mAccessToken = AccessTokenKeeper.readAccessToken(SinaInfoActivity.this);
+		//mAccessToken = AccessTokenKeeper.readAccessToken(SinaInfoActivity.this);
 		mWeibo.anthorize(SinaInfoActivity.this, new AuthDialogListener());
 	}
 
@@ -99,8 +104,7 @@ public class SinaInfoActivity extends AppStoreActivity {
 			String expiresIn = bundle.getString("expires_in");
 			mAccessToken = new Oauth2AccessToken(token, expiresIn);
 			
-			sinaEditText.setText("ok");
-			
+			Log.e(" is valid :  ", String.valueOf(mAccessToken.isSessionValid()));
 			if(mAccessToken.isSessionValid())
 			{
 				String date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(mAccessToken.getExpiresTime()));
@@ -108,17 +112,24 @@ public class SinaInfoActivity extends AppStoreActivity {
 						"expires_in : " +expiresIn + "\r\n有效期:" + date);
 				
 				AccessTokenKeeper.keepAccessToken(SinaInfoActivity.this, mAccessToken);
-				IWeiboAPI iweibo = WeiboSDK.createWeiboAPI(SinaInfoActivity.this, QuhaoConstant.SINA_APP_KEY);
-				boolean flag = iweibo.registerApp();
-				Log.w("", String.valueOf(flag));
-				
+				mIweiboAPI = WeiboSDK.createWeiboAPI(SinaInfoActivity.this, QuhaoConstant.SINA_APP_KEY);
+				boolean flag = mIweiboAPI.registerApp();
+				Log.e("", date +flag);
+				WeiboMessage message = new WeiboMessage();
+				message.mediaObject = getTextObj();
+				SendMessageToWeiboRequest request = new SendMessageToWeiboRequest();
+				request.transaction = String.valueOf(System.currentTimeMillis());
+				request.message = message;
+				mIweiboAPI.sendRequest(SinaInfoActivity.this, request);
 				Toast.makeText(SinaInfoActivity.this, "success", Toast.LENGTH_LONG).show();
+				
 			}
 		}
 
 		@Override
 		public void onError(WeiboDialogError error) {
 			Toast.makeText(SinaInfoActivity.this, "Auth error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+			Log.e("onError:", error.getMessage());
 		}
 
 		@Override
@@ -129,8 +140,15 @@ public class SinaInfoActivity extends AppStoreActivity {
 		@Override
 		public void onWeiboException(WeiboException exception) {
 			Toast.makeText(SinaInfoActivity.this, "Auth exception:" + exception.getMessage(), Toast.LENGTH_LONG).show();
+			Log.e("onWeiboException:", exception.getMessage());
 		}
 		
+	}
+	
+	private BaseMediaObject getTextObj() {
+		TextObject text = new TextObject();
+		text.text = sinaEditText.getText().toString();
+		return text;
 	}
 	
 	@Override

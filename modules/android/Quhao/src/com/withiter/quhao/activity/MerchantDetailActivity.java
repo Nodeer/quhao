@@ -80,18 +80,6 @@ public class MerchantDetailActivity extends AppStoreActivity {
 		scroll.addView(info, layoutParams);
 
 		this.mapLayout = (LinearLayout) findViewById(R.id.mapLayout);
-		mapLayout.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(MerchantDetailActivity.this,
-						MerchantLBSActivity.class);
-				intent.putExtra("merchantId",
-						MerchantDetailActivity.this.merchantId);
-				intent.putExtra("merchantName", "jiu dian 1");
-				startActivity(intent);
-				overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
-			}
-		});
 		
 		this.merchantImg = (ImageView) info.findViewById(R.id.merchantImg);
 		this.merchantAddress = (TextView) info.findViewById(R.id.merchantAddress);
@@ -323,6 +311,18 @@ public class MerchantDetailActivity extends AppStoreActivity {
 					commentContent.setText(m.commentContent);
 					commentDate.setText(m.commentDate);
 					
+					mapLayout.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							Intent intent = new Intent(MerchantDetailActivity.this,
+									MerchantLBSActivity.class);
+							intent.putExtra("merchantId",
+									MerchantDetailActivity.this.merchantId);
+							intent.putExtra("merchantName", MerchantDetailActivity.this.merchant.name);
+							startActivity(intent);
+							overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
+						}
+					});
 					
 					critiqueLayout
 							.setOnClickListener(MerchantDetailActivity.this);

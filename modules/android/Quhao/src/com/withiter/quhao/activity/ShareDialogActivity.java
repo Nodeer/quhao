@@ -79,7 +79,7 @@ public class ShareDialogActivity extends AppStoreActivity implements OnItemClick
 		isClick = false;
 		progressDialogUtil.closeProgress();
 		Bundle bundle = new Bundle();
-		bundle.putString("SHARE_INFO", "(www.withiter.com \n 分享自@常熟零距离网)");
+		bundle.putString("SHARE_INFO", "(www.withiter.com \n 分享自@王介泽)");
 		
 		Intent intent = new Intent(this, SinaInfoActivity.class);
 		if (bundle != null) {

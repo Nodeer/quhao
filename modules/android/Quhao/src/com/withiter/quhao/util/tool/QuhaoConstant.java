@@ -28,7 +28,7 @@ public class QuhaoConstant {
 	/**
 	 * 新浪的应用key， 在官方申请的
 	 */
-	public static final String SINA_APP_KEY = "3183077347";
+	public static final String SINA_APP_KEY = "3183077347";//"3183077347";
 	
 	/**
 	 * 开发者的REDIRECT URL

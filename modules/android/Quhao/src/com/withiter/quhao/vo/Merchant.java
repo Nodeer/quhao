@@ -30,6 +30,16 @@ public class Merchant implements Serializable {
 	public boolean enable;
 	public String joinedDate;
 	
+	/**
+	 * 经度
+	 */
+	public double lat;
+	
+	/**
+	 * 纬度
+	 */
+	public double lng;
+	
 	/** latest one comment **/
 	public String commentAverageCost;
 	public int commentXingjiabi;
@@ -45,7 +55,7 @@ public class Merchant implements Serializable {
 			String tags, Integer kouwei, Integer huanjing, Integer fuwu,
 			Integer xingjiabi, String teses, String nickName,
 			String description, String openTime, String closeTime,
-			Integer marketCount, boolean enable, String joinedDate) {
+			Integer marketCount, boolean enable, String joinedDate,long lat,long lng) {
 		this.id = id;
 		this.merchantImage = merchantImage;
 		this.name = name;
@@ -67,6 +77,8 @@ public class Merchant implements Serializable {
 		this.marketCount = marketCount;
 		this.enable = enable;
 		this.joinedDate = joinedDate;
+		this.lat = lat;
+		this.lng = lng;
 	}
 
 	public Merchant() {
