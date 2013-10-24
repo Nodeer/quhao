@@ -42,10 +42,30 @@ public class MerchantListActivity extends AppStoreActivity {
 	private String categoryType;
 	private String categoryTypeStr;
 	private String categoryCount;
-	private TextView categoryTypeView;
+	private TextView categoryTypeTitle;
 	private TextView categoryCountView;
 	private boolean isFirst = true;
 
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.merchants);
+		super.onCreate(savedInstanceState);
+		
+		this.merchants = new ArrayList<Merchant>();
+
+		this.page = getIntent().getIntExtra("page", 1);
+		this.categoryType = getIntent().getStringExtra("categoryType");
+		this.categoryTypeStr = getIntent().getStringExtra("categoryTypeStr");
+		this.categoryCount = getIntent().getStringExtra("categoryCount");
+
+		this.categoryTypeTitle = (TextView) findViewById(R.id.categoryTypeTitle);
+		this.categoryTypeTitle.setText(categoryTypeStr + "["+ categoryCount + "家]");
+
+		btnBack.setOnClickListener(goBack(this));
+		initView();
+	}
+	
 	private Handler merchantsUpdateHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -98,27 +118,6 @@ public class MerchantListActivity extends AppStoreActivity {
 			overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
 		}
 	};
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.merchants);
-		super.onCreate(savedInstanceState);
-		this.merchants = new ArrayList<Merchant>();
-		this.page = getIntent().getIntExtra("page", 1);
-		this.categoryType = getIntent().getStringExtra("categoryType");
-
-		this.categoryTypeStr = getIntent().getStringExtra("categoryTypeStr");
-		this.categoryTypeView = (TextView) findViewById(R.id.categoryType);
-		this.categoryTypeView.setText(categoryTypeStr);
-
-		this.categoryCount = getIntent().getStringExtra("categoryCount");
-		this.categoryCountView = (TextView) findViewById(R.id.categoryCount);
-		this.categoryCountView.setText("[共" + categoryCount + "家]");
-		
-		btnBack.setOnClickListener(goBack(this));
-		initView();
-	}
 
 	private void initView() {
 		merchantsListView = (ListView) findViewById(R.id.merchantsListView);

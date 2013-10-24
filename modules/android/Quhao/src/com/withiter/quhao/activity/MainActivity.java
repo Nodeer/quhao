@@ -153,10 +153,12 @@ public class MainActivity extends AppStoreActivity {
 			intent.putExtra("categoryType", category.categoryType);
 			intent.putExtra("categoryTypeStr", category.categoryTypeStr);
 			intent.putExtra("categoryCount", String.valueOf(category.count));
+			
 			intent.setClass(MainActivity.this, MerchantListActivity.class);
 
 			startActivity(intent);
-			overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
+//			overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
+			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 		}
 	};
 

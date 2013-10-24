@@ -38,6 +38,7 @@ public abstract class QuhaoActivity extends Activity {
 		try {
 			super.onCreate(savedInstanceState);
 			QuhaoLog.i(TAG, "QuhaoActivity onCreate invoked");
+			QuhaoLog.i(TAG, "QuhaoActivity inited : " + inited);
 			if (!inited) {
 				initAll();
 				inited = true;

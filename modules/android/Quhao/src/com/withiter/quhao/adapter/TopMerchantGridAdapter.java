@@ -65,13 +65,7 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 		Object item = getItem(position);
 		topMerchant = (TopMerchant) item;
 
-		// set the default height
 		final int defaultHight = PhoneTool.getScreenHeight()/6;
-		QuhaoLog.i(TAG, "the defaultHight is :" + defaultHight);
-		if(convertView != null){
-			convertView.setMinimumHeight(defaultHight);
-		}
-		
 		synchronized (item) {
 			ViewHolder holder = null;
 			if (null == convertView) {
@@ -137,6 +131,12 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 				holder.img.setImageDrawable(cachedImage);
 			}
 
+			// set the default height
+			QuhaoLog.i(TAG, "the defaultHight is :" + defaultHight);
+			if(convertView != null){
+				convertView.setMinimumHeight(defaultHight);
+			}
+			
 			convertView.setTag(holder);
 			return convertView;
 		}
