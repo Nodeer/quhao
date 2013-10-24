@@ -67,6 +67,7 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 
 		// set the default height
 		final int defaultHight = PhoneTool.getScreenHeight()/6;
+		QuhaoLog.i(TAG, "the defaultHight is :" + defaultHight);
 		if(convertView != null){
 			convertView.setMinimumHeight(defaultHight);
 		}
