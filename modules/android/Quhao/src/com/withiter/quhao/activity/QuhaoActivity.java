@@ -85,10 +85,30 @@ public abstract class QuhaoActivity extends Activity {
 		
 		// Get the screen size
 		Display display = getWindowManager().getDefaultDisplay();
+		
+		int currentapiVersion = android.os.Build.VERSION.SDK_INT;
 		Point size = new Point();
-		display.getSize(size);
-		int width = size.x;
-		int height = size.y;
+		int width = 0;
+		int height = 0;
+		if (currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+		    //Do something for API 17 only (4.2)
+		    //getRealSize()
+			display.getRealSize(size);
+			width = size.x;
+			height = size.y;
+		}
+		else if (currentapiVersion >= android.os.Build.VERSION_CODES.HONEYCOMB_MR2){
+		    // Do something for API 13 and above , but below API 17 (API 17 will trigger the above block
+		    //getSize()
+			display.getSize(size);
+			width = size.x;
+			height = size.y;
+		} else{
+		    // do something for phones running an SDK before Android 3.2 (API 13)
+		    //getWidth(), getHeight()
+			width = display.getWidth();
+			height = display.getHeight();
+		}
 		PhoneTool.setScreenWidth(width);
 		PhoneTool.setScreenHeight(height);
 		QuhaoLog.i(TAG, "device's screen width is: " + width);
