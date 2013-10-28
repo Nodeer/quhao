@@ -18,6 +18,7 @@ import android.view.Display;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.QuhaoLog;
+import com.withiter.quhao.util.tool.PhoneTool;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 
 public abstract class QuhaoActivity extends Activity {
@@ -85,13 +86,13 @@ public abstract class QuhaoActivity extends Activity {
 		// Get the screen size
 		Display display = getWindowManager().getDefaultDisplay();
 		Point size = new Point();
-//		display.getSize(size);
-//		int width = size.x;
-//		int height = size.y;
-//		PhoneTool.setScreenWidth(width);
-//		PhoneTool.setScreenHeight(height);
-//		QuhaoLog.i(TAG, "device's screen width is: " + width);
-//		QuhaoLog.i(TAG, "device's screen height is: " + height);
+		display.getSize(size);
+		int width = size.x;
+		int height = size.y;
+		PhoneTool.setScreenWidth(width);
+		PhoneTool.setScreenHeight(height);
+		QuhaoLog.i(TAG, "device's screen width is: " + width);
+		QuhaoLog.i(TAG, "device's screen height is: " + height);
 	}
 
 	private void initLogin() {
