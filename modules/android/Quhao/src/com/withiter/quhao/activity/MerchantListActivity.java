@@ -43,7 +43,6 @@ public class MerchantListActivity extends AppStoreActivity {
 	private String categoryTypeStr;
 	private String categoryCount;
 	private TextView categoryTypeTitle;
-	private TextView categoryCountView;
 	private boolean isFirst = true;
 
 	@Override
@@ -51,21 +50,23 @@ public class MerchantListActivity extends AppStoreActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.merchants);
 		super.onCreate(savedInstanceState);
-		
+
 		this.merchants = new ArrayList<Merchant>();
 
 		this.page = getIntent().getIntExtra("page", 1);
+		QuhaoLog.i(LOGTAG, "init page is : " + this.page);
 		this.categoryType = getIntent().getStringExtra("categoryType");
 		this.categoryTypeStr = getIntent().getStringExtra("categoryTypeStr");
 		this.categoryCount = getIntent().getStringExtra("categoryCount");
 
 		this.categoryTypeTitle = (TextView) findViewById(R.id.categoryTypeTitle);
-		this.categoryTypeTitle.setText(categoryTypeStr + "["+ categoryCount + "家]");
+		this.categoryTypeTitle.setText(categoryTypeStr + "[" + categoryCount
+				+ "家]");
 
 		btnBack.setOnClickListener(goBack(this));
 		initView();
 	}
-	
+
 	private Handler merchantsUpdateHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -76,12 +77,9 @@ public class MerchantListActivity extends AppStoreActivity {
 						.getLayoutParams();
 
 				// 设置自定义的layout
-
 				merchantsListView.setLayoutParams(merchantsParams);
 				merchantsListView.invalidate();
 				merchantsListView.setVisibility(View.VISIBLE);
-				// merchantsListView.addFocusables(merchants,
-				// merchants.size()-9);
 
 				// 默认isFirst是true.
 				if (isFirst) {
@@ -147,16 +145,14 @@ public class MerchantListActivity extends AppStoreActivity {
 		public void run() {
 			try {
 				QuhaoLog.v(LOGTAG, "get categorys data form server begin");
-				String buf = CommonHTTPRequest.get("MerchantController/nextPage?page=" + page
-						+ "&cateType=" + categoryType);
-				if(StringUtils.isNull(buf))
-				{
+				String url = "MerchantController/nextPage?page=" + page
+						+ "&cateType=" + categoryType;
+				QuhaoLog.i(LOGTAG, "the request url is : " + url);
+				String buf = CommonHTTPRequest.get(url);
+				if (StringUtils.isNull(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				}
-				else
-				{
-					if(null == merchants)
-					{
+				} else {
+					if (null == merchants) {
 						merchants = new ArrayList<Merchant>();
 					}
 					merchants.addAll(ParseJson.getMerchants(buf));
@@ -164,7 +160,7 @@ public class MerchantListActivity extends AppStoreActivity {
 					merchantsUpdateHandler.obtainMessage(200, merchants)
 							.sendToTarget();
 				}
-				
+
 			} catch (Exception e) {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				e.printStackTrace();
@@ -182,7 +178,7 @@ public class MerchantListActivity extends AppStoreActivity {
 		@Override
 		public void onScroll(AbsListView view, int firstVisibleItem,
 				int visibleItemCount, int totalItemCount) {
-			if (view.getLastVisiblePosition() == totalItemCount - 1) {
+			if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount > 0) {
 				MerchantListActivity.this.page += 1;
 				Thread merchantsThread = new Thread(merchantsRunnable);
 				merchantsThread.start();
