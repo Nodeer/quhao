@@ -137,7 +137,6 @@ public class ParseJson {
 
 		try {
 			JSONArray jsonArrays = new JSONArray(buf);
-
 			for (int i = 0; i < jsonArrays.length(); i++) {
 				JSONObject obj = jsonArrays.getJSONObject(i);
 

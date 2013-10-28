@@ -61,6 +61,10 @@ public class MerchantController extends BaseController {
 
 		page = (page == 0) ? 1 : page;
 
+		// TODO remove test condiftion
+		
+		sortBy = "-modified";
+		
 		List<Merchant> merchantList = Merchant.nextPage(cateType, page, sortBy);
 		List<MerchantVO> merchantVOList = new ArrayList<MerchantVO>();
 		for (Merchant m : merchantList) {

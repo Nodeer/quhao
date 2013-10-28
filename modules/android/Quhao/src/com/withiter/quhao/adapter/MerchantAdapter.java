@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.AsyncImageLoader;
+import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.AsyncImageLoader.ImageCallback;
 import com.withiter.quhao.vo.Merchant;
 
@@ -23,13 +24,14 @@ public class MerchantAdapter extends BaseAdapter {
 
 	private ListView listView;
 	public List<Merchant> merchants;
-	private Activity activity;
+	// private Activity activity;
 	private AsyncImageLoader asyncImageLoader;
+	private static String TAG = MerchantAdapter.class.getName();
 
 	public MerchantAdapter(Activity activity, ListView listView,
 			List<Merchant> merchants) {
 		super();
-		this.activity = activity;
+		// this.activity = activity;
 		this.listView = listView;
 		this.merchants = merchants;
 		asyncImageLoader = new AsyncImageLoader();
@@ -70,17 +72,6 @@ public class MerchantAdapter extends BaseAdapter {
 						.findViewById(R.id.merchantName);
 				holder.btnEnter = (TextView) convertView
 						.findViewById(R.id.merchantAddress);
-
-				/*
-				 * 重新设置图片的宽高
-				 * holder.img.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-				 */
-				/*
-				 * 重新设置Layout 的宽高 holder.img.setLayoutParams(new
-				 * LinearLayout.LayoutParams( LayoutParams.WRAP_CONTENT,
-				 * LayoutParams.WRAP_CONTENT));
-				 */
-
 			}
 			if (holder == null) {
 				holder = (ViewHolder) convertView.getTag();
@@ -88,14 +79,17 @@ public class MerchantAdapter extends BaseAdapter {
 
 			String imageUrl = merchant.merchantImage;
 
+			QuhaoLog.i(TAG, "merchant adapter's imageUrl : " + imageUrl);
+			
+			
 			holder.img.setTag(imageUrl + position);
 			if (null != imageUrl && !"".equals(imageUrl)) {
-				cachedImage = asyncImageLoader.loadDrawable(imageUrl,position,
+				cachedImage = asyncImageLoader.loadDrawable(imageUrl, position,
 						new ImageCallback() {
 
 							@Override
 							public void imageLoaded(Drawable imageDrawable,
-									String imageUrl,int position) {
+									String imageUrl, int position) {
 								ImageView imageViewByTag = (ImageView) listView
 										.findViewWithTag(imageUrl + position);
 								if (null != imageViewByTag
@@ -111,7 +105,7 @@ public class MerchantAdapter extends BaseAdapter {
 						});
 
 			}
-//			// 设置图片给imageView 对象
+			// // 设置图片给imageView 对象
 			if (null != cachedImage) {
 				holder.img.setImageDrawable(cachedImage);
 				holder.img.invalidate();
