@@ -24,7 +24,7 @@ import com.withiter.quhao.vo.TopMerchant;
 public class ParseJson {
 
 	// TODO need to optimize these methods
-	
+
 	public static Collection<? extends Category> getCategorys(String buf) {
 		List<Category> categroys = new ArrayList<Category>();
 		if (null == buf || "".equals(buf)) {
@@ -80,10 +80,7 @@ public class ParseJson {
 						catTypeToString = "小吃快餐";
 				}
 
-				if (obj.has("url")) {
-					url = obj.getString("url");
-				}
-
+				url = obj.optString("url");
 				Category category = new Category(count, categoryType,
 						catTypeToString, url);
 				categroys.add(category);
@@ -110,28 +107,16 @@ public class ParseJson {
 				JSONObject obj = jsonArrays.getJSONObject(i);
 				String imgUrl = "";
 				if (obj.has("merchantImage")) {
-					if(QuhaoConstant.test){
-						imgUrl = obj.getString("merchantImage").replace("localhost", "10.0.2.2");
-					}else{
+					if (QuhaoConstant.test) {
+						imgUrl = obj.getString("merchantImage").replace(
+								"localhost", "10.0.2.2");
+					} else {
 						imgUrl = obj.getString("merchantImage");
 					}
 				}
-
-				String name = "";
-				if (obj.has("name")) {
-					name = obj.getString("name");
-				}
-
-				String id = "";
-				if (obj.has("id")) {
-					id = obj.getString("id");
-				}
-				
-				String mid = "";
-				if(obj.has("mid")){
-					mid = obj.getString("mid");
-				}
-
+				String name = obj.optString("name");
+				String id = obj.optString("id");
+				String mid = obj.optString("mid");
 				TopMerchant topMerchant = new TopMerchant(id, mid, imgUrl, name);
 				topMerchants.add(topMerchant);
 			}
@@ -186,26 +171,10 @@ public class ParseJson {
 
 	private static Merchant coventMerchant(JSONObject obj) throws JSONException {
 		Merchant merchant;
-		String id = "";
-
-		if (obj.has("id")) {
-			id = obj.getString("id");
-		}
-		String imgUrl = "";
-		if (obj.has("merchantImage")) {
-			imgUrl = obj.getString("merchantImage");
-		}
-
-		String name = "";
-		if (obj.has("name")) {
-			name = obj.getString("name");
-		}
-
-		String address = "";
-		if (obj.has("address")) {
-			address = obj.getString("address");
-		}
-
+		String id = obj.optString("id");
+		String imgUrl = obj.optString("merchantImage");
+		String name = obj.optString("name");
+		String address = obj.optString("address");
 		String phone = "";
 		if (obj.has("telephone")) {
 			JSONArray array = obj.getJSONArray("telephone");
@@ -218,20 +187,9 @@ public class ParseJson {
 			}
 		}
 
-		String cateType = "";
-		if (obj.has("cateType")) {
-			cateType = obj.getString("cateType");
-		}
-
-		String grade = "";
-		if (obj.has("grade")) {
-			grade = obj.getString("grade");
-		}
-
-		String averageCost = "";
-		if (obj.has("averageCost")) {
-			averageCost = obj.getString("averageCost");
-		}
+		String cateType = obj.optString("cateType");
+		String grade = obj.optString("grade");
+		String averageCost = obj.optString("averageCost");
 
 		String tags = "";
 		if (obj.has("tags")) {
@@ -245,93 +203,29 @@ public class ParseJson {
 			}
 		}
 
-		Integer kouwei = null;
-		if (obj.has("kouwei")) {
-			kouwei = obj.getInt("kouwei");
-		}
+		Integer kouwei = obj.optInt("kouwei");
+		Integer huanjing = obj.optInt("huanjing");
+		Integer fuwu = obj.optInt("fuwu");
+		Integer xingjiabi = obj.optInt("xingjiabi");
 
-		Integer huanjing = null;
-		if (obj.has("huanjing")) {
-			huanjing = obj.getInt("huanjing");
-		}
+		String teses = obj.optString("teses");
+		String nickName = obj.optString("nickName");
+		String description = obj.optString("description");
+		String openTime = obj.optString("openTime");
+		String closeTime = obj.optString("closeTime");
 
-		Integer fuwu = null;
-		if (obj.has("fuwu")) {
-			fuwu = obj.getInt("fuwu");
-		}
+		Integer marketCount = obj.optInt("marketCount");
+		boolean enable = obj.optBoolean("enable");
+		String joinedDate = obj.optString("joinedDate");
 
-		Integer xingjiabi = null;
-		if (obj.has("xingjiabi")) {
-			xingjiabi = obj.getInt("xingjiabi");
-		}
+		long lat = obj.optLong("lat");
+		long lng = obj.optLong("lng");
 
-		String teses = "";
-		if (obj.has("teses")) {
-			teses = obj.getString("teses");
-		}
-
-		String nickName = "";
-		if (obj.has("nickName")) {
-			nickName = obj.getString("nickName");
-			if (StringUtils.isNull(nickName) || "null".equals(nickName)) {
-				nickName = "";
-			}
-		}
-
-		String description = "";
-		if (obj.has("description")) {
-			description = obj.getString("description");
-			if (StringUtils.isNull(description) || "null".equals(description)) {
-				description = "";
-			}
-		}
-
-		String openTime = "";
-		if (obj.has("openTime")) {
-			openTime = obj.getString("openTime");
-			if (StringUtils.isNull(openTime) || "null".equals(openTime)) {
-				openTime = "";
-			}
-		}
-
-		String closeTime = "";
-		if (obj.has("closeTime")) {
-			closeTime = obj.getString("closeTime");
-			if (StringUtils.isNull(closeTime) || "null".equals(closeTime)) {
-				closeTime = "";
-			}
-		}
-
-		Integer marketCount = null;
-		if (obj.has("marketCount")) {
-			marketCount = obj.getInt("marketCount");
-		}
-
-		boolean enable = false;
-		if (obj.has("enable")) {
-			enable = obj.getBoolean("enable");
-		}
-
-		String joinedDate = "";
-		if (obj.has("joinedDate")) {
-			joinedDate = obj.getString("joinedDate");
-		}
-		
-		long lat = 0L;
-		if (obj.has("lat")) {
-			lat = obj.getLong("lat");
-		}
-		
-		long lng = 0L;
-		if (obj.has("lng")) {
-			lng = obj.getLong("lng");
-		}
-		
 		merchant = new Merchant(id, imgUrl, name, address, phone, cateType,
 				grade, averageCost, tags, kouwei, huanjing, fuwu, xingjiabi,
 				teses, nickName, description, openTime, closeTime, marketCount,
-				enable, joinedDate,lat,lng);
-		
+				enable, joinedDate, lat, lng);
+
 		String commentAverageCost = obj.optString("commentAverageCost");
 		int commentXingjiabi = obj.optInt("commentXingjiabi");
 		int commentKouwei = obj.optInt("commentHuanjing");
@@ -339,17 +233,15 @@ public class ParseJson {
 		int commentHuanjing = obj.optInt("commentHuanjing");
 		String commentContent = obj.optString("commentContent");
 		String commentDate = obj.optString("commentDate");
-		
+
 		merchant.commentAverageCost = commentAverageCost;
-		
 		merchant.commentXingjiabi = commentXingjiabi;
 		merchant.commentKouwei = commentKouwei;
 		merchant.commentHuanjing = commentHuanjing;
 		merchant.commentFuwu = commentFuwu;
-		
 		merchant.commentContent = commentContent;
 		merchant.commentDate = commentDate;
-		
+
 		return merchant;
 	}
 
@@ -362,63 +254,17 @@ public class ParseJson {
 		try {
 			JSONObject obj = new JSONObject(result);
 
-			String msg = "";
-			if (obj.has("msg")) {
-				msg = obj.getString("msg");
-			}
-
-			String phone = "";
-
-			if (obj.has("phone")) {
-				phone = obj.getString("phone");
-			}
-			String jifen = "";
-
-			if (obj.has("jifen")) {
-				jifen = obj.getString("jifen");
-			}
-			String email = "";
-
-			if (obj.has("email")) {
-				email = obj.getString("email");
-			}
-
-			String password = "";
-
-			if (obj.has("password")) {
-				password = obj.getString("password");
-			}
-
-			String nickName = "";
-
-			if (obj.has("nickname")) {
-				nickName = obj.getString("nickname");
-			}
-
-			String birthday = "";
-			if (obj.has("birthDay")) {
-				birthday = obj.getString("birthDay");
-			}
-
-			String userImage = "";
-			if (obj.has("userImage")) {
-				userImage = obj.getString("userImage");
-			}
-
-			String enable = "";
-			if (obj.has("enable")) {
-				enable = obj.getString("enable");
-			}
-
-			String mobileOS = "";
-			if (obj.has("mobileOS")) {
-				mobileOS = obj.getString("mobileOS");
-			}
-
-			String lastLogin = "";
-			if (obj.has("lastLogin")) {
-				lastLogin = obj.getString("lastLogin");
-			}
+			String msg = obj.optString("msg");
+			String phone = obj.optString("phone");
+			String jifen = obj.optString("jifen");
+			String email = obj.optString("email");
+			String password = obj.optString("password");
+			String nickName = obj.optString("nickname");
+			String birthday = obj.optString("birthDay");
+			String userImage = obj.optString("userImage");
+			String enable = obj.optString("enable");
+			String mobileOS = obj.optString("mobileOS");
+			String lastLogin = obj.optString("lastLogin");
 
 			loginInfo = new LoginInfo(msg, phone, jifen, email, password,
 					nickName, birthday, userImage, enable, mobileOS, lastLogin);
@@ -446,12 +292,8 @@ public class ParseJson {
 		try {
 			JSONObject obj = new JSONObject(result);
 
-			String merchantId = "";
-
-			if (obj.has("merchantId")) {
-				merchantId = obj.getString("merchantId");
-				haoma.merchantId = merchantId;
-			}
+			String merchantId = obj.optString("merchantId");
+			haoma.merchantId = merchantId;
 
 			JSONObject jsonMaps = null;
 			List<Paidui> paiduiList = null;
@@ -485,44 +327,14 @@ public class ParseJson {
 	private static Paidui coventPaidui(String key, JSONObject obj) {
 		Paidui paidu = null;
 
-		try {
-
-			Integer currentNumber = null;
-
-			if (obj.has("currentNumber")) {
-				currentNumber = obj.getInt("currentNumber");
-			}
-
-			Integer canceled = null;
-
-			if (obj.has("canceled")) {
-				canceled = obj.getInt("canceled");
-			}
-
-			Integer expired = null;
-
-			if (obj.has("expired")) {
-				expired = obj.getInt("expired");
-			}
-
-			Integer finished = null;
-
-			if (obj.has("finished")) {
-				finished = obj.getInt("finished");
-			}
-
-			boolean enable = false;
-
-			if (obj.has("enable")) {
-				enable = obj.getBoolean("enable");
-			}
-
-			paidu = new Paidui(key, currentNumber, canceled, expired, finished,
-					enable);
-
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		Integer currentNumber = obj.optInt("currentNumber");
+		Integer canceled = obj.optInt("canceled");
+		Integer expired = obj.optInt("expired");
+		Integer finished = obj.optInt("finished");
+		boolean enable = obj.optBoolean("enable");
+		paidu = new Paidui(key, currentNumber, canceled, expired, finished,
+				enable);
+		
 		return paidu;
 	}
 
@@ -535,10 +347,8 @@ public class ParseJson {
 
 		try {
 			JSONArray jsonArrays = new JSONArray(buf);
-
 			for (int i = 0; i < jsonArrays.length(); i++) {
 				JSONObject obj = jsonArrays.getJSONObject(i);
-
 				ReservationVO rvo = coventReservationVO(obj);
 				rvos.add(rvo);
 			}
@@ -558,9 +368,7 @@ public class ParseJson {
 
 		try {
 			JSONObject json = new JSONObject(buf);
-
 			rvo = coventReservationVO(json);
-
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -571,53 +379,15 @@ public class ParseJson {
 	private static ReservationVO coventReservationVO(JSONObject obj)
 			throws JSONException {
 		ReservationVO rvo;
-		String accountId = "";
-
-		if (obj.has("accountId")) {
-			accountId = obj.getString("accountId");
-		}
-		String merchantId = "";
-
-		if (obj.has("merchantId")) {
-			merchantId = obj.getString("merchantId");
-		}
-
-		String seatNumber = "";
-
-		if (obj.has("seatNumber")) {
-			seatNumber = obj.getString("seatNumber");
-		}
-
-		String myNumber = "";
-
-		if (obj.has("myNumber")) {
-			myNumber = obj.getString("myNumber");
-		}
-
-		String beforeYou = "";
-		if (obj.has("beforeYou")) {
-			beforeYou = obj.getString("beforeYou");
-		}
-
-		String currentNumber = "";
-		if (obj.has("currentNumber")) {
-			currentNumber = obj.getString("currentNumber");
-		}
-
-		boolean valid = false;
-		if (obj.has("valid")) {
-			valid = obj.getBoolean("valid");
-		}
-
-		boolean tipKey = false;
-		if (obj.has("tipKey")) {
-			tipKey = obj.getBoolean("tipKey");
-		}
-
-		String tipValue = "";
-		if (obj.has("tipValue")) {
-			tipValue = obj.getString("tipValue");
-		}
+		String accountId = obj.optString("accountId");
+		String merchantId = obj.optString("merchantId");
+		String seatNumber = obj.optString("seatNumber");
+		String myNumber = obj.optString("myNumber");
+		String beforeYou = obj.optString("beforeYou");
+		String currentNumber = obj.optString("currentNumber");
+		boolean valid = obj.optBoolean("valid");
+		boolean tipKey = obj.optBoolean("tipKey");
+		String tipValue = obj.optString("tipValue");
 
 		rvo = new ReservationVO(accountId, merchantId, seatNumber, myNumber,
 				beforeYou, currentNumber, valid, tipKey, tipValue);
@@ -633,14 +403,11 @@ public class ParseJson {
 
 		try {
 			JSONArray jsonArrays = new JSONArray(buf);
-
 			for (int i = 0; i < jsonArrays.length(); i++) {
 				JSONObject obj = jsonArrays.getJSONObject(i);
-
 				MerchantLocation location = coventMerchantLocation(obj);
 				locations.add(location);
 			}
-
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -652,26 +419,11 @@ public class ParseJson {
 			throws JSONException {
 		MerchantLocation location;
 
-		String id = "";
-		if (obj.has("id")) {
-			id = obj.getString("id");
-		}
-		String name = "";
-		if (obj.has("name")) {
-			name = obj.getString("name");
-		}
-		double lat = 0L;
-		if (obj.has("lat")) {
-			lat = obj.getDouble("lat");
-		}
-		double lng = 0L;
-		if (obj.has("lng")) {
-			lng = obj.getDouble("lng");
-		}
-		String address = "";
-		if (obj.has("address")) {
-			address = obj.getString("address");
-		}
+		String id = obj.optString("id");
+		String name = obj.optString("name");
+		double lat = obj.optDouble("lat");
+		double lng = obj.optDouble("lng");
+		String address = obj.optString("address");
 
 		location = new MerchantLocation(id, name, lat, lng, address);
 		return location;
@@ -695,11 +447,9 @@ public class ParseJson {
 		try {
 			JSONArray array = new JSONArray(buf);
 			for (int i = 0; i < array.length(); i++) {
-
 				JSONObject obj = array.getJSONObject(i);
 				Critique critique = coventCritique(obj);
 				critiques.add(critique);
-
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -712,39 +462,13 @@ public class ParseJson {
 
 		Critique critique;
 
-		String accountId = "";
-		if (obj.has("accountId")) {
-			accountId = obj.getString("accountId");
-		}
-		String nickName = "";
-		if (obj.has("nickName")) {
-			nickName = obj.getString("nickName");
-		}
-
-		int level = 0;
-		if (obj.has("level")) {
-			level = obj.getInt("level");
-		}
-
-		int star = 0;
-		if (obj.has("star")) {
-			star = obj.getInt("star");
-		}
-
-		double average = 0L;
-		if (obj.has("average")) {
-			average = obj.getDouble("average");
-		}
-
-		String desc = "";
-		if (obj.has("desc")) {
-			desc = obj.getString("desc");
-		}
-
-		String updateDate = "";
-		if (obj.has("updateDate")) {
-			updateDate = obj.getString("updateDate");
-		}
+		String accountId = obj.optString("accountId");
+		String nickName = obj.optString("nickName");
+		int level = obj.optInt("level");
+		int star = obj.optInt("star");
+		double average = obj.optDouble("average");
+		String desc = obj.optString("desc");
+		String updateDate = obj.optString("updateDate");
 
 		critique = new Critique(accountId, nickName, level, star, average,
 				desc, updateDate);

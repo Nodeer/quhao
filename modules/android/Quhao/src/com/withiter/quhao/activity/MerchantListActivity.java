@@ -178,12 +178,12 @@ public class MerchantListActivity extends AppStoreActivity {
 		@Override
 		public void onScroll(AbsListView view, int firstVisibleItem,
 				int visibleItemCount, int totalItemCount) {
+			// check hit the bottom of current loaded data
 			if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount > 0) {
 				MerchantListActivity.this.page += 1;
 				Thread merchantsThread = new Thread(merchantsRunnable);
 				merchantsThread.start();
 			}
-
 		}
 	};
 
