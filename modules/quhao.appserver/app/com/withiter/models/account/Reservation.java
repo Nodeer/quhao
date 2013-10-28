@@ -111,7 +111,19 @@ public class Reservation extends ReservationEntityDef {
 			String accountId = r.accountId;
 			Account account = Account.findById(accountId);
 			account.jifen = account.jifen + 1;
+			account.modified = new Date();
 			account.save();
+			
+			//增加积分消费情况
+			Credit credit = new Credit();
+			credit.accountId = r.accountId;
+			credit.merchantId = r.merchantId;
+			credit.reservationId = r.id();
+			credit.cost = true;
+			credit.status = "finished";
+			credit.created = new Date();
+			credit.modified = new Date();
+			credit.create();
 		}
 	}
 

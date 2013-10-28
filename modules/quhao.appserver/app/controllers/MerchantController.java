@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import vo.ReservationVO;
 import vo.TopMerchantVO;
 
 import com.withiter.models.account.Account;
+import com.withiter.models.account.Credit;
 import com.withiter.models.account.Reservation;
 import com.withiter.models.merchant.Category;
 import com.withiter.models.merchant.Comment;
@@ -214,6 +216,17 @@ public class MerchantController extends BaseController {
 			rvo.build(reservation);
 			account.jifen -= 1;
 			account.save();
+			
+			//增加积分消费情况
+			Credit credit = new Credit();
+			credit.accountId = r.accountId;
+			credit.merchantId = r.merchantId;
+			credit.reservationId = r.id();
+			credit.cost = false;
+			credit.status = "getNumber";
+			credit.created = new Date();
+			credit.modified = new Date();
+			credit.create();
 		}
 		renderJSON(rvo);
 	}
