@@ -107,6 +107,7 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 									imageDrawable.setBounds(0, 0,
 											imageDrawable.getIntrinsicWidth(),
 											defaultHight);
+									imageViewByTag.setImageDrawable(imageDrawable);
 									imageDrawable.setCallback(null);
 									imageDrawable = null;
 								}
