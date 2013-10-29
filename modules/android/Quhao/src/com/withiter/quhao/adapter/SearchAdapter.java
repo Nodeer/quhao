@@ -114,7 +114,7 @@ public class SearchAdapter extends BaseAdapter {
 				cachedImage.setCallback(null);
 				cachedImage = null;
 			} else {
-				holder.img.setImageResource(R.drawable.title_img);
+				holder.img.setImageResource(R.drawable.no_logo);
 			}
 
 			holder.content.setTag("content_" + position);

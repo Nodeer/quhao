@@ -19,7 +19,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:focusable="false"
-            android:src="@drawable/title_img" />
+            android:src="@drawable/no_logo" />
 
         <LinearLayout
             android:id="@+id/linearLayout1"
