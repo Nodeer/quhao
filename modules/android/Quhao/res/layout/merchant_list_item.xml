@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-     android:background="@drawable/list_item_border"
-	android:layout_width="fill_parent"  android:layout_height="94dp"
-	 android:layout_marginTop="3dp" android:id="@+id/frameLayout1">
-	<RelativeLayout android:layout_width="fill_parent"
-        android:layout_height="94dp"
+    android:id="@+id/frameLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="70dp"
+    android:layout_marginTop="3dp"
+    android:background="@drawable/list_item_border" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="70dp"
         android:orientation="vertical" >
-	    <ImageView
+
+        <ImageView
             android:id="@+id/img"
-            android:focusable="false"
             android:layout_width="76dp"
-            android:layout_height="93dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/title_img" />
-	    <LinearLayout
-            android:id="@+id/linearLayout1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:layout_alignParentLeft="true"
-            android:orientation="vertical"
-            android:paddingLeft="4dp"
-            android:paddingTop="10dp" >
-            
-         </LinearLayout>
-         <LinearLayout
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/empty"
+            android:focusable="false"
+            android:src="@drawable/title_img" 
+            android:padding="4dp"
+            />
+
+        <LinearLayout
             android:id="@+id/linearLayout2"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_marginLeft="10dp"
-            android:layout_toLeftOf="@id/img"
-            android:layout_toRightOf="@id/linearLayout1"
             android:orientation="vertical"
+            android:layout_toLeftOf="@id/linearLayout1"
+            android:layout_toRightOf="@id/img"
             android:paddingTop="10dp" >
 
             <TextView
@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="国际平面设计联盟（AGI）2012"
+                android:text="@string/empty"
                 android:textColor="#333333"
                 android:textSize="16sp" />
 
@@ -50,9 +50,20 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="2012年9月1日至10月19日"
+                android:text="@string/empty"
                 android:textColor="#666666"
                 android:textSize="13sp" />
         </LinearLayout>
-	</RelativeLayout>
+        
+        <LinearLayout
+            android:id="@+id/linearLayout1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:orientation="vertical"
+            android:paddingLeft="4dp"
+            android:paddingTop="10dp" >
+        </LinearLayout>
+    </RelativeLayout>
+
 </FrameLayout>

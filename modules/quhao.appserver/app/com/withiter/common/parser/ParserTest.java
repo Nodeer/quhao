@@ -1,9 +1,14 @@
 package com.withiter.common.parser;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,6 +40,8 @@ public class ParserTest {
 
 	private static Pattern cateAndNumberPattern = Pattern.compile("(.*)\\(([\\d]*)\\)");
 	private static Pattern openAndCloseTimePattern = Pattern.compile("([^-]*)[-]+(.*)");
+	
+	public static String categoryName = "";
 
 	// proxy configuration
 	static {
@@ -87,6 +94,7 @@ public class ParserTest {
 				category = new Category(cate, number);
 				categorySet.add(category);
 				System.out.println(cate);
+				categoryName = cate;
 				System.out.println(number);
 			}
 
@@ -103,12 +111,12 @@ public class ParserTest {
 			System.out.println("pages : " + pages);
 
 			// write into file
-			File f = new File("/Users/user/c/quhao/data/shangjia/"+cate + ".csv");
-//			File f = new File("c:/cross/shangjia/"+cate + ".csv");
-			BufferedWriter output = new BufferedWriter(new FileWriter(f));
-			if(!f.exists()){
-				f.createNewFile();
-			}
+//			File f = new File("/Users/user/c/quhao/data/shangjia/"+cate + ".csv");
+////			File f = new File("c:/cross/shangjia/"+cate + ".csv");
+//			BufferedWriter output = new BufferedWriter(new FileWriter(f));
+//			if(!f.exists()){
+//				f.createNewFile();
+//			}
 
 			logger.info("start to write to file /Users/user/c/quhao/data/shangjia/"+cate + ".csv");
 			for (int i = 1; i <= pages; i++) {
@@ -116,15 +124,15 @@ public class ParserTest {
 				parseListChild(childUrl);
 				for(String s : merchantMap.keySet()){
 					Merchant m = merchantMap.get(s);
-					output.write(m.toString());
-					output.newLine();
+//					output.write(m.toString());
+//					output.newLine();
 				}
 				logger.info("writing to file /Users/user/c/quhao/data/shangjia/"+cate + ".csv");
 				merchantMap.clear();
 				Thread.currentThread().sleep(1000);
 			}
-			output.flush();
-			output.close();
+//			output.flush();
+//			output.close();
 			logger.info("end to write to file /Users/user/c/quhao/data/shangjia/"+cate + ".csv");
 		}
 	}
@@ -244,89 +252,143 @@ public class ParserTest {
 
 		for (Element e : es) {
 			Merchant m = new Merchant();
+			
+			// image element
+			Elements imageDiv = e.select("div[class=photo]");
+			Elements imageNode = imageDiv.select("img");
+			String src = imageNode.attr("src");
+			System.out.println("src:"+src);
+			
+			
 			Elements titleDiv = e.select("div[class=clearfix]");
 			m.name = titleDiv.text();
 			
-			Elements childes = e.select("div[class=more-info clearfix]");
-
-			// more info
-			if (childes != null && childes.size() > 0) {
-				Element details = childes.get(0);
-				Elements detailsDivs = details.children();
-				if (detailsDivs != null && detailsDivs.size() > 0) {
-					Element placeTagDiv = detailsDivs.get(0);
-					if (detailsDivs.size() == 2) {
-						Element priceDiv = detailsDivs.get(1);
-						
-						/* price begin */
-						Elements price = priceDiv.select("strong[style]");
-						if (price != null && price.size() > 0) {
-							m.averageCost = price.get(0).text();
-						}
-						/* price end */
-					}
-					if (detailsDivs.size() == 3) {
-						Element priceDiv = detailsDivs.get(1);
-						
-						/* price begin */
-						Elements price = priceDiv.select("strong[style]");
-						if (price != null && price.size() > 0) {
-							m.averageCost = price.get(0).text();
-						}
-						/* price end */
-						Element dpDiv = detailsDivs.get(2);
-
-						/* haopinglv */
-						Elements haopinglv = dpDiv.select("em");
-						if (haopinglv != null && haopinglv.size() > 0) {
-							m.grade = haopinglv.get(0).text();
-						}
-						/* haopinglv */
-					}
-					
-					/* place tag begin */
-					Elements pingFenDiv = placeTagDiv.select("div[class=pingfen]");
-					if (pingFenDiv != null && pingFenDiv.size() > 1) {
-						m.fuwu = Integer.parseInt(pingFenDiv.get(0)
-								.select("em").get(0).text());
-						m.kouwei = Integer.parseInt(pingFenDiv.get(0)
-								.select("em").get(1).text());
-						m.huanjing = Integer.parseInt(pingFenDiv.get(0)
-								.select("em").get(2).text());
-						m.xingjiabi = Integer.parseInt(pingFenDiv.get(0)
-								.select("em").get(3).text());
-					}
-
-					Elements placeSpan = placeTagDiv.select("span[class=place]");
-					m.address = placeSpan.get(0).parent().text();
-
-					Elements tagsDiv = placeTagDiv.select("div[class=tags]");
-					List<String> tags = new ArrayList<String>();
-					if (tagsDiv != null && tagsDiv.size() > 0) {
-						for (Element tag : tagsDiv.get(0).select("a[href]")) {
-							tags.add(tag.text());
-						}
-					}
-					m.tags = tags;
-					/* place tag end */
-
-				}
-			}
+			saveImageFromURL(m.name, src);
+//			
+//			Elements childes = e.select("div[class=more-info clearfix]");
+//
+//			// more info
+//			if (childes != null && childes.size() > 0) {
+//				Element details = childes.get(0);
+//				Elements detailsDivs = details.children();
+//				if (detailsDivs != null && detailsDivs.size() > 0) {
+//					Element placeTagDiv = detailsDivs.get(0);
+//					if (detailsDivs.size() == 2) {
+//						Element priceDiv = detailsDivs.get(1);
+//						
+//						/* price begin */
+//						Elements price = priceDiv.select("strong[style]");
+//						if (price != null && price.size() > 0) {
+//							m.averageCost = price.get(0).text();
+//						}
+//						/* price end */
+//					}
+//					if (detailsDivs.size() == 3) {
+//						Element priceDiv = detailsDivs.get(1);
+//						
+//						/* price begin */
+//						Elements price = priceDiv.select("strong[style]");
+//						if (price != null && price.size() > 0) {
+//							m.averageCost = price.get(0).text();
+//						}
+//						/* price end */
+//						Element dpDiv = detailsDivs.get(2);
+//
+//						/* haopinglv */
+//						Elements haopinglv = dpDiv.select("em");
+//						if (haopinglv != null && haopinglv.size() > 0) {
+//							m.grade = haopinglv.get(0).text();
+//						}
+//						/* haopinglv */
+//					}
+//					
+//					/* place tag begin */
+//					Elements pingFenDiv = placeTagDiv.select("div[class=pingfen]");
+//					if (pingFenDiv != null && pingFenDiv.size() > 1) {
+//						m.fuwu = Integer.parseInt(pingFenDiv.get(0)
+//								.select("em").get(0).text());
+//						m.kouwei = Integer.parseInt(pingFenDiv.get(0)
+//								.select("em").get(1).text());
+//						m.huanjing = Integer.parseInt(pingFenDiv.get(0)
+//								.select("em").get(2).text());
+//						m.xingjiabi = Integer.parseInt(pingFenDiv.get(0)
+//								.select("em").get(3).text());
+//					}
+//
+//					Elements placeSpan = placeTagDiv.select("span[class=place]");
+//					m.address = placeSpan.get(0).parent().text();
+//
+//					Elements tagsDiv = placeTagDiv.select("div[class=tags]");
+//					List<String> tags = new ArrayList<String>();
+//					if (tagsDiv != null && tagsDiv.size() > 0) {
+//						for (Element tag : tagsDiv.get(0).select("a[href]")) {
+//							tags.add(tag.text());
+//						}
+//					}
+//					m.tags = tags;
+//					/* place tag end */
+//
+//				}
+//			}
 			
 			// parse details of thie element
-			if(titleDiv != null && titleDiv.size() > 0){
-				Elements aLink = titleDiv.get(0).select("a[class=name]");
-				if(aLink != null && aLink.size() > 0){
-					Element nameLink = aLink.get(0);
-					String linkUrl = nameLink.attr("href");
-					parseDetails(linkUrl, m);
-				}
-			}
-			System.out.println(m.toString());
-			merchantMap.put(m.name, m);
+//			if(titleDiv != null && titleDiv.size() > 0){
+//				Elements aLink = titleDiv.get(0).select("a[class=name]");
+//				if(aLink != null && aLink.size() > 0){
+//					Element nameLink = aLink.get(0);
+//					String linkUrl = nameLink.attr("href");
+//					parseDetails(linkUrl, m);
+//				}
+//			}
+//			System.out.println(m.toString());
+//			merchantMap.put(m.name, m);
 		}
 	}
 
+	public static void saveImageFromURL(String merchantName, String url){
+
+		try {
+			URL picUrl;
+			HttpURLConnection conn = null;
+			InputStream is = null;
+				picUrl = new URL(url);
+				conn = (HttpURLConnection) picUrl.openConnection();
+				conn.setConnectTimeout(20000);
+				conn.setReadTimeout(20000);
+				conn.connect();
+				// 获取图片大小
+				int picSize = conn.getContentLength();
+				is = conn.getInputStream();
+					String fileName  = url.substring(url.lastIndexOf("/")+1);
+					File folder = new File("c:/testimage/");
+					if(!folder.exists()){
+						folder.mkdir();
+					}
+					File file = new File("c:/testimage/"+categoryName+"_"+merchantName+"_"+fileName);
+					OutputStream os = new FileOutputStream(file);
+
+					final int buffer_size = 1024;
+					byte[] bytes = new byte[buffer_size];
+					for (;;) {
+						int count = is.read(bytes, 0, buffer_size);
+						if (count == -1)
+							break;
+						os.write(bytes, 0, count);
+					}
+					os.close();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
+	
 	public static void main(String[] args) throws IOException, InterruptedException {
 //		String baseUrl = "http://bendi.koubei.com/list.htm?spm=0.0.0.0.1NrzyZ&city=310100";
 		String baseUrl = "http://bendi.koubei.com/shanghai/list--c1-1000243?spm=5026.1000614.0.0.jySz57";
