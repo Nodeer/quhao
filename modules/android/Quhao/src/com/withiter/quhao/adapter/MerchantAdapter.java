@@ -70,7 +70,7 @@ public class MerchantAdapter extends BaseAdapter {
 						.findViewById(R.id.btnMerchantDetail);
 				holder.content = (TextView) convertView
 						.findViewById(R.id.merchantName);
-				holder.btnEnter = (TextView) convertView
+				holder.merchantAddress = (TextView) convertView
 						.findViewById(R.id.merchantAddress);
 			}
 			if (holder == null) {
@@ -117,9 +117,9 @@ public class MerchantAdapter extends BaseAdapter {
 
 			holder.content.setTag("content_" + position);
 
-			holder.btnEnter.setTag("btnEnter_" + position);
+			holder.merchantAddress.setTag("merchantAddress_" + position);
 			holder.content.setText(merchant.name);
-			holder.btnEnter.setText(merchant.address);
+			holder.merchantAddress.setText(merchant.address);
 			convertView.setTag(holder);
 			return convertView;
 		}
@@ -129,7 +129,7 @@ public class MerchantAdapter extends BaseAdapter {
 	class ViewHolder {
 		ImageView img;
 		TextView content;
-		TextView btnEnter;
+		TextView merchantAddress;
 		Button btn;
 	}
 }
