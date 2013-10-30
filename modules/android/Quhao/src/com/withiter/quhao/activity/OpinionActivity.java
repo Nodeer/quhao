@@ -88,13 +88,13 @@ public class OpinionActivity extends AppStoreActivity {
 		public void run() {
 			try {
 				Looper.prepare();
-				
-				String buf = "OK";
-					//	CommonHTTPRequest.get("getReservations?opinion=" + opinion + "&contact=" + contact);
+				opinion = opinion.trim();
+				contact = contact.trim();
+				String buf = CommonHTTPRequest.get("createOpinion?opinion=" + opinion + "&contact=" + contact);
 				if (StringUtils.isNull(buf) || "[]".equals(buf)) {
 					Toast.makeText(OpinionActivity.this, "网络不好，请重新提交", Toast.LENGTH_LONG).show();
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				} else {
+				} else if("success".equals(buf)){
 					Toast.makeText(OpinionActivity.this, "提交成功，多谢您的意见", Toast.LENGTH_LONG).show();
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				}
@@ -102,6 +102,7 @@ public class OpinionActivity extends AppStoreActivity {
 			} catch (Exception e) {
 				
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				Toast.makeText(OpinionActivity.this, "网络不好，请重新提交", Toast.LENGTH_LONG).show();
 			} finally {
 				progressDialogUtil.closeProgress();
 				Looper.loop();

@@ -85,6 +85,7 @@ public class CommonHTTPRequest {
 	public static String get(String url) throws ClientProtocolException, IOException {
 		String result = "";
 		String httpUrl = QuhaoConstant.HTTP_URL + url;
+		//String httpUrl = "http://192.168.0.16:9081/" + url;
 
 		HttpGet request = new HttpGet(httpUrl);
 
