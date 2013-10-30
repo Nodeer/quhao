@@ -37,6 +37,8 @@ GET		/getCurrentMerchants				AccountController.getCurrentMerchants
 # Patch
 *		/p/{action}							Patches.{action}
 GET		/p        							Patches.index
+# opinion
+GET		/createOpinion						OpinionController.createOpinion
 
 # backend management
 *		/b/m/{action}						backend.merchant.MerchantManagementController.{action}
