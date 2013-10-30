@@ -97,6 +97,7 @@ public class OpinionActivity extends AppStoreActivity {
 				} else if("success".equals(buf)){
 					Toast.makeText(OpinionActivity.this, "提交成功，多谢您的意见", Toast.LENGTH_LONG).show();
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+					OpinionActivity.this.finish();
 				}
 
 			} catch (Exception e) {

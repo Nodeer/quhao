@@ -119,9 +119,10 @@ public class Merchant extends MerchantEntityDef {
 	// TODO add comments here
 	public static List<Merchant> findbyReservations(
 			List<Reservation> reservations) {
-		String whereSql = "";
+		/*
+		String whereSql = "where 1=1 ";
 		if (null != reservations && !reservations.isEmpty()) {
-			whereSql = "id in (";
+			whereSql = whereSql + "and _id in (";
 		} else {
 			return new ArrayList<Merchant>();
 		}
@@ -131,16 +132,38 @@ public class Merchant extends MerchantEntityDef {
 			if (null != reservation.merchantId
 					&& !"".equals(reservation.merchantId)) {
 				if (i < reservations.size() - 1) {
-					whereSql = whereSql + reservation.merchantId + ",";
+					whereSql = whereSql + "\'"+ reservation.merchantId + "\',";
 					continue;
 				}
-				whereSql = whereSql + reservation.merchantId;
+				whereSql = whereSql + "\'"+ reservation.merchantId + "\'";
+				//whereSql = whereSql + reservation.merchantId;
 			}
 		}
 		whereSql = whereSql + ")";
+		System.out.println(whereSql);
 		MorphiaQuery q = Merchant.q();
 		q.where(whereSql);
 		return q.asList();
+		*/
+		List<Merchant> merchants = new ArrayList<Merchant>();
+		
+		Reservation reservation = null;
+		MorphiaQuery q = Merchant.q();
+		for (int i = 0; i < reservations.size(); i++) {
+			reservation = reservations.get(i);
+			if (null != reservation.merchantId
+					&& !"".equals(reservation.merchantId)) {
+				q.filter("_id", new ObjectId(reservation.merchantId));
+				List<Merchant> temps = q.asList();
+				if(temps.size()>0)
+				{
+					merchants.addAll(temps);
+				}
+			}
+		}
+		
+		return merchants;
+		
 	}
 	
 	/**

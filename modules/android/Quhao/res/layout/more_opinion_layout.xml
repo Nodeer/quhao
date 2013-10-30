@@ -51,18 +51,17 @@
 	    android:orientation="vertical" >
 
 		<EditText
-		       android:id="@+id/opinion_edit"
-		       android:layout_width="fill_parent"
-		       android:layout_height="0dip"
-		       android:layout_weight="1"
-		       android:background="@drawable/post_edit_bg"
-		       android:gravity="top"
-		       android:hint="@string/more_option_hint"
-		       android:textSize="14.0sp" />
+		    android:id="@+id/opinion_edit"
+		    android:layout_width="288dp"
+		    android:layout_height="365dp"
+		    android:background="@drawable/post_edit_bg"
+		    android:gravity="top"
+		    android:hint="@string/more_option_hint"
+		    android:textSize="14.0sp" />
 
 		<EditText
 		    android:id="@+id/opinion_edit_contact"
-		    android:layout_width="fill_parent"
+		    android:layout_width="292dp"
 		    android:layout_height="wrap_content"
 		    android:layout_marginTop="15dip"
 		    android:background="@drawable/post_edit_bg"
