@@ -19,9 +19,8 @@
             android:layout_centerVertical="true"
             android:contentDescription="@string/empty"
             android:focusable="false"
-            android:src="@drawable/no_logo" 
             android:padding="4dp"
-            />
+            android:src="@drawable/no_logo" />
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -29,9 +28,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginLeft="10dp"
-            android:orientation="vertical"
             android:layout_toLeftOf="@id/linearLayout1"
             android:layout_toRightOf="@id/img"
+            android:orientation="vertical"
             android:paddingTop="10dp" >
 
             <TextView
@@ -53,8 +52,35 @@
                 android:text="@string/empty"
                 android:textColor="#666666"
                 android:textSize="13sp" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
+                <ImageView
+                    android:id="@+id/pingfen"
+                    android:contentDescription="@string/empty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:src="@drawable/star50" />
+
+                <TextView
+                    android:id="@+id/merchantRenjun"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="6dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="@string/empty"
+                    android:textColor="#666666"
+                    android:textSize="13sp" />
+            </LinearLayout>
         </LinearLayout>
-        
+
         <LinearLayout
             android:id="@+id/linearLayout1"
             android:layout_width="wrap_content"

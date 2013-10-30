@@ -18,6 +18,7 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.util.AsyncImageLoader;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.AsyncImageLoader.ImageCallback;
+import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.vo.Merchant;
 
 public class MerchantAdapter extends BaseAdapter {
@@ -72,6 +73,8 @@ public class MerchantAdapter extends BaseAdapter {
 						.findViewById(R.id.merchantName);
 				holder.merchantAddress = (TextView) convertView
 						.findViewById(R.id.merchantAddress);
+				holder.pinfenImage = (ImageView) convertView.findViewById(R.id.pingfen);
+				holder.merchantRenjun = (TextView) convertView.findViewById(R.id.merchantRenjun);
 			}
 			if (holder == null) {
 				holder = (ViewHolder) convertView.getTag();
@@ -120,6 +123,51 @@ public class MerchantAdapter extends BaseAdapter {
 			holder.merchantAddress.setTag("merchantAddress_" + position);
 			holder.content.setText(merchant.name);
 			holder.merchantAddress.setText(merchant.address);
+			if(StringUtils.isNull(merchant.grade)){
+				merchant.grade = "0.0";
+			}else{
+				merchant.grade = merchant.grade.replace("%", "");
+			}
+			QuhaoLog.i(TAG, merchant.grade);
+			float score = Float.parseFloat(merchant.grade)/100;
+			if(score == 0.0f){
+				holder.pinfenImage.setImageResource(R.drawable.star10);
+			}
+			if(score > 0.0f && score < 1.0f){
+				holder.pinfenImage.setImageResource(R.drawable.star05);
+			}
+			if(score == 1.0f){
+				holder.pinfenImage.setImageResource(R.drawable.star10);
+			}
+			if(score > 1.0f && score < 2.0f){
+				holder.pinfenImage.setImageResource(R.drawable.star15);
+			}
+			if(score == 2.0f){
+				holder.pinfenImage.setImageResource(R.drawable.star20);
+			}
+			if(score > 2.0f && score < 3.0f){
+				holder.pinfenImage.setImageResource(R.drawable.star25);
+			}
+			if(score == 3.0f){
+				holder.pinfenImage.setImageResource(R.drawable.star30);
+			}
+			if(score > 3.0f && score < 4.0f){
+				holder.pinfenImage.setImageResource(R.drawable.star35);
+			}
+			if(score == 4.0f){
+				holder.pinfenImage.setImageResource(R.drawable.star40);
+			}
+			if(score > 4.0f && score < 5.0f){
+				holder.pinfenImage.setImageResource(R.drawable.star45);
+			}
+			if(score == 5.0f){
+				holder.pinfenImage.setImageResource(R.drawable.star50);
+			}
+			
+			if(StringUtils.isNull(merchant.averageCost)){
+				merchant.averageCost = "0";
+			}
+			holder.merchantRenjun.setText("人均消费：￥"+merchant.averageCost);
 			convertView.setTag(holder);
 			return convertView;
 		}
@@ -130,6 +178,8 @@ public class MerchantAdapter extends BaseAdapter {
 		ImageView img;
 		TextView content;
 		TextView merchantAddress;
+		ImageView pinfenImage;
+		TextView merchantRenjun;
 		Button btn;
 	}
 }
