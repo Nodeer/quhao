@@ -2,13 +2,18 @@ package com.withiter.quhao.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
+import com.withiter.quhao.util.tool.SharedprefUtil;
 
 public class MoreActivity extends AppStoreActivity {
 
@@ -20,7 +25,11 @@ public class MoreActivity extends AppStoreActivity {
 	private LinearLayout version;
 	private LinearLayout moreShare; 
 	private LinearLayout help;
+	private LinearLayout loginStatus;
 	
+	private ImageView loginStatusImg;
+	
+	private TextView loginStatusTxt;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +48,30 @@ public class MoreActivity extends AppStoreActivity {
 		moreShare = (LinearLayout) this.findViewById(R.id.more_share);
 		help = (LinearLayout) this.findViewById(R.id.more_help);
 		aboutUs = (LinearLayout) this.findViewById(R.id.more_aboutus);
-		
+		loginStatus = (LinearLayout) this.findViewById(R.id.more_login_status);
 		settings.setOnClickListener(this);
 		version.setOnClickListener(this);
 		opinion.setOnClickListener(this);
 		moreShare.setOnClickListener(this);
 		help.setOnClickListener(this);
 		aboutUs.setOnClickListener(this);
+		loginStatus.setOnClickListener(this);
+		
+		loginStatusImg = (ImageView) this.findViewById(R.id.more_login_status_img);
+		loginStatusTxt = (TextView) this.findViewById(R.id.more_login_status_txt);
+		
+		String loginStatus = SharedprefUtil.get(this, "isLogined", "false");
+		if("true".equals(loginStatus))
+		{
+			loginStatusImg.setImageResource(R.drawable.logout_status);
+			loginStatusTxt.setText(R.string.more_logout);
+		}
+		else
+		{
+			loginStatusImg.setImageResource(R.drawable.login_status);
+			loginStatusTxt.setText(R.string.more_no_login);
+		}
+		
 	}
 	
 	@Override
@@ -103,6 +129,29 @@ public class MoreActivity extends AppStoreActivity {
 			overridePendingTransition(R.anim.main_enter,
 					R.anim.main_exit);
 			break;
+			
+		case R.id.more_login_status:// 分享给好友
+			// 显示分享界面
+			progressDialogUtil.closeProgress();
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			
+			String loginStatus = SharedprefUtil.get(MoreActivity.this, "isLogined", "false");
+			if("true".equals(loginStatus))
+			{
+				loginHandler.obtainMessage(200, loginStatus)
+				.sendToTarget();
+			}
+			else
+			{
+				Intent intent5 = new Intent(MoreActivity.this, LoginActivity.class);
+				intent5.putExtra("activityName",
+						this.getClass().getName());
+				intent5.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent5);
+				overridePendingTransition(R.anim.main_enter,
+						R.anim.main_exit);
+			}
+			break;
 
 		default:
 			break;
@@ -110,6 +159,17 @@ public class MoreActivity extends AppStoreActivity {
 
 	}
 
+	protected Handler loginHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			if (msg.what == 200) {
+				super.handleMessage(msg);
+				SharedprefUtil.put(MoreActivity.this, "isLogined", "false");
+				loginStatusImg.setImageResource(R.drawable.login_status);
+				loginStatusTxt.setText(R.string.more_no_login);
+			}
+		}
+	};
+	
 	@Override
 	public boolean onTouch(View arg0, MotionEvent arg1) {
 		// TODO Auto-generated method stub

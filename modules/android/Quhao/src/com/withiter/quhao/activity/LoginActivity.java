@@ -26,6 +26,7 @@ import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
+import com.withiter.quhao.util.tool.SharedprefUtil;
 import com.withiter.quhao.vo.LoginInfo;
 
 public class LoginActivity extends AppStoreActivity {
@@ -66,7 +67,13 @@ public class LoginActivity extends AppStoreActivity {
 							.equals(activityName)) {
 						intent.setClass(LoginActivity.this,
 								PersonCenterActivity.class);
-					} else {
+					} else if("com.withiter.quhao.activity.MoreActivity"
+							.equals(activityName))
+					{
+						intent.setClass(LoginActivity.this,
+								MoreActivity.class);
+					}
+					else {
 						intent.setClass(LoginActivity.this,
 								PersonCenterActivity.class);
 					}
@@ -149,6 +156,10 @@ public class LoginActivity extends AppStoreActivity {
 					R.string.querying, false);
 			progressLogin.showProgress();
 			String url = "AccountController/login?";
+			url = url + "phone="
+					+ loginNameText.getText().toString().trim() + "&";
+			url = url + "email=" + "&";
+			/*
 			if (radioPhone.getId() == radioGroup.getCheckedRadioButtonId()) {
 				url = url + "phone="
 						+ loginNameText.getText().toString().trim() + "&";
@@ -161,7 +172,11 @@ public class LoginActivity extends AppStoreActivity {
 			} else {
 				url = url + "email=" + "&";
 			}
+			*/
 			url = url + "password=" + passwordText.getText().toString();
+			
+			SharedprefUtil.put(this, "isLogined", "true");
+			
 			QuhaoLog.i(TAG, "the login url is : " + url);
 			try {
 				String result = CommonHTTPRequest.get(url);
