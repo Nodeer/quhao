@@ -25,14 +25,12 @@ public class MerchantAdapter extends BaseAdapter {
 
 	private ListView listView;
 	public List<Merchant> merchants;
-	// private Activity activity;
 	private AsyncImageLoader asyncImageLoader;
 	private static String TAG = MerchantAdapter.class.getName();
 
 	public MerchantAdapter(Activity activity, ListView listView,
 			List<Merchant> merchants) {
 		super();
-		// this.activity = activity;
 		this.listView = listView;
 		this.merchants = merchants;
 		asyncImageLoader = new AsyncImageLoader();
@@ -67,6 +65,7 @@ public class MerchantAdapter extends BaseAdapter {
 				convertView = inflator.inflate(R.layout.merchant_list_item,
 						null);
 				holder.img = (ImageView) convertView.findViewById(R.id.img);
+				holder.img.setAdjustViewBounds(true);
 				holder.btn = (Button) convertView
 						.findViewById(R.id.btnMerchantDetail);
 				holder.content = (TextView) convertView
@@ -165,9 +164,10 @@ public class MerchantAdapter extends BaseAdapter {
 			}
 			
 			if(StringUtils.isNull(merchant.averageCost)){
-				merchant.averageCost = "0";
+				holder.merchantRenjun.setText("人均消费：暂无");
+			} else{
+				holder.merchantRenjun.setText("人均消费：￥"+merchant.averageCost);
 			}
-			holder.merchantRenjun.setText("人均消费：￥"+merchant.averageCost);
 			convertView.setTag(holder);
 			return convertView;
 		}

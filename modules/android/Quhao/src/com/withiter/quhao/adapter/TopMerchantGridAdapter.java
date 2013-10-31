@@ -74,6 +74,7 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				convertView = inflator.inflate(R.layout.topmerchant_item, null);
 				holder.img = (ImageView) convertView.findViewById(R.id.img);
+				holder.img.setAdjustViewBounds(true);
 			}
 
 			if (holder == null) {
