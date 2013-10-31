@@ -144,7 +144,7 @@ public class Merchant extends MerchantEntityDef {
 		MorphiaQuery q = Merchant.q();
 		q.where(whereSql);
 		return q.asList();
-		*/
+		
 		List<Merchant> merchants = new ArrayList<Merchant>();
 		
 		Reservation reservation = null;
@@ -163,7 +163,24 @@ public class Merchant extends MerchantEntityDef {
 		}
 		
 		return merchants;
-		
+		*/
+		if (null != reservations && !reservations.isEmpty()) {
+			ArrayList alist=new ArrayList();
+			Reservation reservation = null;
+			for (int i = 0; i < reservations.size(); i++) {
+				reservation = reservations.get(i);
+				if (null != reservation.merchantId
+						&& !"".equals(reservation.merchantId)) {
+					alist.add(new ObjectId(reservation.merchantId));
+				}
+			}
+			MorphiaQuery q = Merchant.q();
+			q.filter("_id in ",alist);
+
+			return q.asList();
+		} else {
+			return new ArrayList<Merchant>();
+		}	
 	}
 	
 	/**
