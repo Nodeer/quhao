@@ -30,10 +30,11 @@ GET     /getReservations					MerchantController.getReservations
 # Accounts
 GET		/accounts							rsecure.Secure.accounts
 GET		/signup								AccountController.signup
-GET		/login								AccountController.login
+POST	/login								AccountController.login
 GET		/getPersonalInfo					AccountController.getPersonalInfo
 GET		/getHistoryMerchants				AccountController.getHistoryMerchants
 GET		/getCurrentMerchants				AccountController.getCurrentMerchants
+
 # Patch
 *		/p/{action}							Patches.{action}
 GET		/p        							Patches.index
