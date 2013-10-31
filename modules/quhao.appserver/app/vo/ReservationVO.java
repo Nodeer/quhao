@@ -19,6 +19,10 @@ public class ReservationVO {
 	public int currentNumber;
 	public Constants.ReservationStatus status;
 	
+	public String merchantName;
+	
+	public String merchantAddress;
+	
 	public void build(Reservation r){
 		this.accountId = r.accountId;
 		this.merchantId = r.merchantId;

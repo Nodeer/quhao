@@ -247,12 +247,17 @@ public class AccountController extends BaseController {
 
 		List<ReservationVO> currentReservationVOs = new ArrayList<ReservationVO>();
 		ReservationVO reservationVO = null;
+		Merchant merchant = null;
 		for (Reservation reservation : currentReservations) {
 			reservationVO = new ReservationVO();
+			merchant = Merchant.findById(reservation.merchantId);
+			reservationVO.merchantName = merchant.name;
+			reservationVO.merchantAddress = merchant.address;
 			reservationVO.build(reservation);
 			currentReservationVOs.add(reservationVO);
 		}
 
+		/*
 		List<Merchant> currentMerchants = Merchant
 				.findbyReservations(currentReservations);
 		List<MerchantVO> currentMerchantVOs = new ArrayList<MerchantVO>();
@@ -260,8 +265,8 @@ public class AccountController extends BaseController {
 			currentMerchantVOs.add(MerchantVO.build(merchant));
 
 		}
-
-		renderJSON(currentMerchantVOs);
+		*/
+		renderJSON(currentReservationVOs);
 	}
 
 	/**
@@ -277,12 +282,17 @@ public class AccountController extends BaseController {
 
 		List<ReservationVO> histroytReservationVOs = new ArrayList<ReservationVO>();
 		ReservationVO reservationVO = null;
+		Merchant merchant = null;
 		for (Reservation reservation : histroyReservations) {
 			reservationVO = new ReservationVO();
+			merchant = Merchant.findById(reservation.merchantId);
+			reservationVO.merchantName = merchant.name;
+			reservationVO.merchantAddress = merchant.address;
 			reservationVO.build(reservation);
 			histroytReservationVOs.add(reservationVO);
 		}
 
+		/*
 		List<Merchant> histroyMerchants = Merchant
 				.findbyReservations(histroyReservations);
 
@@ -291,8 +301,8 @@ public class AccountController extends BaseController {
 			histroyMerchantVOs.add(MerchantVO.build(merchant));
 
 		}
-
-		renderJSON(histroyMerchantVOs);
+		 */
+		renderJSON(histroytReservationVOs);
 	}
 
 	public static void getIntegralCost(String accountId) {
