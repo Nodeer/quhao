@@ -71,6 +71,34 @@ public class GetNumberActivity extends AppStoreActivity {
 	
 	public static boolean backClicked = false;
 	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(R.layout.get_number);
+		super.onCreate(savedInstanceState);
+
+		progress = new ProgressDialogUtil(this, R.string.empty,
+				R.string.querying, false);
+		merchantId = getIntent().getStringExtra("merchantId");
+
+		// 设置回退
+		btnBack.setOnClickListener(goBack(this,this.getClass().getName()));
+
+		// 获取merchant名称组件
+		merchantNameView = (TextView) findViewById(R.id.merchantName);
+		seatNoView = (TextView) findViewById(R.id.seatNo);
+		currentNumberView = (TextView) findViewById(R.id.currentNumber);
+		beforeYouView = (TextView) findViewById(R.id.beforeYou);
+		beforeYouLayout = (LinearLayout) findViewById(R.id.beforeYouLayout);
+		myNumberLayout = (LinearLayout) findViewById(R.id.myNoLayout);
+		myNumberView = (TextView) findViewById(R.id.myNumber);
+		btnGetNumberLayout = (LinearLayout) findViewById(R.id.btn_GetNumberLayout);
+		btnSeatNo = (Button) findViewById(R.id.btn_seatNo);
+		btnGetNo = (Button) findViewById(R.id.btn_GetNumber);
+		getMerchantInfo();
+		getSeatNos();
+	}
+	
 	/**
 	 * 根据merchant显示在界面上的handler
 	 */
@@ -281,34 +309,6 @@ public class GetNumberActivity extends AppStoreActivity {
 		}
 	};
 	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.get_number);
-		super.onCreate(savedInstanceState);
-
-		progress = new ProgressDialogUtil(this, R.string.empty,
-				R.string.querying, false);
-		merchantId = getIntent().getStringExtra("merchantId");
-
-		// 设置回退
-		btnBack.setOnClickListener(goBack(this,this.getClass().getName()));
-
-		// 获取merchant名称组件
-		merchantNameView = (TextView) findViewById(R.id.merchantName);
-		seatNoView = (TextView) findViewById(R.id.seatNo);
-		currentNumberView = (TextView) findViewById(R.id.currentNumber);
-		beforeYouView = (TextView) findViewById(R.id.beforeYou);
-		beforeYouLayout = (LinearLayout) findViewById(R.id.beforeYouLayout);
-		myNumberLayout = (LinearLayout) findViewById(R.id.myNoLayout);
-		myNumberView = (TextView) findViewById(R.id.myNumber);
-		btnGetNumberLayout = (LinearLayout) findViewById(R.id.btn_GetNumberLayout);
-		btnSeatNo = (Button) findViewById(R.id.btn_seatNo);
-		btnGetNo = (Button) findViewById(R.id.btn_GetNumber);
-		getMerchantInfo();
-		getSeatNos();
-	}
-
 	/**
 	 * 
 	 * get seat numbers by merchant ID from server
