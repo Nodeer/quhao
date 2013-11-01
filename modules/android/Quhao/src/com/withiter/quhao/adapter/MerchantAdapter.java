@@ -130,7 +130,7 @@ public class MerchantAdapter extends BaseAdapter {
 			QuhaoLog.i(TAG, merchant.grade);
 			float score = Float.parseFloat(merchant.grade)/100;
 			if(score == 0.0f){
-				holder.pinfenImage.setImageResource(R.drawable.star10);
+				holder.pinfenImage.setImageResource(R.drawable.star00);
 			}
 			if(score > 0.0f && score < 1.0f){
 				holder.pinfenImage.setImageResource(R.drawable.star05);
