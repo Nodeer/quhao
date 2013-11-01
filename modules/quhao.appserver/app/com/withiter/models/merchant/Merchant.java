@@ -33,6 +33,9 @@ public class Merchant extends MerchantEntityDef {
 		System.out.println(mid);
 		MorphiaQuery q = Merchant.q();
 		q.filter("_id", new ObjectId(mid));
+		if(q.asKeyList().size() == 0){
+			return null;
+		}
 		return (Merchant) q.asList().get(0);
 	}
 

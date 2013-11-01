@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,7 +34,7 @@ import com.withiter.quhao.vo.ReservationVO;
  */
 public class GetNumberActivity extends AppStoreActivity {
 
-	private static final String LOG_TAG = GetNumberActivity.class.getName();
+	private static final String TAG = GetNumberActivity.class.getName();
 
 	/**
 	 * 传递过来的merchant ID
@@ -65,10 +66,11 @@ public class GetNumberActivity extends AppStoreActivity {
 	private String currentNo;
 
 	private Paidui currentPaidui;
-	
 	private ProgressDialogUtil progress;
-	
 	private ReservationVO reservation;
+	
+	public static boolean backClicked = false;
+	
 	/**
 	 * 根据merchant显示在界面上的handler
 	 */
@@ -229,7 +231,7 @@ public class GetNumberActivity extends AppStoreActivity {
 		@Override
 		public void run() {
 			try {
-				QuhaoLog.v(LOG_TAG, "get seat numbers data form server begin");
+				QuhaoLog.v(TAG, "get seat numbers data form server begin");
 				String buf = CommonHTTPRequest
 						.get("nahao?accountId=51e563feae4d165869fda38c&mid="+ merchantId+"&seatNumber=" + currentPaidui.seatNo); //TODO : need to change wjzwjz
 				// + GetNumberActivity.this.merchantId);
@@ -260,7 +262,7 @@ public class GetNumberActivity extends AppStoreActivity {
 		@Override
 		public void run() {
 			try {
-				QuhaoLog.v(LOG_TAG, "get seat numbers data form server begin");
+				QuhaoLog.v(TAG, "get seat numbers data form server begin");
 				String buf = CommonHTTPRequest
 						.get("getCurrentNo?id=51efe7d8ae4dca7b4c281754&seatNo=" + currentPaidui.seatNo); //TODO : need to change wjzwjz
 				// + GetNumberActivity.this.merchantId);
@@ -290,7 +292,7 @@ public class GetNumberActivity extends AppStoreActivity {
 		merchantId = getIntent().getStringExtra("merchantId");
 
 		// 设置回退
-		btnBack.setOnClickListener(goBack(this));
+		btnBack.setOnClickListener(goBack(this,this.getClass().getName()));
 
 		// 获取merchant名称组件
 		merchantNameView = (TextView) findViewById(R.id.merchantName);
@@ -327,7 +329,7 @@ public class GetNumberActivity extends AppStoreActivity {
 		@Override
 		public void run() {
 			try {
-				QuhaoLog.v(LOG_TAG, "get seat numbers data form server begin");
+				QuhaoLog.v(TAG, "get seat numbers data form server begin");
 				String buf = CommonHTTPRequest
 						.get("quhao?id=51efe7d8ae4dca7b4c281754"); //TODO : need to change wjzwjz
 				// + GetNumberActivity.this.merchantId);
@@ -368,7 +370,7 @@ public class GetNumberActivity extends AppStoreActivity {
 		@Override
 		public void run() {
 			try {
-				QuhaoLog.v(LOG_TAG, "get merchant data form server begin");
+				QuhaoLog.v(TAG, "get merchant data form server begin");
 				String buf = CommonHTTPRequest.get("merchant?id="
 						+ GetNumberActivity.this.merchantId);
 				if (StringUtils.isNull(buf)) {
@@ -431,8 +433,22 @@ public class GetNumberActivity extends AppStoreActivity {
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-
 		return false;
+	}
+	
+	@Override
+	protected void onResume() {
+		backClicked = false;
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		Log.i(TAG, "backClicked: " + backClicked);
+		if(backClicked){
+			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+		}
 	}
 
 }

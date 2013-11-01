@@ -195,7 +195,7 @@ public class MerchantDetailActivity extends AppStoreActivity {
 					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);
 				}
-				overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
+				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			}
 		};
 		return listener;
