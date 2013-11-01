@@ -44,6 +44,7 @@ public class MerchantListActivity extends AppStoreActivity {
 	private String categoryCount;
 	private TextView categoryTypeTitle;
 	private boolean isFirst = true;
+	public static boolean backClicked = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +64,7 @@ public class MerchantListActivity extends AppStoreActivity {
 		this.categoryTypeTitle.setText(categoryTypeStr + "[" + categoryCount
 				+ "家]");
 
-		btnBack.setOnClickListener(goBack(this));
+		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
 		initView();
 	}
 
@@ -199,4 +200,19 @@ public class MerchantListActivity extends AppStoreActivity {
 		return false;
 	}
 
+	@Override
+	protected void onResume() {
+		backClicked = false;
+		super.onResume();
+	}
+	
+	@Override
+	public void onPause(){
+		super.onPause();
+		QuhaoLog.i(LOGTAG, LOGTAG+" on pause");
+		if(backClicked){
+			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+		}
+	}
+	
 }

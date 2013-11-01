@@ -82,6 +82,10 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 						Log.i(TAG, "backClicked: " + MerchantDetailActivity.backClicked);
 						MerchantDetailActivity.backClicked = true;
 					}
+					if(params[0].equals(MerchantListActivity.class.getName())){
+						Log.i(TAG, "backClicked: " + MerchantListActivity.backClicked);
+						MerchantListActivity.backClicked = true;
+					}
 				}
 				onBackPressed();
 			}
