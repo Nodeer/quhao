@@ -68,12 +68,21 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 	 *            需要跳转到的页面
 	 * @return 绑定事件
 	 */
-	protected OnClickListener goBack(final Activity activity) {
+	protected OnClickListener goBack(final Activity activity, final Object...params) {
 		OnClickListener clickListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Log.i(TAG, "backClicked: " + MerchantsSearchActivity.backClicked);
-				MerchantsSearchActivity.backClicked = true;
+				if(params != null && params.length > 0){
+					Log.i(TAG, "params[0] is " + params[0]);
+					if(params[0].equals(MerchantsSearchActivity.class.getName())){
+						Log.i(TAG, "backClicked: " + MerchantsSearchActivity.backClicked);
+						MerchantsSearchActivity.backClicked = true;
+					}
+					if(params[0].equals(MerchantDetailActivity.class.getName())){
+						Log.i(TAG, "backClicked: " + MerchantDetailActivity.backClicked);
+						MerchantDetailActivity.backClicked = true;
+					}
+				}
 				onBackPressed();
 			}
 		};

@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -58,6 +59,8 @@ public class MerchantDetailActivity extends AppStoreActivity {
 	private LinearLayout critiqueLayout;
 	private ListView reservationListView;
 	private ReservationAdapter reservationAdapter;
+	
+	public static boolean backClicked = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +70,7 @@ public class MerchantDetailActivity extends AppStoreActivity {
 
 		this.merchantId = getIntent().getStringExtra("merchantId");
 		this.merchantName = (TextView) findViewById(R.id.merchant_detail_merchantName);
-		btnBack.setOnClickListener(goBack(this));
+		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
 		btnGetNumber = (Button) findViewById(R.id.btn_GetNumber);
 		btnGetNumber.setOnClickListener(getNumberClickListener());
 
@@ -385,4 +388,28 @@ public class MerchantDetailActivity extends AppStoreActivity {
 	public boolean onTouch(View v, MotionEvent event) {
 		return false;
 	}
+
+	@Override
+	public void finish() {
+		// TODO Auto-generated method stub
+		super.finish();
+		QuhaoLog.i(LOGTAG, LOGTAG+" finished");
+//		overridePendingTransition(R.anim.out_to_right, R.anim.in_from_left);  
+	}
+	
+	@Override
+	protected void onResume() {
+		backClicked = false;
+		super.onResume();
+	}
+	
+	@Override
+	public void onPause(){
+		super.onPause();
+		QuhaoLog.i(LOGTAG, LOGTAG+" on pause");
+		if(backClicked){
+			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+		}
+	}
+	
 }

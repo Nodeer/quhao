@@ -104,7 +104,7 @@ public class MerchantsSearchActivity extends AppStoreActivity {
 		merchantsListView.setNextFocusDownId(R.id.merchantsListView);
 		merchantsListView.setVisibility(View.GONE);
 
-		btnBack.setOnClickListener(goBack(this));
+		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
 		// initView();
 	}
 

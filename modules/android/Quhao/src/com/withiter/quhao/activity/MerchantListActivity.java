@@ -113,7 +113,7 @@ public class MerchantListActivity extends AppStoreActivity {
 			intent.setClass(MerchantListActivity.this,
 					MerchantDetailActivity.class);
 			startActivity(intent);
-			overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
+			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 		}
 	};
 
