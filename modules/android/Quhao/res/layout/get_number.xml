@@ -40,7 +40,7 @@
                 android:textColor="#ff000000" />
         </LinearLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/merchantNameLayout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -52,18 +52,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_back_background"
-                android:gravity="left" />
+                android:gravity="left|center" />
 
             <TextView
                 android:id="@+id/merchantName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
                 android:text="@string/get_number"
                 android:textAppearance="?android:textAppearanceMedium"
                 android:textColor="#000000" />
-        </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 
     <ScrollView
