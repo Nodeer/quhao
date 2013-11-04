@@ -36,7 +36,10 @@ import com.withiter.quhao.vo.ReservationVO;
 public class MerchantDetailActivity extends AppStoreActivity {
 	
 	private String LOGTAG = MerchantDetailActivity.class.getName();
+	
 	private String merchantId;
+	private String mName;
+	
 	private final int UNLOCK_CLICK = 1000;
 	private ProgressDialogUtil progress;
 	private Merchant merchant;
@@ -179,8 +182,8 @@ public class MerchantDetailActivity extends AppStoreActivity {
 				// if (QHClientApplication.getInstance().isLogined) {
 				if (true) {
 					Intent intent = new Intent();
-					intent.putExtra("merchantId",
-							MerchantDetailActivity.this.merchantId);
+					intent.putExtra("merchantId", MerchantDetailActivity.this.merchantId);
+					intent.putExtra("merchantName", MerchantDetailActivity.this.mName);
 					intent.setClass(MerchantDetailActivity.this,
 							GetNumberActivity.class);
 					startActivity(intent);
@@ -258,6 +261,7 @@ public class MerchantDetailActivity extends AppStoreActivity {
 					}
 					MerchantDetailActivity.this.merchantName
 							.setText(m.name);
+					MerchantDetailActivity.this.mName = m.name;
 					MerchantDetailActivity.this.merchantAddress
 							.setText(m.address);
 					MerchantDetailActivity.this.merchantPhone

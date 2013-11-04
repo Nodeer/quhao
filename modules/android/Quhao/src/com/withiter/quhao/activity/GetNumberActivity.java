@@ -26,11 +26,9 @@ import com.withiter.quhao.vo.Merchant;
 import com.withiter.quhao.vo.Paidui;
 import com.withiter.quhao.vo.ReservationVO;
 
-/***
+/**
  * 取号activity
- * 
  * @author Wang Jie Ze
- * 
  */
 public class GetNumberActivity extends AppStoreActivity {
 
@@ -40,6 +38,11 @@ public class GetNumberActivity extends AppStoreActivity {
 	 * 传递过来的merchant ID
 	 */
 	private String merchantId;
+	
+	/**
+	 * 传递过来的merchant name
+	 */
+	private String merchantName;
 
 	/**
 	 * 根据传递的merchant ID 从服务器查询的数据
@@ -80,6 +83,7 @@ public class GetNumberActivity extends AppStoreActivity {
 		progress = new ProgressDialogUtil(this, R.string.empty,
 				R.string.querying, false);
 		merchantId = getIntent().getStringExtra("merchantId");
+		merchantName = getIntent().getStringExtra("merchantName");
 
 		// 设置回退
 		btnBack.setOnClickListener(goBack(this,this.getClass().getName()));
@@ -95,7 +99,14 @@ public class GetNumberActivity extends AppStoreActivity {
 		btnGetNumberLayout = (LinearLayout) findViewById(R.id.btn_GetNumberLayout);
 		btnSeatNo = (Button) findViewById(R.id.btn_seatNo);
 		btnGetNo = (Button) findViewById(R.id.btn_GetNumber);
-		getMerchantInfo();
+		
+		merchantNameView.setText(merchantName);
+		GetNumberActivity.this.findViewById(R.id.loadingbar)
+				.setVisibility(View.GONE);
+		GetNumberActivity.this.findViewById(R.id.merchantNameLayout)
+				.setVisibility(View.VISIBLE);
+		
+//		getMerchantInfo();
 		getSeatNos();
 	}
 	
@@ -331,7 +342,7 @@ public class GetNumberActivity extends AppStoreActivity {
 			try {
 				QuhaoLog.v(TAG, "get seat numbers data form server begin");
 				String buf = CommonHTTPRequest
-						.get("quhao?id=51efe7d8ae4dca7b4c281754"); //TODO : need to change wjzwjz
+						.get("quhao?id="+merchantId); //TODO : need to change wjzwjz
 				// + GetNumberActivity.this.merchantId);
 				if (StringUtils.isNull(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
