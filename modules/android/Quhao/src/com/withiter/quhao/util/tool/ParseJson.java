@@ -264,9 +264,13 @@ public class ParseJson {
 			String enable = obj.optString("enable");
 			String mobileOS = obj.optString("mobileOS");
 			String lastLogin = obj.optString("lastLogin");
+			String signIn = obj.optString("signIn");
+			String isSignIn = obj.optString("isSignIn");
+			String dianping = obj.optString("dianping");
+			String zhaopian = obj.optString("zhaopian");
 
 			loginInfo = new LoginInfo(msg, phone, jifen, email, password,
-					nickName, birthday, userImage, enable, mobileOS, lastLogin);
+					nickName, birthday, userImage, enable, mobileOS, lastLogin,signIn,isSignIn,dianping,zhaopian);
 
 		} catch (JSONException e) {
 			e.printStackTrace();

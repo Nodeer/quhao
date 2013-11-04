@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
+import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SharedprefUtil;
 
 public class MoreActivity extends AppStoreActivity {
@@ -60,7 +61,7 @@ public class MoreActivity extends AppStoreActivity {
 		loginStatusImg = (ImageView) this.findViewById(R.id.more_login_status_img);
 		loginStatusTxt = (TextView) this.findViewById(R.id.more_login_status_txt);
 		
-		String loginStatus = SharedprefUtil.get(this, "isLogined", "false");
+		String loginStatus = SharedprefUtil.get(this, QuhaoConstant.IS_LOGIN, "false");
 		if("true".equals(loginStatus))
 		{
 			loginStatusImg.setImageResource(R.drawable.logout_status);
@@ -135,7 +136,7 @@ public class MoreActivity extends AppStoreActivity {
 			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			
-			String loginStatus = SharedprefUtil.get(MoreActivity.this, "isLogined", "false");
+			String loginStatus = SharedprefUtil.get(MoreActivity.this, QuhaoConstant.IS_LOGIN, "false");
 			if("true".equals(loginStatus))
 			{
 				loginHandler.obtainMessage(200, loginStatus)
@@ -163,7 +164,7 @@ public class MoreActivity extends AppStoreActivity {
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
-				SharedprefUtil.put(MoreActivity.this, "isLogined", "false");
+				SharedprefUtil.put(MoreActivity.this, QuhaoConstant.IS_LOGIN, "false");
 				loginStatusImg.setImageResource(R.drawable.login_status);
 				loginStatusTxt.setText(R.string.more_no_login);
 			}

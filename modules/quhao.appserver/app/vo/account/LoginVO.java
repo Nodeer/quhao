@@ -23,13 +23,10 @@ public class LoginVO {
 	public Constants.MobileOSType mobileOS;
 	public Date lastLogin = null;
 	
-	public int signIn;
-	
-	public boolean isSignIn = false;
-	
 	public int jifen;
-	public int qiandao;
-	public int dianpin;
+	public int signIn;
+	public boolean isSignIn = false;
+	public int dianping;
 	public int zhaopian;
 	
 	public LoginVO(){
@@ -54,8 +51,7 @@ public class LoginVO {
 		this.signIn = account.signIn;
 		this.isSignIn = account.isSignIn;
 		this.jifen = account.jifen;
-		this.qiandao = account.qiandao;
-		this.dianpin = account.dianpin;
+		this.dianping = account.dianping;
 		this.zhaopian = account.zhaopian;
 	}
 }

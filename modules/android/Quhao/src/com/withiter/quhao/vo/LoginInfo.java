@@ -1,5 +1,6 @@
 package com.withiter.quhao.vo;
 
+
 public class LoginInfo {
 	public String msg;
 	public String phone;
@@ -13,9 +14,16 @@ public class LoginInfo {
 	public String mobileOS;
 	public String lastLogin;
 
+	public String birthDay = "";
+	
+	public String signIn;
+	public String isSignIn;
+	public String dianping;
+	public String zhaopian;
+	
 	public LoginInfo(String msg, String phone, String jifen, String email, String password,
 			String nickName, String birthday, String userImage, String enable,
-			String mobileOS, String lastLogin) {
+			String mobileOS, String lastLogin,String signIn,String isSignIn,String dianping,String zhaopian) {
 		this.msg = msg;
 		this.phone = phone;
 		this.jifen = jifen;
@@ -27,6 +35,10 @@ public class LoginInfo {
 		this.enable = enable;
 		this.mobileOS = mobileOS;
 		this.lastLogin = lastLogin;
+		this.signIn = signIn;
+		this.isSignIn = isSignIn;
+		this.dianping = dianping;
+		this.zhaopian = zhaopian;
 	}
 
 	public LoginInfo() {

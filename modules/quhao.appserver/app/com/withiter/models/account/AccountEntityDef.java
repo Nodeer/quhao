@@ -26,8 +26,7 @@ public abstract class AccountEntityDef extends BaseModel {
 
 	public int jifen = 5;
 	
-	public int qiandao = 0;
-	public int dianpin = 0;
+	public int dianping = 0;
 	public int zhaopian = 0;
 	
 	public String birthDay = "";

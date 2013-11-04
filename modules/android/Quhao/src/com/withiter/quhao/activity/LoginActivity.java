@@ -14,6 +14,7 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -23,9 +24,11 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.util.db.AccountInfoHelper;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
+import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SharedprefUtil;
 import com.withiter.quhao.vo.LoginInfo;
 
@@ -44,6 +47,9 @@ public class LoginActivity extends AppStoreActivity {
 	private final int UNLOCK_CLICK = 1000;
 	private ProgressDialogUtil progressLogin;
 
+	private ImageView isAutoLoginView;
+	private String isAutoLogin = "false";
+	
 	private String activityName;
 
 	private Map<String, Object> transfortParams = new HashMap<String, Object>();
@@ -102,6 +108,17 @@ public class LoginActivity extends AppStoreActivity {
 //		radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
 //		radioPhone = (RadioButton) findViewById(R.id.radioPhone);
 //		radioEmail = (RadioButton) findViewById(R.id.radioEmail);
+		
+		isAutoLoginView = (ImageView) findViewById(R.id.isAutoLogin);
+		isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_LOGIN, "false");
+		if("true".equals(isAutoLogin))
+		{
+			isAutoLoginView.setImageResource(R.drawable.checkbox_checked);
+		}
+		else
+		{
+			isAutoLoginView.setImageResource(R.drawable.checkbox_unchecked);
+		}
 		
 		pannelLoginName = (TextView) findViewById(R.id.pannel_login_name);
 		loginNameText = (EditText) findViewById(R.id.login_name);
@@ -175,8 +192,6 @@ public class LoginActivity extends AppStoreActivity {
 			*/
 			url = url + "password=" + passwordText.getText().toString();
 			
-			SharedprefUtil.put(this, "isLogined", "true");
-			
 			QuhaoLog.i(TAG, "the login url is : " + url);
 			try {
 				String result = CommonHTTPRequest.get(url);
@@ -186,9 +201,16 @@ public class LoginActivity extends AppStoreActivity {
 				} else {
 					LoginInfo loginInfo = ParseJson.getLoginInfo(result);
 					AccountInfo account = new AccountInfo();
+					account.setUserId("1");
 					account.build(loginInfo);
-					QHClientApplication.getInstance().accessInfo = account;
-					QHClientApplication.getInstance().isLogined = true;
+					account.isAuto = isAutoLogin;
+					AccountInfoHelper accountDBHelper = new AccountInfoHelper(this);
+					accountDBHelper.open();
+					accountDBHelper.saveAccountInfo(account);
+					SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, isAutoLogin);
+					accountDBHelper.close();
+//					QHClientApplication.getInstance().accessInfo = account;
+//					QHClientApplication.getInstance().isLogined = true;
 					loginUpdateHandler.obtainMessage(200, account)
 							.sendToTarget();
 				}

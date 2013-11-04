@@ -5,14 +5,31 @@ import java.io.Serializable;
 import com.withiter.quhao.vo.LoginInfo;
 
 public class AccountInfo implements Serializable {
+
+	public String getSignIn() {
+		return signIn;
+	}
+
+	public void setSignIn(String signIn) {
+		this.signIn = signIn;
+	}
+
+	public String getIsSignIn() {
+		return isSignIn;
+	}
+
+	public void setIsSignIn(String isSignIn) {
+		this.isSignIn = isSignIn;
+	}
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 9060527069391618394L;
-	public String msg;
+	
 	public String userId;
 	public String phone;
-	public String jifen;
+	
 	public String email;
 	public String password;
 	public String nickName;
@@ -20,11 +37,15 @@ public class AccountInfo implements Serializable {
 	public String userImage;
 	public String enable;
 	public String mobileOS;
-	public String lastLogin;
-
-	public String qiandao = "0";
-	public String dianpin = "0";
+	public String signIn;
+	public String isSignIn;
+	public String dianping = "0";
 	public String zhaopian = "0";
+	
+	public String jifen;
+	public String isAuto = "false";
+	public String msg;
+	public String lastLogin;
 	
 	public void setMsg(String msg) {
 		this.msg = msg;
@@ -74,6 +95,78 @@ public class AccountInfo implements Serializable {
 		this.jifen = jifen;
 	}
 
+	public String getDianping() {
+		return dianping;
+	}
+
+	public void setDianping(String dianping) {
+		this.dianping = dianping;
+	}
+
+	public String getZhaopian() {
+		return zhaopian;
+	}
+
+	public void setZhaopian(String zhaopian) {
+		this.zhaopian = zhaopian;
+	}
+
+	public String getIsAuto() {
+		return isAuto;
+	}
+
+	public void setIsAuto(String isAuto) {
+		this.isAuto = isAuto;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public String getNickName() {
+		return nickName;
+	}
+
+	public String getBirthday() {
+		return birthday;
+	}
+
+	public String getUserImage() {
+		return userImage;
+	}
+
+	public String getEnable() {
+		return enable;
+	}
+
+	public String getMobileOS() {
+		return mobileOS;
+	}
+
+	public String getJifen() {
+		return jifen;
+	}
+
+	public String getMsg() {
+		return msg;
+	}
+
+	public String getLastLogin() {
+		return lastLogin;
+	}
+	
 	public void build(LoginInfo loginInfo) {
 		this.msg = loginInfo.msg;
 		this.phone = loginInfo.phone;
@@ -86,6 +179,10 @@ public class AccountInfo implements Serializable {
 		this.enable = loginInfo.enable;
 		this.mobileOS = loginInfo.mobileOS;
 		this.lastLogin = loginInfo.lastLogin;
+		this.signIn = loginInfo.signIn;
+		this.isSignIn = loginInfo.isSignIn;
+		this.dianping = loginInfo.dianping;
+		this.zhaopian = loginInfo.zhaopian;
 	}
 
 }

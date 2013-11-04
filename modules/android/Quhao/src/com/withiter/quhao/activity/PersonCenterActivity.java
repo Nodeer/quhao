@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.withiter.quhao.QHClientApplication;
@@ -17,6 +18,7 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.util.db.AccountInfoHelper;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
@@ -43,6 +45,8 @@ public class PersonCenterActivity extends AppStoreActivity {
 	private Button btnLogin;
 	private Button btnRegister;
 
+	private ImageView isAutoLoginView;
+	private String isAutoLogin = "false";
 	private final int UNLOCK_CLICK = 1000;
 	private ProgressDialogUtil progressLogin;
 	
@@ -84,14 +88,24 @@ public class PersonCenterActivity extends AppStoreActivity {
 			loginResult = (TextView) view.findViewById(R.id.person_center_login_result);
 			loginNameText = (EditText) view.findViewById(R.id.login_name);
 			passwordText = (EditText) view.findViewById(R.id.edit_pass);
-
+			isAutoLoginView = (ImageView) view.findViewById(R.id.isAutoLogin);
 			btnClose = (Button) view.findViewById(R.id.close);
 			btnLogin = (Button) view.findViewById(R.id.login);
 			btnRegister = (Button) view.findViewById(R.id.zhuce);
-
+			isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_LOGIN, "false");
+			if("true".equals(isAutoLogin))
+			{
+				isAutoLoginView.setImageResource(R.drawable.checkbox_checked);
+			}
+			else
+			{
+				isAutoLoginView.setImageResource(R.drawable.checkbox_unchecked);
+			}
+			
 			btnClose.setOnClickListener(this);
 			btnLogin.setOnClickListener(this);
 			btnRegister.setOnClickListener(this);
+			isAutoLoginView.setOnClickListener(this);
 
 		} else {
 			// TODO add already login business here
@@ -109,18 +123,31 @@ public class PersonCenterActivity extends AppStoreActivity {
 //					InputMethodManager.HIDE_NOT_ALWAYS);
 //		}
 //		// 已经点过，直接返回
-//		if (isClick) {
-//			return;
-//		}
-//
+		if (isClick) {
+			return;
+		}
+
 //		// 设置已点击标志，避免快速重复点击
-//		isClick = true;
+		isClick = true;
 //		// 解锁
-//		unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+		
 		switch (v.getId()) {
 		case R.id.close:
 			System.gc();
 			finish();
+			break;
+		case R.id.isAutoLogin:
+			if("true".equals(isAutoLogin))
+			{
+				isAutoLogin = "false";
+				isAutoLoginView.setImageResource(R.drawable.checkbox_unchecked);
+			}
+			else
+			{
+				isAutoLogin = "true";
+				isAutoLoginView.setImageResource(R.drawable.checkbox_checked);
+			}
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;
 		case R.id.login:
 			QuhaoLog.i(TAG, "login clicked");
@@ -140,7 +167,9 @@ public class PersonCenterActivity extends AppStoreActivity {
 				} else {
 					LoginInfo loginInfo = ParseJson.getLoginInfo(result);
 					AccountInfo account = new AccountInfo();
+					account.setUserId("1");
 					account.build(loginInfo);
+					account.isAuto = isAutoLogin;
 					QuhaoLog.i(TAG, account.msg);
 					if(account.msg.equals("fail")){
 						loginResult.setText("用户名或密码错误，登陆失败");
@@ -155,12 +184,16 @@ public class PersonCenterActivity extends AppStoreActivity {
 						// TODO add jifen from backend
 						jifen.setText(account.jifen);
 						
-						value_qiandao.setText(account.qiandao);
-						value_dianpin.setText(account.dianpin);
+						value_qiandao.setText(account.signIn);
+						value_dianpin.setText(account.dianping);
 						value_zhaopian.setText(account.zhaopian);
-						
-						QHClientApplication.getInstance().accessInfo = account;
-						QHClientApplication.getInstance().isLogined = true;
+						AccountInfoHelper accountDBHelper = new AccountInfoHelper(this);
+						accountDBHelper.open();
+						accountDBHelper.saveAccountInfo(account);
+						SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, isAutoLogin);
+						accountDBHelper.close();
+//						QHClientApplication.getInstance().accessInfo = account;
+//						QHClientApplication.getInstance().isLogined = true;
 						ad.dismiss();
 						return;
 					}
@@ -170,15 +203,18 @@ public class PersonCenterActivity extends AppStoreActivity {
 				e.printStackTrace();
 			} finally {
 				progressLogin.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 			break;
 		case R.id.zhuce:
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			Intent intent = new Intent(this, RegisterActivity.class);
 			startActivity(intent);
 			System.gc();
 			finish();
 			break;
 		default:
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;
 		}
 	}

@@ -13,6 +13,8 @@ import com.withiter.quhao.util.db.AccountInfoColumn;
 import com.withiter.quhao.util.db.DBException;
 import com.withiter.quhao.util.tool.DBTools;
 import com.withiter.quhao.util.tool.InfoHelper;
+import com.withiter.quhao.util.tool.QuhaoConstant;
+import com.withiter.quhao.util.tool.SharedprefUtil;
 
 public class QHClientApplication extends Application {
 
@@ -84,6 +86,8 @@ public class QHClientApplication extends Application {
 	private void initDBConfig() {
 		Log.i(TAG, "init database config");
 		accessInfo = InfoHelper.getAccountInfo(this);
+		String isAuto = accessInfo.isAuto;
+		SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, isAuto);
 		DBTools.init(instance);
 		boolean flag = false;
 		try {
