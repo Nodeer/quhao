@@ -92,6 +92,7 @@ public abstract class AppStoreActivity extends QuhaoActivity implements
 					}
 				}
 				onBackPressed();
+				activity.finish();
 			}
 		};
 		return clickListener;
