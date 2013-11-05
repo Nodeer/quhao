@@ -120,7 +120,6 @@ public class QHClientApplication extends Application {
 	
 	/**
 	 * 在SD卡上创建一个文件夹
-	 * 
 	 */
 	public void createSDCardDir() {
 		if (Environment.MEDIA_MOUNTED.equals(Environment

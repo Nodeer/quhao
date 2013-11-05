@@ -288,9 +288,9 @@ public class ParseJson {
 	 */
 	public static Haoma getHaoma(String result) {
 		Haoma haoma = new Haoma();
-		if (null == result || "".equals(result)) {
-			return haoma;
-		}
+//		if (null == result || "".equals(result)) {
+//			return haoma;
+//		}
 
 		try {
 			JSONObject obj = new JSONObject(result);
@@ -310,14 +310,14 @@ public class ParseJson {
 					String key = keyIter.next();
 					JSONObject obj1 = jsonMaps.getJSONObject(key);
 					Paidui paidui = coventPaidui(key, obj1);
-					if (paidui.enable == true) {
+					if (paidui.enable) {
 						paiduiList.add(paidui);
 					}
 
 				}
 
 				Collections.sort(paiduiList);
-				haoma.paiduiList = paiduiList;
+				haoma.paiduiList.addAll(paiduiList);
 			}
 
 		} catch (JSONException e) {

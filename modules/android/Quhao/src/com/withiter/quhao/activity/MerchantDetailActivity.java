@@ -259,6 +259,11 @@ public class MerchantDetailActivity extends AppStoreActivity {
 					if(drawable != null){
 						MerchantDetailActivity.this.merchantImg.setImageDrawable(drawable);
 					}
+					
+					if(m.enable){
+						MerchantDetailActivity.this.btnGetNumber.setVisibility(View.VISIBLE);
+					}
+					
 					MerchantDetailActivity.this.merchantName
 							.setText(m.name);
 					MerchantDetailActivity.this.mName = m.name;

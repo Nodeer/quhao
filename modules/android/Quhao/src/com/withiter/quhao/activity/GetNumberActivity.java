@@ -28,6 +28,7 @@ import com.withiter.quhao.vo.ReservationVO;
 
 /**
  * 取号activity
+ * 
  * @author Wang Jie Ze
  */
 public class GetNumberActivity extends AppStoreActivity {
@@ -38,7 +39,7 @@ public class GetNumberActivity extends AppStoreActivity {
 	 * 传递过来的merchant ID
 	 */
 	private String merchantId;
-	
+
 	/**
 	 * 传递过来的merchant name
 	 */
@@ -71,9 +72,9 @@ public class GetNumberActivity extends AppStoreActivity {
 	private Paidui currentPaidui;
 	private ProgressDialogUtil progress;
 	private ReservationVO reservation;
-	
+
 	public static boolean backClicked = false;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -86,7 +87,7 @@ public class GetNumberActivity extends AppStoreActivity {
 		merchantName = getIntent().getStringExtra("merchantName");
 
 		// 设置回退
-		btnBack.setOnClickListener(goBack(this,this.getClass().getName()));
+		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
 
 		// 获取merchant名称组件
 		merchantNameView = (TextView) findViewById(R.id.merchantName);
@@ -99,17 +100,17 @@ public class GetNumberActivity extends AppStoreActivity {
 		btnGetNumberLayout = (LinearLayout) findViewById(R.id.btn_GetNumberLayout);
 		btnSeatNo = (Button) findViewById(R.id.btn_seatNo);
 		btnGetNo = (Button) findViewById(R.id.btn_GetNumber);
-		
+
 		merchantNameView.setText(merchantName);
-		GetNumberActivity.this.findViewById(R.id.loadingbar)
-				.setVisibility(View.GONE);
+		GetNumberActivity.this.findViewById(R.id.loadingbar).setVisibility(
+				View.GONE);
 		GetNumberActivity.this.findViewById(R.id.merchantNameLayout)
 				.setVisibility(View.VISIBLE);
-		
-//		getMerchantInfo();
+
+		// getMerchantInfo();
 		getSeatNos();
 	}
-	
+
 	/**
 	 * 根据merchant显示在界面上的handler
 	 */
@@ -120,7 +121,8 @@ public class GetNumberActivity extends AppStoreActivity {
 				super.handleMessage(msg);
 
 				if (null != GetNumberActivity.this.merchant) {
-					merchantNameView.setText(GetNumberActivity.this.merchant.name);
+					merchantNameView
+							.setText(GetNumberActivity.this.merchant.name);
 				}
 				GetNumberActivity.this.findViewById(R.id.loadingbar)
 						.setVisibility(View.GONE);
@@ -130,7 +132,7 @@ public class GetNumberActivity extends AppStoreActivity {
 			}
 		}
 	};
-	
+
 	/**
 	 * 根据merchant显示在界面上的handler
 	 */
@@ -143,11 +145,11 @@ public class GetNumberActivity extends AppStoreActivity {
 				String currentNo = (String) msg.obj;
 				currentNumberView.setText(currentNo);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				
+
 			}
 		}
 	};
-	
+
 	/**
 	 * 根据merchant显示在界面上的handler
 	 */
@@ -156,18 +158,18 @@ public class GetNumberActivity extends AppStoreActivity {
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
-				
+
 				btnSeatNo.setVisibility(View.GONE);
 				seatNoView.setText(reservation.seatNumber);
 				currentNumberView.setText(reservation.currentNumber);
-				//currentNoLayout.setVisibility(View.GONE);
+				// currentNoLayout.setVisibility(View.GONE);
 				btnGetNumberLayout.setVisibility(View.GONE);
 				myNumberLayout.setVisibility(View.VISIBLE);
 				myNumberView.setText(reservation.myNumber);
 				beforeYouLayout.setVisibility(View.VISIBLE);
 				beforeYouView.setText(reservation.beforeYou);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				
+
 			}
 		}
 	};
@@ -181,77 +183,70 @@ public class GetNumberActivity extends AppStoreActivity {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
 				if (null != haoma) {
-					
+
 					seatNos = new String[haoma.paiduiList.size()];
-					for (int j = 0; j < haoma.paiduiList.size(); j++)
-					{
+					for (int j = 0; j < haoma.paiduiList.size(); j++) {
 						seatNos[j] = haoma.paiduiList.get(j).seatNo;
 					}
-					
 
-					if(null != currentPaidui)
-					{
-						for (int i = 0; i < haoma.paiduiList.size(); i++)
-						{
-							if(currentPaidui.seatNo.equals(haoma.paiduiList.get(i).seatNo))
-							{
+					if (null != currentPaidui) {
+						for (int i = 0; i < haoma.paiduiList.size(); i++) {
+							if (currentPaidui.seatNo.equals(haoma.paiduiList
+									.get(i).seatNo)) {
 								currentIndex = i;
 								currentPaidui = haoma.paiduiList.get(i);
-								currentNo = String.valueOf(currentPaidui.currentNumber);
+								currentNo = String
+										.valueOf(currentPaidui.currentNumber);
 								break;
 							}
 						}
-					}
-					else
-					{
-						//currentIndex = 0;
+					} else {
+						// currentIndex = 0;
+						QuhaoLog.v(TAG, "currentIndex : " + currentIndex);
+						QuhaoLog.v(TAG, "haoma.paiduiList.size : " + haoma.paiduiList.size());
 						currentPaidui = haoma.paiduiList.get(currentIndex);
 						currentNo = String.valueOf(currentPaidui.currentNumber);
 					}
-					
+
 					seatNoView.setText(currentPaidui.seatNo);
-					currentNumberView.setText(String.valueOf(currentPaidui.currentNumber));
-					
+					currentNumberView.setText(String
+							.valueOf(currentPaidui.currentNumber));
+
 					btnSeatNo.setOnClickListener(GetNumberActivity.this);
-					
-					seatNoView.addTextChangedListener(new TextWatcher()
-					{
-						
+
+					seatNoView.addTextChangedListener(new TextWatcher() {
+
 						@Override
-						public void onTextChanged(CharSequence s, int start, int before, int count)
-						{
-							
-							
+						public void onTextChanged(CharSequence s, int start,
+								int before, int count) {
+
 						}
-						
+
 						@Override
-						public void beforeTextChanged(CharSequence s, int start, int count,
-								int after)
-						{
-							
-							
+						public void beforeTextChanged(CharSequence s,
+								int start, int count, int after) {
+
 						}
-						
+
 						@Override
-						public void afterTextChanged(Editable s)
-						{
+						public void afterTextChanged(Editable s) {
 							String str = String.valueOf(seatNoView.getText());
-							
-							for (int j = 0; j < seatNos.length; j++)
-							{
-								if(seatNos[j].equals(str))
-								{
+
+							for (int j = 0; j < seatNos.length; j++) {
+								if (seatNos[j].equals(str)) {
 									currentIndex = j;
-									currentPaidui = haoma.paiduiList.get(currentIndex);
-									currentNo = String.valueOf(currentPaidui.currentNumber);
-									Thread getCurrentNoThread = new Thread(getCurrentNoRunnable);
+									currentPaidui = haoma.paiduiList
+											.get(currentIndex);
+									currentNo = String
+											.valueOf(currentPaidui.currentNumber);
+									Thread getCurrentNoThread = new Thread(
+											getCurrentNoRunnable);
 									getCurrentNoThread.start();
-									//getSeatNos();
-									//currentNumberView.setText(String.valueOf(currentPaidui.currentNumber));
+									// getSeatNos();
+									// currentNumberView.setText(String.valueOf(currentPaidui.currentNumber));
 								}
 							}
-							
-							
+
 						}
 					});
 				}
@@ -272,12 +267,15 @@ public class GetNumberActivity extends AppStoreActivity {
 			try {
 				QuhaoLog.v(TAG, "get seat numbers data form server begin");
 				String buf = CommonHTTPRequest
-						.get("nahao?accountId=51e563feae4d165869fda38c&mid="+ merchantId+"&seatNumber=" + currentPaidui.seatNo); //TODO : need to change wjzwjz
+						.get("nahao?accountId=51e563feae4d165869fda38c&mid="
+								+ merchantId + "&seatNumber="
+								+ currentPaidui.seatNo); // TODO : need to
+															// change wjzwjz
 				// + GetNumberActivity.this.merchantId);
 				if (StringUtils.isNull(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
-					//String currentNo = buf;
+					// String currentNo = buf;
 					reservation = ParseJson.getReservation(buf);
 					getNoUpdateHandler.obtainMessage(200, reservation)
 							.sendToTarget();
@@ -285,14 +283,12 @@ public class GetNumberActivity extends AppStoreActivity {
 			} catch (Exception e) {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				e.printStackTrace();
-			}
-			finally
-			{
+			} finally {
 				progress.closeProgress();
 			}
 		}
 	};
-	
+
 	/***
 	 * 获取merchant信息的线程
 	 */
@@ -303,12 +299,14 @@ public class GetNumberActivity extends AppStoreActivity {
 			try {
 				QuhaoLog.v(TAG, "get seat numbers data form server begin");
 				String buf = CommonHTTPRequest
-						.get("getCurrentNo?id=51efe7d8ae4dca7b4c281754&seatNo=" + currentPaidui.seatNo); //TODO : need to change wjzwjz
+						.get("getCurrentNo?id=51efe7d8ae4dca7b4c281754&seatNo="
+								+ currentPaidui.seatNo); // TODO : need to
+															// change wjzwjz
 				// + GetNumberActivity.this.merchantId);
 				if (StringUtils.isNull(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
-					//String currentNo = buf;
+					// String currentNo = buf;
 
 					currentNoUpdateHandler.obtainMessage(200, buf)
 							.sendToTarget();
@@ -319,7 +317,7 @@ public class GetNumberActivity extends AppStoreActivity {
 			}
 		}
 	};
-	
+
 	/**
 	 * 
 	 * get seat numbers by merchant ID from server
@@ -336,29 +334,35 @@ public class GetNumberActivity extends AppStoreActivity {
 	 * 获取merchant信息的线程
 	 */
 	private Runnable getSeatNosRunnable = new Runnable() {
-
 		@Override
 		public void run() {
 			try {
-				QuhaoLog.v(TAG, "get seat numbers data form server begin");
-				String buf = CommonHTTPRequest
-						.get("quhao?id="+merchantId); //TODO : need to change wjzwjz
+				QuhaoLog.v(TAG,
+						"get seat numbers data form server begin, the merchantId is : "
+								+ merchantId);
+				String buf = CommonHTTPRequest.get("quhao?id=" + merchantId); // TODO
+																				// :
+																				// need
+																				// to
+																				// change
+																				// wjzwjz
+				QuhaoLog.v(TAG,
+						"get seat numbers data form server begin, buf is :"
+								+ buf);
 				// + GetNumberActivity.this.merchantId);
 				if (StringUtils.isNull(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
 					haoma = ParseJson.getHaoma(buf);
-
+					QuhaoLog.v(TAG, "parse from json, haoma.paiduiList.size() is : " + haoma.paiduiList.size());
 					seatNosUpdateHandler.obtainMessage(200, haoma)
 							.sendToTarget();
 				}
 			} catch (Exception e) {
-				
+
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				e.printStackTrace();
-			}
-			finally
-			{
+			} finally {
 				progress.closeProgress();
 			}
 		}
@@ -410,43 +414,42 @@ public class GetNumberActivity extends AppStoreActivity {
 
 		// 设置已点击标志，避免快速重复点击
 		isClick = true;
-		
+
 		switch (v.getId()) {
 		case R.id.btn_seatNo:
-			
+
 			String str = String.valueOf(seatNoView.getText());
-			for (int i = 0; i < seatNos.length; i++)
-			{
-				if(str == seatNos[i])
-				{
+			for (int i = 0; i < seatNos.length; i++) {
+				if (str == seatNos[i]) {
 					currentIndex = i;
 					currentPaidui = haoma.paiduiList.get(currentIndex);
 					currentNo = String.valueOf(currentPaidui.currentNumber);
 				}
 			}
-			selectSeatNo = new SelectSeatNo(GetNumberActivity.this,seatNos, currentIndex);
+			selectSeatNo = new SelectSeatNo(GetNumberActivity.this, seatNos,
+					currentIndex);
 			selectSeatNo.showAtLocation(
 					GetNumberActivity.this.findViewById(R.id.root),
 					Gravity.BOTTOM, 0, 0);
-			
+
 			break;
 		case R.id.btn_GetNumber:
 			progress.showProgress();
 			Thread getNoThread = new Thread(getNoRunnable);
 			getNoThread.start();
-			
+
 			break;
 		default:
 			break;
 		}
-	
+
 	}
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		return false;
 	}
-	
+
 	@Override
 	protected void onResume() {
 		backClicked = false;
@@ -457,7 +460,7 @@ public class GetNumberActivity extends AppStoreActivity {
 	protected void onPause() {
 		super.onPause();
 		Log.i(TAG, "backClicked: " + backClicked);
-		if(backClicked){
+		if (backClicked) {
 			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 		}
 	}

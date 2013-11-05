@@ -102,6 +102,14 @@ public class SelfManagementController extends BaseController {
 		m.enable = true;
 		m.seatType = seatType;
 		m.save();
+		
+		Haoma haoma = Haoma.findByMerchantId(mid);
+		for(String seatNoNeedToEnable : seatType){
+			System.out.println(seatNoNeedToEnable);
+			haoma.haomaMap.get(Integer.parseInt(seatNoNeedToEnable)).enable = true;
+		}
+		haoma.save();
+		
 		// update the category counts
 		Category.updateCounts();
 		

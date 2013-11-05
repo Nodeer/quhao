@@ -27,7 +27,9 @@
             android:gravity="left|center_vertical" />
         <!-- back button -->
 
+
         <!-- quhao button -->
+
         <Button
             android:id="@+id/btn_GetNumber"
             android:layout_width="wrap_content"
@@ -38,19 +40,21 @@
             android:text="@string/get_reservation"
             android:textAppearance="?android:textAppearanceMediumInverse"
             android:textColor="#ff000000"
-            android:textSize="14.0sp" />
-		<!-- quhao button -->
-		
+            android:textSize="14.0sp" 
+            android:visibility="invisible"
+            />
+        <!-- quhao button -->
+
         <TextView
             android:id="@+id/merchant_detail_merchantName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:textSize="14sp"
             android:text="@string/empty"
             android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="#ff000000" />
+            android:textColor="#ff000000"
+            android:textSize="14sp" />
     </RelativeLayout>
 
     <ScrollView
