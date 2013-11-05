@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.WindowManager;
 
 import com.withiter.quhao.domain.AccountInfo;
+import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.db.AccountInfoColumn;
 import com.withiter.quhao.util.db.DBException;
 import com.withiter.quhao.util.tool.DBTools;
@@ -17,15 +18,12 @@ import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SharedprefUtil;
 
 public class QHClientApplication extends Application {
-
+	
 	/**
 	 * 创建全局变量 全局变量一般都比较倾向于创建一个单独的数据类文件，并使用static静态变量
-	 * 
 	 * 这里使用了在Application中添加数据的方法实现全局变量
-	 * 
 	 */
 	private WindowManager.LayoutParams wmParams = new WindowManager.LayoutParams();
-
 	public WindowManager.LayoutParams getMywmParams() {
 		return wmParams;
 	}
@@ -35,8 +33,11 @@ public class QHClientApplication extends Application {
 	public AccountInfo accessInfo = null;
 	public boolean isAuto = false;
 	private static String CREATE_ACCOUNT_TABLE = "";
-	
 	public static Context mContext;
+	/**
+	 * 单例
+	 */
+	private static QHClientApplication instance;
 
 	static {
 		StringBuilder sb = new StringBuilder("");
@@ -56,10 +57,16 @@ public class QHClientApplication extends Application {
 		CREATE_ACCOUNT_TABLE = sb.toString();
 	}
 
-	/**
-	 * 单例
-	 */
-	private static QHClientApplication instance;
+	@Override
+	public void onCreate() {
+		QuhaoLog.i(TAG, "onCreate method is called");
+		QHClientApplication.mContext = this;
+		isLogined = false;
+		instance = this;
+		initDBConfig();
+		initConfig();
+		super.onCreate();
+	}
 
 	public QHClientApplication() {
 		super();
@@ -72,35 +79,29 @@ public class QHClientApplication extends Application {
 		return instance;
 	}
 
-	@Override
-	public void onCreate() {
-		this.mContext = this;
-		Log.i(TAG, "onCreate method is called");
-		isLogined = false;
-		instance = this;
-		initDBConfig();
-		initConfig();
-		super.onCreate();
-	}
-
 	private void initDBConfig() {
-		Log.i(TAG, "init database config");
+		QuhaoLog.i(TAG, "init database config");
 		accessInfo = InfoHelper.getAccountInfo(this);
-		String isAuto = accessInfo.isAuto;
-		SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, isAuto);
-		DBTools.init(instance);
-		boolean flag = false;
-		try {
-			flag = DBTools.getInstance().tabbleIsExist("accountinfo");
-			Log.i(TAG, "accountinfo table exists : " + flag);
-		} catch (Exception e) {
-			e.printStackTrace();
-			Log.e(TAG, e.getCause().toString());
-		}
-		if (!flag) {
-			String sql = CREATE_ACCOUNT_TABLE;
-			createTable("accountinfo", sql);
-			sql = null;
+		if(accessInfo != null){
+			QuhaoLog.i(TAG, "accessInfo is not null");
+			String isAuto = accessInfo.isAuto;
+			SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, isAuto);
+			DBTools.init(instance);
+//			boolean flag = false;
+//			try {
+//				flag = DBTools.getInstance().tabbleIsExist("accountinfo");
+//				Log.i(TAG, "accountinfo table exists : " + flag);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//				Log.e(TAG, e.getCause().toString());
+//			}
+//			if (!flag) {
+//				String sql = CREATE_ACCOUNT_TABLE;
+//				createTable("accountinfo", sql);
+//				sql = null;
+//			}
+		}else{
+			QuhaoLog.i(TAG, "accessInfo is null");
 		}
 	}
 

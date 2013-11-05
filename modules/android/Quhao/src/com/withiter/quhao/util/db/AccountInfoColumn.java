@@ -27,7 +27,7 @@ public class AccountInfoColumn implements BaseColumns {
 	public static final int USERID_COLUMN = 0;
 	public static final int PHONE_COLUMN = 1;
 	public static final int EMAIL_COLUMN = 2;
-	public static final int PASSWORD_COLUMN = 3;
+//	public static final int PASSWORD_COLUMN = 3;
 	public static final int NICKNAME_COLUMN = 4;
 	public static final int BIRTHDAY_COLUMN = 5;
 	public static final int USERIMAGE_COLUMN = 6;
@@ -42,10 +42,11 @@ public class AccountInfoColumn implements BaseColumns {
 	public static final int MSG_COLUMN = 15;
 	public static final int LASTLOGIN_COLUMN = 16;
 
-	public static final String[] PROJECTION = { USERID, // 0
+	public static final String[] PROJECTION = { 
+			USERID, // 0
 			PHONE, // 1
 			EMAIL, // 2
-			PASSWORD, // 3
+//			PASSWORD, // 3
 			NICKNAME, // 4
 			BIRTHDAY, // 5
 			USERIMAGE, // 6
@@ -53,11 +54,11 @@ public class AccountInfoColumn implements BaseColumns {
 			MOBILEOS, // 8
 			SIGNIN, // 9
 			ISSIGNIN, // 10
-			DIANPING, // 11
-			ZHAOPIAN, // 12
-			JIFEN, // 13
+//			DIANPING, // 11
+//			ZHAOPIAN, // 12
+//			JIFEN, // 13
 			ISAUTO, // 14
 			MSG, // 15
-			LASTLOGIN // 15
+			LASTLOGIN // 16
 	};
 }

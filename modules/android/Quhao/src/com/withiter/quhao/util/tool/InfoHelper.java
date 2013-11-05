@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.db.AccountInfoHelper;
+import com.withiter.quhao.util.db.DBHelper;
 
 public class InfoHelper {
 	/**
@@ -19,6 +20,10 @@ public class InfoHelper {
 		List<AccountInfo> list = null;
 		AccountInfoHelper accountDBHelper = new AccountInfoHelper(mContext);
 		accountDBHelper.open();
+//		accountDBHelper.dropAccountInfoTable();
+		if(!accountDBHelper.tabbleIsExist(DBHelper.ACCOUNT_TABLE)){
+			accountDBHelper.createAccountTable();
+		}
 
 		try {
 			list = accountDBHelper.getAccountInfos();

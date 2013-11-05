@@ -2,6 +2,7 @@ package com.withiter.quhao.domain;
 
 import java.io.Serializable;
 
+import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.vo.LoginInfo;
 
 public class AccountInfo implements Serializable {
@@ -116,7 +117,11 @@ public class AccountInfo implements Serializable {
 	}
 
 	public void setIsAuto(String isAuto) {
-		this.isAuto = isAuto;
+		if(StringUtils.isNull(isAuto)){
+			this.isAuto = isAuto;
+		}else{
+			this.isAuto = "false";
+		}
 	}
 
 	public String getUserId() {

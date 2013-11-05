@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.withiter.quhao.domain.AccountInfo;
+import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.tool.DBTools;
 
 public class AccountInfoHelper {
@@ -26,6 +27,11 @@ public class AccountInfoHelper {
 		this.dbHelper = new DBHelper(this.context);
 		this.newDB = this.dbHelper.getWritableDatabase();
 		return this;
+	}
+	
+	public void dropAccountInfoTable(){
+//		newDB.delete(DBHelper.ACCOUNT_TABLE, null, null);
+		newDB.execSQL("DROP TABLE IF EXISTS " +DBHelper.ACCOUNT_TABLE);
 	}
 
 	public List<AccountInfo> getAccountInfos() {
@@ -45,8 +51,8 @@ public class AccountInfoHelper {
 						.getString(AccountInfoColumn.PHONE_COLUMN));
 				account.setEmail(cursor
 						.getString(AccountInfoColumn.EMAIL_COLUMN));
-				account.setPassword(cursor
-						.getString(AccountInfoColumn.PASSWORD_COLUMN));
+//				account.setPassword(cursor
+//						.getString(AccountInfoColumn.PASSWORD_COLUMN));
 				account.setNickName(cursor
 						.getString(AccountInfoColumn.NICKNAME_COLUMN));
 				account.setBirthday(cursor
@@ -61,12 +67,12 @@ public class AccountInfoHelper {
 						.getString(AccountInfoColumn.SIGNIN_COLUMN));
 				account.setIsSignIn(cursor
 						.getString(AccountInfoColumn.ISSIGNIN_COLUMN));
-				account.setDianping(cursor
-						.getString(AccountInfoColumn.DIANPING_COLUMN));
-				account.setZhaopian(cursor
-						.getString(AccountInfoColumn.ZHAOPIAN_COLUMN));
-				account.setJifen(cursor
-						.getString(AccountInfoColumn.JIFEN_COLUMN));
+//				account.setDianping(cursor
+//						.getString(AccountInfoColumn.DIANPING_COLUMN));
+//				account.setZhaopian(cursor
+//						.getString(AccountInfoColumn.ZHAOPIAN_COLUMN));
+//				account.setJifen(cursor
+//						.getString(AccountInfoColumn.JIFEN_COLUMN));
 				account.setIsAuto(cursor
 						.getString(AccountInfoColumn.ISAUTO_COLUMN));
 				account.setMsg(cursor
@@ -156,7 +162,7 @@ public class AccountInfoHelper {
 		ContentValues value = new ContentValues();
 		value.put(AccountInfoColumn.PHONE, account.getPhone());
 		value.put(AccountInfoColumn.EMAIL, account.getEmail());
-		value.put(AccountInfoColumn.PASSWORD, account.getPassword());
+//		value.put(AccountInfoColumn.PASSWORD, account.getPassword());
 		value.put(AccountInfoColumn.NICKNAME, account.getNickName());
 		value.put(AccountInfoColumn.BIRTHDAY, account.getBirthday());
 		value.put(AccountInfoColumn.USERIMAGE, account.getUserImage());
@@ -164,9 +170,9 @@ public class AccountInfoHelper {
 		value.put(AccountInfoColumn.MOBILEOS, account.getMobileOS());
 		value.put(AccountInfoColumn.SIGNIN, account.getSignIn());
 		value.put(AccountInfoColumn.ISSIGNIN, account.getIsSignIn());
-		value.put(AccountInfoColumn.DIANPING, account.getDianping());
-		value.put(AccountInfoColumn.ZHAOPIAN, account.getZhaopian());
-		value.put(AccountInfoColumn.JIFEN, account.getJifen());
+//		value.put(AccountInfoColumn.DIANPING, account.getDianping());
+//		value.put(AccountInfoColumn.ZHAOPIAN, account.getZhaopian());
+//		value.put(AccountInfoColumn.JIFEN, account.getJifen());
 		value.put(AccountInfoColumn.ISAUTO, account.getIsAuto());
 		value.put(AccountInfoColumn.MSG, account.getMsg());
 		value.put(AccountInfoColumn.LASTLOGIN, account.getLastLogin());
@@ -197,7 +203,7 @@ public class AccountInfoHelper {
 		value.put(AccountInfoColumn.USERID, account.getUserId());
 		value.put(AccountInfoColumn.PHONE, account.getPhone());
 		value.put(AccountInfoColumn.EMAIL, account.getEmail());
-		value.put(AccountInfoColumn.PASSWORD, account.getPassword());
+//		value.put(AccountInfoColumn.PASSWORD, account.getPassword());
 		value.put(AccountInfoColumn.NICKNAME, account.getNickName());
 		value.put(AccountInfoColumn.BIRTHDAY, account.getBirthday());
 		value.put(AccountInfoColumn.USERIMAGE, account.getUserImage());
@@ -205,9 +211,9 @@ public class AccountInfoHelper {
 		value.put(AccountInfoColumn.MOBILEOS, account.getMobileOS());
 		value.put(AccountInfoColumn.SIGNIN, account.getSignIn());
 		value.put(AccountInfoColumn.ISSIGNIN, account.getIsSignIn());
-		value.put(AccountInfoColumn.DIANPING, account.getDianping());
-		value.put(AccountInfoColumn.ZHAOPIAN, account.getZhaopian());
-		value.put(AccountInfoColumn.JIFEN, account.getJifen());
+//		value.put(AccountInfoColumn.DIANPING, account.getDianping());
+//		value.put(AccountInfoColumn.ZHAOPIAN, account.getZhaopian());
+//		value.put(AccountInfoColumn.JIFEN, account.getJifen());
 		value.put(AccountInfoColumn.ISAUTO, account.getIsAuto());
 		value.put(AccountInfoColumn.MSG, account.getMsg());
 		value.put(AccountInfoColumn.LASTLOGIN, account.getLastLogin());
@@ -247,5 +253,23 @@ public class AccountInfoHelper {
 		if (dbHelper != null) {
 			dbHelper.close();
 		}
+	}
+
+	/**
+	 * check if the account table exists 
+	 * @param accountTable table name
+	 * @return
+	 */
+	public boolean tabbleIsExist(String accountTable) {
+		QuhaoLog.i(TAG, "tabbleIsExist invoked!");
+		return dbHelper.tabbleIsExist(DBHelper.ACCOUNT_TABLE);
+	}
+
+	/**
+	 * create account table
+	 */
+	public void createAccountTable() {
+		QuhaoLog.i(TAG, "createAccountTable invoked!");
+		dbHelper.createTable(DBHelper.ACCOUNT_TABLE);
 	}
 }
