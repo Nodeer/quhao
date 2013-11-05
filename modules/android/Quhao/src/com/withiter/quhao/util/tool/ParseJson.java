@@ -305,7 +305,6 @@ public class ParseJson {
 				jsonMaps = obj.getJSONObject("haomaVOMap");
 
 				Iterator<String> keyIter = jsonMaps.keys();
-
 				while (keyIter.hasNext()) {
 					String key = keyIter.next();
 					JSONObject obj1 = jsonMaps.getJSONObject(key);

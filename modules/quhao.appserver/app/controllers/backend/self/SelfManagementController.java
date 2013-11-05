@@ -2,11 +2,13 @@ package controllers.backend.self;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import play.Play;
 import play.libs.Images;
-
 import vo.BackendMerchantInfoVO;
 import vo.HaomaVO;
 import vo.ReservationVO;
@@ -103,11 +105,25 @@ public class SelfManagementController extends BaseController {
 		m.seatType = seatType;
 		m.save();
 		
-		Haoma haoma = Haoma.findByMerchantId(mid);
+		Set<String> seatTypeSet = new HashSet<String>();
 		for(String seatNoNeedToEnable : seatType){
 			System.out.println(seatNoNeedToEnable);
-			haoma.haomaMap.get(Integer.parseInt(seatNoNeedToEnable)).enable = true;
+			seatTypeSet.add(seatNoNeedToEnable);
+//			haoma.haomaMap.get(Integer.parseInt(seatNoNeedToEnable)).enable = true;
 		}
+		
+		
+		Haoma haoma = Haoma.findByMerchantId(mid);
+		Iterator it = haoma.haomaMap.keySet().iterator();
+		while(it.hasNext()){
+			Integer key = (Integer) it.next();
+			if(seatTypeSet.contains(key.toString())){
+				haoma.haomaMap.get(key).enable = true;
+			}else{
+				haoma.haomaMap.get(key).enable = false;
+			}
+		}
+		
 		haoma.save();
 		
 		// update the category counts
