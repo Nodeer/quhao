@@ -24,6 +24,9 @@ public class HaomaVO {
 		while(ite.hasNext()){
 			Integer key = (Integer)ite.next();
 			Paidui p = haoma.haomaMap.get(key);
+			if(!p.enable){
+				continue;
+			}
 			PaiduiVO pvo = new PaiduiVO();
 			pvo.numberOfSeat = key;
 			pvo.currentNumber = p.currentNumber;

@@ -340,12 +340,7 @@ public class GetNumberActivity extends AppStoreActivity {
 				QuhaoLog.v(TAG,
 						"get seat numbers data form server begin, the merchantId is : "
 								+ merchantId);
-				String buf = CommonHTTPRequest.get("quhao?id=" + merchantId); // TODO
-																				// :
-																				// need
-																				// to
-																				// change
-																				// wjzwjz
+				String buf = CommonHTTPRequest.get("quhao?id=" + merchantId);
 				QuhaoLog.v(TAG,
 						"get seat numbers data form server begin, buf is :"
 								+ buf);
