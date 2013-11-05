@@ -4,6 +4,9 @@ import japidviews._javatags.I18nKeys;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import play.data.validation.Validation;
@@ -13,11 +16,9 @@ import play.modules.morphia.Model.NoAutoTimestamp;
 import cn.bran.japid.util.StringUtils;
 
 import com.google.code.morphia.annotations.Entity;
-import com.mongodb.DB;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSInputFile;
-import com.withiter.exceptions.ValidationException;
 
 @Entity
 @NoAutoTimestamp
@@ -139,7 +140,37 @@ public class Account extends AccountEntityDef {
 		}
 		return account;
 	}
-
+	/**
+	 * Find Exists Account object by mobile number
+	 * @param phone the mobile number
+	 * @return
+	 */
+	public static Account findExistsAccount(String phone) {
+		Account account = Account.q().filter("phone", phone).filter("enable", true).first();
+		if (account == null) {
+			return null;
+		}
+		return account;
+	}
+	/**
+	 * Find Account object 
+	 * @param phone the mobile number
+	 * @param authCode
+	 * @return
+	 */
+	public static Account findAccount(String phone,String authCode) {
+	    Calendar calendar = new GregorianCalendar();
+	    Date date2 = new Date();
+	    calendar.setTime(date2);
+	    calendar.add(calendar.DATE, -1);
+	    date2 = calendar.getTime();
+		
+		Account account = Account.q().filter("phone", phone).filter("authcode", authCode).filter("authDate >",date2).first();
+		if (account == null) {
+			return null;
+		}
+		return account;
+	}
 	/**
 	 * @author Cross
 	 * @param collectionName

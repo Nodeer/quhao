@@ -2,6 +2,7 @@ package controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.httpclient.HttpException;
@@ -9,8 +10,6 @@ import org.apache.commons.lang.StringUtils;
 
 import play.Logger;
 import play.libs.Codec;
-import vo.MerchantVO;
-import vo.PersonalInfoVO;
 import vo.ReservationVO;
 import vo.account.LoginVO;
 import vo.account.SignupVO;
@@ -34,35 +33,38 @@ public class AccountController extends BaseController {
 	 *            返回SignupVO对象，需对errorKey进行判断，如果不是空字符串，则表示生成失败，否则生成成功。
 	 */
 	public static void GenerateAuthCode(String mobile, String os) {
-		Account account = new Account();
 		SignupVO suVO = new SignupVO();
 		suVO.errorKey = "mobile";
 		if (StringUtils.isEmpty(mobile)) {
 			suVO.errorText = "号码不能为空";
 			renderJSON(suVO);
 		}
-		if (Account.findByPhone(mobile) != null) {
-			suVO.errorText = "此号码已被注册";
+		if (Account.findExistsAccount(mobile) != null) {
+			suVO.errorText = "此号码已注册";
 			renderJSON(suVO);
 		}
-		account.phone = mobile;
+		Account account =Account.findByPhone(mobile);
+		if(account==null){
+			account= new Account();
+			account.phone = mobile;
+		}
 		if (Constants.MobileOSType.ANDROID.toString().equalsIgnoreCase(os)) {
 			account.mobileOS = Constants.MobileOSType.ANDROID;
 		}
 		if (Constants.MobileOSType.IOS.toString().equalsIgnoreCase(os)) {
 			account.mobileOS = Constants.MobileOSType.IOS;
 		}
-
 		try {
 			int result = SMSBusiness.sendAuthCodeForSignup(mobile);
 			if (result == 0) {
 				suVO.errorText = "发送短信出错";
 				renderJSON(suVO);
 			} else {
-				account.password = Codec.hexSHA1(String.valueOf(result));
+				account.authcode=String.valueOf(result);
+				account.authDate=new Date();
 				account.save();
 				suVO.errorKey = "";
-				suVO.errorText = "";
+				suVO.errorText = "验证码24小时之内有效";
 				renderJSON(suVO);
 			}
 		} catch (HttpException e) {
@@ -88,7 +90,7 @@ public class AccountController extends BaseController {
 	 *            返回JSON SignupVO
 	 *            返回SignupVO对象，需对errorKey进行判断，如果不是空字符串，则表示生成失败，否则生成成功。
 	 */
-	public static void signupWithMobile(String mobile, String code, String os) {
+	public static void signupWithMobile(String mobile, String code,String password, String os) {
 		SignupVO suVO = new SignupVO();
 		suVO.errorKey = "mobile";
 		if (StringUtils.isEmpty(mobile)) {
@@ -105,14 +107,22 @@ public class AccountController extends BaseController {
 			suVO.errorText = "手机号码尚未接收过验证码";
 			renderJSON(suVO);
 		}
-
-		if (account.password.equals(Codec.hexSHA1(code))) {
-			account.enable = true;
-			account.save();
-			suVO.errorKey = "";
-			suVO.errorText = "";
+		account = Account.findExistsAccount(mobile);
+		if (account == null) {
+			suVO.errorText = "此号码已注册";
 			renderJSON(suVO);
 		}
+		account = Account.findAccount(mobile,code);
+		if (account == null) {
+			suVO.errorText = "验证码错误或者已过期";
+			renderJSON(suVO);
+		}
+		account.password=Codec.hexSHA1(String.valueOf(password));
+		account.enable = true;
+		account.save();
+		suVO.errorKey = "1";
+		suVO.errorText = "注册成功";
+		renderJSON(suVO);
 	}
 
 	/**

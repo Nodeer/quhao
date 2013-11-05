@@ -19,7 +19,14 @@ public abstract class AccountEntityDef extends BaseModel {
 	public String password = "";
 	@Indexed
 	public String nickname = "";
-	
+	/**
+	 * 验证码
+	 */
+	public String authcode;
+	/**
+	 * 获取验证码的时间
+	 */
+	public Date authDate;
 	public int signIn;
 	
 	public boolean isSignIn = false;
