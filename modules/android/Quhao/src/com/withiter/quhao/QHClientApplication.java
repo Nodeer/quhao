@@ -7,15 +7,22 @@ import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.QuhaoLog;
+import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.db.AccountInfoColumn;
+import com.withiter.quhao.util.db.AccountInfoHelper;
 import com.withiter.quhao.util.db.DBException;
+import com.withiter.quhao.util.db.DBHelper;
+import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.DBTools;
 import com.withiter.quhao.util.tool.InfoHelper;
+import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SharedprefUtil;
+import com.withiter.quhao.vo.LoginInfo;
 
 public class QHClientApplication extends Application {
 	
@@ -32,18 +39,19 @@ public class QHClientApplication extends Application {
 	public boolean isLogined = false;
 	public AccountInfo accessInfo = null;
 	public boolean isAuto = false;
-	private static String CREATE_ACCOUNT_TABLE = "";
 	public static Context mContext;
 	/**
 	 * 单例
 	 */
 	private static QHClientApplication instance;
 
+	/*
 	static {
 		StringBuilder sb = new StringBuilder("");
 		sb.append("CREATE TABLE ").append(" accountinfo (")
-				.append(AccountInfoColumn._ID)
-				.append(" integer primary key autoincrement,")
+				.append(AccountInfoColumn.USERID)
+				.append(" integer primary key,")
+				.append(AccountInfoColumn.USERID).append(" text,")
 				.append(AccountInfoColumn.PHONE).append(" text,")
 				.append(AccountInfoColumn.EMAIL).append(" text,")
 				.append(AccountInfoColumn.PASSWORD).append(" text,")
@@ -52,11 +60,17 @@ public class QHClientApplication extends Application {
 				.append(AccountInfoColumn.USERIMAGE).append(" text,")
 				.append(AccountInfoColumn.ENABLE).append(" text,")
 				.append(AccountInfoColumn.MOBILEOS).append(" text,")
-				.append(" isAuto text,").append(AccountInfoColumn.LASTLOGIN)
-				.append(" text)");
+				.append(AccountInfoColumn.SIGNIN).append(" text,")
+				.append(AccountInfoColumn.ISSIGNIN).append(" text,")
+				.append(AccountInfoColumn.DIANPING).append(" text,")
+				.append(AccountInfoColumn.ZHAOPIAN).append(" text,")
+				.append(AccountInfoColumn.JIFEN).append(" text,")
+				.append(AccountInfoColumn.ISAUTO).append(" text,")
+				.append(AccountInfoColumn.MSG).append(" text,")
+				.append(AccountInfoColumn.LASTLOGIN).append(" text)");
 		CREATE_ACCOUNT_TABLE = sb.toString();
 	}
-
+	 */
 	@Override
 	public void onCreate() {
 		QuhaoLog.i(TAG, "onCreate method is called");
@@ -85,32 +99,57 @@ public class QHClientApplication extends Application {
 		if(accessInfo != null){
 			QuhaoLog.i(TAG, "accessInfo is not null");
 			String isAuto = accessInfo.isAuto;
-			SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, isAuto);
+			SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN, isAuto);
+			if("true".equals(isAuto))
+			{
+				String url = "AccountController/login?";
+				url = url + "phone="
+							+ accessInfo.getPhone() + "&";
+				url = url + "password=" + accessInfo.getPassword();
+				QuhaoLog.i(TAG, "the login url is : " + url);
+				try {
+					String result = CommonHTTPRequest.get(url);
+					QuhaoLog.i(TAG, result);
+					if (StringUtils.isNull(result)) {
+					} else {
+						LoginInfo loginInfo = ParseJson.getLoginInfo(result);
+						AccountInfo account = new AccountInfo();
+						account.setUserId("1");
+						account.build(loginInfo);
+						QuhaoLog.i(TAG, account.msg);
+						if(account.msg.equals("fail")){
+							SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
+							Toast.makeText(this, "用户名或密码错误，登陆失败", Toast.LENGTH_LONG).show();
+							return;
+						}
+						if(account.msg.equals("success")){
+							SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "true");
+							Toast.makeText(this, "登录成功", Toast.LENGTH_LONG).show();
+							return;
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
+					Toast.makeText(this, "登陆失败", Toast.LENGTH_LONG).show();
+				} finally {
+				}
+			}
+			/*
 			DBTools.init(instance);
-//			boolean flag = false;
-//			try {
-//				flag = DBTools.getInstance().tabbleIsExist("accountinfo");
-//				Log.i(TAG, "accountinfo table exists : " + flag);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//				Log.e(TAG, e.getCause().toString());
-//			}
-//			if (!flag) {
-//				String sql = CREATE_ACCOUNT_TABLE;
-//				createTable("accountinfo", sql);
-//				sql = null;
-//			}
+			boolean flag = false;
+			try {
+				flag = DBTools.getInstance().tabbleIsExist("accountinfo");
+				Log.i(TAG, "accountinfo table exists : " + flag);
+			} catch (Exception e) {
+				e.printStackTrace();
+				Log.e(TAG, e.getCause().toString());
+			}
+			if (!flag) {
+				createTable(QuhaoConstant.ACCOUNT_TABLE, QuhaoConstant.CREATE_ACCOUNT_TABLE);
+			}*/
 		}else{
 			QuhaoLog.i(TAG, "accessInfo is null");
-		}
-	}
-
-	private void createTable(String tableName, String sql) {
-		try {
-			DBTools.getInstance().creatTable(tableName, false, sql);
-		} catch (DBException e) {
-			Log.d(TAG, "The table " + tableName
-					+ " already exist, create failure");
 		}
 	}
 

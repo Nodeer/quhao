@@ -21,7 +21,7 @@ public class InfoHelper {
 		AccountInfoHelper accountDBHelper = new AccountInfoHelper(mContext);
 		accountDBHelper.open();
 //		accountDBHelper.dropAccountInfoTable();
-		if(!accountDBHelper.tabbleIsExist(DBHelper.ACCOUNT_TABLE)){
+		if(!accountDBHelper.tabbleIsExist(QuhaoConstant.ACCOUNT_TABLE)){
 			accountDBHelper.createAccountTable();
 		}
 

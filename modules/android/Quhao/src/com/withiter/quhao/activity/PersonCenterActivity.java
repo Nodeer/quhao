@@ -2,7 +2,6 @@ package com.withiter.quhao.activity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -13,7 +12,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.QuhaoLog;
@@ -71,7 +69,6 @@ public class PersonCenterActivity extends AppStoreActivity {
 		value_dianpin = (TextView) findViewById(R.id.value_dianpin);
 		value_zhaopian = (TextView) findViewById(R.id.value_zhaopian);
 		
-		SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
 		String isLogin = SharedprefUtil.get(this,QuhaoConstant.IS_LOGIN, "false");
 
 		// check already login or not
@@ -92,7 +89,7 @@ public class PersonCenterActivity extends AppStoreActivity {
 			btnClose = (Button) view.findViewById(R.id.close);
 			btnLogin = (Button) view.findViewById(R.id.login);
 			btnRegister = (Button) view.findViewById(R.id.zhuce);
-			isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_LOGIN, "false");
+			isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_AUTO_LOGIN, "false");
 			if("true".equals(isAutoLogin))
 			{
 				isAutoLoginView.setImageResource(R.drawable.checkbox_checked);
@@ -108,8 +105,10 @@ public class PersonCenterActivity extends AppStoreActivity {
 			isAutoLoginView.setOnClickListener(this);
 
 		} else {
-			// TODO add already login business here
+			// TODO add already login business here , should refresh the information for dianping , jifen, qiandao and any other informations.
 			QuhaoLog.i(TAG, "login check: login");
+			
+			
 		}
 
 	}
@@ -182,11 +181,11 @@ public class PersonCenterActivity extends AppStoreActivity {
 						mobile.setText(account.phone);
 						
 						// TODO add jifen from backend
-						jifen.setText(account.jifen);
+						jifen.setText(loginInfo.jifen);
 						
 						value_qiandao.setText(account.signIn);
-						value_dianpin.setText(account.dianping);
-						value_zhaopian.setText(account.zhaopian);
+						value_dianpin.setText(loginInfo.dianping);
+						value_zhaopian.setText(loginInfo.zhaopian);
 						AccountInfoHelper accountDBHelper = new AccountInfoHelper(this);
 						accountDBHelper.open();
 						accountDBHelper.saveAccountInfo(account);

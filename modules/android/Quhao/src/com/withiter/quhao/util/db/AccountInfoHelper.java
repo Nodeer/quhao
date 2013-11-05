@@ -6,16 +6,14 @@ import java.util.List;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.QuhaoLog;
-import com.withiter.quhao.util.tool.DBTools;
+import com.withiter.quhao.util.tool.QuhaoConstant;
 
 public class AccountInfoHelper {
 	private DBHelper dbHelper;
-	private SQLiteDatabase newDB;
 	private Context context;
 
 	private static final String TAG = AccountInfoHelper.class.getName();
@@ -25,68 +23,82 @@ public class AccountInfoHelper {
 
 	public AccountInfoHelper open() {
 		this.dbHelper = new DBHelper(this.context);
-		this.newDB = this.dbHelper.getWritableDatabase();
-		return this;
+		return this; 
 	}
 	
 	public void dropAccountInfoTable(){
 //		newDB.delete(DBHelper.ACCOUNT_TABLE, null, null);
-		newDB.execSQL("DROP TABLE IF EXISTS " +DBHelper.ACCOUNT_TABLE);
+		try {
+			dbHelper.execSQL("DROP TABLE IF EXISTS " +QuhaoConstant.ACCOUNT_TABLE);
+		} catch (DBException e) {
+			
+			e.printStackTrace();
+		}
 	}
 
 	public List<AccountInfo> getAccountInfos() {
 		List<AccountInfo> accounts = new ArrayList<AccountInfo>();
 		AccountInfo account = null;
 
-		Cursor cursor = newDB.query(DBHelper.ACCOUNT_TABLE,
-				AccountInfoColumn.PROJECTION, null, null, null, null, null);
+		Cursor cursor;
+		try {
+			cursor = dbHelper.query(QuhaoConstant.ACCOUNT_TABLE,
+					AccountInfoColumn.PROJECTION, null, null, null, null, null);
+			if (cursor.getCount() > 0) {
+				cursor.moveToFirst();
+				while (!cursor.isAfterLast()) {
+					account = new AccountInfo();
+					account.setUserId(cursor
+							.getString(AccountInfoColumn.USERID_COLUMN));
+					account.setPhone(cursor
+							.getString(AccountInfoColumn.PHONE_COLUMN));
+					account.setEmail(cursor
+							.getString(AccountInfoColumn.EMAIL_COLUMN));
+					account.setPassword(cursor
+							.getString(AccountInfoColumn.PASSWORD_COLUMN));
+					account.setNickName(cursor
+							.getString(AccountInfoColumn.NICKNAME_COLUMN));
+					account.setBirthday(cursor
+							.getString(AccountInfoColumn.BIRTHDAY_COLUMN));
+					account.setUserImage(cursor
+							.getString(AccountInfoColumn.USERIMAGE_COLUMN));
+					account.setEnable(cursor
+							.getString(AccountInfoColumn.ENABLE_COLUMN));
+					account.setMobileOS(cursor
+							.getString(AccountInfoColumn.MOBILEOS_COLUMN));
+					account.setSignIn(cursor
+							.getString(AccountInfoColumn.SIGNIN_COLUMN));
+					account.setIsSignIn(cursor
+							.getString(AccountInfoColumn.ISSIGNIN_COLUMN));
+//					account.setDianping(cursor
+//							.getString(AccountInfoColumn.DIANPING_COLUMN));
+//					account.setZhaopian(cursor
+//							.getString(AccountInfoColumn.ZHAOPIAN_COLUMN));
+//					account.setJifen(cursor
+//							.getString(AccountInfoColumn.JIFEN_COLUMN));
+					account.setIsAuto(cursor
+							.getString(AccountInfoColumn.ISAUTO_COLUMN));
+					account.setMsg(cursor
+							.getString(AccountInfoColumn.MSG_COLUMN));
+					account.setLastLogin(cursor
+							.getString(AccountInfoColumn.LASTLOGIN_COLUMN));
 
-		if (cursor.getCount() > 0) {
-			cursor.moveToFirst();
-			while (!cursor.isAfterLast()) {
-				account = new AccountInfo();
-				account.setUserId(cursor
-						.getString(AccountInfoColumn.USERID_COLUMN));
-				account.setPhone(cursor
-						.getString(AccountInfoColumn.PHONE_COLUMN));
-				account.setEmail(cursor
-						.getString(AccountInfoColumn.EMAIL_COLUMN));
-//				account.setPassword(cursor
-//						.getString(AccountInfoColumn.PASSWORD_COLUMN));
-				account.setNickName(cursor
-						.getString(AccountInfoColumn.NICKNAME_COLUMN));
-				account.setBirthday(cursor
-						.getString(AccountInfoColumn.BIRTHDAY_COLUMN));
-				account.setUserImage(cursor
-						.getString(AccountInfoColumn.USERIMAGE_COLUMN));
-				account.setEnable(cursor
-						.getString(AccountInfoColumn.ENABLE_COLUMN));
-				account.setMobileOS(cursor
-						.getString(AccountInfoColumn.MOBILEOS_COLUMN));
-				account.setSignIn(cursor
-						.getString(AccountInfoColumn.SIGNIN_COLUMN));
-				account.setIsSignIn(cursor
-						.getString(AccountInfoColumn.ISSIGNIN_COLUMN));
-//				account.setDianping(cursor
-//						.getString(AccountInfoColumn.DIANPING_COLUMN));
-//				account.setZhaopian(cursor
-//						.getString(AccountInfoColumn.ZHAOPIAN_COLUMN));
-//				account.setJifen(cursor
-//						.getString(AccountInfoColumn.JIFEN_COLUMN));
-				account.setIsAuto(cursor
-						.getString(AccountInfoColumn.ISAUTO_COLUMN));
-				account.setMsg(cursor
-						.getString(AccountInfoColumn.MSG_COLUMN));
-				account.setLastLogin(cursor
-						.getString(AccountInfoColumn.LASTLOGIN_COLUMN));
+					accounts.add(account);
+					cursor.moveToNext();
+				}
 
-				accounts.add(account);
-				cursor.moveToNext();
 			}
-
+			if(cursor != null)
+			{
+				cursor.close();
+			}
+			cursor = null;
+		} catch (DBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		cursor.close();
-		cursor = null;
+
+		 
 		return accounts;
 	}
 
@@ -99,11 +111,11 @@ public class AccountInfoHelper {
 		String userId = "";
 		String[] col = new String[] { "userId" };
 
-		if (DBTools.getInstance() != null) {
+		if (dbHelper != null) {
 
 			Cursor cursor = null;
 			try {
-				cursor = DBTools.getInstance().query("accountinfo", col, null,
+				cursor = dbHelper.query(QuhaoConstant.ACCOUNT_TABLE, col, null,
 						null, null, null, null);
 			} catch (DBException e) {
 				
@@ -118,8 +130,11 @@ public class AccountInfoHelper {
 				cursor.moveToNext();
 				userId = cursor.getString(0);
 			}
+			if(cursor != null)
+			{
+				cursor.close();
+			}
 		}
-
 		// Log.e("+++++++++++++++ queryUserId", ""+ userId);
 		return userId;
 	}
@@ -156,13 +171,12 @@ public class AccountInfoHelper {
 	 * @param password
 	 */
 	public void updateAccountinfo(AccountInfo account) {
-		DBTools dbtool = DBTools.getInstance();
 		String whereClause = "userId = ?";
 		String[] whereArgs = new String[] { account.getUserId() };
 		ContentValues value = new ContentValues();
 		value.put(AccountInfoColumn.PHONE, account.getPhone());
 		value.put(AccountInfoColumn.EMAIL, account.getEmail());
-//		value.put(AccountInfoColumn.PASSWORD, account.getPassword());
+		value.put(AccountInfoColumn.PASSWORD, account.getPassword());
 		value.put(AccountInfoColumn.NICKNAME, account.getNickName());
 		value.put(AccountInfoColumn.BIRTHDAY, account.getBirthday());
 		value.put(AccountInfoColumn.USERIMAGE, account.getUserImage());
@@ -179,7 +193,7 @@ public class AccountInfoHelper {
 
 		try {
 			
-			dbtool.updateRecord("accountinfo", value, whereClause, whereArgs);
+			dbHelper.updateRecord("accountinfo", value, whereClause, whereArgs);
 			Log.i(TAG, "updateDataByNameFromDB dic_address success! ");
 		} catch (DBException e) {
 			Log.w(TAG,
@@ -197,13 +211,13 @@ public class AccountInfoHelper {
 	 * @param password
 	 */
 	public void insertAccountinfo(AccountInfo account) {
-		DBTools dbtool = DBTools.getInstance();
+		
 		// 插入记录
 		ContentValues value = new ContentValues();
 		value.put(AccountInfoColumn.USERID, account.getUserId());
 		value.put(AccountInfoColumn.PHONE, account.getPhone());
 		value.put(AccountInfoColumn.EMAIL, account.getEmail());
-//		value.put(AccountInfoColumn.PASSWORD, account.getPassword());
+		value.put(AccountInfoColumn.PASSWORD, account.getPassword());
 		value.put(AccountInfoColumn.NICKNAME, account.getNickName());
 		value.put(AccountInfoColumn.BIRTHDAY, account.getBirthday());
 		value.put(AccountInfoColumn.USERIMAGE, account.getUserImage());
@@ -219,7 +233,7 @@ public class AccountInfoHelper {
 		value.put(AccountInfoColumn.LASTLOGIN, account.getLastLogin());
 
 		try {
-			dbtool.insertRecord("accountinfo", value);
+			dbHelper.insertRecord(QuhaoConstant.ACCOUNT_TABLE, value);
 			Log.i(TAG, "InsertDataToDB member_node success! ");
 		} catch (DBException e) {
 			Log.w(TAG, "InsertDataToDB member_node failed! " + e.toString());
@@ -235,14 +249,13 @@ public class AccountInfoHelper {
 	 * @param isAuto
 	 */
 	public void updateIsAuto(String oldUserId, String isAuto) {
-		DBTools dbtool = DBTools.getInstance();
 		String whereClause = "userId = ?";
 		String[] whereArgs = new String[] { oldUserId };
 		ContentValues value = new ContentValues();
 		value.put("isAuto", isAuto);
 
 		try {
-			dbtool.updateRecord("accountinfo", value, whereClause, whereArgs);
+			dbHelper.updateRecord(QuhaoConstant.ACCOUNT_TABLE, value, whereClause, whereArgs);
 		} catch (DBException e) {
 		}
 		// Log.e("+++++++++++++++ updateIsAuto", "");
@@ -262,7 +275,7 @@ public class AccountInfoHelper {
 	 */
 	public boolean tabbleIsExist(String accountTable) {
 		QuhaoLog.i(TAG, "tabbleIsExist invoked!");
-		return dbHelper.tabbleIsExist(DBHelper.ACCOUNT_TABLE);
+		return dbHelper.tabbleIsExist(QuhaoConstant.ACCOUNT_TABLE);
 	}
 
 	/**
@@ -270,6 +283,6 @@ public class AccountInfoHelper {
 	 */
 	public void createAccountTable() {
 		QuhaoLog.i(TAG, "createAccountTable invoked!");
-		dbHelper.createTable(DBHelper.ACCOUNT_TABLE);
+		dbHelper.createTable(QuhaoConstant.ACCOUNT_TABLE);
 	}
 }

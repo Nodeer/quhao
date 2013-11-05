@@ -40,10 +40,7 @@ public class AccountInfo implements Serializable {
 	public String mobileOS;
 	public String signIn;
 	public String isSignIn;
-	public String dianping = "0";
-	public String zhaopian = "0";
 	
-	public String jifen;
 	public String isAuto = "false";
 	public String msg;
 	public String lastLogin;
@@ -92,25 +89,6 @@ public class AccountInfo implements Serializable {
 		this.lastLogin = lastLogin;
 	}
 	
-	public void setJifen(String jifen){
-		this.jifen = jifen;
-	}
-
-	public String getDianping() {
-		return dianping;
-	}
-
-	public void setDianping(String dianping) {
-		this.dianping = dianping;
-	}
-
-	public String getZhaopian() {
-		return zhaopian;
-	}
-
-	public void setZhaopian(String zhaopian) {
-		this.zhaopian = zhaopian;
-	}
 
 	public String getIsAuto() {
 		return isAuto;
@@ -160,10 +138,6 @@ public class AccountInfo implements Serializable {
 		return mobileOS;
 	}
 
-	public String getJifen() {
-		return jifen;
-	}
-
 	public String getMsg() {
 		return msg;
 	}
@@ -175,7 +149,6 @@ public class AccountInfo implements Serializable {
 	public void build(LoginInfo loginInfo) {
 		this.msg = loginInfo.msg;
 		this.phone = loginInfo.phone;
-		this.jifen = loginInfo.jifen;
 		this.email = loginInfo.email;
 		this.password = loginInfo.password;
 		this.nickName = loginInfo.nickName;
@@ -186,8 +159,6 @@ public class AccountInfo implements Serializable {
 		this.lastLogin = loginInfo.lastLogin;
 		this.signIn = loginInfo.signIn;
 		this.isSignIn = loginInfo.isSignIn;
-		this.dianping = loginInfo.dianping;
-		this.zhaopian = loginInfo.zhaopian;
 	}
 
 }
