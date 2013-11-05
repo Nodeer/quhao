@@ -27,6 +27,7 @@ GET		/search								MerchantController.getMerchantsByName
 GET     /lastest							MerchantController.getLastMerchants
 GET     /getCurrentNo						MerchantController.getCurrentNo
 GET     /getReservations					MerchantController.getReservations
+
 # Accounts
 GET		/accounts							rsecure.Secure.accounts
 GET		/signup								AccountController.signup
@@ -34,6 +35,8 @@ POST	/login								AccountController.login
 GET		/getPersonalInfo					AccountController.getPersonalInfo
 GET		/getHistoryMerchants				AccountController.getHistoryMerchants
 GET		/getCurrentMerchants				AccountController.getCurrentMerchants
+GET		/getAuthCode					    AccountController.GenerateAuthCode
+GET		/signupWithMobile                   AccountController.signupWithMobile
 
 # Patch
 *		/p/{action}							Patches.{action}
