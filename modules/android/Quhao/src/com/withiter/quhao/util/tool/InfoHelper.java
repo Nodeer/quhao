@@ -12,7 +12,6 @@ import com.withiter.quhao.util.db.DBHelper;
 public class InfoHelper {
 	/**
 	 * 检查帐号
-	 * 
 	 * @param mContext
 	 * @return
 	 */
@@ -21,6 +20,8 @@ public class InfoHelper {
 		AccountInfoHelper accountDBHelper = new AccountInfoHelper(mContext);
 		accountDBHelper.open();
 //		accountDBHelper.dropAccountInfoTable();
+		
+		
 		if(!accountDBHelper.tabbleIsExist(QuhaoConstant.ACCOUNT_TABLE)){
 			accountDBHelper.createAccountTable();
 		}

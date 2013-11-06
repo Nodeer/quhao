@@ -27,14 +27,16 @@ import com.withiter.models.backendMerchant.MerchantAccountRel;
 import com.withiter.models.merchant.Category;
 import com.withiter.models.merchant.Haoma;
 import com.withiter.models.merchant.Merchant;
+import com.withiter.models.merchant.Paidui;
 
 import controllers.BaseController;
 import controllers.UploadController;
 
 public class SelfManagementController extends BaseController {
-	
-	private static Logger logger = LoggerFactory.getLogger(SelfManagementController.class);
-	
+
+	private static Logger logger = LoggerFactory
+			.getLogger(SelfManagementController.class);
+
 	/*
 	 * 1) account information(included information:email or phone...) 2)
 	 * Merchant information(included information:name, address...)
@@ -112,31 +114,42 @@ public class SelfManagementController extends BaseController {
 		m.enable = true;
 		m.seatType = seatType;
 		m.save();
-		
+
 		Set<String> seatTypeSet = new HashSet<String>();
-		for(String seatNoNeedToEnable : seatType){
+		for (String seatNoNeedToEnable : seatType) {
 			System.out.println(seatNoNeedToEnable);
 			seatTypeSet.add(seatNoNeedToEnable);
-//			haoma.haomaMap.get(Integer.parseInt(seatNoNeedToEnable)).enable = true;
+			// haoma.haomaMap.get(Integer.parseInt(seatNoNeedToEnable)).enable =
+			// true;
 		}
-		
-		
+
 		Haoma haoma = Haoma.findByMerchantId(m.id());
 		Iterator it = haoma.haomaMap.keySet().iterator();
-		while(it.hasNext()){
+		while (it.hasNext()) {
 			Integer key = (Integer) it.next();
-			if(seatTypeSet.contains(key.toString())){
+			if (seatTypeSet.contains(key.toString())) {
 				haoma.haomaMap.get(key).enable = true;
-			}else{
+				seatTypeSet.remove(key.toString());
+			} else {
 				haoma.haomaMap.get(key).enable = false;
 			}
 		}
-		
+
+		if (seatTypeSet.size() != 0) {
+			Iterator ite = seatTypeSet.iterator();
+			Paidui p = null;
+			while (ite.hasNext()) {
+				p = new Paidui();
+				p.enable = true;
+				haoma.haomaMap.put(Integer.parseInt(ite.next().toString()), p);
+			}
+		}
+
 		haoma.save();
-		
+
 		// update the category counts
 		Category.updateCounts();
-		
+
 		if (!StringUtils.isEmpty(merchantImage)) {
 			GridFSInputFile file = uploadFirst(merchantImage, m.id());
 			if (file != null) {
@@ -147,8 +160,8 @@ public class SelfManagementController extends BaseController {
 					String imageStorePath = Play.configuration
 							.getProperty("image.store.path");
 					try {
-						m.merchantImage = URLEncoder.encode(server + imageStorePath
-								+ file.getFilename(), "UTF-8");
+						m.merchantImage = URLEncoder.encode(server
+								+ imageStorePath + file.getFilename(), "UTF-8");
 						logger.debug(m.merchantImage);
 					} catch (UnsupportedEncodingException e) {
 						e.printStackTrace();

@@ -25,12 +25,13 @@ import com.withiter.quhao.util.tool.SharedprefUtil;
 import com.withiter.quhao.vo.LoginInfo;
 
 public class QHClientApplication extends Application {
-	
+
 	/**
 	 * 创建全局变量 全局变量一般都比较倾向于创建一个单独的数据类文件，并使用static静态变量
 	 * 这里使用了在Application中添加数据的方法实现全局变量
 	 */
 	private WindowManager.LayoutParams wmParams = new WindowManager.LayoutParams();
+
 	public WindowManager.LayoutParams getMywmParams() {
 		return wmParams;
 	}
@@ -46,30 +47,27 @@ public class QHClientApplication extends Application {
 	private static QHClientApplication instance;
 
 	/*
-	static {
-		StringBuilder sb = new StringBuilder("");
-		sb.append("CREATE TABLE ").append(" accountinfo (")
-				.append(AccountInfoColumn.USERID)
-				.append(" integer primary key,")
-				.append(AccountInfoColumn.USERID).append(" text,")
-				.append(AccountInfoColumn.PHONE).append(" text,")
-				.append(AccountInfoColumn.EMAIL).append(" text,")
-				.append(AccountInfoColumn.PASSWORD).append(" text,")
-				.append(AccountInfoColumn.NICKNAME).append(" text,")
-				.append(AccountInfoColumn.BIRTHDAY).append(" text,")
-				.append(AccountInfoColumn.USERIMAGE).append(" text,")
-				.append(AccountInfoColumn.ENABLE).append(" text,")
-				.append(AccountInfoColumn.MOBILEOS).append(" text,")
-				.append(AccountInfoColumn.SIGNIN).append(" text,")
-				.append(AccountInfoColumn.ISSIGNIN).append(" text,")
-				.append(AccountInfoColumn.DIANPING).append(" text,")
-				.append(AccountInfoColumn.ZHAOPIAN).append(" text,")
-				.append(AccountInfoColumn.JIFEN).append(" text,")
-				.append(AccountInfoColumn.ISAUTO).append(" text,")
-				.append(AccountInfoColumn.MSG).append(" text,")
-				.append(AccountInfoColumn.LASTLOGIN).append(" text)");
-		CREATE_ACCOUNT_TABLE = sb.toString();
-	}
+	 * static { StringBuilder sb = new StringBuilder("");
+	 * sb.append("CREATE TABLE ").append(" accountinfo (")
+	 * .append(AccountInfoColumn.USERID) .append(" integer primary key,")
+	 * .append(AccountInfoColumn.USERID).append(" text,")
+	 * .append(AccountInfoColumn.PHONE).append(" text,")
+	 * .append(AccountInfoColumn.EMAIL).append(" text,")
+	 * .append(AccountInfoColumn.PASSWORD).append(" text,")
+	 * .append(AccountInfoColumn.NICKNAME).append(" text,")
+	 * .append(AccountInfoColumn.BIRTHDAY).append(" text,")
+	 * .append(AccountInfoColumn.USERIMAGE).append(" text,")
+	 * .append(AccountInfoColumn.ENABLE).append(" text,")
+	 * .append(AccountInfoColumn.MOBILEOS).append(" text,")
+	 * .append(AccountInfoColumn.SIGNIN).append(" text,")
+	 * .append(AccountInfoColumn.ISSIGNIN).append(" text,")
+	 * .append(AccountInfoColumn.DIANPING).append(" text,")
+	 * .append(AccountInfoColumn.ZHAOPIAN).append(" text,")
+	 * .append(AccountInfoColumn.JIFEN).append(" text,")
+	 * .append(AccountInfoColumn.ISAUTO).append(" text,")
+	 * .append(AccountInfoColumn.MSG).append(" text,")
+	 * .append(AccountInfoColumn.LASTLOGIN).append(" text)");
+	 * CREATE_ACCOUNT_TABLE = sb.toString(); }
 	 */
 	@Override
 	public void onCreate() {
@@ -96,15 +94,13 @@ public class QHClientApplication extends Application {
 	private void initDBConfig() {
 		QuhaoLog.i(TAG, "init database config");
 		accessInfo = InfoHelper.getAccountInfo(this);
-		if(accessInfo != null){
+		if (accessInfo != null) {
 			QuhaoLog.i(TAG, "accessInfo is not null");
 			String isAuto = accessInfo.isAuto;
 			SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN, isAuto);
-			if("true".equals(isAuto))
-			{
+			if ("true".equals(isAuto)) {
 				String url = "AccountController/login?";
-				url = url + "phone="
-							+ accessInfo.getPhone() + "&";
+				url = url + "phone=" + accessInfo.getPhone() + "&";
 				url = url + "password=" + accessInfo.getPassword();
 				QuhaoLog.i(TAG, "the login url is : " + url);
 				try {
@@ -117,14 +113,18 @@ public class QHClientApplication extends Application {
 						account.setUserId("1");
 						account.build(loginInfo);
 						QuhaoLog.i(TAG, account.msg);
-						if(account.msg.equals("fail")){
-							SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
-							Toast.makeText(this, "用户名或密码错误，登陆失败", Toast.LENGTH_LONG).show();
+						if (account.msg.equals("fail")) {
+							SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN,
+									"false");
+							Toast.makeText(this, "用户名或密码错误，登陆失败",
+									Toast.LENGTH_LONG).show();
 							return;
 						}
-						if(account.msg.equals("success")){
-							SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "true");
-							Toast.makeText(this, "登录成功", Toast.LENGTH_LONG).show();
+						if (account.msg.equals("success")) {
+							SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN,
+									"true");
+							Toast.makeText(this, "登录成功", Toast.LENGTH_LONG)
+									.show();
 							return;
 						}
 					}
@@ -136,19 +136,14 @@ public class QHClientApplication extends Application {
 				}
 			}
 			/*
-			DBTools.init(instance);
-			boolean flag = false;
-			try {
-				flag = DBTools.getInstance().tabbleIsExist("accountinfo");
-				Log.i(TAG, "accountinfo table exists : " + flag);
-			} catch (Exception e) {
-				e.printStackTrace();
-				Log.e(TAG, e.getCause().toString());
-			}
-			if (!flag) {
-				createTable(QuhaoConstant.ACCOUNT_TABLE, QuhaoConstant.CREATE_ACCOUNT_TABLE);
-			}*/
-		}else{
+			 * DBTools.init(instance); boolean flag = false; try { flag =
+			 * DBTools.getInstance().tabbleIsExist("accountinfo"); Log.i(TAG,
+			 * "accountinfo table exists : " + flag); } catch (Exception e) {
+			 * e.printStackTrace(); Log.e(TAG, e.getCause().toString()); } if
+			 * (!flag) { createTable(QuhaoConstant.ACCOUNT_TABLE,
+			 * QuhaoConstant.CREATE_ACCOUNT_TABLE); }
+			 */
+		} else {
 			QuhaoLog.i(TAG, "accessInfo is null");
 		}
 	}
@@ -156,7 +151,7 @@ public class QHClientApplication extends Application {
 	private void initConfig() {
 		createSDCardDir();
 	}
-	
+
 	/**
 	 * 在SD卡上创建一个文件夹
 	 */
