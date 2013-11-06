@@ -1,15 +1,5 @@
 package com.withiter.quhao.activity;
 
-import java.util.List;
-
-import com.withiter.quhao.R;
-import com.withiter.quhao.util.QuhaoLog;
-import com.withiter.quhao.util.StringUtils;
-import com.withiter.quhao.util.http.CommonHTTPRequest;
-import com.withiter.quhao.util.tool.ParseJson;
-import com.withiter.quhao.util.tool.ProgressDialogUtil;
-import com.withiter.quhao.vo.ReservationVO;
-
 import android.os.Bundle;
 import android.os.Looper;
 import android.view.MotionEvent;
@@ -18,6 +8,11 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.withiter.quhao.R;
+import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.util.http.CommonHTTPRequest;
+import com.withiter.quhao.util.tool.ProgressDialogUtil;
 
 public class OpinionActivity extends AppStoreActivity {
 
