@@ -14,6 +14,16 @@ Merchant.reset = function(){
 	$("#closeTime").val("");
 }
 
+Merchant.enableEdit = function(){
+	if(window.confirm("更改桌位类型将清空当前排队号，请谨慎操作！")){
+		$("#address").removeAttr("disabled");
+		$("#tel").removeAttr("disabled");
+		$("input[name=seatType]").removeAttr("disabled");
+		$("#btnli").removeAttr("hidden");
+	}else{
+	}
+}
+
 /**
  * update merchant information
  */

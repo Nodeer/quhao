@@ -21,8 +21,8 @@
 			`for(String srcStr : bmivo.imgSrc){
 				<li><img alt="" class="backendImg" src="${srcStr}" /></li>
 			`}
-			<li><div class="w200">商家地址：</div><input type="text" name="address" id="address" value="${bmivo.address}" placeHolder="商家地址" class="textInput"/></li>
-			<li><div class="w200">联系方式：</div><input type="text" name="tel" id="tel" value="${bmivo.telephone}" placeHolder="联系方式" class="textInput"/></li>
+			<li><div class="w200">商家地址：</div><input type="text" disabled="disabled" name="address" id="address" value="${bmivo.address}" placeHolder="商家地址" class="textInput"/></li>
+			<li><div class="w200">联系方式：</div><input type="text" disabled="disabled" name="tel" id="tel" value="${bmivo.telephone}" placeHolder="联系方式" class="textInput"/></li>
 			
 			<li>
 			<div class="w200">商家风味：</div>
@@ -73,15 +73,22 @@
 			<div class="w350">
 			`for(int i = 1; i <= 20; i++){
 				<div style="width: 80px; float: left;">
-				<input id="seat${i}" name="seatType" value="${i}" type="checkbox"><font class="rmargin20" >${i}人桌</font>
+				<input disabled="disabled" id="seat${i}" name="seatType" value="${i}" type="checkbox"><font class="rmargin20" >${i}人桌</font>
 				</div>
 			`}
 			</div>
 			</li>
-			<li class="buttonBox">
+			`if(bmivo.merchantExist){
+			<li id="btnli" hidden="hidden" class="buttonBox">
+				<input type="button" id="resetbtn" name="" style="margin-left: 60px; margin-right: 100px;" class="styleBtn corner " value="重&nbsp;&nbsp;&nbsp;&nbsp;置" onclick="Merchant.reset();"/>
+				<input type="button" id="updatebtn" name="" class="styleBtn corner " value="提&nbsp;&nbsp;&nbsp;&nbsp;交" onclick="Merchant.update();"/>
+			</li>
+			`}else{
+			<li hidden="hidden" class="buttonBox">
 				<input type="button" name="" style="margin-left: 60px; margin-right: 100px;" class="styleBtn corner " value="重&nbsp;&nbsp;&nbsp;&nbsp;置" onclick="Merchant.reset();"/>
 				<input type="button" name="" class="styleBtn corner " value="提&nbsp;&nbsp;&nbsp;&nbsp;交" onclick="Merchant.update();"/>
 			</li>
+			`}
 		</ul>
 	</fieldset>
 </form>
