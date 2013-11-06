@@ -1,5 +1,8 @@
 package vo;
 
+import java.io.UnsupportedEncodingException;
+
+import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -10,8 +13,15 @@ import com.withiter.models.merchant.Comment;
 import com.withiter.models.merchant.Merchant;
 import com.withiter.models.merchant.Tese;
 
+import controllers.backend.self.SelfManagementController;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class MerchantVO {
 
+	private static Logger logger = LoggerFactory.getLogger(MerchantVO.class);
+	
 	public String id;
 	public String name = "";
 	public String address = "";
@@ -83,7 +93,12 @@ public class MerchantVO {
 		vo.y = m.y;
 		vo.seatType = m.seatType;
 		
-		vo.merchantImage = m.merchantImage;
+		try {
+			vo.merchantImage = URLDecoder.decode(m.merchantImage, "UTF-8");
+			logger.debug(vo.merchantImage);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 		
 		return vo;
 	}

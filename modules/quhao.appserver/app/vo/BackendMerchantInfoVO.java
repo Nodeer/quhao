@@ -1,9 +1,15 @@
 package vo;
 
+import java.io.UnsupportedEncodingException;
+
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import play.Play;
 
@@ -14,6 +20,9 @@ import com.withiter.models.merchant.Merchant;
  * 
  * */
 public class BackendMerchantInfoVO {
+	
+	private static Logger logger = LoggerFactory.getLogger(BackendMerchantInfoVO.class);
+	
 	public String mid;
 	public String name = "";
 	public String nickName;
@@ -65,7 +74,15 @@ public class BackendMerchantInfoVO {
 			vo.merchantExist = true;
 			vo.mid = m.id();
 			vo.address = m.address;
-			vo.merchantImage = m.merchantImage;
+//			vo.merchantImage = m.merchantImage;
+			
+			try {
+				vo.merchantImage = URLDecoder.decode(m.merchantImage, "UTF-8");
+				logger.debug(vo.merchantImage);
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			
 			vo.cateType = m.cateType;
 			vo.closeTime = m.closeTime;
 			vo.description = m.description;

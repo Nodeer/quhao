@@ -2,10 +2,15 @@ package controllers.backend.self;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import play.Play;
 import play.libs.Images;
@@ -27,6 +32,9 @@ import controllers.BaseController;
 import controllers.UploadController;
 
 public class SelfManagementController extends BaseController {
+	
+	private static Logger logger = LoggerFactory.getLogger(SelfManagementController.class);
+	
 	/*
 	 * 1) account information(included information:email or phone...) 2)
 	 * Merchant information(included information:name, address...)
@@ -113,7 +121,7 @@ public class SelfManagementController extends BaseController {
 		}
 		
 		
-		Haoma haoma = Haoma.findByMerchantId(mid);
+		Haoma haoma = Haoma.findByMerchantId(m.id());
 		Iterator it = haoma.haomaMap.keySet().iterator();
 		while(it.hasNext()){
 			Integer key = (Integer) it.next();
@@ -138,8 +146,13 @@ public class SelfManagementController extends BaseController {
 							.getProperty("application.domain");
 					String imageStorePath = Play.configuration
 							.getProperty("image.store.path");
-					m.merchantImage = server + imageStorePath
-							+ file.getFilename();
+					try {
+						m.merchantImage = URLEncoder.encode(server + imageStorePath
+								+ file.getFilename(), "UTF-8");
+						logger.debug(m.merchantImage);
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					}
 				}
 				m.save();
 			}
