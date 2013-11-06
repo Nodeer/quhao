@@ -11,6 +11,7 @@ import vo.MerchantVO;
 import vo.ReservationVO;
 import vo.TopMerchantVO;
 
+import com.withiter.common.Constants.CreditStatus;
 import com.withiter.models.account.Account;
 import com.withiter.models.account.Credit;
 import com.withiter.models.account.Reservation;
@@ -223,7 +224,7 @@ public class MerchantController extends BaseController {
 			credit.merchantId = r.merchantId;
 			credit.reservationId = r.id();
 			credit.cost = false;
-			credit.status = "getNumber";
+			credit.status = CreditStatus.getNumber;
 			credit.created = new Date();
 			credit.modified = new Date();
 			credit.create();

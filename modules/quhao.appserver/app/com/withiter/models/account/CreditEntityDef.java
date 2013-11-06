@@ -1,5 +1,6 @@
 package com.withiter.models.account;
 
+import com.withiter.common.Constants.CreditStatus;
 import com.withiter.models.BaseModel;
 
 public class CreditEntityDef extends BaseModel{
@@ -27,6 +28,6 @@ public class CreditEntityDef extends BaseModel{
 	/**
 	 * 积分消费状态 finished, getNumber
 	 */
-	public String status;
+	public CreditStatus status;
 	
 }

@@ -6,19 +6,21 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.lang.StringUtils;
 
 import play.Logger;
 import play.libs.Codec;
 import vo.ReservationVO;
+import vo.account.CreditVO;
 import vo.account.LoginVO;
 import vo.account.SignupVO;
 
 import com.withiter.common.Constants;
 import com.withiter.common.sms.business.SMSBusiness;
 import com.withiter.models.account.Account;
+import com.withiter.models.account.Credit;
 import com.withiter.models.account.Reservation;
 import com.withiter.models.merchant.Merchant;
+import com.withiter.utils.StringUtils;
 
 public class AccountController extends BaseController {
 
@@ -315,8 +317,44 @@ public class AccountController extends BaseController {
 		renderJSON(histroytReservationVOs);
 	}
 
-	public static void getIntegralCost(String accountId) {
+	/**
+	 * 根据帐号ID查找积分消费情况
+	 * @param accountId 帐号ID
+	 */
+	public static void getCreditCost(String accountId) {
 
+		List<Credit> credits = new ArrayList<Credit>();
+		List<CreditVO> creditVOs = new ArrayList<CreditVO>();
+		if(StringUtils.isEmpty(accountId))
+		{
+			renderJSON(creditVOs);
+			return;
+		}
+		
+		credits = Credit.findByAccountId(accountId);
+		CreditVO creditVO = null;
+		for (Credit credit : credits) {
+			creditVO = new CreditVO();
+			
+			creditVO.build(credit);
+			if(StringUtils.isNotEmpty(credit.merchantId))
+			{
+				Merchant merchant = Merchant.findById(credit.merchantId);
+				creditVO.merchangName = merchant.name;
+				creditVO.merchangAddress = merchant.address;
+			}
+			
+			if(StringUtils.isNotEmpty(credit.reservationId))
+			{
+				Reservation reservation = Reservation.findById(credit.reservationId);
+				creditVO.seatNumber = reservation.seatNumber;
+				creditVO.myNumber = reservation.myNumber;
+			}
+			
+			creditVOs.add(creditVO);
+		}
+		
+		renderJSON(creditVOs);
 	}
 
 	/**

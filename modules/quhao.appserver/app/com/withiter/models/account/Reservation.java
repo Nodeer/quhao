@@ -7,6 +7,7 @@ import java.util.List;
 import play.modules.morphia.Model.NoAutoTimestamp;
 
 import com.google.code.morphia.annotations.Entity;
+import com.withiter.common.Constants.CreditStatus;
 import com.withiter.common.Constants.ReservationStatus;
 import com.withiter.models.merchant.Haoma;
 
@@ -120,7 +121,7 @@ public class Reservation extends ReservationEntityDef {
 			credit.merchantId = r.merchantId;
 			credit.reservationId = r.id();
 			credit.cost = true;
-			credit.status = "finished";
+			credit.status = CreditStatus.finished;
 			credit.created = new Date();
 			credit.modified = new Date();
 			credit.create();

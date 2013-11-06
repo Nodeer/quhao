@@ -11,7 +11,7 @@ public class Constants {
 		mianbaodangao, ribenliaoli, shaokao, tianpinyinpin, xiangcai,
 		xiaochikuaican, xican, xinjiangqingzhen, yuecaiguan, zhongcancaixi, zizhucan
 	}
-
+	
 	public enum SortBy{
 		cateType, grade, averageCost, kouwei, huanjing, fuwu, xingjiabi, markedCount
 	}
@@ -22,6 +22,20 @@ public class Constants {
 	
 	public enum ReservationStatus{
 		finished, canceled, expired, active
+	}
+	
+	/**
+	 * 
+	 * finished : 吃饭完成
+	 * 
+	 * getNumber : 获取号码
+	 * 
+	 * exchange : 兑换 
+	 * @author ASUS
+	 *
+	 */
+	public enum CreditStatus{
+		finished, getNumber,exchange
 	}
 	
 	public static String COOKIE_USERNAME = "quhao_username";

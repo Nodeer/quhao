@@ -35,6 +35,7 @@ POST	/login								AccountController.login
 GET		/getPersonalInfo					AccountController.getPersonalInfo
 GET		/getHistoryMerchants				AccountController.getHistoryMerchants
 GET		/getCurrentMerchants				AccountController.getCurrentMerchants
+GET		/getCreditCost						AccountController.getCreditCost
 GET		/getAuthCode					    AccountController.GenerateAuthCode
 GET		/signupWithMobile                   AccountController.signupWithMobile
 
