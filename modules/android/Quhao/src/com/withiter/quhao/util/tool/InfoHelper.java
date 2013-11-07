@@ -7,7 +7,6 @@ import android.net.ConnectivityManager;
 
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.db.AccountInfoHelper;
-import com.withiter.quhao.util.db.DBHelper;
 
 public class InfoHelper {
 	/**
@@ -35,9 +34,7 @@ public class InfoHelper {
 	}
 
 	/**
-	 * 
 	 * 检查网络
-	 * 
 	 * @param context
 	 * @return
 	 */
