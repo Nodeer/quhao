@@ -19,6 +19,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.QuhaoLog;
@@ -43,6 +44,7 @@ public class LoginActivity extends QuhaoBaseActivity {
 	private Button btnClose;
 	private Button btnLogin;
 	private Button btnRegister;
+	private TextView loginResult;
 	private final int UNLOCK_CLICK = 1000;
 	private ProgressDialogUtil progressLogin;
 
@@ -104,12 +106,13 @@ public class LoginActivity extends QuhaoBaseActivity {
 				transfortParams.put("merchantId", merchantId);
 			}
 		}
+		loginResult = (TextView) this.findViewById(R.id.person_center_login_result);
 //		radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
 //		radioPhone = (RadioButton) findViewById(R.id.radioPhone);
 //		radioEmail = (RadioButton) findViewById(R.id.radioEmail);
 		
 		isAutoLoginView = (ImageView) findViewById(R.id.isAutoLogin);
-		isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_LOGIN, "false");
+		isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_AUTO_LOGIN, "false");
 		if("true".equals(isAutoLogin))
 		{
 			isAutoLoginView.setImageResource(R.drawable.checkbox_checked);
@@ -198,20 +201,36 @@ public class LoginActivity extends QuhaoBaseActivity {
 				if (StringUtils.isNull(result)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
-					LoginInfo loginInfo = ParseJson.getLoginInfo(result);
-					AccountInfo account = new AccountInfo();
-					account.setUserId("1");
-					account.build(loginInfo);
-					account.isAuto = isAutoLogin;
-					AccountInfoHelper accountDBHelper = new AccountInfoHelper(this);
-					accountDBHelper.open();
-					accountDBHelper.saveAccountInfo(account);
-					SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, isAutoLogin);
-					accountDBHelper.close();
-//					QHClientApplication.getInstance().accessInfo = account;
-//					QHClientApplication.getInstance().isLogined = true;
-					loginUpdateHandler.obtainMessage(200, account)
-							.sendToTarget();
+					if (StringUtils.isNull(result)) {
+						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+					} else {
+						LoginInfo loginInfo = ParseJson.getLoginInfo(result);
+						AccountInfo account = new AccountInfo();
+						account.setUserId("1");
+						account.build(loginInfo);
+						account.isAuto = isAutoLogin;
+						QuhaoLog.i(TAG, account.msg);
+						if(account.msg.equals("fail")){
+							loginResult.setText("用户名或密码错误，登陆失败");
+							passwordText.setText("");
+							return;
+						}
+						if(account.msg.equals("success")){
+							loginResult.setText("登陆成功");
+							
+							AccountInfoHelper accountDBHelper = new AccountInfoHelper(this);
+							accountDBHelper.open();
+							accountDBHelper.saveAccountInfo(account);
+							SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "true");
+							SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN, isAutoLogin);
+							accountDBHelper.close();
+							QHClientApplication.getInstance().accessInfo = account;
+//							QHClientApplication.getInstance().isLogined = true;
+							loginUpdateHandler.obtainMessage(200, account).sendToTarget();
+							return;
+						}
+					
+				}
 				}
 			} catch (Exception e) {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);

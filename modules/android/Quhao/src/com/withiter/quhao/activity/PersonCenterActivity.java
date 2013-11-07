@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.QuhaoLog;
@@ -189,9 +190,10 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 						AccountInfoHelper accountDBHelper = new AccountInfoHelper(this);
 						accountDBHelper.open();
 						accountDBHelper.saveAccountInfo(account);
-						SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, isAutoLogin);
+						SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "true");
+						SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN, isAutoLogin);
 						accountDBHelper.close();
-//						QHClientApplication.getInstance().accessInfo = account;
+						QHClientApplication.getInstance().accessInfo = account;
 //						QHClientApplication.getInstance().isLogined = true;
 						ad.dismiss();
 						return;

@@ -109,7 +109,7 @@ public class AccountInfoHelper {
 	 */
 	public String queryUserId() {
 		String userId = "";
-		String[] col = new String[] { "userId" };
+		String[] col = new String[] { AccountInfoColumn.USERID };
 
 		if (dbHelper != null) {
 
@@ -171,7 +171,7 @@ public class AccountInfoHelper {
 	 * @param password
 	 */
 	public void updateAccountinfo(AccountInfo account) {
-		String whereClause = "userId = ?";
+		String whereClause = AccountInfoColumn.USERID + " = ?";
 		String[] whereArgs = new String[] { account.getUserId() };
 		ContentValues value = new ContentValues();
 		value.put(AccountInfoColumn.PHONE, account.getPhone());
@@ -249,7 +249,7 @@ public class AccountInfoHelper {
 	 * @param isAuto
 	 */
 	public void updateIsAuto(String oldUserId, String isAuto) {
-		String whereClause = "userId = ?";
+		String whereClause = AccountInfoColumn.USERID + " = ?";
 		String[] whereArgs = new String[] { oldUserId };
 		ContentValues value = new ContentValues();
 		value.put("isAuto", isAuto);

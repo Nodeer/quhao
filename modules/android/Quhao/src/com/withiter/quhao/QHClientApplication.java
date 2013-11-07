@@ -110,7 +110,7 @@ public class QHClientApplication extends Application {
 						if (account.msg.equals("fail")) {
 							SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN,
 									"false");
-							Toast.makeText(this, "用户名或密码错误，登陆失败",
+							Toast.makeText(this, "登陆失败",
 									Toast.LENGTH_LONG).show();
 							return;
 						}
@@ -138,6 +138,8 @@ public class QHClientApplication extends Application {
 			 * QuhaoConstant.CREATE_ACCOUNT_TABLE); }
 			 */
 		} else {
+			SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
+			SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN, "false");
 			QuhaoLog.i(TAG, "accessInfo is null");
 		}
 	}

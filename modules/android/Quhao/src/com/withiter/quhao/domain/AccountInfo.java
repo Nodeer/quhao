@@ -95,7 +95,7 @@ public class AccountInfo implements Serializable {
 	}
 
 	public void setIsAuto(String isAuto) {
-		if(StringUtils.isNull(isAuto)){
+		if(StringUtils.isNotNull(isAuto)){
 			this.isAuto = isAuto;
 		}else{
 			this.isAuto = "false";

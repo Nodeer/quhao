@@ -57,8 +57,7 @@ public class QuhaoConstant {
 	 */
 	public static long TIME_STAMP = 0;
 	public static long TIME_STAMP_OLD = 0;
-	public static String CREATE_ACCOUNT_TABLE = "CREATE TABLE accountinfo (" + AccountInfoColumn._ID
-			+ " integer primary key autoincrement," 
+	public static String CREATE_ACCOUNT_TABLE = "CREATE TABLE accountinfo ("
 			+ AccountInfoColumn.USERID + " text,"
 			+ AccountInfoColumn.PHONE + " text,"
 			+ AccountInfoColumn.EMAIL + " text,"

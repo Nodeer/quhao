@@ -42,9 +42,11 @@ public class LoginVO {
 		this.accountId = account.id();
 		this.phone = account.phone;
 		this.email = account.email;
+		this.password = account.password;
 		this.nickname = account.nickname;
 		this.birthDay = account.birthDay;
 		this.userImage = account.userImage;
+		this.enable = account.enable;
 		this.mobileOS = account.mobileOS;
 		this.lastLogin = account.lastLogin;
 		
