@@ -127,8 +127,7 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements
 					Intent intent = new Intent(activity, MainActivity.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 					startActivity(intent);
-					overridePendingTransition(R.anim.main_enter,
-							R.anim.main_exit);
+					overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 				}
 			}
 		};
@@ -149,7 +148,7 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements
 				Intent intent = new Intent(activity, NearbyActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(intent);
-				overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
+				overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 			}
 		};
 		return clickListener;
@@ -175,8 +174,7 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements
 							PersonCenterActivity.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 					startActivity(intent);
-					overridePendingTransition(R.anim.main_enter,
-							R.anim.main_exit);
+					overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 				}
 
 				// if (QHClientApplication.getInstance().isLogined) {
@@ -213,7 +211,7 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements
 				Intent intent = new Intent(activity, MoreActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(intent);
-				overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
+				overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 			}
 		};
 		return clickListener;

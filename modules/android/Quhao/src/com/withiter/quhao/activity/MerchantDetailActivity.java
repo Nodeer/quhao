@@ -348,8 +348,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 							intent.putExtra("merchantName",
 									MerchantDetailActivity.this.merchant.name);
 							startActivity(intent);
-							overridePendingTransition(R.anim.main_enter,
-									R.anim.main_exit);
+							overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 						}
 					});
 
