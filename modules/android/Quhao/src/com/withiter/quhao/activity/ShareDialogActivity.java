@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 
-public class ShareDialogActivity extends AppStoreActivity implements OnItemClickListener{
+public class ShareDialogActivity extends QuhaoBaseActivity implements OnItemClickListener{
 
 	private GridView shareGridView;
 	

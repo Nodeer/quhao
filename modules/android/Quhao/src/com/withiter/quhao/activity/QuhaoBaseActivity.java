@@ -19,10 +19,10 @@ import com.withiter.quhao.util.tool.PhoneTool;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 
 @SuppressLint("NewApi")
-public abstract class AppStoreActivity extends QuhaoActivity implements
+public abstract class QuhaoBaseActivity extends QuhaoActivity implements
 		OnClickListener, OnTouchListener {
 
-	private final String TAG = AppStoreActivity.class.getName();
+	private final String TAG = QuhaoBaseActivity.class.getName();
 
 	protected boolean isClick = false;
 	protected String action = "";

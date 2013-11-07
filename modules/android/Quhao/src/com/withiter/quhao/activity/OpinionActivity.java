@@ -14,7 +14,7 @@ import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 
-public class OpinionActivity extends AppStoreActivity {
+public class OpinionActivity extends QuhaoBaseActivity {
 
 	private Button btnOpinion;
 	

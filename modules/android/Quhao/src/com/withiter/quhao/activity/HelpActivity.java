@@ -3,7 +3,7 @@ package com.withiter.quhao.activity;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class HelpActivity extends AppStoreActivity {
+public class HelpActivity extends QuhaoBaseActivity {
 
 	@Override
 	public void onClick(View v) {

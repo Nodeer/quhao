@@ -30,7 +30,7 @@ import com.withiter.quhao.vo.Merchant;
 /**
  * 商家列表页面
  */
-public class MerchantListActivity extends AppStoreActivity {
+public class MerchantListActivity extends QuhaoBaseActivity {
 
 	private String LOGTAG = MerchantListActivity.class.getName();
 	protected ListView merchantsListView;

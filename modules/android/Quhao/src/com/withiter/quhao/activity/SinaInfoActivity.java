@@ -29,7 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class SinaInfoActivity extends AppStoreActivity {
+public class SinaInfoActivity extends QuhaoBaseActivity {
 
 	private Button btnSinaShare;
 	

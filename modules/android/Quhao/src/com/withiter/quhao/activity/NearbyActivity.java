@@ -8,7 +8,7 @@ import android.view.Window;
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.QuhaoLog;
 
-public class NearbyActivity extends AppStoreActivity {
+public class NearbyActivity extends QuhaoBaseActivity {
 
 	private static final String TAG = NearbyActivity.class.getName();
 	

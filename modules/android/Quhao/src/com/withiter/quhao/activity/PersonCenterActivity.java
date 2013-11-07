@@ -24,7 +24,7 @@ import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SharedprefUtil;
 import com.withiter.quhao.vo.LoginInfo;
 
-public class PersonCenterActivity extends AppStoreActivity {
+public class PersonCenterActivity extends QuhaoBaseActivity {
 
 	private final static String TAG = PersonCenterActivity.class.getName();
 	

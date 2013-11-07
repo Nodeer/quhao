@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import org.bson.types.ObjectId;
-
 import vo.CategoryVO;
 import vo.HaomaVO;
 import vo.MerchantVO;
@@ -189,7 +187,7 @@ public class MerchantController extends BaseController {
 			renderJSON(rvo);
 		}
 		
-		Account account = Account.findById(new ObjectId(accountId));
+		Account account = Account.findById(accountId);
 		int left = account.jifen;
 		if(left < 1){
 			Paidui paidui = haoma.haomaMap.get(seatNumber);

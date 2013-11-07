@@ -29,7 +29,7 @@ import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.vo.Merchant;
 
-public class MerchantsSearchActivity extends AppStoreActivity {
+public class MerchantsSearchActivity extends QuhaoBaseActivity {
 
 	private String LOGTAG = MerchantsSearchActivity.class.getName();
 	protected ListView merchantsListView;

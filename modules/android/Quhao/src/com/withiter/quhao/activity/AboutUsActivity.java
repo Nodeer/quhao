@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.ActivityUtil;
 
-public class AboutUsActivity extends AppStoreActivity {
+public class AboutUsActivity extends QuhaoBaseActivity {
 
 	
 	@Override

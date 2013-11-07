@@ -16,7 +16,7 @@ import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SharedprefUtil;
 
-public class MoreActivity extends AppStoreActivity {
+public class MoreActivity extends QuhaoBaseActivity {
 
 	private static final String TAG = MoreActivity.class.getName();
 	

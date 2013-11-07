@@ -20,7 +20,7 @@ import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.vo.Critique;
 
-public class CritiquesActivity extends AppStoreActivity {
+public class CritiquesActivity extends QuhaoBaseActivity {
 
 	private static final String TAG = CritiquesActivity.class.getName();
 	

@@ -16,7 +16,7 @@ import com.withiter.quhao.util.tool.ImageUtil;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.SharedprefUtil;
 
-public class SettingsActivity extends AppStoreActivity {
+public class SettingsActivity extends QuhaoBaseActivity {
 
 	private LinearLayout cleanPicture;
 	private LinearLayout cleanCache;

@@ -30,7 +30,7 @@ import com.withiter.quhao.vo.ReservationVO;
  * 取号activity
  * @author Wang Jie Ze
  */
-public class GetNumberActivity extends AppStoreActivity {
+public class GetNumberActivity extends QuhaoBaseActivity {
 
 	private static final String TAG = GetNumberActivity.class.getName();
 

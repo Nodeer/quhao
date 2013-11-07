@@ -32,7 +32,7 @@ import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.vo.Merchant;
 import com.withiter.quhao.vo.ReservationVO;
 
-public class MerchantDetailActivity extends AppStoreActivity {
+public class MerchantDetailActivity extends QuhaoBaseActivity {
 	
 	private String LOGTAG = MerchantDetailActivity.class.getName();
 	

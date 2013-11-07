@@ -37,7 +37,7 @@ import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.vo.Merchant;
 import com.withiter.quhao.vo.MerchantLocation;
 
-public class MerchantLBSActivity extends AppStoreActivity implements OnMarkerClickListener,
+public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerClickListener,
 	OnMapLoadedListener,OnInfoWindowClickListener,InfoWindowAdapter
 {
 	

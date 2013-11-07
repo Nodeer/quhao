@@ -38,7 +38,7 @@ import com.withiter.quhao.vo.Category;
 import com.withiter.quhao.vo.TopMerchant;
 
 @SuppressLint("InlinedApi")
-public class MainActivity extends AppStoreActivity {
+public class MainActivity extends QuhaoBaseActivity {
 
 	private String TAG = MainActivity.class.getName();
 	protected ListView topMerchantListView;

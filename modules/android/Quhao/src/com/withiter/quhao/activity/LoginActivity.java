@@ -31,7 +31,7 @@ import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SharedprefUtil;
 import com.withiter.quhao.vo.LoginInfo;
 
-public class LoginActivity extends AppStoreActivity {
+public class LoginActivity extends QuhaoBaseActivity {
 
 	private final static String TAG = LoginActivity.class.getName();
 	private RadioGroup radioGroup;
