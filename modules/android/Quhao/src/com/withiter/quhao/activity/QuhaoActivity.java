@@ -24,8 +24,10 @@ import com.withiter.quhao.util.tool.QuhaoConstant;
 public abstract class QuhaoActivity extends Activity {
 
 	private final static String TAG = QuhaoActivity.class.getName();
-	public static String uid = "";
-	public static boolean autoLogin = false;
+	
+	// move below to QuhaoBaseActivity class
+//	public static String uid = "";
+//	public static boolean autoLogin = false;
 	private static boolean inited = false;
 
 	/*
@@ -96,8 +98,7 @@ public abstract class QuhaoActivity extends Activity {
 			display.getRealSize(size);
 			width = size.x;
 			height = size.y;
-		}
-		else if (currentapiVersion >= android.os.Build.VERSION_CODES.HONEYCOMB_MR2){
+		} else if (currentapiVersion >= android.os.Build.VERSION_CODES.HONEYCOMB_MR2){
 		    // Do something for API 13 and above , but below API 17 (API 17 will trigger the above block
 		    //getSize()
 			display.getSize(size);
@@ -121,8 +122,8 @@ public abstract class QuhaoActivity extends Activity {
 		String uidStr = settings.getString("uid", "");
 		String autoLogin = settings.getString("autoLogin", "false");
 		if (uidStr.length() > 0) {
-			QuhaoActivity.uid = uidStr;
-			QuhaoActivity.autoLogin = Boolean.valueOf(autoLogin);
+			QuhaoBaseActivity.uid = uidStr;
+			QuhaoBaseActivity.autoLogin = Boolean.valueOf(autoLogin);
 		}
 	}
 

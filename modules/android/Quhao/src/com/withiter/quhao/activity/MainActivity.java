@@ -66,7 +66,6 @@ public class MainActivity extends QuhaoBaseActivity {
 			return;
 		}
 
-		// initView();
 		topMerchantsGird = (GridView) findViewById(R.id.topMerchants);
 
 		// top merchant function
@@ -157,7 +156,6 @@ public class MainActivity extends QuhaoBaseActivity {
 			intent.setClass(MainActivity.this, MerchantListActivity.class);
 
 			startActivity(intent);
-//			overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
 			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 		}
 	};

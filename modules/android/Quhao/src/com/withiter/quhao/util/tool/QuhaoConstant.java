@@ -11,7 +11,10 @@ public class QuhaoConstant {
 	public static final String SHARED_PREFERENCES = "SHARED_PREFERENCES";
 	public static final String IS_LOGIN = "IS_LOGIN";
 	public static final String IS_AUTO_LOGIN = "IS_AUTO_LOGIN";
+	
 	public static boolean test = false;
+//	public static String uid = "";
+//	public static boolean autoLogin = false;
 	
 	/**
 	 * 共享缓存文件名称

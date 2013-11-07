@@ -33,12 +33,12 @@ import com.withiter.quhao.vo.Merchant;
 import com.withiter.quhao.vo.ReservationVO;
 
 public class MerchantDetailActivity extends QuhaoBaseActivity {
-	
+
 	private String LOGTAG = MerchantDetailActivity.class.getName();
-	
+
 	private String merchantId;
 	private String mName;
-	
+
 	private final int UNLOCK_CLICK = 1000;
 	private ProgressDialogUtil progress;
 	private Merchant merchant;
@@ -61,7 +61,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	private LinearLayout critiqueLayout;
 	private ListView reservationListView;
 	private ReservationAdapter reservationAdapter;
-	
+
 	public static boolean backClicked = false;
 
 	@Override
@@ -77,7 +77,8 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		btnGetNumber.setOnClickListener(getNumberClickListener());
 
 		LayoutInflater inflater = LayoutInflater.from(this);
-		info = (LinearLayout) inflater.inflate(R.layout.merchant_detail_info, null);
+		info = (LinearLayout) inflater.inflate(R.layout.merchant_detail_info,
+				null);
 		LinearLayout scroll = (LinearLayout) findViewById(R.id.lite_list);
 		LayoutParams layoutParams = new LayoutParams(LayoutParams.FILL_PARENT,
 				LayoutParams.WRAP_CONTENT);
@@ -85,13 +86,14 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		scroll.addView(info, layoutParams);
 
 		this.mapLayout = (LinearLayout) findViewById(R.id.mapLayout);
-		
+
 		this.merchantImg = (ImageView) info.findViewById(R.id.merchantImg);
-		this.merchantAddress = (TextView) info.findViewById(R.id.merchantAddress);
+		this.merchantAddress = (TextView) info
+				.findViewById(R.id.merchantAddress);
 		this.merchantPhone = (TextView) info.findViewById(R.id.merchantPhone);
-		
+
 		this.merchantPhone.setClickable(true);
-		this.merchantPhone.setOnClickListener(new OnClickListener(){
+		this.merchantPhone.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// 取得输入的电话号码串
@@ -103,29 +105,29 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 							"android.intent.action.CALL", Uri.parse("tel:"
 									+ phoneNO));
 					startActivity(phoneIntent);
-				}
-				else {
-					Toast.makeText(MerchantDetailActivity.this, "此商家还未添加联系方式", Toast.LENGTH_LONG).show(); 
+				} else {
+					Toast.makeText(MerchantDetailActivity.this, "此商家还未添加联系方式",
+							Toast.LENGTH_LONG).show();
 				}
 			}
 		});
-		
-		this.merchantBusinessTime = (TextView) info.findViewById(R.id.merchantBusinessTime);
+
+		this.merchantBusinessTime = (TextView) info
+				.findViewById(R.id.merchantBusinessTime);
 		this.merchantDesc = (TextView) info.findViewById(R.id.description);
-		this.merchantAverageCost = (TextView) info.findViewById(R.id.merchant_details_AverageCost);
+		this.merchantAverageCost = (TextView) info
+				.findViewById(R.id.merchant_details_AverageCost);
 		this.xingjiabi = (TextView) info.findViewById(R.id.xingjiabi);
 		this.kouwei = (TextView) info.findViewById(R.id.kouwei);
 		this.fuwu = (TextView) info.findViewById(R.id.fuwu);
 		this.huanjing = (TextView) info.findViewById(R.id.huanjing);
-		
+
 		currentNoLayout = (LinearLayout) info
 				.findViewById(R.id.currentNoLayout);
 		reservationListView = (ListView) info
 				.findViewById(R.id.reservationListView);
 
-		// TODO add login check here
-		// if(QHClientApplication.getInstance().isLogined)
-		if (true) {
+		if (autoLogin) {
 			getCurrentNo();
 		}
 
@@ -147,7 +149,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				QuhaoLog.v(LOGTAG, "get categorys data form server begin");
 				String buf = CommonHTTPRequest
 						.get("getReservations?accountId=51e563feae4d165869fda38c&mid="
-				 + MerchantDetailActivity.this.merchantId);
+								+ MerchantDetailActivity.this.merchantId);
 				if (StringUtils.isNull(buf) || "[]".equals(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
@@ -176,28 +178,31 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 
 			@Override
 			public void onClick(View v) {
-				
+
 				// TODO add login check
 				// if (QHClientApplication.getInstance().isLogined) {
-				if (true) {
-					Intent intent = new Intent();
-					intent.putExtra("merchantId", MerchantDetailActivity.this.merchantId);
-					intent.putExtra("merchantName", MerchantDetailActivity.this.mName);
-					intent.setClass(MerchantDetailActivity.this,
-							GetNumberActivity.class);
-					startActivity(intent);
+				// if (true) {
+				Intent intent = new Intent();
+				intent.putExtra("merchantId",
+						MerchantDetailActivity.this.merchantId);
+				intent.putExtra("merchantName",
+						MerchantDetailActivity.this.mName);
+				intent.setClass(MerchantDetailActivity.this,
+						GetNumberActivity.class);
+				startActivity(intent);
 
-				} else {
-					Intent intent = new Intent(MerchantDetailActivity.this,
-							LoginActivity.class);
-					intent.putExtra("activityName",
-							MerchantDetailActivity.class.getName());
-					intent.putExtra("merchantId",
-							MerchantDetailActivity.this.merchantId);
-					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(intent);
-				}
-				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+				// } else {
+				// Intent intent = new Intent(MerchantDetailActivity.this,
+				// LoginActivity.class);
+				// intent.putExtra("activityName",
+				// MerchantDetailActivity.class.getName());
+				// intent.putExtra("merchantId",
+				// MerchantDetailActivity.this.merchantId);
+				// intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				// startActivity(intent);
+				// }
+				overridePendingTransition(R.anim.in_from_right,
+						R.anim.out_to_left);
 			}
 		};
 		return listener;
@@ -221,7 +226,8 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		public void run() {
 			try {
 				QuhaoLog.v(LOGTAG, "get merchant details form server begin");
-				QuhaoLog.v(LOGTAG, "MerchantDetailActivity.this.merchantId : " + MerchantDetailActivity.this.merchantId);
+				QuhaoLog.v(LOGTAG, "MerchantDetailActivity.this.merchantId : "
+						+ MerchantDetailActivity.this.merchantId);
 				String buf = CommonHTTPRequest.get("merchant?id="
 						+ MerchantDetailActivity.this.merchantId);
 				if (StringUtils.isNull(buf)) {
@@ -251,51 +257,48 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				info.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
 
 				if (null != MerchantDetailActivity.this.merchant) {
-					
+
 					Merchant m = MerchantDetailActivity.this.merchant;
 					AsyncImageLoader asynImageLoader = new AsyncImageLoader();
-					Drawable drawable = asynImageLoader.loadDrawable(merchant.merchantImage);
-					if(drawable != null){
-						MerchantDetailActivity.this.merchantImg.setImageDrawable(drawable);
+					Drawable drawable = asynImageLoader
+							.loadDrawable(merchant.merchantImage);
+					if (drawable != null) {
+						MerchantDetailActivity.this.merchantImg
+								.setImageDrawable(drawable);
 					}
-					
-					if(m.enable){
-						MerchantDetailActivity.this.btnGetNumber.setVisibility(View.VISIBLE);
+
+					// check the merchant is enabled and autoLogin is true
+					if (m.enable && autoLogin) {
+						MerchantDetailActivity.this.btnGetNumber
+								.setVisibility(View.VISIBLE);
 					}
-					
-					MerchantDetailActivity.this.merchantName
-							.setText(m.name);
+
+					MerchantDetailActivity.this.merchantName.setText(m.name);
 					MerchantDetailActivity.this.mName = m.name;
 					MerchantDetailActivity.this.merchantAddress
 							.setText(m.address);
-					MerchantDetailActivity.this.merchantPhone
-							.setText(m.phone);
+					MerchantDetailActivity.this.merchantPhone.setText(m.phone);
 					MerchantDetailActivity.this.merchantBusinessTime
-					.setText(m.openTime + "~" + m.closeTime);
+							.setText(m.openTime + "~" + m.closeTime);
 
 					MerchantDetailActivity.this.merchantDesc
 							.setText(m.description);
-					if (StringUtils
-							.isNull(m.description)) {
+					if (StringUtils.isNull(m.description)) {
 						MerchantDetailActivity.this.merchantDesc
 								.setText(R.string.no_desc);
 					}
 
 					MerchantDetailActivity.this.merchantAverageCost
 							.setText(m.averageCost);
-					MerchantDetailActivity.this.xingjiabi
-							.setText(String
-									.valueOf(m.xingjiabi));
-					MerchantDetailActivity.this.kouwei
-							.setText(String
-									.valueOf(m.kouwei));
-					MerchantDetailActivity.this.fuwu
-							.setText(String
-									.valueOf(m.fuwu));
-					MerchantDetailActivity.this.huanjing
-							.setText(String
-									.valueOf(m.huanjing));
-					
+					MerchantDetailActivity.this.xingjiabi.setText(String
+							.valueOf(m.xingjiabi));
+					MerchantDetailActivity.this.kouwei.setText(String
+							.valueOf(m.kouwei));
+					MerchantDetailActivity.this.fuwu.setText(String
+							.valueOf(m.fuwu));
+					MerchantDetailActivity.this.huanjing.setText(String
+							.valueOf(m.huanjing));
+
 					critiqueLayout = (LinearLayout) info
 							.findViewById(R.id.critiqueLayout);
 					QuhaoLog.i(LOGTAG, m.commentAverageCost);
@@ -305,36 +308,51 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					QuhaoLog.i(LOGTAG, m.commentHuanjing);
 					QuhaoLog.i(LOGTAG, m.commentKouwei);
 					QuhaoLog.i(LOGTAG, m.commentXingjiabi);
-					
-					TextView commentRenjun = (TextView)critiqueLayout.findViewById(R.id.comment_renjun);
-					TextView commentFuwu = (TextView)critiqueLayout.findViewById(R.id.comment_fuwu);
-					TextView commentHuanjing = (TextView)critiqueLayout.findViewById(R.id.comment_huanjing);
-					TextView commentKouwei = (TextView)critiqueLayout.findViewById(R.id.comment_kouwei);
-					TextView commentXingjiabi = (TextView)critiqueLayout.findViewById(R.id.comment_xingjiabi);
-					TextView commentContent = (TextView)critiqueLayout.findViewById(R.id.comment_content);
-					TextView commentDate = (TextView)info.findViewById(R.id.comment_date);
-					
-					commentRenjun.setText(commentRenjun.getText()+m.commentAverageCost);
-					commentFuwu.setText(commentFuwu.getText()+String.valueOf(m.commentFuwu));
-					commentHuanjing.setText(commentHuanjing.getText()+String.valueOf(m.commentHuanjing));
-					commentKouwei.setText(commentKouwei.getText()+String.valueOf(m.commentKouwei));
-					commentXingjiabi.setText(commentXingjiabi.getText()+String.valueOf(m.commentXingjiabi));
+
+					TextView commentRenjun = (TextView) critiqueLayout
+							.findViewById(R.id.comment_renjun);
+					TextView commentFuwu = (TextView) critiqueLayout
+							.findViewById(R.id.comment_fuwu);
+					TextView commentHuanjing = (TextView) critiqueLayout
+							.findViewById(R.id.comment_huanjing);
+					TextView commentKouwei = (TextView) critiqueLayout
+							.findViewById(R.id.comment_kouwei);
+					TextView commentXingjiabi = (TextView) critiqueLayout
+							.findViewById(R.id.comment_xingjiabi);
+					TextView commentContent = (TextView) critiqueLayout
+							.findViewById(R.id.comment_content);
+					TextView commentDate = (TextView) info
+							.findViewById(R.id.comment_date);
+
+					commentRenjun.setText(commentRenjun.getText()
+							+ m.commentAverageCost);
+					commentFuwu.setText(commentFuwu.getText()
+							+ String.valueOf(m.commentFuwu));
+					commentHuanjing.setText(commentHuanjing.getText()
+							+ String.valueOf(m.commentHuanjing));
+					commentKouwei.setText(commentKouwei.getText()
+							+ String.valueOf(m.commentKouwei));
+					commentXingjiabi.setText(commentXingjiabi.getText()
+							+ String.valueOf(m.commentXingjiabi));
 					commentContent.setText(m.commentContent);
 					commentDate.setText(m.commentDate);
-					
+
 					mapLayout.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							Intent intent = new Intent(MerchantDetailActivity.this,
+							Intent intent = new Intent(
+									MerchantDetailActivity.this,
 									MerchantLBSActivity.class);
 							intent.putExtra("merchantId",
 									MerchantDetailActivity.this.merchantId);
-							intent.putExtra("merchantName", MerchantDetailActivity.this.merchant.name);
+							intent.putExtra("merchantName",
+									MerchantDetailActivity.this.merchant.name);
 							startActivity(intent);
-							overridePendingTransition(R.anim.main_enter, R.anim.main_exit);
+							overridePendingTransition(R.anim.main_enter,
+									R.anim.main_exit);
 						}
 					});
-					
+
 					critiqueLayout
 							.setOnClickListener(MerchantDetailActivity.this);
 				}
@@ -380,7 +398,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 
 		switch (v.getId()) {
 		case R.id.critiqueLayout:
-
 			Intent intent = new Intent(this, CritiquesActivity.class);
 			intent.putExtra("merchantName", this.merchant.name);
 			intent.putExtra("merchantId", this.merchant.id);
@@ -399,25 +416,23 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 
 	@Override
 	public void finish() {
-		// TODO Auto-generated method stub
 		super.finish();
-		QuhaoLog.i(LOGTAG, LOGTAG+" finished");
-//		overridePendingTransition(R.anim.out_to_right, R.anim.in_from_left);  
+		QuhaoLog.i(LOGTAG, LOGTAG + " finished");
 	}
-	
+
 	@Override
 	protected void onResume() {
 		backClicked = false;
 		super.onResume();
 	}
-	
+
 	@Override
-	public void onPause(){
+	public void onPause() {
 		super.onPause();
-		QuhaoLog.i(LOGTAG, LOGTAG+" on pause");
-		if(backClicked){
+		QuhaoLog.i(LOGTAG, LOGTAG + " on pause");
+		if (backClicked) {
 			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 		}
 	}
-	
+
 }

@@ -38,6 +38,8 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements
 	protected static final int FIRST_REQUEST_CODE = 1;
 	// 网络是否可用
 	protected static boolean networkOK = false;
+	protected static String uid = "";
+	protected static boolean autoLogin = false;
 
 	protected Handler unlockHandler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -52,13 +54,11 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements
 		super.onCreate(savedInstanceState);
 		// 检查网络
 		networkOK = PhoneTool.isNetworkAvailable(this);
-		// if(checkDevice() && autoLogin())
 		btnCategory = (Button) findViewById(R.id.btnMerchantList);
 		btnNearby = (Button) findViewById(R.id.btnNearby);
 		btnPerson = (Button) findViewById(R.id.btnPerson);
 		btnMore = (Button) findViewById(R.id.btnMore);
 		btnBack = (Button) findViewById(R.id.back_btn);
-
 	}
 
 	/**
@@ -219,7 +219,6 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements
 		return clickListener;
 	}
 
-	// TODO 点击search的时候不要进入新的页面，需在当前页面添加一个下拉页面
 	protected OnClickListener goMerchantsSearch(final Activity activity) {
 		OnClickListener clickListener = new OnClickListener() {
 			@Override
