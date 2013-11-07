@@ -28,7 +28,6 @@ import com.withiter.quhao.vo.ReservationVO;
 
 /**
  * 取号activity
- * 
  * @author Wang Jie Ze
  */
 public class GetNumberActivity extends AppStoreActivity {
@@ -67,7 +66,7 @@ public class GetNumberActivity extends AppStoreActivity {
 	private String[] seatNos;
 	private Haoma haoma;
 	private int currentIndex = 0;
-	private String currentNo;
+//	private String currentNo;
 
 	private Paidui currentPaidui;
 	private ProgressDialogUtil progress;
@@ -195,17 +194,18 @@ public class GetNumberActivity extends AppStoreActivity {
 									.get(i).seatNo)) {
 								currentIndex = i;
 								currentPaidui = haoma.paiduiList.get(i);
-								currentNo = String
-										.valueOf(currentPaidui.currentNumber);
+//								currentNo = String
+//										.valueOf(currentPaidui.currentNumber);
 								break;
 							}
 						}
 					} else {
 						// currentIndex = 0;
 						QuhaoLog.v(TAG, "currentIndex : " + currentIndex);
-						QuhaoLog.v(TAG, "haoma.paiduiList.size : " + haoma.paiduiList.size());
+						QuhaoLog.v(TAG, "haoma.paiduiList.size : "
+								+ haoma.paiduiList.size());
 						currentPaidui = haoma.paiduiList.get(currentIndex);
-						currentNo = String.valueOf(currentPaidui.currentNumber);
+//						currentNo = String.valueOf(currentPaidui.currentNumber);
 					}
 
 					seatNoView.setText(currentPaidui.seatNo);
@@ -237,8 +237,8 @@ public class GetNumberActivity extends AppStoreActivity {
 									currentIndex = j;
 									currentPaidui = haoma.paiduiList
 											.get(currentIndex);
-									currentNo = String
-											.valueOf(currentPaidui.currentNumber);
+//									currentNo = String
+//											.valueOf(currentPaidui.currentNumber);
 									Thread getCurrentNoThread = new Thread(
 											getCurrentNoRunnable);
 									getCurrentNoThread.start();
@@ -349,7 +349,9 @@ public class GetNumberActivity extends AppStoreActivity {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
 					haoma = ParseJson.getHaoma(buf);
-					QuhaoLog.v(TAG, "parse from json, haoma.paiduiList.size() is : " + haoma.paiduiList.size());
+					QuhaoLog.v(TAG,
+							"parse from json, haoma.paiduiList.size() is : "
+									+ haoma.paiduiList.size());
 					seatNosUpdateHandler.obtainMessage(200, haoma)
 							.sendToTarget();
 				}
@@ -369,7 +371,6 @@ public class GetNumberActivity extends AppStoreActivity {
 	private void getMerchantInfo() {
 		Thread merchantThread = new Thread(merchantDetailRunnable);
 		merchantThread.start();
-
 	}
 
 	/***
@@ -401,7 +402,6 @@ public class GetNumberActivity extends AppStoreActivity {
 
 	@Override
 	public void onClick(View v) {
-
 		// 已经点过，直接返回
 		if (isClick) {
 			return;
@@ -409,16 +409,14 @@ public class GetNumberActivity extends AppStoreActivity {
 
 		// 设置已点击标志，避免快速重复点击
 		isClick = true;
-
 		switch (v.getId()) {
 		case R.id.btn_seatNo:
-
 			String str = String.valueOf(seatNoView.getText());
 			for (int i = 0; i < seatNos.length; i++) {
 				if (str == seatNos[i]) {
 					currentIndex = i;
 					currentPaidui = haoma.paiduiList.get(currentIndex);
-					currentNo = String.valueOf(currentPaidui.currentNumber);
+//					currentNo = String.valueOf(currentPaidui.currentNumber);
 				}
 			}
 			selectSeatNo = new SelectSeatNo(GetNumberActivity.this, seatNos,
@@ -428,16 +426,15 @@ public class GetNumberActivity extends AppStoreActivity {
 					Gravity.BOTTOM, 0, 0);
 
 			break;
+			
 		case R.id.btn_GetNumber:
 			progress.showProgress();
 			Thread getNoThread = new Thread(getNoRunnable);
 			getNoThread.start();
-
 			break;
 		default:
 			break;
 		}
-
 	}
 
 	@Override
@@ -459,5 +456,4 @@ public class GetNumberActivity extends AppStoreActivity {
 			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 		}
 	}
-
 }
