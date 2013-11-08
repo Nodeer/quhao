@@ -20,6 +20,7 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.tool.PhoneTool;
 import com.withiter.quhao.util.tool.QuhaoConstant;
+import com.withiter.quhao.util.tool.SharedprefUtil;
 
 public abstract class QuhaoActivity extends Activity {
 
@@ -124,6 +125,10 @@ public abstract class QuhaoActivity extends Activity {
 		if (uidStr.length() > 0) {
 			QuhaoBaseActivity.uid = uidStr;
 			QuhaoBaseActivity.autoLogin = Boolean.valueOf(autoLogin);
+			if(Boolean.valueOf(autoLogin)){
+				// TODO verify the uid and password
+//				String isLogin = SharedprefUtil.get(this,QuhaoConstant.IS_LOGIN, "false");
+			}
 		}
 	}
 

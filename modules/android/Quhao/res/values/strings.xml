@@ -20,6 +20,7 @@
 	
 	<!-- 详细页面 -->
 	<string name="get_reservation">取号</string>
+	<string name="login">登陆</string>
 	<string name="renjun">人均￥</string>
 	<string name="zero">0</string>
 	<string name="xingjiabi">性价比:</string>
