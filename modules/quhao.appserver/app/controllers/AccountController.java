@@ -41,11 +41,12 @@ public class AccountController extends BaseController {
 			suVO.errorText = "号码不能为空";
 			renderJSON(suVO);
 		}
-		if (Account.findExistsAccount(mobile) != null) {
+		Account account =Account.findExistsAccount(mobile) ;
+		if (account != null) {
 			suVO.errorText = "此号码已注册";
 			renderJSON(suVO);
 		}
-		Account account =Account.findByPhone(mobile);
+		// account =Account.findByPhone(mobile);
 		if(account==null){
 			account= new Account();
 			account.phone = mobile;
@@ -79,7 +80,90 @@ public class AccountController extends BaseController {
 			renderJSON(suVO);
 		}
 	}
+	
+	/**
+	 * 忘记密码时获取6位数字验证码
+	 * 
+	 * @param mobile 手机号码
+	 *            
+	 *            返回JSON SignupVO
+	 *            返回SignupVO对象，需对errorKey进行判断，如果不是空字符串，则表示生成失败，否则生成成功。
+	 */
+	public static void getAuthCode(String mobile) {
+		SignupVO suVO = new SignupVO();
+		suVO.errorKey = "mobile";
+		if (StringUtils.isEmpty(mobile)) {
+			suVO.errorText = "号码不能为空";
+			renderJSON(suVO);
+		}
+		Account account =Account.findByPhone(mobile);
+		if ( account== null) {
+			suVO.errorText = "此号码还没注册";
+			renderJSON(suVO);
+		}
+		try {
+			int result = SMSBusiness.sendAuthCodeForSignup(mobile);
+			if (result == 0) {
+				suVO.errorText = "发送短信出错";
+				renderJSON(suVO);
+			} else {
+				account.authcode=String.valueOf(result);
+				account.authDate=new Date();
+				account.save();
+				suVO.errorKey = "";
+				suVO.errorText = "验证码24小时之内有效";
+				renderJSON(suVO);
+			}
+		} catch (HttpException e) {
+			suVO.errorText = e.toString();
+			e.printStackTrace();
+			renderJSON(suVO);
+		} catch (IOException e) {
+			suVO.errorText = e.toString();
+			e.printStackTrace();
+			renderJSON(suVO);
+		}
+	}
+	
+	/**
+	 * 更新密码
+	 * 
+	 * @param mobile 手机号码
+	 * @param code 验证码
+	 * @param password 密码
+	 *            返回JSON SignupVO
+	 *            返回SignupVO对象，需对errorKey进行判断，如果不是空字符串，则表示生成失败，否则生成成功。
+	 */
+	public static void updatePassCode(String mobile, String code,String password) {
+		SignupVO suVO = new SignupVO();
+		suVO.errorKey = "mobile";
+		if (StringUtils.isEmpty(mobile)) {
+			suVO.errorKey = "0";
+			suVO.errorText = "手机号码不能为空";
+			renderJSON(suVO);
+		}
+		if (StringUtils.isEmpty(code)) {
+			suVO.errorKey = "0";
+			suVO.errorText = "验证码不能为空";
+			renderJSON(suVO);
+		}
 
+		Account account = Account.findAccount(mobile,code);
+		if (account == null) {
+			suVO.errorKey = "0";
+			suVO.errorText = "验证码错误或者已过期";
+			renderJSON(suVO);
+		}else{
+			account.password=Codec.hexSHA1(String.valueOf(password));
+			account.authcode="";
+			account.authDate=null;
+			account.save();
+			suVO.errorKey = "1";
+			suVO.errorText = "修改成功";
+			renderJSON(suVO);
+		}
+	}
+	
 	/**
 	 * 通过手机号和验证码进行注册
 	 * 
@@ -120,6 +204,8 @@ public class AccountController extends BaseController {
 			renderJSON(suVO);
 		}
 		account.password=Codec.hexSHA1(String.valueOf(password));
+		account.authcode="";
+		account.authDate=null;
 		account.enable = true;
 		account.save();
 		suVO.errorKey = "1";

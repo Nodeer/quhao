@@ -150,7 +150,12 @@ public class SMSBusiness {
 		if (useProxy) {
 			initProxy();
 		}
-		
+		Random r = new Random();
+		int x = r.nextInt(999999);
+		while(x < 100000){
+			x = r.nextInt(999999);
+		}
+		String message=AUTH_CODE_FOR_SIGNUP+String.valueOf(x);
 		HttpClient client = new HttpClient();
 		PostMethod post = new PostMethod("http://utf8.sms.webchinese.cn");
 		post.addRequestHeader("Content-Type",
@@ -158,17 +163,12 @@ public class SMSBusiness {
 		NameValuePair[] data = { new NameValuePair("Uid", UID),
 				new NameValuePair("Key", KEY),
 				new NameValuePair("smsMob", mobileNumber),
-				new NameValuePair("smsText", AUTH_CODE_FOR_SIGNUP) };
+				new NameValuePair("smsText", message) };
 		post.setRequestBody(data);
 		client.executeMethod(post);
 		int statusCode = post.getStatusCode();
 		post.releaseConnection();
 		if(statusCode > 0){
-			Random r = new Random();
-			int x = r.nextInt(999999);
-			while(x < 100000){
-				x = r.nextInt(999999);
-			}
 			return x;
 		}else{
 			return 0;
