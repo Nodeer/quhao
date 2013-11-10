@@ -426,8 +426,8 @@ public class AccountController extends BaseController {
 			if(StringUtils.isNotEmpty(credit.merchantId))
 			{
 				Merchant merchant = Merchant.findById(credit.merchantId);
-				creditVO.merchangName = merchant.name;
-				creditVO.merchangAddress = merchant.address;
+				creditVO.merchantName = merchant.name;
+				creditVO.merchantAddress = merchant.address;
 			}
 			
 			if(StringUtils.isNotEmpty(credit.reservationId))

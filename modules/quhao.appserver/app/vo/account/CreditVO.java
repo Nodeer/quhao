@@ -17,12 +17,12 @@ public class CreditVO {
 	/**
 	 * 酒店名称
 	 */
-	public String merchangName;
+	public String merchantName;
 	
 	/**
 	 * 酒店地址
 	 */
-	public String merchangAddress;
+	public String merchantAddress;
 	
 	/**
 	 * 关联的预定的Id
