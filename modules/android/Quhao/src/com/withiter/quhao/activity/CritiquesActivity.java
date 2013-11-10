@@ -128,7 +128,7 @@ public class CritiquesActivity extends QuhaoBaseActivity {
 						Critique critique2 = new Critique("111", "nick22", 2, 2, 101.25, "比我想象中便宜一点。。。牛肉火锅很好吃~不过不管哪家店的这种豆腐肥牛锅我都很喜欢~一口牛肉也是我觉得最好吃的~还没撒胡椒粉什么的就已经觉得味道满进去了~而且肉不老不塞牙~三文鱼刺身没什么大感觉。。。倒是芥末酱给的好少。。而且感觉干掉了芝士焗年糕。。。筷子弄起来困难。。。而且其实并没什么好吃的~", "12-02-27");
 						critiques.add(critique1);
 						critiques.add(critique2);
-						updateCritiquesHandler .obtainMessage(200, critiques).sendToTarget();
+						updateCritiquesHandler.obtainMessage(200, critiques).sendToTarget();
 					}
 				} catch (Exception e) {
 					unlockHandler.sendEmptyMessageAtTime(UNLOCK_CLICK, 1000);

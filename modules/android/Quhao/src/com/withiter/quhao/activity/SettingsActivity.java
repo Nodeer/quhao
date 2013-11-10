@@ -70,7 +70,18 @@ public class SettingsActivity extends QuhaoBaseActivity {
 				progressDialogUtil = new ProgressDialogUtil(SettingsActivity.this, R.string.empty,
 						R.string.deleting, false);
 				progressDialogUtil.showProgress();
-				
+				SharedprefUtil.clear(this);
+				String isWifi1 = SharedprefUtil.get(this, "com.withiter.settings.wifi", "false");
+				if("true".equals(isWifi1))
+				{
+					imageView.setImageResource(R.drawable.checkbox_unchecked);
+					isWifi1 = "false";
+				}
+				else
+				{
+					imageView.setImageResource(R.drawable.checkbox_checked);
+					isWifi1 = "true";
+				}
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				
