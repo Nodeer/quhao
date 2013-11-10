@@ -7,6 +7,14 @@ import com.withiter.quhao.vo.LoginInfo;
 
 public class AccountInfo implements Serializable {
 
+	public String getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(String accountId) {
+		this.accountId = accountId;
+	}
+
 	public String getSignIn() {
 		return signIn;
 	}
@@ -29,6 +37,7 @@ public class AccountInfo implements Serializable {
 	private static final long serialVersionUID = 9060527069391618394L;
 	
 	public String userId;
+	public String accountId;
 	public String phone;
 	
 	public String email;
@@ -148,6 +157,7 @@ public class AccountInfo implements Serializable {
 	
 	public void build(LoginInfo loginInfo) {
 		this.msg = loginInfo.msg;
+		this.accountId = loginInfo.accountId;
 		this.phone = loginInfo.phone;
 		this.email = loginInfo.email;
 		this.password = loginInfo.password;

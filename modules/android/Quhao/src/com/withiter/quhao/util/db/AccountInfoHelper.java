@@ -50,6 +50,8 @@ public class AccountInfoHelper {
 					account = new AccountInfo();
 					account.setUserId(cursor
 							.getString(AccountInfoColumn.USERID_COLUMN));
+					account.setAccountId(cursor
+							.getString(AccountInfoColumn.ACCOUNTID_COLUMN));
 					account.setPhone(cursor
 							.getString(AccountInfoColumn.PHONE_COLUMN));
 					account.setEmail(cursor
@@ -174,6 +176,7 @@ public class AccountInfoHelper {
 		String whereClause = AccountInfoColumn.USERID + " = ?";
 		String[] whereArgs = new String[] { account.getUserId() };
 		ContentValues value = new ContentValues();
+		value.put(AccountInfoColumn.ACCOUNTID, account.getAccountId());
 		value.put(AccountInfoColumn.PHONE, account.getPhone());
 		value.put(AccountInfoColumn.EMAIL, account.getEmail());
 		value.put(AccountInfoColumn.PASSWORD, account.getPassword());
@@ -215,6 +218,7 @@ public class AccountInfoHelper {
 		// 插入记录
 		ContentValues value = new ContentValues();
 		value.put(AccountInfoColumn.USERID, account.getUserId());
+		value.put(AccountInfoColumn.ACCOUNTID, account.getAccountId());
 		value.put(AccountInfoColumn.PHONE, account.getPhone());
 		value.put(AccountInfoColumn.EMAIL, account.getEmail());
 		value.put(AccountInfoColumn.PASSWORD, account.getPassword());

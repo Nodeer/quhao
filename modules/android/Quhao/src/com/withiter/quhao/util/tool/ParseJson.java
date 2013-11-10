@@ -254,6 +254,7 @@ public class ParseJson {
 			JSONObject obj = new JSONObject(result);
 
 			String msg = obj.optString("msg");
+			String accountId = obj.optString("accountId");
 			String phone = obj.optString("phone");
 			String jifen = obj.optString("jifen");
 			String email = obj.optString("email");
@@ -269,7 +270,7 @@ public class ParseJson {
 			String dianping = obj.optString("dianping");
 			String zhaopian = obj.optString("zhaopian");
 
-			loginInfo = new LoginInfo(msg, phone, jifen, email, password,
+			loginInfo = new LoginInfo(msg, accountId, phone, jifen, email, password,
 					nickName, birthday, userImage, enable, mobileOS, lastLogin,signIn,isSignIn,dianping,zhaopian);
 
 		} catch (JSONException e) {

@@ -9,6 +9,7 @@ public class QuhaoConstant {
 	public static final String NEW_BODY = null;
 	public static final int ADVERTISE_PIC_MAX = 409600;
 	public static final String SHARED_PREFERENCES = "SHARED_PREFERENCES";
+	public static final String ACCOUNT_ID = "ACCOUNT_ID";
 	public static final String IS_LOGIN = "IS_LOGIN";
 	public static final String IS_AUTO_LOGIN = "IS_AUTO_LOGIN";
 	public static final String PHONE = "PHONE";
@@ -61,6 +62,7 @@ public class QuhaoConstant {
 	public static long TIME_STAMP_OLD = 0;
 	public static String CREATE_ACCOUNT_TABLE = "CREATE TABLE accountinfo ("
 			+ AccountInfoColumn.USERID + " text,"
+			+ AccountInfoColumn.ACCOUNTID + " text,"
 			+ AccountInfoColumn.PHONE + " text,"
 			+ AccountInfoColumn.EMAIL + " text,"
 			+ AccountInfoColumn.PASSWORD + " text,"

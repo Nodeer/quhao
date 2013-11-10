@@ -229,6 +229,7 @@ public class LoginActivity extends QuhaoBaseActivity {
 						}
 						if(account.msg.equals("success")){
 							loginResult.setText("登陆成功");
+							SharedprefUtil.put(this, QuhaoConstant.ACCOUNT_ID,loginInfo.accountId);
 							SharedprefUtil.put(this, QuhaoConstant.PHONE,account.getPhone());
 							SharedprefUtil.put(this, QuhaoConstant.PASSWORD,account.getPassword());
 							SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN,isAutoLogin.trim());

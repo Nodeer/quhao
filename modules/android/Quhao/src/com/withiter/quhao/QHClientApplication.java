@@ -12,7 +12,6 @@ import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
-import com.withiter.quhao.util.tool.InfoHelper;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SharedprefUtil;
@@ -86,6 +85,7 @@ public class QHClientApplication extends Application {
 	}
 
 	private void initDBConfig() {
+		SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN,"false");
 		QuhaoLog.i(TAG, "init database config");
 		String phone = SharedprefUtil.get(this, QuhaoConstant.PHONE, "");
 		String password = SharedprefUtil.get(this, QuhaoConstant.PASSWORD, "");
@@ -113,6 +113,10 @@ public class QHClientApplication extends Application {
 							return;
 						}
 						if (account.msg.equals("success")) {
+							SharedprefUtil.put(this, QuhaoConstant.ACCOUNT_ID,loginInfo.accountId);
+							SharedprefUtil.put(this, QuhaoConstant.PHONE,phone.trim());
+							SharedprefUtil.put(this, QuhaoConstant.PASSWORD,password.trim());
+							SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN,isAutoLogin.trim());
 							SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN,"true");
 							Toast.makeText(this, "登录成功", Toast.LENGTH_LONG).show();
 							return;

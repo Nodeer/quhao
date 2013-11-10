@@ -3,6 +3,7 @@ package com.withiter.quhao.vo;
 
 public class LoginInfo {
 	public String msg;
+	public String accountId;
 	public String phone;
 	public String jifen;
 	public String email;
@@ -21,10 +22,11 @@ public class LoginInfo {
 	public String dianping;
 	public String zhaopian;
 	
-	public LoginInfo(String msg, String phone, String jifen, String email, String password,
+	public LoginInfo(String msg, String accountId,String phone, String jifen, String email, String password,
 			String nickName, String birthday, String userImage, String enable,
 			String mobileOS, String lastLogin,String signIn,String isSignIn,String dianping,String zhaopian) {
 		this.msg = msg;
+		this.accountId = accountId;
 		this.phone = phone;
 		this.jifen = jifen;
 		this.email = email;
