@@ -87,6 +87,56 @@ public class QHClientApplication extends Application {
 
 	private void initDBConfig() {
 		QuhaoLog.i(TAG, "init database config");
+		String phone = SharedprefUtil.get(this, QuhaoConstant.PHONE, "");
+		String password = SharedprefUtil.get(this, QuhaoConstant.PASSWORD, "");
+		String isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_AUTO_LOGIN, "");
+		if (StringUtils.isNotNull(phone) && StringUtils.isNotNull(password)) {
+			if ("true".equalsIgnoreCase(isAutoLogin)) {
+				String url = "AccountController/login?";
+				url = url + "phone=" + phone.trim() + "&";
+				url = url + "password=" + password.trim();
+				QuhaoLog.i(TAG, "the login url is : " + url);
+				try {
+					String result = CommonHTTPRequest.get(url);
+					QuhaoLog.i(TAG, result);
+					if (StringUtils.isNull(result)) {
+					} else {
+						LoginInfo loginInfo = ParseJson.getLoginInfo(result);
+						AccountInfo account = new AccountInfo();
+						account.setUserId("1");
+						account.build(loginInfo);
+						QuhaoLog.i(TAG, account.msg);
+						if (account.msg.equals("fail")) {
+							
+							SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN,"false");
+							Toast.makeText(this, "登陆失败", Toast.LENGTH_LONG).show();
+							return;
+						}
+						if (account.msg.equals("success")) {
+							SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN,"true");
+							Toast.makeText(this, "登录成功", Toast.LENGTH_LONG).show();
+							return;
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN,"false");
+					Toast.makeText(this, "登陆失败", Toast.LENGTH_LONG).show();
+				} finally {
+				}
+			}
+			else
+			{
+				SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN,"false");
+			}
+		} else {
+			SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
+			QuhaoLog.i(TAG, "accessInfo is null");
+		}
+	}
+	/*
+	private void initDBConfig() {
+		QuhaoLog.i(TAG, "init database config");
 		accessInfo = InfoHelper.getAccountInfo(this);
 		if (accessInfo != null) {
 			QuhaoLog.i(TAG, "accessInfo is not null");
@@ -129,20 +179,13 @@ public class QHClientApplication extends Application {
 				} finally {
 				}
 			}
-			/*
-			 * DBTools.init(instance); boolean flag = false; try { flag =
-			 * DBTools.getInstance().tabbleIsExist("accountinfo"); Log.i(TAG,
-			 * "accountinfo table exists : " + flag); } catch (Exception e) {
-			 * e.printStackTrace(); Log.e(TAG, e.getCause().toString()); } if
-			 * (!flag) { createTable(QuhaoConstant.ACCOUNT_TABLE,
-			 * QuhaoConstant.CREATE_ACCOUNT_TABLE); }
-			 */
+			
 		} else {
 			SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
 			SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN, "false");
 			QuhaoLog.i(TAG, "accessInfo is null");
 		}
-	}
+	}*/
 
 	private void initConfig() {
 		createSDCardDir();

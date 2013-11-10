@@ -17,6 +17,8 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.tool.PhoneTool;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
+import com.withiter.quhao.util.tool.QuhaoConstant;
+import com.withiter.quhao.util.tool.SharedprefUtil;
 
 @SuppressLint("NewApi")
 public abstract class QuhaoBaseActivity extends QuhaoActivity implements
@@ -165,6 +167,7 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements
 		OnClickListener clickListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				/*
 				if (activity instanceof PersonCenterActivity) {
 					QuhaoLog.i(TAG, "refresh personal center page");
 					activity.recreate();
@@ -175,22 +178,23 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements
 					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 					startActivity(intent);
 					overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
-				}
-
-				// if (QHClientApplication.getInstance().isLogined) {
-				// Intent intent = new Intent(activity,
-				// PersonCenterActivity.class);
-				// intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				// startActivity(intent);
-				// } else {
-				// Intent intent = new Intent(activity, LoginActivity.class);
-				// intent.putExtra("activityName", activity.getClass()
-				// .getName());
-				// QuhaoLog.d(TAG, " activity.getClass().getName() : "
-				// + activity.getClass().getName());
-				// intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				// startActivity(intent);
-				// }
+				}*/
+				
+				String isLogined = SharedprefUtil.get(activity, QuhaoConstant.IS_LOGIN, "false");
+				if ("true".equals(isLogined)) {
+					 Intent intent = new Intent(activity,
+					 PersonCenterActivity.class);
+					 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+					 overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+					 startActivity(intent);
+				 } else {
+					 Intent intent = new Intent(activity, LoginActivity.class);
+					 intent.putExtra("activityName", activity.getClass().getName());
+					 QuhaoLog.d(TAG, " activity.getClass().getName() : " + activity.getClass().getName());
+					 intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+					 overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+					 startActivity(intent);
+				 }
 
 			}
 		};
