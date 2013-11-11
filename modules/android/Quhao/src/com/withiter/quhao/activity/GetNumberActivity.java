@@ -13,6 +13,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.QuhaoLog;
@@ -20,6 +21,8 @@ import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
+import com.withiter.quhao.util.tool.QuhaoConstant;
+import com.withiter.quhao.util.tool.SharedprefUtil;
 import com.withiter.quhao.view.SelectSeatNo;
 import com.withiter.quhao.vo.Haoma;
 import com.withiter.quhao.vo.Merchant;
@@ -181,7 +184,7 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
-				if (null != haoma) {
+				if (null != haoma && null != haoma.paiduiList && haoma.paiduiList.size()>0) {
 
 					seatNos = new String[haoma.paiduiList.size()];
 					for (int j = 0; j < haoma.paiduiList.size(); j++) {
@@ -249,9 +252,15 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 
 						}
 					});
+					btnGetNo.setOnClickListener(GetNumberActivity.this);
 				}
-
-				btnGetNo.setOnClickListener(GetNumberActivity.this);
+				else
+				{
+					//TODO : 没有位置时， 该怎么做， 应该返回到列表页面， 在酒店详细信息页面应该判断
+					Toast.makeText(GetNumberActivity.this, "此酒店没有座位了，请选择其他酒店。", Toast.LENGTH_LONG).show();
+					GetNumberActivity.this.finish();
+				}
+				
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 		}
@@ -266,8 +275,9 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 		public void run() {
 			try {
 				QuhaoLog.v(TAG, "get seat numbers data form server begin");
+				String accountId = SharedprefUtil.get(GetNumberActivity.this, QuhaoConstant.ACCOUNT_ID, "");
 				String buf = CommonHTTPRequest
-						.get("nahao?accountId=51e563feae4d165869fda38c&mid="
+						.get("nahao?accountId=" + accountId + "&mid="
 								+ merchantId + "&seatNumber="
 								+ currentPaidui.seatNo); // TODO : need to
 															// change wjzwjz
@@ -281,10 +291,10 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 							.sendToTarget();
 				}
 			} catch (Exception e) {
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				e.printStackTrace();
 			} finally {
 				progress.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 		}
 	};
@@ -424,7 +434,7 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 			selectSeatNo.showAtLocation(
 					GetNumberActivity.this.findViewById(R.id.root),
 					Gravity.BOTTOM, 0, 0);
-
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;
 			
 		case R.id.btn_GetNumber:
