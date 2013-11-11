@@ -220,16 +220,17 @@ public class MerchantController extends BaseController {
 			
 			//增加积分消费情况
 			Credit credit = new Credit();
-			credit.accountId = r.accountId;
-			credit.merchantId = r.merchantId;
-			credit.reservationId = r.id();
+			credit.accountId = reservation.accountId;
+			credit.merchantId = reservation.merchantId;
+			credit.reservationId = reservation.id();
 			credit.cost = false;
 			credit.status = CreditStatus.getNumber;
 			credit.created = new Date();
 			credit.modified = new Date();
 			credit.create();
+			renderJSON(rvo);
 		}
-		renderJSON(rvo);
+		
 	}
 
 	/**

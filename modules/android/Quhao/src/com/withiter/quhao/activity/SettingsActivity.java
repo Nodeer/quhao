@@ -61,6 +61,7 @@ public class SettingsActivity extends QuhaoBaseActivity {
 		{
 			return;
 		}
+		isClick = true;
 		switch(v.getId())
 		{
 			case R.id.more_settings_cleanpicture:
@@ -74,15 +75,16 @@ public class SettingsActivity extends QuhaoBaseActivity {
 				String isWifi1 = SharedprefUtil.get(this, "com.withiter.settings.wifi", "false");
 				if("true".equals(isWifi1))
 				{
-					imageView.setImageResource(R.drawable.checkbox_unchecked);
-					isWifi1 = "false";
-				}
-				else
-				{
 					imageView.setImageResource(R.drawable.checkbox_checked);
 					isWifi1 = "true";
 				}
+				else
+				{
+					imageView.setImageResource(R.drawable.checkbox_unchecked);
+					isWifi1 = "false";
+				}
 				progressDialogUtil.closeProgress();
+				Toast.makeText(SettingsActivity.this, "清除成功", Toast.LENGTH_LONG).show();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				
 				break;

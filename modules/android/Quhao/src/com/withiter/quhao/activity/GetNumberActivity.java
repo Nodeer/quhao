@@ -283,10 +283,17 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 															// change wjzwjz
 				// + GetNumberActivity.this.merchantId);
 				if (StringUtils.isNull(buf)) {
+					Toast.makeText(GetNumberActivity.this, "当前网络异常，请重新拿号。", Toast.LENGTH_LONG).show();
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
 					// String currentNo = buf;
 					reservation = ParseJson.getReservation(buf);
+					if("NO_MORE_JIFEN".equalsIgnoreCase(reservation.tipValue))
+					{
+						Toast.makeText(GetNumberActivity.this, "您没有更多的积分了..", Toast.LENGTH_LONG).show();
+						GetNumberActivity.this.finish();
+						return;
+					}
 					getNoUpdateHandler.obtainMessage(200, reservation)
 							.sendToTarget();
 				}
@@ -309,7 +316,7 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 			try {
 				QuhaoLog.v(TAG, "get seat numbers data form server begin");
 				String buf = CommonHTTPRequest
-						.get("getCurrentNo?id=51efe7d8ae4dca7b4c281754&seatNo="
+						.get("getCurrentNo?id=" + merchantId + "&seatNo="
 								+ currentPaidui.seatNo); // TODO : need to
 															// change wjzwjz
 				// + GetNumberActivity.this.merchantId);
@@ -356,6 +363,7 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 								+ buf);
 				// + GetNumberActivity.this.merchantId);
 				if (StringUtils.isNull(buf)) {
+					
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
 					haoma = ParseJson.getHaoma(buf);

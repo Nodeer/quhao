@@ -178,11 +178,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		reservationListView = (ListView) info
 				.findViewById(R.id.reservationListView);
 
-		String isLogin = SharedprefUtil.get(this, QuhaoConstant.IS_LOGIN, "false");
-		if ("true".equalsIgnoreCase(isLogin)) {
-			getCurrentNo();
-		}
-
 		initView();
 	}
 
@@ -313,8 +308,8 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					}
 
 					// check the merchant is enabled and autoLogin is true
-					String isLogin = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.IS_LOGIN, "false");
-					if("true".equalsIgnoreCase(isLogin) && m.enable)
+					//String isLogin = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.IS_LOGIN, "false");
+					if(m.enable)
 					{
 						btnGetNumber.setVisibility(View.VISIBLE);
 					}
@@ -394,10 +389,15 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						}
 					});
 
+					String isLogin = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.IS_LOGIN, "false");
+					if ("true".equalsIgnoreCase(isLogin)) {
+						getCurrentNo();
+					}
 					critiqueLayout
 							.setOnClickListener(MerchantDetailActivity.this);
 				}
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				
 			}
 
 		}

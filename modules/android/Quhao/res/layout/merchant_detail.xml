@@ -39,7 +39,6 @@
             android:textAppearance="?android:textAppearanceMediumInverse"
             android:textColor="#ff000000"
             android:textSize="14.0sp" 
-            android:visibility="gone"
             />
         <!-- quhao button -->
         
