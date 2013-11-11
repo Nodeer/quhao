@@ -120,7 +120,6 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		
 		@Override
 		public void run() {
-			
 			String phone = SharedprefUtil.get(PersonCenterActivity.this, QuhaoConstant.PHONE, "");
 			String password = SharedprefUtil.get(PersonCenterActivity.this, QuhaoConstant.PASSWORD, "");
 			if (StringUtils.isNotNull(phone) && StringUtils.isNotNull(password)) {

@@ -35,9 +35,6 @@ import com.withiter.quhao.vo.LoginInfo;
 public class LoginActivity extends QuhaoBaseActivity {
 
 	private final static String TAG = LoginActivity.class.getName();
-	private RadioGroup radioGroup;
-	private RadioButton radioPhone;
-	private RadioButton radioEmail;
 	private TextView pannelLoginName;
 	private EditText loginNameText;
 	private EditText passwordText;
@@ -50,103 +47,52 @@ public class LoginActivity extends QuhaoBaseActivity {
 
 	private ImageView isAutoLoginView;
 	private String isAutoLogin = "false";
-	
+
 	private String activityName;
 
 	private Map<String, Object> transfortParams = new HashMap<String, Object>();
-
-	private Handler loginUpdateHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			if (msg.what == 200) {
-				super.handleMessage(msg);
-
-				// intent.pute
-				if (StringUtils.isNotNull(activityName)) {
-					Intent intent = new Intent();
-					if ("com.withiter.quhao.activity.MerchantDetailActivity"
-							.equals(activityName)) {
-						intent.putExtra("merchantId",
-								(String) transfortParams.get("merchantId"));
-						intent.setClass(LoginActivity.this,
-								GetNumberActivity.class);
-					} else if ("com.withiter.quhao.activity.PersonCenterActivity"
-							.equals(activityName)) {
-						intent.setClass(LoginActivity.this,
-								PersonCenterActivity.class);
-					} else if("com.withiter.quhao.activity.MoreActivity"
-							.equals(activityName))
-					{
-						intent.setClass(LoginActivity.this,
-								MoreActivity.class);
-					}
-					else {
-						intent.setClass(LoginActivity.this,
-								PersonCenterActivity.class);
-					}
-					startActivity(intent);
-				}
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				finish();
-			}
-		}
-	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.login_layout);
 		super.onCreate(savedInstanceState);
-		String phone = SharedprefUtil.get(LoginActivity.this, QuhaoConstant.PHONE, "");
+
+		String phone = SharedprefUtil.get(LoginActivity.this,
+				QuhaoConstant.PHONE, "");
 		activityName = getIntent().getStringExtra("activityName");
 		if (StringUtils.isNotNull(activityName)) {
-			if ("com.withiter.quhao.activity.MerchantDetailActivity"
-					.equals(activityName)) {
+			if (MerchantDetailActivity.class.getName().equals(activityName)) {
 				String merchantId = getIntent().getStringExtra("merchantId");
 				transfortParams.put("merchantId", merchantId);
 			}
 		}
-		loginResult = (TextView) this.findViewById(R.id.person_center_login_result);
-//		radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
-//		radioPhone = (RadioButton) findViewById(R.id.radioPhone);
-//		radioEmail = (RadioButton) findViewById(R.id.radioEmail);
-		
+		loginResult = (TextView) this
+				.findViewById(R.id.person_center_login_result);
+
 		isAutoLoginView = (ImageView) findViewById(R.id.isAutoLogin);
 		isAutoLoginView.setOnClickListener(this);
-		isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_AUTO_LOGIN, "false");
-		if("true".equals(isAutoLogin))
-		{
+		isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_AUTO_LOGIN,
+				"false");
+
+		if ("true".equals(isAutoLogin)) {
 			isAutoLoginView.setImageResource(R.drawable.checkbox_checked);
-		}
-		else
-		{
+		} else {
 			isAutoLoginView.setImageResource(R.drawable.checkbox_unchecked);
 		}
-		
+
 		pannelLoginName = (TextView) findViewById(R.id.pannel_login_name);
 		loginNameText = (EditText) findViewById(R.id.login_name);
 		loginNameText.setText(phone);
 		passwordText = (EditText) findViewById(R.id.edit_pass);
-		
+
 		btnClose = (Button) findViewById(R.id.close);
 		btnLogin = (Button) findViewById(R.id.login);
 		btnRegister = (Button) findViewById(R.id.zhuce);
-		
+
 		btnClose.setOnClickListener(this);
 		btnLogin.setOnClickListener(this);
 		btnRegister.setOnClickListener(this);
-		
-//		radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-//			@Override
-//			public void onCheckedChanged(RadioGroup group, int checkedId) {
-//				if (checkedId == radioPhone.getId()) {
-//					pannelLoginName.setText(R.string.radioPhone);
-//				} else if (checkedId == radioEmail.getId()) {
-//					pannelLoginName.setText(R.string.radioEmail);
-//				}
-//
-//			}
-//		});
 	}
 
 	@Override
@@ -161,9 +107,9 @@ public class LoginActivity extends QuhaoBaseActivity {
 		if (isClick) {
 			return;
 		}
-
 		// 设置已点击标志，避免快速重复点击
 		isClick = true;
+
 		// 解锁
 		unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 		switch (v.getId()) {
@@ -186,26 +132,10 @@ public class LoginActivity extends QuhaoBaseActivity {
 			progressLogin = new ProgressDialogUtil(this, R.string.empty,
 					R.string.waitting, false);
 			progressLogin.showProgress();
-			String url = "AccountController/login?";
-			url = url + "phone="
-					+ loginNameText.getText().toString().trim() + "&";
-			url = url + "email=&";
-			/*
-			if (radioPhone.getId() == radioGroup.getCheckedRadioButtonId()) {
-				url = url + "phone="
-						+ loginNameText.getText().toString().trim() + "&";
-			} else {
-				url = url + "phone=" + "&";
-			}
-			if (radioEmail.getId() == radioGroup.getCheckedRadioButtonId()) {
-				url = url + "email="
-						+ loginNameText.getText().toString().trim() + "&";
-			} else {
-				url = url + "email=" + "&";
-			}
-			*/
-			url = url + "password=" + passwordText.getText().toString();
-			
+
+			String url = "AccountController/login?phone="
+					+ loginNameText.getText().toString().trim()
+					+ "&email=&password=" + passwordText.getText().toString();
 			QuhaoLog.i(TAG, "the login url is : " + url);
 			try {
 				String result = CommonHTTPRequest.get(url);
@@ -213,42 +143,51 @@ public class LoginActivity extends QuhaoBaseActivity {
 				if (StringUtils.isNull(result)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
-					if (StringUtils.isNull(result)) {
-						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-					} else {
-						LoginInfo loginInfo = ParseJson.getLoginInfo(result);
-						AccountInfo account = new AccountInfo();
-						account.setUserId("1");
-						account.build(loginInfo);
-						account.isAuto = isAutoLogin;
-						QuhaoLog.i(TAG, account.msg);
-						if(account.msg.equals("fail")){
-							loginResult.setText("用户名或密码错误，登陆失败");
-							passwordText.setText("");
-							return;
-						}
-						if(account.msg.equals("success")){
-							loginResult.setText("登陆成功");
-							SharedprefUtil.put(this, QuhaoConstant.ACCOUNT_ID,loginInfo.accountId);
-							SharedprefUtil.put(this, QuhaoConstant.PHONE,account.getPhone());
-							SharedprefUtil.put(this, QuhaoConstant.PASSWORD,account.getPassword());
-							SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN,isAutoLogin.trim());
-							SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN,"true");
-							AccountInfoHelper accountDBHelper = new AccountInfoHelper(this);
-							accountDBHelper.open();
-							accountDBHelper.saveAccountInfo(account);
-							accountDBHelper.close();
-							QHClientApplication.getInstance().accessInfo = account;
-//							QHClientApplication.getInstance().isLogined = true;
-							loginUpdateHandler.obtainMessage(200, account).sendToTarget();
-							return;
-						}
+					LoginInfo loginInfo = ParseJson.getLoginInfo(result);
+					AccountInfo account = new AccountInfo();
 					
-				}
+					// TODO : user id is 1??
+					account.setUserId("1");
+					account.build(loginInfo);
+					account.isAuto = isAutoLogin;
+					QuhaoLog.i(TAG, account.msg);
+					if (account.msg.equals("fail")) {
+						loginResult.setText("用户名或密码错误，登陆失败");
+						passwordText.setText("");
+						return;
+					}
+					if (account.msg.equals("success")) {
+						loginResult.setText("登陆成功");
+						SharedprefUtil.put(this, QuhaoConstant.ACCOUNT_ID,
+								loginInfo.accountId);
+						SharedprefUtil.put(this, QuhaoConstant.PHONE,
+								account.getPhone());
+						SharedprefUtil.put(this, QuhaoConstant.PASSWORD,
+								account.getPassword());
+						SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN,
+								isAutoLogin.trim());
+						SharedprefUtil
+								.put(this, QuhaoConstant.IS_LOGIN, "true");
+						
+						// TODO add user info into sqlite 
+//						AccountInfoHelper accountDBHelper = new AccountInfoHelper(
+//								this);
+//						accountDBHelper.open();
+//						accountDBHelper.saveAccountInfo(account);
+//						accountDBHelper.close();
+						
+						QHClientApplication.getInstance().accessInfo = account;
+						
+						QuhaoLog.d(TAG, "login call back to " + activityName);
+						
+						loginUpdateHandler.obtainMessage(200, account)
+								.sendToTarget();
+						return;
+					}
 				}
 			} catch (Exception e) {
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				e.printStackTrace();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			} finally {
 				progressLogin.closeProgress();
 			}
@@ -265,10 +204,44 @@ public class LoginActivity extends QuhaoBaseActivity {
 		}
 	}
 
+	private Handler loginUpdateHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.what == 200) {
+				super.handleMessage(msg);
+
+				QuhaoLog.d(TAG, "login call back to " + activityName);
+				
+				// intent.pute
+				if (StringUtils.isNotNull(activityName)) {
+					Intent intent = new Intent();
+					if (MerchantDetailActivity.class.getName()
+							.equals(activityName)) {
+						intent.putExtra("merchantId",
+								(String) transfortParams.get("merchantId"));
+						intent.setClass(LoginActivity.this,
+								GetNumberActivity.class);
+					} else if ("com.withiter.quhao.activity.PersonCenterActivity"
+							.equals(activityName)) {
+						intent.setClass(LoginActivity.this,
+								PersonCenterActivity.class);
+					} else if ("com.withiter.quhao.activity.MoreActivity"
+							.equals(activityName)) {
+						intent.setClass(LoginActivity.this, MoreActivity.class);
+					} else {
+						intent.setClass(LoginActivity.this,
+								PersonCenterActivity.class);
+					}
+					startActivity(intent);
+				}
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				finish();
+			}
+		}
+	};
+
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		
 		return false;
 	}
-
 }

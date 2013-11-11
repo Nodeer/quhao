@@ -45,7 +45,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	private ProgressDialogUtil progress;
 	private Merchant merchant;
 	private Button btnGetNumber;
-	private Button btnLogin;
+	// private Button btnLogin;
 	private LinearLayout info;
 	private LinearLayout mapLayout;
 	private TextView merchantName;
@@ -77,52 +77,52 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		this.merchantName = (TextView) findViewById(R.id.merchant_detail_merchantName);
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
 		btnGetNumber = (Button) findViewById(R.id.btn_GetNumber);
-		btnLogin = (Button) findViewById(R.id.btn_loginr);
+		// btnLogin = (Button) findViewById(R.id.btn_loginr);
 		btnGetNumber.setOnClickListener(getNumberClickListener());
-		btnLogin.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				LayoutInflater inflater = (LayoutInflater) getApplicationContext()
-						.getSystemService(LAYOUT_INFLATER_SERVICE);
-				View view = inflater.inflate(R.layout.login_layout, null);
-				AlertDialog ad = new AlertDialog.Builder(
-						MerchantDetailActivity.this).setView(view)
-						.setTitle("登陆账号即可进行取号").show();
-
-				final EditText loginNameText = (EditText) view
-						.findViewById(R.id.login_name);
-				final EditText passwordText = (EditText) view
-						.findViewById(R.id.edit_pass);
-				
-				ImageView isAutoLoginView = (ImageView) view
-						.findViewById(R.id.isAutoLogin);
-				
-				Button btnClose = (Button) view.findViewById(R.id.close);
-				btnClose.setOnClickListener(new OnClickListener(){
-					@Override
-					public void onClick(View arg0) {
-						
-					}
-				});
-				
-				Button btnLogin = (Button) view.findViewById(R.id.login);
-				btnLogin.setOnClickListener(new OnClickListener(){
-					@Override
-					public void onClick(View arg0) {
-						QuhaoLog.d(LOGTAG, loginNameText.getText());
-						QuhaoLog.d(LOGTAG, passwordText.getText());
-					}
-				});
-				
-				Button btnRegister = (Button) view.findViewById(R.id.zhuce);
-				btnRegister.setOnClickListener(new OnClickListener(){
-					@Override
-					public void onClick(View arg0) {
-						
-					}
-				});
-			}
-		});
+		// btnLogin.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// LayoutInflater inflater = (LayoutInflater) getApplicationContext()
+		// .getSystemService(LAYOUT_INFLATER_SERVICE);
+		// View view = inflater.inflate(R.layout.login_layout, null);
+		// AlertDialog ad = new AlertDialog.Builder(
+		// MerchantDetailActivity.this).setView(view)
+		// .setTitle("登陆账号即可进行取号").show();
+		//
+		// final EditText loginNameText = (EditText) view
+		// .findViewById(R.id.login_name);
+		// final EditText passwordText = (EditText) view
+		// .findViewById(R.id.edit_pass);
+		//
+		// ImageView isAutoLoginView = (ImageView) view
+		// .findViewById(R.id.isAutoLogin);
+		//
+		// Button btnClose = (Button) view.findViewById(R.id.close);
+		// btnClose.setOnClickListener(new OnClickListener(){
+		// @Override
+		// public void onClick(View arg0) {
+		//
+		// }
+		// });
+		//
+		// Button btnLogin = (Button) view.findViewById(R.id.login);
+		// btnLogin.setOnClickListener(new OnClickListener(){
+		// @Override
+		// public void onClick(View arg0) {
+		// QuhaoLog.d(LOGTAG, loginNameText.getText());
+		// QuhaoLog.d(LOGTAG, passwordText.getText());
+		// }
+		// });
+		//
+		// Button btnRegister = (Button) view.findViewById(R.id.zhuce);
+		// btnRegister.setOnClickListener(new OnClickListener(){
+		// @Override
+		// public void onClick(View arg0) {
+		//
+		// }
+		// });
+		// }
+		// });
 
 		LayoutInflater inflater = LayoutInflater.from(this);
 		info = (LinearLayout) inflater.inflate(R.layout.merchant_detail_info,
@@ -226,26 +226,25 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			@Override
 			public void onClick(View v) {
 
-				// TODO add login check
-				// if (QHClientApplication.getInstance().isLogined) {
-				// if (true) {
-				Intent intent = new Intent();
-				intent.putExtra("merchantId", merchantId);
-				intent.putExtra("merchantName", mName);
-				intent.setClass(MerchantDetailActivity.this,
-						GetNumberActivity.class);
-				startActivity(intent);
+				// check the merchant is enabled and autoLogin is true
+				if (autoLogin) {
+					Intent intent = new Intent();
+					intent.putExtra("merchantId", merchantId);
+					intent.putExtra("merchantName", mName);
+					intent.setClass(MerchantDetailActivity.this,
+							GetNumberActivity.class);
+					startActivity(intent);
+				} else {
+					Intent intent = new Intent(MerchantDetailActivity.this,
+							LoginActivity.class);
+					intent.putExtra("activityName",
+							MerchantDetailActivity.class.getName());
+					intent.putExtra("merchantId",
+							MerchantDetailActivity.this.merchantId);
+					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivity(intent);
+				}
 
-				// } else {
-				// Intent intent = new Intent(MerchantDetailActivity.this,
-				// LoginActivity.class);
-				// intent.putExtra("activityName",
-				// MerchantDetailActivity.class.getName());
-				// intent.putExtra("merchantId",
-				// MerchantDetailActivity.this.merchantId);
-				// intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				// startActivity(intent);
-				// }
 				overridePendingTransition(R.anim.in_from_right,
 						R.anim.out_to_left);
 			}
@@ -310,13 +309,11 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						merchantImg.setImageDrawable(drawable);
 					}
 
-					// check the merchant is enabled and autoLogin is true
+					// check the merchant is enabled
 					if (m.enable) {
-						if (autoLogin) {
-							btnGetNumber.setVisibility(View.VISIBLE);
-						} else {
-							btnLogin.setVisibility(View.VISIBLE);
-						}
+						btnGetNumber.setClickable(true);
+					}else{
+						btnGetNumber.setClickable(false);
 					}
 
 					merchantName.setText(m.name);

@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.util.db.AccountInfoHelper;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.QuhaoConstant;
@@ -39,29 +40,6 @@ public class QHClientApplication extends Application {
 	 */
 	private static QHClientApplication instance;
 
-	/*
-	 * static { StringBuilder sb = new StringBuilder("");
-	 * sb.append("CREATE TABLE ").append(" accountinfo (")
-	 * .append(AccountInfoColumn.USERID) .append(" integer primary key,")
-	 * .append(AccountInfoColumn.USERID).append(" text,")
-	 * .append(AccountInfoColumn.PHONE).append(" text,")
-	 * .append(AccountInfoColumn.EMAIL).append(" text,")
-	 * .append(AccountInfoColumn.PASSWORD).append(" text,")
-	 * .append(AccountInfoColumn.NICKNAME).append(" text,")
-	 * .append(AccountInfoColumn.BIRTHDAY).append(" text,")
-	 * .append(AccountInfoColumn.USERIMAGE).append(" text,")
-	 * .append(AccountInfoColumn.ENABLE).append(" text,")
-	 * .append(AccountInfoColumn.MOBILEOS).append(" text,")
-	 * .append(AccountInfoColumn.SIGNIN).append(" text,")
-	 * .append(AccountInfoColumn.ISSIGNIN).append(" text,")
-	 * .append(AccountInfoColumn.DIANPING).append(" text,")
-	 * .append(AccountInfoColumn.ZHAOPIAN).append(" text,")
-	 * .append(AccountInfoColumn.JIFEN).append(" text,")
-	 * .append(AccountInfoColumn.ISAUTO).append(" text,")
-	 * .append(AccountInfoColumn.MSG).append(" text,")
-	 * .append(AccountInfoColumn.LASTLOGIN).append(" text)");
-	 * CREATE_ACCOUNT_TABLE = sb.toString(); }
-	 */
 	@Override
 	public void onCreate() {
 		QuhaoLog.i(TAG, "onCreate method is called");
@@ -85,11 +63,19 @@ public class QHClientApplication extends Application {
 	}
 
 	private void initDBConfig() {
-		SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN,"false");
+		
+		// TODO remove below codes
+		AccountInfoHelper accountDBHelper = new AccountInfoHelper(this);
+		accountDBHelper.open();
+		accountDBHelper.dropAccountInfoTable();
+		accountDBHelper.close();
+		
+		SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
 		QuhaoLog.i(TAG, "init database config");
 		String phone = SharedprefUtil.get(this, QuhaoConstant.PHONE, "");
 		String password = SharedprefUtil.get(this, QuhaoConstant.PASSWORD, "");
-		String isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_AUTO_LOGIN, "");
+		String isAutoLogin = SharedprefUtil.get(this,
+				QuhaoConstant.IS_AUTO_LOGIN, "");
 		if (StringUtils.isNotNull(phone) && StringUtils.isNotNull(password)) {
 			if ("true".equalsIgnoreCase(isAutoLogin)) {
 				String url = "AccountController/login?";
@@ -107,68 +93,23 @@ public class QHClientApplication extends Application {
 						account.build(loginInfo);
 						QuhaoLog.i(TAG, account.msg);
 						if (account.msg.equals("fail")) {
-							
-							SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN,"false");
-							Toast.makeText(this, "登陆失败", Toast.LENGTH_LONG).show();
-							return;
-						}
-						if (account.msg.equals("success")) {
-							SharedprefUtil.put(this, QuhaoConstant.ACCOUNT_ID,loginInfo.accountId);
-							SharedprefUtil.put(this, QuhaoConstant.PHONE,phone.trim());
-							SharedprefUtil.put(this, QuhaoConstant.PASSWORD,password.trim());
-							SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN,isAutoLogin.trim());
-							SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN,"true");
-							Toast.makeText(this, "登录成功", Toast.LENGTH_LONG).show();
-							return;
-						}
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN,"false");
-					Toast.makeText(this, "登陆失败", Toast.LENGTH_LONG).show();
-				} finally {
-				}
-			}
-			else
-			{
-				SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN,"false");
-			}
-		} else {
-			SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
-			QuhaoLog.i(TAG, "accessInfo is null");
-		}
-	}
-	/*
-	private void initDBConfig() {
-		QuhaoLog.i(TAG, "init database config");
-		accessInfo = InfoHelper.getAccountInfo(this);
-		if (accessInfo != null) {
-			QuhaoLog.i(TAG, "accessInfo is not null");
-			String isAuto = accessInfo.isAuto;
-			SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN, isAuto);
-			if ("true".equals(isAuto)) {
-				String url = "AccountController/login?";
-				url = url + "phone=" + accessInfo.getPhone() + "&";
-				url = url + "password=" + accessInfo.getPassword();
-				QuhaoLog.i(TAG, "the login url is : " + url);
-				try {
-					String result = CommonHTTPRequest.get(url);
-					QuhaoLog.i(TAG, result);
-					if (StringUtils.isNull(result)) {
-					} else {
-						LoginInfo loginInfo = ParseJson.getLoginInfo(result);
-						AccountInfo account = new AccountInfo();
-						account.setUserId("1");
-						account.build(loginInfo);
-						QuhaoLog.i(TAG, account.msg);
-						if (account.msg.equals("fail")) {
+
 							SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN,
 									"false");
-							Toast.makeText(this, "登陆失败",
-									Toast.LENGTH_LONG).show();
+							Toast.makeText(this, "登陆失败", Toast.LENGTH_LONG)
+									.show();
 							return;
 						}
 						if (account.msg.equals("success")) {
+							SharedprefUtil.put(this, QuhaoConstant.ACCOUNT_ID,
+									loginInfo.accountId);
+							SharedprefUtil.put(this, QuhaoConstant.PHONE,
+									phone.trim());
+							SharedprefUtil.put(this, QuhaoConstant.PASSWORD,
+									password.trim());
+							SharedprefUtil.put(this,
+									QuhaoConstant.IS_AUTO_LOGIN,
+									isAutoLogin.trim());
 							SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN,
 									"true");
 							Toast.makeText(this, "登录成功", Toast.LENGTH_LONG)
@@ -182,14 +123,41 @@ public class QHClientApplication extends Application {
 					Toast.makeText(this, "登陆失败", Toast.LENGTH_LONG).show();
 				} finally {
 				}
+			} else {
+				SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
 			}
-			
 		} else {
 			SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
-			SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN, "false");
 			QuhaoLog.i(TAG, "accessInfo is null");
 		}
-	}*/
+	}
+
+	/*
+	 * private void initDBConfig() { QuhaoLog.i(TAG, "init database config");
+	 * accessInfo = InfoHelper.getAccountInfo(this); if (accessInfo != null) {
+	 * QuhaoLog.i(TAG, "accessInfo is not null"); String isAuto =
+	 * accessInfo.isAuto; SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN,
+	 * isAuto); if ("true".equals(isAuto)) { String url =
+	 * "AccountController/login?"; url = url + "phone=" + accessInfo.getPhone()
+	 * + "&"; url = url + "password=" + accessInfo.getPassword();
+	 * QuhaoLog.i(TAG, "the login url is : " + url); try { String result =
+	 * CommonHTTPRequest.get(url); QuhaoLog.i(TAG, result); if
+	 * (StringUtils.isNull(result)) { } else { LoginInfo loginInfo =
+	 * ParseJson.getLoginInfo(result); AccountInfo account = new AccountInfo();
+	 * account.setUserId("1"); account.build(loginInfo); QuhaoLog.i(TAG,
+	 * account.msg); if (account.msg.equals("fail")) { SharedprefUtil.put(this,
+	 * QuhaoConstant.IS_LOGIN, "false"); Toast.makeText(this, "登陆失败",
+	 * Toast.LENGTH_LONG).show(); return; } if (account.msg.equals("success")) {
+	 * SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "true");
+	 * Toast.makeText(this, "登录成功", Toast.LENGTH_LONG) .show(); return; } } }
+	 * catch (Exception e) { e.printStackTrace(); SharedprefUtil.put(this,
+	 * QuhaoConstant.IS_LOGIN, "false"); Toast.makeText(this, "登陆失败",
+	 * Toast.LENGTH_LONG).show(); } finally { } }
+	 * 
+	 * } else { SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
+	 * SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN, "false");
+	 * QuhaoLog.i(TAG, "accessInfo is null"); } }
+	 */
 
 	private void initConfig() {
 		createSDCardDir();

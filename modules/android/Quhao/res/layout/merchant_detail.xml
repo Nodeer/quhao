@@ -39,11 +39,11 @@
             android:textAppearance="?android:textAppearanceMediumInverse"
             android:textColor="#ff000000"
             android:textSize="14.0sp" 
-            android:visibility="invisible"
             />
         <!-- quhao button -->
         
         <!-- login button -->
+        <!-- 
         <Button
             android:id="@+id/btn_loginr"
             android:layout_width="wrap_content"
@@ -57,6 +57,7 @@
             android:textSize="14.0sp" 
             android:visibility="invisible"
             />
+         -->
         <!-- login button -->
 
         <TextView
