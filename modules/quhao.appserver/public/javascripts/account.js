@@ -38,6 +38,7 @@ Account.updatePwd = function(){
 			success:function(data){
 				if(data.success){
 					alert("密码修改成功");
+					window.location.href="/b/m";
 				}else{
 					alert(data.value);
 				}

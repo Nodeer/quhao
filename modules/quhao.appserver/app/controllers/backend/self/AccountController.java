@@ -22,10 +22,6 @@ import controllers.BaseController;
 
 public class AccountController extends BaseController {
 
-	public static void test() {
-		renderJSON("aaa");
-	}
-
 	/**
 	 * merchant login function
 	 */
