@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.withiter.quhao.activity.GetNumberActivity;
+import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 
 import android.os.Environment;
@@ -20,6 +22,8 @@ import android.os.Environment;
  * 
  */
 public class ImageUtil {
+	
+	private static final String TAG = ImageUtil.class.getName();
 
 	private static File cacheDir;
 	private static ImageUtil instance;
@@ -54,6 +58,7 @@ public class ImageUtil {
 	}
 
 	public String getFilePath(String imageUrl) {
+		QuhaoLog.d(TAG, "imageUrl : " + imageUrl);
 		String path = cacheDir.getPath() + "/"
 				+ imageUrl.split("\\?fileName=")[1];
 		return path;
