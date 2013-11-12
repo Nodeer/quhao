@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import com.jamonapi.utils.Logger;
 import com.withiter.common.httprequest.CommonHTTPRequest;
 
 import cn.bran.play.JapidMailer;
 
 public class MailsController extends JapidMailer {
 
-	public static final String FROM = "Quhao<quhaonoreply@gmail.com>";
+	public static final String FROM = "Quhao<noreply_quhao@126.com>";
 	public static final String SUBJECT_SIGNUP = "[取号]账号激活通知";
 	public static final String CONTENT_SIGNUP_TMP = "感谢您注册取号APP，您只需要点击下面链接，激活您的帐户，您便可以享受取号APP各项服务。";
 
@@ -56,6 +57,7 @@ public class MailsController extends JapidMailer {
 		if (useProxy) {
 			initProxy();
 		}
+		Logger.log("useProxy : " + useProxy);
 		setFrom(FROM);
 		setCharset("UTF-8");
 		setSubject(SUBJECT_SIGNUP);
