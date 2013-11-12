@@ -11,19 +11,70 @@
 	<fieldset class="fieldset">
 		<ul>
 			`if(bmivo.merchantExist){
-			<li><div class="w200">商家名称：</div><input type="text" disabled="disabled" name="merchantName" id="merchantName" value="${bmivo.name}" placeHolder="商家名称" class="textInput"/></li>
+			<li><div class="w200">商家名称：</div><input disabled="disabled" type="text" name="merchantName" id="merchantName" value="${bmivo.name}" placeHolder="商家名称" class="textInput"/></li>
+			<li><div class="w200">商家描述：</div><textarea disabled="disabled" id="description" name="description" cols="20" rows="10" placeHolder="商家描述" class="textInput"></textarea></li>
+			<li><div class="w200">上传图片：</div><input disabled="disabled" id="merchantImage" name="merchantImage" size="20" type="file" /></li>
 			`}else{
 			<li><div class="w200">商家名称：</div><input type="text" name="merchantName" id="merchantName" value="${bmivo.name}" placeHolder="商家名称" class="textInput"/></li>
-			`}
 			<li><div class="w200">商家描述：</div><textarea id="description" name="description" cols="20" rows="10" placeHolder="商家描述" class="textInput"></textarea></li>
 			<li><div class="w200">上传图片：</div><input id="merchantImage" name="merchantImage" size="20" type="file" /></li>
+			`}
+			
 			<li><div class="w200">展示图片：</div></li>
 			`for(String srcStr : bmivo.imgSrc){
 				<li><img alt="" class="backendImg" src="${srcStr}" /></li>
 			`}
+			
+			`if(bmivo.merchantExist){
 			<li><div class="w200">商家地址：</div><input type="text" disabled="disabled" name="address" id="address" value="${bmivo.address}" placeHolder="商家地址" class="textInput"/></li>
 			<li><div class="w200">联系方式：</div><input type="text" disabled="disabled" name="tel" id="tel" value="${bmivo.telephone}" placeHolder="联系方式" class="textInput"/></li>
-			
+			<li>
+			<div class="w200">商家风味：</div>
+			<span class="select">
+				<select disabled="disabled" id="cateType" name="cateType" class="select" style="width: 198px;">
+					<option value="">请选择风味</option>
+					<option value="benbangcai">本帮菜</option>
+					<option value="chuancai">川菜</option>
+					<option value="dongnanyacai">东南亚菜</option>
+					<option value="haixian">海鲜</option>
+					<option value="huoguoliaoli">火锅料理</option>
+					<option value="huoguo">火锅</option>
+					<option value="ribenliaoli">日本料理</option>
+					<option value="shaokao">烧烤</option>
+					<option value="xiangcai">湘菜</option>
+					<option value="xican">西餐</option>
+					<option value="xinjiangqingzhen">新疆清真</option>
+					<option value="yuecaiguan">粤菜馆</option>
+					<option value="zhongcanxican">中餐西餐</option>
+					<option value="zizhucan">自助餐</option>
+				</select>
+			</span>
+			</li>
+			<li>
+			<div class="w200">营业时间（开始）：</div>
+			<span class="select">
+				<select disabled="disabled" id="openTime" name="openTime" class="select" style="width: 198px;">
+					<option value="">请选择营业时间（开始）</option>
+					`for(int i=0;i<24;i++){
+						<option value="${i}:00">$i:00</option>
+					`}
+				</select>
+			</span>
+			</li>
+			<li>
+			<div class="w200">营业时间（结束）：</div>
+			<span class="select">
+				<select disabled="disabled" id="closeTime" name="closeTime" class="select" style="width: 198px;">
+					<option value="">请选择营业时间（结束）</option>
+					`for(int i=0;i<24;i++){
+						<option value="${i}:00">$i:00</option>
+					`}
+				</select>
+			</span>
+			</li>
+			`}else{
+			<li><div class="w200">商家地址：</div><input type="text" name="address" id="address" value="${bmivo.address}" placeHolder="商家地址" class="textInput"/></li>
+			<li><div class="w200">联系方式：</div><input type="text" name="tel" id="tel" value="${bmivo.telephone}" placeHolder="联系方式" class="textInput"/></li>
 			<li>
 			<div class="w200">商家风味：</div>
 			<span class="select">
@@ -68,13 +119,32 @@
 				</select>
 			</span>
 			</li>
+			`}
+			
 			<li>
-			<div class="w200">设置桌位类型：<font style="cursor: help;" title="桌位类型就是贵店包括多少人座位类型，比如有4人桌，6人桌，8人桌，则在下面的选择项上打钩即可。">（什么是桌位类型）</font></div>
+			`if(bmivo.merchantExist){
+			<div class="w200">
+				设置桌位类型：<font style="cursor: help;" title="桌位类型就是贵店包括多少人座位类型，比如有4人桌，6人桌，8人桌，则在下面的选择项上打钩即可。">（什么是桌位类型）</font>
+				<br/><br/><font style="color: red;">注意：更改桌位类型将清空当前排队号，请谨慎操作！</font>
+			</div>
+			`}else{
+			<div class="w200">
+				设置桌位类型：<font style="cursor: help;" title="桌位类型就是贵店包括多少人座位类型，比如有4人桌，6人桌，8人桌，则在下面的选择项上打钩即可。">（什么是桌位类型）</font>
+			</div>
+			`}
 			<div class="w350">
-			`for(int i = 1; i <= 20; i++){
-				<div style="width: 80px; float: left;">
-				<input disabled="disabled" id="seat${i}" name="seatType" value="${i}" type="checkbox"><font class="rmargin20" >${i}人桌</font>
-				</div>
+			`if(bmivo.merchantExist){
+				`for(int i = 1; i <= 20; i++){
+					<div style="width: 80px; float: left;">
+					<input disabled="disabled" id="seat${i}" name="seatType" value="${i}" type="checkbox"><font class="rmargin20" >${i}人桌</font>
+					</div>
+				`}
+			`}else{
+				`for(int i = 1; i <= 20; i++){
+					<div style="width: 80px; float: left;">
+					<input id="seat${i}" name="seatType" value="${i}" type="checkbox"><font class="rmargin20" >${i}人桌</font>
+					</div>
+				`}
 			`}
 			</div>
 			</li>
@@ -84,7 +154,7 @@
 				<input type="button" id="updatebtn" name="" class="styleBtn corner " value="提&nbsp;&nbsp;&nbsp;&nbsp;交" onclick="Merchant.update();"/>
 			</li>
 			`}else{
-			<li hidden="hidden" class="buttonBox">
+			<li class="buttonBox">
 				<input type="button" name="" style="margin-left: 60px; margin-right: 100px;" class="styleBtn corner " value="重&nbsp;&nbsp;&nbsp;&nbsp;置" onclick="Merchant.reset();"/>
 				<input type="button" name="" class="styleBtn corner " value="提&nbsp;&nbsp;&nbsp;&nbsp;交" onclick="Merchant.update();"/>
 			</li>
