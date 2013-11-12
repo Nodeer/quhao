@@ -332,7 +332,10 @@ public class Account extends AccountEntityDef {
 		return null;
 	}
 
-	public static void cleanSignUp() {
+	/**
+	 * clean the mark action number of today
+	 */
+	public static void cleanSignIn() {
 //		DB db =  Account.db();
 //		db.command("db.Account.update({\"className\":\"com.withiter.models.account.Account\"},{$set:{\"isSignIn\":\"true\"}},false,true)");
 		
@@ -341,6 +344,5 @@ public class Account extends AccountEntityDef {
 			account.isSignIn = false;
 			account.save();
 		}
-		
 	}
 }

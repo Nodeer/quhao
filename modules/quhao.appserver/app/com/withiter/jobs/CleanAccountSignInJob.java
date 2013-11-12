@@ -34,7 +34,7 @@ public class CleanAccountSignInJob extends Job {
 
 				if (hour == 23) {
 					if (51 < minute && minute < 60) {
-						Account.cleanSignUp();
+						Account.cleanSignIn();
 					}
 				}
 				logger.info(CleanAccountSignInJob.class.getName() + " finished, elapsed time " + (System.currentTimeMillis() - start) + "ms.");
