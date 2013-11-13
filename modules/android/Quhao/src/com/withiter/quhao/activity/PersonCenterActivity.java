@@ -1,12 +1,18 @@
 package com.withiter.quhao.activity;
 
+import java.io.IOException;
+
+import org.apache.http.client.ClientProtocolException;
+
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +41,19 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 	private TextView value_zhaopian;
 
 	private LoginInfo loginInfo;
+	
+	private LinearLayout signInLayout;
 
+	private LinearLayout dianpingLayout;
+	
+	private LinearLayout photoLayout;
+	
+	private LinearLayout currentPaiduiLayout;
+	
+	private LinearLayout historyPaiduiLayout;
+	
+	private LinearLayout creditCostLayout;
+	
 	private final int UNLOCK_CLICK = 1000;
 
 	AlertDialog ad;
@@ -59,6 +77,22 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		value_dianpin = (TextView) findViewById(R.id.value_dianpin);
 		value_zhaopian = (TextView) findViewById(R.id.value_zhaopian);
 
+		signInLayout = (LinearLayout) findViewById(R.id.signInLayout);
+		dianpingLayout = (LinearLayout) findViewById(R.id.dianpingLayout);
+		photoLayout = (LinearLayout) findViewById(R.id.photoLayout);
+		
+		currentPaiduiLayout = (LinearLayout) findViewById(R.id.current_paidui_layout);
+		historyPaiduiLayout = (LinearLayout) findViewById(R.id.history_paidui_layout);
+		creditCostLayout = (LinearLayout) findViewById(R.id.credit_cost_layout);
+		
+		signInLayout.setOnClickListener(this);
+		dianpingLayout.setOnClickListener(this);
+		photoLayout.setOnClickListener(this);
+		
+		currentPaiduiLayout.setOnClickListener(this);
+		historyPaiduiLayout.setOnClickListener(this);
+		creditCostLayout.setOnClickListener(this);
+		
 		initData();
 		/*
 		String isLogin = SharedprefUtil.get(this, QuhaoConstant.IS_LOGIN,
@@ -185,7 +219,10 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 					value_qiandao.setText(loginInfo.signIn);
 					value_dianpin.setText(loginInfo.dianping);
 					value_zhaopian.setText(loginInfo.zhaopian);
-					
+					if("true".equals(loginInfo.isSignIn))
+					{
+						signInLayout.setEnabled(false);
+					}
 				}
 				
 			}
@@ -208,12 +245,89 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		// // 设置已点击标志，避免快速重复点击
 		isClick = true;
 		// // 解锁
-
+		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
+		progressDialogUtil.showProgress();
 		switch (v.getId()) {
-		
-		default:
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			break;
+			case R.id.signInLayout:
+				
+				String accountId = SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "false");
+				try {
+					String result = CommonHTTPRequest.get("AccountController/signIn?accountId=" + accountId);
+					QuhaoLog.i(TAG, result);
+					if (StringUtils.isNull(result)) {
+					} else {
+						loginInfo = ParseJson.getLoginInfo(result);
+						AccountInfo account = new AccountInfo();
+						account.setUserId("1");
+						account.build(loginInfo);
+						SharedprefUtil
+								.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "true");
+						QHClientApplication.getInstance().accessInfo = account;
+						QuhaoLog.i(TAG, loginInfo.msg);
+						
+						if (loginInfo.msg.equals("fail")) {
+							
+							SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN,"false");
+							Toast.makeText(PersonCenterActivity.this, "签到失败", Toast.LENGTH_LONG).show();
+							return;
+						}
+						if (loginInfo.msg.equals("success")) {
+							nickName.setText(loginInfo.nickName);
+							mobile.setText(loginInfo.phone);
+
+							// TODO add jifen from backend
+							jifen.setText(loginInfo.jifen);
+
+							value_qiandao.setText(loginInfo.signIn);
+							value_dianpin.setText(loginInfo.dianping);
+							value_zhaopian.setText(loginInfo.zhaopian);
+							signInLayout.setEnabled(false);
+						}
+						
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}finally
+				{
+					progressDialogUtil.closeProgress();
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				}
+				
+				break;
+			case R.id.dianpingLayout:
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				break;
+			case R.id.photoLayout:
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			case R.id.current_paidui_layout:
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				Intent intentCurrent = new Intent();
+				intentCurrent.putExtra("queryCondition", "current");
+				intentCurrent.setClass(this, PaiduiListActivity.class);
+				startActivity(intentCurrent);
+				
+			case R.id.history_paidui_layout:
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				Intent intentHistory = new Intent();
+				intentHistory.putExtra("queryCondition", "history");
+				intentHistory.setClass(this, PaiduiListActivity.class);
+				startActivity(intentHistory);
+				
+			case R.id.credit_cost_layout:
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				Intent intentCredit = new Intent();
+				intentCredit.setClass(this, CreditCostListActivity.class);
+				startActivity(intentCredit);
+				
+			default:
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				break;
 		}
 	}
 

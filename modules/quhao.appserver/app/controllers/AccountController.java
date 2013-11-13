@@ -303,12 +303,10 @@ public class AccountController extends BaseController {
 	 * @param phone
 	 * @param email
 	 */
-	public static void signIn(String phone, String email) {
+	public static void signIn(String accountId) {
 		Account account = null;
-		if (null != phone) {
-			account = Account.findByPhone(phone);
-		} else if (null != email) {
-			account = Account.findByEmail(email);
+		if (null != accountId) {
+			account = Account.findById(accountId);
 		}
 
 		LoginVO loginVO = new LoginVO();

@@ -14,13 +14,17 @@ public class ReservationVO {
 	public boolean valid;
 	public String status;
 	
+	public String merchantName;
+	
+	public String merchantAddress;
+	
 	public ReservationVO()
 	{
 		
 	}
 	
 	public ReservationVO(String accountId,String merchantId,String seatNumber,String myNumber,String beforeYou,
-			String currentNumber,boolean valid,boolean tipKey,String tipValue){
+			String currentNumber,boolean valid,boolean tipKey,String tipValue,String merchantName,String merchantAddress){
 		this.accountId = accountId;
 		this.merchantId = merchantId;
 		this.seatNumber = seatNumber;
@@ -32,5 +36,7 @@ public class ReservationVO {
 		//this.status = status;
 		this.tipKey = tipKey;
 		this.tipValue = tipValue;
+		this.merchantName = merchantName;
+		this.merchantAddress = merchantAddress;
 	}
 }

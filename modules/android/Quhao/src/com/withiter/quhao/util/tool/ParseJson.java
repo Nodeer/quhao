@@ -391,9 +391,11 @@ public class ParseJson {
 		boolean valid = obj.optBoolean("valid");
 		boolean tipKey = obj.optBoolean("tipKey");
 		String tipValue = obj.optString("tipValue");
+		String merchantName = obj.optString("merchantName");
+		String merchantAddress = obj.optString("merchantAddress");
 
 		rvo = new ReservationVO(accountId, merchantId, seatNumber, myNumber,
-				beforeYou, currentNumber, valid, tipKey, tipValue);
+				beforeYou, currentNumber, valid, tipKey, tipValue,merchantName,merchantAddress);
 		return rvo;
 	}
 

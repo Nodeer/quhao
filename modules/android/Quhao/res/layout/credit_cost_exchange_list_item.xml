@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="#ffffffff"
+  xmlns:android="http://schemas.android.com/apk/res/android" >
+    <LinearLayout android:gravity="center_vertical" 
+   		android:orientation="vertical" 
+   		android:layout_width="fill_parent" 
+   		android:layout_height="wrap_content"
+   		android:background="@drawable/list_item_border"
+   		android:clickable="true">
+   		
+   		<LinearLayout android:gravity="center_vertical" 
+    		android:orientation="horizontal" 
+    		android:paddingLeft="10.0dip" 
+    		android:layout_width="fill_parent" 
+    		android:layout_height="wrap_content">
+   			<TextView android:id="@+id/merchantName"
+   				android:layout_width="wrap_content"
+   				android:layout_height="wrap_content"
+   				android:text="酒店111"
+   				android:textColor="#ff000000"/>
+   			
+   		</LinearLayout>
+   		
+   		<LinearLayout 
+   			android:gravity="center_vertical" 
+    		android:orientation="horizontal" 
+    		android:paddingLeft="10.0dip" 
+    		android:layout_width="fill_parent" 
+    		android:layout_height="wrap_content">
+  			<TextView android:id="@+id/merchantAddress"
+   				android:layout_width="wrap_content"
+   				android:layout_height="wrap_content"
+   				android:text="地址111"
+   				android:textColor="#ff000000"
+   				android:paddingLeft="8dip"/>
+   		</LinearLayout>
+   	
+    	<LinearLayout 
+    		android:gravity="center_vertical" 
+    		android:orientation="horizontal" 
+    		android:paddingLeft="10.0dip" 
+    		android:paddingTop="4.0dip"
+    		android:paddingBottom="4.0dip"
+    		android:layout_width="fill_parent" 
+    		android:layout_height="wrap_content">
+  
+    	    <TextView android:id="@+id/description"
+   				android:layout_width="wrap_content"
+   				android:layout_height="wrap_content"
+   				android:text="取号， 座位号：11， 我的号码：222"
+   				android:textColor="#ff000000"
+   				android:paddingLeft="8dip"/>
+
+		</LinearLayout>
+		
+   	</LinearLayout>
+</LinearLayout> 
