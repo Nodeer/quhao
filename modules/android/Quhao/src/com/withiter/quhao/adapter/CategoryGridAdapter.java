@@ -116,7 +116,7 @@ public class CategoryGridAdapter extends BaseAdapter {
 				cachedImage = null;
 			} else {
 				cachedImage = context.getResources().getDrawable(
-						R.drawable.default_icon1);
+						R.drawable.no_logo);
 				cachedImage.setBounds(0, 0, cachedImage.getIntrinsicWidth(),
 						cachedImage.getIntrinsicHeight());
 				// holder.itemView.setCompoundDrawables(null, cachedImage, null,

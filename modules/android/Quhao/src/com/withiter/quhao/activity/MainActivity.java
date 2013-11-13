@@ -172,7 +172,7 @@ public class MainActivity extends QuhaoBaseActivity {
 			public void run() {
 				Looper.prepare();
 				try {
-					QuhaoLog.i(TAG, "Start to get Top Merchants data form server.");
+					QuhaoLog.d(TAG, "Start to get Top Merchants data form server.");
 					String result = CommonHTTPRequest
 							.get("MerchantController/getTopMerchants?x=6");
 					QuhaoLog.d(TAG, result);
