@@ -64,7 +64,7 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 
 		final int defaultHight = PhoneTool.getScreenHeight() / 6;
 		final int defaultWidth = PhoneTool.getScreenWidth() / 4;
-//		 synchronized (item) {
+		
 		ViewHolder holder = null;
 		if (null == convertView) {
 			holder = new ViewHolder();
@@ -75,10 +75,6 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-
-		// if (holder == null) {
-		// holder = (ViewHolder) convertView.getTag();
-		// }
 
 		// this holder has no top merchant
 		if (StringUtils.isNull(topMerchant.id)) {

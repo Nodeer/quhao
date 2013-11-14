@@ -1,5 +1,7 @@
 package com.withiter.quhao.util.tool;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -107,11 +109,21 @@ public class ParseJson {
 				JSONObject obj = jsonArrays.getJSONObject(i);
 				String imgUrl = "";
 				if (obj.has("merchantImage")) {
+					// TODO test here
 					if (QuhaoConstant.test) {
 						imgUrl = obj.getString("merchantImage").replace(
 								"localhost", "10.0.2.2");
 					} else {
 						imgUrl = obj.getString("merchantImage");
+					}
+					
+					try {
+						if(!imgUrl.contains("=")){
+							imgUrl = URLDecoder.decode(obj.getString("merchantImage"), "UTF-8") ;
+						}
+					} catch (UnsupportedEncodingException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
 				}
 				String name = obj.optString("name");

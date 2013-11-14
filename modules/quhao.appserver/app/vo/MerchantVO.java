@@ -129,7 +129,12 @@ public class MerchantVO {
 		vo.y = m.y;
 		vo.seatType = m.seatType;
 		
-		vo.merchantImage = m.merchantImage;
+		try {
+			vo.merchantImage = URLDecoder.decode(m.merchantImage, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		vo.commentAverageCost = c.averageCost;
 		vo.commentContent = StringUtils.isEmpty(c.content) ? "暂无评论" : c.content;
