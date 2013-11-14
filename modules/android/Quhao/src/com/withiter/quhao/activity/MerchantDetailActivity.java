@@ -47,7 +47,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	private ProgressDialogUtil progress;
 	private Merchant merchant;
 	private Button btnGetNumber;
-	//private Button btnLogin;
+	// private Button btnLogin;
 	private LinearLayout info;
 	private LinearLayout mapLayout;
 	private TextView merchantName;
@@ -79,69 +79,58 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		this.merchantName = (TextView) findViewById(R.id.merchant_detail_merchantName);
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
 		btnGetNumber = (Button) findViewById(R.id.btn_GetNumber);
-		
+
 		btnGetNumber.setOnClickListener(getNumberClickListener());
 		/*
-		btnLogin = (Button) findViewById(R.id.btn_loginr);
-		btnLogin.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				LayoutInflater inflater = (LayoutInflater) getApplicationContext()
-						.getSystemService(LAYOUT_INFLATER_SERVICE);
-				View view = inflater.inflate(R.layout.login_layout, null);
-				AlertDialog ad = new AlertDialog.Builder(
-						MerchantDetailActivity.this).setView(view)
-						.setTitle("登陆账号即可进行取号").show();
-
-				final EditText loginNameText = (EditText) view
-						.findViewById(R.id.login_name);
-				final EditText passwordText = (EditText) view
-						.findViewById(R.id.edit_pass);
-				
-				ImageView isAutoLoginView = (ImageView) view
-						.findViewById(R.id.isAutoLogin);
-				
-				Button btnClose = (Button) view.findViewById(R.id.close);
-				btnClose.setOnClickListener(new OnClickListener(){
-					@Override
-					public void onClick(View arg0) {
-						
-					}
-				});
-				
-				Button btnLogin = (Button) view.findViewById(R.id.login);
-				btnLogin.setOnClickListener(new OnClickListener(){
-					@Override
-					public void onClick(View arg0) {
-						QuhaoLog.d(LOGTAG, loginNameText.getText());
-						QuhaoLog.d(LOGTAG, passwordText.getText());
-					}
-				});
-				
-				Button btnRegister = (Button) view.findViewById(R.id.zhuce);
-				btnRegister.setOnClickListener(new OnClickListener(){
-					@Override
-					public void onClick(View arg0) {
-						
-					}
-				});
-			}
-		});
+		 * btnLogin = (Button) findViewById(R.id.btn_loginr);
+		 * btnLogin.setOnClickListener(new OnClickListener() {
+		 * 
+		 * @Override public void onClick(View v) { LayoutInflater inflater =
+		 * (LayoutInflater) getApplicationContext()
+		 * .getSystemService(LAYOUT_INFLATER_SERVICE); View view =
+		 * inflater.inflate(R.layout.login_layout, null); AlertDialog ad = new
+		 * AlertDialog.Builder( MerchantDetailActivity.this).setView(view)
+		 * .setTitle("登陆账号即可进行取号").show();
+		 * 
+		 * final EditText loginNameText = (EditText) view
+		 * .findViewById(R.id.login_name); final EditText passwordText =
+		 * (EditText) view .findViewById(R.id.edit_pass);
+		 * 
+		 * ImageView isAutoLoginView = (ImageView) view
+		 * .findViewById(R.id.isAutoLogin);
+		 * 
+		 * Button btnClose = (Button) view.findViewById(R.id.close);
+		 * btnClose.setOnClickListener(new OnClickListener(){
+		 * 
+		 * @Override public void onClick(View arg0) {
+		 * 
+		 * } });
+		 * 
+		 * Button btnLogin = (Button) view.findViewById(R.id.login);
+		 * btnLogin.setOnClickListener(new OnClickListener(){
+		 * 
+		 * @Override public void onClick(View arg0) { QuhaoLog.d(LOGTAG,
+		 * loginNameText.getText()); QuhaoLog.d(LOGTAG, passwordText.getText());
+		 * } });
+		 * 
+		 * Button btnRegister = (Button) view.findViewById(R.id.zhuce);
+		 * btnRegister.setOnClickListener(new OnClickListener(){
+		 * 
+		 * @Override public void onClick(View arg0) {
+		 * 
+		 * } }); } });
 		 */
 		LayoutInflater inflater = LayoutInflater.from(this);
-		info = (LinearLayout) inflater.inflate(R.layout.merchant_detail_info,
-				null);
+		info = (LinearLayout) inflater.inflate(R.layout.merchant_detail_info, null);
 		LinearLayout scroll = (LinearLayout) findViewById(R.id.lite_list);
-		LayoutParams layoutParams = new LayoutParams(LayoutParams.FILL_PARENT,
-				LayoutParams.WRAP_CONTENT);
+		LayoutParams layoutParams = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
 		scroll.addView(info, layoutParams);
 
 		this.mapLayout = (LinearLayout) findViewById(R.id.mapLayout);
 
 		this.merchantImg = (ImageView) info.findViewById(R.id.merchantImg);
-		this.merchantAddress = (TextView) info
-				.findViewById(R.id.merchantAddress);
+		this.merchantAddress = (TextView) info.findViewById(R.id.merchantAddress);
 		this.merchantPhone = (TextView) info.findViewById(R.id.merchantPhone);
 
 		this.merchantPhone.setClickable(true);
@@ -152,31 +141,24 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				String phoneNO = merchantPhone.getText().toString();
 				// 如果输入不为空创建打电话的Intent
 				if (StringUtils.isNotNull(phoneNO)) {
-					Intent phoneIntent = new Intent(
-							"android.intent.action.CALL", Uri.parse("tel:"
-									+ phoneNO));
+					Intent phoneIntent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + phoneNO));
 					startActivity(phoneIntent);
 				} else {
-					Toast.makeText(MerchantDetailActivity.this, "此商家还未添加联系方式",
-							Toast.LENGTH_LONG).show();
+					Toast.makeText(MerchantDetailActivity.this, "此商家还未添加联系方式", Toast.LENGTH_LONG).show();
 				}
 			}
 		});
 
-		this.merchantBusinessTime = (TextView) info
-				.findViewById(R.id.merchantBusinessTime);
+		this.merchantBusinessTime = (TextView) info.findViewById(R.id.merchantBusinessTime);
 		this.merchantDesc = (TextView) info.findViewById(R.id.description);
-		this.merchantAverageCost = (TextView) info
-				.findViewById(R.id.merchant_details_AverageCost);
+		this.merchantAverageCost = (TextView) info.findViewById(R.id.merchant_details_AverageCost);
 		this.xingjiabi = (TextView) info.findViewById(R.id.xingjiabi);
 		this.kouwei = (TextView) info.findViewById(R.id.kouwei);
 		this.fuwu = (TextView) info.findViewById(R.id.fuwu);
 		this.huanjing = (TextView) info.findViewById(R.id.huanjing);
 
-		currentNoLayout = (LinearLayout) info
-				.findViewById(R.id.currentNoLayout);
-		reservationListView = (ListView) info
-				.findViewById(R.id.reservationListView);
+		currentNoLayout = (LinearLayout) info.findViewById(R.id.currentNoLayout);
+		reservationListView = (ListView) info.findViewById(R.id.reservationListView);
 
 		initView();
 	}
@@ -195,15 +177,12 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			try {
 				QuhaoLog.v(LOGTAG, "get categorys data form server begin");
 				String accountId = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.ACCOUNT_ID, "false");
-				String buf = CommonHTTPRequest
-						.get("getReservations?accountId=" + accountId + "&mid="
-								+ merchantId);
+				String buf = CommonHTTPRequest.get("getReservations?accountId=" + accountId + "&mid=" + merchantId);
 				if (StringUtils.isNull(buf) || "[]".equals(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
 					List<ReservationVO> rvos = ParseJson.getReservations(buf);
-					reservationUpdateHandler.obtainMessage(200, rvos)
-							.sendToTarget();
+					reservationUpdateHandler.obtainMessage(200, rvos).sendToTarget();
 				}
 
 			} catch (Exception e) {
@@ -233,18 +212,17 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					Intent intent = new Intent();
 					intent.putExtra("merchantId", merchantId);
 					intent.putExtra("merchantName", mName);
-					intent.setClass(MerchantDetailActivity.this,GetNumberActivity.class);
+					intent.setClass(MerchantDetailActivity.this, GetNumberActivity.class);
 					startActivity(intent);
 
-				 } else {
-					 Intent intent = new Intent(MerchantDetailActivity.this, LoginActivity.class);
-					 intent.putExtra("activityName", MerchantDetailActivity.class.getName());
-					 intent.putExtra("merchantId", MerchantDetailActivity.this.merchantId);
-					 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					 startActivity(intent);
-				 }
-				overridePendingTransition(R.anim.in_from_right,
-						R.anim.out_to_left);
+				} else {
+					Intent intent = new Intent(MerchantDetailActivity.this, LoginActivity.class);
+					intent.putExtra("activityName", MerchantDetailActivity.class.getName());
+					intent.putExtra("merchantId", MerchantDetailActivity.this.merchantId);
+					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivity(intent);
+				}
+				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			}
 		};
 		return listener;
@@ -255,8 +233,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			return;
 		}
 		isClick = true;
-		progress = new ProgressDialogUtil(this, R.string.empty,
-				R.string.querying, false);
+		progress = new ProgressDialogUtil(this, R.string.empty, R.string.querying, false);
 		progress.showProgress();
 		Thread merchantThread = new Thread(merchantDetailRunnable);
 		merchantThread.start();
@@ -268,15 +245,13 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		public void run() {
 			try {
 				QuhaoLog.v(LOGTAG, "get merchant details form server begin");
-				QuhaoLog.v(LOGTAG, "MerchantDetailActivity.this.merchantId : "
-						+ merchantId);
+				QuhaoLog.v(LOGTAG, "MerchantDetailActivity.this.merchantId : " + merchantId);
 				String buf = CommonHTTPRequest.get("merchant?id=" + merchantId);
 				if (StringUtils.isNull(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
 					merchant = ParseJson.getMerchant(buf);
-					merchantUpdateHandler.obtainMessage(200, merchant)
-							.sendToTarget();
+					merchantUpdateHandler.obtainMessage(200, merchant).sendToTarget();
 				}
 
 			} catch (Exception e) {
@@ -301,30 +276,23 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 
 					Merchant m = merchant;
 					AsyncImageLoader asynImageLoader = new AsyncImageLoader();
-					Drawable drawable = asynImageLoader
-							.loadDrawable(merchant.merchantImage);
+					Drawable drawable = asynImageLoader.loadDrawable(merchant.merchantImage);
 					if (drawable != null) {
 						merchantImg.setImageDrawable(drawable);
 					}
 
 					// check the merchant is enabled and autoLogin is true
-					//String isLogin = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.IS_LOGIN, "false");
-					if(m.enable)
-					{
+					if (m.enable) {
 						btnGetNumber.setVisibility(View.VISIBLE);
-					}
-					else
-					{
+					} else {
 						btnGetNumber.setVisibility(View.GONE);
 					}
-					
 
 					merchantName.setText(m.name);
 					mName = m.name;
 					merchantAddress.setText(m.address);
 					merchantPhone.setText(m.phone);
-					merchantBusinessTime
-							.setText(m.openTime + "~" + m.closeTime);
+					merchantBusinessTime.setText(m.openTime + "~" + m.closeTime);
 
 					merchantDesc.setText(m.description);
 					if (StringUtils.isNull(m.description)) {
@@ -337,8 +305,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					fuwu.setText(String.valueOf(m.fuwu));
 					huanjing.setText(String.valueOf(m.huanjing));
 
-					critiqueLayout = (LinearLayout) info
-							.findViewById(R.id.critiqueLayout);
+					critiqueLayout = (LinearLayout) info.findViewById(R.id.critiqueLayout);
 					QuhaoLog.i(LOGTAG, m.commentAverageCost);
 					QuhaoLog.i(LOGTAG, m.commentContent);
 					QuhaoLog.i(LOGTAG, m.commentDate);
@@ -347,45 +314,30 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					QuhaoLog.i(LOGTAG, m.commentKouwei);
 					QuhaoLog.i(LOGTAG, m.commentXingjiabi);
 
-					TextView commentRenjun = (TextView) critiqueLayout
-							.findViewById(R.id.comment_renjun);
-					TextView commentFuwu = (TextView) critiqueLayout
-							.findViewById(R.id.comment_fuwu);
-					TextView commentHuanjing = (TextView) critiqueLayout
-							.findViewById(R.id.comment_huanjing);
-					TextView commentKouwei = (TextView) critiqueLayout
-							.findViewById(R.id.comment_kouwei);
-					TextView commentXingjiabi = (TextView) critiqueLayout
-							.findViewById(R.id.comment_xingjiabi);
-					TextView commentContent = (TextView) critiqueLayout
-							.findViewById(R.id.comment_content);
-					TextView commentDate = (TextView) info
-							.findViewById(R.id.comment_date);
+					TextView commentRenjun = (TextView) critiqueLayout.findViewById(R.id.comment_renjun);
+					TextView commentFuwu = (TextView) critiqueLayout.findViewById(R.id.comment_fuwu);
+					TextView commentHuanjing = (TextView) critiqueLayout.findViewById(R.id.comment_huanjing);
+					TextView commentKouwei = (TextView) critiqueLayout.findViewById(R.id.comment_kouwei);
+					TextView commentXingjiabi = (TextView) critiqueLayout.findViewById(R.id.comment_xingjiabi);
+					TextView commentContent = (TextView) critiqueLayout.findViewById(R.id.comment_content);
+					TextView commentDate = (TextView) info.findViewById(R.id.comment_date);
 
-					commentRenjun.setText(commentRenjun.getText()
-							+ m.commentAverageCost);
-					commentFuwu.setText(commentFuwu.getText()
-							+ String.valueOf(m.commentFuwu));
-					commentHuanjing.setText(commentHuanjing.getText()
-							+ String.valueOf(m.commentHuanjing));
-					commentKouwei.setText(commentKouwei.getText()
-							+ String.valueOf(m.commentKouwei));
-					commentXingjiabi.setText(commentXingjiabi.getText()
-							+ String.valueOf(m.commentXingjiabi));
+					commentRenjun.setText(commentRenjun.getText() + m.commentAverageCost);
+					commentFuwu.setText(commentFuwu.getText() + String.valueOf(m.commentFuwu));
+					commentHuanjing.setText(commentHuanjing.getText() + String.valueOf(m.commentHuanjing));
+					commentKouwei.setText(commentKouwei.getText() + String.valueOf(m.commentKouwei));
+					commentXingjiabi.setText(commentXingjiabi.getText() + String.valueOf(m.commentXingjiabi));
 					commentContent.setText(m.commentContent);
 					commentDate.setText(m.commentDate);
 
 					mapLayout.setOnClickListener(new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							Intent intent = new Intent(
-									MerchantDetailActivity.this,
-									MerchantLBSActivity.class);
+							Intent intent = new Intent(MerchantDetailActivity.this, MerchantLBSActivity.class);
 							intent.putExtra("merchantId", merchantId);
 							intent.putExtra("merchantName", merchant.name);
 							startActivity(intent);
-							overridePendingTransition(R.anim.in_from_left,
-									R.anim.out_to_right);
+							overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 						}
 					});
 
@@ -393,11 +345,10 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					if ("true".equalsIgnoreCase(isLogin)) {
 						getCurrentNo();
 					}
-					critiqueLayout
-							.setOnClickListener(MerchantDetailActivity.this);
+					critiqueLayout.setOnClickListener(MerchantDetailActivity.this);
 				}
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				
+
 			}
 
 		}
@@ -411,20 +362,18 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				super.handleMessage(msg);
 
 				currentNoLayout.setVisibility(View.VISIBLE);
-				LinearLayout.LayoutParams reservationsParams = (LayoutParams) reservationListView
-						.getLayoutParams();
+				LinearLayout.LayoutParams reservationsParams = (LayoutParams) reservationListView.getLayoutParams();
 
 				// 设置自定义的layout
 
 				reservationListView.setLayoutParams(reservationsParams);
 				reservationListView.invalidate();
 
-				btnGetNumber.setVisibility(View.GONE); 
+				btnGetNumber.setVisibility(View.GONE);
 
 				reservationListView.setVisibility(View.VISIBLE);
 				List<ReservationVO> rvos = (List<ReservationVO>) msg.obj;
-				reservationAdapter = new ReservationAdapter(
-						MerchantDetailActivity.this, reservationListView, rvos);
+				reservationAdapter = new ReservationAdapter(MerchantDetailActivity.this, reservationListView, rvos);
 				reservationListView.setAdapter(reservationAdapter);
 				reservationAdapter.notifyDataSetChanged();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
