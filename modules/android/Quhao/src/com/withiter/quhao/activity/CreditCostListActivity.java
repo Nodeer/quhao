@@ -1,19 +1,7 @@
 package com.withiter.quhao.activity;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import com.withiter.quhao.R;
-import com.withiter.quhao.adapter.CreditAdapter;
-import com.withiter.quhao.adapter.ReservationAdapter;
-import com.withiter.quhao.util.QuhaoLog;
-import com.withiter.quhao.util.StringUtils;
-import com.withiter.quhao.util.http.CommonHTTPRequest;
-import com.withiter.quhao.util.tool.ParseJson;
-import com.withiter.quhao.util.tool.ProgressDialogUtil;
-import com.withiter.quhao.util.tool.QuhaoConstant;
-import com.withiter.quhao.util.tool.SharedprefUtil;
-import com.withiter.quhao.vo.Credit;
-import com.withiter.quhao.vo.ReservationVO;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,15 +9,23 @@ import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.LinearLayout.LayoutParams;
+
+import com.withiter.quhao.R;
+import com.withiter.quhao.adapter.CreditAdapter;
+import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.util.http.CommonHTTPRequest;
+import com.withiter.quhao.util.tool.ParseJson;
+import com.withiter.quhao.util.tool.ProgressDialogUtil;
+import com.withiter.quhao.util.tool.QuhaoConstant;
+import com.withiter.quhao.util.tool.SharedprefUtil;
+import com.withiter.quhao.vo.Credit;
 
 public class CreditCostListActivity extends QuhaoBaseActivity {
 
 	private List<Credit> credits;
 	
-	private ListView cresitsListView;
+	private ListView creditsListView;
 	
 	private CreditAdapter creditAdapter;
 	
@@ -40,8 +36,7 @@ public class CreditCostListActivity extends QuhaoBaseActivity {
 		setContentView(R.layout.credit_cost_list_layout);
 		super.onCreate(savedInstanceState);
 		
-		String accountId = SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "");
-		
+		creditsListView = (ListView) this.findViewById(R.id.creditsListView);
 		btnBack.setOnClickListener(goBack(this));
 		
 		initListView();
@@ -62,8 +57,8 @@ public class CreditCostListActivity extends QuhaoBaseActivity {
 				super.handleMessage(msg);
 
 				creditAdapter = new CreditAdapter(
-						CreditCostListActivity.this, cresitsListView, credits);
-				cresitsListView.setAdapter(creditAdapter);
+						CreditCostListActivity.this, creditsListView, credits);
+				creditsListView.setAdapter(creditAdapter);
 				creditAdapter.notifyDataSetChanged();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
@@ -83,7 +78,9 @@ public class CreditCostListActivity extends QuhaoBaseActivity {
 				if (StringUtils.isNull(buf) || "[]".equals(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
-					 creditsUpdateHandler.obtainMessage(200, null)
+					credits = new ArrayList<Credit>();
+					credits = ParseJson.getCredits(buf);
+					creditsUpdateHandler.obtainMessage(200, credits)
 							.sendToTarget();
 				}
 

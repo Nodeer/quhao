@@ -65,10 +65,10 @@ public class QHClientApplication extends Application {
 	private void initDBConfig() {
 		
 		// TODO remove below codes
-		AccountInfoHelper accountDBHelper = new AccountInfoHelper(this);
-		accountDBHelper.open();
-		accountDBHelper.dropAccountInfoTable();
-		accountDBHelper.close();
+//		AccountInfoHelper accountDBHelper = new AccountInfoHelper(this);
+//		accountDBHelper.open();
+//		accountDBHelper.dropAccountInfoTable();
+//		accountDBHelper.close();
 		
 		SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
 		QuhaoLog.i(TAG, "init database config");

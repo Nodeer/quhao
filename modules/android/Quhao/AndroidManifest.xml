@@ -23,7 +23,7 @@
 	<uses-permission android:name="android.permission.CHANGE_CONFIGURATION"/>
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <!-- 添加拨出电话的权限 -->
+    <!-- 添加拨出电话的权限 --> 
 	<uses-permission android:name="android.permission.CALL_PHONE" /> 
 	
 	<supports-screens android:largeScreens="true"
@@ -32,8 +32,9 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/application_icon"
-        android:label=".QHClientApplication"
-        android:theme="@style/AppTheme" >
+        android:label="@style/AppTheme"
+        android:theme="@style/AppTheme" 
+        android:name="com.withiter.quhao.QHClientApplication">
 <!--         android:name=".QHClientApplication" -->
         
         <!-- TODO: WARNING 部署时请修改test的值为false -->
@@ -281,7 +282,7 @@
             android:theme="@android:style/Theme.NoTitleBar" />
         <!-- share sina page -->
         
-        <!-- share sina page -->
+        <!-- paidui list page -->
         <activity
             android:name="com.withiter.quhao.activity.PaiduiListActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -289,9 +290,9 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
-        <!-- share sina page -->
+        <!-- paidui list page -->
         
-        <!-- share sina page -->
+        <!-- credit list page -->
         <activity
             android:name="com.withiter.quhao.activity.CreditCostListActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -299,7 +300,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
-        <!-- share sina page -->
+        <!-- credit list page -->
         
     </application>
 

@@ -1,13 +1,10 @@
 package com.withiter.quhao.activity;
 
-import java.io.IOException;
-
-import org.apache.http.client.ClientProtocolException;
-
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,7 +18,6 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
-import com.withiter.quhao.util.db.AccountInfoHelper;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
@@ -154,6 +150,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		
 		@Override
 		public void run() {
+			Looper.prepare();
 			String phone = SharedprefUtil.get(PersonCenterActivity.this, QuhaoConstant.PHONE, "");
 			String password = SharedprefUtil.get(PersonCenterActivity.this, QuhaoConstant.PASSWORD, "");
 			if (StringUtils.isNotNull(phone) && StringUtils.isNotNull(password)) {
@@ -170,13 +167,14 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 						AccountInfo account = new AccountInfo();
 						account.setUserId("1");
 						account.build(loginInfo);
-						AccountInfoHelper accountDBHelper = new AccountInfoHelper(
-								PersonCenterActivity.this);
-						accountDBHelper.open();
-						accountDBHelper.saveAccountInfo(account);
+//						AccountInfoHelper accountDBHelper = new AccountInfoHelper(
+//								PersonCenterActivity.this);
+//						accountDBHelper.open();
+//						accountDBHelper.saveAccountInfo(account);
+//						accountDBHelper.close();
 						SharedprefUtil
 								.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "true");
-						accountDBHelper.close();
+						
 						QHClientApplication.getInstance().accessInfo = account;
 						QuhaoLog.i(TAG, loginInfo.msg);
 						accountUpdateHandler.obtainMessage(200, loginInfo).sendToTarget();
@@ -188,12 +186,14 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 					Toast.makeText(PersonCenterActivity.this, "登陆失败", Toast.LENGTH_LONG).show();
 				} finally {
 					progressDialogUtil.closeProgress();
+					Looper.loop();
 				}
 				
 			} else {
 				progressDialogUtil.closeProgress();
 				SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "false");
 				QuhaoLog.i(TAG, "accessInfo is null");
+				Looper.loop();
 			}
 		}
 	};
@@ -301,6 +301,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			case R.id.photoLayout:
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				break;
 			case R.id.current_paidui_layout:
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -308,7 +309,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				intentCurrent.putExtra("queryCondition", "current");
 				intentCurrent.setClass(this, PaiduiListActivity.class);
 				startActivity(intentCurrent);
-				
+				break;
 			case R.id.history_paidui_layout:
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -316,14 +317,14 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				intentHistory.putExtra("queryCondition", "history");
 				intentHistory.setClass(this, PaiduiListActivity.class);
 				startActivity(intentHistory);
-				
+				break;
 			case R.id.credit_cost_layout:
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				Intent intentCredit = new Intent();
 				intentCredit.setClass(this, CreditCostListActivity.class);
 				startActivity(intentCredit);
-				
+				break;
 			default:
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);

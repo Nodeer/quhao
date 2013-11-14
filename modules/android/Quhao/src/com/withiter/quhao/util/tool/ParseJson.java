@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.vo.Category;
+import com.withiter.quhao.vo.Credit;
 import com.withiter.quhao.vo.Critique;
 import com.withiter.quhao.vo.Haoma;
 import com.withiter.quhao.vo.LoginInfo;
@@ -490,5 +491,48 @@ public class ParseJson {
 		critique = new Critique(accountId, nickName, level, star, average,
 				desc, updateDate);
 		return critique;
+	}
+
+	public static List<Credit> getCredits(String buf) {
+
+		List<Credit> credits = new ArrayList<Credit>();
+		if (StringUtils.isNull(buf)) {
+			return credits;
+		}
+
+		try {
+			JSONArray array = new JSONArray(buf);
+			for (int i = 0; i < array.length(); i++) {
+				JSONObject obj = array.getJSONObject(i);
+				Credit credit = coventCredit(obj);
+				if(null != credit)
+				{
+					credits.add(credit);
+				}
+				
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		return credits;
+	}
+
+	private static Credit coventCredit(JSONObject obj) {
+
+		Credit credit;
+
+		String accountId = obj.optString("accountId");
+		String merchantId = obj.optString("merchantId");
+		String merchantName = obj.optString("merchantName");
+		String merchantAddress = obj.optString("merchantAddress");
+		String reservationId = obj.optString("reservationId");
+		int seatNumber = obj.optInt("seatNumber");
+		int myNumber = obj.optInt("myNumber");
+		boolean cost = obj.optBoolean("cost");
+		String status = obj.optString("status");
+
+		credit = new Credit(accountId, merchantId, merchantName, merchantAddress, reservationId, seatNumber, myNumber, cost, status);
+		return credit;
 	}
 }
