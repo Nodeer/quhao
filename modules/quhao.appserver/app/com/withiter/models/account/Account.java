@@ -249,8 +249,8 @@ public class Account extends AccountEntityDef {
 	 */
 	public boolean validatePassword(String password) {
 		boolean flag = false;
-		//String hexedPwd = Codec.hexSHA1(password);
-		if (this.password.equals(password)) {
+		String hexedPwd = Codec.hexSHA1(password);
+		if (this.password.equals(hexedPwd)) {
 			flag = true;
 		}
 		return flag;
