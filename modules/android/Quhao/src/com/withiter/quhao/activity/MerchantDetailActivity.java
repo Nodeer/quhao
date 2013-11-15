@@ -2,7 +2,6 @@ package com.withiter.quhao.activity;
 
 import java.util.List;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -81,45 +79,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		btnGetNumber = (Button) findViewById(R.id.btn_GetNumber);
 
 		btnGetNumber.setOnClickListener(getNumberClickListener());
-		/*
-		 * btnLogin = (Button) findViewById(R.id.btn_loginr);
-		 * btnLogin.setOnClickListener(new OnClickListener() {
-		 * 
-		 * @Override public void onClick(View v) { LayoutInflater inflater =
-		 * (LayoutInflater) getApplicationContext()
-		 * .getSystemService(LAYOUT_INFLATER_SERVICE); View view =
-		 * inflater.inflate(R.layout.login_layout, null); AlertDialog ad = new
-		 * AlertDialog.Builder( MerchantDetailActivity.this).setView(view)
-		 * .setTitle("登陆账号即可进行取号").show();
-		 * 
-		 * final EditText loginNameText = (EditText) view
-		 * .findViewById(R.id.login_name); final EditText passwordText =
-		 * (EditText) view .findViewById(R.id.edit_pass);
-		 * 
-		 * ImageView isAutoLoginView = (ImageView) view
-		 * .findViewById(R.id.isAutoLogin);
-		 * 
-		 * Button btnClose = (Button) view.findViewById(R.id.close);
-		 * btnClose.setOnClickListener(new OnClickListener(){
-		 * 
-		 * @Override public void onClick(View arg0) {
-		 * 
-		 * } });
-		 * 
-		 * Button btnLogin = (Button) view.findViewById(R.id.login);
-		 * btnLogin.setOnClickListener(new OnClickListener(){
-		 * 
-		 * @Override public void onClick(View arg0) { QuhaoLog.d(LOGTAG,
-		 * loginNameText.getText()); QuhaoLog.d(LOGTAG, passwordText.getText());
-		 * } });
-		 * 
-		 * Button btnRegister = (Button) view.findViewById(R.id.zhuce);
-		 * btnRegister.setOnClickListener(new OnClickListener(){
-		 * 
-		 * @Override public void onClick(View arg0) {
-		 * 
-		 * } }); } });
-		 */
 		LayoutInflater inflater = LayoutInflater.from(this);
 		info = (LinearLayout) inflater.inflate(R.layout.merchant_detail_info, null);
 		LinearLayout scroll = (LinearLayout) findViewById(R.id.lite_list);

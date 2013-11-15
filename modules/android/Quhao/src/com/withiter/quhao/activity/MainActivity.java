@@ -58,10 +58,10 @@ public class MainActivity extends QuhaoBaseActivity {
 		super.onCreate(savedInstanceState);
 
 		// TODO add default view here
+
 		if (!networkOK) {
 			Builder dialog = new AlertDialog.Builder(MainActivity.this);
-			dialog.setTitle("温馨提示").setMessage("Wifi/蜂窝网络未打开，或者网络情况不是很好哟")
-					.setPositiveButton("确定", null);
+			dialog.setTitle("温馨提示").setMessage("Wifi/蜂窝网络未打开，或者网络情况不是很好哟").setPositiveButton("确定", null);
 			dialog.show();
 			return;
 		}
@@ -98,8 +98,7 @@ public class MainActivity extends QuhaoBaseActivity {
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
-				ListAdapter adapter = new TopMerchantGridAdapter(topMerchants,
-						topMerchantsGird, MainActivity.this);
+				ListAdapter adapter = new TopMerchantGridAdapter(topMerchants, MainActivity.this);
 				topMerchantsGird.setAdapter(adapter);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
@@ -111,8 +110,7 @@ public class MainActivity extends QuhaoBaseActivity {
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
-				ListAdapter adapter = new CategoryGridAdapter(categorys,
-						categorysGird, MainActivity.this);
+				ListAdapter adapter = new CategoryGridAdapter(categorys, categorysGird, MainActivity.this);
 				categorysGird.setAdapter(adapter);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
@@ -121,15 +119,12 @@ public class MainActivity extends QuhaoBaseActivity {
 
 	private OnItemClickListener topMerchantClickListener = new OnItemClickListener() {
 		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			String mid = topMerchants.get(position).mid;
 			QuhaoLog.d(TAG, "mid:" + mid);
-			if(StringUtils.isNull(mid)){
+			if (StringUtils.isNull(mid)) {
 				Builder dialog = new AlertDialog.Builder(MainActivity.this);
-				dialog.setTitle("温馨提示")
-						.setMessage("推荐商家虚席以待")
-						.setPositiveButton("确定", null);
+				dialog.setTitle("温馨提示").setMessage("推荐商家虚席以待").setPositiveButton("确定", null);
 				dialog.show();
 				return;
 			}
@@ -143,16 +138,14 @@ public class MainActivity extends QuhaoBaseActivity {
 
 	private OnItemClickListener categorysClickListener = new OnItemClickListener() {
 		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			Category category = categorys.get(position);
-			QuhaoLog.d(TAG, "the category is : " + category.categoryType
-					+ ", the count is : " + category.count);
+			QuhaoLog.d(TAG, "the category is : " + category.categoryType + ", the count is : " + category.count);
 			Intent intent = new Intent();
 			intent.putExtra("categoryType", category.categoryType);
 			intent.putExtra("categoryTypeStr", category.categoryTypeStr);
 			intent.putExtra("categoryCount", String.valueOf(category.count));
-			
+
 			intent.setClass(MainActivity.this, MerchantListActivity.class);
 
 			startActivity(intent);
@@ -164,8 +157,7 @@ public class MainActivity extends QuhaoBaseActivity {
 	 * get top merchants from server side and display
 	 */
 	public void getTopMerchantsFromServerAndDisplay() {
-		progressTopMerchant = new ProgressDialogUtil(this, R.string.empty,
-				R.string.querying, false);
+		progressTopMerchant = new ProgressDialogUtil(this, R.string.empty, R.string.querying, false);
 		progressTopMerchant.showProgress();
 		Thread t = new Thread() {
 			@Override
@@ -173,39 +165,34 @@ public class MainActivity extends QuhaoBaseActivity {
 				Looper.prepare();
 				try {
 					QuhaoLog.d(TAG, "Start to get Top Merchants data form server.");
-					String result = CommonHTTPRequest
-							.get("MerchantController/getTopMerchants?x=6");
+					String result = CommonHTTPRequest.get("MerchantController/getTopMerchants?x=6");
 					QuhaoLog.d(TAG, result);
 					if (StringUtils.isNull(result)) {
 						// TODO display error page here
-						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
-								1000);
+						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					} else {
 						if (null == topMerchants) {
 							topMerchants = new ArrayList<TopMerchant>();
 						}
 						topMerchants.clear();
 						topMerchants.addAll(ParseJson.getTopMerchants(result));
-						
+
 						// check the numbers of top merchant
 						int topMerchantCount = topMerchants.size();
-						if(topMerchantCount < 6){
-							for(int i=0; i< 6 - topMerchantCount; i++){
+						if (topMerchantCount < 6) {
+							for (int i = 0; i < 6 - topMerchantCount; i++) {
 								TopMerchant topMerchant = new TopMerchant();
 								topMerchants.add(topMerchant);
 							}
 						}
-						topMerchantsUpdateHandler.obtainMessage(200,
-								topMerchants).sendToTarget();
+						topMerchantsUpdateHandler.obtainMessage(200, topMerchants).sendToTarget();
 					}
 				} catch (ClientProtocolException e) {
 					// TODO display error page here
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					e.printStackTrace();
 					Builder dialog = new AlertDialog.Builder(MainActivity.this);
-					dialog.setTitle("温馨提示")
-							.setMessage("使用\"取号\"人数火爆，亲，稍等片刻")
-							.setPositiveButton("确定", null);
+					dialog.setTitle("温馨提示").setMessage("使用\"取号\"人数火爆，亲，稍等片刻").setPositiveButton("确定", null);
 					dialog.show();
 				} catch (IOException e) {
 					// TODO display error page here
@@ -213,9 +200,7 @@ public class MainActivity extends QuhaoBaseActivity {
 					// Log.e(TAG, e.getCause().toString(), e);
 					e.printStackTrace();
 					Builder dialog = new AlertDialog.Builder(MainActivity.this);
-					dialog.setTitle("温馨提示")
-							.setMessage("使用\"取号\"人数火爆，亲，稍等片刻")
-							.setPositiveButton("确定", null);
+					dialog.setTitle("温馨提示").setMessage("使用\"取号\"人数火爆，亲，稍等片刻").setPositiveButton("确定", null);
 					dialog.show();
 				} finally {
 					progressTopMerchant.closeProgress();
@@ -235,8 +220,7 @@ public class MainActivity extends QuhaoBaseActivity {
 		}
 
 		isClick = true;
-		progressCategory = new ProgressDialogUtil(this, R.string.empty,
-				R.string.querying, false);
+		progressCategory = new ProgressDialogUtil(this, R.string.empty, R.string.querying, false);
 		progressCategory.showProgress();
 		Thread t = new Thread() {
 			@Override
@@ -244,19 +228,16 @@ public class MainActivity extends QuhaoBaseActivity {
 				Looper.prepare();
 				try {
 					QuhaoLog.v(TAG, "get categorys data form server begin");
-					String result = CommonHTTPRequest
-							.get("MerchantController/allCategories");
+					String result = CommonHTTPRequest.get("MerchantController/allCategories");
 					if (StringUtils.isNull(result)) {
-						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
-								1000);
+						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					} else {
 						if (null == categorys) {
 							categorys = new ArrayList<Category>();
 						}
 						categorys.clear();
 						categorys.addAll(ParseJson.getCategorys(result));
-						categorysUpdateHandler.obtainMessage(200, categorys)
-								.sendToTarget();
+						categorysUpdateHandler.obtainMessage(200, categorys).sendToTarget();
 					}
 
 				} catch (Exception e) {
@@ -283,15 +264,15 @@ public class MainActivity extends QuhaoBaseActivity {
 
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev) {
-		
-		InputMethodManager imm= (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		
-		if(ev.getAction() == MotionEvent.ACTION_DOWN){
-			if(MainActivity.this.getCurrentFocus()!=null && MainActivity.this.getCurrentFocus().getWindowToken()!=null){
+
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
+		if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+			if (MainActivity.this.getCurrentFocus() != null && MainActivity.this.getCurrentFocus().getWindowToken() != null) {
 				imm.hideSoftInputFromWindow(MainActivity.this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 			}
 		}
-		
+
 		return super.dispatchTouchEvent(ev);
 	}
 }
