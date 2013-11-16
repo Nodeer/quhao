@@ -7,10 +7,10 @@ import com.withiter.common.Constants;
 import com.withiter.models.account.Reservation;
 
 public class ReservationVO {
-
+	public String id;
 	public boolean tipKey = false;
 	public String tipValue = "";
-	
+	public boolean isAppraise = false;
 	public String accountId;
 	public String merchantId;
 	public int seatNumber;
@@ -24,11 +24,13 @@ public class ReservationVO {
 	public String merchantAddress;
 	
 	public void build(Reservation r){
+		this.id = r.id();
 		this.accountId = r.accountId;
 		this.merchantId = r.merchantId;
 		this.myNumber = r.myNumber;
 		this.seatNumber = r.seatNumber;
 		this.status = r.status;
+		this.isAppraise=r.isAppraise;
 	}
 	
 	public static List<ReservationVO> build(List<Reservation> rList){

@@ -15,7 +15,7 @@ public abstract class ReservationEntityDef extends BaseModel {
 	public String merchantId;
 	public int seatNumber;
 	public int myNumber;
-	
+	public boolean isAppraise = false;
 	/**
 	 * 
 	 */

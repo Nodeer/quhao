@@ -60,10 +60,10 @@ public class BackendMerchantInfoVO {
 	public String averageCost = "";
 	public List<String> tags = null;
 	
-	public int kouwei;
-	public int huanjing;
-	public int fuwu;
-	public int xingjiabi;
+	public float kouwei;
+	public float huanjing;
+	public float fuwu;
+	public float xingjiabi;
 	
 	public List<String> imgSrc = new ArrayList<String>();
 	

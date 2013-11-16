@@ -31,10 +31,10 @@ public abstract class MerchantEntityDef extends BaseModel {
 	public String averageCost = "";
 	public List<String> tags = null;
 	
-	public int kouwei;
-	public int huanjing;
-	public int fuwu;
-	public int xingjiabi;
+	public float kouwei;
+	public float huanjing;
+	public float fuwu;
+	public float xingjiabi;
 	
 	@Reference
 	public List<Tese> teses;

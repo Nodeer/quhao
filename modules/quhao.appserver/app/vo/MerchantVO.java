@@ -33,10 +33,10 @@ public class MerchantVO {
 	public String averageCost = "";
 	public List<String> tags = null;
 	
-	public int kouwei;
-	public int huanjing;
-	public int fuwu;
-	public int xingjiabi;;
+	public float kouwei;
+	public float huanjing;
+	public float fuwu;
+	public float xingjiabi;;
 	
 	public List<Tese> teses;
 	public String nickName;
@@ -60,10 +60,10 @@ public class MerchantVO {
 	
 	
 	public String commentAverageCost;
-	public int commentXingjiabi;
-	public int commentKouwei;
-	public int commentHuanjing;
-	public int commentFuwu;
+	public float commentXingjiabi;
+	public float commentKouwei;
+	public float commentHuanjing;
+	public float commentFuwu;
 	public String commentContent;
 	public String commentDate;
 	

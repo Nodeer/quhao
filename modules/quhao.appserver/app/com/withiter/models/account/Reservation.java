@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.bson.types.ObjectId;
+
+import play.modules.morphia.Model.MorphiaQuery;
 import play.modules.morphia.Model.NoAutoTimestamp;
 
 import com.google.code.morphia.annotations.Entity;
 import com.withiter.common.Constants.CreditStatus;
 import com.withiter.common.Constants.ReservationStatus;
 import com.withiter.models.merchant.Haoma;
+import com.withiter.models.merchant.Merchant;
 
 @Entity
 @NoAutoTimestamp
@@ -230,5 +234,17 @@ public class Reservation extends ReservationEntityDef {
 		findReservationsByMerchantIdandDate(mid, d);
 		return rList;
 	}
-
+	/**
+	 * 
+	 * @param rid  id of reservation
+	 * @return reservation
+	 */
+	public static Reservation findByRid(String rid){
+		MorphiaQuery q = Reservation.q();
+		q.filter("_id", new ObjectId(rid));
+		if(q.asKeyList().size() == 0){
+			return null;
+		}
+		return (Reservation) q.asList().get(0);
+	}
 }

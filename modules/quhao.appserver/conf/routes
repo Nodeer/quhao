@@ -41,6 +41,9 @@ GET		/signupWithMobile                   AccountController.signupWithMobile
 GET		/updatePassCode						AccountController.updatePassCode
 GET		/getAuthCode						AccountController.getAuthCode
 
+# Comment
+GET		/updateComment						CommentController.updateComment
+
 # Patch
 *		/p/{action}							Patches.{action}
 GET		/p        							Patches.index
