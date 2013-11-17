@@ -23,7 +23,7 @@ public class CommentController  extends BaseController{
 	 * @param xingjiabi 性价比
 	 * @return  String
 	 */
-	public static void updateComment(String rid,float kouwei,float huanjing,float fuwu,float xingjiabi,String content) {
+	public static void updateComment(String rid,int kouwei,int huanjing,int fuwu,int xingjiabi,String content) {
 		if (StringUtils.isEmpty(rid)||rid.equals("(null)")) {
 			renderJSON("服务器错误");
 		}
