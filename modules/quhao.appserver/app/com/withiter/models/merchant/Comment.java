@@ -90,10 +90,9 @@ public class Comment extends CommentEntityDef {
 		return paginate(q, page);
 	}
 	
-	public static Comment getLatestComment(String rid) {
+	public static Comment getComment(String rid) {
 		MorphiaQuery q = Comment.q();
 		q.filter("rid", rid);
-		q.order("-date");
 		return q.first();
 	}
 }

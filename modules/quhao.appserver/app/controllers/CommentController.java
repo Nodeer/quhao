@@ -36,14 +36,19 @@ public class CommentController  extends BaseController{
 				account.jifen=account.jifen+1;
 				account.save();
 			}
-			Comment cm=new Comment();
-			cm.rid=reservation.id();
-			cm.kouwei=kouwei;
-			cm.huanjing=huanjing;
-			cm.fuwu=fuwu;
-			cm.xingjiabi=xingjiabi;
-			cm.content=content;
-			cm.save();
+			Comment cm=Comment.getComment(rid);
+			if(cm==null){
+			    cm=new Comment();
+				cm.rid=reservation.id();
+				cm.mid=reservation.merchantId;
+				cm.accountId=reservation.accountId;
+				cm.kouwei=kouwei;
+				cm.huanjing=huanjing;
+				cm.fuwu=fuwu;
+				cm.xingjiabi=xingjiabi;
+				cm.content=content;
+				cm.save();
+			}
 			
 			reservation.isAppraise=true;
 			reservation.save();
@@ -56,8 +61,8 @@ public class CommentController  extends BaseController{
 	 * @param id  id of  reservation
 	 * 
 	 */
-	public static void getLatestComment(String rid) {
-		Comment c = Comment.getLatestComment(rid);
+	public static void getComment(String rid) {
+		Comment c = Comment.getComment(rid);
 		renderJSON(CommentVO.build(c));
 	}
 	
