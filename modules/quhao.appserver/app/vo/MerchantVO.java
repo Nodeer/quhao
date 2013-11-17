@@ -60,10 +60,10 @@ public class MerchantVO {
 	
 	
 	public String commentAverageCost;
-	public int commentXingjiabi;
-	public int commentKouwei;
-	public int commentHuanjing;
-	public int commentFuwu;
+	public float commentXingjiabi;
+	public float commentKouwei;
+	public float commentHuanjing;
+	public float commentFuwu;
 	public String commentContent;
 	public String commentDate;
 	

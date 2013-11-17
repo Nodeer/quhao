@@ -15,10 +15,10 @@ public class CommentVO {
 	public String mid;
 	
 	public String averageCost = "0";
-	public int xingjiabi = 0;
-	public int kouwei = 0;
-	public int huanjing = 0;
-	public int fuwu = 0;
+	public float xingjiabi = 0;
+	public float kouwei = 0;
+	public float huanjing = 0;
+	public float fuwu = 0;
 
 	public String content = "";
 
