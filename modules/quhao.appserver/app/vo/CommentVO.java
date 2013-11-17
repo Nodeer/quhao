@@ -9,7 +9,7 @@ public class CommentVO {
 	public String uid;
 	
 	public String accountId;
-	
+	public String rid;
 	public String nickName;
 	
 	public String mid;
@@ -30,6 +30,7 @@ public class CommentVO {
 	public static CommentVO build(Comment comment) {
 		CommentVO commentVO = new CommentVO();
 		commentVO.uid = comment.uid;
+		commentVO.rid = comment.rid;
 		commentVO.accountId = comment.accountId;
 		commentVO.nickName = comment.nickName;
 		commentVO.mid = comment.mid;
