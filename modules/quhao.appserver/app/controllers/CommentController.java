@@ -39,16 +39,16 @@ public class CommentController  extends BaseController{
 			Comment cm=Comment.getComment(rid);
 			if(cm==null){
 			    cm=new Comment();
-				cm.rid=reservation.id();
-				cm.mid=reservation.merchantId;
-				cm.accountId=reservation.accountId;
-				cm.kouwei=kouwei;
-				cm.huanjing=huanjing;
-				cm.fuwu=fuwu;
-				cm.xingjiabi=xingjiabi;
-				cm.content=content;
-				cm.save();
 			}
+			cm.rid=reservation.id();
+			cm.mid=reservation.merchantId;
+			cm.accountId=reservation.accountId;
+			cm.kouwei=kouwei;
+			cm.huanjing=huanjing;
+			cm.fuwu=fuwu;
+			cm.xingjiabi=xingjiabi;
+			cm.content=content;
+			cm.save();
 			
 			reservation.isAppraise=true;
 			reservation.save();
