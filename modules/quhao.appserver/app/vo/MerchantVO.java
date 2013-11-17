@@ -60,10 +60,10 @@ public class MerchantVO {
 	
 	
 	public String commentAverageCost;
-	public float commentXingjiabi;
-	public float commentKouwei;
-	public float commentHuanjing;
-	public float commentFuwu;
+	public int commentXingjiabi;
+	public int commentKouwei;
+	public int commentHuanjing;
+	public int commentFuwu;
 	public String commentContent;
 	public String commentDate;
 	
@@ -138,7 +138,7 @@ public class MerchantVO {
 		
 		vo.commentAverageCost = c.averageCost;
 		vo.commentContent = StringUtils.isEmpty(c.content) ? "暂无评论" : c.content;
-		vo.commentDate = StringUtils.isEmpty(c.content) ? "" : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(c.date);
+		vo.commentDate = StringUtils.isEmpty(c.content) ? "" : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(c.modified);
 		vo.commentFuwu = c.fuwu;
 		vo.commentHuanjing = c.huanjing;
 		vo.commentKouwei = c.kouwei;

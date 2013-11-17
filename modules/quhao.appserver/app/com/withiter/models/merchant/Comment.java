@@ -1,7 +1,12 @@
 package com.withiter.models.merchant;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import play.modules.morphia.Model.MorphiaQuery;
+
+import cn.bran.japid.util.StringUtils;
 
 import com.google.code.morphia.annotations.Entity;
 
@@ -37,7 +42,7 @@ public class Comment extends CommentEntityDef {
 	 */
 	public static Comment latestOne() {
 		MorphiaQuery q = Comment.q();
-		q.order("date");
+		q.order("modified");
 		return q.first();
 	}
 	
@@ -48,7 +53,39 @@ public class Comment extends CommentEntityDef {
 	public static Comment latestOne(String mid) {
 		MorphiaQuery q = Comment.q();
 		q.filter("mid", mid);
-		q.order("date");
+		q.order("modified");
 		return q.first();
+	}
+	
+	/**
+	 * 通用分页
+	 * @param q
+	 * @param page
+	 * @return
+	 */
+	private static List<Comment> paginate(MorphiaQuery q, int page) {
+		q.offset((page - 1) * 10).limit(10);
+		return q.asList();
+	}
+	
+	/**
+	 * 通用排序
+	 * @param q
+	 * @param sortBy
+	 * @return
+	 */
+	private static MorphiaQuery sortBy(MorphiaQuery q, String sortBy) {
+		q.order(sortBy);
+		return q;
+	}
+
+	public static List<Comment> findbyMid(int page, String mid, String sortBy) {
+
+		MorphiaQuery q = Comment.q();
+		q.filter("mid",mid);
+		if (!StringUtils.isEmpty(sortBy)) {
+			q = sortBy(q, sortBy);
+		}
+		return paginate(q, page);
 	}
 }

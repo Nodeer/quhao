@@ -44,6 +44,7 @@ public class MerchantListActivity extends QuhaoBaseActivity {
 	private String categoryCount;
 	private TextView categoryTypeTitle;
 	private boolean isFirst = true;
+	private boolean needToLoad = true;
 	public static boolean backClicked = false;
 
 	@Override
@@ -150,8 +151,9 @@ public class MerchantListActivity extends QuhaoBaseActivity {
 						+ "&cateType=" + categoryType;
 				QuhaoLog.i(LOGTAG, "the request url is : " + url);
 				String buf = CommonHTTPRequest.get(url);
-				if (StringUtils.isNull(buf)) {
+				if (StringUtils.isNull(buf) || "[]".endsWith(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+					needToLoad = false;
 				} else {
 					if (null == merchants) {
 						merchants = new ArrayList<Merchant>();
@@ -180,7 +182,7 @@ public class MerchantListActivity extends QuhaoBaseActivity {
 		public void onScroll(AbsListView view, int firstVisibleItem,
 				int visibleItemCount, int totalItemCount) {
 			// check hit the bottom of current loaded data
-			if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount > 0) {
+			if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount > 0 && needToLoad) {
 				MerchantListActivity.this.page += 1;
 				Thread merchantsThread = new Thread(merchantsRunnable);
 				merchantsThread.start();

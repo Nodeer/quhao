@@ -61,13 +61,13 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/critiquesLayout"
+        android:id="@+id/commentsLayout"
         android:layout_width="fill_parent"
         android:layout_height="0dip"
         android:layout_weight="1.0" >
 
         <ListView
-            android:id="@+id/critiquesView"
+            android:id="@+id/commentsView"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center_horizontal"

@@ -455,42 +455,45 @@ public class ParseJson {
 	 *            json string
 	 * @return critiques
 	 */
-	public static List<Comment> getCritiques(String buf) {
+	public static List<Comment> getComments(String buf) {
 
-		List<Comment> critiques = new ArrayList<Comment>();
+		List<Comment> comments = new ArrayList<Comment>();
 		if (StringUtils.isNull(buf)) {
-			return critiques;
+			return comments;
 		}
 
 		try {
 			JSONArray array = new JSONArray(buf);
 			for (int i = 0; i < array.length(); i++) {
 				JSONObject obj = array.getJSONObject(i);
-				Comment critique = coventCritique(obj);
-				critiques.add(critique);
+				Comment comment = coventComment(obj);
+				comments.add(comment);
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 
-		return critiques;
+		return comments;
 	}
 
-	private static Comment coventCritique(JSONObject obj) throws JSONException {
+	private static Comment coventComment(JSONObject obj) throws JSONException {
 
-		Comment critique;
-
+		Comment comment;
+		String uid = obj.optString("uid");
 		String accountId = obj.optString("accountId");
 		String nickName = obj.optString("nickName");
-		int level = obj.optInt("level");
-		int star = obj.optInt("star");
-		double average = obj.optDouble("average");
-		String desc = obj.optString("desc");
-		String updateDate = obj.optString("updateDate");
+		String mid = obj.optString("mid");
+		String averageCost = obj.optString("averageCost");
+		int xingjiabi = obj.optInt("xingjiabi");
+		int kouwei = obj.optInt("kouwei");
+		int huanjing = obj.optInt("huanjing");
+		int fuwu = obj.optInt("fuwu");
+		String content = obj.optString("content");
+		String created = obj.optString("created");
+		String modified = obj.optString("modified");
 
-		critique = new Comment(accountId, nickName, level, star, average,
-				desc, updateDate);
-		return critique;
+		comment = new Comment(uid, accountId, nickName, mid, averageCost, xingjiabi, kouwei, huanjing, fuwu, content, created, modified);
+		return comment;
 	}
 
 	public static List<Credit> getCredits(String buf) {

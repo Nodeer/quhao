@@ -1,29 +1,41 @@
 package com.withiter.quhao.vo;
 
+
 public class Comment {
 
+	private String uid;
+	
 	public String accountId;
 	
 	public String nickName;
 	
-	public int level;
+	private String mid;
 	
-	public int star;
+	public String averageCost = "0";
+	public int xingjiabi = 0;
+	public int kouwei = 0;
+	public int huanjing = 0;
+	public int fuwu = 0;
 	
-	public double average;
+	public String content;
 	
-	public String desc;
+	public String created;
+	public String modified;
 	
-	public String updateDate;
-	
-	public Comment(String accountId, String nickName,int level, int star, double average,String desc,String updateDate)
+	public Comment(String uid,String accountId, String nickName,String mid,String averageCost, 
+			int xingjiabi, int kouwei,int huanjing,int fuwu,String content,String created,String modified)
 	{
+		this.uid = uid;
 		this.accountId = accountId;
 		this.nickName = nickName;
-		this.level = level;
-		this.star = star;
-		this.average = average;
-		this.desc = desc;
-		this.updateDate = updateDate;
+		this.mid = mid;
+		this.averageCost = averageCost;
+		this.xingjiabi = xingjiabi;
+		this.kouwei = kouwei;
+		this.huanjing = huanjing;
+		this.fuwu = fuwu;
+		this.content = content;
+		this.created = created;
+		this.modified = modified;
 	}
 }

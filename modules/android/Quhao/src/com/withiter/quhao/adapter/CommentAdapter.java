@@ -15,28 +15,28 @@ import android.widget.TextView;
 import com.withiter.quhao.R;
 import com.withiter.quhao.vo.Comment;
 
-public class CritiqueAdapter extends BaseAdapter {
+public class CommentAdapter extends BaseAdapter {
 
 	private ListView listView;
 	private Activity activity;
-	public List<Comment> critiques;
+	public List<Comment> comments;
 
-	public CritiqueAdapter(Activity activity, ListView listView,List<Comment> critiques) {
+	public CommentAdapter(Activity activity, ListView listView,List<Comment> comments) {
 		super();
 		this.activity = activity;
 		this.listView= listView;
-		this.critiques = critiques;
+		this.comments = comments;
 
 	}
 
 	@Override
 	public int getCount() {
-		return critiques.size();
+		return comments.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return critiques.get(position);
+		return comments.get(position);
 	}
 
 	@Override
@@ -46,21 +46,25 @@ public class CritiqueAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Comment critique = (Comment) getItem(position);
-		synchronized (critique) {
+		Comment comment = (Comment) getItem(position);
+		synchronized (comment) {
 			ViewHolder holder = null;
 			if (convertView == null) {
 				holder = new ViewHolder();
 				LayoutInflater inflator = (LayoutInflater) parent.getContext()
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				convertView = inflator.inflate(R.layout.critique_list_item,
+				convertView = inflator.inflate(R.layout.comment_list_item,
 						null);
 				holder.nickName = (TextView) convertView.findViewById(R.id.nickName);
-				holder.level = (ImageView) convertView.findViewById(R.id.level);
+				holder.modified = (TextView) convertView.findViewById(R.id.modified);
+				holder.fuwu = (TextView) convertView.findViewById(R.id.fuwu);
+				holder.huanjing = (TextView) convertView.findViewById(R.id.huanjing);
+				holder.kouwei = (TextView) convertView.findViewById(R.id.kouwei);
+				holder.xingjiabi = (TextView) convertView.findViewById(R.id.xingjiabi);
 				holder.star = (ImageView) convertView.findViewById(R.id.star);
-				holder.average = (TextView) convertView.findViewById(R.id.average);
-				holder.critiqueDesc = (TextView) convertView.findViewById(R.id.critique_desc);
-				holder.updateDate = (TextView) convertView.findViewById(R.id.updateDate);
+				holder.content = (TextView) convertView.findViewById(R.id.content);
+				
+				holder.averageCost = (TextView) convertView.findViewById(R.id.averageCost);
 
 				/*
 				 * 重新设置图片的宽高
@@ -77,38 +81,19 @@ public class CritiqueAdapter extends BaseAdapter {
 				holder = (ViewHolder) convertView.getTag();
 			}
 
-			holder.nickName.setText(critique.nickName);
-			holder.average.setText(String.valueOf(critique.average));
+			holder.nickName.setText(comment.nickName);
+			holder.modified.setText(comment.modified);
+			holder.fuwu.setText(String.valueOf(comment.fuwu));
+			holder.huanjing.setText(String.valueOf(comment.huanjing));
+			holder.kouwei.setText(String.valueOf(comment.kouwei));
+			holder.xingjiabi.setText(String.valueOf(comment.xingjiabi));
+			holder.star = (ImageView) convertView.findViewById(R.id.star);
+			holder.content.setText(comment.content);
+			holder.averageCost.setText(comment.averageCost);
+			float avgValue = (comment.fuwu + comment.huanjing + comment.kouwei + comment.xingjiabi)/4;
+			int avg = Math.round(avgValue);
 			
-			holder.critiqueDesc.setText(critique.desc);
-			
-			holder.updateDate.setText(critique.updateDate);
-			holder.level.setTag("btnEnter_" + position);
-			
-			switch (critique.level) {
-			case 1:
-				holder.level.setImageResource(R.drawable.star00);
-				break;
-			case 2:
-				holder.level.setImageResource(R.drawable.star10);
-				break;
-			case 3:
-				holder.level.setImageResource(R.drawable.star20);
-				break;
-			case 4:
-				holder.level.setImageResource(R.drawable.star30);
-				break;
-			case 5:
-				holder.level.setImageResource(R.drawable.star40);
-				break;
-			case 6:
-				holder.level.setImageResource(R.drawable.star50);
-				break;
-			default:
-				break;
-			}
-			
-			switch (critique.star) {
+			switch (avg) {
 			case 1:
 				holder.star.setImageResource(R.drawable.star00);
 				break;
@@ -138,10 +123,13 @@ public class CritiqueAdapter extends BaseAdapter {
 
 	class ViewHolder {
 		TextView nickName;
-		ImageView level;
+		TextView xingjiabi;
+		TextView kouwei;
+		TextView huanjing;
+		TextView fuwu;
 		ImageView star;
-		TextView average;
-		TextView critiqueDesc;
-		TextView updateDate;
+		TextView averageCost;
+		TextView content;
+		TextView modified;
 	}
 }

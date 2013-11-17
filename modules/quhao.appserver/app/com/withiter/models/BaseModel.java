@@ -10,8 +10,8 @@ import play.modules.morphia.MorphiaPlugin;
 import play.modules.morphia.Model.MorphiaQuery;
 
 public abstract class BaseModel extends Model {
-	public Date created;
-	public Date modified;
+	public Date created = new Date();
+	public Date modified = new Date();
 
 	public String key;
 
