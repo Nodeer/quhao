@@ -23,7 +23,7 @@ public class CommentController  extends BaseController{
 	 * @param xingjiabi 性价比
 	 * @return  String
 	 */
-	public static void updateComment(String rid,int kouwei,int huanjing,int fuwu,int xingjiabi) {
+	public static void updateComment(String rid,float kouwei,float huanjing,float fuwu,float xingjiabi,String content) {
 		if (StringUtils.isEmpty(rid)||rid.equals("(null)")) {
 			renderJSON("服务器错误");
 		}
@@ -37,16 +37,28 @@ public class CommentController  extends BaseController{
 				account.save();
 			}
 			Comment cm=new Comment();
+			cm.rid=reservation.id();
 			cm.kouwei=kouwei;
 			cm.huanjing=huanjing;
 			cm.fuwu=fuwu;
 			cm.xingjiabi=xingjiabi;
+			cm.content=content;
 			cm.save();
 			
 			reservation.isAppraise=true;
 			reservation.save();
 			renderText("评价成功");
 		}
+	}
+	/**
+	 * 返回最新的评价
+	 * 
+	 * @param id  id of  reservation
+	 * 
+	 */
+	public static void getLatestComment(String rid) {
+		Comment c = Comment.getLatestComment(rid);
+		renderJSON(CommentVO.build(c));
 	}
 	
 	/**
@@ -113,3 +125,4 @@ public class CommentController  extends BaseController{
 		}
 	}
 }
+
