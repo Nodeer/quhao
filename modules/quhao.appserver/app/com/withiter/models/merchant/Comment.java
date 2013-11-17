@@ -58,6 +58,7 @@ public class Comment extends CommentEntityDef {
 	}
 	
 	/**
+<<<<<<< Updated upstream
 	 * 通用分页
 	 * @param q
 	 * @param page
@@ -87,5 +88,12 @@ public class Comment extends CommentEntityDef {
 			q = sortBy(q, sortBy);
 		}
 		return paginate(q, page);
+	}
+	
+	public static Comment getLatestComment(String rid) {
+		MorphiaQuery q = Comment.q();
+		q.filter("rid", rid);
+		q.order("-date");
+		return q.first();
 	}
 }
