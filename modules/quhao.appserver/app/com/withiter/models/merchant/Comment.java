@@ -58,7 +58,6 @@ public class Comment extends CommentEntityDef {
 	}
 	
 	/**
-<<<<<<< Updated upstream
 	 * 通用分页
 	 * @param q
 	 * @param page
@@ -90,9 +89,23 @@ public class Comment extends CommentEntityDef {
 		return paginate(q, page);
 	}
 	
+	/**
+	 * @param id of reservation
+	 * @return
+	 */
 	public static Comment getComment(String rid) {
 		MorphiaQuery q = Comment.q();
 		q.filter("rid", rid);
 		return q.first();
+	}
+	
+	/**
+	 * @param id of account
+	 * @return count
+	 */
+	public static long getCommentByAccountId(String aid) {
+		MorphiaQuery q = Comment.q();
+		q.filter("accountId", aid);
+		return q.count();
 	}
 }

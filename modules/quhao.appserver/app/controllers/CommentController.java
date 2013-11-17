@@ -67,6 +67,16 @@ public class CommentController  extends BaseController{
 	}
 	
 	/**
+	 *  获取用户评论
+	 * @return 评论数量
+	 * @param  id of account
+	 */
+	public static void getCommentsById(String accountId) {
+		long count= Comment.getCommentByAccountId(accountId);
+		renderText(count);
+	}
+	
+	/**
 	 *  根据商家ID获取评论
 	 * @return 评论
 	 * @param  date 日期

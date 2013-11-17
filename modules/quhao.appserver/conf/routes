@@ -45,6 +45,7 @@ GET		/getAuthCode						AccountController.getAuthCode
 GET		/updateComment						CommentController.updateComment
 GET		/getCommentsByMid					CommentController.getCommentsByMid
 GET		/getComment							CommentController.getComment
+GET		/getCommentsById					CommentController.getCommentsById
 
 # Patch
 *		/p/{action}							Patches.{action}
