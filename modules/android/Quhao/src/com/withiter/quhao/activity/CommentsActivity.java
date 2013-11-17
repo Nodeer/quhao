@@ -18,11 +18,11 @@ import com.withiter.quhao.adapter.CritiqueAdapter;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
-import com.withiter.quhao.vo.Critique;
+import com.withiter.quhao.vo.Comment;
 
-public class CritiquesActivity extends QuhaoBaseActivity {
+public class CommentsActivity extends QuhaoBaseActivity {
 
-	private static final String TAG = CritiquesActivity.class.getName();
+	private static final String TAG = CommentsActivity.class.getName();
 	
 	private String merchantName;
 	
@@ -32,7 +32,7 @@ public class CritiquesActivity extends QuhaoBaseActivity {
 	/**
 	 * the critiques queried from merchant
 	 */
-	private List<Critique> critiques;
+	private List<Comment> critiques;
 	
 	/**
 	 * back button
@@ -69,7 +69,7 @@ public class CritiquesActivity extends QuhaoBaseActivity {
 					
 					findViewById(R.id.loadingbar).setVisibility(View.GONE);
 					findViewById(R.id.critiquesLayout).setVisibility(View.VISIBLE);
-					critiqueAdapter = new CritiqueAdapter(CritiquesActivity.this,critiquesView,critiques);
+					critiqueAdapter = new CritiqueAdapter(CommentsActivity.this,critiquesView,critiques);
 					critiquesView.setAdapter(critiqueAdapter);
 					isFirstLoad = false;
 				}else{
@@ -123,16 +123,16 @@ public class CritiquesActivity extends QuhaoBaseActivity {
 						unlockHandler.sendEmptyMessageAtTime(UNLOCK_CLICK, 1000);
 					}else{
 						//critiques = ParseJson.getCritiques(buf);
-						critiques = new ArrayList<Critique>();
-						Critique critique1 = new Critique("111", "nick11", 1, 1, 10.25, "很像日本的居酒屋。服务态度超赞，点餐的时候都“半蹲”着，上菜的时候“会提醒你”趁热吃或小心烫。菜都“很精致”，不过量“很小”，种类也“不是很多”。环境挺好，座位空间比较大，也“不是那么嘈杂”，“两三个人小聚、随便聊聊，挺合适的”。", "12-02-27");
-						Critique critique2 = new Critique("111", "nick22", 2, 2, 101.25, "比我想象中便宜一点。。。牛肉火锅很好吃~不过不管哪家店的这种豆腐肥牛锅我都很喜欢~一口牛肉也是我觉得最好吃的~还没撒胡椒粉什么的就已经觉得味道满进去了~而且肉不老不塞牙~三文鱼刺身没什么大感觉。。。倒是芥末酱给的好少。。而且感觉干掉了芝士焗年糕。。。筷子弄起来困难。。。而且其实并没什么好吃的~", "12-02-27");
+						critiques = new ArrayList<Comment>();
+						Comment critique1 = new Comment("111", "nick11", 1, 1, 10.25, "很像日本的居酒屋。服务态度超赞，点餐的时候都“半蹲”着，上菜的时候“会提醒你”趁热吃或小心烫。菜都“很精致”，不过量“很小”，种类也“不是很多”。环境挺好，座位空间比较大，也“不是那么嘈杂”，“两三个人小聚、随便聊聊，挺合适的”。", "12-02-27");
+						Comment critique2 = new Comment("111", "nick22", 2, 2, 101.25, "比我想象中便宜一点。。。牛肉火锅很好吃~不过不管哪家店的这种豆腐肥牛锅我都很喜欢~一口牛肉也是我觉得最好吃的~还没撒胡椒粉什么的就已经觉得味道满进去了~而且肉不老不塞牙~三文鱼刺身没什么大感觉。。。倒是芥末酱给的好少。。而且感觉干掉了芝士焗年糕。。。筷子弄起来困难。。。而且其实并没什么好吃的~", "12-02-27");
 						critiques.add(critique1);
 						critiques.add(critique2);
 						updateCritiquesHandler.obtainMessage(200, critiques).sendToTarget();
 					}
 				} catch (Exception e) {
 					unlockHandler.sendEmptyMessageAtTime(UNLOCK_CLICK, 1000);
-					Toast.makeText(CritiquesActivity.this, R.string.network_error_info, Toast.LENGTH_SHORT).show();
+					Toast.makeText(CommentsActivity.this, R.string.network_error_info, Toast.LENGTH_SHORT).show();
 					QuhaoLog.e(TAG, "Error for querying critiques from web service, the error is : " + e.getMessage());
 				}finally{
 					unlockHandler.sendEmptyMessageAtTime(UNLOCK_CLICK, 1000);

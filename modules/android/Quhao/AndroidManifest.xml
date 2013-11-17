@@ -214,7 +214,7 @@
         
         <!-- critiques page -->
         <activity
-            android:name="com.withiter.quhao.activity.CritiquesActivity"
+            android:name="com.withiter.quhao.activity.CommentsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/app_name"
             android:launchMode="singleTop"

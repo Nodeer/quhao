@@ -1,6 +1,6 @@
 package com.withiter.quhao.vo;
 
-public class Critique {
+public class Comment {
 
 	public String accountId;
 	
@@ -16,7 +16,7 @@ public class Critique {
 	
 	public String updateDate;
 	
-	public Critique(String accountId, String nickName,int level, int star, double average,String desc,String updateDate)
+	public Comment(String accountId, String nickName,int level, int star, double average,String desc,String updateDate)
 	{
 		this.accountId = accountId;
 		this.nickName = nickName;

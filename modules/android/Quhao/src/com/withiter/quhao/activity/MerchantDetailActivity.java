@@ -347,7 +347,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 
 		switch (v.getId()) {
 		case R.id.critiqueLayout:
-			Intent intent = new Intent(this, CritiquesActivity.class);
+			Intent intent = new Intent(this, CommentsActivity.class);
 			intent.putExtra("merchantName", this.merchant.name);
 			intent.putExtra("merchantId", this.merchant.id);
 			startActivity(intent);

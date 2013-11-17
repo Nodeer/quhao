@@ -15,7 +15,7 @@ import org.json.JSONObject;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.vo.Category;
 import com.withiter.quhao.vo.Credit;
-import com.withiter.quhao.vo.Critique;
+import com.withiter.quhao.vo.Comment;
 import com.withiter.quhao.vo.Haoma;
 import com.withiter.quhao.vo.LoginInfo;
 import com.withiter.quhao.vo.Merchant;
@@ -455,9 +455,9 @@ public class ParseJson {
 	 *            json string
 	 * @return critiques
 	 */
-	public static List<Critique> getCritiques(String buf) {
+	public static List<Comment> getCritiques(String buf) {
 
-		List<Critique> critiques = new ArrayList<Critique>();
+		List<Comment> critiques = new ArrayList<Comment>();
 		if (StringUtils.isNull(buf)) {
 			return critiques;
 		}
@@ -466,7 +466,7 @@ public class ParseJson {
 			JSONArray array = new JSONArray(buf);
 			for (int i = 0; i < array.length(); i++) {
 				JSONObject obj = array.getJSONObject(i);
-				Critique critique = coventCritique(obj);
+				Comment critique = coventCritique(obj);
 				critiques.add(critique);
 			}
 		} catch (JSONException e) {
@@ -476,9 +476,9 @@ public class ParseJson {
 		return critiques;
 	}
 
-	private static Critique coventCritique(JSONObject obj) throws JSONException {
+	private static Comment coventCritique(JSONObject obj) throws JSONException {
 
-		Critique critique;
+		Comment critique;
 
 		String accountId = obj.optString("accountId");
 		String nickName = obj.optString("nickName");
@@ -488,7 +488,7 @@ public class ParseJson {
 		String desc = obj.optString("desc");
 		String updateDate = obj.optString("updateDate");
 
-		critique = new Critique(accountId, nickName, level, star, average,
+		critique = new Comment(accountId, nickName, level, star, average,
 				desc, updateDate);
 		return critique;
 	}

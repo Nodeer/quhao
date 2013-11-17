@@ -13,15 +13,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.withiter.quhao.R;
-import com.withiter.quhao.vo.Critique;
+import com.withiter.quhao.vo.Comment;
 
 public class CritiqueAdapter extends BaseAdapter {
 
 	private ListView listView;
 	private Activity activity;
-	public List<Critique> critiques;
+	public List<Comment> critiques;
 
-	public CritiqueAdapter(Activity activity, ListView listView,List<Critique> critiques) {
+	public CritiqueAdapter(Activity activity, ListView listView,List<Comment> critiques) {
 		super();
 		this.activity = activity;
 		this.listView= listView;
@@ -46,7 +46,7 @@ public class CritiqueAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Critique critique = (Critique) getItem(position);
+		Comment critique = (Comment) getItem(position);
 		synchronized (critique) {
 			ViewHolder holder = null;
 			if (convertView == null) {
