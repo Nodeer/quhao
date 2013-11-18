@@ -10,7 +10,6 @@ import org.apache.commons.lang.StringUtils;
 import play.Play;
 import play.libs.Codec;
 import play.mvc.Scope.Session;
-import play.mvc.With;
 import vo.MerchantVO;
 import vo.account.AccountVO;
 import vo.account.CommonVO;
@@ -21,7 +20,6 @@ import com.withiter.models.backendMerchant.MerchantAccountRel;
 import com.withiter.models.merchant.Merchant;
 
 import controllers.BaseController;
-import controllers.secure.Secure;
 
 /**
  * Account Controller for backend merchant
