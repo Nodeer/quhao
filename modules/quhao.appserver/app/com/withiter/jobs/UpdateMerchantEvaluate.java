@@ -44,18 +44,21 @@ public class UpdateMerchantEvaluate extends Job {
 					long huanjing =  commentQ.average("huanjing");
 					long fuwu =  commentQ.average("fuwu");
 					long grade =  commentQ.average("grade");
+					long averageCost =  commentQ.average("averageCost");
 					
 					logger.debug("merchant " + m.name + ", xingjiabi :" + xingjiabi);
 					logger.debug("merchant " + m.name + ", kouwei :" + kouwei);
 					logger.debug("merchant " + m.name + ", huanjing :" + huanjing);
 					logger.debug("merchant " + m.name + ", fuwu :" + fuwu);
 					logger.debug("merchant " + m.name + ", grade :" + grade);
+					logger.debug("merchant " + m.name + ", averageCost :" + averageCost);
 					
 					m.xingjiabi = xingjiabi;
 					m.kouwei = kouwei;
 					m.huanjing = huanjing;
 					m.fuwu = fuwu;
 					m.grade = grade;
+					m.averageCost = averageCost;
 					
 					m.save();
 				}
