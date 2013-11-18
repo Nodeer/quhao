@@ -208,4 +208,12 @@ public class Merchant extends MerchantEntityDef {
 				DEFAULT_PAGE_ITEMS_NUMBER);
 		return q.asList();
 	}
+
+	/**
+	 * play job for updating merchant evaluate, eg: grade, xingjiabi, kouwei, huanjing, fuwu, renjun
+	 */
+	public static void updateMerchantEvaluate() {
+		
+		
+	}
 }

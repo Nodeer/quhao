@@ -20,6 +20,7 @@ public abstract class CommentEntityDef extends BaseModel {
 	public int kouwei = 0;
 	public int huanjing = 0;
 	public int fuwu = 0;
+	public int grade = 0;
 
 	public String content = "";
 

@@ -29,14 +29,14 @@ public class MerchantVO {
 
 	public String cateType;
 	
-	public String grade = "";
-	public String averageCost = "";
 	public List<String> tags = null;
 	
-	public float kouwei;
-	public float huanjing;
-	public float fuwu;
-	public float xingjiabi;;
+	public float averageCost = 0f;
+	public float grade = 0f;
+	public float kouwei = 0f;
+	public float huanjing = 0f;
+	public float fuwu = 0f;
+	public float xingjiabi = 0f;
 	
 	public List<Tese> teses;
 	public String nickName;
@@ -107,7 +107,7 @@ public class MerchantVO {
 		MerchantVO vo = new MerchantVO();
 		vo.id = m.id();
 		vo.address = m.address;
-		vo.averageCost = StringUtils.isEmpty(m.averageCost) ? "0" : m.averageCost;
+		vo.averageCost = m.averageCost;
 		vo.cateType = m.cateType;
 		vo.closeTime = m.closeTime;
 		vo.description = m.description;

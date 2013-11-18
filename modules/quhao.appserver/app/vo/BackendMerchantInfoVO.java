@@ -56,14 +56,14 @@ public class BackendMerchantInfoVO {
 //	public Constants.MobileOSType mobileOS;
 	public Date lastLogin = new Date();
 	
-	public String grade = "";
-	public String averageCost = "";
 	public List<String> tags = null;
 	
-	public float kouwei;
-	public float huanjing;
-	public float fuwu;
-	public float xingjiabi;
+	public float averageCost = 0f;
+	public float grade = 0f;
+	public float kouwei = 0f;
+	public float huanjing = 0f;
+	public float fuwu = 0f;
+	public float xingjiabi = 0f;
 	
 	public List<String> imgSrc = new ArrayList<String>();
 	

@@ -148,7 +148,7 @@ public class Patches extends BaseController {
 		m.address = (s[1].split(":").length == 1) ? "" : s[1].split(":")[1].trim();
 		
 		m.telephone = (s[2].split(":").length == 1) ? new String[]{""} : new String[]{s[2].split(":")[1].trim()};
-		m.averageCost = (s[3].split(":").length == 1) ? "" : s[3].split(":")[1].trim();
+		m.averageCost = Float.parseFloat((s[3].split(":").length == 1) ? "" : s[3].split(":")[1].trim());
 		
 		m.openTime = (s[4].split(":").length == 1) ? "" : s[4].split(":")[1].trim();
 		m.closeTime = (s[5].split(":").length == 1) ? "" : s[5].split(":")[1].trim();
@@ -158,7 +158,7 @@ public class Patches extends BaseController {
 		m.kouwei = (s[9].split(":").length == 1) ? 0 : Integer.parseInt(s[9].split(":")[1].trim());
 		m.xingjiabi = (s[10].split(":").length == 1) ? 0 : Integer.parseInt(s[10].split(":")[1].trim());
 		
-		m.grade = (s[11].split(":").length == 1) ? "" : s[11].split(":")[1].trim();
+		m.grade = Float.parseFloat((s[11].split(":").length == 1) ? "" : s[11].split(":")[1].trim());
 		m.markedCount = (s[12].split(":").length == 1) ? 0 : Integer.parseInt(s[12].split(":")[1].trim());
 		
 		m.nickName = (s[13].split(":").length == 1) ? "" : s[13].split(":")[1].trim();
@@ -192,7 +192,7 @@ public class Patches extends BaseController {
 		m.address = (s[1].split(":").length == 1) ? "" : s[1].split(":")[1].trim();
 		
 		m.telephone = (s[2].split(":").length == 1) ? new String[]{""} : new String[]{s[2].split(":")[1].trim()};
-		m.averageCost = (s[3].split(":").length == 1) ? "" : s[3].split(":")[1].trim();
+		m.averageCost = Float.parseFloat((s[3].split(":").length == 1) ? "" : s[3].split(":")[1].trim());
 		
 		m.openTime = (s[4].split(":").length == 1) ? "" : s[4].split(":")[1].trim();
 		m.closeTime = (s[5].split(":").length == 1) ? "" : s[5].split(":")[1].trim();
@@ -202,7 +202,7 @@ public class Patches extends BaseController {
 		m.kouwei = (s[9].split(":").length == 1) ? 0 : Integer.parseInt(s[9].split(":")[1].trim());
 		m.xingjiabi = (s[10].split(":").length == 1) ? 0 : Integer.parseInt(s[10].split(":")[1].trim());
 		
-		m.grade = (s[11].split(":").length == 1) ? "" : s[11].split(":")[1].trim();
+		m.grade = Float.parseFloat((s[11].split(":").length == 1) ? "" : s[11].split(":")[1].trim());
 		m.markedCount = (s[12].split(":").length == 1) ? 0 : Integer.parseInt(s[12].split(":")[1].trim());
 		
 		m.nickName = (s[13].split(":").length == 1) ? "" : s[13].split(":")[1].trim();
