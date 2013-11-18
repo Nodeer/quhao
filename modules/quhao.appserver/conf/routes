@@ -66,6 +66,7 @@ GET		/createOpinion						OpinionController.createOpinion
 *		/b/w/finishByMerchant				backend.self.SelfManagementController.finishByMerchant
 
 *		/b/a/updatePwd						backend.self.AccountController.updatePwd
+*		/b/a/logout							backend.self.AccountController.logout
 # backend management
 
 # image display

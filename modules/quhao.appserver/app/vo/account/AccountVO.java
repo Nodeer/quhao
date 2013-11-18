@@ -25,7 +25,7 @@ public class AccountVO {
 	public String mobileOS;
 	public Date lastLogin;
 	
-	public String error;
+	public String error = "";
 	
 	public List<MerchantVO> mList = new ArrayList<MerchantVO>();
 	

@@ -1,5 +1,6 @@
 package controllers.backend.self;
 
+import java.util.Date;
 import java.util.List;
 
 import notifiers.MailsController;
@@ -8,6 +9,7 @@ import org.apache.commons.lang.StringUtils;
 
 import play.Play;
 import play.libs.Codec;
+import play.mvc.Http.Cookie;
 import play.mvc.Scope.Session;
 import vo.MerchantVO;
 import vo.account.AccountVO;
@@ -20,6 +22,12 @@ import com.withiter.models.merchant.Merchant;
 
 import controllers.BaseController;
 
+/**
+ * Account Controller for backend merchant
+ * 
+ * @author CROSS
+ * 
+ */
 public class AccountController extends BaseController {
 
 	/**
@@ -40,6 +48,11 @@ public class AccountController extends BaseController {
 			} else {
 				account = Account.findByPhone(userName);
 			}
+			
+			// update account last login datews
+			account.lastLogin = new Date();
+			account.save();
+			
 			avo = AccountVO.build(account);
 			avo.error = "";
 
@@ -53,9 +66,20 @@ public class AccountController extends BaseController {
 				}
 			}
 
-			Session.current().put(Constants.SESSION_USERNAME, account);
+			Session.current().put(account.id(), account);
 			renderJSON(avo);
 		}
+	}
+
+	/**
+	 * merchant logout function
+	 */
+	public static void logout() {
+		String aid = params.get("aid");
+		AccountVO avo = new AccountVO();
+
+		Session.current().remove(aid);
+		renderJSON(avo);
 	}
 
 	/**
@@ -100,11 +124,11 @@ public class AccountController extends BaseController {
 			renderJapidWith("japidviews.backend.self.AccountController.activeFailed");
 		}
 	}
-	
+
 	/**
 	 * validate the old password
 	 */
-	public static void updatePwd(){
+	public static void updatePwd() {
 		String uid = params.get("uid");
 		String oPwd = params.get("oPwd");
 		String nPwd = params.get("nPwd");
@@ -113,28 +137,29 @@ public class AccountController extends BaseController {
 		System.out.println(oPwd);
 		System.out.println(nPwd);
 		System.out.println(nPwdR);
-		
+
 		Account account = Account.findById(uid);
 		CommonVO cvo = new CommonVO();
-		if(account == null){
+		if (account == null) {
 			cvo.success = false;
 			cvo.value = "用户不存在";
 			renderJSON(cvo);
 		}
-		
+
 		boolean flag = account.validatePassword(oPwd);
-		if(!flag){
+		if (!flag) {
 			cvo.success = false;
 			cvo.value = "原始密码不正确";
 			renderJSON(cvo);
 		}
-		
-		if(StringUtils.isEmpty(nPwd) || nPwd.length() < 6 || nPwd.length() > 12){
+
+		if (StringUtils.isEmpty(nPwd) || nPwd.length() < 6
+				|| nPwd.length() > 12) {
 			cvo.success = false;
 			cvo.value = "新密码长度6-12个字符";
 			renderJSON(cvo);
 		}
-		
+
 		account.updatePassword(account, nPwd);
 		cvo.success = true;
 		renderJSON(cvo);

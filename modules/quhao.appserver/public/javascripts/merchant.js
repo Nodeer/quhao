@@ -170,3 +170,22 @@ Merchant.finish = function(seatNumber, currentNumber, mid){
 Merchant.expired = function(seatNumber, currentNumber, mid){
 	
 }
+
+Merchant.logout = function(aid){
+	$.ajax({
+		type:"POST",
+		url:"/b/a/logout",
+		dataType:"json",
+		data:{"aid":aid},
+		success:function(data){
+			alert(data);
+			alert(data.error);
+			if(data.error == ""){
+				window.location.href="/b/m";
+			}
+		},
+		error:function(){
+			alert("服务器维护中，马上就好。");
+		}
+	});
+}

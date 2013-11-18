@@ -3,11 +3,12 @@
 
 <div class="lmargin300">
 	`if(bmivo.merchantExist){
-		<div style="margin: 50px 0px 50px 0px; padding: 35px 15px; float: left;"><input type="button" name="" style=" margin-right: 30px;" class="styleBtn corner " value="用户排队管理" onclick="Merchant.goPaiduiPage('${bmivo.mid}');"/></div>
+	<div class="backend_btn_div"><input type="button" class="styleBtn corner rmargin10" value="用户排队管理" onclick="Merchant.goPaiduiPage('${bmivo.mid}');"/></div>
 	`}
-	<div style="margin: 50px 0px 50px 0px; padding: 35px 15px; float: left;"><input type="button" name="" style=" margin-right: 30px;" class="styleBtn corner " value="个人信息管理" onclick="Merchant.goPersonalPage('${bmivo.aid}');"/></div>
+	<div class="backend_btn_div"><input type="button" class="styleBtn corner rmargin10" value="个人信息管理" onclick="Merchant.goPersonalPage('${bmivo.aid}');"/></div>
 	`if(bmivo.merchantExist){
-	<div style="margin: 50px 0px 50px 0px; padding: 35px 15px; float: left;"><input type="button" name="" style=" margin-right: 30px;" class="styleBtn corner " value="消费统计管理" onclick="Merchant.goStatisticPage('${bmivo.mid}');"/></div>
-	<div style="margin: 50px 0px 50px 0px; padding: 35px 15px; float: left;"><input type="button" name="" style=" margin-right: 30px;" class="styleBtn corner " value="编辑商家资料" onclick="Merchant.enableEdit();"/></div>
+	<div class="backend_btn_div"><input type="button" class="styleBtn corner rmargin10" value="消费统计管理" onclick="Merchant.goStatisticPage('${bmivo.mid}');"/></div>
+	<div class="backend_btn_div"><input type="button" class="styleBtn corner rmargin10" value="编辑商家资料" onclick="Merchant.enableEdit();"/></div>
 	`}
+	<div class="backend_btn_div"><input type="button" class="styleBtn corner rmargin10" value="退出后台管理" onclick="Merchant.logout('${bmivo.aid}');"/></div>
 </div>
