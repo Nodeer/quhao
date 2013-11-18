@@ -9,8 +9,8 @@ import org.apache.commons.lang.StringUtils;
 
 import play.Play;
 import play.libs.Codec;
-import play.mvc.Http.Cookie;
 import play.mvc.Scope.Session;
+import play.mvc.With;
 import vo.MerchantVO;
 import vo.account.AccountVO;
 import vo.account.CommonVO;
@@ -21,6 +21,7 @@ import com.withiter.models.backendMerchant.MerchantAccountRel;
 import com.withiter.models.merchant.Merchant;
 
 import controllers.BaseController;
+import controllers.secure.Secure;
 
 /**
  * Account Controller for backend merchant
@@ -28,6 +29,7 @@ import controllers.BaseController;
  * @author CROSS
  * 
  */
+//@With(Secure.class)
 public class AccountController extends BaseController {
 
 	/**
@@ -65,8 +67,8 @@ public class AccountController extends BaseController {
 					avo.mList.add(MerchantVO.build(m));
 				}
 			}
-
-			Session.current().put(account.id(), account);
+			session.put(Constants.SESSION_USERNAME, account.id());
+			Session.current().put(account.id(), account.id());
 			renderJSON(avo);
 		}
 	}
@@ -79,6 +81,7 @@ public class AccountController extends BaseController {
 		AccountVO avo = new AccountVO();
 
 		Session.current().remove(aid);
+		session.clear();
 		renderJSON(avo);
 	}
 
