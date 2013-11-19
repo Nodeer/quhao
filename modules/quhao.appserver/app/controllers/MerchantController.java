@@ -5,14 +5,15 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import play.libs.Codec;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import play.mvc.Before;
 import vo.CategoryVO;
 import vo.HaomaVO;
 import vo.MerchantVO;
 import vo.ReservationVO;
 import vo.TopMerchantVO;
-import vo.account.SignupVO;
 
 import com.withiter.common.Constants.CreditStatus;
 import com.withiter.models.account.Account;
@@ -24,15 +25,26 @@ import com.withiter.models.merchant.Haoma;
 import com.withiter.models.merchant.Merchant;
 import com.withiter.models.merchant.Paidui;
 import com.withiter.models.merchant.TopMerchant;
-import com.withiter.utils.StringUtils;
 
 /**
  * 所有商家的操作
  * 
  * @author Cross Lee
  */
+
 public class MerchantController extends BaseController {
 
+	private static Logger logger = LoggerFactory.getLogger(MerchantController.class);
+	
+	/**
+	 * Interception
+	 * any caller on this controller, will first invoke this method
+	 */
+	@Before
+	static void checkAuthentification(){
+		logger.debug("Interception called");
+	}
+	
 	/**
 	 * 返回所有分类
 	 */
