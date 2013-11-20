@@ -347,10 +347,18 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 
 		switch (v.getId()) {
 		case R.id.critiqueLayout:
-			Intent intent = new Intent(this, CommentsActivity.class);
-			intent.putExtra("merchantName", this.merchant.name);
-			intent.putExtra("merchantId", this.merchant.id);
-			startActivity(intent);
+			if(StringUtils.isNotNull(this.merchant.commentContent))
+			{
+				QuhaoLog.d("", "the commentContent : " + this.merchant.commentContent);
+				Intent intent = new Intent(this, CommentsActivity.class);
+				intent.putExtra("merchantName", this.merchant.name);
+				intent.putExtra("merchantId", this.merchant.id);
+				startActivity(intent);
+			}
+			else
+			{
+				Toast.makeText(this, "对不起，暂无评论。", Toast.LENGTH_LONG).show();
+			}
 			break;
 		default:
 			break;

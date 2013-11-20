@@ -483,16 +483,17 @@ public class ParseJson {
 		String accountId = obj.optString("accountId");
 		String nickName = obj.optString("nickName");
 		String mid = obj.optString("mid");
+		String rId = obj.optString("rid");
 		String averageCost = obj.optString("averageCost");
-		int xingjiabi = obj.optInt("xingjiabi");
-		int kouwei = obj.optInt("kouwei");
-		int huanjing = obj.optInt("huanjing");
-		int fuwu = obj.optInt("fuwu");
+		float xingjiabi = Float.valueOf(obj.optString("xingjiabi"));
+		float kouwei = Float.valueOf(obj.optString("kouwei"));
+		float huanjing = Float.valueOf(obj.optString("xingjiabi"));
+		float fuwu = Float.valueOf(obj.optString("fuwu"));
 		String content = obj.optString("content");
 		String created = obj.optString("created");
 		String modified = obj.optString("modified");
 
-		comment = new Comment(uid, accountId, nickName, mid, averageCost, xingjiabi, kouwei, huanjing, fuwu, content, created, modified);
+		comment = new Comment(uid, accountId, nickName, mid,rId, averageCost, xingjiabi, kouwei, huanjing, fuwu, content, created, modified);
 		return comment;
 	}
 

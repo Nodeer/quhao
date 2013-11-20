@@ -11,24 +11,27 @@ public class Comment {
 	
 	private String mid;
 	
+	private String rId;
+	
 	public String averageCost = "0";
-	public int xingjiabi = 0;
-	public int kouwei = 0;
-	public int huanjing = 0;
-	public int fuwu = 0;
+	public float xingjiabi = 0;
+	public float kouwei = 0;
+	public float huanjing = 0;
+	public float fuwu = 0;
 	
 	public String content;
 	
 	public String created;
 	public String modified;
 	
-	public Comment(String uid,String accountId, String nickName,String mid,String averageCost, 
-			int xingjiabi, int kouwei,int huanjing,int fuwu,String content,String created,String modified)
+	public Comment(String uid,String accountId, String nickName,String mid,String rId,String averageCost, 
+			float xingjiabi, float kouwei,float huanjing,float fuwu,String content,String created,String modified)
 	{
 		this.uid = uid;
 		this.accountId = accountId;
 		this.nickName = nickName;
 		this.mid = mid;
+		this.rId = rId;
 		this.averageCost = averageCost;
 		this.xingjiabi = xingjiabi;
 		this.kouwei = kouwei;

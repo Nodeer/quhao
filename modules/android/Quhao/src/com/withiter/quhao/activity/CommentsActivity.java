@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
@@ -71,6 +72,13 @@ public class CommentsActivity extends QuhaoBaseActivity {
 			
 			if(msg.what == 200){
 				
+				if(null == msg.obj)
+				{
+					findViewById(R.id.loadingbar).setVisibility(View.GONE);
+					findViewById(R.id.commentsLayout).setVisibility(View.VISIBLE);
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+					return;
+				}
 				if(isFirstLoad){
 					
 					findViewById(R.id.loadingbar).setVisibility(View.GONE);
@@ -82,7 +90,6 @@ public class CommentsActivity extends QuhaoBaseActivity {
 					critiqueAdapter.comments = comments;
 				}
 				critiqueAdapter.notifyDataSetChanged();
-				
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 		}
@@ -141,12 +148,13 @@ public class CommentsActivity extends QuhaoBaseActivity {
 			public void run() {
 				
 				try {
+					Looper.prepare();
 					QuhaoLog.v(TAG, "query critiques from web service, the merchant id is : " + merchantId);
 					String buf = CommonHTTPRequest.get("getCommentsByMid?page=" + page + "&mid=" +merchantId);
 					
 					if(StringUtils.isNull(buf) || "[]".equals(buf)){
 						needToLoad = false;
-						unlockHandler.sendEmptyMessageAtTime(UNLOCK_CLICK, 1000);
+						updateCritiquesHandler.obtainMessage(200, null).sendToTarget();
 					}else{
 						//
 						if(isFirstLoad || null == comments)
@@ -163,6 +171,7 @@ public class CommentsActivity extends QuhaoBaseActivity {
 					QuhaoLog.e(TAG, "Error for querying critiques from web service, the error is : " + e.getMessage());
 				}finally{
 					unlockHandler.sendEmptyMessageAtTime(UNLOCK_CLICK, 1000);
+					Looper.loop();
 				}
 				
 				
