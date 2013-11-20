@@ -138,7 +138,7 @@ public class LoginActivity extends QuhaoBaseActivity {
 					+ "&email=&password=" + passwordText.getText().toString();
 			QuhaoLog.i(TAG, "the login url is : " + url);
 			try {
-				String result = CommonHTTPRequest.get(url);
+				String result = CommonHTTPRequest.post(url);
 				QuhaoLog.i(TAG, result);
 				if (StringUtils.isNull(result)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);

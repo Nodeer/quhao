@@ -67,6 +67,7 @@ public class AccountController extends BaseController {
 			}
 			session.put(Constants.SESSION_USERNAME, account.id());
 			Session.current().put(account.id(), account.id());
+			
 			renderJSON(avo);
 		}
 	}

@@ -6,9 +6,11 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.httpclient.HttpException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import play.Logger;
 import play.libs.Codec;
+import play.mvc.Scope.Session;
 import vo.ReservationVO;
 import vo.account.CreditVO;
 import vo.account.LoginVO;
@@ -23,6 +25,8 @@ import com.withiter.models.merchant.Merchant;
 import com.withiter.utils.StringUtils;
 
 public class AccountController extends BaseController {
+	
+	private static Logger logger = LoggerFactory.getLogger(controllers.AccountController.class);
 
 	/**
 	 * 手机号注册生成随即6位数字验证码
@@ -244,7 +248,7 @@ public class AccountController extends BaseController {
 
 		String result = account.validateThenCreate();
 
-		Logger.info(result);
+		logger.debug(result);
 
 		if (result != null) {
 			renderHtml(result);
@@ -282,6 +286,10 @@ public class AccountController extends BaseController {
 				loginVO.msg = "success";
 				loginVO.errorCode = 0;
 				loginVO.build(account);
+				session.put(Constants.SESSION_USERNAME, account.id());
+				Session.current().put(account.id(), account.id());
+				
+				logger.debug(session.getId());
 			} else {
 				loginVO.errorCode = -2;
 				loginVO.msg = "fail";
