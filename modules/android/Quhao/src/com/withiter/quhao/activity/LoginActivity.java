@@ -228,7 +228,10 @@ public class LoginActivity extends QuhaoBaseActivity {
 					} else if ("com.withiter.quhao.activity.MoreActivity"
 							.equals(activityName)) {
 						intent.setClass(LoginActivity.this, MoreActivity.class);
-					} else {
+					}else if("com.withiter.quhao.activity.RegisterActivity"
+							.equals(activityName)){
+						
+					}else {
 						intent.setClass(LoginActivity.this,
 								PersonCenterActivity.class);
 					}

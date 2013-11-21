@@ -14,14 +14,15 @@ import org.json.JSONObject;
 
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.vo.Category;
-import com.withiter.quhao.vo.Credit;
 import com.withiter.quhao.vo.Comment;
+import com.withiter.quhao.vo.Credit;
 import com.withiter.quhao.vo.Haoma;
 import com.withiter.quhao.vo.LoginInfo;
 import com.withiter.quhao.vo.Merchant;
 import com.withiter.quhao.vo.MerchantLocation;
 import com.withiter.quhao.vo.Paidui;
 import com.withiter.quhao.vo.ReservationVO;
+import com.withiter.quhao.vo.SignupVO;
 import com.withiter.quhao.vo.TopMerchant;
 
 public class ParseJson {
@@ -538,5 +539,28 @@ public class ParseJson {
 
 		credit = new Credit(accountId, merchantId, merchantName, merchantAddress, reservationId, seatNumber, myNumber, cost, status);
 		return credit;
+	}
+
+	/**
+	 * parse json string to signup
+	 * @param buf
+	 * @return
+	 */
+	public static SignupVO getSignup(String buf) {
+		SignupVO signup = null;
+		if (null == buf || "".equals(buf)) {
+			return signup;
+		}
+
+		try {
+			JSONObject json = new JSONObject(buf);
+			String errorKey = json.optString("errorKey");
+			String errorText = json.optString("errorText");
+			signup = new SignupVO(errorKey, errorText);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		return signup;
 	}
 }
