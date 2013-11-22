@@ -287,7 +287,7 @@ public class AccountController extends BaseController {
 				loginVO.errorCode = 0;
 				loginVO.build(account);
 				session.put(Constants.SESSION_USERNAME, account.id());
-				Session.current().put(account.id(), account.id());
+				session.put(account.id(), account.id());
 				
 				logger.debug(session.getId());
 			} else {

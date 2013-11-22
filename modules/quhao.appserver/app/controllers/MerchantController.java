@@ -1,10 +1,17 @@
 package controllers;
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +35,7 @@ import com.withiter.models.merchant.Haoma;
 import com.withiter.models.merchant.Merchant;
 import com.withiter.models.merchant.Paidui;
 import com.withiter.models.merchant.TopMerchant;
+import com.withiter.utils.DesUtils;
 
 /**
  * 所有商家的操作
@@ -42,38 +50,66 @@ public class MerchantController extends BaseController {
 	/**
 	 * Interception any caller on this controller, will first invoke this method
 	 */
-//	@Before
+	@Before
 	static void checkAuthentification() {
 		boolean mobileAgent = false;
-		Header header = request.headers.get("user-agent");
-		logger.debug(header.name);
-		logger.debug(header.value());
-		logger.debug(session.getId());
-		if (header.values.contains("QuhaoAndroid")) {
-			mobileAgent = true;
+		boolean sessionExist = false;
+
+		Header userAgentHeader = request.headers.get("user-agent");
+		Header sessionAndroidHeader = request.headers.get("quhao-android-session");
+		Header sessionIOSHeader = request.headers.get("quhao-ios-session");
+		
+		for(String k : request.headers.keySet()){
+			logger.debug("header key: "+k);
+			logger.debug("header value: " + request.headers.get(k).values);
 		}
-		if (header.values.contains("QuhaoiPhone")) {
+		
+		if (userAgentHeader.values.contains("QuhaoAndroid")) {
 			mobileAgent = true;
+			return;
+//			if(sessionAndroidHeader != null){
+//				String phone  = new DesUtils().decrypt(sessionAndroidHeader.value());
+//				Account account = Account.findByPhone(phone);
+//				if(StringUtils.isNotEmpty(phone) && account != null){
+//					session.put(account.id(), account.id());
+//					return;
+//				}
+//			}
 		}
-		if (header.values.contains("Windows")) {
+		
+		if (userAgentHeader.values.contains("QuhaoiPhone")) {
+			mobileAgent = true;
+			return;
+//			if(sessionIOSHeader != null){
+//				String phone  = new DesUtils().decrypt(sessionIOSHeader.value());
+//				Account account = Account.findByPhone(phone);
+//				if(StringUtils.isNotEmpty(phone) && account != null){
+//					session.put(account.id(), account.id());
+//					return;
+//				}
+//			}
+		}
+		
+		if (userAgentHeader.values.contains("Windows")) {
 
 		}
-
-		//
 
 		logger.debug("The caller agent is mobile : " + mobileAgent);
 		logger.debug("The caller agent is pc : " + !mobileAgent);
 
+//		if (mobileAgent) {
+//			if (!sessionExist) {
+//				ErrorVO evo = new ErrorVO();
+//				evo.key = "NO_LOGIN";
+//				evo.cause = "SESSION_EXPIRED";
+//				renderJSON(evo);
+//			}
+//			return;
+//		}
+
 		if (!session.contains(Constants.SESSION_USERNAME)) {
 			logger.debug("no session is found in Constants.SESSION_USERNAME");
-			if (mobileAgent) {
-				ErrorVO evo = new ErrorVO();
-				evo.key = "NO_LOGIN";
-				evo.cause = "SESSION_EXPIRED";
-				renderJSON(evo);
-			} else {
-				renderJapidWith("japidviews.backend.merchant.MerchantManagementController.index");
-			}
+			renderJapidWith("japidviews.backend.merchant.MerchantManagementController.index");
 		}
 	}
 
