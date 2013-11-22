@@ -18,6 +18,7 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.util.encrypt.DesUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
@@ -89,7 +90,14 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		historyPaiduiLayout.setOnClickListener(this);
 		creditCostLayout.setOnClickListener(this);
 		
-		initData();
+		AccountInfo account = (AccountInfo)getIntent().getSerializableExtra("account");
+		if(account != null){
+			QuhaoLog.d(TAG, "account.phone: " + account.phone);
+			mobile.setText(account.phone);
+		} else {
+			initData();
+		}
+		
 		/*
 		String isLogin = SharedprefUtil.get(this, QuhaoConstant.IS_LOGIN,
 				"false");
@@ -153,10 +161,11 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			Looper.prepare();
 			String phone = SharedprefUtil.get(PersonCenterActivity.this, QuhaoConstant.PHONE, "");
 			String password = SharedprefUtil.get(PersonCenterActivity.this, QuhaoConstant.PASSWORD, "");
-			if (StringUtils.isNotNull(phone) && StringUtils.isNotNull(password)) {
-				String url = "AccountController/login?";
-				url = url + "phone=" + phone.trim() + "&";
-				url = url + "password=" + password.trim();
+			
+			String decripedPwd = new DesUtils().decrypt(password);
+			
+			if (StringUtils.isNotNull(phone) && StringUtils.isNotNull(decripedPwd)) {
+				String url = "AccountController/login?phone=" + phone.trim() + "&password=" + password.trim();
 				QuhaoLog.i(TAG, "the login url is : " + url);
 				try {
 					String result = CommonHTTPRequest.get(url);

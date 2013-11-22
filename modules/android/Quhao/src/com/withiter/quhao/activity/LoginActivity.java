@@ -15,8 +15,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.withiter.quhao.QHClientApplication;
@@ -24,7 +22,7 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
-import com.withiter.quhao.util.db.AccountInfoHelper;
+import com.withiter.quhao.util.encrypt.DesUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
@@ -58,8 +56,8 @@ public class LoginActivity extends QuhaoBaseActivity {
 		setContentView(R.layout.login_layout);
 		super.onCreate(savedInstanceState);
 
-		String phone = SharedprefUtil.get(LoginActivity.this,
-				QuhaoConstant.PHONE, "");
+		// TODO : There is a issue here
+		String phone = SharedprefUtil.get(LoginActivity.this, QuhaoConstant.PHONE, "");
 		activityName = getIntent().getStringExtra("activityName");
 		if (StringUtils.isNotNull(activityName)) {
 			if (MerchantDetailActivity.class.getName().equals(activityName)) {
@@ -67,13 +65,11 @@ public class LoginActivity extends QuhaoBaseActivity {
 				transfortParams.put("merchantId", merchantId);
 			}
 		}
-		loginResult = (TextView) this
-				.findViewById(R.id.person_center_login_result);
+		loginResult = (TextView) this.findViewById(R.id.person_center_login_result);
 
 		isAutoLoginView = (ImageView) findViewById(R.id.isAutoLogin);
 		isAutoLoginView.setOnClickListener(this);
-		isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_AUTO_LOGIN,
-				"false");
+		isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_AUTO_LOGIN, "false");
 
 		if ("true".equals(isAutoLogin)) {
 			isAutoLoginView.setImageResource(R.drawable.checkbox_checked);
@@ -100,8 +96,7 @@ public class LoginActivity extends QuhaoBaseActivity {
 		// 隐藏软键盘
 		InputMethodManager m = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		if (m != null) {
-			m.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(),
-					InputMethodManager.HIDE_NOT_ALWAYS);
+			m.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 		}
 		// 已经点过，直接返回
 		if (isClick) {
@@ -129,13 +124,10 @@ public class LoginActivity extends QuhaoBaseActivity {
 			break;
 		case R.id.login:
 			QuhaoLog.i(TAG, "login clcick");
-			progressLogin = new ProgressDialogUtil(this, R.string.empty,
-					R.string.waitting, false);
+			progressLogin = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
 			progressLogin.showProgress();
 
-			String url = "AccountController/login?phone="
-					+ loginNameText.getText().toString().trim()
-					+ "&email=&password=" + passwordText.getText().toString();
+			String url = "AccountController/login?phone=" + loginNameText.getText().toString().trim() + "&email=&password=" + passwordText.getText().toString();
 			QuhaoLog.i(TAG, "the login url is : " + url);
 			try {
 				String result = CommonHTTPRequest.post(url);
@@ -145,7 +137,7 @@ public class LoginActivity extends QuhaoBaseActivity {
 				} else {
 					LoginInfo loginInfo = ParseJson.getLoginInfo(result);
 					AccountInfo account = new AccountInfo();
-					
+
 					// TODO : user id is 1??
 					account.setUserId("1");
 					account.build(loginInfo);
@@ -158,30 +150,29 @@ public class LoginActivity extends QuhaoBaseActivity {
 					}
 					if (account.msg.equals("success")) {
 						loginResult.setText("登陆成功");
-						SharedprefUtil.put(this, QuhaoConstant.ACCOUNT_ID,
-								loginInfo.accountId);
-						SharedprefUtil.put(this, QuhaoConstant.PHONE,
-								account.getPhone());
-						SharedprefUtil.put(this, QuhaoConstant.PASSWORD,
-								account.getPassword());
-						SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN,
-								isAutoLogin.trim());
-						SharedprefUtil
-								.put(this, QuhaoConstant.IS_LOGIN, "true");
+						SharedprefUtil.put(this, QuhaoConstant.ACCOUNT_ID, loginInfo.accountId);
+						SharedprefUtil.put(this, QuhaoConstant.PHONE, account.getPhone());
 						
-						// TODO add user info into sqlite 
-//						AccountInfoHelper accountDBHelper = new AccountInfoHelper(
-//								this);
-//						accountDBHelper.open();
-//						accountDBHelper.saveAccountInfo(account);
-//						accountDBHelper.close();
+						String HexedPwd = new DesUtils().encrypt(passwordText.getText().toString());
+						SharedprefUtil.put(this, QuhaoConstant.PASSWORD, HexedPwd);
 						
+						SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN, isAutoLogin.trim());
+						SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "true");
+
+						// TODO add user info into sqlite
+						// AccountInfoHelper accountDBHelper = new
+						// AccountInfoHelper(
+						// this);
+						// accountDBHelper.open();
+						// accountDBHelper.saveAccountInfo(account);
+						// accountDBHelper.close();
+
 						QHClientApplication.getInstance().accessInfo = account;
-						
+						QHClientApplication.getInstance().isLogined = true;
+
 						QuhaoLog.d(TAG, "login call back to " + activityName);
-						
-						loginUpdateHandler.obtainMessage(200, account)
-								.sendToTarget();
+
+						loginUpdateHandler.obtainMessage(200, account).sendToTarget();
 						return;
 					}
 				}
@@ -211,29 +202,26 @@ public class LoginActivity extends QuhaoBaseActivity {
 				super.handleMessage(msg);
 
 				QuhaoLog.d(TAG, "login call back to " + activityName);
-				
+
 				// intent.pute
 				if (StringUtils.isNotNull(activityName)) {
 					Intent intent = new Intent();
-					if (MerchantDetailActivity.class.getName()
-							.equals(activityName)) {
-						intent.putExtra("merchantId",
-								(String) transfortParams.get("merchantId"));
-						intent.setClass(LoginActivity.this,
-								GetNumberActivity.class);
-					} else if ("com.withiter.quhao.activity.PersonCenterActivity"
-							.equals(activityName)) {
-						intent.setClass(LoginActivity.this,
-								PersonCenterActivity.class);
-					} else if ("com.withiter.quhao.activity.MoreActivity"
-							.equals(activityName)) {
-						intent.setClass(LoginActivity.this, MoreActivity.class);
-					}else if("com.withiter.quhao.activity.RegisterActivity"
-							.equals(activityName)){
+					if (MerchantDetailActivity.class.getName().equals(activityName)) {
+						intent.putExtra("merchantId", (String) transfortParams.get("merchantId"));
+						intent.setClass(LoginActivity.this, GetNumberActivity.class);
+					} else if (PersonCenterActivity.class.getName().equals(activityName)) {
+						intent.setClass(LoginActivity.this, PersonCenterActivity.class);
+						Bundle mBundle = new Bundle();  
 						
-					}else {
-						intent.setClass(LoginActivity.this,
-								PersonCenterActivity.class);
+						QuhaoLog.d(TAG, "(AccountInfo)msg.obj : " + ((AccountInfo)msg.obj).password);
+				        mBundle.putSerializable("account", (AccountInfo)msg.obj);  
+				        intent.putExtras(mBundle);  
+					} else if ("com.withiter.quhao.activity.MoreActivity".equals(activityName)) {
+						intent.setClass(LoginActivity.this, MoreActivity.class);
+					} else if ("com.withiter.quhao.activity.RegisterActivity".equals(activityName)) {
+
+					} else {
+						intent.setClass(LoginActivity.this, PersonCenterActivity.class);
 					}
 					startActivity(intent);
 				}
