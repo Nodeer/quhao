@@ -1,8 +1,5 @@
 package com.withiter.quhao.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,7 +32,6 @@ import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.vo.Merchant;
-import com.withiter.quhao.vo.MerchantLocation;
 
 public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerClickListener,
 	OnMapLoadedListener,OnInfoWindowClickListener,InfoWindowAdapter
@@ -53,17 +49,11 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 	
 	private Merchant merchant;
 	
-	private List<MerchantLocation> locations;
-	
 	private MapView mMapView;
 	
 	private AMap mAMap;
 	
-	private TextView markerText;
-	
 	private CameraUpdate update = null;
-	
-	private List<LatLng> latLngs = new ArrayList<LatLng>();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -127,8 +117,8 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 				} else {
 					
 					merchant = ParseJson.getMerchant(buf);
-					merchant.lat = 31.678109;
-					merchant.lng = 31.678109;
+//					merchant.lat = 31.678109;
+//					merchant.lng = 31.678109;
 					//List<ReservationVO> rvos = ParseJson.getReservations(buf);
 //					locations = new ArrayList<MerchantLocation>();
 //					MerchantLocation location = new MerchantLocation("51e563feae4d165869fda38c", "name111", 31.678109, 31.678109, "address11");

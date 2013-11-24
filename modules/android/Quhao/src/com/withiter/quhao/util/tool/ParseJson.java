@@ -77,7 +77,7 @@ public class ParseJson {
 					if (categoryType.equals("yuecaiguan"))
 						catTypeToString = "粤菜馆";
 					if (categoryType.equals("zhongcancaixi"))
-						catTypeToString = "中餐西餐";
+						catTypeToString = "中餐菜系";
 					if (categoryType.equals("zizhucan"))
 						catTypeToString = "自助餐";
 					if (categoryType.equals("xiaochikuaican"))
@@ -231,8 +231,8 @@ public class ParseJson {
 		boolean enable = obj.optBoolean("enable");
 		String joinedDate = obj.optString("joinedDate");
 
-		long lat = obj.optLong("lat");
-		long lng = obj.optLong("lng");
+		double lat = obj.optDouble("x");
+		double lng = obj.optDouble("y");
 
 		merchant = new Merchant(id, imgUrl, name, address, phone, cateType,
 				grade, averageCost, tags, kouwei, huanjing, fuwu, xingjiabi,

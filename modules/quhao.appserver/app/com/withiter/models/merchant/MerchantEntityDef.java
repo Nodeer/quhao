@@ -21,6 +21,14 @@ public abstract class MerchantEntityDef extends BaseModel {
 	public String cateType;
 	public String merchantImage = "";
 	
+	public String cityCode;
+	
+	public String postcode;
+	
+	public String email;
+	
+	public String website;
+	
 	public Set merchantImageSet = new HashSet<String>();
 	
 	// 百度坐标

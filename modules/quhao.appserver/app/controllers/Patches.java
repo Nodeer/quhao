@@ -61,6 +61,182 @@ public class Patches extends BaseController {
 	}
 	
 	/**
+	 * 从data/merchants导入商家信息
+	 * @throws IOException
+	 */
+	public static void importMerchants1() throws IOException{
+		logger.info(Patches.class.getName()+" start to importMerchants.");
+		long start = System.currentTimeMillis();
+		String dir = MERCHANT_CSV_FOLDER;
+		File f = new File(dir);
+		if(f.isDirectory()){
+			File[] files = f.listFiles();
+			for(int i = 0; i < files.length; i++){
+				if(files[i].getName().indexOf(".txt")>0)
+				{
+					BufferedReader br = new BufferedReader(new FileReader(files[i]));
+					String line = null;
+					while((line=br.readLine())!=null){
+						String[] s = line.replaceAll("：", ":").split("\\|");
+						
+
+						Merchant m = new Merchant();
+						for(String ss : s){
+							System.out.println(ss);
+						}
+						
+						
+						m.cityCode = s[1].split(":")[1].trim();
+						m.email = (s[4].split(":").length == 1) ? "" : s[4].split(":")[1].trim();
+						m.postcode = s[6].split(":")[1].trim();
+						m.name = s[9].split(":")[1].trim();
+						m.address = (s[7].split(":").length == 1) ? "" : s[7].split(":")[1].trim();
+						
+						m.telephone = (s[8].split(":").length == 1) ? new String[]{""} :s[8].split(":")[1].split(";"); 
+						m.website = (s[11].split(":").length == 1) ? "" : s[11].split(":")[1].trim();
+						m.x = s[12].split(":")[1].trim();
+						m.y = s[13].split(":")[1].trim();
+						
+						String[] typeDescs = s[10].split(":")[1].split(";");
+						
+						if(typeDescs[2].contains("中餐厅"))
+						{
+							m.cateType = "zhongcancaixi";
+						}else if(typeDescs[2].contains("中式素菜"))
+						{
+							m.cateType = "zhongcancaixi";
+						}
+						else if(typeDescs[2].contains("四川"))
+						{
+							m.cateType = "chuancai";
+						}
+						else if(typeDescs[2].contains("火锅"))
+						{
+							m.cateType = "huoguo";
+						}
+						else if(typeDescs[2].contains("湖南"))
+						{
+							m.cateType = "xiangcai";
+						}
+						else if(typeDescs[2].contains("广东"))
+						{
+							m.cateType = "yuecaiguan";
+						}
+						else if(typeDescs[2].contains("上海"))
+						{
+							m.cateType = "benbangcai";
+						}
+						else if(typeDescs[2].contains("综合"))
+						{
+							m.cateType = "zhongcancaixi";
+						}
+						else if(typeDescs[2].contains("海鲜"))
+						{
+							m.cateType = "haixian";
+						}
+						else if(typeDescs[2].contains("江苏"))
+						{
+							m.cateType = "jiangsucai";
+						}
+						else if(typeDescs[2].contains("台湾"))
+						{
+							m.cateType = "taiwan";
+						}
+						else if(typeDescs[2].contains("东北"))
+						{
+							m.cateType = "dongbei";
+						}
+						else if(typeDescs[2].contains("潮州"))
+						{
+							m.cateType = "yuecaiguan";
+						}
+						else if(typeDescs[2].contains("浙江"))
+						{
+							m.cateType = "zhejiangcai";
+						}
+						else if(typeDescs[2].contains("清真"))
+						{
+							m.cateType = "xinjiangqingzhen";
+						}
+						else if(typeDescs[2].contains("特色"))
+						{
+							m.cateType = "zhongcancaixi";
+						}
+						else if(typeDescs[2].contains("清真"))
+						{
+							m.cateType = "xinjiangqingzhen";
+						}
+						else if(typeDescs[2].contains("云贵"))
+						{
+							m.cateType = "chuancai";
+						}
+						else if(typeDescs[2].contains("快餐"))
+						{
+							m.cateType = "xiaochikuaican";
+						}
+						else if(typeDescs[2].contains("茶餐"))
+						{
+							m.cateType = "xiaochikuaican";
+						}
+						else if(typeDescs[2].contains("大家"))
+						{
+							m.cateType = "xiaochikuaican";
+						}
+						else if(typeDescs[2].contains("大家"))
+						{
+							m.cateType = "xiaochikuaican";
+						}
+						else if(typeDescs[2].contains("大家"))
+						{
+							m.cateType = "xiaochikuaican";
+						}
+						else if(typeDescs[2].contains("大家"))
+						{
+							m.cateType = "xiaochikuaican";
+						}
+						else if(typeDescs[2].contains("大家"))
+						{
+							m.cateType = "xiaochikuaican";
+						}
+						else
+						{
+							m.cateType = "zhongcancaixi";
+						}
+							
+						
+						m.averageCost = 0;
+						
+						m.openTime = "";
+						m.closeTime = "";
+						m.description = "";
+						m.fuwu = 0;
+						m.huanjing = 0;
+						m.kouwei = 0;
+						m.xingjiabi = 0;
+						
+						m.grade = 0;
+						m.markedCount = 0;
+						
+						m.nickName = "";
+						//m.cateType = fileName;
+						m.enable = false;
+						m.joinedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()).toString();
+						
+						m.save();
+					
+					}
+					br.close();
+				}
+				
+			}
+		}
+		logger.info(Patches.class.getName()+" importMerchants finished, "+ (System.currentTimeMillis() - start) + "ms.");
+		
+		MorphiaQuery q = Merchant.q();
+		renderJSON(q.count());
+	}
+	
+	/**
 	 * 从data/topmerchants导入topX商家信息
 	 * @throws IOException
 	 */

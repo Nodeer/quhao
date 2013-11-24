@@ -54,7 +54,7 @@ public class Merchant implements Serializable {
 			String tags, Integer kouwei, Integer huanjing, Integer fuwu,
 			Integer xingjiabi, String teses, String nickName,
 			String description, String openTime, String closeTime,
-			Integer marketCount, boolean enable, String joinedDate,long lat,long lng) {
+			Integer marketCount, boolean enable, String joinedDate,double lat,double lng) {
 		this.id = id;
 		this.merchantImage = merchantImage;
 		this.name = name;
