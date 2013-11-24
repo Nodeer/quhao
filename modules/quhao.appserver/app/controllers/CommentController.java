@@ -34,6 +34,7 @@ public class CommentController  extends BaseController{
 			if(reservation.isAppraise==false){
 				Account account = Account.findById(reservation.accountId);
 				account.jifen=account.jifen+1;
+				account.dianping=account.dianping+1;
 				account.save();
 			}
 			Comment cm=Comment.getComment(rid);
