@@ -43,6 +43,7 @@ GET		/generateAuthCode					AccountController.GenerateAuthCode
 GET		/signupWithMobile                   AccountController.signupWithMobile
 GET		/updatePassCode						AccountController.updatePassCode
 GET		/getAuthCode						AccountController.getAuthCode
+GET		/signIn								AccountController.signIn
 
 # Comment
 GET		/updateComment						CommentController.updateComment
