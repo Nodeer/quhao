@@ -7,6 +7,29 @@ import com.withiter.quhao.vo.LoginInfo;
 
 public class AccountInfo implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9060527069391618394L;
+
+	public String userId;
+	public String accountId;
+	public String phone;
+
+	public String email;
+	public String password;
+	public String nickName;
+	public String birthday;
+	public String userImage;
+	public String enable;
+	public String mobileOS;
+	public String signIn;
+	public String isSignIn;
+
+	public String isAuto = "false";
+	public String msg;
+	public String lastLogin;
+
 	public String getAccountId() {
 		return accountId;
 	}
@@ -31,29 +54,6 @@ public class AccountInfo implements Serializable {
 		this.isSignIn = isSignIn;
 	}
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 9060527069391618394L;
-	
-	public String userId;
-	public String accountId;
-	public String phone;
-	
-	public String email;
-	public String password;
-	public String nickName;
-	public String birthday;
-	public String userImage;
-	public String enable;
-	public String mobileOS;
-	public String signIn;
-	public String isSignIn;
-	
-	public String isAuto = "false";
-	public String msg;
-	public String lastLogin;
-	
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
@@ -97,16 +97,15 @@ public class AccountInfo implements Serializable {
 	public void setLastLogin(String lastLogin) {
 		this.lastLogin = lastLogin;
 	}
-	
 
 	public String getIsAuto() {
 		return isAuto;
 	}
 
 	public void setIsAuto(String isAuto) {
-		if(StringUtils.isNotNull(isAuto)){
+		if (StringUtils.isNotNull(isAuto)) {
 			this.isAuto = isAuto;
-		}else{
+		} else {
 			this.isAuto = "false";
 		}
 	}
@@ -154,7 +153,7 @@ public class AccountInfo implements Serializable {
 	public String getLastLogin() {
 		return lastLogin;
 	}
-	
+
 	public void build(LoginInfo loginInfo) {
 		this.msg = loginInfo.msg;
 		this.accountId = loginInfo.accountId;

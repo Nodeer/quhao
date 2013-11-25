@@ -47,8 +47,8 @@ public class QHClientApplication extends Application {
 		QHClientApplication.mContext = this;
 		isLogined = false;
 		instance = this;
-		initDBConfig();
-		initConfig();
+		initAccountConfig();
+		createSDCardDir();
 		super.onCreate();
 	}
 
@@ -63,13 +63,8 @@ public class QHClientApplication extends Application {
 		return instance;
 	}
 
-	private void initDBConfig() {
+	private void initAccountConfig() {
 
-		// TODO remove below codes
-		// AccountInfoHelper accountDBHelper = new AccountInfoHelper(this);
-		// accountDBHelper.open();
-		// accountDBHelper.dropAccountInfoTable();
-		// accountDBHelper.close();
 		QuhaoLog.i(TAG, "init database config");
 
 		SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
@@ -105,6 +100,7 @@ public class QHClientApplication extends Application {
 							SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN, isAutoLogin.trim());
 							SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "true");
 							this.phone = phone;
+							this.isLogined = true;
 							Toast.makeText(this, "登录成功", Toast.LENGTH_LONG).show();
 							return;
 						}
@@ -122,10 +118,6 @@ public class QHClientApplication extends Application {
 			SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
 			QuhaoLog.i(TAG, "accessInfo is null");
 		}
-	}
-
-	private void initConfig() {
-		createSDCardDir();
 	}
 
 	/**

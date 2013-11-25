@@ -139,10 +139,11 @@ public class LoginActivity extends QuhaoBaseActivity {
 					AccountInfo account = new AccountInfo();
 
 					// TODO : user id is 1??
-					account.setUserId("1");
+//					account.setUserId("1");
 					account.build(loginInfo);
 					account.isAuto = isAutoLogin;
-					QuhaoLog.i(TAG, account.msg);
+					QuhaoLog.i(TAG, "account.msg : " + account.msg);
+					
 					if (account.msg.equals("fail")) {
 						loginResult.setText("用户名或密码错误，登陆失败");
 						passwordText.setText("");
@@ -159,18 +160,10 @@ public class LoginActivity extends QuhaoBaseActivity {
 						SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN, isAutoLogin.trim());
 						SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "true");
 
-						// TODO add user info into sqlite
-						// AccountInfoHelper accountDBHelper = new
-						// AccountInfoHelper(
-						// this);
-						// accountDBHelper.open();
-						// accountDBHelper.saveAccountInfo(account);
-						// accountDBHelper.close();
-
 						QHClientApplication.getInstance().accessInfo = account;
 						QHClientApplication.getInstance().isLogined = true;
 
-						QuhaoLog.d(TAG, "login call back to " + activityName);
+//						QuhaoLog.d(TAG, "login call back to " + activityName);
 
 						loginUpdateHandler.obtainMessage(200, account).sendToTarget();
 						return;
