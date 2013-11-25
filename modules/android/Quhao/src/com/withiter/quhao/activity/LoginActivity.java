@@ -138,8 +138,6 @@ public class LoginActivity extends QuhaoBaseActivity {
 					LoginInfo loginInfo = ParseJson.getLoginInfo(result);
 					AccountInfo account = new AccountInfo();
 
-					// TODO : user id is 1??
-//					account.setUserId("1");
 					account.build(loginInfo);
 					account.isAuto = isAutoLogin;
 					QuhaoLog.i(TAG, "account.msg : " + account.msg);
@@ -162,8 +160,6 @@ public class LoginActivity extends QuhaoBaseActivity {
 
 						QHClientApplication.getInstance().accessInfo = account;
 						QHClientApplication.getInstance().isLogined = true;
-
-//						QuhaoLog.d(TAG, "login call back to " + activityName);
 
 						loginUpdateHandler.obtainMessage(200, account).sendToTarget();
 						return;

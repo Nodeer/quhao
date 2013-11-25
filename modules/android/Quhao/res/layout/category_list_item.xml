@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="国际平面设计联盟（AGI）2012"
+                android:text="@string/empty"
                 android:textColor="#333333"
                 android:textSize="16sp" />
 
@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="2012年9月1日至10月19日"
+                android:text="@string/empty"
                 android:textColor="#666666"
                 android:textSize="13sp" />
         </LinearLayout>

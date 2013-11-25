@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.ReservationAdapter;
 import com.withiter.quhao.util.AsyncImageLoader;
@@ -164,10 +165,10 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 
 			@Override
 			public void onClick(View v) {
-
-				// TODO add login check
+				// TODO remove below line
 				String isLogin = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.IS_LOGIN, "false");
-				if ("true".equalsIgnoreCase(isLogin)) {
+				
+				if (QHClientApplication.getInstance().isLogined) {
 					Intent intent = new Intent();
 					intent.putExtra("merchantId", merchantId);
 					intent.putExtra("merchantName", mName);

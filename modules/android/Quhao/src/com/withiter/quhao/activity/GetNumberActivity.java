@@ -31,6 +31,7 @@ import com.withiter.quhao.vo.ReservationVO;
 
 /**
  * 取号activity
+ * 
  * @author Wang Jie Ze
  */
 public class GetNumberActivity extends QuhaoBaseActivity {
@@ -69,7 +70,7 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 	private String[] seatNos;
 	private Haoma haoma;
 	private int currentIndex = 0;
-//	private String currentNo;
+	// private String currentNo;
 
 	private Paidui currentPaidui;
 	private ProgressDialogUtil progress;
@@ -83,8 +84,7 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 		setContentView(R.layout.get_number);
 		super.onCreate(savedInstanceState);
 
-		progress = new ProgressDialogUtil(this, R.string.empty,
-				R.string.querying, false);
+		progress = new ProgressDialogUtil(this, R.string.empty, R.string.querying, false);
 		merchantId = getIntent().getStringExtra("merchantId");
 		merchantName = getIntent().getStringExtra("merchantName");
 
@@ -96,6 +96,7 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 		seatNoView = (TextView) findViewById(R.id.seatNo);
 		currentNumberView = (TextView) findViewById(R.id.currentNumber);
 		beforeYouView = (TextView) findViewById(R.id.beforeYou);
+		
 		beforeYouLayout = (LinearLayout) findViewById(R.id.beforeYouLayout);
 		myNumberLayout = (LinearLayout) findViewById(R.id.myNoLayout);
 		myNumberView = (TextView) findViewById(R.id.myNumber);
@@ -104,10 +105,8 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 		btnGetNo = (Button) findViewById(R.id.btn_GetNumber);
 
 		merchantNameView.setText(merchantName);
-		GetNumberActivity.this.findViewById(R.id.loadingbar).setVisibility(
-				View.GONE);
-		GetNumberActivity.this.findViewById(R.id.merchantNameLayout)
-				.setVisibility(View.VISIBLE);
+		GetNumberActivity.this.findViewById(R.id.loadingbar).setVisibility(View.GONE);
+		GetNumberActivity.this.findViewById(R.id.merchantNameLayout).setVisibility(View.VISIBLE);
 
 		// getMerchantInfo();
 		getSeatNos();
@@ -123,13 +122,10 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 				super.handleMessage(msg);
 
 				if (null != GetNumberActivity.this.merchant) {
-					merchantNameView
-							.setText(GetNumberActivity.this.merchant.name);
+					merchantNameView.setText(GetNumberActivity.this.merchant.name);
 				}
-				GetNumberActivity.this.findViewById(R.id.loadingbar)
-						.setVisibility(View.GONE);
-				GetNumberActivity.this.findViewById(R.id.merchantNameLayout)
-						.setVisibility(View.VISIBLE);
+				GetNumberActivity.this.findViewById(R.id.loadingbar).setVisibility(View.GONE);
+				GetNumberActivity.this.findViewById(R.id.merchantNameLayout).setVisibility(View.VISIBLE);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 		}
@@ -184,7 +180,7 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
-				if (null != haoma && null != haoma.paiduiList && haoma.paiduiList.size()>0) {
+				if (null != haoma && null != haoma.paiduiList && haoma.paiduiList.size() > 0) {
 
 					seatNos = new String[haoma.paiduiList.size()];
 					for (int j = 0; j < haoma.paiduiList.size(); j++) {
@@ -193,41 +189,37 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 
 					if (null != currentPaidui) {
 						for (int i = 0; i < haoma.paiduiList.size(); i++) {
-							if (currentPaidui.seatNo.equals(haoma.paiduiList
-									.get(i).seatNo)) {
+							if (currentPaidui.seatNo.equals(haoma.paiduiList.get(i).seatNo)) {
 								currentIndex = i;
 								currentPaidui = haoma.paiduiList.get(i);
-//								currentNo = String
-//										.valueOf(currentPaidui.currentNumber);
+								// currentNo = String
+								// .valueOf(currentPaidui.currentNumber);
 								break;
 							}
 						}
 					} else {
 						// currentIndex = 0;
 						QuhaoLog.v(TAG, "currentIndex : " + currentIndex);
-						QuhaoLog.v(TAG, "haoma.paiduiList.size : "
-								+ haoma.paiduiList.size());
+						QuhaoLog.v(TAG, "haoma.paiduiList.size : " + haoma.paiduiList.size());
 						currentPaidui = haoma.paiduiList.get(currentIndex);
-//						currentNo = String.valueOf(currentPaidui.currentNumber);
+						// currentNo =
+						// String.valueOf(currentPaidui.currentNumber);
 					}
 
 					seatNoView.setText(currentPaidui.seatNo);
-					currentNumberView.setText(String
-							.valueOf(currentPaidui.currentNumber));
+					currentNumberView.setText(String.valueOf(currentPaidui.currentNumber));
 
 					btnSeatNo.setOnClickListener(GetNumberActivity.this);
 
 					seatNoView.addTextChangedListener(new TextWatcher() {
 
 						@Override
-						public void onTextChanged(CharSequence s, int start,
-								int before, int count) {
+						public void onTextChanged(CharSequence s, int start, int before, int count) {
 
 						}
 
 						@Override
-						public void beforeTextChanged(CharSequence s,
-								int start, int count, int after) {
+						public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
 						}
 
@@ -238,12 +230,10 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 							for (int j = 0; j < seatNos.length; j++) {
 								if (seatNos[j].equals(str)) {
 									currentIndex = j;
-									currentPaidui = haoma.paiduiList
-											.get(currentIndex);
-//									currentNo = String
-//											.valueOf(currentPaidui.currentNumber);
-									Thread getCurrentNoThread = new Thread(
-											getCurrentNoRunnable);
+									currentPaidui = haoma.paiduiList.get(currentIndex);
+									// currentNo = String
+									// .valueOf(currentPaidui.currentNumber);
+									Thread getCurrentNoThread = new Thread(getCurrentNoRunnable);
 									getCurrentNoThread.start();
 									// getSeatNos();
 									// currentNumberView.setText(String.valueOf(currentPaidui.currentNumber));
@@ -253,14 +243,12 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 						}
 					});
 					btnGetNo.setOnClickListener(GetNumberActivity.this);
-				}
-				else
-				{
-					//TODO : 没有位置时， 该怎么做， 应该返回到列表页面， 在酒店详细信息页面应该判断
+				} else {
+					// TODO : 没有位置时， 该怎么做， 应该返回到列表页面， 在酒店详细信息页面应该判断
 					Toast.makeText(GetNumberActivity.this, "此酒店没有座位了，请选择其他酒店。", Toast.LENGTH_LONG).show();
 					GetNumberActivity.this.finish();
 				}
-				
+
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 		}
@@ -276,11 +264,12 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 			try {
 				QuhaoLog.v(TAG, "get seat numbers data form server begin");
 				String accountId = SharedprefUtil.get(GetNumberActivity.this, QuhaoConstant.ACCOUNT_ID, "");
-				String buf = CommonHTTPRequest
-						.get("nahao?accountId=" + accountId + "&mid="
-								+ merchantId + "&seatNumber="
-								+ currentPaidui.seatNo); // TODO : need to
-															// change wjzwjz
+				String buf = CommonHTTPRequest.get("nahao?accountId=" + accountId + "&mid=" + merchantId + "&seatNumber=" + currentPaidui.seatNo); // TODO
+																																					// :
+																																					// need
+																																					// to
+																																					// change
+																																					// wjzwjz
 				// + GetNumberActivity.this.merchantId);
 				if (StringUtils.isNull(buf)) {
 					Toast.makeText(GetNumberActivity.this, "当前网络异常，请重新拿号。", Toast.LENGTH_LONG).show();
@@ -288,14 +277,12 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 				} else {
 					// String currentNo = buf;
 					reservation = ParseJson.getReservation(buf);
-					if("NO_MORE_JIFEN".equalsIgnoreCase(reservation.tipValue))
-					{
+					if ("NO_MORE_JIFEN".equalsIgnoreCase(reservation.tipValue)) {
 						Toast.makeText(GetNumberActivity.this, "您没有更多的积分了..", Toast.LENGTH_LONG).show();
 						GetNumberActivity.this.finish();
 						return;
 					}
-					getNoUpdateHandler.obtainMessage(200, reservation)
-							.sendToTarget();
+					getNoUpdateHandler.obtainMessage(200, reservation).sendToTarget();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -315,18 +302,19 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 		public void run() {
 			try {
 				QuhaoLog.v(TAG, "get seat numbers data form server begin");
-				String buf = CommonHTTPRequest
-						.get("getCurrentNo?id=" + merchantId + "&seatNo="
-								+ currentPaidui.seatNo); // TODO : need to
-															// change wjzwjz
+				String buf = CommonHTTPRequest.get("getCurrentNo?id=" + merchantId + "&seatNo=" + currentPaidui.seatNo); // TODO
+																															// :
+																															// need
+																															// to
+																															// change
+																															// wjzwjz
 				// + GetNumberActivity.this.merchantId);
 				if (StringUtils.isNull(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
 					// String currentNo = buf;
 
-					currentNoUpdateHandler.obtainMessage(200, buf)
-							.sendToTarget();
+					currentNoUpdateHandler.obtainMessage(200, buf).sendToTarget();
 				}
 			} catch (Exception e) {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -354,24 +342,17 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 		@Override
 		public void run() {
 			try {
-				QuhaoLog.v(TAG,
-						"get seat numbers data form server begin, the merchantId is : "
-								+ merchantId);
+				QuhaoLog.v(TAG, "get seat numbers data form server begin, the merchantId is : " + merchantId);
 				String buf = CommonHTTPRequest.get("quhao?id=" + merchantId);
-				QuhaoLog.v(TAG,
-						"get seat numbers data form server begin, buf is :"
-								+ buf);
+				QuhaoLog.v(TAG, "get seat numbers data form server begin, buf is :" + buf);
 				// + GetNumberActivity.this.merchantId);
 				if (StringUtils.isNull(buf)) {
-					
+
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
 					haoma = ParseJson.getHaoma(buf);
-					QuhaoLog.v(TAG,
-							"parse from json, haoma.paiduiList.size() is : "
-									+ haoma.paiduiList.size());
-					seatNosUpdateHandler.obtainMessage(200, haoma)
-							.sendToTarget();
+					QuhaoLog.v(TAG, "parse from json, haoma.paiduiList.size() is : " + haoma.paiduiList.size());
+					seatNosUpdateHandler.obtainMessage(200, haoma).sendToTarget();
 				}
 			} catch (Exception e) {
 
@@ -400,15 +381,13 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 		public void run() {
 			try {
 				QuhaoLog.v(TAG, "get merchant data form server begin");
-				String buf = CommonHTTPRequest.get("merchant?id="
-						+ GetNumberActivity.this.merchantId);
+				String buf = CommonHTTPRequest.get("merchant?id=" + GetNumberActivity.this.merchantId);
 				if (StringUtils.isNull(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
 					merchant = ParseJson.getMerchant(buf);
 
-					merchantUpdateHandler.obtainMessage(200, merchant)
-							.sendToTarget();
+					merchantUpdateHandler.obtainMessage(200, merchant).sendToTarget();
 				}
 
 			} catch (Exception e) {
@@ -434,17 +413,14 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 				if (str == seatNos[i]) {
 					currentIndex = i;
 					currentPaidui = haoma.paiduiList.get(currentIndex);
-//					currentNo = String.valueOf(currentPaidui.currentNumber);
+					// currentNo = String.valueOf(currentPaidui.currentNumber);
 				}
 			}
-			selectSeatNo = new SelectSeatNo(GetNumberActivity.this, seatNos,
-					currentIndex);
-			selectSeatNo.showAtLocation(
-					GetNumberActivity.this.findViewById(R.id.root),
-					Gravity.BOTTOM, 0, 0);
+			selectSeatNo = new SelectSeatNo(GetNumberActivity.this, seatNos, currentIndex);
+			selectSeatNo.showAtLocation(GetNumberActivity.this.findViewById(R.id.root), Gravity.BOTTOM, 0, 0);
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;
-			
+
 		case R.id.btn_GetNumber:
 			progress.showProgress();
 			Thread getNoThread = new Thread(getNoRunnable);

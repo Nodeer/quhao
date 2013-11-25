@@ -26,48 +26,43 @@ import com.withiter.quhao.vo.ReservationVO;
 public class PaiduiListActivity extends QuhaoBaseActivity {
 
 	private List<ReservationVO> reservations;
-	
+
 	private TextView titleView;
-	
+
 	private ListView paiduiListView;
-	
+
 	private String queryCondition;
-	
+
 	private ReservationForPaiduiAdapter reservationForPaiduiAdapter;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.paidui_list_layout);
 		super.onCreate(savedInstanceState);
-		
+
 		queryCondition = this.getIntent().getStringExtra("queryCondition");
 		titleView = (TextView) findViewById(R.id.title);
-		if("current".equals(queryCondition))
-		{
+		if ("current".equals(queryCondition)) {
 			titleView.setText("当前取号情况");
-		}
-		else if("history".equals(queryCondition))
-		{
+		} else if ("history".equals(queryCondition)) {
 			titleView.setText("历史取号情况");
 		}
-		
-		
+
 		paiduiListView = (ListView) this.findViewById(R.id.paiduiListView);
 		btnBack.setOnClickListener(goBack(this));
-		
+
 		initData();
-		
+
 	}
-	
+
 	private Handler reservationsUpdateHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
 
-				reservationForPaiduiAdapter = new ReservationForPaiduiAdapter(
-						PaiduiListActivity.this, paiduiListView, reservations);
+				reservationForPaiduiAdapter = new ReservationForPaiduiAdapter(PaiduiListActivity.this, paiduiListView, reservations);
 				paiduiListView.setAdapter(reservationForPaiduiAdapter);
 				reservationForPaiduiAdapter.notifyDataSetChanged();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -76,37 +71,32 @@ public class PaiduiListActivity extends QuhaoBaseActivity {
 		}
 
 	};
-	
+
 	private void initData() {
-		
+
 		Thread thread = new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				Looper.prepare();
 				try {
-					
+
 					progressDialogUtil = new ProgressDialogUtil(PaiduiListActivity.this, R.string.empty, R.string.waitting, false);
 					progressDialogUtil.showProgress();
 					String url = "";
 					String accountId = SharedprefUtil.get(PaiduiListActivity.this, QuhaoConstant.ACCOUNT_ID, "false");
-					if("current".equals(queryCondition))
-					{
-						url = "getCurrentMerchants?accountId=" +accountId;
+					if ("current".equals(queryCondition)) {
+						url = "getCurrentMerchants?accountId=" + accountId;
+					} else if ("history".equals(queryCondition)) {
+						url = "getHistoryMerchants?accountId=" + accountId;
 					}
-					else if("history".equals(queryCondition))
-					{
-						url = "getHistoryMerchants?accountId=" +accountId;
-					}
-					String buf = CommonHTTPRequest
-							.get(url);
+					String buf = CommonHTTPRequest.get(url);
 					if (StringUtils.isNull(buf) || "[]".equals(buf)) {
 						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					} else {
 						reservations = new ArrayList<ReservationVO>();
 						reservations = ParseJson.getReservations(buf);
-						reservationsUpdateHandler.obtainMessage(200, reservations)
-								.sendToTarget();
+						reservationsUpdateHandler.obtainMessage(200, reservations).sendToTarget();
 					}
 
 				} catch (Exception e) {
@@ -116,12 +106,11 @@ public class PaiduiListActivity extends QuhaoBaseActivity {
 					progressDialogUtil.closeProgress();
 					Looper.loop();
 				}
-			
-				
+
 			}
 		});
 		thread.start();
-		
+
 	}
 
 	@Override
