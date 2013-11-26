@@ -7,21 +7,35 @@
     <uses-sdk android:minSdkVersion="5" />
 
     <!-- permissions -->
+    <!-- 使用Internet许可 -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 网络定位技术许可 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- 检测网络状态 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    
     <uses-permission android:name="android.permission.LOCATION" />
+    <!-- GPS定位技术许可 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- 读取手机状态许可 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 在sdcard中创建/删除文件的权限 -->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <!-- 写入内存卡许可 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 可选的权限 -->
+    <!-- 启用错误分析功能，须添加该权限 -->
     <uses-permission android:name="android.permission.READ_LOGS" />
+    <!-- 发送短信权限 -->
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <!-- 相机权限 -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 	<uses-permission android:name="android.permission.CHANGE_CONFIGURATION"/>
+	<!-- 检测网络状态 -->
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+	<!-- 检测WIFI状态 -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <!-- 添加拨出电话的权限 --> 
 	<uses-permission android:name="android.permission.CALL_PHONE" /> 
@@ -301,6 +315,16 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar" />
         <!-- credit list page -->
+        
+        <!-- around merchant list page -->
+        <activity
+            android:name="com.withiter.quhao.activity.PoiAroundMerchantsActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <!-- around merchant list page -->
         
     </application>
 

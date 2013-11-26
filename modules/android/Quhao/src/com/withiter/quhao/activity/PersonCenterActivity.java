@@ -35,15 +35,12 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 	private TextView jifen;
 	private TextView value_qiandao;
 	private TextView value_dianpin;
-	private TextView value_zhaopian;
 
 	private LoginInfo loginInfo;
 
 	private LinearLayout signInLayout;
 
 	private LinearLayout dianpingLayout;
-
-	private LinearLayout photoLayout;
 
 	private LinearLayout currentPaiduiLayout;
 
@@ -73,11 +70,9 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		
 		value_qiandao = (TextView) findViewById(R.id.value_qiandao);
 		value_dianpin = (TextView) findViewById(R.id.value_dianpin);
-		value_zhaopian = (TextView) findViewById(R.id.value_zhaopian);
 
 		signInLayout = (LinearLayout) findViewById(R.id.signInLayout);
 		dianpingLayout = (LinearLayout) findViewById(R.id.dianpingLayout);
-		photoLayout = (LinearLayout) findViewById(R.id.photoLayout);
 
 		currentPaiduiLayout = (LinearLayout) findViewById(R.id.current_paidui_layout);
 		historyPaiduiLayout = (LinearLayout) findViewById(R.id.history_paidui_layout);
@@ -85,7 +80,6 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 
 		signInLayout.setOnClickListener(this);
 		dianpingLayout.setOnClickListener(this);
-		photoLayout.setOnClickListener(this);
 
 		currentPaiduiLayout.setOnClickListener(this);
 		historyPaiduiLayout.setOnClickListener(this);
@@ -226,7 +220,6 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 
 					value_qiandao.setText(loginInfo.signIn);
 					value_dianpin.setText(loginInfo.dianping);
-					value_zhaopian.setText(loginInfo.zhaopian);
 					if ("true".equals(loginInfo.isSignIn)) {
 						signInLayout.setEnabled(false);
 					}
@@ -287,7 +280,6 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 
 						value_qiandao.setText(loginInfo.signIn);
 						value_dianpin.setText(loginInfo.dianping);
-						value_zhaopian.setText(loginInfo.zhaopian);
 						signInLayout.setEnabled(false);
 					}
 
@@ -301,10 +293,6 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 
 			break;
 		case R.id.dianpingLayout:
-			progressDialogUtil.closeProgress();
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			break;
-		case R.id.photoLayout:
 			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;
