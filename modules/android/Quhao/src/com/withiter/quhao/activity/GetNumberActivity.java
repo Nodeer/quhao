@@ -70,7 +70,6 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 	private String[] seatNos;
 	private Haoma haoma;
 	private int currentIndex = 0;
-	// private String currentNo;
 
 	private Paidui currentPaidui;
 	private ProgressDialogUtil progress;

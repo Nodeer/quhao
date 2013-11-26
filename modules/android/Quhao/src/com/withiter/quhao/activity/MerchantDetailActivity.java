@@ -77,9 +77,10 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		this.merchantId = getIntent().getStringExtra("merchantId");
 		this.merchantName = (TextView) findViewById(R.id.merchant_detail_merchantName);
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
+		
 		btnGetNumber = (Button) findViewById(R.id.btn_GetNumber);
-
 		btnGetNumber.setOnClickListener(getNumberClickListener());
+		
 		LayoutInflater inflater = LayoutInflater.from(this);
 		info = (LinearLayout) inflater.inflate(R.layout.merchant_detail_info, null);
 		LinearLayout scroll = (LinearLayout) findViewById(R.id.lite_list);
@@ -162,12 +163,8 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	 */
 	private OnClickListener getNumberClickListener() {
 		OnClickListener listener = new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-				// TODO remove below line
-				String isLogin = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.IS_LOGIN, "false");
-				
 				if (QHClientApplication.getInstance().isLogined) {
 					Intent intent = new Intent();
 					intent.putExtra("merchantId", merchantId);
@@ -182,7 +179,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);
 				}
-				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+//				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			}
 		};
 		return listener;

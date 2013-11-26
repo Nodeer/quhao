@@ -14,24 +14,24 @@ public class InfoHelper {
 	 * @param mContext
 	 * @return
 	 */
-	public static AccountInfo getAccountInfo(Context mContext) {
-		List<AccountInfo> list = null;
-		AccountInfoHelper accountDBHelper = new AccountInfoHelper(mContext);
-		accountDBHelper.open();
-//		accountDBHelper.dropAccountInfoTable();
-		
-		
-		if(!accountDBHelper.tabbleIsExist(QuhaoConstant.ACCOUNT_TABLE)){
-			accountDBHelper.createAccountTable();
-		}
-
-		try {
-			list = accountDBHelper.getAccountInfos();
-		} finally {
-			accountDBHelper.close();
-		}
-		return (list != null && list.size() != 0) ? list.get(0) : null;
-	}
+//	public static AccountInfo getAccountInfo(Context mContext) {
+//		List<AccountInfo> list = null;
+//		AccountInfoHelper accountDBHelper = new AccountInfoHelper(mContext);
+//		accountDBHelper.open();
+////		accountDBHelper.dropAccountInfoTable();
+//		
+//		
+//		if(!accountDBHelper.tabbleIsExist(QuhaoConstant.ACCOUNT_TABLE)){
+//			accountDBHelper.createAccountTable();
+//		}
+//
+//		try {
+//			list = accountDBHelper.getAccountInfos();
+//		} finally {
+//			accountDBHelper.close();
+//		}
+//		return (list != null && list.size() != 0) ? list.get(0) : null;
+//	}
 
 	/**
 	 * 检查网络

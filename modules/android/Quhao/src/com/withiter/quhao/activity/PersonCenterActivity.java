@@ -70,6 +70,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		nickName = (TextView) findViewById(R.id.nickName);
 		mobile = (TextView) findViewById(R.id.mobile);
 		jifen = (TextView) findViewById(R.id.jifen);
+		
 		value_qiandao = (TextView) findViewById(R.id.value_qiandao);
 		value_dianpin = (TextView) findViewById(R.id.value_dianpin);
 		value_zhaopian = (TextView) findViewById(R.id.value_zhaopian);
@@ -95,9 +96,14 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			Intent intent = new Intent(this, LoginActivity.class);
 			intent.putExtra("activityName", this.getClass().getName());
 			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+//			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 			startActivity(intent);
 			return;
+		} else {
+			AccountInfo account = QHClientApplication.getInstance().accessInfo;
+			if(account != null){
+				updateUIData(account);
+			}
 		}
 		
 		// if click personal center, should stay in personal center.
@@ -107,10 +113,20 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		AccountInfo account = (AccountInfo) getIntent().getSerializableExtra("account");
 		if (account != null) {
 			QuhaoLog.d(TAG, "account.phone: " + account.phone);
-			mobile.setText(account.phone);
-		} else {
-			initData();
+			updateUIData(account);
 		}
+//		} else {
+//			initData();
+//		}
+	}
+	
+	private void updateUIData(AccountInfo account){
+		mobile.setText(account.phone);
+		nickName.setText(account.nickName);
+		
+		QuhaoLog.d(TAG, "account.jifen : " + account.jifen);
+		jifen.setText(account.jifen);
+		
 	}
 
 	private void initData() {
@@ -250,7 +266,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				} else {
 					loginInfo = ParseJson.getLoginInfo(result);
 					AccountInfo account = new AccountInfo();
-					account.setUserId("1");
+//					account.setUserId("1");
 					account.build(loginInfo);
 					SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "true");
 					QHClientApplication.getInstance().accessInfo = account;

@@ -83,7 +83,7 @@ public class QHClientApplication extends Application {
 					if (StringUtils.isNotNull(result)) {
 						LoginInfo loginInfo = ParseJson.getLoginInfo(result);
 						AccountInfo account = new AccountInfo();
-						account.setUserId("1");
+//						account.setUserId("1");
 						account.build(loginInfo);
 						QuhaoLog.i(TAG, account.msg);
 						

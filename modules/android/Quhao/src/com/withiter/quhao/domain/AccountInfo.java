@@ -15,6 +15,8 @@ public class AccountInfo implements Serializable {
 	public String userId;
 	public String accountId;
 	public String phone;
+	
+	public String jifen;
 
 	public String email;
 	public String password;
@@ -30,77 +32,77 @@ public class AccountInfo implements Serializable {
 	public String msg;
 	public String lastLogin;
 
-	public String getAccountId() {
-		return accountId;
-	}
-
-	public void setAccountId(String accountId) {
-		this.accountId = accountId;
-	}
-
-	public String getSignIn() {
-		return signIn;
-	}
-
-	public void setSignIn(String signIn) {
-		this.signIn = signIn;
-	}
-
-	public String getIsSignIn() {
-		return isSignIn;
-	}
-
-	public void setIsSignIn(String isSignIn) {
-		this.isSignIn = isSignIn;
-	}
-
-	public void setMsg(String msg) {
-		this.msg = msg;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
-	}
-
-	public void setBirthday(String birthday) {
-		this.birthday = birthday;
-	}
-
-	public void setUserImage(String userImage) {
-		this.userImage = userImage;
-	}
-
-	public void setEnable(String enable) {
-		this.enable = enable;
-	}
-
-	public void setMobileOS(String mobileOS) {
-		this.mobileOS = mobileOS;
-	}
-
-	public void setLastLogin(String lastLogin) {
-		this.lastLogin = lastLogin;
-	}
-
-	public String getIsAuto() {
-		return isAuto;
-	}
+//	public String getAccountId() {
+//		return accountId;
+//	}
+//
+//	public void setAccountId(String accountId) {
+//		this.accountId = accountId;
+//	}
+//
+//	public String getSignIn() {
+//		return signIn;
+//	}
+//
+//	public void setSignIn(String signIn) {
+//		this.signIn = signIn;
+//	}
+//
+//	public String getIsSignIn() {
+//		return isSignIn;
+//	}
+//
+//	public void setIsSignIn(String isSignIn) {
+//		this.isSignIn = isSignIn;
+//	}
+//
+//	public void setMsg(String msg) {
+//		this.msg = msg;
+//	}
+//
+//	public void setUserId(String userId) {
+//		this.userId = userId;
+//	}
+//
+//	public void setPhone(String phone) {
+//		this.phone = phone;
+//	}
+//
+//	public void setEmail(String email) {
+//		this.email = email;
+//	}
+//
+//	public void setPassword(String password) {
+//		this.password = password;
+//	}
+//
+//	public void setNickName(String nickName) {
+//		this.nickName = nickName;
+//	}
+//
+//	public void setBirthday(String birthday) {
+//		this.birthday = birthday;
+//	}
+//
+//	public void setUserImage(String userImage) {
+//		this.userImage = userImage;
+//	}
+//
+//	public void setEnable(String enable) {
+//		this.enable = enable;
+//	}
+//
+//	public void setMobileOS(String mobileOS) {
+//		this.mobileOS = mobileOS;
+//	}
+//
+//	public void setLastLogin(String lastLogin) {
+//		this.lastLogin = lastLogin;
+//	}
+//
+//	public String getIsAuto() {
+//		return isAuto;
+//	}
 
 	public void setIsAuto(String isAuto) {
 		if (StringUtils.isNotNull(isAuto)) {
@@ -110,49 +112,49 @@ public class AccountInfo implements Serializable {
 		}
 	}
 
-	public String getUserId() {
-		return userId;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public String getNickName() {
-		return nickName;
-	}
-
-	public String getBirthday() {
-		return birthday;
-	}
-
-	public String getUserImage() {
-		return userImage;
-	}
-
-	public String getEnable() {
-		return enable;
-	}
-
-	public String getMobileOS() {
-		return mobileOS;
-	}
-
-	public String getMsg() {
-		return msg;
-	}
-
-	public String getLastLogin() {
-		return lastLogin;
-	}
+//	public String getUserId() {
+//		return userId;
+//	}
+//
+//	public String getPhone() {
+//		return phone;
+//	}
+//
+//	public String getEmail() {
+//		return email;
+//	}
+//
+//	public String getPassword() {
+//		return password;
+//	}
+//
+//	public String getNickName() {
+//		return nickName;
+//	}
+//
+//	public String getBirthday() {
+//		return birthday;
+//	}
+//
+//	public String getUserImage() {
+//		return userImage;
+//	}
+//
+//	public String getEnable() {
+//		return enable;
+//	}
+//
+//	public String getMobileOS() {
+//		return mobileOS;
+//	}
+//
+//	public String getMsg() {
+//		return msg;
+//	}
+//
+//	public String getLastLogin() {
+//		return lastLogin;
+//	}
 
 	public void build(LoginInfo loginInfo) {
 		this.msg = loginInfo.msg;
@@ -168,6 +170,7 @@ public class AccountInfo implements Serializable {
 		this.lastLogin = loginInfo.lastLogin;
 		this.signIn = loginInfo.signIn;
 		this.isSignIn = loginInfo.isSignIn;
+		this.jifen = loginInfo.jifen;
 	}
 
 }

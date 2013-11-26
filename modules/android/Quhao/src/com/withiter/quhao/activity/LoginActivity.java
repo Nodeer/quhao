@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
@@ -57,7 +58,7 @@ public class LoginActivity extends QuhaoBaseActivity {
 		super.onCreate(savedInstanceState);
 
 		// TODO : There is a issue here
-		String phone = SharedprefUtil.get(LoginActivity.this, QuhaoConstant.PHONE, "");
+		
 		activityName = getIntent().getStringExtra("activityName");
 		if (StringUtils.isNotNull(activityName)) {
 			if (MerchantDetailActivity.class.getName().equals(activityName)) {
@@ -77,9 +78,13 @@ public class LoginActivity extends QuhaoBaseActivity {
 			isAutoLoginView.setImageResource(R.drawable.checkbox_unchecked);
 		}
 
+		// phone label
 		pannelLoginName = (TextView) findViewById(R.id.pannel_login_name);
+		// phone text filed
+		String phone = SharedprefUtil.get(LoginActivity.this, QuhaoConstant.PHONE, "");
 		loginNameText = (EditText) findViewById(R.id.login_name);
 		loginNameText.setText(phone);
+		
 		passwordText = (EditText) findViewById(R.id.edit_pass);
 
 		btnClose = (Button) findViewById(R.id.close);
@@ -133,6 +138,7 @@ public class LoginActivity extends QuhaoBaseActivity {
 				String result = CommonHTTPRequest.post(url);
 				QuhaoLog.i(TAG, result);
 				if (StringUtils.isNull(result)) {
+					Toast.makeText(this, "网络不是很好，登陆失败，稍等片刻就好", Toast.LENGTH_LONG).show();
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
 					LoginInfo loginInfo = ParseJson.getLoginInfo(result);
@@ -150,13 +156,16 @@ public class LoginActivity extends QuhaoBaseActivity {
 					if (account.msg.equals("success")) {
 						loginResult.setText("登陆成功");
 						SharedprefUtil.put(this, QuhaoConstant.ACCOUNT_ID, loginInfo.accountId);
-						SharedprefUtil.put(this, QuhaoConstant.PHONE, account.getPhone());
+						SharedprefUtil.put(this, QuhaoConstant.PHONE, account.phone);
 						
 						String HexedPwd = new DesUtils().encrypt(passwordText.getText().toString());
 						SharedprefUtil.put(this, QuhaoConstant.PASSWORD, HexedPwd);
 						
 						SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN, isAutoLogin.trim());
-						SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "true");
+						
+						// login state will store in QHClientApplication
+						// TODO remove below line
+//						SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "true");
 
 						QHClientApplication.getInstance().accessInfo = account;
 						QHClientApplication.getInstance().isLogined = true;
