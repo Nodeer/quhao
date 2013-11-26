@@ -131,32 +131,6 @@
                 android:paddingRight="4dip">
             </EditText>
         </LinearLayout>
-		<LinearLayout
-	        android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-	        android:gravity="center_vertical"
-	        android:orientation="horizontal"
-	        android:paddingBottom="10dip"
-	        android:paddingTop="10dip" >
-	
-	        <TextView
-	            android:layout_width="0dip"
-	            android:layout_height="wrap_content"
-	            android:layout_marginLeft="10dip"
-	            android:layout_weight="1"
-	            android:gravity="center_vertical"
-	            android:text="下次自动登录:"
-	            android:textColor="@color/black"
-	            android:textSize="14sp" />
-	
-	        <ImageView
-	            android:id="@+id/isAutoLogin"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_marginRight="10dip"
-	            android:adjustViewBounds="true"
-	            android:src="@drawable/checkbox_unchecked" />
-    	</LinearLayout>
         <RelativeLayout
             android:id="@+id/linebar"
             android:layout_width="fill_parent"

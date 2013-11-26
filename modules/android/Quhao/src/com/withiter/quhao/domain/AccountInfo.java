@@ -28,6 +28,7 @@ public class AccountInfo implements Serializable {
 	public String signIn;
 	public String isSignIn;
 
+	public String dianping;
 	public String isAuto = "false";
 	public String msg;
 	public String lastLogin;
@@ -171,6 +172,7 @@ public class AccountInfo implements Serializable {
 		this.signIn = loginInfo.signIn;
 		this.isSignIn = loginInfo.isSignIn;
 		this.jifen = loginInfo.jifen;
+		this.dianping = loginInfo.dianping;
 	}
 
 }

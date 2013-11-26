@@ -19,11 +19,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
+import com.withiter.quhao.util.tool.QuhaoConstant;
+import com.withiter.quhao.util.tool.SharedprefUtil;
 import com.withiter.quhao.vo.SignupVO;
 
 public class RegisterActivity extends QuhaoBaseActivity implements OnFocusChangeListener{
@@ -119,6 +122,12 @@ public class RegisterActivity extends QuhaoBaseActivity implements OnFocusChange
 					if("1".equals(signup.errorKey))
 					{
 						Toast.makeText(RegisterActivity.this, "注册成功。", Toast.LENGTH_LONG).show();
+						SharedprefUtil.remove(RegisterActivity.this, QuhaoConstant.ACCOUNT_ID);
+						SharedprefUtil.remove(RegisterActivity.this, QuhaoConstant.IS_AUTO_LOGIN);
+						SharedprefUtil.remove(RegisterActivity.this, QuhaoConstant.IS_LOGIN);
+						SharedprefUtil.put(RegisterActivity.this, QuhaoConstant.PHONE, loginName);
+						SharedprefUtil.put(RegisterActivity.this, QuhaoConstant.PASSWORD, password);
+						QHClientApplication.getInstance().isLogined = false;
 						Intent intent = new Intent();
 						intent.putExtra("activityName", RegisterActivity.class.getName());
 						intent.setClass(RegisterActivity.this, LoginActivity.class);

@@ -217,7 +217,12 @@ public class LoginActivity extends QuhaoBaseActivity {
 					} else if ("com.withiter.quhao.activity.MoreActivity".equals(activityName)) {
 						intent.setClass(LoginActivity.this, MoreActivity.class);
 					} else if ("com.withiter.quhao.activity.RegisterActivity".equals(activityName)) {
-
+						intent.setClass(LoginActivity.this, PersonCenterActivity.class);
+						Bundle mBundle = new Bundle();  
+						
+						QuhaoLog.d(TAG, "(AccountInfo)msg.obj : " + ((AccountInfo)msg.obj).password);
+				        mBundle.putSerializable("account", (AccountInfo)msg.obj);  
+				        intent.putExtras(mBundle);  
 					} else {
 						intent.setClass(LoginActivity.this, PersonCenterActivity.class);
 					}

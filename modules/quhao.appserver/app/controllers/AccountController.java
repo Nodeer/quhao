@@ -198,7 +198,7 @@ public class AccountController extends BaseController {
 			renderJSON(suVO);
 		}
 		account = Account.findExistsAccount(mobile);
-		if (account == null) {
+		if (account != null) {
 			suVO.errorText = "此号码已注册";
 			renderJSON(suVO);
 		}

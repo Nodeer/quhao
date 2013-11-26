@@ -1,6 +1,8 @@
 package com.withiter.quhao.activity;
 
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,6 +11,7 @@ import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,10 +50,12 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 	private LinearLayout historyPaiduiLayout;
 
 	private LinearLayout creditCostLayout;
+	
+	private Button loginBtn;
+	
+	private Button regBtn;
 
 	private final int UNLOCK_CLICK = 1000;
-
-	AlertDialog ad;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,33 +90,36 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		historyPaiduiLayout.setOnClickListener(this);
 		creditCostLayout.setOnClickListener(this);
 
+		
+		loginBtn = (Button) this.findViewById(R.id.login);
+		regBtn = (Button) this.findViewById(R.id.register);
+		
+		loginBtn.setOnClickListener(this);
+		regBtn.setOnClickListener(this);
+		
 		// if haven't login, prompt the login dialog
-		if(!QHClientApplication.getInstance().isLogined){
-			Intent intent = new Intent(this, LoginActivity.class);
-			intent.putExtra("activityName", this.getClass().getName());
-			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-//			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
-			startActivity(intent);
-			return;
-		} else {
+		String isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_AUTO_LOGIN, "false");
+		if(!QHClientApplication.getInstance().isLogined && "false".equals(isAutoLogin)){
+
+			
+		}
+		else if(!QHClientApplication.getInstance().isLogined && "true".equals(isAutoLogin))
+		{
+			initData();
+		}else if(QHClientApplication.getInstance().isLogined){
+			loginBtn.setVisibility(View.GONE);
+			regBtn.setVisibility(View.GONE);
 			AccountInfo account = QHClientApplication.getInstance().accessInfo;
 			if(account != null){
 				updateUIData(account);
 			}
+			else
+			{
+				loginBtn.setVisibility(View.VISIBLE);
+				regBtn.setVisibility(View.VISIBLE);
+			}
 		}
 		
-		// if click personal center, should stay in personal center.
-		this.getIntent().putExtra("activityName", this.getClass().getName());
-		
-		// if account hasn't login, below account object will return from loginActivity.java
-		AccountInfo account = (AccountInfo) getIntent().getSerializableExtra("account");
-		if (account != null) {
-			QuhaoLog.d(TAG, "account.phone: " + account.phone);
-			updateUIData(account);
-		}
-//		} else {
-//			initData();
-//		}
 	}
 	
 	private void updateUIData(AccountInfo account){
@@ -119,10 +127,21 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		nickName.setText(account.nickName);
 		
 		QuhaoLog.d(TAG, "account.jifen : " + account.jifen);
+		nickName.setText(account.nickName);
+		mobile.setText(account.phone);
+
+		// TODO add jifen from backend
 		jifen.setText(account.jifen);
+
+		value_qiandao.setText(account.signIn);
+		value_dianpin.setText(account.dianping);
+		if ("true".equals(account.isSignIn)) {
+			signInLayout.setEnabled(false);
+		}
 		
 	}
 
+	
 	private void initData() {
 
 		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
@@ -229,6 +248,8 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		}
 	};
 
+	
+	
 	@Override
 	public void onClick(View v) {
 		// // 隐藏软键盘
@@ -249,75 +270,190 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
 		progressDialogUtil.showProgress();
 		switch (v.getId()) {
+		case R.id.login:
+			progressDialogUtil.closeProgress();
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			Intent intent = new Intent(this, LoginActivity.class);
+			intent.putExtra("activityName", this.getClass().getName());
+			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+			startActivity(intent);
+			break;
+		case R.id.register:
+			progressDialogUtil.closeProgress();
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			Intent intentReg = new Intent(this, RegisterActivity.class);
+			intentReg.putExtra("activityName", this.getClass().getName());
+			intentReg.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+			startActivity(intentReg);
+			break;
 		case R.id.signInLayout:
+			if(QHClientApplication.getInstance().isLogined)
+			{
+				String accountId = SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "false");
+				try {
+					String result = CommonHTTPRequest.get("AccountController/signIn?accountId=" + accountId);
+					QuhaoLog.i(TAG, result);
+					if (StringUtils.isNull(result)) {
+					} else {
+						loginInfo = ParseJson.getLoginInfo(result);
+						AccountInfo account = new AccountInfo();
+//						account.setUserId("1");
+						account.build(loginInfo);
+						SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "true");
+						QHClientApplication.getInstance().accessInfo = account;
+						QuhaoLog.i(TAG, loginInfo.msg);
 
-			String accountId = SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "false");
-			try {
-				String result = CommonHTTPRequest.get("AccountController/signIn?accountId=" + accountId);
-				QuhaoLog.i(TAG, result);
-				if (StringUtils.isNull(result)) {
-				} else {
-					loginInfo = ParseJson.getLoginInfo(result);
-					AccountInfo account = new AccountInfo();
-//					account.setUserId("1");
-					account.build(loginInfo);
-					SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "true");
-					QHClientApplication.getInstance().accessInfo = account;
-					QuhaoLog.i(TAG, loginInfo.msg);
+						if (loginInfo.msg.equals("fail")) {
 
-					if (loginInfo.msg.equals("fail")) {
+							SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "false");
+							Toast.makeText(PersonCenterActivity.this, "签到失败", Toast.LENGTH_LONG).show();
+							return;
+						}
+						if (loginInfo.msg.equals("success")) {
+							nickName.setText(loginInfo.nickName);
+							mobile.setText(loginInfo.phone);
 
-						SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "false");
-						Toast.makeText(PersonCenterActivity.this, "签到失败", Toast.LENGTH_LONG).show();
-						return;
+							// TODO add jifen from backend
+							jifen.setText(loginInfo.jifen);
+
+							value_qiandao.setText(loginInfo.signIn);
+							value_dianpin.setText(loginInfo.dianping);
+							signInLayout.setEnabled(false);
+						}
+
 					}
-					if (loginInfo.msg.equals("success")) {
-						nickName.setText(loginInfo.nickName);
-						mobile.setText(loginInfo.phone);
-
-						// TODO add jifen from backend
-						jifen.setText(loginInfo.jifen);
-
-						value_qiandao.setText(loginInfo.signIn);
-						value_dianpin.setText(loginInfo.dianping);
-						signInLayout.setEnabled(false);
-					}
-
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					progressDialogUtil.closeProgress();
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+					
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
+
+			}
+			else
+			{
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				AlertDialog.Builder builder = new Builder(this);
+				builder.setMessage("请先登录");
+				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						
+						dialog.dismiss();
+						
+					}
+				});
+				builder.create().show();
 			}
-
 			break;
 		case R.id.dianpingLayout:
-			progressDialogUtil.closeProgress();
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			if(QHClientApplication.getInstance().isLogined)
+			{
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			}else
+			{
+				
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				AlertDialog.Builder builder = new Builder(this);
+				builder.setMessage("请先登录");
+				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						
+						dialog.dismiss();
+						
+					}
+				});
+				builder.create().show();
+			}
+			
 			break;
 		case R.id.current_paidui_layout:
-			progressDialogUtil.closeProgress();
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			Intent intentCurrent = new Intent();
-			intentCurrent.putExtra("queryCondition", "current");
-			intentCurrent.setClass(this, PaiduiListActivity.class);
-			startActivity(intentCurrent);
+			if(QHClientApplication.getInstance().isLogined)
+			{
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				Intent intentCurrent = new Intent();
+				intentCurrent.putExtra("queryCondition", "current");
+				intentCurrent.setClass(this, PaiduiListActivity.class);
+				startActivity(intentCurrent);
+			}
+			else
+			{
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				AlertDialog.Builder builder = new Builder(this);
+				builder.setMessage("请先登录");
+				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						
+						dialog.dismiss();
+						
+					}
+				});
+				builder.create().show();
+			}
 			break;
 		case R.id.history_paidui_layout:
-			progressDialogUtil.closeProgress();
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			Intent intentHistory = new Intent();
-			intentHistory.putExtra("queryCondition", "history");
-			intentHistory.setClass(this, PaiduiListActivity.class);
-			startActivity(intentHistory);
+			if(QHClientApplication.getInstance().isLogined)
+			{
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				Intent intentHistory = new Intent();
+				intentHistory.putExtra("queryCondition", "history");
+				intentHistory.setClass(this, PaiduiListActivity.class);
+				startActivity(intentHistory);
+			}
+			else
+			{
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				AlertDialog.Builder builder = new Builder(this);
+				builder.setMessage("请先登录");
+				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						
+						dialog.dismiss();
+						
+					}
+				});
+				builder.create().show();
+			}
+			
 			break;
 		case R.id.credit_cost_layout:
-			progressDialogUtil.closeProgress();
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			Intent intentCredit = new Intent();
-			intentCredit.setClass(this, CreditCostListActivity.class);
-			startActivity(intentCredit);
+			if(QHClientApplication.getInstance().isLogined)
+			{
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				Intent intentCredit = new Intent();
+				intentCredit.setClass(this, CreditCostListActivity.class);
+				startActivity(intentCredit);
+			}
+			else
+			{
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				AlertDialog.Builder builder = new Builder(this);
+				builder.setMessage("请先登录");
+				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						
+						dialog.dismiss();
+						
+					}
+				});
+				builder.create().show();
+			}
 			break;
 		default:
 			progressDialogUtil.closeProgress();
@@ -326,6 +462,11 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		}
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+	}
+	
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 
