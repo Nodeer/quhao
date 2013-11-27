@@ -20,8 +20,7 @@ public class ReservationForPaiduiAdapter extends BaseAdapter {
 	public List<ReservationVO> rvos;
 	private Activity activity;
 
-	public ReservationForPaiduiAdapter(Activity activity, ListView listView,
-			List<ReservationVO> rvos) {
+	public ReservationForPaiduiAdapter(Activity activity, ListView listView, List<ReservationVO> rvos) {
 		super();
 		this.activity = activity;
 		this.listView = listView;
@@ -51,18 +50,12 @@ public class ReservationForPaiduiAdapter extends BaseAdapter {
 			ViewHolder holder = null;
 			if (convertView == null) {
 				holder = new ViewHolder();
-				LayoutInflater inflator = (LayoutInflater) parent.getContext()
-						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				convertView = inflator.inflate(R.layout.paidui_list_item,
-						null);
-				holder.merchantName = (TextView) convertView
-						.findViewById(R.id.merchantName);
-				holder.merchantAddress = (TextView) convertView
-						.findViewById(R.id.merchantAddress);
-				holder.myNumber = (TextView) convertView
-						.findViewById(R.id.myNumber);
-				holder.seatNo = (TextView) convertView
-						.findViewById(R.id.seatNo);
+				LayoutInflater inflator = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				convertView = inflator.inflate(R.layout.paidui_list_item, null);
+				holder.merchantName = (TextView) convertView.findViewById(R.id.merchantName);
+				holder.merchantAddress = (TextView) convertView.findViewById(R.id.merchantAddress);
+				holder.myNumber = (TextView) convertView.findViewById(R.id.myNumber);
+				holder.seatNo = (TextView) convertView.findViewById(R.id.seatNo);
 				holder.beforeYou = (TextView) convertView.findViewById(R.id.beforeYou);
 				holder.currentNumber = (TextView) convertView.findViewById(R.id.currentNumber);
 
@@ -75,7 +68,7 @@ public class ReservationForPaiduiAdapter extends BaseAdapter {
 			holder.merchantName.setText(rvo.merchantName);
 			holder.merchantAddress.setTag("merchantAddress_" + position);
 			holder.merchantAddress.setText(rvo.merchantAddress);
-			
+
 			holder.myNumber.setTag("myNumber_" + position);
 			holder.myNumber.setText(rvo.myNumber);
 			holder.seatNo.setTag("seatNo_" + position);

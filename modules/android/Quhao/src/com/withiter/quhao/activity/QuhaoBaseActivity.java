@@ -217,7 +217,7 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 
 		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.logining, false);
 
-		if (null == QHClientApplication.getInstance().accessInfo) {
+		if (null == QHClientApplication.getInstance().accountInfo) {
 			return true;
 		} else {
 			QHClientApplication.getInstance().isAuto = true;

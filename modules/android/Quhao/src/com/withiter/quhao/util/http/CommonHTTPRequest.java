@@ -56,6 +56,7 @@ public class CommonHTTPRequest {
 	public static String post(String url) throws ClientProtocolException, IOException {
 		String result = "";
 		String httpUrl = QuhaoConstant.HTTP_URL + url;
+		QuhaoLog.d(TAG, "HTTP REQUEST POST, URL: " + httpUrl);
 
 		HttpPost request = new HttpPost(httpUrl);
 		request.setHeader("user-agent", "QuhaoAndroid");
@@ -64,11 +65,6 @@ public class CommonHTTPRequest {
 		if(QHClientApplication.getInstance().isLogined){
 			request.setHeader("quhao-android-session", new DesUtils().encrypt(QHClientApplication.getInstance().phone));
 		}
-		
-		// set session id if exist
-//		if(StringUtils.isNotNull(CommonHTTPRequest.sessionID)){
-//			request.setHeader("Cookie", CommonHTTPRequest.sessionID);
-//		}
 		
 		HttpParams httpParameters = new BasicHttpParams();
 		// Set the timeout in milliseconds until a connection is established.
@@ -82,31 +78,10 @@ public class CommonHTTPRequest {
 		HttpClient httpClient = new DefaultHttpClient(httpParameters);
 		HttpResponse response = httpClient.execute(request);
 		
-//		Header[] headers = response.getAllHeaders();
-//		for(Header h : headers){
-//			QuhaoLog.d(TAG, h.getName() + "|||" + h.getValue());
-//			QuhaoLog.d(TAG, "decoded: "+URLDecoder.decode(h.getValue(), "UTF-8"));
-//			
-//			// h.getValue() : PLAY_SESSION=28b7eb241f5b26e778acf4a825f8deddfa123e47-%005289c60bc929b65bbf675278%3A5289c60bc929b65bbf675278%00%00quhao_username%3A5289c60bc929b65bbf675278%00;Path=/
-//			if(h.getValue().contains("PLAY_SESSION")){
-//				
-//			}
-//		}
-		
 		QuhaoLog.i(TAG, "get data from server, the status code is  : " + response.getStatusLine().getStatusCode());
 		if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 			result = EntityUtils.toString(response.getEntity());
 			QuhaoLog.v(TAG, "get data from server : " + result);
-			
-//			CookieStore mCookieStore = ((AbstractHttpClient) httpClient).getCookieStore();
-//            List<Cookie> cookies = mCookieStore.getCookies();
-//            for (int i = 0; i < cookies.size(); i++) {
-//                //这里是读取Cookie['PHPSESSID']的值存在静态变量中，保证每次都是同一个值
-//                if ("PHPSESSID".equals(cookies.get(i).getName())) {
-//                	CommonHTTPRequest.sessionID = cookies.get(i).getValue();
-//                    break;
-//                }
-//            }
 		}
 
 		return result;
@@ -122,6 +97,7 @@ public class CommonHTTPRequest {
 	public static String get(String url) throws ClientProtocolException, IOException {
 		String result = "";
 		String httpUrl = QuhaoConstant.HTTP_URL + url;
+		QuhaoLog.d(TAG, "HTTP REQUEST GET, URL: " + httpUrl);
 
 		HttpGet request = new HttpGet(httpUrl);
 		request.setHeader("user-agent", "QuhaoAndroid");
@@ -132,11 +108,6 @@ public class CommonHTTPRequest {
 			request.setHeader("quhao-android-session", new DesUtils().encrypt(QHClientApplication.getInstance().phone));
 		}
 		
-		// set session id if exist
-//		if(StringUtils.isNotNull(CommonHTTPRequest.sessionID)){
-//			request.setHeader("Cookie", CommonHTTPRequest.sessionID);
-//		}
-
 		HttpParams httpParameters = new BasicHttpParams();
 		// Set the timeout in milliseconds until a connection is established.
 		int timeoutConnection = 10 * 1000;
@@ -152,15 +123,6 @@ public class CommonHTTPRequest {
 		if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 			result = EntityUtils.toString(response.getEntity());
 			QuhaoLog.v(TAG, "get data from server : " + result);
-//			CookieStore mCookieStore = ((AbstractHttpClient) httpClient).getCookieStore();
-//            List<Cookie> cookies = mCookieStore.getCookies();
-//            for (int i = 0; i < cookies.size(); i++) {
-//                //这里是读取Cookie['PHPSESSID']的值存在静态变量中，保证每次都是同一个值
-//                if ("PHPSESSID".equals(cookies.get(i).getName())) {
-//                	CommonHTTPRequest.sessionID = cookies.get(i).getValue();
-//                    break;
-//                }
-//            }
 		}
 
 		return result;

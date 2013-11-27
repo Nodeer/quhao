@@ -74,10 +74,10 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		setContentView(R.layout.merchant_detail);
 		super.onCreate(savedInstanceState);
 
+		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
+
 		this.merchantId = getIntent().getStringExtra("merchantId");
 		this.merchantName = (TextView) findViewById(R.id.merchant_detail_merchantName);
-		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
-		
 		btnGetNumber = (Button) findViewById(R.id.btn_GetNumber);
 		btnGetNumber.setOnClickListener(getNumberClickListener());
 		
@@ -136,8 +136,9 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		@Override
 		public void run() {
 			try {
-				QuhaoLog.v(LOGTAG, "get categorys data form server begin");
-				String accountId = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.ACCOUNT_ID, "false");
+				QuhaoLog.d(LOGTAG, "start to load paidui information from server side");
+//				String accountId = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.ACCOUNT_ID, "false");
+				String accountId = QHClientApplication.getInstance().accountInfo.accountId;
 				String buf = CommonHTTPRequest.get("getReservations?accountId=" + accountId + "&mid=" + merchantId);
 				if (StringUtils.isNull(buf) || "[]".equals(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -233,17 +234,19 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 
 					Merchant m = merchant;
 					
+					// if merchant has no image, set no_logo as default
 					if(StringUtils.isNull(m.merchantImage)){
 						merchantImg.setImageResource(R.drawable.no_logo);
 					}
 					
+					// get image from memory/SDCard/URL stream
 					AsyncImageLoader asynImageLoader = new AsyncImageLoader();
 					Drawable drawable = asynImageLoader.loadDrawable(merchant.merchantImage);
 					if (drawable != null) {
 						merchantImg.setImageDrawable(drawable);
 					}
 
-					// check the merchant is enabled and autoLogin is true
+					// check the merchant is enabled
 					if (m.enable) {
 						btnGetNumber.setVisibility(View.VISIBLE);
 					} else {
@@ -267,6 +270,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					fuwu.setText(String.valueOf(m.fuwu));
 					huanjing.setText(String.valueOf(m.huanjing));
 
+					// comment layout
 					critiqueLayout = (LinearLayout) info.findViewById(R.id.critiqueLayout);
 					QuhaoLog.i(LOGTAG, m.commentAverageCost);
 					QuhaoLog.i(LOGTAG, m.commentContent);
@@ -303,18 +307,15 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						}
 					});
 
-					String isLogin = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.IS_LOGIN, "false");
-					if ("true".equalsIgnoreCase(isLogin)) {
+					QuhaoLog.d(LOGTAG, "check login state on MerchantDetailActivity, isLogined : " + QHClientApplication.getInstance().isLogined);
+					if(QHClientApplication.getInstance().isLogined){
 						getCurrentNo();
 					}
 					critiqueLayout.setOnClickListener(MerchantDetailActivity.this);
 				}
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-
 			}
-
 		}
-
 	};
 
 	private Handler reservationUpdateHandler = new Handler() {

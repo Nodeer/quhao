@@ -33,7 +33,7 @@ public class QHClientApplication extends Application {
 	private static final String TAG = QHClientApplication.class.getName();
 	public boolean isLogined = false;
 	public String phone = "";
-	public AccountInfo accessInfo = null;
+	public AccountInfo accountInfo = null;
 	public boolean isAuto = false;
 	public static Context mContext;
 	/**

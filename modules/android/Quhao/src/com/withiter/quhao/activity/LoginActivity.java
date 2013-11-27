@@ -167,7 +167,7 @@ public class LoginActivity extends QuhaoBaseActivity {
 						// TODO remove below line
 //						SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "true");
 
-						QHClientApplication.getInstance().accessInfo = account;
+						QHClientApplication.getInstance().accountInfo = account;
 						QHClientApplication.getInstance().isLogined = true;
 
 						loginUpdateHandler.obtainMessage(200, account).sendToTarget();

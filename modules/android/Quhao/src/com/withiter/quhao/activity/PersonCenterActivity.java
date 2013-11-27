@@ -57,7 +57,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.person_center_layout);
 		super.onCreate(savedInstanceState);
-		
+
 		QuhaoLog.d(TAG, "onCreate");
 
 		// bind menu button function
@@ -92,36 +92,39 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 
 		loginBtn.setOnClickListener(this);
 		regBtn.setOnClickListener(this);
-		
+
 		// other activity will invoke this method
 		refreshUI();
-		
-//		String isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_AUTO_LOGIN, "false");
-//		if (!QHClientApplication.getInstance().isLogined && "false".equals(isAutoLogin)) {
-//
-//		} else if (!QHClientApplication.getInstance().isLogined && "true".equals(isAutoLogin)) {
-//			initData();
-//		} else if (QHClientApplication.getInstance().isLogined) {
-//			loginBtn.setVisibility(View.GONE);
-//			regBtn.setVisibility(View.GONE);
-//			AccountInfo account = QHClientApplication.getInstance().accessInfo;
-//			if (account != null) {
-//				updateUIData(account);
-//			} else {
-//				loginBtn.setVisibility(View.VISIBLE);
-//				regBtn.setVisibility(View.VISIBLE);
-//			}
-//		}
+
+		// String isAutoLogin = SharedprefUtil.get(this,
+		// QuhaoConstant.IS_AUTO_LOGIN, "false");
+		// if (!QHClientApplication.getInstance().isLogined &&
+		// "false".equals(isAutoLogin)) {
+		//
+		// } else if (!QHClientApplication.getInstance().isLogined &&
+		// "true".equals(isAutoLogin)) {
+		// initData();
+		// } else if (QHClientApplication.getInstance().isLogined) {
+		// loginBtn.setVisibility(View.GONE);
+		// regBtn.setVisibility(View.GONE);
+		// AccountInfo account = QHClientApplication.getInstance().accessInfo;
+		// if (account != null) {
+		// updateUIData(account);
+		// } else {
+		// loginBtn.setVisibility(View.VISIBLE);
+		// regBtn.setVisibility(View.VISIBLE);
+		// }
+		// }
 	}
 
-	public void refreshUI(){
+	public void refreshUI() {
 		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
 		progressDialogUtil.showProgress();
 		// if haven't login, prompt the login dialog
 		// no need to check auto login from SharedPreference
 		// because when APP start up, the action had been performed
 		QuhaoLog.d(TAG, "QHClientApplication.getInstance().isLogined : " + QHClientApplication.getInstance().isLogined);
-		if(!QHClientApplication.getInstance().isLogined){
+		if (!QHClientApplication.getInstance().isLogined) {
 			Intent intent = new Intent(this, LoginActivity.class);
 			intent.putExtra("activityName", this.getClass().getName());
 			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -131,8 +134,8 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		} else {
 			loginBtn.setVisibility(View.GONE);
 			regBtn.setVisibility(View.GONE);
-			AccountInfo account = QHClientApplication.getInstance().accessInfo;
-			if(account != null){
+			AccountInfo account = QHClientApplication.getInstance().accountInfo;
+			if (account != null) {
 				updateUIData(account);
 			} else {
 				loginBtn.setVisibility(View.VISIBLE);
@@ -142,8 +145,9 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 
 		// if click personal center, should stay in personal center.
 		this.getIntent().putExtra("activityName", this.getClass().getName());
-				
-		// if account hasn't login, below account object will return from loginActivity.java
+
+		// if account hasn't login, below account object will return from
+		// loginActivity.java
 		AccountInfo account = (AccountInfo) getIntent().getSerializableExtra("account");
 		QuhaoLog.d(TAG, "account returned from LoginActivity.java : " + account);
 		if (account != null) {
@@ -151,7 +155,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			updateUIData(account);
 		}
 	}
-	
+
 	// update UI according to the account object
 	private void updateUIData(AccountInfo account) {
 		mobile.setText(account.phone);
@@ -160,8 +164,6 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		QuhaoLog.d(TAG, "account.jifen : " + account.jifen);
 		nickName.setText(account.nickName);
 		mobile.setText(account.phone);
-
-		// TODO add jifen from backend
 		jifen.setText(account.jifen);
 
 		value_qiandao.setText(account.signIn);
@@ -173,7 +175,6 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 	}
 
 	private void initData() {
-
 		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
 		progressDialogUtil.showProgress();
 		Thread accountThread = new Thread(accountRunnable);
@@ -181,7 +182,6 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 	}
 
 	private Runnable accountRunnable = new Runnable() {
-
 		@Override
 		public void run() {
 			Looper.prepare();
@@ -214,24 +214,10 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 						if (account.msg.equals("success")) {
 							QuhaoLog.i(TAG, "auto login successfully.");
 							SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "true");
-							QHClientApplication.getInstance().accessInfo = account;
+							QHClientApplication.getInstance().accountInfo = account;
 							QHClientApplication.getInstance().isLogined = true;
 							accountUpdateHandler.obtainMessage(200, account).sendToTarget();
 						}
-
-						// loginInfo = ParseJson.getLoginInfo(result);
-						// AccountInfo account = new AccountInfo();
-						// account.setUserId("1");
-						// account.build(loginInfo);
-						// SharedprefUtil.put(PersonCenterActivity.this,
-						// QuhaoConstant.IS_LOGIN, "true");
-
-						// QHClientApplication.getInstance().accessInfo =
-						// account;
-						// QuhaoLog.i(TAG, loginInfo.msg);
-						// accountUpdateHandler.obtainMessage(200,
-						// loginInfo).sendToTarget();
-
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -282,23 +268,17 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 
 	@Override
 	public void onClick(View v) {
-		// // 隐藏软键盘
-		// InputMethodManager m = (InputMethodManager)
-		// getSystemService(Context.INPUT_METHOD_SERVICE);
-		// if (m != null) {
-		// m.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(),
-		// InputMethodManager.HIDE_NOT_ALWAYS);
-		// }
-		// // 已经点过，直接返回
+		// 已经点过，直接返回
 		if (isClick) {
 			return;
 		}
 
-		// // 设置已点击标志，避免快速重复点击
+		// 设置已点击标志，避免快速重复点击
 		isClick = true;
-		// // 解锁
+		// 解锁
 		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
 		progressDialogUtil.showProgress();
+		
 		switch (v.getId()) {
 		case R.id.login:
 			progressDialogUtil.closeProgress();
@@ -306,8 +286,6 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			Intent intent = new Intent(this, LoginActivity.class);
 			intent.putExtra("activityName", this.getClass().getName());
 			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-			// overridePendingTransition(R.anim.in_from_left,
-			// R.anim.out_to_right);
 			startActivity(intent);
 			break;
 		case R.id.register:
@@ -316,8 +294,6 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			Intent intentReg = new Intent(this, RegisterActivity.class);
 			intentReg.putExtra("activityName", this.getClass().getName());
 			intentReg.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-			// overridePendingTransition(R.anim.in_from_left,
-			// R.anim.out_to_right);
 			startActivity(intentReg);
 			break;
 		case R.id.signInLayout:
@@ -330,14 +306,12 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 					} else {
 						loginInfo = ParseJson.getLoginInfo(result);
 						AccountInfo account = new AccountInfo();
-						// account.setUserId("1");
 						account.build(loginInfo);
 						SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "true");
-						QHClientApplication.getInstance().accessInfo = account;
+						QHClientApplication.getInstance().accountInfo = account;
+						
 						QuhaoLog.i(TAG, loginInfo.msg);
-
 						if (loginInfo.msg.equals("fail")) {
-
 							SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "false");
 							Toast.makeText(PersonCenterActivity.this, "签到失败", Toast.LENGTH_LONG).show();
 							return;
@@ -345,24 +319,19 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 						if (loginInfo.msg.equals("success")) {
 							nickName.setText(loginInfo.nickName);
 							mobile.setText(loginInfo.phone);
-
-							// TODO add jifen from backend
 							jifen.setText(loginInfo.jifen);
 
 							value_qiandao.setText(loginInfo.signIn);
 							value_dianpin.setText(loginInfo.dianping);
 							signInLayout.setEnabled(false);
 						}
-
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				} finally {
 					progressDialogUtil.closeProgress();
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-
 				}
-
 			} else {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -371,9 +340,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-
 						dialog.dismiss();
-
 					}
 				});
 				builder.create().show();
@@ -384,7 +351,6 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			} else {
-
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				AlertDialog.Builder builder = new Builder(this);
@@ -392,22 +358,21 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-
 						dialog.dismiss();
-
 					}
 				});
 				builder.create().show();
 			}
-
 			break;
 		case R.id.current_paidui_layout:
 			if (QHClientApplication.getInstance().isLogined) {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				
 				Intent intentCurrent = new Intent();
 				intentCurrent.putExtra("queryCondition", "current");
-				intentCurrent.setClass(this, PaiduiListActivity.class);
+				intentCurrent.setClass(this, QuhaoStatesActivity.class);
+				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 				startActivity(intentCurrent);
 			} else {
 				progressDialogUtil.closeProgress();
@@ -417,9 +382,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-
 						dialog.dismiss();
-
 					}
 				});
 				builder.create().show();
@@ -431,7 +394,8 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				Intent intentHistory = new Intent();
 				intentHistory.putExtra("queryCondition", "history");
-				intentHistory.setClass(this, PaiduiListActivity.class);
+				intentHistory.setClass(this, QuhaoStatesActivity.class);
+				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 				startActivity(intentHistory);
 			} else {
 				progressDialogUtil.closeProgress();
@@ -441,14 +405,11 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-
 						dialog.dismiss();
-
 					}
 				});
 				builder.create().show();
 			}
-
 			break;
 		case R.id.credit_cost_layout:
 			if (QHClientApplication.getInstance().isLogined) {
@@ -456,6 +417,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				Intent intentCredit = new Intent();
 				intentCredit.setClass(this, CreditCostListActivity.class);
+				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 				startActivity(intentCredit);
 			} else {
 				progressDialogUtil.closeProgress();
@@ -465,9 +427,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-
 						dialog.dismiss();
-
 					}
 				});
 				builder.create().show();
@@ -487,11 +447,6 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-
 		return false;
-	}
-
-	private void displayAccountInfo() {
-		// TextView nickName = (TextView) findViewById("nickName");
 	}
 }

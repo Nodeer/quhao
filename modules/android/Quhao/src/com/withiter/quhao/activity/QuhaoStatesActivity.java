@@ -13,8 +13,10 @@ import android.view.Window;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.ReservationForPaiduiAdapter;
+import com.withiter.quhao.exception.NoResultFromHTTPRequestException;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
@@ -23,16 +25,16 @@ import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SharedprefUtil;
 import com.withiter.quhao.vo.ReservationVO;
 
-public class PaiduiListActivity extends QuhaoBaseActivity {
+/**
+ * Quhao states of Current/History
+ * 
+ */
+public class QuhaoStatesActivity extends QuhaoBaseActivity {
 
 	private List<ReservationVO> reservations;
-
 	private TextView titleView;
-
 	private ListView paiduiListView;
-
 	private String queryCondition;
-
 	private ReservationForPaiduiAdapter reservationForPaiduiAdapter;
 
 	@Override
@@ -53,45 +55,29 @@ public class PaiduiListActivity extends QuhaoBaseActivity {
 		btnBack.setOnClickListener(goBack(this));
 
 		initData();
-
 	}
 
-	private Handler reservationsUpdateHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			if (msg.what == 200) {
-				super.handleMessage(msg);
-
-				reservationForPaiduiAdapter = new ReservationForPaiduiAdapter(PaiduiListActivity.this, paiduiListView, reservations);
-				paiduiListView.setAdapter(reservationForPaiduiAdapter);
-				reservationForPaiduiAdapter.notifyDataSetChanged();
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			}
-
-		}
-
-	};
-
 	private void initData() {
-
 		Thread thread = new Thread(new Runnable() {
-
 			@Override
 			public void run() {
 				Looper.prepare();
 				try {
-
-					progressDialogUtil = new ProgressDialogUtil(PaiduiListActivity.this, R.string.empty, R.string.waitting, false);
+					progressDialogUtil = new ProgressDialogUtil(QuhaoStatesActivity.this, R.string.empty, R.string.waitting, false);
 					progressDialogUtil.showProgress();
+					
 					String url = "";
-					String accountId = SharedprefUtil.get(PaiduiListActivity.this, QuhaoConstant.ACCOUNT_ID, "false");
+					String accountId = QHClientApplication.getInstance().accountInfo.accountId;
 					if ("current".equals(queryCondition)) {
 						url = "getCurrentMerchants?accountId=" + accountId;
-					} else if ("history".equals(queryCondition)) {
+					}
+					if ("history".equals(queryCondition)) {
 						url = "getHistoryMerchants?accountId=" + accountId;
 					}
+					
 					String buf = CommonHTTPRequest.get(url);
 					if (StringUtils.isNull(buf) || "[]".equals(buf)) {
+						new NoResultFromHTTPRequestException();
 						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					} else {
 						reservations = new ArrayList<ReservationVO>();
@@ -112,6 +98,21 @@ public class PaiduiListActivity extends QuhaoBaseActivity {
 		thread.start();
 
 	}
+
+	private Handler reservationsUpdateHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.what == 200) {
+				super.handleMessage(msg);
+				reservationForPaiduiAdapter = new ReservationForPaiduiAdapter(QuhaoStatesActivity.this, paiduiListView, reservations);
+				paiduiListView.setAdapter(reservationForPaiduiAdapter);
+				reservationForPaiduiAdapter.notifyDataSetChanged();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			}
+
+		}
+
+	};
 
 	@Override
 	public void onClick(View v) {
