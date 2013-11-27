@@ -232,6 +232,11 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				if (null != merchant) {
 
 					Merchant m = merchant;
+					
+					if(StringUtils.isNull(m.merchantImage)){
+						merchantImg.setImageResource(R.drawable.no_logo);
+					}
+					
 					AsyncImageLoader asynImageLoader = new AsyncImageLoader();
 					Drawable drawable = asynImageLoader.loadDrawable(merchant.merchantImage);
 					if (drawable != null) {

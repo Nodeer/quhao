@@ -62,8 +62,7 @@ public class MerchantListActivity extends QuhaoBaseActivity {
 		this.categoryCount = getIntent().getStringExtra("categoryCount");
 
 		this.categoryTypeTitle = (TextView) findViewById(R.id.categoryTypeTitle);
-		this.categoryTypeTitle.setText(categoryTypeStr + "[" + categoryCount
-				+ "家]");
+		this.categoryTypeTitle.setText(categoryTypeStr + "[" + categoryCount + "家]");
 
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
 		initView();
@@ -75,8 +74,7 @@ public class MerchantListActivity extends QuhaoBaseActivity {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
 
-				LinearLayout.LayoutParams merchantsParams = (LayoutParams) merchantsListView
-						.getLayoutParams();
+				LinearLayout.LayoutParams merchantsParams = (LayoutParams) merchantsListView.getLayoutParams();
 
 				// 设置自定义的layout
 				merchantsListView.setLayoutParams(merchantsParams);
@@ -85,9 +83,7 @@ public class MerchantListActivity extends QuhaoBaseActivity {
 
 				// 默认isFirst是true.
 				if (isFirst) {
-					merchantAdapter = new MerchantAdapter(
-							MerchantListActivity.this, merchantsListView,
-							merchants);
+					merchantAdapter = new MerchantAdapter(MerchantListActivity.this, merchantsListView, merchants);
 					merchantsListView.setAdapter(merchantAdapter);
 					isFirst = false;
 				} else {
@@ -95,8 +91,7 @@ public class MerchantListActivity extends QuhaoBaseActivity {
 				}
 
 				merchantAdapter.notifyDataSetChanged();
-				merchantsListView
-						.setOnItemClickListener(merchantItemClickListener);
+				merchantsListView.setOnItemClickListener(merchantItemClickListener);
 
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
@@ -107,13 +102,11 @@ public class MerchantListActivity extends QuhaoBaseActivity {
 
 	private AdapterView.OnItemClickListener merchantItemClickListener = new AdapterView.OnItemClickListener() {
 		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			Merchant merchant = merchants.get(position);
 			Intent intent = new Intent();
 			intent.putExtra("merchantId", merchant.id);
-			intent.setClass(MerchantListActivity.this,
-					MerchantDetailActivity.class);
+			intent.setClass(MerchantListActivity.this, MerchantDetailActivity.class);
 			startActivity(intent);
 			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 		}
@@ -135,8 +128,7 @@ public class MerchantListActivity extends QuhaoBaseActivity {
 		}
 		isClick = true;
 
-		progressMerchants = new ProgressDialogUtil(this, R.string.empty,
-				R.string.querying, false);
+		progressMerchants = new ProgressDialogUtil(this, R.string.empty, R.string.querying, false);
 		progressMerchants.showProgress();
 		Thread merchantsThread = new Thread(merchantsRunnable);
 		merchantsThread.start();
@@ -147,8 +139,7 @@ public class MerchantListActivity extends QuhaoBaseActivity {
 		public void run() {
 			try {
 				QuhaoLog.v(LOGTAG, "get categorys data form server begin");
-				String url = "MerchantController/nextPage?page=" + page
-						+ "&cateType=" + categoryType;
+				String url = "MerchantController/nextPage?page=" + page + "&cateType=" + categoryType;
 				QuhaoLog.i(LOGTAG, "the request url is : " + url);
 				String buf = CommonHTTPRequest.get(url);
 				if (StringUtils.isNull(buf) || "[]".endsWith(buf)) {
@@ -160,8 +151,7 @@ public class MerchantListActivity extends QuhaoBaseActivity {
 					}
 					merchants.addAll(ParseJson.getMerchants(buf));
 
-					merchantsUpdateHandler.obtainMessage(200, merchants)
-							.sendToTarget();
+					merchantsUpdateHandler.obtainMessage(200, merchants).sendToTarget();
 				}
 
 			} catch (Exception e) {
@@ -179,8 +169,7 @@ public class MerchantListActivity extends QuhaoBaseActivity {
 		}
 
 		@Override
-		public void onScroll(AbsListView view, int firstVisibleItem,
-				int visibleItemCount, int totalItemCount) {
+		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 			// check hit the bottom of current loaded data
 			if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount > 0 && needToLoad) {
 				MerchantListActivity.this.page += 1;
@@ -207,14 +196,14 @@ public class MerchantListActivity extends QuhaoBaseActivity {
 		backClicked = false;
 		super.onResume();
 	}
-	
+
 	@Override
-	public void onPause(){
+	public void onPause() {
 		super.onPause();
-		QuhaoLog.i(LOGTAG, LOGTAG+" on pause");
-		if(backClicked){
+		QuhaoLog.i(LOGTAG, LOGTAG + " on pause");
+		if (backClicked) {
 			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 		}
 	}
-	
+
 }

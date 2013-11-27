@@ -9,10 +9,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
+import android.app.Application;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 
+import com.withiter.quhao.R;
 import com.withiter.quhao.util.tool.ImageUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SDTool;
