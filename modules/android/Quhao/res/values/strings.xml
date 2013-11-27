@@ -45,7 +45,7 @@
 	<string name="logining">登录中&#8230;</string>
 	<string name="net_error">网络异常，请重试!</string>
 	<string name="querying">正努力帮您加载美味信息&#8230;</string>
-	<string name="waitting">请稍等 &#8230; &#8230; &#8230;</string>
+	<string name="waitting">请稍等 &#8230; &#8230;</string>
 	<string name="radioPhone">手机</string>
 	<string name="radioPassword">密码</string>
 	<string name="radioEmail">邮箱</string>
@@ -60,7 +60,7 @@
 	<string name="noname">无名人士</string>
 	<string name="nomobile">无号码</string>
 	<string name="jifen_label">剩余积分</string>
-	<string name="jifen_default">5</string>
+	<string name="jifen_default">0</string>
 	<string name="label_qiandao">签到</string>
 	<string name="value_qiandao">0</string>
 	<string name="label_dianpin">点评</string>

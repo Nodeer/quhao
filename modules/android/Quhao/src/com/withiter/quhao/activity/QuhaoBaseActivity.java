@@ -21,8 +21,7 @@ import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SharedprefUtil;
 
 @SuppressLint("NewApi")
-public abstract class QuhaoBaseActivity extends QuhaoActivity implements
-		OnClickListener, OnTouchListener {
+public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClickListener, OnTouchListener {
 
 	private final String TAG = QuhaoBaseActivity.class.getName();
 
@@ -70,25 +69,25 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements
 	 *            需要跳转到的页面
 	 * @return 绑定事件
 	 */
-	protected OnClickListener goBack(final Activity activity, final Object...params) {
+	protected OnClickListener goBack(final Activity activity, final Object... params) {
 		OnClickListener clickListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(params != null && params.length > 0){
+				if (params != null && params.length > 0) {
 					Log.i(TAG, "params[0] is " + params[0]);
-					if(params[0].equals(MerchantsSearchActivity.class.getName())){
+					if (params[0].equals(MerchantsSearchActivity.class.getName())) {
 						Log.i(TAG, "backClicked: " + MerchantsSearchActivity.backClicked);
 						MerchantsSearchActivity.backClicked = true;
 					}
-					if(params[0].equals(MerchantDetailActivity.class.getName())){
+					if (params[0].equals(MerchantDetailActivity.class.getName())) {
 						Log.i(TAG, "backClicked: " + MerchantDetailActivity.backClicked);
 						MerchantDetailActivity.backClicked = true;
 					}
-					if(params[0].equals(MerchantListActivity.class.getName())){
+					if (params[0].equals(MerchantListActivity.class.getName())) {
 						Log.i(TAG, "backClicked: " + MerchantListActivity.backClicked);
 						MerchantListActivity.backClicked = true;
 					}
-					if(params[0].equals(GetNumberActivity.class.getName())){
+					if (params[0].equals(GetNumberActivity.class.getName())) {
 						Log.i(TAG, "backClicked: " + GetNumberActivity.backClicked);
 						GetNumberActivity.backClicked = true;
 					}
@@ -104,7 +103,7 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements
 	public void onBackPressed() {
 		super.onBackPressed();
 	}
-	
+
 	/**
 	 * 商家列表按钮绑定事件，点击进入商家列表页面
 	 * 
@@ -121,15 +120,13 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements
 				// 判断是否在当前页面, 需要刷新页面，重新加载数据，而不是调整activity的显示顺序。 Add by Cross
 				if (activity instanceof MainActivity) {
 					QuhaoLog.i(TAG, "refresh category page");
-					((MainActivity) activity)
-							.getTopMerchantsFromServerAndDisplay();
-					((MainActivity) activity)
-							.getCategoriesFromServerAndDisplay();
+					((MainActivity) activity).getTopMerchantsFromServerAndDisplay();
+					((MainActivity) activity).getCategoriesFromServerAndDisplay();
 				} else {
 					Intent intent = new Intent(activity, MainActivity.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 					startActivity(intent);
-					overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+//					overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 				}
 			}
 		};
@@ -150,7 +147,7 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements
 				Intent intent = new Intent(activity, NearbyActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(intent);
-				overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+//				overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 			}
 		};
 		return clickListener;
@@ -167,8 +164,14 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements
 		OnClickListener clickListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				if (activity instanceof PersonCenterActivity) {
+					QuhaoLog.i(TAG, "refresh PersonCenterActivity page");
+					((PersonCenterActivity) activity).refreshUI();
+//					((PersonCenterActivity) activity).recreate();
+					return;
+				}
 				// no need to check login status here.
-				Intent intent = new Intent(activity,PersonCenterActivity.class);
+				Intent intent = new Intent(activity, PersonCenterActivity.class);
 				startActivity(intent);
 			}
 		};
@@ -199,11 +202,9 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements
 		OnClickListener clickListener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(activity,
-						MerchantsSearchActivity.class);
+				Intent intent = new Intent(activity, MerchantsSearchActivity.class);
 				startActivity(intent);
-				overridePendingTransition(R.anim.in_from_right,
-						R.anim.out_to_left);
+				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			}
 		};
 		return clickListener;
@@ -214,8 +215,7 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements
 			return true;
 		}
 
-		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty,
-				R.string.logining, false);
+		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.logining, false);
 
 		if (null == QHClientApplication.getInstance().accessInfo) {
 			return true;
