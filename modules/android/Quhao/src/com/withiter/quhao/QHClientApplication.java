@@ -11,7 +11,6 @@ import android.widget.Toast;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
-import com.withiter.quhao.util.db.AccountInfoHelper;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.QuhaoConstant;
@@ -83,7 +82,6 @@ public class QHClientApplication extends Application {
 					if (StringUtils.isNotNull(result)) {
 						LoginInfo loginInfo = ParseJson.getLoginInfo(result);
 						AccountInfo account = new AccountInfo();
-//						account.setUserId("1");
 						account.build(loginInfo);
 						QuhaoLog.i(TAG, account.msg);
 						
@@ -137,6 +135,5 @@ public class QHClientApplication extends Application {
 		} else {
 			return;
 		}
-
 	}
 }

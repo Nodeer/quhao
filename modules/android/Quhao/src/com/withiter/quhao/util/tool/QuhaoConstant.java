@@ -1,7 +1,5 @@
 package com.withiter.quhao.util.tool;
 
-import com.withiter.quhao.util.db.AccountInfoColumn;
-
 public class QuhaoConstant {
 
 	public static String HTTP_URL = "http://192.168.0.20:9081/";
@@ -16,8 +14,6 @@ public class QuhaoConstant {
 	public static final String PASSWORD = "PASSWORD";
 	
 	public static boolean test = false;
-//	public static String uid = "";
-//	public static boolean autoLogin = false;
 	
 	/**
 	 * 共享缓存文件名称
@@ -58,30 +54,6 @@ public class QuhaoConstant {
 	/**
 	 * 更新時間
 	 */
-	public static long TIME_STAMP = 0;
-	public static long TIME_STAMP_OLD = 0;
-	public static String CREATE_ACCOUNT_TABLE = "CREATE TABLE accountinfo ("
-			+ AccountInfoColumn.USERID + " text,"
-			+ AccountInfoColumn.ACCOUNTID + " text,"
-			+ AccountInfoColumn.PHONE + " text,"
-			+ AccountInfoColumn.EMAIL + " text,"
-			+ AccountInfoColumn.PASSWORD + " text,"
-			+ AccountInfoColumn.NICKNAME + " text,"
-			+ AccountInfoColumn.BIRTHDAY + " text,"
-			+ AccountInfoColumn.USERIMAGE + " text," 
-			+ AccountInfoColumn.ENABLE + " text," 
-			+ AccountInfoColumn.MOBILEOS + " text,"
-			+ AccountInfoColumn.SIGNIN + " text,"
-			+ AccountInfoColumn.ISSIGNIN + " text,"
-//			+ AccountInfoColumn.DIANPING + " text,"
-//			+ AccountInfoColumn.ZHAOPIAN + " text,"
-//			+ AccountInfoColumn.JIFEN + " text,"
-			+ AccountInfoColumn.ISAUTO + " text,"
-			+ AccountInfoColumn.MSG + " text,"
-			+ AccountInfoColumn.LASTLOGIN + " text)";
-	public static final String ACCOUNT_TABLE = "accountinfo";
-	
-	public static final String DATABASE_NAME = "quhao.db";
-	
-	public static final int DATABASE_VERSION = 1;
+//	public static long TIME_STAMP = 0;
+//	public static long TIME_STAMP_OLD = 0;
 }

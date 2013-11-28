@@ -95,26 +95,6 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 
 		// other activity will invoke this method
 		refreshUI();
-
-		// String isAutoLogin = SharedprefUtil.get(this,
-		// QuhaoConstant.IS_AUTO_LOGIN, "false");
-		// if (!QHClientApplication.getInstance().isLogined &&
-		// "false".equals(isAutoLogin)) {
-		//
-		// } else if (!QHClientApplication.getInstance().isLogined &&
-		// "true".equals(isAutoLogin)) {
-		// initData();
-		// } else if (QHClientApplication.getInstance().isLogined) {
-		// loginBtn.setVisibility(View.GONE);
-		// regBtn.setVisibility(View.GONE);
-		// AccountInfo account = QHClientApplication.getInstance().accessInfo;
-		// if (account != null) {
-		// updateUIData(account);
-		// } else {
-		// loginBtn.setVisibility(View.VISIBLE);
-		// regBtn.setVisibility(View.VISIBLE);
-		// }
-		// }
 	}
 
 	public void refreshUI() {

@@ -209,29 +209,4 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 		};
 		return clickListener;
 	}
-
-	private boolean autoLogin() {
-		if (QHClientApplication.getInstance().isLogined) {
-			return true;
-		}
-
-		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.logining, false);
-
-		if (null == QHClientApplication.getInstance().accountInfo) {
-			return true;
-		} else {
-			QHClientApplication.getInstance().isAuto = true;
-			progressDialogUtil.showProgress();
-		}
-		return false;
-	}
-
-	// private boolean checkDevice() {
-	// if (!InfoHelper.checkNetwork(this)) {
-	// Toast.makeText(this, R.string.network_error_info, Toast.LENGTH_LONG)
-	// .show();
-	// return false;
-	// }
-	// return true;
-	// }
 }
