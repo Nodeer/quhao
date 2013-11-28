@@ -2,7 +2,6 @@ package com.withiter.quhao.domain;
 
 import java.io.Serializable;
 
-import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.vo.LoginInfo;
 
 public class AccountInfo implements Serializable {
@@ -47,5 +46,5 @@ public class AccountInfo implements Serializable {
 		this.jifen = loginInfo.jifen;
 		this.dianping = loginInfo.dianping;
 	}
-
+	
 }

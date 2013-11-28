@@ -137,7 +137,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		public void run() {
 			try {
 				QuhaoLog.d(LOGTAG, "start to load paidui information from server side");
-//				String accountId = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.ACCOUNT_ID, "false");
 				String accountId = QHClientApplication.getInstance().accountInfo.accountId;
 				String buf = CommonHTTPRequest.get("getReservations?accountId=" + accountId + "&mid=" + merchantId);
 				if (StringUtils.isNull(buf) || "[]".equals(buf)) {

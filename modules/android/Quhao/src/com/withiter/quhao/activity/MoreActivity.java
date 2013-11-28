@@ -19,30 +19,30 @@ import com.withiter.quhao.util.tool.SharedprefUtil;
 public class MoreActivity extends QuhaoBaseActivity {
 
 	private static final String TAG = MoreActivity.class.getName();
-	
+
 	private LinearLayout settings;
 	private LinearLayout aboutUs;
 	private LinearLayout opinion;
 	private LinearLayout version;
-	private LinearLayout moreShare; 
+	private LinearLayout moreShare;
 	private LinearLayout help;
 	private LinearLayout loginStatus;
-	
+
 	private ImageView loginStatusImg;
-	
+
 	private TextView loginStatusTxt;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.more_layout);
 		super.onCreate(savedInstanceState);
-		
+
 		btnCategory.setOnClickListener(goCategory(this));
 		btnNearby.setOnClickListener(goNearby(this));
 		btnPerson.setOnClickListener(goPersonCenter(this));
 		btnMore.setOnClickListener(goMore(this));
-		
+
 		settings = (LinearLayout) this.findViewById(R.id.more_settings);
 		version = (LinearLayout) this.findViewById(R.id.more_version);
 		opinion = (LinearLayout) this.findViewById(R.id.more_opinion);
@@ -57,32 +57,27 @@ public class MoreActivity extends QuhaoBaseActivity {
 		help.setOnClickListener(this);
 		aboutUs.setOnClickListener(this);
 		loginStatus.setOnClickListener(this);
-		
+
 		loginStatusImg = (ImageView) this.findViewById(R.id.more_login_status_img);
 		loginStatusTxt = (TextView) this.findViewById(R.id.more_login_status_txt);
-		
+
 		String loginStatus = SharedprefUtil.get(this, QuhaoConstant.IS_LOGIN, "false");
-		if("true".equals(loginStatus))
-		{
+		if ("true".equals(loginStatus)) {
 			loginStatusImg.setImageResource(R.drawable.logout_status);
 			loginStatusTxt.setText(R.string.more_logout);
-		}
-		else
-		{
+		} else {
 			loginStatusImg.setImageResource(R.drawable.login_status);
 			loginStatusTxt.setText(R.string.more_no_login);
 		}
-		
+
 	}
-	
+
 	@Override
 	public void onClick(View v) {
-		if(isClick)
-		{
+		if (isClick) {
 			return;
 		}
-		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty,
-				R.string.querying, false);
+		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.querying, false);
 		progressDialogUtil.showProgress();
 		switch (v.getId()) {
 		case R.id.more_settings:// 系统设置
@@ -106,7 +101,7 @@ public class MoreActivity extends QuhaoBaseActivity {
 			startActivity(intent2);
 			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 			break;
-		case R.id.more_help://帮助
+		case R.id.more_help:// 帮助
 			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			Intent intent3 = new Intent(this, HelpActivity.class);
@@ -125,23 +120,18 @@ public class MoreActivity extends QuhaoBaseActivity {
 			startActivity(intent4);
 			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 			break;
-			
+
 		case R.id.more_login_status:// 分享给好友
 			// 显示分享界面
 			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			
+
 			String loginStatus = SharedprefUtil.get(MoreActivity.this, QuhaoConstant.IS_LOGIN, "false");
-			if("true".equals(loginStatus))
-			{
-				loginHandler.obtainMessage(200, loginStatus)
-				.sendToTarget();
-			}
-			else
-			{
+			if ("true".equals(loginStatus)) {
+				loginHandler.obtainMessage(200, loginStatus).sendToTarget();
+			} else {
 				Intent intent5 = new Intent(MoreActivity.this, LoginActivity.class);
-				intent5.putExtra("activityName",
-						this.getClass().getName());
+				intent5.putExtra("activityName", this.getClass().getName());
 				intent5.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent5);
 				overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
@@ -164,7 +154,7 @@ public class MoreActivity extends QuhaoBaseActivity {
 			}
 		}
 	};
-	
+
 	@Override
 	public boolean onTouch(View arg0, MotionEvent arg1) {
 		// TODO Auto-generated method stub

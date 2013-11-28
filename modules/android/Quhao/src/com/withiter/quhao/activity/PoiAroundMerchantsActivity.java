@@ -7,21 +7,20 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 
-public class PoiAroundMerchantsActivity extends QuhaoBaseActivity{
+public class PoiAroundMerchantsActivity extends QuhaoBaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.poi_around_merchants_layout);
 		super.onCreate(savedInstanceState);
-		
-		
+
 	}
 
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -29,7 +28,5 @@ public class PoiAroundMerchantsActivity extends QuhaoBaseActivity{
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
-	
 
 }

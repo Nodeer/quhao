@@ -258,7 +258,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		// 解锁
 		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
 		progressDialogUtil.showProgress();
-		
+
 		switch (v.getId()) {
 		case R.id.login:
 			progressDialogUtil.closeProgress();
@@ -289,7 +289,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 						account.build(loginInfo);
 						SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "true");
 						QHClientApplication.getInstance().accountInfo = account;
-						
+
 						QuhaoLog.i(TAG, loginInfo.msg);
 						if (loginInfo.msg.equals("fail")) {
 							SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "false");
@@ -348,7 +348,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			if (QHClientApplication.getInstance().isLogined) {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				
+
 				Intent intentCurrent = new Intent();
 				intentCurrent.putExtra("queryCondition", "current");
 				intentCurrent.setClass(this, QuhaoStatesActivity.class);

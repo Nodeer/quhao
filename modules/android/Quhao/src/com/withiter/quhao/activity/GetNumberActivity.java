@@ -95,7 +95,7 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 		seatNoView = (TextView) findViewById(R.id.seatNo);
 		currentNumberView = (TextView) findViewById(R.id.currentNumber);
 		beforeYouView = (TextView) findViewById(R.id.beforeYou);
-		
+
 		beforeYouLayout = (LinearLayout) findViewById(R.id.beforeYouLayout);
 		myNumberLayout = (LinearLayout) findViewById(R.id.myNoLayout);
 		myNumberView = (TextView) findViewById(R.id.myNumber);

@@ -58,7 +58,6 @@ public class MainActivity extends QuhaoBaseActivity {
 		super.onCreate(savedInstanceState);
 
 		// TODO add default view here
-
 		if (!networkOK) {
 			Builder dialog = new AlertDialog.Builder(MainActivity.this);
 			dialog.setTitle("温馨提示").setMessage("Wifi/蜂窝网络未打开，或者网络情况不是很好哟").setPositiveButton("确定", null);

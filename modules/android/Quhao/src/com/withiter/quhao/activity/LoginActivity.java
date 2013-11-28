@@ -164,9 +164,6 @@ public class LoginActivity extends QuhaoBaseActivity {
 						SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN, isAutoLogin.trim());
 						
 						// login state will store in QHClientApplication
-						// TODO remove below line
-//						SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "true");
-
 						QHClientApplication.getInstance().accountInfo = account;
 						QHClientApplication.getInstance().isLogined = true;
 
@@ -201,7 +198,6 @@ public class LoginActivity extends QuhaoBaseActivity {
 
 				QuhaoLog.d(TAG, "login call back to " + activityName);
 
-				// intent.pute
 				if (StringUtils.isNotNull(activityName)) {
 					Intent intent = new Intent();
 					if (MerchantDetailActivity.class.getName().equals(activityName)) {

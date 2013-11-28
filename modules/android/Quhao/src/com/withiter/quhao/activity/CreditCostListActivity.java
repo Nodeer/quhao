@@ -24,21 +24,20 @@ import com.withiter.quhao.vo.Credit;
 public class CreditCostListActivity extends QuhaoBaseActivity {
 
 	private List<Credit> credits;
-	
+
 	private ListView creditsListView;
-	
+
 	private CreditAdapter creditAdapter;
-	
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.credit_cost_list_layout);
 		super.onCreate(savedInstanceState);
-		
+
 		creditsListView = (ListView) this.findViewById(R.id.creditsListView);
 		btnBack.setOnClickListener(goBack(this));
-		
+
 		initListView();
 	}
 
@@ -56,8 +55,7 @@ public class CreditCostListActivity extends QuhaoBaseActivity {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
 
-				creditAdapter = new CreditAdapter(
-						CreditCostListActivity.this, creditsListView, credits);
+				creditAdapter = new CreditAdapter(CreditCostListActivity.this, creditsListView, credits);
 				creditsListView.setAdapter(creditAdapter);
 				creditAdapter.notifyDataSetChanged();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -66,22 +64,20 @@ public class CreditCostListActivity extends QuhaoBaseActivity {
 		}
 
 	};
-	
+
 	private Runnable getCreditsRunnable = new Runnable() {
-		
+
 		@Override
 		public void run() {
 			try {
 				String accountId = SharedprefUtil.get(CreditCostListActivity.this, QuhaoConstant.ACCOUNT_ID, "");
-				String buf = CommonHTTPRequest
-						.get("getCreditCost?accountId=" + accountId);
+				String buf = CommonHTTPRequest.get("getCreditCost?accountId=" + accountId);
 				if (StringUtils.isNull(buf) || "[]".equals(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
 					credits = new ArrayList<Credit>();
 					credits = ParseJson.getCredits(buf);
-					creditsUpdateHandler.obtainMessage(200, credits)
-							.sendToTarget();
+					creditsUpdateHandler.obtainMessage(200, credits).sendToTarget();
 				}
 
 			} catch (Exception e) {
@@ -92,6 +88,7 @@ public class CreditCostListActivity extends QuhaoBaseActivity {
 			}
 		}
 	};
+
 	@Override
 	public void onClick(View v) {
 
