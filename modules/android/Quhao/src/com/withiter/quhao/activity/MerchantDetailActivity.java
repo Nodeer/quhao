@@ -30,8 +30,6 @@ import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
-import com.withiter.quhao.util.tool.QuhaoConstant;
-import com.withiter.quhao.util.tool.SharedprefUtil;
 import com.withiter.quhao.vo.Merchant;
 import com.withiter.quhao.vo.ReservationVO;
 

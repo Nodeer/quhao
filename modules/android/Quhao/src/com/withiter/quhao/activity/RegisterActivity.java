@@ -12,7 +12,6 @@ import android.os.Message;
 import android.telephony.TelephonyManager;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnFocusChangeListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,7 +28,7 @@ import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SharedprefUtil;
 import com.withiter.quhao.vo.SignupVO;
 
-public class RegisterActivity extends QuhaoBaseActivity implements OnFocusChangeListener{
+public class RegisterActivity extends QuhaoBaseActivity{
 
 	private EditText loginNameText;
 
@@ -72,7 +71,6 @@ public class RegisterActivity extends QuhaoBaseActivity implements OnFocusChange
 		colseBtn.setOnClickListener(this);
 		registerBtn.setOnClickListener(this);
 		verifyCodeBtn.setOnClickListener(this);
-		password2Text.setOnFocusChangeListener(this);
 		TelephonyManager telephonyManager = (TelephonyManager) this
 				.getSystemService(Context.TELEPHONY_SERVICE);
 		String phone = telephonyManager.getLine1Number();
@@ -324,11 +322,6 @@ public class RegisterActivity extends QuhaoBaseActivity implements OnFocusChange
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		return false;
-	}
-
-	@Override
-	public void onFocusChange(View v, boolean hasFocus) {
-		
 	}
 
 }

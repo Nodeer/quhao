@@ -19,8 +19,6 @@ import com.withiter.quhao.util.tool.SharedprefUtil;
 
 public class MoreActivity extends QuhaoBaseActivity {
 
-	private static final String TAG = MoreActivity.class.getName();
-
 	private LinearLayout settings;
 	private LinearLayout aboutUs;
 	private LinearLayout opinion;

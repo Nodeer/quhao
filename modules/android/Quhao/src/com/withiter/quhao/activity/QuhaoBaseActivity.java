@@ -12,13 +12,10 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 
-import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.tool.PhoneTool;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
-import com.withiter.quhao.util.tool.QuhaoConstant;
-import com.withiter.quhao.util.tool.SharedprefUtil;
 
 @SuppressLint("NewApi")
 public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClickListener, OnTouchListener {
