@@ -194,6 +194,11 @@
 			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
 		<!-- around merchant list page -->
 
+		
+		<!-- around merchant list page -->
+		<activity android:name="com.withiter.quhao.activity.ForgetPasswordActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
+			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
+		<!-- around merchant list page -->
 	</application>
 
 </manifest>

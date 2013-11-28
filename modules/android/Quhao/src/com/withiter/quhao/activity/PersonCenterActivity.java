@@ -49,6 +49,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 
 	private Button loginBtn;
 	private Button regBtn;
+	private Button editPasswordBtn;
 
 	private final int UNLOCK_CLICK = 1000;
 
@@ -87,11 +88,13 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		historyPaiduiLayout.setOnClickListener(this);
 		creditCostLayout.setOnClickListener(this);
 
+		editPasswordBtn = (Button) this.findViewById(R.id.editPassword);
 		loginBtn = (Button) this.findViewById(R.id.login);
 		regBtn = (Button) this.findViewById(R.id.register);
 
 		loginBtn.setOnClickListener(this);
 		regBtn.setOnClickListener(this);
+		editPasswordBtn.setOnClickListener(this);
 
 		// other activity will invoke this method
 		refreshUI();
@@ -104,36 +107,24 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		// no need to check auto login from SharedPreference
 		// because when APP start up, the action had been performed
 		QuhaoLog.d(TAG, "QHClientApplication.getInstance().isLogined : " + QHClientApplication.getInstance().isLogined);
-		if (!QHClientApplication.getInstance().isLogined) {
-			Intent intent = new Intent(this, LoginActivity.class);
-			intent.putExtra("activityName", this.getClass().getName());
-			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-			progressDialogUtil.closeProgress();
-			startActivity(intent);
-			return;
-		} else {
-			loginBtn.setVisibility(View.GONE);
-			regBtn.setVisibility(View.GONE);
+		if (QHClientApplication.getInstance().isLogined) {
 			AccountInfo account = QHClientApplication.getInstance().accountInfo;
 			if (account != null) {
+				loginBtn.setVisibility(View.GONE);
+				regBtn.setVisibility(View.GONE);
+				editPasswordBtn.setVisibility(View.VISIBLE);
 				updateUIData(account);
 			} else {
 				loginBtn.setVisibility(View.VISIBLE);
 				regBtn.setVisibility(View.VISIBLE);
+				progressDialogUtil.closeProgress();
 			}
 		}
-
-		// if click personal center, should stay in personal center.
-		this.getIntent().putExtra("activityName", this.getClass().getName());
-
-		// if account hasn't login, below account object will return from
-		// loginActivity.java
-		AccountInfo account = (AccountInfo) getIntent().getSerializableExtra("account");
-		QuhaoLog.d(TAG, "account returned from LoginActivity.java : " + account);
-		if (account != null) {
-			QuhaoLog.d(TAG, "account.phone: " + account.phone);
-			updateUIData(account);
+		else
+		{
+			progressDialogUtil.closeProgress();
 		}
+
 	}
 
 	// update UI according to the account object
@@ -393,6 +384,28 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			}
 			break;
 		case R.id.credit_cost_layout:
+			if (QHClientApplication.getInstance().isLogined) {
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				Intent intentCredit = new Intent();
+				intentCredit.setClass(this, CreditCostListActivity.class);
+				startActivity(intentCredit);
+				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+			} else {
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				AlertDialog.Builder builder = new Builder(this);
+				builder.setMessage("请先登录");
+				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+				builder.create().show();
+			}
+			break;
+		case R.id.editPassword:
 			if (QHClientApplication.getInstance().isLogined) {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);

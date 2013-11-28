@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.util.encrypt.DesUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.QuhaoConstant;
@@ -74,6 +75,7 @@ public class QHClientApplication extends Application {
 		
 		if (StringUtils.isNotNull(phone) && StringUtils.isNotNull(password)) {
 			if ("true".equalsIgnoreCase(isAutoLogin)) {
+				password = new DesUtils().decrypt(password);
 				String url = "AccountController/login?phone=" + phone.trim() + "&password=" + password.trim();
 				QuhaoLog.i(TAG, "the login url is : " + url);
 				try {
@@ -94,9 +96,11 @@ public class QHClientApplication extends Application {
 						if (account.msg.equals("success")) {
 							SharedprefUtil.put(this, QuhaoConstant.ACCOUNT_ID, loginInfo.accountId);
 							SharedprefUtil.put(this, QuhaoConstant.PHONE, phone.trim());
+							password = new DesUtils().encrypt(password.trim());
 							SharedprefUtil.put(this, QuhaoConstant.PASSWORD, password.trim());
 							SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN, isAutoLogin.trim());
-							SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "true");
+//							SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "true");
+							this.accountInfo = account;
 							this.phone = phone;
 							this.isLogined = true;
 							Toast.makeText(this, "登录成功", Toast.LENGTH_LONG).show();

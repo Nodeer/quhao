@@ -39,7 +39,7 @@ public class LoginActivity extends QuhaoBaseActivity {
 	private EditText passwordText;
 	private Button btnClose;
 	private Button btnLogin;
-	private Button btnRegister;
+	private Button forgetPasswordBtn;
 	private TextView loginResult;
 	private final int UNLOCK_CLICK = 1000;
 	private ProgressDialogUtil progressLogin;
@@ -89,11 +89,11 @@ public class LoginActivity extends QuhaoBaseActivity {
 
 		btnClose = (Button) findViewById(R.id.close);
 		btnLogin = (Button) findViewById(R.id.login);
-		btnRegister = (Button) findViewById(R.id.zhuce);
+		forgetPasswordBtn = (Button) findViewById(R.id.forgetPassword);
 
 		btnClose.setOnClickListener(this);
 		btnLogin.setOnClickListener(this);
-		btnRegister.setOnClickListener(this);
+		forgetPasswordBtn.setOnClickListener(this);
 	}
 
 	@Override
@@ -178,9 +178,9 @@ public class LoginActivity extends QuhaoBaseActivity {
 				progressLogin.closeProgress();
 			}
 			break;
-		case R.id.zhuce:
+		case R.id.forgetPassword:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			Intent intent = new Intent(this, RegisterActivity.class);
+			Intent intent = new Intent(this, ForgetPasswordActivity.class);
 			startActivity(intent);
 			System.gc();
 			finish();
