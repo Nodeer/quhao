@@ -1,20 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="#ffffffff"
-  xmlns:android="http://schemas.android.com/apk/res/android" >
-    <LinearLayout android:gravity="center_vertical" 
-   		android:orientation="vertical" 
-   		android:layout_width="fill_parent" 
-   		android:layout_height="wrap_content"
-   		android:background="@drawable/list_item_border"
-   		android:clickable="true">
-  
-   	    <TextView android:id="@+id/description"
-  			android:layout_width="wrap_content"
-  			android:layout_height="wrap_content"
-  			android:text="取号， 座位号：11， 我的号码：222"
-  			android:textColor="#ff000000"
-  			android:paddingLeft="8dip"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffffff"
+    android:orientation="vertical" >
 
-		
-   	</LinearLayout>
-</LinearLayout> 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/list_item_border"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:orientation="vertical" >
+
+        <!-- 积分消费动作 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dip"
+            android:text="@string/jifen_cost_action"
+            android:textColor="#ff000000" />
+
+        <TextView
+            android:id="@+id/action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dip"
+            android:text="@string/empty"
+            android:textColor="#ff000000" />
+        <!-- 积分消费动作 -->
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dip"
+            android:text="@string/empty"
+            android:textColor="#ff000000" />
+    </LinearLayout>
+
+</LinearLayout>

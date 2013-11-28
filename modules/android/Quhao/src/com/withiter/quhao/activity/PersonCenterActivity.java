@@ -154,12 +154,12 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		progressDialogUtil.closeProgress();
 	}
 
-	private void initData() {
-		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
-		progressDialogUtil.showProgress();
-		Thread accountThread = new Thread(accountRunnable);
-		accountThread.start();
-	}
+//	private void initData() {
+//		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
+//		progressDialogUtil.showProgress();
+//		Thread accountThread = new Thread(accountRunnable);
+//		accountThread.start();
+//	}
 
 	private Runnable accountRunnable = new Runnable() {
 		@Override
@@ -255,6 +255,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 
 		// 设置已点击标志，避免快速重复点击
 		isClick = true;
+		
 		// 解锁
 		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
 		progressDialogUtil.showProgress();
@@ -352,8 +353,8 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				Intent intentCurrent = new Intent();
 				intentCurrent.putExtra("queryCondition", "current");
 				intentCurrent.setClass(this, QuhaoStatesActivity.class);
-				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 				startActivity(intentCurrent);
+				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			} else {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -375,8 +376,8 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				Intent intentHistory = new Intent();
 				intentHistory.putExtra("queryCondition", "history");
 				intentHistory.setClass(this, QuhaoStatesActivity.class);
-				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 				startActivity(intentHistory);
+				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			} else {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -397,8 +398,8 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				Intent intentCredit = new Intent();
 				intentCredit.setClass(this, CreditCostListActivity.class);
-				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 				startActivity(intentCredit);
+				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			} else {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);

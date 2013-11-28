@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -21,8 +22,6 @@ import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
-import com.withiter.quhao.util.tool.QuhaoConstant;
-import com.withiter.quhao.util.tool.SharedprefUtil;
 import com.withiter.quhao.vo.ReservationVO;
 
 /**
@@ -30,6 +29,9 @@ import com.withiter.quhao.vo.ReservationVO;
  * 
  */
 public class QuhaoStatesActivity extends QuhaoBaseActivity {
+
+	protected static boolean backClicked = false;
+	private static String TAG = QuhaoStatesActivity.class.getName();
 
 	private List<ReservationVO> reservations;
 	private TextView titleView;
@@ -77,8 +79,8 @@ public class QuhaoStatesActivity extends QuhaoBaseActivity {
 					
 					String buf = CommonHTTPRequest.get(url);
 					if (StringUtils.isNull(buf) || "[]".equals(buf)) {
-						new NoResultFromHTTPRequestException();
 						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+						throw new NoResultFromHTTPRequestException();
 					} else {
 						reservations = new ArrayList<ReservationVO>();
 						reservations = ParseJson.getReservations(buf);
@@ -109,9 +111,7 @@ public class QuhaoStatesActivity extends QuhaoBaseActivity {
 				reservationForPaiduiAdapter.notifyDataSetChanged();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
-
 		}
-
 	};
 
 	@Override
@@ -122,6 +122,21 @@ public class QuhaoStatesActivity extends QuhaoBaseActivity {
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		return false;
+	}
+	
+	@Override
+	protected void onResume() {
+		backClicked = false;
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		Log.i(TAG, "backClicked: " + backClicked);
+		if (backClicked) {
+			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+		}
 	}
 
 }

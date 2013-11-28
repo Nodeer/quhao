@@ -25,7 +25,6 @@ public class ReservationForPaiduiAdapter extends BaseAdapter {
 		this.activity = activity;
 		this.listView = listView;
 		this.rvos = rvos;
-
 	}
 
 	@Override

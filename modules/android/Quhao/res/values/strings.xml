@@ -89,6 +89,14 @@
 	<string name="before_you">在你前面：</string>
 	<string name="nahao">拿号</string>
 	<!-- get number end -->
+
+	<!-- jifen cost states -->
+	<string name="jifen_cost">积分消费情况</string>
+	<string name="jifen_cost_merchant_name">所在消费商家：</string>
+	<string name="jifen_cost_merchant_address">所在消费地址：</string>
+	<string name="jifen_cost_action">积分消费动作：</string>
+	<string name="jifen_cost_description">积分消费描述：</string>
+	<!-- jifen cost states -->
 	
 	<!-- more begin -->
 	<string name="more_setting">系统设置</string>

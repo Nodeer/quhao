@@ -91,6 +91,10 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 						Log.i(TAG, "backClicked: " + GetNumberActivity.backClicked);
 						GetNumberActivity.backClicked = true;
 					}
+					if (params[0].equals(CreditCostListActivity.class.getName())) {
+						Log.i(TAG, "backClicked: " + CreditCostListActivity.backClicked);
+						CreditCostListActivity.backClicked = true;
+					}
 				}
 				onBackPressed();
 				activity.finish();
@@ -192,7 +196,7 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 				Intent intent = new Intent(activity, MoreActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(intent);
-				overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+//				overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 			}
 		};
 		return clickListener;

@@ -25,7 +25,7 @@ import com.withiter.models.merchant.Merchant;
 import com.withiter.utils.StringUtils;
 
 public class AccountController extends BaseController {
-	
+
 	private static Logger logger = LoggerFactory.getLogger(controllers.AccountController.class);
 
 	/**
@@ -45,14 +45,14 @@ public class AccountController extends BaseController {
 			suVO.errorText = "号码不能为空";
 			renderJSON(suVO);
 		}
-		Account account =Account.findExistsAccount(mobile) ;
+		Account account = Account.findExistsAccount(mobile);
 		if (account != null) {
 			suVO.errorText = "此号码已注册";
 			renderJSON(suVO);
 		}
 		// account =Account.findByPhone(mobile);
-		if(account==null){
-			account= new Account();
+		if (account == null) {
+			account = new Account();
 			account.phone = mobile;
 		}
 		if (Constants.MobileOSType.ANDROID.toString().equalsIgnoreCase(os)) {
@@ -67,8 +67,8 @@ public class AccountController extends BaseController {
 				suVO.errorText = "发送短信出错";
 				renderJSON(suVO);
 			} else {
-				account.authcode=String.valueOf(result);
-				account.authDate=new Date();
+				account.authcode = String.valueOf(result);
+				account.authDate = new Date();
 				account.save();
 				suVO.errorKey = "";
 				suVO.errorText = "验证码24小时之内有效";
@@ -84,12 +84,13 @@ public class AccountController extends BaseController {
 			renderJSON(suVO);
 		}
 	}
-	
+
 	/**
 	 * 忘记密码时获取6位数字验证码
 	 * 
-	 * @param mobile 手机号码
-	 *            
+	 * @param mobile
+	 *            手机号码
+	 * 
 	 *            返回JSON SignupVO
 	 *            返回SignupVO对象，需对errorKey进行判断，如果不是空字符串，则表示生成失败，否则生成成功。
 	 */
@@ -100,8 +101,8 @@ public class AccountController extends BaseController {
 			suVO.errorText = "号码不能为空";
 			renderJSON(suVO);
 		}
-		Account account =Account.findByPhone(mobile);
-		if ( account== null) {
+		Account account = Account.findByPhone(mobile);
+		if (account == null) {
 			suVO.errorText = "此号码还没注册";
 			renderJSON(suVO);
 		}
@@ -111,8 +112,8 @@ public class AccountController extends BaseController {
 				suVO.errorText = "发送短信出错";
 				renderJSON(suVO);
 			} else {
-				account.authcode=String.valueOf(result);
-				account.authDate=new Date();
+				account.authcode = String.valueOf(result);
+				account.authDate = new Date();
 				account.save();
 				suVO.errorKey = "";
 				suVO.errorText = "验证码24小时之内有效";
@@ -128,17 +129,19 @@ public class AccountController extends BaseController {
 			renderJSON(suVO);
 		}
 	}
-	
+
 	/**
 	 * 更新密码
 	 * 
-	 * @param mobile 手机号码
-	 * @param code 验证码
-	 * @param password 密码
-	 *            返回JSON SignupVO
+	 * @param mobile
+	 *            手机号码
+	 * @param code
+	 *            验证码
+	 * @param password
+	 *            密码 返回JSON SignupVO
 	 *            返回SignupVO对象，需对errorKey进行判断，如果不是空字符串，则表示生成失败，否则生成成功。
 	 */
-	public static void updatePassCode(String mobile, String code,String password) {
+	public static void updatePassCode(String mobile, String code, String password) {
 		SignupVO suVO = new SignupVO();
 		suVO.errorKey = "mobile";
 		if (StringUtils.isEmpty(mobile)) {
@@ -152,22 +155,22 @@ public class AccountController extends BaseController {
 			renderJSON(suVO);
 		}
 
-		Account account = Account.findAccount(mobile,code);
+		Account account = Account.findAccount(mobile, code);
 		if (account == null) {
 			suVO.errorKey = "0";
 			suVO.errorText = "验证码错误或者已过期";
 			renderJSON(suVO);
-		}else{
-			account.password=Codec.hexSHA1(String.valueOf(password));
-			account.authcode="";
-			account.authDate=null;
+		} else {
+			account.password = Codec.hexSHA1(String.valueOf(password));
+			account.authcode = "";
+			account.authDate = null;
 			account.save();
 			suVO.errorKey = "1";
 			suVO.errorText = "修改成功";
 			renderJSON(suVO);
 		}
 	}
-	
+
 	/**
 	 * 通过手机号和验证码进行注册
 	 * 
@@ -180,7 +183,7 @@ public class AccountController extends BaseController {
 	 *            返回JSON SignupVO
 	 *            返回SignupVO对象，需对errorKey进行判断，如果不是空字符串，则表示生成失败，否则生成成功。
 	 */
-	public static void signupWithMobile(String mobile, String code,String password, String os) {
+	public static void signupWithMobile(String mobile, String code, String password, String os) {
 		SignupVO suVO = new SignupVO();
 		suVO.errorKey = "mobile";
 		if (StringUtils.isEmpty(mobile)) {
@@ -202,14 +205,14 @@ public class AccountController extends BaseController {
 			suVO.errorText = "此号码已注册";
 			renderJSON(suVO);
 		}
-		account = Account.findAccount(mobile,code);
+		account = Account.findAccount(mobile, code);
 		if (account == null) {
 			suVO.errorText = "验证码错误或者已过期";
 			renderJSON(suVO);
 		}
-		account.password=Codec.hexSHA1(String.valueOf(password));
-		account.authcode="";
-		account.authDate=null;
+		account.password = Codec.hexSHA1(String.valueOf(password));
+		account.authcode = "";
+		account.authDate = null;
 		account.enable = true;
 		account.save();
 		suVO.errorKey = "1";
@@ -226,8 +229,7 @@ public class AccountController extends BaseController {
 	 * @param os
 	 *            the type of end user (ANDROID, IOS, WEB)
 	 */
-	public static void signup(String phone, String email, String password,
-			String os) {
+	public static void signup(String phone, String email, String password, String os) {
 		Account account = new Account();
 		account.password = password;
 		if (!StringUtils.isEmpty(phone)) {
@@ -288,7 +290,7 @@ public class AccountController extends BaseController {
 				loginVO.build(account);
 				session.put(Constants.SESSION_USERNAME, account.id());
 				session.put(account.id(), account.id());
-				
+
 				logger.debug(session.getId());
 			} else {
 				loginVO.errorCode = -2;
@@ -346,8 +348,7 @@ public class AccountController extends BaseController {
 	 *            account id
 	 */
 	public static void getCurrentMerchants(String accountId) {
-		List<Reservation> currentReservations = Reservation
-				.findValidReservations(accountId);
+		List<Reservation> currentReservations = Reservation.findValidReservations(accountId);
 
 		List<ReservationVO> currentReservationVOs = new ArrayList<ReservationVO>();
 		ReservationVO reservationVO = null;
@@ -361,15 +362,6 @@ public class AccountController extends BaseController {
 			currentReservationVOs.add(reservationVO);
 		}
 
-		/*
-		List<Merchant> currentMerchants = Merchant
-				.findbyReservations(currentReservations);
-		List<MerchantVO> currentMerchantVOs = new ArrayList<MerchantVO>();
-		for (Merchant merchant : currentMerchants) {
-			currentMerchantVOs.add(MerchantVO.build(merchant));
-
-		}
-		*/
 		renderJSON(currentReservationVOs);
 	}
 
@@ -381,8 +373,7 @@ public class AccountController extends BaseController {
 	 *            account id
 	 */
 	public static void getHistoryMerchants(String accountId) {
-		List<Reservation> histroyReservations = Reservation
-				.findHistroyReservations(accountId);
+		List<Reservation> histroyReservations = Reservation.findHistroyReservations(accountId);
 
 		List<ReservationVO> histroytReservationVOs = new ArrayList<ReservationVO>();
 		ReservationVO reservationVO = null;
@@ -397,55 +388,53 @@ public class AccountController extends BaseController {
 		}
 
 		/*
-		List<Merchant> histroyMerchants = Merchant
-				.findbyReservations(histroyReservations);
-
-		List<MerchantVO> histroyMerchantVOs = new ArrayList<MerchantVO>();
-		for (Merchant merchant : histroyMerchants) {
-			histroyMerchantVOs.add(MerchantVO.build(merchant));
-
-		}
+		 * List<Merchant> histroyMerchants = Merchant
+		 * .findbyReservations(histroyReservations);
+		 * 
+		 * List<MerchantVO> histroyMerchantVOs = new ArrayList<MerchantVO>();
+		 * for (Merchant merchant : histroyMerchants) {
+		 * histroyMerchantVOs.add(MerchantVO.build(merchant));
+		 * 
+		 * }
 		 */
 		renderJSON(histroytReservationVOs);
 	}
 
 	/**
 	 * 根据帐号ID查找积分消费情况
-	 * @param accountId 帐号ID
+	 * 
+	 * @param accountId
+	 *            帐号ID
 	 */
 	public static void getCreditCost(String accountId) {
 
-		List<Credit> credits = new ArrayList<Credit>();
+		
 		List<CreditVO> creditVOs = new ArrayList<CreditVO>();
-		if(StringUtils.isEmpty(accountId))
-		{
+		if (StringUtils.isEmpty(accountId)) {
 			renderJSON(creditVOs);
 			return;
 		}
-		
-		credits = Credit.findByAccountId(accountId);
+
+		List<Credit> credits = Credit.findByAccountId(accountId);
 		CreditVO creditVO = null;
 		for (Credit credit : credits) {
 			creditVO = new CreditVO();
-			
 			creditVO.build(credit);
-			if(StringUtils.isNotEmpty(credit.merchantId))
-			{
+			if (StringUtils.isNotEmpty(credit.merchantId)) {
 				Merchant merchant = Merchant.findById(credit.merchantId);
 				creditVO.merchantName = merchant.name;
 				creditVO.merchantAddress = merchant.address;
 			}
-			
-			if(StringUtils.isNotEmpty(credit.reservationId))
-			{
+
+			if (StringUtils.isNotEmpty(credit.reservationId)) {
 				Reservation reservation = Reservation.findById(credit.reservationId);
 				creditVO.seatNumber = reservation.seatNumber;
 				creditVO.myNumber = reservation.myNumber;
 			}
-			
+
 			creditVOs.add(creditVO);
 		}
-		
+
 		renderJSON(creditVOs);
 	}
 
@@ -458,8 +447,7 @@ public class AccountController extends BaseController {
 	 *            the email address
 	 * @throws Exception
 	 */
-	public static void getPersonalInfo(String phone, String email)
-			throws Exception {
+	public static void getPersonalInfo(String phone, String email) throws Exception {
 		Account account = null;
 		if (null != phone) {
 			account = Account.findByPhone(phone);

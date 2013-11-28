@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
@@ -61,12 +62,12 @@ public class MoreActivity extends QuhaoBaseActivity {
 		loginStatusImg = (ImageView) this.findViewById(R.id.more_login_status_img);
 		loginStatusTxt = (TextView) this.findViewById(R.id.more_login_status_txt);
 
-		String loginStatus = SharedprefUtil.get(this, QuhaoConstant.IS_LOGIN, "false");
-		if ("true".equals(loginStatus)) {
-			loginStatusImg.setImageResource(R.drawable.logout_status);
+		boolean loginStatus = QHClientApplication.getInstance().isLogined;
+		if (loginStatus) {
+			loginStatusImg.setImageResource(R.drawable.login_status);
 			loginStatusTxt.setText(R.string.more_logout);
 		} else {
-			loginStatusImg.setImageResource(R.drawable.login_status);
+			loginStatusImg.setImageResource(R.drawable.logout_status);
 			loginStatusTxt.setText(R.string.more_no_login);
 		}
 

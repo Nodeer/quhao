@@ -85,8 +85,7 @@ public class ParseJson {
 				}
 
 				url = obj.optString("url");
-				Category category = new Category(count, categoryType,
-						catTypeToString, url);
+				Category category = new Category(count, categoryType, catTypeToString, url);
 				categroys.add(category);
 			}
 
@@ -113,15 +112,14 @@ public class ParseJson {
 				if (obj.has("merchantImage")) {
 					// TODO test here
 					if (QuhaoConstant.test) {
-						imgUrl = obj.getString("merchantImage").replace(
-								"localhost", "10.0.2.2");
+						imgUrl = obj.getString("merchantImage").replace("localhost", "10.0.2.2");
 					} else {
 						imgUrl = obj.getString("merchantImage");
 					}
-					
+
 					try {
-						if(!imgUrl.contains("=")){
-							imgUrl = URLDecoder.decode(obj.getString("merchantImage"), "UTF-8") ;
+						if (!imgUrl.contains("=")) {
+							imgUrl = URLDecoder.decode(obj.getString("merchantImage"), "UTF-8");
 						}
 					} catch (UnsupportedEncodingException e) {
 						// TODO Auto-generated catch block
@@ -234,10 +232,8 @@ public class ParseJson {
 		double lat = obj.optDouble("x");
 		double lng = obj.optDouble("y");
 
-		merchant = new Merchant(id, imgUrl, name, address, phone, cateType,
-				grade, averageCost, tags, kouwei, huanjing, fuwu, xingjiabi,
-				teses, nickName, description, openTime, closeTime, marketCount,
-				enable, joinedDate, lat, lng);
+		merchant = new Merchant(id, imgUrl, name, address, phone, cateType, grade, averageCost, tags, kouwei, huanjing, fuwu, xingjiabi, teses, nickName, description, openTime, closeTime,
+				marketCount, enable, joinedDate, lat, lng);
 
 		String commentAverageCost = obj.optString("commentAverageCost");
 		int commentXingjiabi = obj.optInt("commentXingjiabi");
@@ -284,8 +280,7 @@ public class ParseJson {
 			String dianping = obj.optString("dianping");
 			String zhaopian = obj.optString("zhaopian");
 
-			loginInfo = new LoginInfo(msg, accountId, phone, jifen, email, password,
-					nickName, birthday, userImage, enable, mobileOS, lastLogin,signIn,isSignIn,dianping,zhaopian);
+			loginInfo = new LoginInfo(msg, accountId, phone, jifen, email, password, nickName, birthday, userImage, enable, mobileOS, lastLogin, signIn, isSignIn, dianping, zhaopian);
 
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -303,9 +298,9 @@ public class ParseJson {
 	 */
 	public static Haoma getHaoma(String result) {
 		Haoma haoma = new Haoma();
-//		if (null == result || "".equals(result)) {
-//			return haoma;
-//		}
+		// if (null == result || "".equals(result)) {
+		// return haoma;
+		// }
 
 		try {
 			JSONObject obj = new JSONObject(result);
@@ -349,9 +344,8 @@ public class ParseJson {
 		Integer expired = obj.optInt("expired");
 		Integer finished = obj.optInt("finished");
 		boolean enable = obj.optBoolean("enable");
-		paidu = new Paidui(key, currentNumber, canceled, expired, finished,
-				enable);
-		
+		paidu = new Paidui(key, currentNumber, canceled, expired, finished, enable);
+
 		return paidu;
 	}
 
@@ -393,8 +387,7 @@ public class ParseJson {
 		return rvo;
 	}
 
-	private static ReservationVO coventReservationVO(JSONObject obj)
-			throws JSONException {
+	private static ReservationVO coventReservationVO(JSONObject obj) throws JSONException {
 		ReservationVO rvo;
 		String accountId = obj.optString("accountId");
 		String merchantId = obj.optString("merchantId");
@@ -408,8 +401,7 @@ public class ParseJson {
 		String merchantName = obj.optString("merchantName");
 		String merchantAddress = obj.optString("merchantAddress");
 
-		rvo = new ReservationVO(accountId, merchantId, seatNumber, myNumber,
-				beforeYou, currentNumber, valid, tipKey, tipValue,merchantName,merchantAddress);
+		rvo = new ReservationVO(accountId, merchantId, seatNumber, myNumber, beforeYou, currentNumber, valid, tipKey, tipValue, merchantName, merchantAddress);
 		return rvo;
 	}
 
@@ -434,8 +426,7 @@ public class ParseJson {
 		return locations;
 	}
 
-	private static MerchantLocation coventMerchantLocation(JSONObject obj)
-			throws JSONException {
+	private static MerchantLocation coventMerchantLocation(JSONObject obj) throws JSONException {
 		MerchantLocation location;
 
 		String id = obj.optString("id");
@@ -494,7 +485,7 @@ public class ParseJson {
 		String created = obj.optString("created");
 		String modified = obj.optString("modified");
 
-		comment = new Comment(uid, accountId, nickName, mid,rId, averageCost, xingjiabi, kouwei, huanjing, fuwu, content, created, modified);
+		comment = new Comment(uid, accountId, nickName, mid, rId, averageCost, xingjiabi, kouwei, huanjing, fuwu, content, created, modified);
 		return comment;
 	}
 
@@ -510,11 +501,10 @@ public class ParseJson {
 			for (int i = 0; i < array.length(); i++) {
 				JSONObject obj = array.getJSONObject(i);
 				Credit credit = coventCredit(obj);
-				if(null != credit)
-				{
+				if (null != credit) {
 					credits.add(credit);
 				}
-				
+
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -524,25 +514,24 @@ public class ParseJson {
 	}
 
 	private static Credit coventCredit(JSONObject obj) {
-
-		Credit credit;
-
 		String accountId = obj.optString("accountId");
 		String merchantId = obj.optString("merchantId");
 		String merchantName = obj.optString("merchantName");
 		String merchantAddress = obj.optString("merchantAddress");
 		String reservationId = obj.optString("reservationId");
+
 		int seatNumber = obj.optInt("seatNumber");
 		int myNumber = obj.optInt("myNumber");
 		boolean cost = obj.optBoolean("cost");
 		String status = obj.optString("status");
 
-		credit = new Credit(accountId, merchantId, merchantName, merchantAddress, reservationId, seatNumber, myNumber, cost, status);
+		Credit credit = new Credit(accountId, merchantId, merchantName, merchantAddress, reservationId, seatNumber, myNumber, cost, status);
 		return credit;
 	}
 
 	/**
 	 * parse json string to signup
+	 * 
 	 * @param buf
 	 * @return
 	 */

@@ -124,7 +124,7 @@ public class CommonHTTPRequest {
 			result = EntityUtils.toString(response.getEntity());
 			QuhaoLog.v(TAG, "get data from server : " + result);
 		}
-
+		
 		return result;
 	}
 }
