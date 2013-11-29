@@ -54,6 +54,11 @@
 	<string name="pass_warning">无效密码</string>
 	<!-- 提示信息 -->
 	
+	<!-- 当前/历史取号情况 -->
+	<string name="quhao_states_merchantName">商家名称 ：</string>
+	<string name="quhao_states_merchantAddress">商家地址 ：</string>
+	<!-- 当前/历史取号情况 -->
+	
 	<!-- 个人中心 -->
 	<string name="gerenzhongxin">个人中心</string>
 	<string name="avatar">您的优雅头像</string>

@@ -119,9 +119,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				regBtn.setVisibility(View.VISIBLE);
 				progressDialogUtil.closeProgress();
 			}
-		}
-		else
-		{
+		} else {
 			progressDialogUtil.closeProgress();
 		}
 
@@ -144,69 +142,6 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		}
 		progressDialogUtil.closeProgress();
 	}
-
-//	private void initData() {
-//		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
-//		progressDialogUtil.showProgress();
-//		Thread accountThread = new Thread(accountRunnable);
-//		accountThread.start();
-//	}
-
-	private Runnable accountRunnable = new Runnable() {
-		@Override
-		public void run() {
-			Looper.prepare();
-			String phone = SharedprefUtil.get(PersonCenterActivity.this, QuhaoConstant.PHONE, "");
-			String password = SharedprefUtil.get(PersonCenterActivity.this, QuhaoConstant.PASSWORD, "");
-
-			String decripedPwd = new DesUtils().decrypt(password);
-
-			if (StringUtils.isNotNull(phone) && StringUtils.isNotNull(decripedPwd)) {
-				String url = "AccountController/login?phone=" + phone.trim() + "&password=" + password.trim();
-				QuhaoLog.i(TAG, "the login url is : " + url);
-				try {
-					String result = CommonHTTPRequest.get(url);
-					QuhaoLog.i(TAG, result);
-					if (StringUtils.isNull(result)) {
-						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-					} else {
-						LoginInfo loginInfo = ParseJson.getLoginInfo(result);
-						AccountInfo account = new AccountInfo();
-
-						account.build(loginInfo);
-						QuhaoLog.i(TAG, "account.msg : " + account.msg);
-
-						if (account.msg.equals("fail")) {
-							QuhaoLog.i(TAG, "auto login failed.");
-							SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "false");
-							Toast.makeText(PersonCenterActivity.this, "自动登录失败，请检查用户名密码是否正确", Toast.LENGTH_LONG).show();
-							return;
-						}
-						if (account.msg.equals("success")) {
-							QuhaoLog.i(TAG, "auto login successfully.");
-							SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "true");
-							QHClientApplication.getInstance().accountInfo = account;
-							QHClientApplication.getInstance().isLogined = true;
-							accountUpdateHandler.obtainMessage(200, account).sendToTarget();
-						}
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "false");
-					Toast.makeText(PersonCenterActivity.this, "登陆失败", Toast.LENGTH_LONG).show();
-				} finally {
-					progressDialogUtil.closeProgress();
-					Looper.loop();
-				}
-
-			} else {
-				progressDialogUtil.closeProgress();
-				SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "false");
-				QuhaoLog.i(TAG, "accessInfo is null");
-				Looper.loop();
-			}
-		}
-	};
 
 	private Handler accountUpdateHandler = new Handler() {
 		@Override
@@ -232,7 +167,6 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 						signInLayout.setEnabled(false);
 					}
 				}
-
 			}
 		}
 	};
@@ -246,7 +180,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 
 		// 设置已点击标志，避免快速重复点击
 		isClick = true;
-		
+
 		// 解锁
 		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
 		progressDialogUtil.showProgress();

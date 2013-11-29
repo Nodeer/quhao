@@ -279,7 +279,6 @@
 
 
         <!-- current/history quhao, history jifen -->
-
         <LinearLayout android:id="@+id/current_paidui_layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
