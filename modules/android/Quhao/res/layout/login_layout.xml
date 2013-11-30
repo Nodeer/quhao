@@ -117,9 +117,9 @@
 			    android:layout_height="wrap_content"
 			    android:background="@drawable/btn_weight"
 			    android:text="忘记密码"
-			    android:visibility="gone"
 			    android:layout_gravity="right|center_vertical"
 			    android:textAppearance="?android:textAppearanceMediumInverse"
+			    android:layout_alignParentRight="true"
 			    android:textColor="#ff000000"
 			    android:textSize="14.0sp" />
         </RelativeLayout>

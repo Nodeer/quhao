@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.util.encrypt.DesUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
@@ -53,7 +54,7 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.register_layout);
+		setContentView(R.layout.forget_password_layout);
 		super.onCreate(savedInstanceState);
 
 		loginNameText = (EditText) this.findViewById(R.id.login_name);
@@ -120,6 +121,7 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 						SharedprefUtil.remove(ForgetPasswordActivity.this, QuhaoConstant.IS_AUTO_LOGIN);
 						SharedprefUtil.remove(ForgetPasswordActivity.this, QuhaoConstant.IS_LOGIN);
 						SharedprefUtil.put(ForgetPasswordActivity.this, QuhaoConstant.PHONE, loginName);
+						password = new DesUtils().encrypt(password);
 						SharedprefUtil.put(ForgetPasswordActivity.this, QuhaoConstant.PASSWORD, password);
 						QHClientApplication.getInstance().isLogined = false;
 						Intent intent = new Intent();
@@ -159,7 +161,7 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 					try {
 						
 						loginName = loginNameText.getText().toString().trim();
-						if (StringUtils.isNull(loginName)
+						if (StringUtils.isNotNull(loginName)
 								|| validatePhoneNumber(loginName)) {
 							password = passwordText.getText().toString().trim();
 							password2 = password2Text.getText().toString().trim();
@@ -200,8 +202,8 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 								return;
 							}
 							
-							String url = "signupWithMobile?mobile=" + loginName
-									+ "&code=" + verifyCode + "&password="+ password +"&os=ANDROID";
+							String url = "updatePassCode?mobile=" + loginName
+									+ "&code=" + verifyCode + "&password="+ password;
 
 							String buf = CommonHTTPRequest.get(url);
 							if(StringUtils.isNull(buf)||"[]".equals(buf))
@@ -255,10 +257,9 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 					try {
 						
 						loginName = loginNameText.getText().toString().trim();
-						if (StringUtils.isNull(loginName)
+						if (StringUtils.isNotNull(loginName)
 								|| validatePhoneNumber(loginName)) {
-							String url = "generateAuthCode?mobile=" + loginName
-									+ "&os=ANDROID";
+							String url = "getAuthCode?mobile=" + loginName;
 
 							String buf = CommonHTTPRequest.get(url);
 							if(StringUtils.isNull(buf)||"[]".equals(buf))
