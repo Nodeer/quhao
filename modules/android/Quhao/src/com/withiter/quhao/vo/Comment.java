@@ -9,9 +9,13 @@ public class Comment {
 	
 	public String nickName;
 	
-	private String mid;
+	public String mid;
 	
-	private String rId;
+	public String merchantName;
+	
+	public String merchantAddress;
+	
+	public String rId;
 	
 	public String averageCost = "0";
 	public float xingjiabi = 0;
@@ -24,13 +28,15 @@ public class Comment {
 	public String created;
 	public String modified;
 	
-	public Comment(String uid,String accountId, String nickName,String mid,String rId,String averageCost, 
+	public Comment(String uid,String accountId, String nickName,String mid,String merchantName,String merchantAddress,String rId,String averageCost, 
 			float xingjiabi, float kouwei,float huanjing,float fuwu,String content,String created,String modified)
 	{
 		this.uid = uid;
 		this.accountId = accountId;
 		this.nickName = nickName;
 		this.mid = mid;
+		this.merchantName = merchantName;
+		this.merchantAddress = merchantAddress;
 		this.rId = rId;
 		this.averageCost = averageCost;
 		this.xingjiabi = xingjiabi;

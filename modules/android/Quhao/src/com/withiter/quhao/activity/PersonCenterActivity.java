@@ -256,6 +256,13 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			if (QHClientApplication.getInstance().isLogined) {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				
+				Intent intentComment = new Intent();
+				intentComment.putExtra("accountId", QHClientApplication.getInstance().accountInfo.accountId);
+				intentComment.setClass(this, CommentsAccountActivity.class);
+				startActivity(intentComment);
+				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+				
 			} else {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);

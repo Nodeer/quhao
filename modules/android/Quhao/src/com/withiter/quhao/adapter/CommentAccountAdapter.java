@@ -15,13 +15,13 @@ import android.widget.TextView;
 import com.withiter.quhao.R;
 import com.withiter.quhao.vo.Comment;
 
-public class CommentAdapter extends BaseAdapter {
+public class CommentAccountAdapter extends BaseAdapter {
 
 	private ListView listView;
 	private Activity activity;
 	public List<Comment> comments;
 
-	public CommentAdapter(Activity activity, ListView listView,List<Comment> comments) {
+	public CommentAccountAdapter(Activity activity, ListView listView,List<Comment> comments) {
 		super();
 		this.activity = activity;
 		this.listView= listView;
@@ -53,10 +53,12 @@ public class CommentAdapter extends BaseAdapter {
 				holder = new ViewHolder();
 				LayoutInflater inflator = (LayoutInflater) parent.getContext()
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				convertView = inflator.inflate(R.layout.comment_list_item,
+				convertView = inflator.inflate(R.layout.comment_account_list_item,
 						null);
 				holder.nickName = (TextView) convertView.findViewById(R.id.nickName);
 				holder.modified = (TextView) convertView.findViewById(R.id.modified);
+				holder.merchantName = (TextView) convertView.findViewById(R.id.merchantName);
+				holder.merchantAddress = (TextView) convertView.findViewById(R.id.merchantAddress);
 				holder.fuwu = (TextView) convertView.findViewById(R.id.fuwu);
 				holder.huanjing = (TextView) convertView.findViewById(R.id.huanjing);
 				holder.kouwei = (TextView) convertView.findViewById(R.id.kouwei);
@@ -83,6 +85,8 @@ public class CommentAdapter extends BaseAdapter {
 
 			holder.nickName.setText(comment.nickName);
 			holder.modified.setText(comment.modified);
+			holder.merchantName.setText(comment.merchantName);
+			holder.merchantAddress.setText(comment.merchantAddress);
 			holder.fuwu.setText(String.valueOf(comment.fuwu));
 			holder.huanjing.setText(String.valueOf(comment.huanjing));
 			holder.kouwei.setText(String.valueOf(comment.kouwei));
@@ -123,6 +127,8 @@ public class CommentAdapter extends BaseAdapter {
 
 	class ViewHolder {
 		TextView nickName;
+		TextView merchantName;
+		TextView merchantAddress;
 		TextView xingjiabi;
 		TextView kouwei;
 		TextView huanjing;

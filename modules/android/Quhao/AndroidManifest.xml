@@ -144,10 +144,15 @@
 			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
 		<!-- get number page -->
 
-		<!-- critiques page -->
-		<activity android:name="com.withiter.quhao.activity.CommentsActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
+		<!-- comments page -->
+		<activity android:name="com.withiter.quhao.activity.CommentsMerchantActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
 			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
-		<!-- critiques page -->
+		<!-- comments page -->
+		
+		<!-- comments page -->
+		<activity android:name="com.withiter.quhao.activity.CommentsAccountActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
+			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
+		<!-- comments page -->
 
 		<!-- settings page -->
 		<activity android:name="com.withiter.quhao.activity.SettingsActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"

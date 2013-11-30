@@ -14,6 +14,10 @@ public class CommentVO {
 	
 	public String mid;
 	
+	public String merchantName;
+	
+	public String merchantAddress;
+	
 	public String averageCost = "0";
 	public int xingjiabi = 0;
 	public int kouwei = 0;

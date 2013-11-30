@@ -124,6 +124,7 @@ public class QuhaoStatesActivity extends QuhaoBaseActivity {
 		return false;
 	}
 	
+	
 	@Override
 	protected void onResume() {
 		backClicked = false;
@@ -139,4 +140,12 @@ public class QuhaoStatesActivity extends QuhaoBaseActivity {
 		}
 	}
 
+	@Override
+	protected void onDestroy() {
+		
+		super.onDestroy();
+		if (progressDialogUtil!=null) {
+			progressDialogUtil.closeProgress();
+		}
+	}
 }

@@ -351,7 +351,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			if(StringUtils.isNotNull(this.merchant.commentContent))
 			{
 				QuhaoLog.d("", "the commentContent : " + this.merchant.commentContent);
-				Intent intent = new Intent(this, CommentsActivity.class);
+				Intent intent = new Intent(this, CommentsMerchantActivity.class);
 				intent.putExtra("merchantName", this.merchant.name);
 				intent.putExtra("merchantId", this.merchant.id);
 				startActivity(intent);

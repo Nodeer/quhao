@@ -17,16 +17,16 @@ import android.widget.Toast;
 import android.widget.AbsListView.OnScrollListener;
 
 import com.withiter.quhao.R;
-import com.withiter.quhao.adapter.CommentAdapter;
+import com.withiter.quhao.adapter.CommentMerchantAdapter;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.vo.Comment;
 
-public class CommentsActivity extends QuhaoBaseActivity {
+public class CommentsMerchantActivity extends QuhaoBaseActivity {
 
-	private static final String TAG = CommentsActivity.class.getName();
+	private static final String TAG = CommentsMerchantActivity.class.getName();
 
 	private String merchantName;
 
@@ -51,7 +51,7 @@ public class CommentsActivity extends QuhaoBaseActivity {
 	/**
 	 * critique adapter
 	 */
-	private CommentAdapter critiqueAdapter;
+	private CommentMerchantAdapter commentAdapter;
 
 	/**
 	 * when the page is first loaded, the critiques will be initialize , the
@@ -64,7 +64,7 @@ public class CommentsActivity extends QuhaoBaseActivity {
 
 	private int page;
 
-	protected Handler updateCritiquesHandler = new Handler() {
+	protected Handler updateCommentsHandler = new Handler() {
 
 		@Override
 		public void handleMessage(Message msg) {
@@ -83,13 +83,13 @@ public class CommentsActivity extends QuhaoBaseActivity {
 
 					findViewById(R.id.loadingbar).setVisibility(View.GONE);
 					findViewById(R.id.commentsLayout).setVisibility(View.VISIBLE);
-					critiqueAdapter = new CommentAdapter(CommentsActivity.this, commentsView, comments);
-					commentsView.setAdapter(critiqueAdapter);
+					commentAdapter = new CommentMerchantAdapter(CommentsMerchantActivity.this, commentsView, comments);
+					commentsView.setAdapter(commentAdapter);
 					isFirstLoad = false;
 				} else {
-					critiqueAdapter.comments = comments;
+					commentAdapter.comments = comments;
 				}
-				critiqueAdapter.notifyDataSetChanged();
+				commentAdapter.notifyDataSetChanged();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 		}
@@ -100,7 +100,7 @@ public class CommentsActivity extends QuhaoBaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.comments);
+		setContentView(R.layout.comments_merchant);
 
 		this.merchantName = getIntent().getStringExtra("merchantName");
 
@@ -129,7 +129,7 @@ public class CommentsActivity extends QuhaoBaseActivity {
 		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 			// check hit the bottom of current loaded data
 			if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount > 0 && needToLoad) {
-				CommentsActivity.this.page += 1;
+				CommentsMerchantActivity.this.page += 1;
 				getCritiques();
 			}
 		}
@@ -153,7 +153,7 @@ public class CommentsActivity extends QuhaoBaseActivity {
 
 					if (StringUtils.isNull(buf) || "[]".equals(buf)) {
 						needToLoad = false;
-						updateCritiquesHandler.obtainMessage(200, null).sendToTarget();
+						updateCommentsHandler.obtainMessage(200, null).sendToTarget();
 					} else {
 						//
 						if (isFirstLoad || null == comments) {
@@ -161,11 +161,11 @@ public class CommentsActivity extends QuhaoBaseActivity {
 						}
 						List<Comment> commentList = ParseJson.getComments(buf);
 						comments.addAll(commentList);
-						updateCritiquesHandler.obtainMessage(200, comments).sendToTarget();
+						updateCommentsHandler.obtainMessage(200, comments).sendToTarget();
 					}
 				} catch (Exception e) {
 					unlockHandler.sendEmptyMessageAtTime(UNLOCK_CLICK, 1000);
-					Toast.makeText(CommentsActivity.this, R.string.network_error_info, Toast.LENGTH_SHORT).show();
+					Toast.makeText(CommentsMerchantActivity.this, R.string.network_error_info, Toast.LENGTH_SHORT).show();
 					QuhaoLog.e(TAG, "Error for querying critiques from web service, the error is : " + e.getMessage());
 				} finally {
 					unlockHandler.sendEmptyMessageAtTime(UNLOCK_CLICK, 1000);
@@ -193,6 +193,7 @@ public class CommentsActivity extends QuhaoBaseActivity {
 		switch (v.getId()) {
 		case R.id.back_btn:
 			onBackPressed();
+			this.finish();
 			break;
 		default:
 			break;

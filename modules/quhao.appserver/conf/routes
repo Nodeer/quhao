@@ -48,6 +48,7 @@ GET		/signIn								AccountController.signIn
 # Comment
 GET		/updateComment						CommentController.updateComment
 GET		/getCommentsByMid					CommentController.getCommentsByMid
+GET		/getCommentsByAccountId				CommentController.getCommentsByAccountId
 GET		/getComment							CommentController.getComment
 GET		/getCommentsById					CommentController.getCommentsById
 

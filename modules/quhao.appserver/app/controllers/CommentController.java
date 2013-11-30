@@ -73,7 +73,7 @@ public class CommentController  extends BaseController{
 	 * @param  id of account
 	 */
 	public static void getCommentsById(String accountId) {
-		long count= Comment.getCommentByAccountId(accountId);
+		long count= Comment.getCommentCountByAccountId(accountId);
 		renderText(count);
 	}
 	
@@ -94,12 +94,33 @@ public class CommentController  extends BaseController{
 		
 	}
 	
+	/**
+	 *  根据商家ID获取评论
+	 * @return 评论
+	 * @param  date 日期
+	 */
+	public static void getCommentsByAccountId(int page,String accountId,String sortBy) {
+		page = (page == 0) ? 1 : page;
+
+		List<Comment> comments = Comment.findbyAccountId(page,accountId,sortBy);
+		List<CommentVO> commentVOs = new ArrayList<CommentVO>();
+		for (Comment comment : comments) {
+			CommentVO vo = CommentVO.build(comment);
+			Merchant merchant = Merchant.findByMid(comment.mid);
+			vo.merchantName = merchant.name;
+			vo.merchantAddress = merchant.address;
+			commentVOs.add(vo);
+		}
+		renderJSON(commentVOs);
+		
+	}
+	
 	public static void insertTestCommectsData()
 	{
 		Comment comment = new Comment();
-		comment.accountId = "5280f208e02427a1741c417b";
+		comment.accountId = "5291bc7378a34c9ba73d1a3f";
 		comment.nickName = "jazze";
-		comment.mid = "526fc9e478a3c576667fc14c";
+		comment.mid = "5291bd8478a34c9ba73d1a40";
 		comment.averageCost="50";
 		comment.xingjiabi = 2;
 		comment.kouwei = 3;
@@ -111,9 +132,9 @@ public class CommentController  extends BaseController{
 		comment.save();
 		
 		Comment comment1 = new Comment();
-		comment1.accountId = "5280f208e02427a1741c417b";
+		comment1.accountId = "5291bc7378a34c9ba73d1a3f";
 		comment1.nickName = "jazze";
-		comment1.mid = "526fc9e478a3c576667fc14c";
+		comment1.mid = "5291ac9978a30fc8b8e54d9d";
 		comment1.averageCost="50";
 		comment1.xingjiabi = 5;
 		comment1.kouwei = 4;
@@ -126,9 +147,9 @@ public class CommentController  extends BaseController{
 		
 		for (int i = 0; i < 20; i++) {
 			Comment comment3 = new Comment();
-			comment3.accountId = "5280f208e02427a1741c417b";
+			comment3.accountId = "5291bc7378a34c9ba73d1a3f";
 			comment3.nickName = "jazze";
-			comment3.mid = "526fc9e478a3c576667fc14c";
+			comment3.mid = "5291bd8478a34c9ba73d1a40";
 			comment3.averageCost="50";
 			comment3.xingjiabi = 5;
 			comment3.kouwei = 4;
