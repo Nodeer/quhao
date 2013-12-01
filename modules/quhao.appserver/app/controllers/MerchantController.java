@@ -312,6 +312,7 @@ public class MerchantController extends BaseController {
 			credit.merchantId = reservation.merchantId;
 			credit.reservationId = reservation.id();
 			credit.cost = false;
+			credit.jifen=-1;
 			credit.status = CreditStatus.getNumber;
 			credit.created = new Date();
 			credit.modified = new Date();

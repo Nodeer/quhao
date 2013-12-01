@@ -45,6 +45,11 @@ public class CreditVO {
 	public boolean cost;
 	
 	/**
+	 * 增加或减少积分
+	 */
+	public int jifen;
+	
+	/**
 	 * 积分消费状态 finished, getNumber
 	 */
 	public String status;
@@ -55,6 +60,7 @@ public class CreditVO {
 		this.merchantId = credit.merchantId;
 		this.reservationId = credit.reservationId;
 		this.cost = credit.cost;
+		this.jifen=credit.jifen;
 		this.status = credit.status.toString();
 	}
 
