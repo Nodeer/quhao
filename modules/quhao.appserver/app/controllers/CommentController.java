@@ -6,7 +6,9 @@ import java.util.List;
 
 import vo.CommentVO;
 
+import com.withiter.common.Constants.CreditStatus;
 import com.withiter.models.account.Account;
+import com.withiter.models.account.Credit;
 import com.withiter.models.account.Reservation;
 import com.withiter.models.merchant.Comment;
 import com.withiter.models.merchant.Merchant;
@@ -36,6 +38,18 @@ public class CommentController  extends BaseController{
 				account.jifen=account.jifen+1;
 				account.dianping=account.dianping+1;
 				account.save();
+				
+				// 增加积分消费
+				Credit credit = new Credit();
+				credit.accountId = reservation.accountId;
+				credit.merchantId = reservation.merchantId;
+				credit.reservationId = reservation.id();
+				credit.cost = false;
+				credit.jifen=1;
+				credit.status = CreditStatus.getNumber;
+				credit.created = new Date();
+				credit.modified = new Date();
+				credit.save();
 			}
 			Comment cm=Comment.getComment(rid);
 			if(cm==null){
