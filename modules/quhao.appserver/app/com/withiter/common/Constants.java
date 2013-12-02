@@ -35,7 +35,7 @@ public class Constants {
 	 *
 	 */
 	public enum CreditStatus{
-		finished, getNumber,exchange
+		finished, getNumber,exchange,credit
 	}
 	
 	public static String COOKIE_USERNAME = "quhao_username";

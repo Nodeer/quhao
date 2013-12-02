@@ -46,7 +46,7 @@ public class CommentController  extends BaseController{
 				credit.reservationId = reservation.id();
 				credit.cost = false;
 				credit.jifen=1;
-				credit.status = CreditStatus.getNumber;
+				credit.status = CreditStatus.credit;
 				credit.created = new Date();
 				credit.modified = new Date();
 				credit.save();
