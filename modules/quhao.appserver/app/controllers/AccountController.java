@@ -9,6 +9,7 @@ import org.apache.commons.httpclient.HttpException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import play.Play;
 import play.libs.Codec;
 import play.mvc.Scope.Session;
 import vo.ReservationVO;
@@ -17,6 +18,7 @@ import vo.account.LoginVO;
 import vo.account.SignupVO;
 
 import com.withiter.common.Constants;
+import com.withiter.common.Constants.CreditStatus;
 import com.withiter.common.sms.business.SMSBusiness;
 import com.withiter.models.account.Account;
 import com.withiter.models.account.Credit;
@@ -317,6 +319,7 @@ public class AccountController extends BaseController {
 	 * @param email
 	 */
 	public static void signIn(String accountId) {
+		int exchangePer = Integer.parseInt(Play.configuration.getProperty("credit.exchange.jifen"));
 		Account account = null;
 		if (null != accountId) {
 			account = Account.findById(accountId);
@@ -330,7 +333,23 @@ public class AccountController extends BaseController {
 		} else if (!account.isSignIn) {
 			account.signIn = account.signIn + 1;
 			account.isSignIn = true;
+			if(account.signIn%5==0){
+				account.jifen=account.jifen+exchangePer;
+				// 增加积分消费
+				Credit credit = new Credit();
+				credit.accountId = accountId;
+				credit.merchantId = "";
+				credit.reservationId = "";
+				credit.cost = true;
+				credit.jifen=exchangePer;
+				credit.status = CreditStatus.exchange;
+				credit.created = new Date();
+				credit.modified = new Date();
+				credit.save();
+
+			}
 			account.save();
+						
 			loginVO.errorCode = 1;
 			loginVO.msg = "success";
 			loginVO.build(account);
@@ -350,8 +369,8 @@ public class AccountController extends BaseController {
 	 * @param accountId
 	 *            account id
 	 */
-	public static void getCurrentMerchants(String accountId) {
-		List<Reservation> currentReservations = Reservation.findValidReservations(accountId);
+	public static void getCurrentMerchants(String accountId,int page,String sortBy) {
+		List<Reservation> currentReservations = Reservation.findValidReservations(accountId,page,sortBy);
 
 		List<ReservationVO> currentReservationVOs = new ArrayList<ReservationVO>();
 		ReservationVO reservationVO = null;
@@ -375,8 +394,8 @@ public class AccountController extends BaseController {
 	 * @param accountId
 	 *            account id
 	 */
-	public static void getHistoryMerchants(String accountId) {
-		List<Reservation> histroyReservations = Reservation.findHistroyReservations(accountId);
+	public static void getHistoryMerchants(String accountId,int page,String sortBy) {
+		List<Reservation> histroyReservations = Reservation.findHistroyReservations(accountId,page,sortBy);
 
 		List<ReservationVO> histroytReservationVOs = new ArrayList<ReservationVO>();
 		ReservationVO reservationVO = null;
@@ -409,7 +428,7 @@ public class AccountController extends BaseController {
 	 * @param accountId
 	 *            帐号ID
 	 */
-	public static void getCreditCost(String accountId) {
+	public static void getCreditCost(String accountId,int page,String sortBy) {
 
 		
 		List<CreditVO> creditVOs = new ArrayList<CreditVO>();
@@ -418,7 +437,7 @@ public class AccountController extends BaseController {
 			return;
 		}
 
-		List<Credit> credits = Credit.findByAccountId(accountId);
+		List<Credit> credits = Credit.findByAccountId(accountId,page,sortBy);
 		CreditVO creditVO = null;
 		for (Credit credit : credits) {
 			creditVO = new CreditVO();

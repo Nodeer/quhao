@@ -9,6 +9,8 @@ import org.bson.types.ObjectId;
 import play.modules.morphia.Model.MorphiaQuery;
 import play.modules.morphia.Model.NoAutoTimestamp;
 
+import cn.bran.japid.util.StringUtils;
+
 import com.google.code.morphia.annotations.Entity;
 import com.withiter.common.Constants.CreditStatus;
 import com.withiter.common.Constants.ReservationStatus;
@@ -18,7 +20,7 @@ import com.withiter.models.merchant.Merchant;
 @Entity
 @NoAutoTimestamp
 public class Reservation extends ReservationEntityDef {
-
+	private static int DEFAULT_PAGE_ITEMS_NUMBER = 10;
 	/**
 	 * Find valid reservation list by account id
 	 * 
@@ -31,7 +33,27 @@ public class Reservation extends ReservationEntityDef {
 		q.filter("accountId", accountId).filter("valid", true);
 		return q.asList();
 	}
+	
+	/**
+	 * get next page current reservations  by account ID
+	 * @param accountId account ID
+	 * @param page the page number
+	 * @param sortBy 排序方式
+	 * @return reservations list
+	 */
 
+	public static List<Reservation> findValidReservations(String accountId,int page,String sortBy) {
+		MorphiaQuery q = Reservation.q();
+		q.filter("accountId", accountId).filter("valid", true);
+		
+		if (!StringUtils.isEmpty(sortBy)) {
+			q = sortBy(q, sortBy);
+		}else{
+			q = sortBy(q, "-created");
+		}
+		return paginate(q, page);
+	}
+	
 	/**
 	 * Check whether does the reservation exist by account id, merchant id and
 	 * seat number
@@ -65,6 +87,48 @@ public class Reservation extends ReservationEntityDef {
 		return q.asList();
 	}
 
+	/**
+	 * get next page reservations by account ID
+	 * @param accountId account ID
+	 * @param page the page number
+	 * @param sortBy 排序方式
+	 * @return reservations list
+	 */
+	public static List<Reservation> findHistroyReservations(String accountId,int page,String sortBy) {
+		MorphiaQuery q = Reservation.q();
+		q.filter("accountId", accountId).filter("valid", false);
+		
+		if (!StringUtils.isEmpty(sortBy)) {
+			q = sortBy(q, sortBy);
+		}else{
+			q = sortBy(q, "-created");
+		}
+		return paginate(q, page);
+	}
+	
+	/**
+	 * 通用排序
+	 * @param q
+	 * @param sortBy
+	 * @return
+	 */
+	private static MorphiaQuery sortBy(MorphiaQuery q, String sortBy) {
+		q.order(sortBy);
+		return q;
+	}
+	
+	/**
+	 * 通用分页
+	 * @param q
+	 * @param page
+	 * @return
+	 */
+	private static List<Reservation> paginate(MorphiaQuery q, int page) {
+		q.offset((page - 1) * DEFAULT_PAGE_ITEMS_NUMBER).limit(
+				DEFAULT_PAGE_ITEMS_NUMBER);
+		return q.asList();
+	}
+	
 	/**
 	 * 当排队情况有变化时，需要推送到所有关联的用户 when current object updated, this function will
 	 * automatically invoked.
