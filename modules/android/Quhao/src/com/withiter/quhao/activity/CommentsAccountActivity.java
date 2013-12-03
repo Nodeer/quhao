@@ -3,6 +3,7 @@ package com.withiter.quhao.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -11,6 +12,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -23,7 +26,7 @@ import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.vo.Comment;
 
-public class CommentsAccountActivity extends QuhaoBaseActivity {
+public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItemClickListener{
 
 	private static final String TAG = CommentsAccountActivity.class.getName();
 
@@ -86,6 +89,7 @@ public class CommentsAccountActivity extends QuhaoBaseActivity {
 					commentAdapter.comments = comments;
 				}
 				commentAdapter.notifyDataSetChanged();
+				commentsView.setOnItemClickListener(CommentsAccountActivity.this);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 		}
@@ -196,6 +200,28 @@ public class CommentsAccountActivity extends QuhaoBaseActivity {
 	@Override
 	public boolean onTouch(View arg0, MotionEvent arg1) {
 		return false;
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		
+		// 已经点过，直接返回
+		if (isClick) {
+			return;
+		}
+
+		// 设置已点击标志，避免快速重复点击
+		isClick = true;
+		// 解锁
+		unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+		
+		Comment merchant = comments.get(position);
+		Intent intent = new Intent();
+		intent.putExtra("merchantId", merchant.mid);
+		intent.setClass(CommentsAccountActivity.this, MerchantDetailActivity.class);
+		startActivity(intent);
+		overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 	}
 
 }
