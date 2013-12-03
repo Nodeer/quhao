@@ -210,10 +210,11 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				}
 
 			} catch (Exception e) {
+				progress.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				e.printStackTrace();
 			} finally {
-				progress.closeProgress();
+				
 			}
 		}
 	};

@@ -129,51 +129,5 @@ public class CommentController  extends BaseController{
 		
 	}
 	
-	public static void insertTestCommectsData()
-	{
-		Comment comment = new Comment();
-		comment.accountId = "5291bc7378a34c9ba73d1a3f";
-		comment.nickName = "jazze";
-		comment.mid = "5291bd8478a34c9ba73d1a40";
-		comment.averageCost="50";
-		comment.xingjiabi = 2;
-		comment.kouwei = 3;
-		comment.fuwu = 5;
-		comment.huanjing=4;
-		comment.content = "比我想象中便宜一点。。。牛肉火锅很好吃~不过不管哪家店的这种豆腐肥牛锅我都很喜欢~一口牛肉也是我觉得最好吃的~还没撒胡椒粉什么的就已经觉得味道满进去了~而且肉不老不塞牙~三文鱼刺身没什么大感觉。。。倒是芥末酱给的好少。。而且感觉干掉了芝士焗年糕。。。筷子弄起来困难。。。而且其实并没什么好吃的~";
-		comment.created = new Date();
-		comment.modified = new Date();
-		comment.save();
-		
-		Comment comment1 = new Comment();
-		comment1.accountId = "5291bc7378a34c9ba73d1a3f";
-		comment1.nickName = "jazze";
-		comment1.mid = "5291ac9978a30fc8b8e54d9d";
-		comment1.averageCost="50";
-		comment1.xingjiabi = 5;
-		comment1.kouwei = 4;
-		comment1.fuwu = 5;
-		comment1.huanjing=3;
-		comment1.content = "“很像日本的居酒屋”。服务态度超赞，点餐的时候都“半蹲”着，上菜的时候“会提醒你”趁热吃或小心烫。菜都“很精致”，不过量“很小”，种类也“不是很多”。环境挺好，座位空间比较大，也“不是那么嘈杂”，“两三个人小聚、随便聊聊，挺合适的”。";
-		comment1.created = new Date();
-		comment1.modified = new Date();
-		comment1.save();
-		
-		for (int i = 0; i < 20; i++) {
-			Comment comment3 = new Comment();
-			comment3.accountId = "5291bc7378a34c9ba73d1a3f";
-			comment3.nickName = "jazze";
-			comment3.mid = "5291bd8478a34c9ba73d1a40";
-			comment3.averageCost="50";
-			comment3.xingjiabi = 5;
-			comment3.kouwei = 4;
-			comment3.fuwu = 5;
-			comment3.huanjing=3;
-			comment3.content = "“很像日本的居酒屋”。服务态度超赞，点餐的时候都“半蹲”着，上菜的时候“会提醒你”趁热吃或小心烫。菜都“很精致”，不过量“很小”，种类也“不是很多”。环境挺好，座位空间比较大，也“不是那么嘈杂”，“两三个人小聚、随便聊聊，挺合适的”。";
-			comment3.created = new Date();
-			comment3.modified = new Date();
-			comment3.save();
-		}
-	}
 }
 
