@@ -140,7 +140,7 @@ public class ParseJson {
 		return topMerchants;
 	}
 
-	public static Collection<? extends Merchant> getMerchants(String buf) {
+	public static List<Merchant> getMerchants(String buf) {
 		List<Merchant> merchants = new ArrayList<Merchant>();
 
 		if (null == buf || "".equals(buf)) {

@@ -149,7 +149,12 @@ public class MerchantListActivity extends QuhaoBaseActivity {
 					if (null == merchants) {
 						merchants = new ArrayList<Merchant>();
 					}
-					merchants.addAll(ParseJson.getMerchants(buf));
+					List<Merchant> mers = ParseJson.getMerchants(buf);
+					if(mers.size()<10)
+					{
+						needToLoad = false;
+					}
+					merchants.addAll(mers);
 
 					merchantsUpdateHandler.obtainMessage(200, merchants).sendToTarget();
 				}

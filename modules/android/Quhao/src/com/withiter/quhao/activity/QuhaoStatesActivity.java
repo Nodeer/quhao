@@ -3,6 +3,7 @@ package com.withiter.quhao.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -11,6 +12,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -28,7 +31,7 @@ import com.withiter.quhao.vo.ReservationVO;
  * Quhao states of Current/History
  * 
  */
-public class QuhaoStatesActivity extends QuhaoBaseActivity {
+public class QuhaoStatesActivity extends QuhaoBaseActivity implements OnItemClickListener{
 
 	protected static boolean backClicked = false;
 	private static String TAG = QuhaoStatesActivity.class.getName();
@@ -54,6 +57,7 @@ public class QuhaoStatesActivity extends QuhaoBaseActivity {
 		}
 
 		paiduiListView = (ListView) this.findViewById(R.id.paiduiListView);
+		paiduiListView.setOnItemClickListener(QuhaoStatesActivity.this);
 		btnBack.setOnClickListener(goBack(this));
 
 		initData();
@@ -109,6 +113,7 @@ public class QuhaoStatesActivity extends QuhaoBaseActivity {
 				reservationForPaiduiAdapter = new ReservationForPaiduiAdapter(QuhaoStatesActivity.this, paiduiListView, reservations);
 				paiduiListView.setAdapter(reservationForPaiduiAdapter);
 				reservationForPaiduiAdapter.notifyDataSetChanged();
+				
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 		}
@@ -147,5 +152,27 @@ public class QuhaoStatesActivity extends QuhaoBaseActivity {
 		if (progressDialogUtil!=null) {
 			progressDialogUtil.closeProgress();
 		}
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		
+		// 已经点过，直接返回
+		if (isClick) {
+			return;
+		}
+
+		// 设置已点击标志，避免快速重复点击
+		isClick = true;
+		// 解锁
+		unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+		
+		ReservationVO reservation = reservations.get(position);
+		Intent intent = new Intent();
+		intent.putExtra("merchantId", reservation.merchantId);
+		intent.setClass(QuhaoStatesActivity.this, MerchantDetailActivity.class);
+		startActivity(intent);
+		overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 	}
 }

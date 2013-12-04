@@ -216,9 +216,9 @@ public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItem
 		// 解锁
 		unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 		
-		Comment merchant = comments.get(position);
+		Comment comment = comments.get(position);
 		Intent intent = new Intent();
-		intent.putExtra("merchantId", merchant.mid);
+		intent.putExtra("merchantId", comment.mid);
 		intent.setClass(CommentsAccountActivity.this, MerchantDetailActivity.class);
 		startActivity(intent);
 		overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);

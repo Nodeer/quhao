@@ -160,6 +160,10 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity {
 							comments = new ArrayList<Comment>();
 						}
 						List<Comment> commentList = ParseJson.getComments(buf);
+						if(commentList.size()<10)
+						{
+							needToLoad = false;
+						}
 						comments.addAll(commentList);
 						updateCommentsHandler.obtainMessage(200, comments).sendToTarget();
 					}
