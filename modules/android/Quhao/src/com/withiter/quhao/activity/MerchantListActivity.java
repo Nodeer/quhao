@@ -9,14 +9,18 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantAdapter;
@@ -30,7 +34,7 @@ import com.withiter.quhao.vo.Merchant;
 /**
  * 商家列表页面
  */
-public class MerchantListActivity extends QuhaoBaseActivity {
+public class MerchantListActivity extends QuhaoBaseActivity implements OnScrollListener{
 
 	private String LOGTAG = MerchantListActivity.class.getName();
 	protected ListView merchantsListView;
@@ -46,6 +50,14 @@ public class MerchantListActivity extends QuhaoBaseActivity {
 	private boolean isFirst = true;
 	private boolean needToLoad = true;
 	public static boolean backClicked = false;
+	
+	private View moreView;
+	
+	private Button bt;
+	
+	private ProgressBar pg;
+	
+	private int lastVisibleIndex;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +75,7 @@ public class MerchantListActivity extends QuhaoBaseActivity {
 
 		this.categoryTypeTitle = (TextView) findViewById(R.id.categoryTypeTitle);
 		this.categoryTypeTitle.setText(categoryTypeStr + "[" + categoryCount + "家]");
-
+		
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
 		initView();
 	}
@@ -91,7 +103,10 @@ public class MerchantListActivity extends QuhaoBaseActivity {
 				}
 
 				merchantAdapter.notifyDataSetChanged();
-				merchantsListView.setOnItemClickListener(merchantItemClickListener);
+				
+				merchantsListView.setOnScrollListener(MerchantListActivity.this);
+				bt.setVisibility(View.VISIBLE);
+				pg.setVisibility(View.GONE);
 
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
@@ -113,12 +128,30 @@ public class MerchantListActivity extends QuhaoBaseActivity {
 	};
 
 	private void initView() {
+		
+		moreView = getLayoutInflater().inflate(R.layout.moredata, null);
+		bt = (Button) moreView.findViewById(R.id.bt_load);
+		pg = (ProgressBar) moreView.findViewById(R.id.pg);
+		
 		merchantsListView = (ListView) findViewById(R.id.merchantsListView);
-
+		
+		merchantsListView.addFooterView(moreView);
 		merchantsListView.setNextFocusDownId(R.id.merchantsListView);
-		merchantsListView.setOnScrollListener(merchantsListScrollListener);
+		
 		merchantsListView.setVisibility(View.GONE);
-
+		merchantsListView.setOnItemClickListener(merchantItemClickListener);
+		
+		bt.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				pg.setVisibility(View.VISIBLE);
+				bt.setVisibility(View.GONE);
+				MerchantListActivity.this.page += 1;
+				Thread merchantsThread = new Thread(merchantsRunnable);
+				merchantsThread.start();
+			}
+		});
 		getMerchants();
 	}
 
@@ -167,22 +200,40 @@ public class MerchantListActivity extends QuhaoBaseActivity {
 			}
 		}
 	};
-	private OnScrollListener merchantsListScrollListener = new OnScrollListener() {
-		@Override
-		public void onScrollStateChanged(AbsListView view, int scrollState) {
-
+	
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		
+		if(scrollState == OnScrollListener.SCROLL_STATE_IDLE
+				&& lastVisibleIndex == merchantAdapter.getCount())
+		{
+			pg.setVisibility(View.VISIBLE);
+			bt.setVisibility(View.GONE);
+			MerchantListActivity.this.page += 1;
+			Thread merchantsThread = new Thread(merchantsRunnable);
+			merchantsThread.start();
 		}
+		
+	}
 
-		@Override
-		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-			// check hit the bottom of current loaded data
-			if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount > 0 && needToLoad) {
-				MerchantListActivity.this.page += 1;
-				Thread merchantsThread = new Thread(merchantsRunnable);
-				merchantsThread.start();
-			}
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+		// check hit the bottom of current loaded data
+		
+		lastVisibleIndex = firstVisibleItem + visibleItemCount -1;
+		if(!needToLoad)
+		{
+			merchantsListView.removeFooterView(moreView);
+			//Toast.makeText(MerchantListActivity.this, "the data load completely", Toast.LENGTH_LONG).show();
+			
 		}
-	};
+		
+//		if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount > 0 && needToLoad) {
+//			MerchantListActivity.this.page += 1;
+//			Thread merchantsThread = new Thread(merchantsRunnable);
+//			merchantsThread.start();
+//		}
+	}
 
 	@Override
 	public void onClick(View v) {

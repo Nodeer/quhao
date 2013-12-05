@@ -12,6 +12,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.AbsListView;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -29,7 +31,7 @@ import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.vo.Comment;
 import com.withiter.quhao.vo.Credit;
 
-public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemClickListener{
+public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemClickListener,OnScrollListener{
 
 	protected static boolean backClicked = false;
 	private static String TAG = CreditCostListActivity.class.getName();
@@ -39,6 +41,14 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 	private int page;
 	private boolean needToLoad = true;
 	private boolean isFirstLoad = true;
+	
+	private View moreView;
+	
+	private Button bt;
+	
+	private ProgressBar pg;
+	
+	private int lastVisibleIndex;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -47,7 +57,14 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 
 		creditsListView = (ListView) this.findViewById(R.id.creditsListView);
 		creditsListView.setOnItemClickListener(CreditCostListActivity.this);
-		creditsListView.setOnScrollListener(creditScroller);
+		
+		moreView = getLayoutInflater().inflate(R.layout.moredata, null);
+		bt = (Button) moreView.findViewById(R.id.bt_load);
+		pg = (ProgressBar) moreView.findViewById(R.id.pg);
+		bt.setOnClickListener(this);
+		
+		creditsListView.addFooterView(moreView);
+		
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
 		this.page = getIntent().getIntExtra("page", 1);
 		initListView();
@@ -76,7 +93,9 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 				}
 				
 				creditAdapter.notifyDataSetChanged();
-				
+				bt.setVisibility(View.VISIBLE);
+				pg.setVisibility(View.GONE);
+				creditsListView.setOnScrollListener(CreditCostListActivity.this);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 
@@ -84,22 +103,6 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 
 	};
 
-	private OnScrollListener creditScroller = new OnScrollListener() {
-		@Override
-		public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-		}
-
-		@Override
-		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-			// check hit the bottom of current loaded data
-			if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount > 0 && needToLoad) {
-				CreditCostListActivity.this.page += 1;
-				initListView();
-			}
-		}
-	};
-	
 	private Runnable getCreditsRunnable = new Runnable() {
 		@Override
 		public void run() {
@@ -134,6 +137,28 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 
 	@Override
 	public void onClick(View v) {
+
+		// 已经点过，直接返回
+		if (isClick) {
+			return;
+		}
+
+		// 设置已点击标志，避免快速重复点击
+		isClick = true;
+		// 解锁
+		unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+
+		switch (v.getId()) {
+		case R.id.bt_load:
+			pg.setVisibility(View.VISIBLE);
+			bt.setVisibility(View.GONE);
+			CreditCostListActivity.this.page += 1;
+			Thread thread = new Thread(getCreditsRunnable);
+			thread.start();
+			break;
+		default:
+			break;
+		}
 
 	}
 
@@ -181,5 +206,32 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 		}
 		
+	}
+
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+		if (scrollState == OnScrollListener.SCROLL_STATE_IDLE
+				&& lastVisibleIndex == creditAdapter.getCount()) {
+			bt.setVisibility(View.GONE);
+			pg.setVisibility(View.VISIBLE);
+			CreditCostListActivity.this.page +=1;
+			Thread thread = new Thread(getCreditsRunnable);
+			thread.start();
+		}
+	}
+
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+		// check hit the bottom of current loaded data
+		lastVisibleIndex = firstVisibleItem + visibleItemCount -1;
+		if(!needToLoad)
+		{
+			creditsListView.removeFooterView(moreView);
+		}
+//		if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount > 0 && needToLoad) {
+//			CreditCostListActivity.this.page += 1;
+//			initListView();
+//		}
 	}
 }

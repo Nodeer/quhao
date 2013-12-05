@@ -13,6 +13,7 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +25,7 @@ import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.vo.Comment;
 
-public class CommentsMerchantActivity extends QuhaoBaseActivity {
+public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnScrollListener{
 
 	private static final String TAG = CommentsMerchantActivity.class.getName();
 
@@ -63,6 +64,14 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity {
 	private boolean needToLoad = true;
 
 	private int page;
+	
+	private View moreView;
+	
+	private Button bt;
+	
+	private ProgressBar pg;
+	
+	private int lastVisibleIndex;
 
 	protected Handler updateCommentsHandler = new Handler() {
 
@@ -90,6 +99,9 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity {
 					commentAdapter.comments = comments;
 				}
 				commentAdapter.notifyDataSetChanged();
+				bt.setVisibility(View.VISIBLE);
+				pg.setVisibility(View.GONE);
+				commentsView.setOnScrollListener(CommentsMerchantActivity.this);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 		}
@@ -109,39 +121,28 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity {
 		merchantNameView = (TextView) findViewById(R.id.merchantName);
 		merchantNameView.setText(merchantName);
 
+		moreView = getLayoutInflater().inflate(R.layout.moredata, null);
+		bt = (Button) moreView.findViewById(R.id.bt_load);
+		pg = (ProgressBar) moreView.findViewById(R.id.pg);
+		
+		bt.setOnClickListener(this);
 		commentsView = (ListView) findViewById(R.id.commentsView);
+		commentsView.addFooterView(moreView);
 		commentsView.setNextFocusDownId(R.id.commentsView);
-		commentsView.setOnScrollListener(commentsScrollListener);
 
 		btnBack = (Button) findViewById(R.id.back_btn);
 		btnBack.setOnClickListener(this);
-		getCritiques();
+		getComments();
 
 	}
-
-	private OnScrollListener commentsScrollListener = new OnScrollListener() {
-		@Override
-		public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-		}
-
-		@Override
-		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-			// check hit the bottom of current loaded data
-			if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount > 0 && needToLoad) {
-				CommentsMerchantActivity.this.page += 1;
-				getCritiques();
-			}
-		}
-	};
 
 	/**
 	 * 
 	 * query critiques from web service via merchant ID
 	 */
-	private void getCritiques() {
+	private void getComments() {
 
-		Thread getCritiquesRunnable = new Thread(new Runnable() {
+		Thread getCommentsRunnable = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
@@ -178,7 +179,7 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity {
 
 			}
 		});
-		getCritiquesRunnable.start();
+		getCommentsRunnable.start();
 	}
 
 	@Override
@@ -199,6 +200,13 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity {
 			onBackPressed();
 			this.finish();
 			break;
+		case R.id.bt_load:
+			pg.setVisibility(View.VISIBLE);
+			bt.setVisibility(View.GONE);
+			CommentsMerchantActivity.this.page +=1;
+			getComments();
+			
+			break;
 		default:
 			break;
 		}
@@ -208,6 +216,31 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity {
 	@Override
 	public boolean onTouch(View arg0, MotionEvent arg1) {
 		return false;
+	}
+
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		if (scrollState == OnScrollListener.SCROLL_STATE_IDLE
+				&& lastVisibleIndex == commentAdapter.getCount()) {
+			pg.setVisibility(View.VISIBLE);
+			bt.setVisibility(View.GONE);
+			CommentsMerchantActivity.this.page +=1;
+			getComments();
+		}
+	}
+
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+		
+		// check hit the bottom of current loaded data
+		lastVisibleIndex = firstVisibleItem + visibleItemCount -1;
+		if (!needToLoad) {
+			commentsView.removeFooterView(moreView);
+		}
+//		if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount > 0 && needToLoad) {
+//			CommentsMerchantActivity.this.page += 1;
+//			getCritiques();
+//		}
 	}
 
 }

@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.withiter.quhao.R;
@@ -26,7 +27,7 @@ import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.vo.Comment;
 
-public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItemClickListener{
+public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItemClickListener,OnScrollListener{
 
 	private static final String TAG = CommentsAccountActivity.class.getName();
 
@@ -62,6 +63,14 @@ public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItem
 	private boolean needToLoad = true;
 
 	private int page;
+	
+	private View moreView;
+	
+	private Button bt;
+	
+	private ProgressBar pg;
+	
+	private int lastVisibleIndex;
 
 	protected Handler updateCommentsHandler = new Handler() {
 
@@ -89,6 +98,9 @@ public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItem
 					commentAdapter.comments = comments;
 				}
 				commentAdapter.notifyDataSetChanged();
+				bt.setVisibility(View.VISIBLE);
+				pg.setVisibility(View.GONE);
+				commentsView.setOnScrollListener(CommentsAccountActivity.this);
 				commentsView.setOnItemClickListener(CommentsAccountActivity.this);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
@@ -105,39 +117,57 @@ public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItem
 		this.accountId = getIntent().getStringExtra("accountId");
 		this.page = getIntent().getIntExtra("page", 1);
 
+		moreView = getLayoutInflater().inflate(R.layout.moredata, null);
+		
+		bt = (Button) moreView.findViewById(R.id.bt_load);
+		pg = (ProgressBar) moreView.findViewById(R.id.pg);
+		
+		bt.setOnClickListener(this);
+		
 		commentsView = (ListView) findViewById(R.id.commentsView);
+		commentsView.addFooterView(moreView);
 		commentsView.setNextFocusDownId(R.id.commentsView);
-		commentsView.setOnScrollListener(commentsScrollListener);
 
 		btnBack = (Button) findViewById(R.id.back_btn);
 		btnBack.setOnClickListener(this);
-		getCritiques();
+		getComments();
 
 	}
 
-	private OnScrollListener commentsScrollListener = new OnScrollListener() {
-		@Override
-		public void onScrollStateChanged(AbsListView view, int scrollState) {
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
 
+		if (scrollState == OnScrollListener.SCROLL_STATE_IDLE
+				&& lastVisibleIndex == commentAdapter.getCount()) {
+			pg.setVisibility(View.VISIBLE);
+			bt.setVisibility(View.GONE);
+			CommentsAccountActivity.this.page += 1;
+			getComments();
 		}
+	}
 
-		@Override
-		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-			// check hit the bottom of current loaded data
-			if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount > 0 && needToLoad) {
-				CommentsAccountActivity.this.page += 1;
-				getCritiques();
-			}
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+		lastVisibleIndex = firstVisibleItem + visibleItemCount -1;
+		if(!needToLoad)
+		{
+			commentsView.removeFooterView(moreView);
+			//Toast.makeText(CommentsAccountActivity.this, "the data load completely", Toast.LENGTH_LONG).show();
 		}
-	};
+		// check hit the bottom of current loaded data
+//		if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount > 0 && needToLoad) {
+//			CommentsAccountActivity.this.page += 1;
+//			getCritiques();
+//		}
+	}
 
 	/**
 	 * 
 	 * query critiques from web service via merchant ID
 	 */
-	private void getCritiques() {
+	private void getComments() {
 
-		Thread getCritiquesRunnable = new Thread(new Runnable() {
+		Thread getCommentsRunnable = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
@@ -170,7 +200,7 @@ public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItem
 
 			}
 		});
-		getCritiquesRunnable.start();
+		getCommentsRunnable.start();
 	}
 
 	@Override
@@ -190,6 +220,12 @@ public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItem
 		case R.id.back_btn:
 			onBackPressed();
 			this.finish();
+			break;
+		case R.id.bt_load:
+			pg.setVisibility(View.VISIBLE);
+			bt.setVisibility(View.GONE);
+			CommentsAccountActivity.this.page += 1;
+			getComments();
 			break;
 		default:
 			break;

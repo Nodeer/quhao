@@ -121,32 +121,40 @@ public class AsyncImageLoader {
 	 */
 	public Drawable loadDrawable(String imageUrl) {
 
-		if (QuhaoConstant.test) {
-			imageUrl = imageUrl.replace("localhost", QuhaoConstant.HTTP_URL);
-		}
-
-		QuhaoLog.i(TAG, "imageUrl: " + imageUrl);
-
-		// get cached image from memory
-		if (imageCache.containsKey(imageUrl)) {
-			SoftReference<Drawable> softReference = imageCache.get(imageUrl);
-			Drawable drawable = softReference.get();
-			if (drawable != null) {
-				return drawable;
+		try{
+			if (QuhaoConstant.test) {
+				imageUrl = imageUrl.replace("localhost", QuhaoConstant.HTTP_URL);
 			}
-		}
 
-		// get cached image from SD card
-		Drawable drawable = null;
-		if (SDTool.instance().SD_EXIST && StringUtils.isNotNull(imageUrl)) {
-			drawable = Drawable.createFromPath(ImageUtil.getInstance().getFilePath(imageUrl));
-			if (null != drawable) {
-				return drawable;
+			QuhaoLog.i(TAG, "imageUrl: " + imageUrl);
+
+			// get cached image from memory
+			if (imageCache.containsKey(imageUrl)) {
+				SoftReference<Drawable> softReference = imageCache.get(imageUrl);
+				Drawable drawable = softReference.get();
+				if (drawable != null) {
+					return drawable;
+				}
 			}
+
+			// get cached image from SD card
+			Drawable drawable = null;
+			if (SDTool.instance().SD_EXIST && StringUtils.isNotNull(imageUrl)) {
+				drawable = Drawable.createFromPath(ImageUtil.getInstance().getFilePath(imageUrl));
+				if (null != drawable) {
+					return drawable;
+				}
+			}
+			drawable = loadImageFromUrl(imageUrl);
+			imageCache.put(imageUrl, new SoftReference<Drawable>(drawable));
+			return drawable;
 		}
-		drawable = loadImageFromUrl(imageUrl);
-		imageCache.put(imageUrl, new SoftReference<Drawable>(drawable));
-		return drawable;
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+		
 	}
 
 	public static Drawable loadImageFromUrl(String url) {
