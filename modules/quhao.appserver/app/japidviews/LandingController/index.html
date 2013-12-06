@@ -8,11 +8,85 @@
 <link href="/public/images/applyful_favicon.gif" type="image/png" rel="shortcut icon">
 <script src="/public/javascripts/libs/jquery-1.7.js" type="text/javascript" language="javascript" charset="utf-8"></script>
 <script src="/public/javascripts/libs/jquery-ui-1.9.2.custom.min.js" type="text/javascript" language="javascript" charset="utf-8"></script>
+<script src="/public/javascripts/slogan/jquery-jrumble.js" type="text/javascript" language="javascript" charset="utf-8"></script>
 
 <title>取号</title>
+
+<script type="text/javascript">
+jQuery.fn.shake = function(intShakes /*Amount of shakes*/, intDistance /*Shake distance*/, intDuration /*Time duration*/) {
+	this.each(function() {
+		var jqNode = $(this);
+		jqNode.css({position: 'relative'});
+		for (var x=1; x<=intShakes; x++) {
+			jqNode.animate({ left: (intDistance * -1) },(((intDuration / intShakes) / 4)))
+			.animate({ left: intDistance },((intDuration/intShakes)/2))
+			.animate({ left: 0 },(((intDuration/intShakes)/4)));
+		}
+	});
+	return this;
+}
+
+$(function() {
+	    //$("#diannao").shake(1,10,10000);
+	    $('#diannao').jrumble({
+	    	rumbleSpeed: 50,
+	    	rumbleEvent: ('constant')
+	    });
+	    $('#zixingche').jrumble({
+	    	rumbleSpeed: 50,
+	    	rumbleEvent: ('constant')
+	    });
+	    $('#nahao').jrumble({
+	    	rumbleSpeed: 50,
+	    	rumbleEvent: ('constant')
+	    });
+	    $('#zuozhe').jrumble({
+	    	rumbleSpeed: 50,
+	    	rumbleEvent: ('constant')
+	    });
+});
+</script>
+
+<style type="text/css">
+	.grid{
+		width: 25%; 
+		float: left; 
+		text-align: center;
+	}
+</style>
+
 </head>
 
 <body id="fatherContainer" style="background-color:#fff;">
-	<img alt="工作中..." src="/public/images/slogan/diannao.png">
+	<div style="height: 50%; width:100%; border-bottom: solid 1px;">
+		<div class="grid">
+			<img id="diannao" alt="工作中..." src="/public/images/slogan/diannao.png">
+		</div>
+		<div class="grid">
+			<img id="zixingche" alt="工作中..." src="/public/images/slogan/zixingche.png">
+		</div>
+		<div class="grid">
+			<img id="nahao" alt="工作中..." src="/public/images/slogan/nahao.png">
+		</div>
+		<div class="grid">
+			<img id="zuozhe" alt="工作中..." src="/public/images/slogan/zuozhe.png">
+		</div>
+	</div>
+	<hr style="border: solid 1px black;">
+	<div style="height: 50%; width:100%">
+		<div class="grid">
+			<img id="diannao" alt="工作中..." src="/public/images/slogan/diannao.png">
+		</div>
+		<div class="grid">
+			<img id="zixingche" alt="工作中..." src="/public/images/slogan/zixingche.png">
+		</div>
+		<div class="grid">
+			<img id="nahao" alt="工作中..." src="/public/images/slogan/nahao.png">
+		</div>
+		<div class="grid">
+			<img id="zuozhe" alt="工作中..." src="/public/images/slogan/zuozhe.png">
+		</div>
+	</div>
+	
 </body>
 </html>
