@@ -1,9 +1,5 @@
 package com.withiter.quhao.activity;
 
-import java.io.IOException;
-
-import org.apache.http.client.ClientProtocolException;
-
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -91,7 +87,8 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 				huanjing = (int) huanjingRatingBar.getRating();
 				fuwu = (int) fuwuRatingBar.getRating();
 				xingjiabi = (int) xingjiabiRatingBar.getRating();
-				
+				float gradeAvg = (kouwei + huanjing + fuwu + xingjiabi)/4;
+				int grade = Math.round(gradeAvg);
 				if(StringUtils.isNull(comment))
 				{
 					Toast.makeText(this, "请填写评论", Toast.LENGTH_LONG).show();
@@ -100,7 +97,7 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 					return;
 				}
 			
-				CommonHTTPRequest.get("updateComment?rid=" + rId + "&kouwei=" + kouwei + "&huanjing=" + huanjing + "&fuwu=" + fuwu + "&xingjiabi=" + xingjiabi + "&averageCost=" + averageCost +  "&content=" + comment);
+				CommonHTTPRequest.get("updateComment?rid=" + rId + "&kouwei=" + kouwei + "&huanjing=" + huanjing + "&fuwu=" + fuwu + "&xingjiabi=" + xingjiabi + "&grade=" + grade + "&averageCost=" + averageCost +  "&content=" + comment);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
