@@ -389,6 +389,7 @@ public class ParseJson {
 
 	private static ReservationVO coventReservationVO(JSONObject obj) throws JSONException {
 		ReservationVO rvo;
+		String rId = obj.optString("id");
 		String accountId = obj.optString("accountId");
 		String merchantId = obj.optString("merchantId");
 		String seatNumber = obj.optString("seatNumber");
@@ -401,7 +402,7 @@ public class ParseJson {
 		String merchantName = obj.optString("merchantName");
 		String merchantAddress = obj.optString("merchantAddress");
 
-		rvo = new ReservationVO(accountId, merchantId, seatNumber, myNumber, beforeYou, currentNumber, valid, tipKey, tipValue, merchantName, merchantAddress);
+		rvo = new ReservationVO(rId,accountId, merchantId, seatNumber, myNumber, beforeYou, currentNumber, valid, tipKey, tipValue, merchantName, merchantAddress);
 		return rvo;
 	}
 
@@ -481,7 +482,7 @@ public class ParseJson {
 		String averageCost = obj.optString("averageCost");
 		float xingjiabi = Float.valueOf(obj.optString("xingjiabi"));
 		float kouwei = Float.valueOf(obj.optString("kouwei"));
-		float huanjing = Float.valueOf(obj.optString("xingjiabi"));
+		float huanjing = Float.valueOf(obj.optString("huanjing"));
 		float fuwu = Float.valueOf(obj.optString("fuwu"));
 		String content = obj.optString("content");
 		String created = obj.optString("created");

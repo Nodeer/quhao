@@ -33,6 +33,20 @@
             android:text="搜索 - 美食"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="#ff000000" />
+        <!-- quhao button -->
+        <Button
+            android:id="@+id/comment_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/btn_weight"
+            android:text="点评"
+            android:textAppearance="?android:textAppearanceMediumInverse"
+            android:textColor="#ff000000"
+            android:textSize="14.0sp" 
+            />
     </RelativeLayout>
 
     <LinearLayout

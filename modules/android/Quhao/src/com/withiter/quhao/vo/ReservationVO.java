@@ -5,6 +5,7 @@ public class ReservationVO {
 	public boolean tipKey = false;
 	public String tipValue = "";
 	
+	public String rId;
 	public String accountId;
 	public String merchantId;
 	public String seatNumber;
@@ -23,8 +24,9 @@ public class ReservationVO {
 		
 	}
 	
-	public ReservationVO(String accountId,String merchantId,String seatNumber,String myNumber,String beforeYou,
+	public ReservationVO(String rId,String accountId,String merchantId,String seatNumber,String myNumber,String beforeYou,
 			String currentNumber,boolean valid,boolean tipKey,String tipValue,String merchantName,String merchantAddress){
+		this.rId = rId;
 		this.accountId = accountId;
 		this.merchantId = merchantId;
 		this.seatNumber = seatNumber;

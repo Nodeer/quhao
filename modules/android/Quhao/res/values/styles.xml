@@ -24,4 +24,9 @@
 		<item name="android:maxLines">0</item>
 		<item name="android:scrollHorizontally">true</item>
 	</style>
+	<style name="commentRatingBar" parent="@android:style/Widget.RatingBar">
+		<item name="android:progressDrawable">@drawable/comment_rating_bar</item>
+		<item name="android:minHeight">32dip</item>
+		<item name="android:maxHeight">32dip</item>
+	</style>
 </resources>

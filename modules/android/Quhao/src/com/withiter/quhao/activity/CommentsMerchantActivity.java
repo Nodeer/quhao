@@ -3,6 +3,7 @@ package com.withiter.quhao.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -17,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.CommentMerchantAdapter;
 import com.withiter.quhao.util.QuhaoLog;
@@ -32,6 +34,8 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnScr
 	private String merchantName;
 
 	private String merchantId;
+	
+	private String rId;
 
 	private TextView merchantNameView;
 	/**
@@ -43,6 +47,8 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnScr
 	 * back button
 	 */
 	private Button btnBack;
+	
+	private Button commentBtn;
 
 	/**
 	 * list view for critiques
@@ -117,6 +123,7 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnScr
 		this.merchantName = getIntent().getStringExtra("merchantName");
 
 		this.merchantId = getIntent().getStringExtra("merchantId");
+		this.rId = getIntent().getStringExtra("rId");
 		this.page = getIntent().getIntExtra("page", 1);
 		merchantNameView = (TextView) findViewById(R.id.merchantName);
 		merchantNameView.setText(merchantName);
@@ -132,8 +139,14 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnScr
 
 		btnBack = (Button) findViewById(R.id.back_btn);
 		btnBack.setOnClickListener(this);
-		getComments();
-
+		
+		commentBtn = (Button) findViewById(R.id.comment_btn);
+		if(QHClientApplication.getInstance().isLogined && StringUtils.isNotNull(rId))
+		{
+			commentBtn.setVisibility(View.VISIBLE);
+			commentBtn.setOnClickListener(this);
+		}
+		
 	}
 
 	/**
@@ -207,6 +220,15 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnScr
 			getComments();
 			
 			break;
+		case R.id.comment_btn:
+			if(QHClientApplication.getInstance().isLogined && StringUtils.isNotNull(rId))
+			{
+				Intent intent = new Intent();
+				intent.putExtra("rId", rId);
+				intent.setClass(this, CreateCommentActivity.class);
+				startActivity(intent);
+			}
+			break;
 		default:
 			break;
 		}
@@ -243,4 +265,18 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnScr
 //		}
 	}
 
+	@Override
+	protected void onResume() {
+		
+		super.onResume();
+		findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
+		findViewById(R.id.commentsLayout).setVisibility(View.GONE);
+		isFirstLoad = true;
+		needToLoad = true;
+		lastVisibleIndex=0;
+		this.page = 1;
+		this.comments = new ArrayList<Comment>();
+		getComments();
+		
+	}
 }

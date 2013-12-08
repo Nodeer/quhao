@@ -3,7 +3,7 @@ package com.withiter.quhao.vo;
 
 public class Comment {
 
-	private String uid;
+	public String uid;
 	
 	public String accountId;
 	

@@ -98,22 +98,22 @@ public class CommentAccountAdapter extends BaseAdapter {
 			int avg = Math.round(avgValue);
 			
 			switch (avg) {
-			case 1:
+			case 0:
 				holder.star.setImageResource(R.drawable.star00);
 				break;
-			case 2:
+			case 1:
 				holder.star.setImageResource(R.drawable.star10);
 				break;
-			case 3:
+			case 2:
 				holder.star.setImageResource(R.drawable.star20);
 				break;
-			case 4:
+			case 3:
 				holder.star.setImageResource(R.drawable.star30);
 				break;
-			case 5:
+			case 4:
 				holder.star.setImageResource(R.drawable.star40);
 				break;
-			case 6:
+			case 5:
 				holder.star.setImageResource(R.drawable.star50);
 				break;
 			default:

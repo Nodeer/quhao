@@ -63,6 +63,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	private LinearLayout critiqueLayout;
 	private ListView reservationListView;
 	private ReservationAdapter reservationAdapter;
+	private List<ReservationVO> rvos;
 
 	public static boolean backClicked = false;
 
@@ -140,7 +141,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				if (StringUtils.isNull(buf) || "[]".equals(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
-					List<ReservationVO> rvos = ParseJson.getReservations(buf);
+					rvos = ParseJson.getReservations(buf);
 					reservationUpdateHandler.obtainMessage(200, rvos).sendToTarget();
 				}
 
@@ -333,7 +334,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				btnGetNumber.setVisibility(View.GONE);
 
 				reservationListView.setVisibility(View.VISIBLE);
-				List<ReservationVO> rvos = (List<ReservationVO>) msg.obj;
 				reservationAdapter = new ReservationAdapter(MerchantDetailActivity.this, reservationListView, rvos);
 				reservationListView.setAdapter(reservationAdapter);
 				reservationAdapter.notifyDataSetChanged();
@@ -355,6 +355,11 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				Intent intent = new Intent(this, CommentsMerchantActivity.class);
 				intent.putExtra("merchantName", this.merchant.name);
 				intent.putExtra("merchantId", this.merchant.id);
+				
+				if(null != rvos && rvos.size()>0)
+				{
+					intent.putExtra("rId", rvos.get(0).rId);
+				}
 				startActivity(intent);
 			}
 			else
