@@ -25,7 +25,7 @@ public class CommentController  extends BaseController{
 	 * @param xingjiabi 性价比
 	 * @return  String
 	 */
-	public static void updateComment(String rid,int kouwei,int huanjing,int fuwu,int xingjiabi,String content) {
+	public static void updateComment(String rid,int kouwei,int huanjing,int fuwu,int xingjiabi,String content,int grade,String cost) {
 		if (StringUtils.isEmpty(rid)||rid.equals("(null)")) {
 			renderJSON("服务器错误");
 		}
@@ -61,8 +61,10 @@ public class CommentController  extends BaseController{
 			cm.kouwei=kouwei;
 			cm.huanjing=huanjing;
 			cm.fuwu=fuwu;
+			cm.grade=grade;
 			cm.xingjiabi=xingjiabi;
 			cm.content=content;
+			cm.averageCost=cost;
 			cm.save();
 			
 			reservation.isAppraise=true;
