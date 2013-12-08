@@ -64,7 +64,7 @@ public class CommentController  extends BaseController{
 			cm.grade=grade;
 			cm.xingjiabi=xingjiabi;
 			cm.content=content;
-			cm.averageCost=cost;
+			cm.averageCost=cost.trim();
 			cm.save();
 			
 			reservation.isAppraise=true;
