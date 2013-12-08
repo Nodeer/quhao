@@ -23,7 +23,7 @@ public class CommentVO {
 	public int kouwei = 0;
 	public int huanjing = 0;
 	public int fuwu = 0;
-
+	public int grade=0;
 	public String content = "";
 
 	public String location;
@@ -43,6 +43,7 @@ public class CommentVO {
 		commentVO.kouwei = comment.kouwei;
 		commentVO.huanjing = comment.huanjing;
 		commentVO.fuwu = comment.fuwu;
+		commentVO.grade=comment.grade;
 		commentVO.content = comment.content;
 		commentVO.location = comment.location;
 		commentVO.created = comment.created;
