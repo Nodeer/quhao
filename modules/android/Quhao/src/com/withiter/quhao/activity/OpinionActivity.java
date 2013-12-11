@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.withiter.quhao.R;
+import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
@@ -17,15 +18,35 @@ import com.withiter.quhao.util.tool.ProgressDialogUtil;
 public class OpinionActivity extends QuhaoBaseActivity {
 
 	private Button btnOpinion;
-
 	private EditText opinionEdit;
-
 	private EditText contactEdit;
-
 	private String opinion;
-
 	private String contact;
 
+	public static boolean backClicked = false;
+	private String LOGTAG = OpinionActivity.class.getName();
+
+	@Override
+	public void finish() {
+		super.finish();
+		QuhaoLog.i(LOGTAG, LOGTAG + " finished");
+	}
+
+	@Override
+	protected void onResume() {
+		backClicked = false;
+		super.onResume();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		QuhaoLog.i(LOGTAG, LOGTAG + " on pause");
+		if (backClicked) {
+			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+		}
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -37,7 +58,7 @@ public class OpinionActivity extends QuhaoBaseActivity {
 		opinionEdit = (EditText) findViewById(R.id.opinion_edit);
 		contactEdit = (EditText) findViewById(R.id.opinion_edit_contact);
 		btnOpinion.setOnClickListener(this);
-		btnBack.setOnClickListener(goBack(this));
+		btnBack.setOnClickListener(goBack(this,this.getClass().getName()));
 	}
 
 	@Override

@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.withiter.quhao.R;
+import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.tool.ImageUtil;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.SharedprefUtil;
@@ -23,96 +24,84 @@ public class SettingsActivity extends QuhaoBaseActivity {
 	private LinearLayout imageShow;
 	private ImageView imageView;
 	
+	public static boolean backClicked = false;
+	private String LOGTAG = SettingsActivity.class.getName();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
+
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.more_setting_layout);
 		super.onCreate(savedInstanceState);
-		
+
 		cleanPicture = (LinearLayout) this.findViewById(R.id.more_settings_cleanpicture);
 		cleanCache = (LinearLayout) this.findViewById(R.id.more_settings_cleancache);
 		imageShow = (LinearLayout) this.findViewById(R.id.more_settings_imageshow);
-		
+
 		imageView = (ImageView) this.findViewById(R.id.more_settings_image);
-		
+
 		String isWifi = SharedprefUtil.get(this, "com.withiter.settings.wifi", "false");
-		
-		if("true".equals(isWifi))
-		{
+
+		if ("true".equals(isWifi)) {
 			imageView.setImageResource(R.drawable.checkbox_checked);
-		}
-		else
-		{
+		} else {
 			imageView.setImageResource(R.drawable.checkbox_unchecked);
 		}
-		
+
 		cleanPicture.setOnClickListener(this);
 		cleanCache.setOnClickListener(this);
 		imageShow.setOnClickListener(this);
-		
-		btnBack.setOnClickListener(goBack(this));
+
+		btnBack.setOnClickListener(goBack(this,this.getClass().getName()));
 	}
 
 	@Override
 	public void onClick(View v) {
-		
-		if(isClick)
-		{
+
+		if (isClick) {
 			return;
 		}
 		isClick = true;
-		switch(v.getId())
-		{
-			case R.id.more_settings_cleanpicture:
-				new CleanPicTask().execute();
-				break;
-			case R.id.more_settings_cleancache:
-				progressDialogUtil = new ProgressDialogUtil(SettingsActivity.this, R.string.empty,
-						R.string.deleting, false);
-				progressDialogUtil.showProgress();
-				SharedprefUtil.clear(this);
-				String isWifi1 = SharedprefUtil.get(this, "com.withiter.settings.wifi", "false");
-				if("true".equals(isWifi1))
-				{
-					imageView.setImageResource(R.drawable.checkbox_checked);
-					isWifi1 = "true";
-				}
-				else
-				{
-					imageView.setImageResource(R.drawable.checkbox_unchecked);
-					isWifi1 = "false";
-				}
-				progressDialogUtil.closeProgress();
-				Toast.makeText(SettingsActivity.this, "清除成功", Toast.LENGTH_LONG).show();
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				
-				break;
-			case R.id.more_settings_imageshow:
-				progressDialogUtil = new ProgressDialogUtil(SettingsActivity.this, R.string.empty,
-						R.string.deleting, false);
-				progressDialogUtil.showProgress();
-				
-				
-				String isWifi = SharedprefUtil.get(this, "com.withiter.settings.wifi", "false");
-				if("true".equals(isWifi))
-				{
-					imageView.setImageResource(R.drawable.checkbox_unchecked);
-					isWifi = "false";
-				}
-				else
-				{
-					imageView.setImageResource(R.drawable.checkbox_checked);
-					isWifi = "true";
-				}
-				
-				SharedprefUtil.put(SettingsActivity.this,
-						"com.withiter.settings.wifi", isWifi);
-				progressDialogUtil.closeProgress();
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				break;
-			default:
-				break;
+		switch (v.getId()) {
+		case R.id.more_settings_cleanpicture:
+			new CleanPicTask().execute();
+			break;
+		case R.id.more_settings_cleancache:
+			progressDialogUtil = new ProgressDialogUtil(SettingsActivity.this, R.string.empty, R.string.deleting, false);
+			progressDialogUtil.showProgress();
+			SharedprefUtil.clear(this);
+			String isWifi1 = SharedprefUtil.get(this, "com.withiter.settings.wifi", "false");
+			if ("true".equals(isWifi1)) {
+				imageView.setImageResource(R.drawable.checkbox_checked);
+				isWifi1 = "true";
+			} else {
+				imageView.setImageResource(R.drawable.checkbox_unchecked);
+				isWifi1 = "false";
+			}
+			progressDialogUtil.closeProgress();
+			Toast.makeText(SettingsActivity.this, "清除成功", Toast.LENGTH_LONG).show();
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+
+			break;
+		case R.id.more_settings_imageshow:
+			progressDialogUtil = new ProgressDialogUtil(SettingsActivity.this, R.string.empty, R.string.deleting, false);
+			progressDialogUtil.showProgress();
+
+			String isWifi = SharedprefUtil.get(this, "com.withiter.settings.wifi", "false");
+			if ("true".equals(isWifi)) {
+				imageView.setImageResource(R.drawable.checkbox_unchecked);
+				isWifi = "false";
+			} else {
+				imageView.setImageResource(R.drawable.checkbox_checked);
+				isWifi = "true";
+			}
+
+			SharedprefUtil.put(SettingsActivity.this, "com.withiter.settings.wifi", isWifi);
+			progressDialogUtil.closeProgress();
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -121,8 +110,7 @@ public class SettingsActivity extends QuhaoBaseActivity {
 
 		@Override
 		protected void onPreExecute() {
-			progress = new ProgressDialogUtil(SettingsActivity.this, R.string.empty,
-					R.string.deleting, false);
+			progress = new ProgressDialogUtil(SettingsActivity.this, R.string.empty, R.string.deleting, false);
 			progress.showProgress();
 		}
 
@@ -148,10 +136,32 @@ public class SettingsActivity extends QuhaoBaseActivity {
 			}
 		}
 	}
+
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		
+
 		return false;
+	}
+	
+	@Override
+	public void finish() {
+		super.finish();
+		QuhaoLog.i(LOGTAG, LOGTAG + " finished");
+	}
+
+	@Override
+	protected void onResume() {
+		backClicked = false;
+		super.onResume();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		QuhaoLog.i(LOGTAG, LOGTAG + " on pause");
+		if (backClicked) {
+			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+		}
 	}
 
 }

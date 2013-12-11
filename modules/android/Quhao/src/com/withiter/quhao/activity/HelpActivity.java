@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.HelpAdapter;
+import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.vo.HelpVO;
@@ -21,10 +22,32 @@ import com.withiter.quhao.vo.HelpVO;
 public class HelpActivity extends QuhaoBaseActivity {
 
 	private List<HelpVO> helpList;
-	
 	private ListView helpListView;
-	
 	private HelpAdapter helpAdapter;
+	
+	public static boolean backClicked = false;
+	private String LOGTAG = HelpActivity.class.getName();
+
+	@Override
+	public void finish() {
+		super.finish();
+		QuhaoLog.i(LOGTAG, LOGTAG + " finished");
+	}
+
+	@Override
+	protected void onResume() {
+		backClicked = false;
+		super.onResume();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		QuhaoLog.i(LOGTAG, LOGTAG + " on pause");
+		if (backClicked) {
+			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+		}
+	}
 	
 	/**
 	 * when the page is first loaded, the critiques will be initialize , the value isFirstLoad will be true
@@ -38,7 +61,7 @@ public class HelpActivity extends QuhaoBaseActivity {
 		setContentView(R.layout.more_help_layout);
 		super.onCreate(savedInstanceState);
 		
-		btnBack.setOnClickListener(goBack(this));
+		btnBack.setOnClickListener(goBack(this,this.getClass().getName()));
 		
 		helpListView = (ListView) this.findViewById(R.id.helpListView);
 		
