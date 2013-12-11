@@ -52,6 +52,9 @@ GET		/getCommentsByAccountId				CommentController.getCommentsByAccountId
 GET		/getComment							CommentController.getComment
 GET		/getCommentsById					CommentController.getCommentsById
 
+# Help
+GET		/help								HelpController.help
+
 # Patch
 *		/p/{action}							Patches.{action}
 GET		/p        							Patches.index
