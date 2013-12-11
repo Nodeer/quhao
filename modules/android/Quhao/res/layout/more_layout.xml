@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="#ffffffff"
-  xmlns:android="http://schemas.android.com/apk/res/android">
-   
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffffff"
+    android:orientation="vertical" >
+
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -11,264 +14,295 @@
         android:paddingRight="5dip"
         android:paddingTop="5dip" >
 
-		<TextView
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_centerHorizontal="true"
-		    android:layout_centerVertical="true"
-		    android:text="更多"
-		    android:textAppearance="?android:textAppearanceMedium"
-		    android:textColor="#ff000000" />
-		
-	</RelativeLayout>
-	<ScrollView android:layout_width="fill_parent" android:layout_height="wrap_content" android:fillViewport="true" android:layout_weight="1.0">
-	<LinearLayout 
-	    android:orientation="vertical"
-	    android:layout_width="fill_parent" 
-	    android:layout_height="wrap_content" 
-	    android:background="#ffffffff"
-	    android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/more"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="#ff000000" />
+    </RelativeLayout>
 
-		<LinearLayout
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    android:gravity="center_horizontal|bottom"
-		    android:orientation="vertical" >
-
-		    <ImageView
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:src="@drawable/launch_logo" />
-		</LinearLayout>
-
-		<LinearLayout
-		    android:id="@+id/more_settings"
-		    android:layout_width="288dp"
-		    android:layout_height="42dp"
-		    android:layout_marginTop="20dip"
-		    android:background="@drawable/form_border_top"
-		    android:gravity="center_vertical"
-		    android:orientation="horizontal"
-		    android:paddingLeft="20dip"
-		    android:paddingRight="20dip" >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@drawable/settings" />
-
-            <TextView
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dip"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:text="@string/more_setting"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@drawable/arrow_right" />
-        </LinearLayout>
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1.0"
+        android:fillViewport="true" >
 
         <LinearLayout
-            android:id="@+id/more_version"
-            android:layout_width="288dp"
-            android:layout_height="42dp"
-            android:background="@drawable/form_border_middle"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="20dip"
-            android:paddingRight="20dip" >
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffffff"
+            android:gravity="center"
+            android:orientation="vertical" >
 
-            <ImageView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@drawable/check_vetsion" />
+                android:gravity="center_horizontal|bottom"
+                android:orientation="vertical" >
 
-            <TextView
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dip"
-                android:layout_weight="1"
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/empty"
+                    android:src="@drawable/launch_logo" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/more_settings"
+                android:layout_width="288dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="20dip"
+                android:background="@drawable/form_border_top"
                 android:gravity="center_vertical"
-                android:text="@string/more_new_version"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:orientation="horizontal"
+                android:paddingLeft="20dip"
+                android:paddingRight="20dip" >
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@drawable/arrow_right" />
-        </LinearLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/empty"
+                    android:src="@drawable/settings" />
 
-        <LinearLayout
-            android:id="@+id/more_opinion"
-            android:layout_height="42dp"
-            android:layout_width="288dp"
-            android:background="@drawable/form_border_middle"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="20dip"
-            android:paddingRight="20dip" >
+                <TextView
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dip"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/more_setting"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@drawable/opinion" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/empty"
+                    android:src="@drawable/arrow_right" />
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dip"
-                android:layout_weight="1"
+            <LinearLayout
+                android:id="@+id/more_version"
+                android:layout_width="288dp"
+                android:layout_height="42dp"
+                android:background="@drawable/form_border_middle"
                 android:gravity="center_vertical"
-                android:text="@string/more_opinion"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:orientation="horizontal"
+                android:paddingLeft="20dip"
+                android:paddingRight="20dip" >
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@drawable/arrow_right" />
-        </LinearLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/empty"
+                    android:src="@drawable/check_vetsion" />
 
-        <LinearLayout
-            android:id="@+id/more_share"
-            android:layout_height="42dp"
-            android:layout_width="288dp"
-            android:background="@drawable/form_border_middle"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="20dip"
-            android:paddingRight="20dip" >
+                <TextView
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dip"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/more_new_version"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@drawable/icon_btn_setshare" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/empty"
+                    android:src="@drawable/arrow_right" />
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dip"
-                android:layout_weight="1"
+            <LinearLayout
+                android:id="@+id/more_opinion"
+                android:layout_width="288dp"
+                android:layout_height="42dp"
+                android:background="@drawable/form_border_middle"
                 android:gravity="center_vertical"
-                android:text="@string/more_share"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:orientation="horizontal"
+                android:paddingLeft="20dip"
+                android:paddingRight="20dip" >
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@drawable/arrow_right" />
-        </LinearLayout>
-		<LinearLayout
-            android:id="@+id/more_help"
-            android:layout_height="42dp"
-            android:layout_width="288dp"
-            android:background="@drawable/form_border_middle"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="20dip"
-            android:paddingRight="20dip" >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/empty"
+                    android:src="@drawable/opinion" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@drawable/help" />
+                <TextView
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dip"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/more_opinion"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
 
-            <TextView
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dip"
-                android:layout_weight="1"
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/empty"
+                    android:src="@drawable/arrow_right" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/more_share"
+                android:layout_width="288dp"
+                android:layout_height="42dp"
+                android:background="@drawable/form_border_middle"
                 android:gravity="center_vertical"
-                android:text="@string/more_help"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:orientation="horizontal"
+                android:paddingLeft="20dip"
+                android:paddingRight="20dip" >
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@drawable/arrow_right" />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/more_aboutus"
-            android:layout_height="42dp"
-            android:layout_width="288dp"
-            android:background="@drawable/form_border_bottom"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="20dip"
-            android:paddingRight="20dip" >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/empty"
+                    android:src="@drawable/icon_btn_setshare" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@drawable/about_us" />
+                <TextView
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dip"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/more_share"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
 
-            <TextView
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dip"
-                android:layout_weight="1"
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/empty"
+                    android:src="@drawable/arrow_right" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/more_help"
+                android:layout_width="288dp"
+                android:layout_height="42dp"
+                android:background="@drawable/form_border_middle"
                 android:gravity="center_vertical"
-                android:text="@string/more_aboutus"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:orientation="horizontal"
+                android:paddingLeft="20dip"
+                android:paddingRight="20dip" >
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@drawable/arrow_right" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/empty"
+                    android:src="@drawable/help" />
+
+                <TextView
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dip"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/more_help"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/empty"
+                    android:src="@drawable/arrow_right" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/more_aboutus"
+                android:layout_width="288dp"
+                android:layout_height="42dp"
+                android:background="@drawable/form_border_bottom"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="20dip"
+                android:paddingRight="20dip" >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/empty"
+                    android:src="@drawable/about_us" />
+
+                <TextView
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dip"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/more_aboutus"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/empty"
+                    android:src="@drawable/arrow_right" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/more_login_status"
+                android:layout_width="288dp"
+                android:layout_height="42dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/btn_title"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="20dip"
+                android:paddingRight="20dip" >
+
+                <ImageView
+                    android:id="@+id/more_login_status_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/empty"
+                    android:src="@drawable/logout_status" />
+
+                <TextView
+                    android:id="@+id/more_login_status_txt"
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dip"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="@string/more_no_login"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
         </LinearLayout>
-        <LinearLayout android:id="@+id/more_login_status"
-            android:layout_height="42dp"
-            android:layout_width="288dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/btn_title"
-            android:gravity="center_vertical"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:paddingLeft="20dip"
-            android:paddingRight="20dip" >
+    </ScrollView>
 
-            <ImageView android:id="@+id/more_login_status_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:src="@drawable/logout_status" />
+    <LinearLayout
+        android:id="@+id/menuLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
 
-            <TextView android:id="@+id/more_login_status_txt"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dip"
-                android:layout_weight="1"
-                android:gravity="center_vertical|center_horizontal"
-                android:text="@string/more_no_login"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+        <include
+            android:id="@+id/menu"
+            layout="@layout/menu_bar" />
+    </LinearLayout>
 
-        </LinearLayout>
-	</LinearLayout>
-	</ScrollView>
-    <LinearLayout android:layout_width="fill_parent"
-		android:id="@+id/menuLayout" android:layout_height="wrap_content">
-		<include android:id="@+id/menu" layout="@layout/menu_bar" />
-	</LinearLayout>
-</LinearLayout> 
+</LinearLayout>

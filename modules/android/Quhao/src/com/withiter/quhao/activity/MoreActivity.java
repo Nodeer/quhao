@@ -84,28 +84,28 @@ public class MoreActivity extends QuhaoBaseActivity {
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			Intent intent = new Intent(this, SettingsActivity.class);
 			startActivity(intent);
-			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 		case R.id.more_aboutus:// 关于我们
 			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			Intent intent1 = new Intent(this, AboutUsActivity.class);
 			startActivity(intent1);
-			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 		case R.id.more_opinion:// 反馈
 			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			Intent intent2 = new Intent(this, OpinionActivity.class);
 			startActivity(intent2);
-			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 		case R.id.more_help:// 帮助
 			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			Intent intent3 = new Intent(this, HelpActivity.class);
 			startActivity(intent3);
-			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 		case R.id.more_version:// 版本检测
 			progressDialogUtil.closeProgress();
@@ -117,7 +117,7 @@ public class MoreActivity extends QuhaoBaseActivity {
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			Intent intent4 = new Intent(this, ShareDialogActivity.class);
 			startActivity(intent4);
-			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 
 		case R.id.more_login_status:// 分享给好友
@@ -133,7 +133,7 @@ public class MoreActivity extends QuhaoBaseActivity {
 				intent5.putExtra("activityName", this.getClass().getName());
 				intent5.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent5);
-				overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			}
 			break;
 
@@ -143,6 +143,9 @@ public class MoreActivity extends QuhaoBaseActivity {
 
 	}
 
+	// TODO : add static to the all Handler class, because such class may be
+	// caused leaks
+	// http://stackoverflow.com/questions/11407943/this-handler-class-should-be-static-or-leaks-might-occur-incominghandler
 	protected Handler loginHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {

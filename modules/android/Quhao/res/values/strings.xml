@@ -104,6 +104,7 @@
 	<!-- jifen cost states -->
 	
 	<!-- more begin -->
+	<string name="more">更多</string>
 	<string name="more_setting">系统设置</string>
 	<string name="more_new_version">检查更新</string>
 	<string name="more_opinion">意见反馈</string>
