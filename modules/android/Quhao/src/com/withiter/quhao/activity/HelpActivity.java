@@ -67,8 +67,8 @@ public class HelpActivity extends QuhaoBaseActivity {
 
 		// TODO add help content here
 		helpList = new ArrayList<HelpVO>();
-		HelpVO help1 = new HelpVO("how to use qhao", "11111111111111111111111");
-		HelpVO help2 = new HelpVO("how to use qhao", "11111111111111111111111");
+		HelpVO help1 = new HelpVO("为什么需要手机注册？", "手机注册取号会员后，系统才能通过手机短信通知您的排队情况。");
+		HelpVO help2 = new HelpVO("如何注册？", "打开取号APP后，进入【个人中心】，左上角有注册按钮。");
 		helpList.add(help1);
 		helpList.add(help2);
 		updateHelpHandler.obtainMessage(200, helpList).sendToTarget();
