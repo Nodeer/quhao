@@ -10,13 +10,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.HelpAdapter;
 import com.withiter.quhao.util.QuhaoLog;
-import com.withiter.quhao.util.StringUtils;
-import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.vo.HelpVO;
 
 public class HelpActivity extends QuhaoBaseActivity {
@@ -69,8 +66,12 @@ public class HelpActivity extends QuhaoBaseActivity {
 		helpList = new ArrayList<HelpVO>();
 		HelpVO help1 = new HelpVO("为什么需要手机注册？", "手机注册取号会员后，系统才能通过手机短信通知您的排队情况。");
 		HelpVO help2 = new HelpVO("如何注册？", "打开取号APP后，进入【个人中心】，左上角有注册按钮。");
+		HelpVO help3 = new HelpVO("积分有什么用？", "积分是用来取号排队用的，每次取号会消耗一定积分。");
+		HelpVO help4 = new HelpVO("如何增加积分？", "在某商家消费结束之后，确认消费即可返还取号时消费的积分。另外可以通过完成任务以及签到获得奖励积分。");
 		helpList.add(help1);
 		helpList.add(help2);
+		helpList.add(help3);
+		helpList.add(help4);
 		updateHelpHandler.obtainMessage(200, helpList).sendToTarget();
 		
 	}
