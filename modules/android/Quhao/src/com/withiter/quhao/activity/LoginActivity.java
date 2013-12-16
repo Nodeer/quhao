@@ -11,6 +11,7 @@ import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -99,10 +100,25 @@ public class LoginActivity extends QuhaoBaseActivity {
 	@Override
 	public void onClick(View v) {
 		// 隐藏软键盘
+		
 		InputMethodManager m = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		if (m != null) {
-			m.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+//			if(this.getCurrentFocus()!=null && this.getCurrentFocus().getWindowToken() != null)
+//			{
+//				m.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+//			}
+			
+			//R.id.login
+			//m.hideSoftInputFromWindow(passwordText.getWindowToken(), 0);
+			//m.hideSoftInputFromWindow(loginNameText.getWindowToken(), 0);
+			if(m.isActive()){
+				m.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
+			}
+			
+			
 		}
+		
+//		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		// 已经点过，直接返回
 		if (isClick) {
 			return;

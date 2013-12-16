@@ -1,9 +1,11 @@
 package com.withiter.quhao.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
@@ -76,6 +78,22 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 		}
 		isClick = true;
 
+		InputMethodManager m = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		if (m != null) {
+//			if(this.getCurrentFocus()!=null && this.getCurrentFocus().getWindowToken() != null)
+//			{
+//				m.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+//			}
+			
+			//R.id.login
+			//m.hideSoftInputFromWindow(passwordText.getWindowToken(), 0);
+			//m.hideSoftInputFromWindow(loginNameText.getWindowToken(), 0);
+			if(m.isActive()){
+				m.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
+			}
+			
+			
+		}
 		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.committing, false);
 		progressDialogUtil.showProgress();
 		switch (v.getId()) {

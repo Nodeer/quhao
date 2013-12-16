@@ -264,12 +264,21 @@ public class MainActivity extends QuhaoBaseActivity {
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev) {
 
-		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-
-		if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-			if (MainActivity.this.getCurrentFocus() != null && MainActivity.this.getCurrentFocus().getWindowToken() != null) {
-				imm.hideSoftInputFromWindow(MainActivity.this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+		InputMethodManager m = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		if (m != null) {
+//			if(this.getCurrentFocus()!=null && this.getCurrentFocus().getWindowToken() != null)
+//			{
+//				m.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+//			}
+			
+			//R.id.login
+			//m.hideSoftInputFromWindow(passwordText.getWindowToken(), 0);
+			//m.hideSoftInputFromWindow(loginNameText.getWindowToken(), 0);
+			if(m.isActive()){
+				m.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
 			}
+			
+			
 		}
 
 		return super.dispatchTouchEvent(ev);

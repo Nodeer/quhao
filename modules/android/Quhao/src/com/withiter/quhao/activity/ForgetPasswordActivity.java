@@ -3,6 +3,7 @@ package com.withiter.quhao.activity;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +12,7 @@ import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -147,6 +149,24 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 			return;
 		}
 		isClick = true;
+		
+		InputMethodManager m = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		if (m != null) {
+//			if(this.getCurrentFocus()!=null && this.getCurrentFocus().getWindowToken() != null)
+//			{
+//				m.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+//			}
+			
+			//R.id.login
+			//m.hideSoftInputFromWindow(passwordText.getWindowToken(), 0);
+			//m.hideSoftInputFromWindow(loginNameText.getWindowToken(), 0);
+			if(m.isActive()){
+				m.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
+			}
+			
+			
+		}
+		
 		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty,
 				R.string.waitting, false);
 		progressDialogUtil.showProgress();

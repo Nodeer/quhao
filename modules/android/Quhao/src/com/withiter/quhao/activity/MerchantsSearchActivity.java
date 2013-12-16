@@ -135,8 +135,22 @@ public class MerchantsSearchActivity extends QuhaoBaseActivity {
 				editSearch.clearFocus();
 
 				// 让软键盘消失
-				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);
+				InputMethodManager m = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+				if (m != null) {
+//					if(this.getCurrentFocus()!=null && this.getCurrentFocus().getWindowToken() != null)
+//					{
+//						m.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+//					}
+					
+					//R.id.login
+					//m.hideSoftInputFromWindow(passwordText.getWindowToken(), 0);
+					//m.hideSoftInputFromWindow(loginNameText.getWindowToken(), 0);
+					if(m.isActive()){
+						m.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
+					}
+					
+					
+				}
 				getMerchants();
 
 			}

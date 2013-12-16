@@ -1,13 +1,22 @@
 package com.withiter.quhao.activity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
@@ -22,8 +31,9 @@ import com.amap.api.services.poisearch.PoiSearch;
 import com.amap.api.services.poisearch.PoiSearch.OnPoiSearchListener;
 import com.amap.api.services.poisearch.PoiSearch.SearchBound;
 import com.withiter.quhao.R;
+import com.withiter.quhao.adapter.MerchantNearByAdapter;
 
-public class NearbyActivity extends QuhaoBaseActivity implements AMapLocationListener,OnPoiSearchListener{
+public class NearbyActivity extends QuhaoBaseActivity implements AMapLocationListener,OnPoiSearchListener,OnScrollListener{
 
 	private LocationManagerProxy mAMapLocManager = null;
 	
@@ -31,16 +41,170 @@ public class NearbyActivity extends QuhaoBaseActivity implements AMapLocationLis
 	
 	private PoiSearch poiSearch;
 	
+	private PoiResult poiResult; // poi返回的结果
+	
+	private int page = 0;
+	
+	private ListView merchantsListView;
+	
+	private MerchantNearByAdapter nearByAdapter;
+	
+	private View moreView;
+	
+	private Button bt;
+	
+	private ProgressBar pg;
+	
+	private int lastVisibleIndex;
+	
+	private boolean isFirstLoad = true;
+	
+	private boolean needToLoad = true;
+	
+	private List<PoiItem> poiItems;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.nearby_layout);
 		super.onCreate(savedInstanceState);
 		
+		// bind menu button function
+		btnCategory.setOnClickListener(goCategory(this));
+		btnNearby.setOnClickListener(goNearby(this));
+		btnPerson.setOnClickListener(goPersonCenter(this));
+		btnMore.setOnClickListener(goMore(this));
+		
 		mAMapLocManager = LocationManagerProxy.getInstance(this);
 		
 		mAMapLocManager.requestLocationUpdates(LocationProviderProxy.AMapNetwork, 1000, 10, this);
 
+		merchantsListView = (ListView) this.findViewById(R.id.merchantsListView);
+		
+		moreView = getLayoutInflater().inflate(R.layout.moredata, null);
+		bt = (Button) moreView.findViewById(R.id.bt_load);
+		pg = (ProgressBar) moreView.findViewById(R.id.pg);
+		bt.setOnClickListener(this);
+		merchantsListView.addFooterView(moreView);
+		merchantsListView.setNextFocusDownId(R.id.commentsView);
+		queryMerchants();
+	}
+
+	protected Handler updatePoiItemsHandler = new Handler() {
+
+		@Override
+		public void handleMessage(Message msg) {
+
+			super.handleMessage(msg);
+
+			if (msg.what == 200) {
+
+				if (isFirstLoad) {
+
+					nearByAdapter = new MerchantNearByAdapter(NearbyActivity.this, merchantsListView, poiItems);
+					merchantsListView.setAdapter(nearByAdapter);
+					isFirstLoad = false;
+				} else {
+					nearByAdapter.merchants = poiItems;
+				}
+				nearByAdapter.notifyDataSetChanged();
+				bt.setVisibility(View.VISIBLE);
+				pg.setVisibility(View.GONE);
+				merchantsListView.setOnScrollListener(NearbyActivity.this);
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			}
+		}
+
+	};
+	
+	private void queryMerchants() {
+		
+		query = new PoiSearch.Query("", "餐厅", "021");
+		query.setPageSize(10);// 设置每页最多返回多少条poiitem
+		query.setPageNum(page);// 设置查第一页
+		query.setLimitDiscount(false);
+		query.setLimitGroupbuy(false);
+		poiSearch = new PoiSearch(this, query);
+		poiSearch.setOnPoiSearchListener(this);
+//		double lat = location.getLatitude();
+//		double lon = location.getLongitude();
+		LatLonPoint lp = new LatLonPoint(31.192172, 121.443025);
+		poiSearch.setBound(new SearchBound(
+				lp, 1000));//设置搜索区域为以lp点为圆心，其周围1000米范围
+		try {
+			poiItems = new ArrayList<PoiItem>();
+			PoiResult result = poiSearch.searchPOI();
+			if(null != result && null != result.getQuery())
+			{
+				List<PoiItem> poiItemTemps = result.getPois();// 取得第一页的poiitem数据，页数从数字0开始
+				if(null != poiItemTemps && poiItemTemps.size()>0)
+				{
+					if(poiItemTemps.size()<10)
+					{
+						needToLoad = false;
+					}
+					poiItems.addAll(poiItemTemps);
+					updatePoiItemsHandler.obtainMessage(200, null).sendToTarget();
+					Log.e("TAG111", poiItemTemps.toString());
+				}
+				else
+				{
+					needToLoad = false;
+				}
+				
+			}
+			else
+			{
+				needToLoad = false;
+			}
+		} catch (AMapException e) {
+			needToLoad = false;
+			e.printStackTrace();
+		}//异步搜索
+	}
+	
+	/**
+	 * 点击下一页poi搜索
+	 */
+	public void nextSearch() {
+		if(query!=null&&poiSearch!=null&&poiResult!=null){
+			if (poiResult.getPageCount() - 1 > page) {
+				page++;
+				query.setPageNum(page);// 设置查后一页
+				try {
+					poiResult = poiSearch.searchPOI();
+					if(null != poiResult && null != poiResult.getQuery())
+					{
+						List<PoiItem> poiItemTemps = poiResult.getPois();// 取得第一页的poiitem数据，页数从数字0开始
+						if(null != poiItemTemps && poiItemTemps.size()>0)
+						{
+							if(poiItemTemps.size()<10)
+							{
+								needToLoad = false;
+							}
+							poiItems.addAll(poiItemTemps);
+							updatePoiItemsHandler.obtainMessage(200, null).sendToTarget();
+							Log.e("TAG111", poiItemTemps.toString());
+						}
+						else
+						{
+							needToLoad = false;
+						}
+						
+					}
+					else
+					{
+						needToLoad = false;
+					}
+				} catch (AMapException e) {
+					needToLoad = false;
+					e.printStackTrace();
+				}
+			} else {
+				needToLoad = false;
+				Toast.makeText(this, "No result", Toast.LENGTH_LONG).show();
+			}
+		}
 	}
 	
 	@Override
@@ -61,10 +225,6 @@ public class NearbyActivity extends QuhaoBaseActivity implements AMapLocationLis
 		super.onDestroy();
 	}
 
-	@Override
-	public void onClick(View v) {
-
-	}
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
@@ -96,7 +256,6 @@ public class NearbyActivity extends QuhaoBaseActivity implements AMapLocationLis
 		
 		if(null != location)
 		{
-			
 			query = new PoiSearch.Query("", "餐厅", location.getCityCode());
 			query.setLimitDiscount(false);
 			query.setLimitGroupbuy(false);
@@ -114,11 +273,23 @@ public class NearbyActivity extends QuhaoBaseActivity implements AMapLocationLis
 					List<PoiItem> poiItems = result.getPois();// 取得第一页的poiitem数据，页数从数字0开始
 					if(null != poiItems && poiItems.size()>0)
 					{
+						if(poiItems.size()<10)
+						{
+							needToLoad = false;
+						}
 						Log.e("TAG111", String.valueOf(poiItems.size()));
 					}
+					else
+					{
+						needToLoad = false;
+					}
+					
+				}
+				else
+				{
+					needToLoad = false;
 				}
 			} catch (AMapException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}//异步搜索
 		}
@@ -127,14 +298,60 @@ public class NearbyActivity extends QuhaoBaseActivity implements AMapLocationLis
 
 	@Override
 	public void onPoiItemDetailSearched(PoiItemDetail arg0, int arg1) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void onPoiSearched(PoiResult arg0, int arg1) {
-		// TODO Auto-generated method stub
 		
 	}
 
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		if (scrollState == OnScrollListener.SCROLL_STATE_IDLE
+				&& lastVisibleIndex == nearByAdapter.getCount()) {
+			pg.setVisibility(View.VISIBLE);
+			bt.setVisibility(View.GONE);
+			nextSearch();
+		}
+	}
+
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem,
+			int visibleItemCount, int totalItemCount) {
+		// check hit the bottom of current loaded data
+		lastVisibleIndex = firstVisibleItem + visibleItemCount -1;
+		if (!needToLoad) {
+			merchantsListView.removeFooterView(moreView);
+		}
+	}
+
+	@Override
+	public void onClick(View v) {
+
+		// 已经点过，直接返回
+		if (isClick) {
+			return;
+		}
+
+		// 设置已点击标志，避免快速重复点击
+		isClick = true;
+		// 解锁
+		unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+		
+		switch (v.getId()) {
+		case R.id.back_btn:
+			onBackPressed();
+			this.finish();
+			break;
+		case R.id.bt_load:
+			pg.setVisibility(View.VISIBLE);
+			bt.setVisibility(View.GONE);
+			nextSearch();
+			
+			break;
+		default:
+			break;
+		}
+	}
 }
