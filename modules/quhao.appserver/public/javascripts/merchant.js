@@ -1,5 +1,10 @@
 Merchant = {};
 
+
+Merchant.findMerchant = function(mNameObj){
+	alert($(mNameObj).val());
+}
+
 /**
  * reset the merchant infomation form
  */
