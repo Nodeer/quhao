@@ -2,7 +2,34 @@ Merchant = {};
 
 
 Merchant.findMerchant = function(mNameObj){
-	alert($(mNameObj).val());
+	var keyword = Quhao.trim($(mNameObj).val());
+	$.ajax({
+		type:"GET",
+		url:"/search",
+		dataType:"JSON",
+		data:{"name":keyword},
+		success:function(data){
+			if(data != null && data.length > 0){
+				var ajaxResultDiv = document.createElement("div");
+				for(var i=0; i< data.length; i++){
+					console.log(data[i].name);
+					var item = document.createElement("div");
+					$(item).html(data[i].name);
+					ajaxResultDiv.appendChild(item);
+				}
+				var p = $("#merchantName");
+				var position = p.position();
+				console.log(position.left);
+				console.log(position.top);
+//				ajaxResultDiv.style.position.left=position.left;
+//				ajaxResultDiv.style.position.top=position.top;
+				$(p).after($(ajaxResultDiv).html());
+			}
+		},
+		error:function(){
+			alert("服务器维护中，马上就好。");
+		}
+	});
 }
 
 /**
