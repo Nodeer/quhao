@@ -10,20 +10,52 @@ Merchant.findMerchant = function(mNameObj){
 		data:{"name":keyword},
 		success:function(data){
 			if(data != null && data.length > 0){
-				var ajaxResultDiv = document.createElement("div");
+				
+				var availableNames = [];
+				
+//				var ajaxResultDiv = document.createElement("div");
 				for(var i=0; i< data.length; i++){
 					console.log(data[i].name);
-					var item = document.createElement("div");
-					$(item).html(data[i].name);
-					ajaxResultDiv.appendChild(item);
+					availableNames[i] = data[i].name;
+//					var item = document.createElement("div");
+//					$(item).html(data[i].name);
+//					ajaxResultDiv.appendChild(item);
 				}
-				var p = $("#merchantName");
-				var position = p.position();
-				console.log(position.left);
-				console.log(position.top);
+//				var p = $("#merchantName");
+//				var position = p.position();
+//				console.log(position.left);
+//				console.log(position.top);
 //				ajaxResultDiv.style.position.left=position.left;
 //				ajaxResultDiv.style.position.top=position.top;
-				$(p).after($(ajaxResultDiv).html());
+//				$(p).after($(ajaxResultDiv).html());
+				
+				var availableTags = [
+					"ActionScript",
+					"AppleScript",
+					"Asp",
+					"BASIC",
+					"C",
+					"C++",
+					"Clojure",
+					"COBOL",
+					"ColdFusion",
+					"Erlang",
+					"Fortran",
+					"Groovy",
+					"Haskell",
+					"Java",
+					"JavaScript",
+					"Lisp",
+					"Perl",
+					"PHP",
+					"Python",
+					"Ruby",
+					"Scala",
+					"Scheme"
+					];
+					$("#merchantName").autocomplete({
+						source: availableNames
+					});
 			}
 		},
 		error:function(){
