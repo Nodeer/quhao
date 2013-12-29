@@ -1,5 +1,6 @@
 Merchant = {};
 
+Merchant.ALL = null;
 
 Merchant.findMerchant = function(mNameObj){
 	var keyword = Quhao.trim($(mNameObj).val());
@@ -12,50 +13,22 @@ Merchant.findMerchant = function(mNameObj){
 			if(data != null && data.length > 0){
 				
 				var availableNames = [];
-				
-//				var ajaxResultDiv = document.createElement("div");
 				for(var i=0; i< data.length; i++){
 					console.log(data[i].name);
-					availableNames[i] = data[i].name;
-//					var item = document.createElement("div");
-//					$(item).html(data[i].name);
-//					ajaxResultDiv.appendChild(item);
+					var item = {};
+					item["label"] = data[i].name + ", " + data[i].address;
+					item["value"] = data[i].name;
+					availableNames.push(item);
+//					availableNames[i] = "{label:" + "\""+ data[i].name+"\"" +", value:" +"\""+data[i].address+"\"}";
 				}
-//				var p = $("#merchantName");
-//				var position = p.position();
-//				console.log(position.left);
-//				console.log(position.top);
-//				ajaxResultDiv.style.position.left=position.left;
-//				ajaxResultDiv.style.position.top=position.top;
-//				$(p).after($(ajaxResultDiv).html());
-				
-				var availableTags = [
-					"ActionScript",
-					"AppleScript",
-					"Asp",
-					"BASIC",
-					"C",
-					"C++",
-					"Clojure",
-					"COBOL",
-					"ColdFusion",
-					"Erlang",
-					"Fortran",
-					"Groovy",
-					"Haskell",
-					"Java",
-					"JavaScript",
-					"Lisp",
-					"Perl",
-					"PHP",
-					"Python",
-					"Ruby",
-					"Scala",
-					"Scheme"
-					];
-					$("#merchantName").autocomplete({
-						source: availableNames
-					});
+				$("#merchantName").autocomplete({
+					source: availableNames,
+					select: function( event, ui ) {
+						alert("selcted!");
+						alert(ui.item.label);
+						alert(ui.item.value);
+					}
+				});
 			}
 		},
 		error:function(){
