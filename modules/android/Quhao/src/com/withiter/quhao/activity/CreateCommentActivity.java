@@ -53,7 +53,7 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.comment_create_layout);
 		super.onCreate(savedInstanceState);
-		
+		btnBack.setOnClickListener(goBack(this, null));
 		rId = getIntent().getStringExtra("rId");
 		submit = (Button) this.findViewById(R.id.submit);
 		kouweiRatingBar = (RatingBar) this.findViewById(R.id.kouwei_ratingbar);
@@ -116,15 +116,16 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 				}
 			
 				CommonHTTPRequest.get("updateComment?rid=" + rId + "&kouwei=" + kouwei + "&huanjing=" + huanjing + "&fuwu=" + fuwu + "&xingjiabi=" + xingjiabi + "&grade=" + grade + "&averageCost=" + averageCost +  "&content=" + comment);
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+				Toast.makeText(this, "评论成功", Toast.LENGTH_LONG).show();
+				this.finish();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			finally
 			{
-				progressDialogUtil.closeProgress();
-				unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
-				Toast.makeText(this, "评论成功", Toast.LENGTH_LONG).show();
-				this.finish();
+				
 			}
 
 			break;

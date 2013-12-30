@@ -49,7 +49,7 @@ public class CreditAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Credit credit = (Credit) getItem(position);
 		synchronized (credit) {
-			if ("finished".equals(credit.status) || "getNumber".equals(credit.status)) {
+			if ("finished".equals(credit.status) || "getNumber".equals(credit.status) || "credit".equals(credit.status)) {
 				MerchantHolder holder = null;
 				if (convertView == null) {
 					holder = new MerchantHolder();

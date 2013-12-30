@@ -3,6 +3,9 @@ package com.withiter.quhao.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,23 +15,21 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.AbsListView;
-import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
-import com.withiter.quhao.adapter.CommentAccountAdapter;
 import com.withiter.quhao.adapter.CreditAdapter;
 import com.withiter.quhao.exception.NoResultFromHTTPRequestException;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
-import com.withiter.quhao.vo.Comment;
 import com.withiter.quhao.vo.Credit;
 
 public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemClickListener,OnScrollListener{
@@ -93,9 +94,10 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 				}
 				
 				creditAdapter.notifyDataSetChanged();
+				
+				creditsListView.setOnScrollListener(CreditCostListActivity.this);
 				bt.setVisibility(View.VISIBLE);
 				pg.setVisibility(View.GONE);
-				creditsListView.setOnScrollListener(CreditCostListActivity.this);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 
@@ -197,13 +199,25 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 		unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 		
 		Credit credit = credits.get(position);
-		if(StringUtils.isNotNull(credit.merchantId))
+		if(StringUtils.isNotNull(credit.reservationId))
 		{
 			Intent intent = new Intent();
-			intent.putExtra("merchantId", credit.merchantId);
-			intent.setClass(CreditCostListActivity.this, MerchantDetailActivity.class);
+			intent.putExtra("rId", credit.reservationId);
+			intent.setClass(CreditCostListActivity.this, CreateCommentActivity.class);
 			startActivity(intent);
 			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+		}
+		else
+		{
+			AlertDialog.Builder builder = new Builder(this);
+			builder.setMessage("对不起，这条不能评论。");
+			builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
+			builder.create().show();
 		}
 		
 	}
