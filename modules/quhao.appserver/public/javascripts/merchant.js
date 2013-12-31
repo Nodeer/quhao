@@ -18,15 +18,33 @@ Merchant.findMerchant = function(mNameObj){
 					var item = {};
 					item["label"] = data[i].name + ", " + data[i].address;
 					item["value"] = data[i].name;
+					item["key"] = data[i].id;
 					availableNames.push(item);
-//					availableNames[i] = "{label:" + "\""+ data[i].name+"\"" +", value:" +"\""+data[i].address+"\"}";
 				}
 				$("#merchantName").autocomplete({
 					source: availableNames,
 					select: function( event, ui ) {
-						alert("selcted!");
 						alert(ui.item.label);
 						alert(ui.item.value);
+						alert(ui.item.key);
+						
+						$.ajax({
+							type:"GET",
+							url:"/merchant",
+							dataType:"JSON",
+							data:{"id":ui.item.key},
+							success:function(data){
+								console.log(data);
+								$("#description").val(data.description);
+								
+								// add merchant image here
+								$("#address").val(data.address);
+								$("#tel").val(data.telephone);
+							},
+							error:function(){
+								alert("服务器维护中，马上就好。");
+							}
+						});
 					}
 				});
 			}
