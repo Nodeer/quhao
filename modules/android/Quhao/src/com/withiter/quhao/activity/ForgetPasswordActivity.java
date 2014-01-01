@@ -121,7 +121,7 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 						Toast.makeText(ForgetPasswordActivity.this, "注册成功。", Toast.LENGTH_LONG).show();
 						SharedprefUtil.remove(ForgetPasswordActivity.this, QuhaoConstant.ACCOUNT_ID);
 						SharedprefUtil.remove(ForgetPasswordActivity.this, QuhaoConstant.IS_AUTO_LOGIN);
-						SharedprefUtil.remove(ForgetPasswordActivity.this, QuhaoConstant.IS_LOGIN);
+//						SharedprefUtil.remove(ForgetPasswordActivity.this, QuhaoConstant.IS_LOGIN);
 						SharedprefUtil.put(ForgetPasswordActivity.this, QuhaoConstant.PHONE, loginName);
 						password = new DesUtils().encrypt(password);
 						SharedprefUtil.put(ForgetPasswordActivity.this, QuhaoConstant.PASSWORD, password);

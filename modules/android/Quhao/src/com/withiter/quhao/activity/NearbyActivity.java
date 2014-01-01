@@ -86,7 +86,7 @@ public class NearbyActivity extends QuhaoBaseActivity implements AMapLocationLis
 		pg = (ProgressBar) moreView.findViewById(R.id.pg);
 		bt.setOnClickListener(this);
 		merchantsListView.addFooterView(moreView);
-		merchantsListView.setNextFocusDownId(R.id.commentsView);
+		merchantsListView.setNextFocusDownId(R.id.merchantsListView);
 		queryMerchants();
 	}
 

@@ -122,7 +122,7 @@ public class RegisterActivity extends QuhaoBaseActivity{
 						Toast.makeText(RegisterActivity.this, "注册成功。", Toast.LENGTH_LONG).show();
 						SharedprefUtil.remove(RegisterActivity.this, QuhaoConstant.ACCOUNT_ID);
 						SharedprefUtil.remove(RegisterActivity.this, QuhaoConstant.IS_AUTO_LOGIN);
-						SharedprefUtil.remove(RegisterActivity.this, QuhaoConstant.IS_LOGIN);
+//						SharedprefUtil.remove(RegisterActivity.this, QuhaoConstant.IS_LOGIN);
 						SharedprefUtil.put(RegisterActivity.this, QuhaoConstant.PHONE, loginName);
 						SharedprefUtil.put(RegisterActivity.this, QuhaoConstant.PASSWORD, password);
 						QHClientApplication.getInstance().isLogined = false;

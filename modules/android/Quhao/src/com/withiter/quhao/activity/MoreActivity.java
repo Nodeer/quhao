@@ -125,8 +125,8 @@ public class MoreActivity extends QuhaoBaseActivity {
 			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 
-			String loginStatus = SharedprefUtil.get(MoreActivity.this, QuhaoConstant.IS_LOGIN, "false");
-			if ("true".equals(loginStatus)) {
+//			String loginStatus = SharedprefUtil.get(MoreActivity.this, QuhaoConstant.IS_LOGIN, "false");
+			if (QHClientApplication.getInstance().isLogined) {
 				loginHandler.obtainMessage(200, loginStatus).sendToTarget();
 			} else {
 				Intent intent5 = new Intent(MoreActivity.this, LoginActivity.class);
@@ -150,7 +150,7 @@ public class MoreActivity extends QuhaoBaseActivity {
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
-				SharedprefUtil.put(MoreActivity.this, QuhaoConstant.IS_LOGIN, "false");
+//				SharedprefUtil.put(MoreActivity.this, QuhaoConstant.IS_LOGIN, "false");
 				loginStatusImg.setImageResource(R.drawable.login_status);
 				loginStatusTxt.setText(R.string.more_no_login);
 			}

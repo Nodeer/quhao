@@ -147,8 +147,8 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
 				if (loginInfo.msg.equals("fail")) {
-
-					SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "false");
+					QHClientApplication.getInstance().isLogined = false;
+//					SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "false");
 					Toast.makeText(PersonCenterActivity.this, "登陆失败", Toast.LENGTH_LONG).show();
 					return;
 				}
@@ -211,20 +211,24 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 						loginInfo = ParseJson.getLoginInfo(result);
 						AccountInfo account = new AccountInfo();
 						account.build(loginInfo);
-						SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "true");
+//						SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "true");
 						QHClientApplication.getInstance().accountInfo = account;
+						QHClientApplication.getInstance().isLogined = true;
 
 						QuhaoLog.i(TAG, loginInfo.msg);
 						if (loginInfo.msg.equals("fail")) {
-							SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "false");
+//							SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "false");
+							QHClientApplication.getInstance().isLogined = false;
 							Toast.makeText(PersonCenterActivity.this, "签到失败", Toast.LENGTH_LONG).show();
 							return;
 						}
 						if (loginInfo.msg.equals("success")) {
+							QHClientApplication.getInstance().isLogined = false;
+							
 							nickName.setText(loginInfo.nickName);
 							mobile.setText(loginInfo.phone);
 							jifen.setText(loginInfo.jifen);
-
+							
 							value_qiandao.setText(loginInfo.signIn);
 							value_dianpin.setText(loginInfo.dianping);
 							signInLayout.setEnabled(false);

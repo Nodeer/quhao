@@ -20,7 +20,6 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantAdapter;
