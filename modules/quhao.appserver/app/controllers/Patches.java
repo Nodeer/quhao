@@ -79,15 +79,14 @@ public class Patches extends BaseController {
 					while((line=br.readLine())!=null){
 						String[] s = line.replaceAll("：", ":").split("\\|");
 						
-
 						Merchant m = new Merchant();
 						for(String ss : s){
 							System.out.println(ss);
 						}
 						
-						
 						m.cityCode = s[1].split(":")[1].trim();
 						m.email = (s[4].split(":").length == 1) ? "" : s[4].split(":")[1].trim();
+						m.poiId =  (s[5].split(":").length == 1) ? "" : s[5].split(":")[1].trim();
 						m.postcode = s[6].split(":")[1].trim();
 						m.name = s[9].split(":")[1].trim();
 						m.address = (s[7].split(":").length == 1) ? "" : s[7].split(":")[1].trim();

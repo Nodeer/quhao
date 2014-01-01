@@ -18,6 +18,8 @@ public abstract class MerchantEntityDef extends BaseModel {
 	@Indexed
 	public String[] telephone = {""};
 	
+	public String poiId;
+	
 	public String cateType;
 	public String merchantImage = "";
 	
