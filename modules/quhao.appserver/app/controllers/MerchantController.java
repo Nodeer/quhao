@@ -404,5 +404,5 @@ public class MerchantController extends BaseController {
 		renderJSON(merchantVOList);
 
 	}
-
+	
 }

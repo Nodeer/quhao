@@ -1,6 +1,8 @@
 `import static press.Plugin.*;
 `def baseCss
+$addCSS("bootstrap.min.css", true)
 $addCSS("jquery-ui-1.10.3.custom.min.css", true)
+
 $addCSS("base.css", true)
 `
 `get prepare`
@@ -11,6 +13,7 @@ $addCSS("base.css", true)
 <link href="/public/images/common/quhao_favicon.jpg" type="image/png" rel="shortcut icon" />
 $addJS("libs/jquery-1.7.js", true)
 $addJS("libs/jquery-ui-1.10.3.custom.min.js", true)
+$addJS("libs/bootstrap.min.js", true)
 $addJS("common.js", true)
 $addJS("quhao.js", true)
 $baseCss()

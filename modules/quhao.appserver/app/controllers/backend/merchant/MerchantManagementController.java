@@ -13,6 +13,10 @@ public class MerchantManagementController extends BaseController {
 		renderJapid();
 	}
 	
+	public static void bootstrap(){
+		renderJapid();
+	}
+	
 	public static void home(String uid){
 		Account account = Account.findById(uid);
 		renderJapid(AccountVO.build(account));

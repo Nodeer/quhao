@@ -15,32 +15,88 @@ $addCSS("backend.css", true)
 <html lang="cn">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
 <link href="/public/images/common/quhao_favicon.jpg" type="image/png" rel="shortcut icon">
 <title>取号啦 - 商家后台管理</title>
+
+<style type="text/css">
+@media screen and (max-width: 767px) {
+	.row-offcanvas {
+	    position: relative;
+	    transition: all 0.25s ease-out 0s;
+	}
+	.row-offcanvas-right .sidebar-offcanvas {
+	    right: -50%;
+	}
+	.row-offcanvas-left .sidebar-offcanvas {
+	    left: -50%;
+	}
+	.row-offcanvas-right.active {
+	    right: 50%;
+	}
+	.row-offcanvas-left.active {
+	    left: 50%;
+	}
+	.sidebar-offcanvas {
+	    position: absolute;
+	    top: 0;
+	    width: 50%;
+	}
+	}
+
+</style>
+
+
 </head>
 <body class="backendBG" id="fatherDIV">
 
+ 
 	`t merchantMenu(bmivo)
 
-	`if(bmivo.merchantExist){
-	<div class="lmargin100 fl" style="margin-top: 100px;width: 200px;">
-		<div class="" style="margin-bottom: 20px;">关注数：${bmivo.markedCount}</div>
-		`if(!asBoolean(bmivo.grade)){
-			<div class="" style="margin-bottom: 20px;">评分：N/A</div>
-		`}else{
-			<div class="" style="margin-bottom: 20px;">评分：${bmivo.grade}</div>
-		`}
-		`if(!asBoolean(bmivo.averageCost)){
-			<div class="" style="margin-bottom: 20px;">人均消费：N/A</div>
-		`}else{
-			<div class="" style="margin-bottom: 20px;">人均消费：${bmivo.averageCost}</div>
-		`}
-		<div class="" style="margin-bottom: 20px;">口味：${bmivo.kouwei}</div>
-		<div class="" style="margin-bottom: 20px;">环境：${bmivo.huanjing}</div>
-		<div class="" style="margin-bottom: 20px;">服务：${bmivo.fuwu}</div>
-		<div class="" style="margin-bottom: 20px;">性价比：${bmivo.xingjiabi}</div>
-	</div>
+    `if(bmivo.merchantExist){
+	<div class="container">
+      <div class="row row-offcanvas row-offcanvas-right">
+        <div class="col-xs-12 col-sm-9">
+          <p class="pull-right visible-xs">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+          </p>
+        </div><!--/span-->
+        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" style="padding-top: 80px;">
+          <div class="list-group">
+            <a href="javascript:void(0);" class="list-group-item active">消费者数据</a>
+            <a href="javascript:void(0);" class="list-group-item">关注数：${bmivo.markedCount}</a>
+			`if(!asBoolean(bmivo.grade)){
+				<a href="javascript:void(0);" class="list-group-item">评分：N/A</a>
+			`}else{
+				<a href="javascript:void(0);" class="list-group-item">评分：${bmivo.grade}</a>
+			`}
+			`if(!asBoolean(bmivo.averageCost)){
+				<a href="javascript:void(0);" class="list-group-item">人均消费：N/A</a>
+			`}else{
+				<a href="javascript:void(0);" class="list-group-item">人均消费：${bmivo.averageCost}</a>
+			`}
+			<a href="javascript:void(0);" class="list-group-item">口味：${bmivo.kouwei}</a>
+			<a href="javascript:void(0);" class="list-group-item">环境：${bmivo.huanjing}</a>
+			<a href="javascript:void(0);" class="list-group-item">服务：${bmivo.fuwu}</a>
+			<a href="javascript:void(0);" class="list-group-item">性价比：${bmivo.xingjiabi}</a>
+          </div>
+        </div><!--/span-->
+      </div><!--/row-->
 	`}
+
+      <hr>
+
+      <footer>
+        <p>&copy; Company 2013</p>
+      </footer>
+
+    </div><!--/.container-->
+
+	
 	`t merchantEdit(bmivo)
 </body>
 </html>
