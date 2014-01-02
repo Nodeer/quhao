@@ -67,22 +67,22 @@ $addCSS("backend.css", true)
         </div><!--/span-->
         <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation" style="padding-top: 80px;">
           <div class="list-group">
-            <a href="javascript:void(0);" class="list-group-item active">消费者数据</a>
-            <a href="javascript:void(0);" class="list-group-item">关注数：${bmivo.markedCount}</a>
+            <a href="javascript:void(0);" class="list-group-item active" style="cursor: default;">消费者数据</a>
+            <a href="javascript:void(0);" class="list-group-item" style="cursor: default;">关注数：${bmivo.markedCount}</a>
 			`if(!asBoolean(bmivo.grade)){
-				<a href="javascript:void(0);" class="list-group-item">评分：N/A</a>
+				<a href="javascript:void(0);" class="list-group-item" style="cursor: default;">评分：N/A</a>
 			`}else{
-				<a href="javascript:void(0);" class="list-group-item">评分：${bmivo.grade}</a>
+				<a href="javascript:void(0);" class="list-group-item" style="cursor: default;">评分：${bmivo.grade}</a>
 			`}
 			`if(!asBoolean(bmivo.averageCost)){
-				<a href="javascript:void(0);" class="list-group-item">人均消费：N/A</a>
+				<a href="javascript:void(0);" class="list-group-item" style="cursor: default;">人均消费：N/A</a>
 			`}else{
-				<a href="javascript:void(0);" class="list-group-item">人均消费：${bmivo.averageCost}</a>
+				<a href="javascript:void(0);" class="list-group-item" style="cursor: default;">人均消费：${bmivo.averageCost}</a>
 			`}
-			<a href="javascript:void(0);" class="list-group-item">口味：${bmivo.kouwei}</a>
-			<a href="javascript:void(0);" class="list-group-item">环境：${bmivo.huanjing}</a>
-			<a href="javascript:void(0);" class="list-group-item">服务：${bmivo.fuwu}</a>
-			<a href="javascript:void(0);" class="list-group-item">性价比：${bmivo.xingjiabi}</a>
+			<a href="javascript:void(0);" class="list-group-item" style="cursor: default;">口味：${bmivo.kouwei}</a>
+			<a href="javascript:void(0);" class="list-group-item" style="cursor: default;">环境：${bmivo.huanjing}</a>
+			<a href="javascript:void(0);" class="list-group-item" style="cursor: default;">服务：${bmivo.fuwu}</a>
+			<a href="javascript:void(0);" class="list-group-item" style="cursor: default;">性价比：${bmivo.xingjiabi}</a>
           </div>
         </div><!--/span-->
       </div><!--/row-->
@@ -90,13 +90,13 @@ $addCSS("backend.css", true)
 
       <hr>
 
-      <footer>
-        <p>&copy; Company 2013</p>
-      </footer>
-
     </div><!--/.container-->
 
 	
 	`t merchantEdit(bmivo)
+	
+	<footer>
+        <p>&copy; Company 2013</p>
+      </footer>
 </body>
 </html>
