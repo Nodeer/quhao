@@ -14,189 +14,242 @@
   * html .ui-autocomplete {
     height: 200px;
   }
-  </style>
 
-<div class="pop_logIn edit_merchant" style="margin-top: 80px;">
-<h2>编辑/新增&nbsp;商家信息</h2>
+</style>
 
-<form id="merchantForm" action="/b/w/editMerchant" enctype="multipart/form-data" method="post" class="editmerchantForm">
+
+<form role="form" class="form-horizontal" id="merchantForm" action="/b/w/editMerchant" enctype="multipart/form-data" method="post">
 	
 	<input type="hidden" name="uid" value="${bmivo.aid}" /> 
-	<input type="hidden" name="mid" value="${bmivo.mid}" /> 
-	<fieldset class="fieldset">
-		<ul>
-			`if(bmivo.merchantExist){
-				<li><div class="w200">商家名称：</div><input disabled="disabled" type="text" name="merchantName" id="merchantName" value="${bmivo.name}" placeHolder="商家名称" class="textInput" autocomplete="off"/></li>
-				<li><div class="w200">商家描述：</div><textarea disabled="disabled" id="description" name="description" cols="20" rows="10" placeHolder="商家描述" class="textInput"></textarea></li>
-				<li><div class="w200">上传图片：</div><input disabled="disabled" id="merchantImage" name="merchantImage" size="20" type="file" /></li>
-			`}else{
-				<li><div class="w200">商家名称：</div><input type="text" onkeyup="Merchant.findMerchant(this);" name="merchantName" id="merchantName" value="${bmivo.name}" placeHolder="商家名称" class="textInput" autocomplete="off"/></li>
-				<li><div class="w200">商家描述：</div><textarea id="description" name="description" cols="20" rows="10" placeHolder="商家描述" class="textInput"></textarea></li>
-				<li><div class="w200">上传图片：</div><input id="merchantImage" name="merchantImage" size="20" type="file" /></li>
-			`}
-			
-			<li><div class="w200">展示图片：</div></li>
-			`for(String srcStr : bmivo.imgSrc){
-				<li><img alt="" class="backendImg" src="${srcStr}" /></li>
-			`}
-			
-			`if(bmivo.merchantExist){
-			<li><div class="w200">商家地址：</div><input type="text" disabled="disabled" name="address" id="address" value="${bmivo.address}" placeHolder="商家地址" class="textInput"/></li>
-			<li><div class="w200">联系方式：</div><input type="text" disabled="disabled" name="tel" id="tel" value="${bmivo.telephone}" placeHolder="联系方式" class="textInput"/></li>
-			<li>
-			<div class="w200">商家风味：</div>
-			<span class="select">
-				<select disabled="disabled" id="cateType" name="cateType" class="select" style="width: 198px;">
-					<option value="">请选择风味</option>
-					<option value="benbangcai">本帮菜</option>
-					<option value="chuancai">川菜</option>
-					<option value="dongnanyacai">东南亚菜</option>
-					<option value="haixian">海鲜</option>
-					<option value="huoguoliaoli">火锅料理</option>
-					<option value="huoguo">火锅</option>
-					<option value="ribenliaoli">日本料理</option>
-					<option value="shaokao">烧烤</option>
-					<option value="xiangcai">湘菜</option>
-					<option value="xican">西餐</option>
-					<option value="xinjiangqingzhen">新疆清真</option>
-					<option value="yuecaiguan">粤菜馆</option>
-					<option value="zhongcanxican">中餐西餐</option>
-					<option value="zizhucan">自助餐</option>
+	<input type="hidden" name="mid" value="${bmivo.mid}" />
+	
+	`if(bmivo.merchantExist){
+		<div class="form-group">
+			<label for="merchantName" class="col-sm-2 control-label">商家名称：</label>
+			<div class="col-xs-4">
+				<input class="form-control" disabled="disabled" type="text" name="merchantName" id="merchantName" value="${bmivo.name}" placeHolder="商家名称" autocomplete="off"/>
+		    </div>
+		</div>
+		<div class="form-group">
+			<label for="description" class="col-sm-2 control-label">商家描述：</label>
+			<div class="col-xs-4">
+				<textarea class="form-control" rows="3" disabled="disabled" id="description" name="description" placeHolder="商家描述"></textarea>
+		    </div>
+		</div>
+		<div class="form-group">
+			<label for="merchantImage" class="col-sm-2 control-label">上传图片：</label>
+		    <div class="col-xs-4">
+		    	<input type="file" class="form-control" id="merchantImage" name="merchantImage" disabled="disabled" >
+		    </div>
+		    <p class="help-block">第一张上传的图片将作为展示在APP客户端的商家Logo</p>
+		</div>
+	`}else{
+		<div class="form-group">
+			<label for="merchantName" class="col-sm-2 control-label">商家名称：</label>
+			<div class="col-xs-4">
+				<input class="form-control" onkeyup="Merchant.findMerchant(this);" type="text" name="merchantName" id="merchantName" value="${bmivo.name}" placeHolder="商家名称" autocomplete="off"/>
+		    </div>
+		</div>
+		<div class="form-group">
+			<label for="description" class="col-sm-2 control-label">商家描述：</label>
+			<div class="col-xs-4">
+				<textarea class="form-control" rows="3" disabled="disabled" id="description" name="description" placeHolder="商家描述"></textarea>
+		    </div>
+		</div>
+		<div class="form-group">
+			<label for="merchantImage" class="col-sm-2 control-label">上传图片：</label>
+			<div class="col-xs-4">
+		    	<input type="file"  id="merchantImage" name="merchantImage" >
+			    <p class="help-block">第一张上传的图片将作为展示在APP客户端的商家Logo</p>
+		    </div>
+		</div>
+	`}
+		
+		<div class="form-group">
+			<label for="" class="col-sm-2 control-label">展示图片：</label>
+			<div class="col-xs-4">
+				`for(String srcStr : bmivo.imgSrc){
+					<img alt="" class="backendImg" src="${srcStr}" />
+				`}
+		    </div>
+		</div>
+	
+	
+	`if(bmivo.merchantExist){
+		<div class="form-group">
+			<label for="address" class="col-sm-2 control-label">商家地址：</label>
+			<div class="col-xs-4">
+				<input class="form-control" disabled="disabled" name="address" id="address" value="${bmivo.address}" placeHolder="商家地址" />
+		    </div>
+		</div>
+		<div class="form-group">
+			<label for="address" class="col-sm-2 control-label">联系方式：</label>
+			<div class="col-xs-4">
+				<input class="form-control" disabled="disabled" name="tel" id="tel" value="${bmivo.telephone}" placeHolder="联系方式" />
+		    </div>
+		</div>
+		
+	
+	
+	
+		<li><div class="w200">商家地址：</div><input type="text" disabled="disabled" name="address" id="address" value="${bmivo.address}" placeHolder="商家地址" class="textInput"/></li>
+		<li><div class="w200">联系方式：</div><input type="text" disabled="disabled" name="tel" id="tel" value="${bmivo.telephone}" placeHolder="联系方式" class="textInput"/></li>
+		<li>
+		<div class="w200">商家风味：</div>
+		<span class="select">
+			<select disabled="disabled" id="cateType" name="cateType" class="select" style="width: 198px;">
+				<option value="">请选择风味</option>
+				<option value="benbangcai">本帮菜</option>
+				<option value="chuancai">川菜</option>
+				<option value="dongnanyacai">东南亚菜</option>
+				<option value="haixian">海鲜</option>
+				<option value="huoguoliaoli">火锅料理</option>
+				<option value="huoguo">火锅</option>
+				<option value="ribenliaoli">日本料理</option>
+				<option value="shaokao">烧烤</option>
+				<option value="xiangcai">湘菜</option>
+				<option value="xican">西餐</option>
+				<option value="xinjiangqingzhen">新疆清真</option>
+				<option value="yuecaiguan">粤菜馆</option>
+				<option value="zhongcanxican">中餐西餐</option>
+				<option value="zizhucan">自助餐</option>
+			</select>
+		</span>
+		</li>
+		<li>
+		<div class="w200">营业时间（开始）：</div>
+		<span class="select">
+			<select disabled="disabled" id="openTime" name="openTime" class="select" style="width: 198px;">
+				<option value="">请选择营业时间（开始）</option>
+				`for(int i=0;i<24;i++){
+					<option value="${i}:00">$i:00</option>
+				`}
+			</select>
+		</span>
+		</li>
+		<li>
+		<div class="w200">营业时间（结束）：</div>
+		<span class="select">
+			<select disabled="disabled" id="closeTime" name="closeTime" class="select" style="width: 198px;">
+				<option value="">请选择营业时间（结束）</option>
+				`for(int i=0;i<24;i++){
+					<option value="${i}:00">$i:00</option>
+				`}
+			</select>
+		</span>
+		</li>
+	`}else{
+		<div class="form-group">
+			<label for="address" class="col-sm-2 control-label">商家地址：</label>
+			<div class="col-xs-4">
+				<input class="form-control" disabled="disabled" name="address" id="address" value="${bmivo.address}" placeHolder="商家地址" />
+		    </div>
+		</div>
+		<div class="form-group">
+			<label for="tel" class="col-sm-2 control-label">联系方式：</label>
+			<div class="col-xs-4">
+				<input class="form-control" disabled="disabled" name="tel" id="tel" value="${bmivo.telephone}" placeHolder="联系方式" />
+		    </div>
+		</div>
+		<div class="form-group">
+			<label for="cateType" class="col-sm-2 control-label">商家风味：</label>
+			<div class="col-xs-4">
+				<select class="form-control" id="cateType" name="cateType" >
+					<option class="form-control" value="">请选择风味</option>
+					<option class="form-control" value="benbangcai">本帮菜</option>
+					<option class="form-control" value="chuancai">川菜</option>
+					<option class="form-control" value="dongnanyacai">东南亚菜</option>
+					<option class="form-control" value="haixian">海鲜</option>
+					<option class="form-control" value="huoguoliaoli">火锅料理</option>
+					<option class="form-control" value="huoguo">火锅</option>
+					<option class="form-control" value="ribenliaoli">日本料理</option>
+					<option class="form-control" value="shaokao">烧烤</option>
+					<option class="form-control" value="xiangcai">湘菜</option>
+					<option class="form-control" value="xican">西餐</option>
+					<option class="form-control" value="xinjiangqingzhen">新疆清真</option>
+					<option class="form-control" value="yuecaiguan">粤菜馆</option>
+					<option class="form-control" value="zhongcanxican">中餐西餐</option>
+					<option class="form-control" value="zizhucan">自助餐</option>
 				</select>
-			</span>
-			</li>
-			<li>
-			<div class="w200">营业时间（开始）：</div>
-			<span class="select">
-				<select disabled="disabled" id="openTime" name="openTime" class="select" style="width: 198px;">
-					<option value="">请选择营业时间（开始）</option>
-					`for(int i=0;i<24;i++){
-						<option value="${i}:00">$i:00</option>
+		    </div>
+		</div>
+		
+		<div class="form-group">
+			<label for="openTime" class="col-sm-2 control-label">营业时间（开始）：</label>
+			<div class="col-xs-4">
+				<select class="form-control" id="openTime" name="openTime" >
+					<option class="form-control" value="">请选择营业时间（开始）</option>
+					`for(int i=0; i < 24; i++){
+						<option class="form-control" value="${i}:00">$i:00</option>
 					`}
 				</select>
-			</span>
-			</li>
-			<li>
-			<div class="w200">营业时间（结束）：</div>
-			<span class="select">
-				<select disabled="disabled" id="closeTime" name="closeTime" class="select" style="width: 198px;">
-					<option value="">请选择营业时间（结束）</option>
-					`for(int i=0;i<24;i++){
-						<option value="${i}:00">$i:00</option>
+		    </div>
+		</div>
+		<div class="form-group">
+			<label for="closeTime" class="col-sm-2 control-label">营业时间（结束）：</label>
+			<div class="col-xs-4">
+				<select class="form-control" id="closeTime" name="closeTime" >
+					<option class="form-control" value="">请选择营业时间（结束）</option>
+					`for(int i=0; i < 24; i++){
+						<option class="form-control" value="${i}:00">$i:00</option>
 					`}
 				</select>
-			</span>
-			</li>
-			`}else{
-			<li><div class="w200">商家地址：</div><input type="text" name="address" id="address" value="${bmivo.address}" placeHolder="商家地址" class="textInput"/></li>
-			<li><div class="w200">联系方式：</div><input type="text" name="tel" id="tel" value="${bmivo.telephone}" placeHolder="联系方式" class="textInput"/></li>
-			<li>
-			<div class="w200">商家风味：</div>
-			<span class="select">
-				<select id="cateType" name="cateType" class="select" style="width: 198px;">
-					<option value="">请选择风味</option>
-					<option value="benbangcai">本帮菜</option>
-					<option value="chuancai">川菜</option>
-					<option value="dongnanyacai">东南亚菜</option>
-					<option value="haixian">海鲜</option>
-					<option value="huoguoliaoli">火锅料理</option>
-					<option value="huoguo">火锅</option>
-					<option value="ribenliaoli">日本料理</option>
-					<option value="shaokao">烧烤</option>
-					<option value="xiangcai">湘菜</option>
-					<option value="xican">西餐</option>
-					<option value="xinjiangqingzhen">新疆清真</option>
-					<option value="yuecaiguan">粤菜馆</option>
-					<option value="zhongcanxican">中餐西餐</option>
-					<option value="zizhucan">自助餐</option>
-				</select>
-			</span>
-			</li>
-			<li>
-			<div class="w200">营业时间（开始）：</div>
-			<span class="select">
-				<select id="openTime" name="openTime" class="select" style="width: 198px;">
-					<option value="">请选择营业时间（开始）</option>
-					`for(int i=0;i<24;i++){
-						<option value="${i}:00">$i:00</option>
-					`}
-				</select>
-			</span>
-			</li>
-			<li>
-			<div class="w200">营业时间（结束）：</div>
-			<span class="select">
-				<select id="closeTime" name="closeTime" class="select" style="width: 198px;">
-					<option value="">请选择营业时间（结束）</option>
-					`for(int i=0;i<24;i++){
-						<option value="${i}:00">$i:00</option>
-					`}
-				</select>
-			</span>
-			</li>
-			`}
-			
-			<li>
+		    </div>
+		</div>
+	`}
+	
+		<div class="form-group">
+			<label for="closeTime" class="col-sm-2 control-label">设置桌位类型：</label>
+			<div class="col-xs-4">
+			<p class="help-block">桌位类型指贵店包括多少人座位类型，比如有4人桌，6人桌，8人桌，则在下面的选择项上打钩即可。</p>
 			`if(bmivo.merchantExist){
-			<div class="w200">
-				设置桌位类型：<font style="cursor: help;" title="桌位类型就是贵店包括多少人座位类型，比如有4人桌，6人桌，8人桌，则在下面的选择项上打钩即可。">（什么是桌位类型）</font>
-				<br/><br/><font style="color: red;">注意：更改桌位类型将清空当前排队号，请谨慎操作！</font>
-			</div>
-			`}else{
-			<div class="w200">
-				设置桌位类型：<font style="cursor: help;" title="桌位类型就是贵店包括多少人座位类型，比如有4人桌，6人桌，8人桌，则在下面的选择项上打钩即可。">（什么是桌位类型）</font>
-			</div>
-			`}
-			<div class="w350">
-			`if(bmivo.merchantExist){
+				<p class="help-block" style="color: red;">注意：更改桌位类型将清空当前排队号，请谨慎操作！</p>
 				`for(int i = 1; i <= 20; i++){
-					<div style="width: 80px; float: left;">
-					<input disabled="disabled" id="seat${i}" name="seatType" value="${i}" type="checkbox"><font class="rmargin20" >${i}人桌</font>
+					<div style="width: 90px; float: left;">
+						<input disabled="disabled" id="seat${i}" name="seatType" value="${i}" type="checkbox"><font class="rmargin20 lmargin5" >${i}人桌</font>
 					</div>
 				`}
 			`}else{
 				`for(int i = 1; i <= 20; i++){
-					<div style="width: 80px; float: left;">
-					<input id="seat${i}" name="seatType" value="${i}" type="checkbox"><font class="rmargin20" >${i}人桌</font>
+					<div style="width: 90px; float: left;">
+						<input id="seat${i}" name="seatType" value="${i}" type="checkbox"><font class="rmargin20 lmargin5" >${i}人桌</font>
 					</div>
 				`}
 			`}
-			</div>
-			</li>
-			`if(bmivo.merchantExist){
-			<li id="btnli" hidden="hidden" class="buttonBox">
-				<input type="button" id="resetbtn" name="" style="margin-left: 60px; margin-right: 100px;" class="styleBtn corner " value="重&nbsp;&nbsp;&nbsp;&nbsp;置" onclick="Merchant.reset();"/>
-				<input type="button" id="updatebtn" name="" class="styleBtn corner " value="提&nbsp;&nbsp;&nbsp;&nbsp;交" onclick="Merchant.update();"/>
-			</li>
-			`}else{
-			<li class="buttonBox">
-				<input type="button" name="" style="margin-left: 60px; margin-right: 100px;" class="styleBtn corner " value="重&nbsp;&nbsp;&nbsp;&nbsp;置" onclick="Merchant.reset();"/>
-				<input type="button" name="" class="styleBtn corner " value="提&nbsp;&nbsp;&nbsp;&nbsp;交" onclick="Merchant.update();"/>
-			</li>
-			`}
-		</ul>
-	</fieldset>
+		    </div>
+		</div>
+	
+	`if(bmivo.merchantExist){
+		<div class="form-group">
+    		<div class="col-sm-offset-2 col-sm-10">
+      			<button type="button" id="resetbtn" class="btn btn-default" onclick="Merchant.reset();">重&nbsp;&nbsp;&nbsp;&nbsp;置</button>
+      			<button type="button" id="updatebtn" class="btn btn-default" style="margin-left: 70px;" onclick="Merchant.update();">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
+    		</div>
+ 		</div>
+	`}else{
+		<div class="form-group">
+    		<div class="col-sm-offset-2 col-sm-10">
+      			<button type="button" class="btn btn-default" onclick="Merchant.reset();">重&nbsp;&nbsp;&nbsp;&nbsp;置</button>
+      			<button type="button" class="btn btn-default" style="margin-left: 70px;" onclick="Merchant.update();">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
+    		</div>
+ 		</div>
+	`}
 </form>
-</div>
 
 `if(bmivo.merchantExist){
-<script>
-$("#merchantName").val("${bmivo.name}");
-$("#cateType").val("${bmivo.cateType}");
-$("#openTime").val("${bmivo.openTime}");
-$("#closeTime").val("${bmivo.closeTime}");
-$("#description").val("${bmivo.description}");
-</script>
+	<script type="text/javascript">
+		$("#merchantName").val("${bmivo.name}");
+		$("#cateType").val("${bmivo.cateType}");
+		$("#openTime").val("${bmivo.openTime}");
+		$("#closeTime").val("${bmivo.closeTime}");
+		$("#description").val("${bmivo.description}");
+	</script>
 `}
 
 `if(bmivo.seatType != null){
 	`for(String s : bmivo.seatType){
-		<script>
-		$("#seat"+${s}).attr("checked","true");
+		<script type="text/javascript">
+			$("#seat"+${s}).attr("checked","true");
 		</script>
 	`}
 `}
-
-<script>
-
-</script>

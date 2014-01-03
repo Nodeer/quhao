@@ -22,10 +22,7 @@
 
 /* 1. common
 ========================================================================*/
-@font-face {
-  font-family: "Open Sans";
-  src: url("../images/common/font/OpenSans-Regular.ttf");
-}
+
 
 html{height: 100%;}
  
