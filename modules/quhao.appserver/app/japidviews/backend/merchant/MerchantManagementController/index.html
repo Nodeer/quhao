@@ -19,13 +19,13 @@ $addCSS("pop_signUp_logIn.css", true)
 	<div>
     <div class="logintll">已经有账号了? <a href="javascript:Login.exchange();">登陆.</a></div>
     
-    <div id="login_div" class="pop_logIn" style="display:none;">
+    <div id="login_div" class="pop_logIn" style="display:none; width: 240px;">
 		<p class="or"><span>登陆</span></p>
 		<p id="error_tip" class="errorText" style="visibility:hidden;">请输入手机号或者邮箱</p>
 		<form id="login_form" action="@{backend.self.AccountController.login()}" method="post">
 			<fieldset class="fieldset">
 				<ul>
-					<li><input type="text" name="userName" id="userName" placeHolder="手机号/邮箱" class="textInput"/></li>
+					<li><input type="text" name="userName" id="userName" placeHolder="手机号/邮箱" class="textInput" /></li>
 					<li>
 						<input type="password" name="userPwd" id="userPwd" placeHolder="密码" class="textInput" onkeydown="Login.entered(event);"/>
 					</li>

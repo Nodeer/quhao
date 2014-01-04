@@ -233,8 +233,6 @@ Merchant.logout = function(aid){
 		dataType:"json",
 		data:{"aid":aid},
 		success:function(data){
-			alert(data);
-			alert(data.error);
 			if(data.error == ""){
 				window.location.href="/b/m";
 			}
