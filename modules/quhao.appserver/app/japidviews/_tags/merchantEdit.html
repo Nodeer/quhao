@@ -25,40 +25,40 @@
 	
 	`if(bmivo.merchantExist){
 		<div class="form-group">
-			<label for="merchantName" class="col-sm-2 control-label">商家名称：</label>
-			<div class="col-xs-4">
+			<label for="merchantName" class="col-sm-3 control-label">商家名称：</label>
+			<div class="col-xs-7">
 				<input class="form-control" disabled="disabled" type="text" name="merchantName" id="merchantName" value="${bmivo.name}" placeHolder="商家名称" autocomplete="off"/>
 		    </div>
 		</div>
 		<div class="form-group">
-			<label for="description" class="col-sm-2 control-label">商家描述：</label>
-			<div class="col-xs-4">
+			<label for="description" class="col-sm-3 control-label">商家描述：</label>
+			<div class="col-xs-7">
 				<textarea class="form-control" rows="3" disabled="disabled" id="description" name="description" placeHolder="商家描述"></textarea>
 		    </div>
 		</div>
 		<div class="form-group">
-			<label for="merchantImage" class="col-sm-2 control-label">上传图片：</label>
-		    <div class="col-xs-4">
+			<label for="merchantImage" class="col-sm-3 control-label">上传图片：</label>
+		    <div class="col-xs-7">
 		    	<input type="file" id="merchantImage" name="merchantImage" disabled="disabled" >
 			    <p class="help-block">第一张上传的图片将作为展示在APP客户端的商家Logo</p>
 		    </div>
 		</div>
 	`}else{
 		<div class="form-group">
-			<label for="merchantName" class="col-sm-2 control-label">商家名称：</label>
-			<div class="col-xs-4">
+			<label for="merchantName" class="col-sm-3 control-label">商家名称：</label>
+			<div class="col-xs-7">
 				<input class="form-control" onkeyup="Merchant.findMerchant(this);" type="text" name="merchantName" id="merchantName" value="${bmivo.name}" placeHolder="商家名称" autocomplete="off"/>
 		    </div>
 		</div>
 		<div class="form-group">
-			<label for="description" class="col-sm-2 control-label">商家描述：</label>
-			<div class="col-xs-4">
+			<label for="description" class="col-sm-3 control-label">商家描述：</label>
+			<div class="col-xs-7">
 				<textarea class="form-control" rows="3" disabled="disabled" id="description" name="description" placeHolder="商家描述"></textarea>
 		    </div>
 		</div>
 		<div class="form-group">
-			<label for="merchantImage" class="col-sm-2 control-label">上传图片：</label>
-			<div class="col-xs-4">
+			<label for="merchantImage" class="col-sm-3 control-label">上传图片：</label>
+			<div class="col-xs-7">
 		    	<input type="file"  id="merchantImage" name="merchantImage" >
 			    <p class="help-block">第一张上传的图片将作为展示在APP客户端的商家Logo</p>
 		    </div>
@@ -66,8 +66,8 @@
 	`}
 		
 		<div class="form-group">
-			<label for="" class="col-sm-2 control-label">展示图片：</label>
-			<div class="col-xs-4">
+			<label for="" class="col-sm-3 control-label">展示图片：</label>
+			<div class="col-xs-7">
 				`for(String srcStr : bmivo.imgSrc){
 					<img alt="" class="backendImg" src="${srcStr}" />
 				`}
@@ -77,20 +77,20 @@
 	
 	`if(bmivo.merchantExist){
 		<div class="form-group">
-			<label for="address" class="col-sm-2 control-label">商家地址：</label>
-			<div class="col-xs-4">
+			<label for="address" class="col-sm-3 control-label">商家地址：</label>
+			<div class="col-xs-7">
 				<input class="form-control" disabled="disabled" name="address" id="address" value="${bmivo.address}" placeHolder="商家地址" />
 		    </div>
 		</div>
 		<div class="form-group">
-			<label for="address" class="col-sm-2 control-label">联系方式：</label>
-			<div class="col-xs-4">
+			<label for="address" class="col-sm-3 control-label">联系方式：</label>
+			<div class="col-xs-7">
 				<input class="form-control" disabled="disabled" name="tel" id="tel" value="${bmivo.telephone}" placeHolder="联系方式" />
 		    </div>
 		</div>
 		<div class="form-group">
-			<label for="cateType" class="col-sm-2 control-label">商家风味：</label>
-			<div class="col-xs-4">
+			<label for="cateType" class="col-sm-3 control-label">商家风味：</label>
+			<div class="col-xs-7">
 				<select disabled="disabled" class="form-control" id="cateType" name="cateType" >
 					<option class="form-control" value="">请选择风味</option>
 					<option class="form-control" value="benbangcai">本帮菜</option>
@@ -112,8 +112,8 @@
 		</div>
 		
 		<div class="form-group">
-			<label for="openTime" class="col-sm-2 control-label">营业时间（开始）：</label>
-			<div class="col-xs-4">
+			<label for="openTime" class="col-sm-3 control-label">营业时间（开始）：</label>
+			<div class="col-xs-7">
 				<select disabled="disabled" class="form-control" id="openTime" name="openTime" >
 					<option class="form-control" value="">请选择营业时间（开始）</option>
 					`for(int i=0; i < 24; i++){
@@ -123,8 +123,8 @@
 		    </div>
 		</div>
 		<div class="form-group">
-			<label for="closeTime" class="col-sm-2 control-label">营业时间（结束）：</label>
-			<div class="col-xs-4">
+			<label for="closeTime" class="col-sm-3 control-label">营业时间（结束）：</label>
+			<div class="col-xs-7">
 				<select disabled="disabled" class="form-control" id="closeTime" name="closeTime" >
 					<option class="form-control" value="">请选择营业时间（结束）</option>
 					`for(int i=0; i < 24; i++){
@@ -135,20 +135,20 @@
 		</div>
 	`}else{
 		<div class="form-group">
-			<label for="address" class="col-sm-2 control-label">商家地址：</label>
-			<div class="col-xs-4">
+			<label for="address" class="col-sm-3 control-label">商家地址：</label>
+			<div class="col-xs-7">
 				<input class="form-control" disabled="disabled" name="address" id="address" value="${bmivo.address}" placeHolder="商家地址" />
 		    </div>
 		</div>
 		<div class="form-group">
-			<label for="tel" class="col-sm-2 control-label">联系方式：</label>
-			<div class="col-xs-4">
+			<label for="tel" class="col-sm-3 control-label">联系方式：</label>
+			<div class="col-xs-7">
 				<input class="form-control" disabled="disabled" name="tel" id="tel" value="${bmivo.telephone}" placeHolder="联系方式" />
 		    </div>
 		</div>
 		<div class="form-group">
-			<label for="cateType" class="col-sm-2 control-label">商家风味：</label>
-			<div class="col-xs-4">
+			<label for="cateType" class="col-sm-3 control-label">商家风味：</label>
+			<div class="col-xs-7">
 				<select class="form-control" id="cateType" name="cateType" >
 					<option class="form-control" value="">请选择风味</option>
 					<option class="form-control" value="benbangcai">本帮菜</option>
@@ -170,8 +170,8 @@
 		</div>
 		
 		<div class="form-group">
-			<label for="openTime" class="col-sm-2 control-label">营业时间（开始）：</label>
-			<div class="col-xs-4">
+			<label for="openTime" class="col-sm-3 control-label">营业时间（开始）：</label>
+			<div class="col-xs-7">
 				<select class="form-control" id="openTime" name="openTime" >
 					<option class="form-control" value="">请选择营业时间（开始）</option>
 					`for(int i=0; i < 24; i++){
@@ -181,8 +181,8 @@
 		    </div>
 		</div>
 		<div class="form-group">
-			<label for="closeTime" class="col-sm-2 control-label">营业时间（结束）：</label>
-			<div class="col-xs-4">
+			<label for="closeTime" class="col-sm-3 control-label">营业时间（结束）：</label>
+			<div class="col-xs-7">
 				<select class="form-control" id="closeTime" name="closeTime" >
 					<option class="form-control" value="">请选择营业时间（结束）</option>
 					`for(int i=0; i < 24; i++){
@@ -194,8 +194,8 @@
 	`}
 	
 		<div class="form-group">
-			<label for="closeTime" class="col-sm-2 control-label">设置桌位类型：</label>
-			<div class="col-xs-4">
+			<label for="closeTime" class="col-sm-3 control-label">设置桌位类型：</label>
+			<div class="col-xs-7">
 			<p class="help-block">桌位类型指贵店包括多少人座位类型，比如有4人桌，6人桌，8人桌，则在下面的选择项上打钩即可。</p>
 			`if(bmivo.merchantExist){
 				<p class="help-block" style="color: red;">注意：更改桌位类型将清空当前排队号，请谨慎操作！</p>
@@ -216,14 +216,14 @@
 	
 	`if(bmivo.merchantExist){
 		<div class="form-group" style="display: none;">
-    		<div class="col-sm-offset-2 col-sm-10">
+    		<div class="col-sm-offset-3 col-sm-10">
       			<button type="button" id="resetbtn" class="btn btn-default" onclick="Merchant.reset();">重&nbsp;&nbsp;&nbsp;&nbsp;置</button>
       			<button type="button" id="updatebtn" class="btn btn-default" style="margin-left: 70px;" onclick="Merchant.update();">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
     		</div>
  		</div>
 	`}else{
 		<div class="form-group">
-    		<div class="col-sm-offset-2 col-sm-10">
+    		<div class="col-sm-offset-3 col-sm-10">
       			<button type="button" class="btn btn-default" onclick="Merchant.reset();">重&nbsp;&nbsp;&nbsp;&nbsp;置</button>
       			<button type="button" class="btn btn-default" style="margin-left: 70px;" onclick="Merchant.update();">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
     		</div>
