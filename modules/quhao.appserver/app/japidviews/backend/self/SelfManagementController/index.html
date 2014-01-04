@@ -126,6 +126,7 @@ $addCSS("backend.css", true)
             <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
           </p>
           <div class="jumbotron" style="font-size: 13px; background-color: white; border: solid #eee 1px;">
+          		<div class="alert alert-danger" style="display: none;" id="tips"></div>
           		<h2>编辑/新增&nbsp;商家信息</h2>
 		        <p class="lead">
 		        	<!-- form begin -->
@@ -182,7 +183,7 @@ $addCSS("backend.css", true)
 	        排队不用等，从取号开始
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
 	      </div>
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
@@ -200,7 +201,26 @@ $addCSS("backend.css", true)
 	        Email : quhao@quhao.com
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+    
+    <!-- Create merchant Modal -->
+	<div class="modal fade" id="createMerchant" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">搜索结果</h4>
+	      </div>
+	      <div class="modal-body" id="createMerchantDescription">
+	        没有搜索到相关记录，确定使用<p style="color:red;"></p>作为商家名称吗?
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+	        <button type="button" class="btn btn-primary" onclick="Merchant.create();">确定</button>
 	      </div>
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->

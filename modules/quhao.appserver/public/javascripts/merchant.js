@@ -2,8 +2,7 @@ Merchant = {};
 
 Merchant.ALL = null;
 
-Merchant.findMerchant = function(mNameObj){
-	var keyword = Quhao.trim($(mNameObj).val());
+Merchant.ajaxSearch = function(keyword,type){
 	$.ajax({
 		type:"GET",
 		url:"/search",
@@ -48,11 +47,31 @@ Merchant.findMerchant = function(mNameObj){
 					}
 				});
 			}
+			
+			if(type == "search"){
+				$('#createMerchantDescription').html('没有搜索到相关记录，确定使用<font style=\"color:red;\">'+ keyword +'</font>作为商家名称吗?');
+				$('#createMerchant').modal();
+			}
 		},
 		error:function(){
 			alert("服务器维护中，马上就好。");
 		}
 	});
+}
+
+Merchant.findMerchant = function(mNameObj){
+	var keyword = Quhao.trim($(mNameObj).val());
+	Merchant.ajaxSearch(keyword,'keyup');
+}
+
+Merchant.search = function(){
+	var keyword = Quhao.trim($("#merchantName").val());
+	if(keyword == null || keyword == ""){
+		$("#tips").html("请输入商家名称或者相关关键字").show();
+		return;
+	}
+	
+	Merchant.ajaxSearch(keyword,'search');
 }
 
 /**
@@ -82,6 +101,19 @@ Merchant.enableEdit = function(){
 		$("#btnli").removeAttr("hidden");
 	}else{
 	}
+}
+
+Merchant.create = function(){
+	$("#description").removeAttr("disabled");
+	$("#address").removeAttr("disabled");
+	$("#merchantImage").removeAttr("disabled");
+	$("#tel").removeAttr("disabled");
+	$("#cateType").removeAttr("disabled");
+	$("#openTime").removeAttr("disabled");
+	$("#closeTime").removeAttr("disabled");
+	$("input[name=seatType]").removeAttr("disabled");
+	$("#btnli").removeAttr("hidden");
+	$('#createMerchant').modal('hide')
 }
 
 /**
