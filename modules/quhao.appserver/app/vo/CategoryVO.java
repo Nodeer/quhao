@@ -6,11 +6,13 @@ public class CategoryVO {
 
 	public long count = 0;
 	public String cateType;
+	public String cateName;
 	
 	public static CategoryVO build(Category c){
 		CategoryVO vo = new CategoryVO();
 		vo.cateType = c.cateType;
 		vo.count = c.count;
+		vo.cateName = c.cateName;
 		return vo;
 	}
 }

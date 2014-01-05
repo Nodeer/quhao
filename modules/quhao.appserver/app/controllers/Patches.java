@@ -201,7 +201,6 @@ public class Patches extends BaseController {
 						{
 							m.cateType = "zhongcancaixi";
 						}
-							
 						
 						m.averageCost = 0;
 						

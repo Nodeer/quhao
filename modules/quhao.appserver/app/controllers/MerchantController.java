@@ -176,6 +176,26 @@ public class MerchantController extends BaseController {
 		}
 		renderJSON(MerchantVO.build(m, c));
 	}
+	
+	
+	/**
+	 * 返回商家详细信息
+	 * 
+	 * @param id
+	 *            商家id
+	 */
+	public static void queryMerchantByPoiId(String poiId) {
+		System.out.println("merchant:" + poiId);
+		Merchant m = Merchant.queryMerchantByPoiId(poiId);
+		if(m!=null)
+		{
+			renderJSON(m.id());
+		}
+		else
+		{
+			renderJSON("");
+		}
+	}
 
 	/**
 	 * 返回当前商家所有N人桌排队信息

@@ -23,6 +23,7 @@ GET		/allCategories						MerchantController.allCategories
 GET		/nextPage							MerchantController.nextPage
 GET		/merchantByCategory					MerchantController.merchantByCategory
 GET		/merchant							MerchantController.merchant
+GET		/queryMerchantByPoiId				MerchantController.queryMerchantByPoiId
 GET		/quhao								MerchantController.quhao
 GET		/getTopMerchants					MerchantController.getTopMerchants
 GET		/nahao								MerchantController.nahao

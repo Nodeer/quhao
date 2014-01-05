@@ -216,4 +216,15 @@ public class Merchant extends MerchantEntityDef {
 		
 		
 	}
+
+	public static Merchant queryMerchantByPoiId(String poiId) {
+		System.out.println(poiId);
+		MorphiaQuery q = Merchant.q();
+		q.filter("poiId", poiId);
+		List<Merchant> merchants = q.asList();
+		if(merchants.size() == 0){
+			return null;
+		}
+		return merchants.get(0);
+	}
 }

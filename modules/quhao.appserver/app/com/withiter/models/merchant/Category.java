@@ -1,6 +1,7 @@
 package com.withiter.models.merchant;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.code.morphia.annotations.Entity;
 import com.withiter.common.Constants;
@@ -14,6 +15,7 @@ public class Category extends CategoryEntityDef {
 	 */
 	public static void updateCounts() {
 		CateType[] categories = Constants.CateType.values();
+		Map<String, String> cates = Constants.categorys;
 		for(CateType cate : categories){
 			MorphiaQuery q = Category.q();
 			q.filter("cateType", cate.toString());
@@ -23,6 +25,7 @@ public class Category extends CategoryEntityDef {
 			}else{
 				c = new Category();
 				c.cateType = cate.toString();
+				c.cateName = cates.get(cate.toString());
 			}
 			c.count = count(cate.toString());
 			if(cate == CateType.mianbaodangao || cate == CateType.tianpinyinpin || cate == CateType.xiaochikuaican){
