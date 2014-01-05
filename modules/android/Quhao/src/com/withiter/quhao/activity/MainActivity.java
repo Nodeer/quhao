@@ -142,7 +142,7 @@ public class MainActivity extends QuhaoBaseActivity {
 			QuhaoLog.d(TAG, "the category is : " + category.categoryType + ", the count is : " + category.count);
 			Intent intent = new Intent();
 			intent.putExtra("categoryType", category.categoryType);
-			intent.putExtra("categoryTypeStr", category.categoryTypeStr);
+			intent.putExtra("cateName", category.cateName);
 			intent.putExtra("categoryCount", String.valueOf(category.count));
 
 			intent.setClass(MainActivity.this, MerchantListActivity.class);

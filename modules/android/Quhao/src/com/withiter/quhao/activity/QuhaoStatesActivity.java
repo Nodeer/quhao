@@ -53,7 +53,7 @@ public class QuhaoStatesActivity extends QuhaoBaseActivity implements OnItemClic
 		if ("current".equals(queryCondition)) {
 			titleView.setText("当前取号情况");
 		} else if ("history".equals(queryCondition)) {
-			titleView.setText("历史取号情况");
+			titleView.setText("历史取号情(点击评论)");
 		}
 
 		paiduiListView = (ListView) this.findViewById(R.id.paiduiListView);
@@ -167,12 +167,22 @@ public class QuhaoStatesActivity extends QuhaoBaseActivity implements OnItemClic
 		isClick = true;
 		// 解锁
 		unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+		if ("current".equals(queryCondition)) {
+			ReservationVO reservation = reservations.get(position);
+			Intent intent = new Intent();
+			intent.putExtra("merchantId", reservation.merchantId);
+			intent.setClass(QuhaoStatesActivity.this, MerchantDetailActivity.class);
+			startActivity(intent);
+			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+		} else if ("history".equals(queryCondition)) {
+			ReservationVO reservation = reservations.get(position);
+			Intent intent = new Intent();
+			intent.putExtra("rId", reservation.rId);
+			intent.setClass(QuhaoStatesActivity.this, CreateCommentActivity.class);
+			startActivity(intent);
+			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+			
+		}
 		
-		ReservationVO reservation = reservations.get(position);
-		Intent intent = new Intent();
-		intent.putExtra("merchantId", reservation.merchantId);
-		intent.setClass(QuhaoStatesActivity.this, MerchantDetailActivity.class);
-		startActivity(intent);
-		overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 	}
 }

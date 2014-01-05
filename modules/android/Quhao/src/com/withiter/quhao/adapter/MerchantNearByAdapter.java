@@ -53,6 +53,7 @@ public class MerchantNearByAdapter extends BaseAdapter {
 				LayoutInflater inflator = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				convertView = inflator.inflate(R.layout.merchant_nearby_item, null);
 				holder.merchantName = (TextView) convertView.findViewById(R.id.merchantName);
+				holder.distance = (TextView) convertView.findViewById(R.id.distance);
 				holder.merchantAddress = (TextView) convertView.findViewById(R.id.merchantAddress);
 				holder.tel = (TextView) convertView.findViewById(R.id.tel);
 			}
@@ -62,6 +63,9 @@ public class MerchantNearByAdapter extends BaseAdapter {
 
 			holder.merchantName.setTag("merchantName_" + position);
 			holder.merchantName.setText(merchant.getTitle());
+			
+			holder.distance.setTag("distance_" + position);
+			holder.distance.setText(String.valueOf(merchant.getDistance()));
 			
 			holder.merchantAddress.setTag("merchantAddress_" + position);
 			holder.merchantAddress.setText(merchant.getSnippet());
@@ -79,6 +83,7 @@ public class MerchantNearByAdapter extends BaseAdapter {
 
 	class ViewHolder {
 		TextView merchantName;
+		TextView distance;
 		TextView merchantAddress;
 		TextView tel;
 	}

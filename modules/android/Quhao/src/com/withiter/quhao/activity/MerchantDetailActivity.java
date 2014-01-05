@@ -41,7 +41,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	private String mName;
 
 	private final int UNLOCK_CLICK = 1000;
-	private ProgressDialogUtil progress;
 	private Merchant merchant;
 	private Button btnGetNumber;
 	// private Button btnLogin;
@@ -149,7 +148,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				e.printStackTrace();
 			} finally {
-				progress.closeProgress();
+				progressDialogUtil.closeProgress();
 			}
 		}
 	};
@@ -189,8 +188,8 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			return;
 		}
 		isClick = true;
-		progress = new ProgressDialogUtil(this, R.string.empty, R.string.querying, false);
-		progress.showProgress();
+		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.querying, false);
+		progressDialogUtil.showProgress();
 		Thread merchantThread = new Thread(merchantDetailRunnable);
 		merchantThread.start();
 
@@ -211,7 +210,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				}
 
 			} catch (Exception e) {
-				progress.closeProgress();
+				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				e.printStackTrace();
 			} finally {
@@ -309,6 +308,10 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					QuhaoLog.d(LOGTAG, "check login state on MerchantDetailActivity, isLogined : " + QHClientApplication.getInstance().isLogined);
 					if(QHClientApplication.getInstance().isLogined){
 						getCurrentNo();
+					}
+					else
+					{
+						progressDialogUtil.closeProgress();
 					}
 					critiqueLayout.setOnClickListener(MerchantDetailActivity.this);
 				}

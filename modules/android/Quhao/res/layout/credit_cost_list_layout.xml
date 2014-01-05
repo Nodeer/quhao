@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="积分消费情况(点击评论)"
+            android:text="积分消费情况"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="#ff000000" />
     </RelativeLayout>

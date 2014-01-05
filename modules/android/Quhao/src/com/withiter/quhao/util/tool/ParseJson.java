@@ -44,8 +44,10 @@ public class ParseJson {
 				String catTypeToString = "";
 				String url = "";
 				if (obj.has("count")) {
-					count = Long.valueOf(obj.getString("count"));
+					count = Long.valueOf(obj.optString("count"));
 				}
+				
+				/*
 				if (obj.has("cateType")) {
 					categoryType = obj.getString("cateType");
 					if (categoryType.equals("benbangcai"))
@@ -84,8 +86,18 @@ public class ParseJson {
 						catTypeToString = "小吃快餐";
 				}
 
+				*/
+				
+				if (obj.has("cateType")) {
+					categoryType = obj.optString("cateType");
+				}
+				
+				String cateName = null;
+				if (obj.has("cateName")) {
+					cateName = obj.optString("cateName");
+				}
 				url = obj.optString("url");
-				Category category = new Category(count, categoryType, catTypeToString, url);
+				Category category = new Category(count, categoryType, cateName, url);
 				categroys.add(category);
 			}
 

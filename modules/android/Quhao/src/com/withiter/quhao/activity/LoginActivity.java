@@ -114,7 +114,6 @@ public class LoginActivity extends QuhaoBaseActivity {
 				m.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
 			}
 			
-			
 		}
 		
 //		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);

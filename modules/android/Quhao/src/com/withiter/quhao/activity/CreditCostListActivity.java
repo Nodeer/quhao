@@ -199,18 +199,18 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 		unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 		
 		Credit credit = credits.get(position);
-		if(StringUtils.isNotNull(credit.reservationId))
+		if(StringUtils.isNotNull(credit.merchantId))
 		{
 			Intent intent = new Intent();
-			intent.putExtra("rId", credit.reservationId);
-			intent.setClass(CreditCostListActivity.this, CreateCommentActivity.class);
+			intent.putExtra("merchantId", credit.merchantId);
+			intent.setClass(CreditCostListActivity.this, MerchantDetailActivity.class);
 			startActivity(intent);
 			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 		}
 		else
 		{
 			AlertDialog.Builder builder = new Builder(this);
-			builder.setMessage("对不起，这条不能评论。");
+			builder.setMessage("对不起，这条不能查看。");
 			builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {

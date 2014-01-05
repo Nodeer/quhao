@@ -43,7 +43,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnScrollL
 	private ProgressDialogUtil progressMerchants;
 	private int page;
 	private String categoryType;
-	private String categoryTypeStr;
+	private String cateName;
 	private String categoryCount;
 	private TextView categoryTypeTitle;
 	private boolean isFirst = true;
@@ -69,11 +69,11 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnScrollL
 		this.page = getIntent().getIntExtra("page", 1);
 		QuhaoLog.i(LOGTAG, "init page is : " + this.page);
 		this.categoryType = getIntent().getStringExtra("categoryType");
-		this.categoryTypeStr = getIntent().getStringExtra("categoryTypeStr");
+		this.cateName = getIntent().getStringExtra("cateName");
 		this.categoryCount = getIntent().getStringExtra("categoryCount");
 
 		this.categoryTypeTitle = (TextView) findViewById(R.id.categoryTypeTitle);
-		this.categoryTypeTitle.setText(categoryTypeStr + "[" + categoryCount + "家]");
+		this.categoryTypeTitle.setText(cateName + "[" + categoryCount + "家]");
 		
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
 		initView();

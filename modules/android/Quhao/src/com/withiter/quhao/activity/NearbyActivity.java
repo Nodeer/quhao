@@ -3,6 +3,10 @@ package com.withiter.quhao.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +17,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -32,8 +38,13 @@ import com.amap.api.services.poisearch.PoiSearch.OnPoiSearchListener;
 import com.amap.api.services.poisearch.PoiSearch.SearchBound;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantNearByAdapter;
+import com.withiter.quhao.util.QuhaoLog;
+import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.util.http.CommonHTTPRequest;
+import com.withiter.quhao.util.tool.ParseJson;
+import com.withiter.quhao.util.tool.ProgressDialogUtil;
 
-public class NearbyActivity extends QuhaoBaseActivity implements AMapLocationListener,OnPoiSearchListener,OnScrollListener{
+public class NearbyActivity extends QuhaoBaseActivity implements AMapLocationListener,OnPoiSearchListener,OnScrollListener,OnItemClickListener{
 
 	private LocationManagerProxy mAMapLocManager = null;
 	
@@ -111,6 +122,7 @@ public class NearbyActivity extends QuhaoBaseActivity implements AMapLocationLis
 				bt.setVisibility(View.VISIBLE);
 				pg.setVisibility(View.GONE);
 				merchantsListView.setOnScrollListener(NearbyActivity.this);
+				merchantsListView.setOnItemClickListener(NearbyActivity.this);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 		}
@@ -133,10 +145,10 @@ public class NearbyActivity extends QuhaoBaseActivity implements AMapLocationLis
 				lp, 1000));//设置搜索区域为以lp点为圆心，其周围1000米范围
 		try {
 			poiItems = new ArrayList<PoiItem>();
-			PoiResult result = poiSearch.searchPOI();
-			if(null != result && null != result.getQuery())
+			poiResult = poiSearch.searchPOI();
+			if(null != poiResult && null != poiResult.getQuery())
 			{
-				List<PoiItem> poiItemTemps = result.getPois();// 取得第一页的poiitem数据，页数从数字0开始
+				List<PoiItem> poiItemTemps = poiResult.getPois();// 取得第一页的poiitem数据，页数从数字0开始
 				if(null != poiItemTemps && poiItemTemps.size()>0)
 				{
 					if(poiItemTemps.size()<10)
@@ -353,5 +365,79 @@ public class NearbyActivity extends QuhaoBaseActivity implements AMapLocationLis
 		default:
 			break;
 		}
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		
+		// 已经点过，直接返回
+		if (isClick) {
+			return;
+		}
+
+		// 设置已点击标志，避免快速重复点击
+		isClick = true;
+		// 解锁
+		unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
+		progressDialogUtil.showProgress();
+		
+		try {
+			String poiId = poiItems.get(position).getPoiId();
+			if(StringUtils.isNotNull(poiId))
+			{
+				String buf = CommonHTTPRequest.get("queryMerchantByPoiId?poiId=" + poiId);
+				if (StringUtils.isNull(buf) || "[]".equals(buf)) {
+					progressDialogUtil.closeProgress();
+					AlertDialog.Builder builder = new Builder(this);
+					builder.setMessage("对不起，该商家未在取号系统注册。");
+					builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+						}
+					});
+					builder.create().show();
+				} else {
+					progressDialogUtil.closeProgress();
+					Intent intent = new Intent();
+					intent.setClass(this, MerchantDetailActivity.class);
+					intent.putExtra("merchantId", buf);
+					this.startActivity(intent);
+					overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+				}
+			}
+			else
+			{
+				progressDialogUtil.closeProgress();
+				AlertDialog.Builder builder = new Builder(this);
+				builder.setMessage("对不起，该商家未在取号系统注册。");
+				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+				builder.create().show();
+			}
+
+		} catch (Exception e) {
+			progressDialogUtil.closeProgress();
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			AlertDialog.Builder builder = new Builder(this);
+			builder.setMessage("对不起，网络异常。");
+			builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
+			builder.create().show();
+			e.printStackTrace();
+		} finally {
+			
+		}
+		
 	}
 }

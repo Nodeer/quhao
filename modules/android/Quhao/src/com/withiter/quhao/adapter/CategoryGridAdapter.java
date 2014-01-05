@@ -124,7 +124,7 @@ public class CategoryGridAdapter extends BaseAdapter {
 				// holder.img.setImageDrawable(cachedImage);
 			}
 
-			holder.itemView.setText(category.categoryTypeStr);
+			holder.itemView.setText(category.cateName);
 			holder.countView.setText("(" + category.count + ")");
 			convertView.setTag(holder);
 			return convertView;

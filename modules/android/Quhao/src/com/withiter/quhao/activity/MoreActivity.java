@@ -151,6 +151,7 @@ public class MoreActivity extends QuhaoBaseActivity {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
 //				SharedprefUtil.put(MoreActivity.this, QuhaoConstant.IS_LOGIN, "false");
+				QHClientApplication.getInstance().isLogined = false;
 				loginStatusImg.setImageResource(R.drawable.login_status);
 				loginStatusTxt.setText(R.string.more_no_login);
 			}

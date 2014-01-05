@@ -126,10 +126,14 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 	// update UI according to the account object
 	private void updateUIData(AccountInfo account) {
 		mobile.setText(account.phone);
+		
 		nickName.setText(account.nickName);
+		if(StringUtils.isNull(account.nickName))
+		{
+			nickName.setText(R.string.noname);
+		}
 
 		QuhaoLog.d(TAG, "account.jifen : " + account.jifen);
-		nickName.setText(account.nickName);
 		mobile.setText(account.phone);
 		jifen.setText(account.jifen);
 
