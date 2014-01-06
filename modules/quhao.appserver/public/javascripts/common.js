@@ -18,12 +18,20 @@ Common.REGEX_ZIPCODE = /^[1-9]\/d{5}$/;
 Common.REGEX_ONLY_LETTER = /^[a-zA-Z]+$/;
 Common.REGEX_NO_SPECILAL_CHARS = /^[0-9a-zA-Z]+$/;
 
+Common.tel = function(tel){
+	if(Common.REGEX_TELEPHONE.test(tel)){
+		return true;
+	} else {
+		return false;
+	}
+}
+
 /**
  * Validate the mobile format
  * if tel matches mobile format return true, otherwise return false
  */
-Common.mobile = function(tel) {
-	if (Common.REGEX_MOBILE.test(tel)) {
+Common.mobile = function(mobile) {
+	if (Common.REGEX_MOBILE.test(mobile)) {
 		return true;
 	} else {
 		return false;

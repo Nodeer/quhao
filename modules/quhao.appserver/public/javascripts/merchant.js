@@ -147,31 +147,47 @@ Merchant.validate = function(){
 	}
 	
 	if(Common.isEmpty(description)){
-		alert("请输入商家描述");
+		$("#tips").html("请输入商家描述").show();
+		$("html,body").animate({scrollTop: $("#body").offset().top}, 200);   
 		return false;
 	}
 	if(Common.isEmpty(address)){
-		alert("请输入商家详细地址");
+		$("#tips").html("请输入商家详细地址").show();
+		$("html,body").animate({scrollTop: $("#body").offset().top}, 200); 
 		return false;
 	}
+	
+	// validate telephone
 	if(Common.isEmpty(tel)){
-		alert("请输入联系方式");
+		$("#tips").html("请输入联系方式").show();
+		$("html,body").animate({scrollTop: $("#body").offset().top}, 200); 
 		return false;
 	}
+	if(!Common.number(tel)){
+		$("#tips").html("请输入正确的联系方式，格式02183004700").show();
+		$("html,body").animate({scrollTop: $("#body").offset().top}, 200);
+		return false;
+	}
+	
+	
 	if(Common.isEmpty(cateType)){
-		alert("请选择商家菜系");
+		$("#tips").html("请选择商家菜系").show();
+		$("html,body").animate({scrollTop: $("#body").offset().top}, 200); 
 		return false;
 	}
 	if(Common.isEmpty(openTime)){
-		alert("请选择营业时间（开始）");
+		$("#tips").html("请选择营业时间（开始）").show();
+		$("html,body").animate({scrollTop: $("#body").offset().top}, 200); 
 		return false;
 	}
 	if(Common.isEmpty(closeTime)){
-		alert("请选择营业时间（结束）");
+		$("#tips").html("请选择营业时间（结束）").show();
+		$("html,body").animate({scrollTop: $("#body").offset().top}, 200); 
 		return false;
 	}
 	if(i == 21){
-		alert("请至少选择一个桌位类型");
+		$("#tips").html("请至少选择一个桌位类型").show();
+		$("html,body").animate({scrollTop: $("#body").offset().top}, 200); 
 		return false;
 	}
 	return true;
