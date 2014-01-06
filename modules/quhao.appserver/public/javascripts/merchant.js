@@ -89,18 +89,16 @@ Merchant.reset = function(){
 }
 
 Merchant.enableEdit = function(){
-	if(window.confirm("更改桌位类型将清空当前排队号，请谨慎操作！")){
-		$("#description").removeAttr("disabled");
-		$("#address").removeAttr("disabled");
-		$("#merchantImage").removeAttr("disabled");
-		$("#tel").removeAttr("disabled");
-		$("#cateType").removeAttr("disabled");
-		$("#openTime").removeAttr("disabled");
-		$("#closeTime").removeAttr("disabled");
-		$("input[name=seatType]").removeAttr("disabled");
-		$("#btnupdate").show();
-	}else{
-	}
+	$("#description").removeAttr("disabled");
+	$("#address").removeAttr("disabled");
+	$("#merchantImage").removeAttr("disabled");
+	$("#tel").removeAttr("disabled");
+	$("#cateType").removeAttr("disabled");
+	$("#openTime").removeAttr("disabled");
+	$("#closeTime").removeAttr("disabled");
+	$("input[name=seatType]").removeAttr("disabled");
+	$('#updateMerchant').modal('hide');
+	$("#btnupdate").show();
 }
 
 Merchant.create = function(){
@@ -112,7 +110,6 @@ Merchant.create = function(){
 	$("#openTime").removeAttr("disabled");
 	$("#closeTime").removeAttr("disabled");
 	$("input[name=seatType]").removeAttr("disabled");
-	$("#btnli").removeAttr("hidden");
 	$('#createMerchant').modal('hide');
 	$("#btnupdate").show();
 }

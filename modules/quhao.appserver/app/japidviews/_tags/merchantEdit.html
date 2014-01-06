@@ -23,6 +23,15 @@
 	<input type="hidden" name="mid" value="${bmivo.mid}" />
 	
 	<div class="form-group">
+		<label for="merchantName" class="col-sm-3 control-label"></label>
+		<div class="col-xs-7">
+			<div class="input-group">
+				<font style="font-size: large;">商家信息</font>
+			</div>
+		</div>
+	</div>
+	<hr>
+	<div class="form-group">
 		<label for="merchantName" class="col-sm-3 control-label">商家名称：</label>
 		<div class="col-xs-7">
 			<div class="input-group">
@@ -39,6 +48,7 @@
 		      >搜索</button>
 		    </span>
 		    </div>
+		    <p class="help-block" style="color: red;">注意：提交之后商家名称是不能修改的</p>
 	    </div>
 	</div>
 	<div class="form-group">
@@ -51,7 +61,7 @@
 		<label for="merchantImage" class="col-sm-3 control-label">上传图片：</label>
 	    <div class="col-xs-7">
 	    	<input type="file" id="merchantImage" name="merchantImage" disabled="disabled" />
-		    <p class="help-block">第一张上传的图片将作为展示在APP客户端的商家Logo</p>
+		    <p class="help-block" style="color: red;">注意：上传的图片将作为展示在APP客户端的商家Logo</p>
 	    </div>
 	</div>
 
@@ -70,14 +80,14 @@
 		<label for="address" class="col-sm-3 control-label">商家地址：</label>
 		<div class="col-xs-7">
 			<input class="form-control" disabled="disabled" name="address" id="address" value="${bmivo.address}" placeHolder="商家地址" />
-			<p class="help-block">请认真填写商家地址，错误的地址将导致消费者无法到贵店消费</p>
+			<p class="help-block" style="color: red;">注意：请认真填写商家地址，错误的地址将导致消费者无法到贵店消费</p>
 	    </div>
 	</div>
 	<div class="form-group">
 		<label for="address" class="col-sm-3 control-label">联系方式：</label>
 		<div class="col-xs-7">
 			<input class="form-control" disabled="disabled" name="tel" id="tel" value="${bmivo.telephone}" placeHolder="联系方式" />
-			<p class="help-block">请认真填写联系方式，错误的联系方式导致消费者无法联系商家</p>
+			<p class="help-block" style="color: red;">注意：请认真填写联系方式，错误的联系方式导致消费者无法联系商家</p>
 	    </div>
 	</div>
 	<div class="form-group">

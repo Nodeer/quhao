@@ -127,7 +127,7 @@ $addCSS("backend.css", true)
           </p>
           <div class="jumbotron" style="font-size: 13px; background-color: white; border: solid #eee 1px;">
           		<div class="alert alert-danger" style="display: none;" id="tips"></div>
-          		<h2>编辑/新增&nbsp;商家信息</h2>
+          		
 		        <p class="lead">
 		        	<!-- form begin -->
 		        	`t merchantEdit(bmivo)
@@ -226,6 +226,24 @@ $addCSS("backend.css", true)
 	  </div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
     
+    <!-- update merchant Modal -->
+	<div class="modal fade" id="updateMerchant" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">更新商家信息</h4>
+	      </div>
+	      <div class="modal-body" id="updateMerchantDescription">
+	        更改桌位类型将清空当前排队号，请谨慎操作！确定要更新商家信息吗?
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+	        <button type="button" class="btn btn-primary" onclick="Merchant.enableEdit();">确定</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
 </body>
 </html>
 
