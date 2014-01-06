@@ -26,7 +26,7 @@
 		<label for="merchantName" class="col-sm-3 control-label">商家名称：</label>
 		<div class="col-xs-7">
 			<div class="input-group">
-			<input class="form-control" type="text" name="merchantName" id="merchantName" value="${bmivo.name}" placeHolder="商家名称" autocomplete="off"
+			<input class="form-control" onkeyup="Merchant.findMerchant(this);" type="text" name="merchantName" id="merchantName" value="${bmivo.name}" placeHolder="商家名称" autocomplete="off"
 				`if(bmivo.merchantExist){ 
 					disabled="disabled" 
 				`}
@@ -139,7 +139,7 @@
 	    </div>
 	</div>
 
-	<div class="form-group" style="display: none;">
+	<div id="btnupdate" class="form-group" style="display: none;">
  		<div class="col-sm-offset-3 col-sm-10">
    			<button type="button" id="resetbtn" class="btn btn-primary" onclick="Merchant.reset();">重&nbsp;&nbsp;&nbsp;&nbsp;置</button>
    			<button type="button" id="updatebtn" class="btn btn-primary" style="margin-left: 70px;" onclick="Merchant.update();">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>

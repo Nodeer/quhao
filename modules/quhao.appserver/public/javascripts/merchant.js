@@ -98,7 +98,7 @@ Merchant.enableEdit = function(){
 		$("#openTime").removeAttr("disabled");
 		$("#closeTime").removeAttr("disabled");
 		$("input[name=seatType]").removeAttr("disabled");
-		$("#btnli").removeAttr("hidden");
+		$("#btnupdate").show();
 	}else{
 	}
 }
@@ -113,7 +113,8 @@ Merchant.create = function(){
 	$("#closeTime").removeAttr("disabled");
 	$("input[name=seatType]").removeAttr("disabled");
 	$("#btnli").removeAttr("hidden");
-	$('#createMerchant').modal('hide')
+	$('#createMerchant').modal('hide');
+	$("#btnupdate").show();
 }
 
 /**
