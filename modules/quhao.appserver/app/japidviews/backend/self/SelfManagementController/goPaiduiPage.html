@@ -17,37 +17,6 @@ $addCSS("backend.css", true)
 <html lang="cn">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-<style type="text/css">
-.dataHeader{
-	float: left;
-	width: 150px;
-	text-align: center;
-	font-size: large;
-	color: black;
-	padding-bottom: 20px;
-	border: 1px solid;
-	margin-left: 15px;
-	vertical-align: middle;
-}
-
-.dataElement{
-	float: left;
-	width: 150px;
-	text-align: center;
-	border: 1px solid;
-	height: 38px;
-	margin-left: 15px;
-	vertical-align: middle;
-}
-
-.color_red{
-	border-color: inherit;
-	color: red;
-	font: bolder;
-}
-</style>
-
 </head>
 
 <body>
@@ -65,15 +34,47 @@ $addCSS("backend.css", true)
           <p class="pull-right visible-xs">
             <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
           </p>
-          <div class="jumbotron" style="font-size: 13px; background-color: white; border: solid #eee 1px;">
-          		<div class="alert alert-danger" style="display: none;" id="tips"></div>
-          		
-		        <p class="lead">
-		        	<!-- form begin -->
-		        	`t merchantEdit(bmivo)
-		        	<!-- form end -->
-		        </p>
-          </div>
+          
+          
+          <div style="margin-top: 100px;" class="panel panel-default">
+	  					<!-- Default panel contents -->
+						  <div class="panel-heading">排队实时情况</div>
+		
+						  <!-- Table -->
+						  <table class="table" >
+						    <tr align="center" valign="top">
+							    <td>人桌</td>
+							    <td>已取消排队数</td>
+							    <td>已过期排队数</td>
+							    <td>消费成功数</td>
+							    <td>当前最大排队号码</td>
+							    <td>当前排队号码</td>
+							    <td>消费操作</td>
+							    <td>过期操作</td>
+						    </tr>
+						    `for(PaiduiVO paiduiVO : haomaVO.paiduiVOList){
+						    	<tr align="center">
+						    		<td>${paiduiVO.numberOfSeat}</td>
+						    		<td>${paiduiVO.canceled}</td>
+						    		<td>${paiduiVO.expired}</td>
+						    		<td>${paiduiVO.finished}</td>
+						    		<td>${paiduiVO.maxNumber}</td>
+						    		<td class="label label-danger">${paiduiVO.currentNumber}</td>
+						    		<td><button type="button" class="btn btn-primary" 
+						    		`if(paiduiVO.currentNumber == 0){
+						    			disabled="disabled"
+						    		`}
+						    		onclick="Merchant.finish('${paiduiVO.numberOfSeat}','${paiduiVO.currentNumber}','${haomaVO.merchantId}');">消费</button></td>
+						    		<td><button type="button" class="btn btn-primary" 
+						    		`if(paiduiVO.currentNumber == 0){
+						    			disabled="disabled"
+						    		`}
+						    		onclick="Merchant.expired('${paiduiVO.numberOfSeat}','${paiduiVO.currentNumber}','${haomaVO.merchantId}');">过期</button></td>
+						    	</tr>
+						    `}
+						  </table>
+						</div>
+          
         </div><!--/span-->
       </div><!--/row-->
 
