@@ -15,13 +15,6 @@ $addCSS("backend.css", true)
 <html lang="cn">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="">
-<meta name="author" content="">
-<link href="/public/images/common/quhao_favicon.jpg" type="image/png" rel="shortcut icon">
-<title>取号啦 - 商家后台管理</title>
 
 <style type="text/css">
 	/*
@@ -102,7 +95,7 @@ $addCSS("backend.css", true)
 </head>
 
 
-<body  id="body">
+<body id="body">
     <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -114,7 +107,7 @@ $addCSS("backend.css", true)
           </button>
         </div>
         <div class="collapse navbar-collapse">
-          `t merchantMenu(bmivo)
+          `t merchantMenu(bmivo,"index")
         </div><!-- /.nav-collapse -->
       </div><!-- /.container -->
     </div><!-- /.navbar -->
@@ -133,41 +126,17 @@ $addCSS("backend.css", true)
 		        	`t merchantEdit(bmivo)
 		        	<!-- form end -->
 		        </p>
-            <!-- 
-            <h1>Hello, world!</h1>
-            <p>This is an example to show the potential of an offcanvas layout pattern in Bootstrap. Try some responsive-range viewport sizes to see it in action.</p>
-             -->
           </div>
         </div><!--/span-->
 
 		<!-- side bar -->
-        <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
-          <div class="list-group">
-            <a href="javascript:void(0);" class="list-group-item active" style="cursor: default;">消费者数据</a>
-            <a href="javascript:void(0);" class="list-group-item" style="cursor: default;">关注数：${bmivo.markedCount}</a>
-			`if(!asBoolean(bmivo.grade)){
-				<a href="javascript:void(0);" class="list-group-item" style="cursor: default;">评分：N/A</a>
-			`}else{
-				<a href="javascript:void(0);" class="list-group-item" style="cursor: default;">评分：${bmivo.grade}</a>
-			`}
-			`if(!asBoolean(bmivo.averageCost)){
-				<a href="javascript:void(0);" class="list-group-item" style="cursor: default;">人均消费：N/A</a>
-			`}else{
-				<a href="javascript:void(0);" class="list-group-item" style="cursor: default;">人均消费：${bmivo.averageCost}</a>
-			`}
-			<a href="javascript:void(0);" class="list-group-item" style="cursor: default;">口味：${bmivo.kouwei}</a>
-			<a href="javascript:void(0);" class="list-group-item" style="cursor: default;">环境：${bmivo.huanjing}</a>
-			<a href="javascript:void(0);" class="list-group-item" style="cursor: default;">服务：${bmivo.fuwu}</a>
-			<a href="javascript:void(0);" class="list-group-item" style="cursor: default;">性价比：${bmivo.xingjiabi}</a>
-          </div>
-        </div><!--/span-->
+		`t sideBar(bmivo)
 	    <!-- side bar -->
       </div><!--/row-->
 
-      <footer>
-        <p>&copy; Quhao.la 2013</p>
-      </footer>
-
+	  <!-- footer -->
+      `t merchantFoot
+	  <!-- footer -->
     </div><!--/.container-->
     
     

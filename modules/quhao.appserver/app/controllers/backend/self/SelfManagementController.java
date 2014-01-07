@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import play.Play;
 import play.libs.Images;
+import play.mvc.Scope.Session;
 import vo.BackendMerchantInfoVO;
 import vo.HaomaVO;
 import vo.ReservationVO;
@@ -21,6 +22,7 @@ import vo.account.AccountVO;
 import cn.bran.japid.util.StringUtils;
 
 import com.mongodb.gridfs.GridFSInputFile;
+import com.withiter.common.Constants;
 import com.withiter.models.account.Account;
 import com.withiter.models.account.Reservation;
 import com.withiter.models.backendMerchant.MerchantAccountRel;
@@ -178,7 +180,15 @@ public class SelfManagementController extends BaseController {
 		String mid = params.get("mid");
 		Haoma haoma = Haoma.findByMerchantId(mid);
 		HaomaVO haomaVO = HaomaVO.build(haoma);
-		renderJapid(haomaVO);
+		
+		
+		String uid = Session.current().get(Constants.SESSION_USERNAME);
+		Account account = Account.findById(uid);
+		Merchant merchant = Merchant.findById(mid);
+		BackendMerchantInfoVO bmivo = BackendMerchantInfoVO.build(merchant,
+				account);
+		
+		renderJapid(haomaVO, bmivo);
 	}
 
 	// TODO add personal page

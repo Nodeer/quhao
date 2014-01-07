@@ -1,15 +1,23 @@
 `import vo.BackendMerchantInfoVO 
-`args BackendMerchantInfoVO bmivo
+`args BackendMerchantInfoVO bmivo, String type
 
 <ul class="nav navbar-nav">
-  <li class="active"><a href="#">后台管理</a></li>
+  <li
+  	`if(asBoolean(type.equals("index"))){
+  		  class="active"
+  	`}
+  ><a href="/b/w?uid=${bmivo.aid}">后台管理</a></li>
   `if(bmivo.merchantExist){
-  <li><a href="javascript:void(0);" onclick="Merchant.goPaiduiPage('${bmivo.mid}');">用户排队管理</a></li>
-`}
-`if(bmivo.merchantExist){
-<li><a href="javascript:void(0);" onclick="Merchant.goStatisticPage('${bmivo.mid}');">消费统计管理</a></li>
-<li><a href="#updateMerchant" data-toggle="modal" data-target="#updateMerchant">编辑商家资料</a></li>
-`}
+  	<li
+  		`if(asBoolean(type.equals("paidui"))){
+  		  class="active"
+  		`}
+  	><a href="javascript:void(0);" onclick="Merchant.goPaiduiPage('${bmivo.mid}');">用户排队管理</a></li>
+  `}
+  `if(bmivo.merchantExist){
+    <li><a href="javascript:void(0);" onclick="Merchant.goStatisticPage('${bmivo.mid}');">消费统计管理</a></li>
+    <li><a href="#updateMerchant" data-toggle="modal" data-target="#updateMerchant">编辑商家资料</a></li>
+  `}
 
   <li><a href="#about" data-toggle="modal" data-target="#about">关于</a></li>
   <li><a href="#contact" data-toggle="modal" data-target="#contactus">联系我们</a></li>
