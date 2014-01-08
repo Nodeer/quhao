@@ -25,8 +25,11 @@
 	<div class="form-group">
 		<label for="merchantName" class="col-sm-3 control-label"></label>
 		<div class="col-xs-7">
-			<div class="input-group">
+			<div class="input-group" style="width: 100%">
 				<font style="font-size: large;">商家信息</font>
+			  `if(bmivo.merchantExist){
+				<button style="float: right;" class="btn btn-primary" data-toggle="modal" data-target="#updateMerchant">编辑商家信息</button>
+			  `}
 			</div>
 		</div>
 	</div>
