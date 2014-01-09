@@ -43,7 +43,7 @@ $addCSS("backend.css", true)
 						  <!-- Table -->
 						  <table class="table" >
 						    <tr align="center">
-							    <td valign="middle">人桌</td>
+							    <td>人桌</td>
 							    <td>已取消排队数</td>
 							    <td>已过期排队数</td>
 							    <td>消费成功数</td>
@@ -54,18 +54,18 @@ $addCSS("backend.css", true)
 						    </tr>
 						    `for(PaiduiVO paiduiVO : haomaVO.paiduiVOList){
 						    	<tr align="center">
-						    		<td style="vertical-align: middle;"><button type="button" class="btn btn-primary">${paiduiVO.numberOfSeat}</button></td>
-						    		<td style="vertical-align: middle;"><button type="button" class="btn btn-primary">${paiduiVO.canceled}</button></td>
-						    		<td style="vertical-align: middle;"><button type="button" class="btn btn-primary">${paiduiVO.expired}</button></td>
-						    		<td style="vertical-align: middle;"><button type="button" class="btn btn-primary">${paiduiVO.finished}</button></td>
-						    		<td style="vertical-align: middle;"><button type="button" class="btn btn-warning">${paiduiVO.maxNumber}</button></td>
-						    		<td style="vertical-align: middle;"><button type="button" class="btn btn-danger">${paiduiVO.currentNumber}</button></td>
-						    		<td style="vertical-align: middle;"><button type="button" class="btn btn-primary" 
+						    		<td><button type="button" class="btn btn-primary col-md-6" style="float: none; width: 50px;">${paiduiVO.numberOfSeat}</button></td>
+						    		<td><button type="button" class="btn btn-primary col-md-6" style="float: none; width: 50px;">${paiduiVO.canceled}</button></td>
+						    		<td><button type="button" class="btn btn-primary col-md-6" style="float: none; width: 50px;">${paiduiVO.expired}</button></td>
+						    		<td><button type="button" class="btn btn-primary col-md-6" style="float: none; width: 50px;">${paiduiVO.finished}</button></td>
+						    		<td><button type="button" class="btn btn-warning col-md-6" style="float: none; width: 50px;">${paiduiVO.maxNumber}</button></td>
+						    		<td><button type="button" class="btn btn-danger col-md-6" style="float: none; width: 50px;">${paiduiVO.currentNumber}</button></td>
+						    		<td><button type="button" class="btn btn-primary col-md-6" style="float: none; width: 50px;" 
 						    		`if(paiduiVO.currentNumber == 0){
 						    			disabled="disabled"
 						    		`}
 						    		onclick="Merchant.finish('${paiduiVO.numberOfSeat}','${paiduiVO.currentNumber}','${haomaVO.merchantId}');">消费</button></td>
-						    		<td style="vertical-align: middle;"><button type="button" class="btn btn-primary" 
+						    		<td><button type="button" class="btn btn-primary col-md-6" style="float: none; width: 50px;" 
 						    		`if(paiduiVO.currentNumber == 0){
 						    			disabled="disabled"
 						    		`}
