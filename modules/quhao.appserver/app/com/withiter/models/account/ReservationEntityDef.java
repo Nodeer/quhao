@@ -15,10 +15,7 @@ public abstract class ReservationEntityDef extends BaseModel {
 	public String merchantId;
 	public int seatNumber;
 	public int myNumber;
-	public boolean isCommented = false;
-	/**
-	 * 
-	 */
+	public boolean isCommented = false;				// 是否评价
 	public boolean valid;
 	public Constants.ReservationStatus status;
 }
