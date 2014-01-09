@@ -69,6 +69,7 @@ public class Reservation extends ReservationEntityDef {
 	public static Reservation reservationExist(String accountId, String mid,
 			int seatNumber) {
 		MorphiaQuery q = Reservation.q();
+		
 		q.filter("accountId", accountId).filter("merchantId", mid)
 				.filter("valid", true).filter("seatNumber", seatNumber);
 		return q.first();

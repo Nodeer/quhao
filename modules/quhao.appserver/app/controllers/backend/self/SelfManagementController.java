@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 
 import play.Play;
 import play.libs.Images;
+import play.mvc.Before;
+import play.mvc.Http.Header;
 import play.mvc.Scope.Session;
 import vo.BackendMerchantInfoVO;
 import vo.HaomaVO;
@@ -36,9 +38,19 @@ import controllers.UploadController;
 
 public class SelfManagementController extends BaseController {
 
-	private static Logger logger = LoggerFactory
-			.getLogger(SelfManagementController.class);
+	private static Logger logger = LoggerFactory.getLogger(SelfManagementController.class);
 
+	/**
+	 * Interception any caller on this controller, will first invoke this method
+	 */
+	@Before
+	static void checkAuthentification() {
+		if (!session.contains(Constants.SESSION_USERNAME)) {
+			logger.debug("no session is found in Constants.SESSION_USERNAME");
+			renderJapidWith("japidviews.backend.merchant.MerchantManagementController.index");
+		}
+	}
+	
 	/*
 	 * 1) account information(included information:email or phone...) 2)
 	 * Merchant information(included information:name, address...)
@@ -51,8 +63,7 @@ public class SelfManagementController extends BaseController {
 	 */
 	public static void index(String uid) {
 		Account account = Account.findById(uid);
-		List<MerchantAccountRel> relList = MerchantAccountRel
-				.getMerchantAccountRelList(uid);
+		List<MerchantAccountRel> relList = MerchantAccountRel.getMerchantAccountRelList(uid);
 		Merchant merchant = null;
 		if (relList == null || relList.isEmpty()) {
 
@@ -61,8 +72,7 @@ public class SelfManagementController extends BaseController {
 			String mid = rel.mid;
 			merchant = Merchant.findById(mid);
 		}
-		BackendMerchantInfoVO bmivo = BackendMerchantInfoVO.build(merchant,
-				account);
+		BackendMerchantInfoVO bmivo = BackendMerchantInfoVO.build(merchant, account);
 		renderJapid(bmivo);
 	}
 
@@ -157,13 +167,10 @@ public class SelfManagementController extends BaseController {
 			if (file != null) {
 				m.merchantImageSet.add(file.getFilename());
 				if (StringUtils.isEmpty(m.merchantImage)) {
-					String server = Play.configuration
-							.getProperty("application.domain");
-					String imageStorePath = Play.configuration
-							.getProperty("image.store.path");
+					String server = Play.configuration.getProperty("application.domain");
+					String imageStorePath = Play.configuration.getProperty("image.store.path");
 					try {
-						m.merchantImage = URLEncoder.encode(server
-								+ imageStorePath + file.getFilename(), "UTF-8");
+						m.merchantImage = URLEncoder.encode(server + imageStorePath + file.getFilename(), "UTF-8");
 						logger.debug(m.merchantImage);
 					} catch (UnsupportedEncodingException e) {
 						e.printStackTrace();
@@ -180,14 +187,12 @@ public class SelfManagementController extends BaseController {
 		String mid = params.get("mid");
 		Haoma haoma = Haoma.findByMerchantId(mid);
 		HaomaVO haomaVO = HaomaVO.build(haoma);
-		
-		
+
 		String uid = Session.current().get(Constants.SESSION_USERNAME);
 		Account account = Account.findById(uid);
 		Merchant merchant = Merchant.findById(mid);
-		BackendMerchantInfoVO bmivo = BackendMerchantInfoVO.build(merchant,
-				account);
-		
+		BackendMerchantInfoVO bmivo = BackendMerchantInfoVO.build(merchant, account);
+
 		renderJapid(haomaVO, bmivo);
 	}
 
@@ -202,8 +207,7 @@ public class SelfManagementController extends BaseController {
 	// TODO add statistic report here
 	public static void goStatisticPage() {
 		String mid = params.get("mid");
-		List<Reservation> rList = Reservation
-				.findReservationsByMerchantIdandDate(mid);
+		List<Reservation> rList = Reservation.findReservationsByMerchantIdandDate(mid);
 		List<ReservationVO> voList = ReservationVO.build(rList);
 
 		System.out.println(voList.size());
@@ -215,9 +219,7 @@ public class SelfManagementController extends BaseController {
 		String mid = params.get("mid");
 		Haoma haoma = Haoma.findByMerchantId(mid);
 		HaomaVO haomaVO = HaomaVO.build(haoma);
-		renderJapidWith(
-				"japidviews.backend.self.SelfManagementController.goPaiduiPageRefresh",
-				haomaVO);
+		renderJapidWith("japidviews.backend.self.SelfManagementController.goPaiduiPageRefresh", haomaVO);
 	}
 
 	/**
@@ -227,11 +229,14 @@ public class SelfManagementController extends BaseController {
 		String cNumber = params.get("currentNumber");
 		String sNumber = params.get("seatNumber");
 		String mid = params.get("mid");
+		
+		if(StringUtils.isEmpty(cNumber) || StringUtils.isEmpty(sNumber) || StringUtils.isEmpty(mid)){
+			renderJSON(false);
+		}
 		int currentNumber = Integer.parseInt(cNumber);
 		int seatNumber = Integer.parseInt(sNumber);
 
-		Reservation r = Reservation.findReservationFinishByMerchant(seatNumber,
-				currentNumber, mid);
+		Reservation r = Reservation.findReservationFinishByMerchant(seatNumber, currentNumber, mid);
 		if (r != null) {
 			Reservation.finish(r.id());
 			renderJSON(true);

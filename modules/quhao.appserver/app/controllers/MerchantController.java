@@ -53,59 +53,28 @@ public class MerchantController extends BaseController {
 	@Before
 	static void checkAuthentification() {
 		boolean mobileAgent = false;
-		boolean sessionExist = false;
 
 		Header userAgentHeader = request.headers.get("user-agent");
-		Header sessionAndroidHeader = request.headers.get("quhao-android-session");
-		Header sessionIOSHeader = request.headers.get("quhao-ios-session");
-		
-		for(String k : request.headers.keySet()){
-			logger.debug("header key: "+k);
-			logger.debug("header value: " + request.headers.get(k).values);
-		}
 		
 		if (userAgentHeader.values.contains("QuhaoAndroid")) {
 			mobileAgent = true;
+			logger.debug("The caller agent is mobile : " + mobileAgent);
+			logger.debug("The caller agent is pc : " + !mobileAgent);
 			return;
-//			if(sessionAndroidHeader != null){
-//				String phone  = new DesUtils().decrypt(sessionAndroidHeader.value());
-//				Account account = Account.findByPhone(phone);
-//				if(StringUtils.isNotEmpty(phone) && account != null){
-//					session.put(account.id(), account.id());
-//					return;
-//				}
-//			}
 		}
 		
 		if (userAgentHeader.values.contains("QuhaoiPhone")) {
 			mobileAgent = true;
+			logger.debug("The caller agent is mobile : " + mobileAgent);
+			logger.debug("The caller agent is pc : " + !mobileAgent);
 			return;
-//			if(sessionIOSHeader != null){
-//				String phone  = new DesUtils().decrypt(sessionIOSHeader.value());
-//				Account account = Account.findByPhone(phone);
-//				if(StringUtils.isNotEmpty(phone) && account != null){
-//					session.put(account.id(), account.id());
-//					return;
-//				}
-//			}
 		}
 		
 		if (userAgentHeader.values.contains("Windows")) {
-
+			mobileAgent = false;
+			logger.debug("The caller agent is mobile : " + mobileAgent);
+			logger.debug("The caller agent is pc : " + !mobileAgent);
 		}
-
-		logger.debug("The caller agent is mobile : " + mobileAgent);
-		logger.debug("The caller agent is pc : " + !mobileAgent);
-
-//		if (mobileAgent) {
-//			if (!sessionExist) {
-//				ErrorVO evo = new ErrorVO();
-//				evo.key = "NO_LOGIN";
-//				evo.cause = "SESSION_EXPIRED";
-//				renderJSON(evo);
-//			}
-//			return;
-//		}
 
 		if (!session.contains(Constants.SESSION_USERNAME)) {
 			logger.debug("no session is found in Constants.SESSION_USERNAME");
@@ -278,17 +247,19 @@ public class MerchantController extends BaseController {
 		ReservationVO rvo = new ReservationVO();
 		Reservation r = Reservation.reservationExist(accountId, mid, seatNumber);
 		Haoma haoma = Haoma.findByMerchantId(mid);
+		
+		// if r != null, means current user had been got a paidui ticket
 		if (r != null) {
 			Paidui paidui = haoma.haomaMap.get(seatNumber);
 			// rvo.beforeYou = paidui.currentNumber - (paidui.canceled +
 			// paidui.expired + paidui.finished);
 			rvo.tipValue = "ALREADY_HAVE";
-			int canclCount = (int) Reservation.findCountBetweenCurrentNoAndMyNumber(mid, paidui.currentNumber, r.myNumber, seatNumber);
-
-			rvo.beforeYou = r.myNumber - (paidui.currentNumber + canclCount);
+//			int cancelCount = (int) Reservation.findCountBetweenCurrentNoAndMyNumber(mid, paidui.currentNumber, r.myNumber, seatNumber);
+//
+//			rvo.beforeYou = r.myNumber - (paidui.currentNumber + cancelCount);
 			// rvo.beforeYou = reservation.myNumber-( paidui.currentNumber +
 			// paidui.canceled);
-			rvo.currentNumber = paidui.currentNumber;
+//			rvo.currentNumber = paidui.currentNumber;
 			rvo.build(r);
 			renderJSON(rvo);
 		}

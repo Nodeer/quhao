@@ -10,7 +10,7 @@ public class ReservationVO {
 	public String id;
 	public boolean tipKey = false;
 	public String tipValue = "";
-	public boolean isAppraise = false;
+	public boolean isCommented = false;
 	public String accountId;
 	public String merchantId;
 	public int seatNumber;
@@ -30,7 +30,7 @@ public class ReservationVO {
 		this.myNumber = r.myNumber;
 		this.seatNumber = r.seatNumber;
 		this.status = r.status;
-		this.isAppraise=r.isAppraise;
+		this.isCommented=r.isCommented;
 	}
 	
 	public static List<ReservationVO> build(List<Reservation> rList){

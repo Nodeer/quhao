@@ -33,7 +33,7 @@ public class CommentController  extends BaseController{
 		if (reservation == null) {
 			renderText("服务器错误");
 		}else{
-			if(reservation.isAppraise==false){
+			if(!reservation.isCommented){
 				Account account = Account.findById(reservation.accountId);
 				account.jifen=account.jifen+1;
 				account.dianping=account.dianping+1;
@@ -70,7 +70,7 @@ public class CommentController  extends BaseController{
 			cm.averageCost=cost.trim();
 			cm.save();
 			
-			reservation.isAppraise=true;
+			reservation.isCommented=true;
 			reservation.save();
 			renderText("评价成功");
 		}

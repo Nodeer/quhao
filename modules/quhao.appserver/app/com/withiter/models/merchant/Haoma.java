@@ -5,6 +5,11 @@ import java.util.Date;
 import com.withiter.common.Constants.ReservationStatus;
 import com.withiter.models.account.Reservation;
 
+/**
+ * Haoma contains whole paidui information
+ * @author Cross
+ *
+ */
 public class Haoma extends HaomaEntityDef {
 
 	/**
