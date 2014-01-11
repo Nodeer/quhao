@@ -67,12 +67,15 @@ public class CommentController  extends BaseController{
 			cm.xingjiabi=xingjiabi;
 			cm.averageCost = averageCost;
 			cm.content=content;
-			cm.averageCost=cost.trim();
+			if(StringUtils.isNotEmpty(cost))
+			{
+				cm.averageCost=cost.trim();
+			}
 			cm.save();
 			
 			reservation.isCommented=true;
 			reservation.save();
-			renderText("评价成功");
+			renderText("success");
 		}
 	}
 	/**
