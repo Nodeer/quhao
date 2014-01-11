@@ -122,10 +122,10 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 				this.finish();
 			} catch (Exception e) {
 				e.printStackTrace();
-			}
-			finally
-			{
-				
+				Toast.makeText(this, "网络异常", Toast.LENGTH_LONG).show();
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+				this.finish();
 			}
 
 			break;

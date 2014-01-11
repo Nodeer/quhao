@@ -26,18 +26,20 @@
 	    android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content" 
 	    android:background="#ffffffff">
+
        	<ListView
-         	android:id="@+id/merchantsListView"
-         	android:layout_width="fill_parent"
-         	android:layout_height="fill_parent"
-         	android:layout_gravity="center_horizontal"
-         	android:cacheColorHint="@null"
-         	android:divider="@null"
-         	android:entries="@null"
-         	android:headerDividersEnabled="true"
-        	android:listSelector="@drawable/list_item_trans"
-         	android:scrollbarThumbVertical="@drawable/scrollbar"
-         	android:scrollbars="vertical" />
+       	    android:id="@+id/merchantsListView"
+       	    android:layout_width="fill_parent"
+       	    android:layout_height="404dp"
+       	    android:layout_gravity="center_horizontal"
+       	    android:cacheColorHint="@null"
+       	    android:divider="@null"
+       	    android:entries="@null"
+       	    android:headerDividersEnabled="true"
+       	    android:listSelector="@drawable/list_item_trans"
+       	    android:scrollbarThumbVertical="@drawable/scrollbar"
+       	    android:scrollbars="vertical" />
+
 	</LinearLayout>
             
     <LinearLayout android:layout_width="fill_parent"

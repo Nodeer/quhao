@@ -1,19 +1,15 @@
 package com.withiter.quhao.util.http;
 
 import java.io.IOException;
-import java.net.URLDecoder;
-import java.util.List;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
-import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.cookie.Cookie;
-import org.apache.http.impl.client.AbstractHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
@@ -22,7 +18,6 @@ import org.apache.http.util.EntityUtils;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.util.QuhaoLog;
-import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.encrypt.DesUtils;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 
@@ -57,7 +52,7 @@ public class CommonHTTPRequest {
 		String result = "";
 		String httpUrl = QuhaoConstant.HTTP_URL + url;
 		QuhaoLog.d(TAG, "HTTP REQUEST POST, URL: " + httpUrl);
-
+		httpUrl = encoderURL(httpUrl);
 		HttpPost request = new HttpPost(httpUrl);
 		request.setHeader("user-agent", "QuhaoAndroid");
 
@@ -97,8 +92,9 @@ public class CommonHTTPRequest {
 	public static String get(String url) throws ClientProtocolException, IOException {
 		String result = "";
 		String httpUrl = QuhaoConstant.HTTP_URL + url;
-		QuhaoLog.d(TAG, "HTTP REQUEST GET, URL: " + httpUrl);
-
+		QuhaoLog.d(TAG, "HTTP REQUEST POST, URL: " + httpUrl);
+		httpUrl = encoderURL(httpUrl);
+		QuhaoLog.d(TAG, "HTTP REQUEST POST, URL: " + httpUrl);
 		HttpGet request = new HttpGet(httpUrl);
 		request.setHeader("user-agent", "QuhaoAndroid");
 		
@@ -126,5 +122,27 @@ public class CommonHTTPRequest {
 		}
 		
 		return result;
+	}
+
+	private static String encoderURL(String httpUrl)
+			throws UnsupportedEncodingException {
+		String[] strs = httpUrl.split("\\?");
+		
+		if(strs.length>1)
+		{
+			httpUrl = strs[0] + "?";
+			String[] paramStr = strs[1].split("&");
+			for (int i = 0; i < paramStr.length; i++) {
+				String params[] = paramStr[i].split("=");
+				
+				if(i==0)
+				{
+					httpUrl = httpUrl + params[0] + "=" + URLEncoder.encode(params[1], "UTF-8");
+					continue;
+				}
+				httpUrl = httpUrl + "&" + params[0] + "=" + URLEncoder.encode(params[1], "UTF-8");
+			}
+		}
+		return httpUrl;
 	}
 }

@@ -219,6 +219,8 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		}
 	};
 
+	
+	
 	private Handler merchantUpdateHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -390,6 +392,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	@Override
 	protected void onResume() {
 		backClicked = false;
+		initView();
 		super.onResume();
 	}
 
