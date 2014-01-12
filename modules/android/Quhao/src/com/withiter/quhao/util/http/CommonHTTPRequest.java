@@ -135,12 +135,24 @@ public class CommonHTTPRequest {
 			for (int i = 0; i < paramStr.length; i++) {
 				String params[] = paramStr[i].split("=");
 				
-				if(i==0)
+				if(params.length>1)
 				{
-					httpUrl = httpUrl + params[0] + "=" + URLEncoder.encode(params[1], "UTF-8");
-					continue;
+					if(i==0)
+					{
+						httpUrl = httpUrl + params[0] + "=" + URLEncoder.encode(params[1], "UTF-8");
+						continue;
+					}
+					httpUrl = httpUrl + "&" + params[0] + "=" + URLEncoder.encode(params[1], "UTF-8");
 				}
-				httpUrl = httpUrl + "&" + params[0] + "=" + URLEncoder.encode(params[1], "UTF-8");
+				else
+				{
+					if(i==0)
+					{
+						httpUrl = httpUrl + params[0] + "=" + URLEncoder.encode("", "UTF-8");
+						continue;
+					}
+					httpUrl = httpUrl + "&" + params[0] + "=" + URLEncoder.encode("", "UTF-8");
+				}
 			}
 		}
 		return httpUrl;
