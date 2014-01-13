@@ -53,10 +53,10 @@ $addCSS("backend.css", true)
 						    </tr>
 						    `for(PaiduiVO paiduiVO : haomaVO.paiduiVOList){
 						    	<tr align="center">
-						    		<td><button type="button" class="btn btn-primary col-md-6" style="float: none; width: 50px;">${paiduiVO.numberOfSeat}</button></td>
-						    		<td><button type="button" class="btn btn-primary col-md-6" style="float: none; width: 50px;">${paiduiVO.canceled}</button></td>
-						    		<td><button type="button" class="btn btn-primary col-md-6" style="float: none; width: 50px;">${paiduiVO.expired}</button></td>
-						    		<td><button type="button" class="btn btn-primary col-md-6" style="float: none; width: 50px;">${paiduiVO.finished}</button></td>
+						    		<td><button type="button" class="btn btn-info col-md-6" style="float: none; width: 50px;">${paiduiVO.numberOfSeat}</button></td>
+						    		<td><button type="button" class="btn btn-info col-md-6" style="float: none; width: 50px;">${paiduiVO.canceled}</button></td>
+						    		<td><button type="button" class="btn btn-info col-md-6" style="float: none; width: 50px;">${paiduiVO.expired}</button></td>
+						    		<td><button type="button" class="btn btn-info col-md-6" style="float: none; width: 50px;">${paiduiVO.finished}</button></td>
 						    		<td><button type="button" class="btn btn-warning col-md-6" style="float: none; width: 50px;">${paiduiVO.maxNumber}</button></td>
 						    		<td><button type="button" class="btn btn-danger col-md-6" style="float: none; width: 50px;">${paiduiVO.currentNumber}</button></td>
 						    		<td><button type="button" class="btn btn-primary col-md-6" style="float: none; width: 50px;" 
@@ -68,7 +68,7 @@ $addCSS("backend.css", true)
 						    		`if(paiduiVO.currentNumber == 0 || paiduiVO.currentNumber > paiduiVO.maxNumber){
 						    			disabled="disabled"
 						    		`}
-						    		onclick="Merchant.expired('${paiduiVO.numberOfSeat}','${paiduiVO.currentNumber}','${haomaVO.merchantId}');">过期</button></td>
+						    		onclick="Merchant.expiredConfirm('${paiduiVO.numberOfSeat}','${paiduiVO.currentNumber}','${haomaVO.merchantId}');">过期</button></td>
 						    	</tr>
 						    `}
 						  </table>

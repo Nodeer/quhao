@@ -73,6 +73,7 @@ GET		/createOpinion						OpinionController.createOpinion
 *		/b/w/goStatisticPage				backend.self.SelfManagementController.goStatisticPage
 *		/b/w/paiduiPageAutoRefresh			backend.self.SelfManagementController.paiduiPageAutoRefresh
 *		/b/w/finishByMerchant				backend.self.SelfManagementController.finishByMerchant
+*		/b/w/expireByMerchant				backend.self.SelfManagementController.expireByMerchant
 
 *		/b/a/updatePwd						backend.self.AccountController.updatePwd
 *		/b/a/logout							backend.self.AccountController.logout

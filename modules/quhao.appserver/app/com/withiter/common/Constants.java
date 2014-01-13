@@ -61,7 +61,11 @@ public class Constants {
 	 *
 	 */
 	public enum CreditStatus{
-		finished, getNumber,exchange,credit
+		finished, 		// finish one reservation, will get back one credit
+		getNumber,		// get one reservation, will cost one credit
+		exchange,		// exchange to get the credits
+		comment,		// comment will get back one credit
+		expired,		// expired reservation, will not get back one credit
 	}
 	
 	public static String COOKIE_USERNAME = "quhao_username";

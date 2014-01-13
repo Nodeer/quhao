@@ -208,6 +208,17 @@ public class Reservation extends ReservationEntityDef {
 			r.valid = false;
 			r.modified = new Date();
 			r.save();
+			
+			//cost one credit
+			Credit credit = new Credit();
+			credit.accountId = r.accountId;
+			credit.merchantId = r.merchantId;
+			credit.reservationId = r.id();
+			credit.cost = true;
+			credit.status = CreditStatus.expired;
+			credit.created = new Date();
+			credit.modified = new Date();
+			credit.create();
 		}
 	}
 
@@ -270,7 +281,7 @@ public class Reservation extends ReservationEntityDef {
 	 * @param mid
 	 * @return
 	 */
-	public static Reservation findReservationFinishByMerchant(int seatNumber, int currentNumber, String mid){
+	public static Reservation findReservationForHandle(int seatNumber, int currentNumber, String mid){
 		MorphiaQuery q = Reservation.q();
 		q.filter("created >", (new DateTime(System.currentTimeMillis() - 1000l*60*60*24).toDate()))
 		.filter("merchantId", mid)

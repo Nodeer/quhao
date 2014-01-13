@@ -272,9 +272,32 @@ public class SelfManagementController extends BaseController {
 		int currentNumber = Integer.parseInt(cNumber);
 		int seatNumber = Integer.parseInt(sNumber);
 
-		Reservation r = Reservation.findReservationFinishByMerchant(seatNumber, currentNumber, mid);
+		Reservation r = Reservation.findReservationForHandle(seatNumber, currentNumber, mid);
 		if (r != null) {
 			Reservation.finish(r.id());
+			renderJSON(true);
+		} else {
+			renderJSON(false);
+		}
+	}
+	
+	/**
+	 * expire one reservation by merchant
+	 */
+	public static void expireByMerchant() {
+		String cNumber = params.get("currentNumber");
+		String sNumber = params.get("seatNumber");
+		String mid = params.get("mid");
+		
+		if(StringUtils.isEmpty(cNumber) || StringUtils.isEmpty(sNumber) || StringUtils.isEmpty(mid)){
+			renderJSON(false);
+		}
+		int currentNumber = Integer.parseInt(cNumber);
+		int seatNumber = Integer.parseInt(sNumber);
+
+		Reservation r = Reservation.findReservationForHandle(seatNumber, currentNumber, mid);
+		if (r != null) {
+			Reservation.expire(r.id());
 			renderJSON(true);
 		} else {
 			renderJSON(false);
