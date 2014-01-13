@@ -19,6 +19,7 @@ import play.mvc.Http.Header;
 import play.mvc.Scope.Session;
 import vo.BackendMerchantInfoVO;
 import vo.HaomaVO;
+import vo.PaiduiVO;
 import vo.ReservationVO;
 import vo.account.AccountVO;
 import cn.bran.japid.util.StringUtils;
@@ -215,9 +216,28 @@ public class SelfManagementController extends BaseController {
 		renderJapid(voList);
 	}
 
+	/**
+	 * refresh paidui table
+	 */
 	public static void paiduiPageAutoRefresh() {
 		String mid = params.get("mid");
 		Haoma haoma = Haoma.findByMerchantId(mid);
+		
+		Iterator ite = haoma.haomaMap.keySet().iterator();
+		while(ite.hasNext()){
+			Integer key = (Integer)ite.next();
+			Paidui p = haoma.haomaMap.get(key);
+			if(!p.enable){
+				continue;
+			}
+			
+			// if maxNumber > 0 and currentNumber == 0, then set currentNumber to 1
+			if(p.maxNumber > 0 && p.currentNumber == 0 ){
+				p.currentNumber = 1;
+				haoma.save();
+			}
+		}
+		
 		HaomaVO haomaVO = HaomaVO.build(haoma);
 		renderJapidWith("japidviews.backend.self.SelfManagementController.goPaiduiPageRefresh", haomaVO);
 	}

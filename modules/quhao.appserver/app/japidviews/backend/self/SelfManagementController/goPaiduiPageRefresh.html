@@ -3,20 +3,38 @@
 
 `args HaomaVO haomaVO
 
-`for(PaiduiVO paiduiVO : haomaVO.paiduiVOList){
-<div>
-	<div class="dataElement">${paiduiVO.numberOfSeat}</div>
-	<div class="dataElement">${paiduiVO.canceled}</div>
-	<div class="dataElement">${paiduiVO.expired}</div>
-	<div class="dataElement">${paiduiVO.finished}</div>
-	<div class="dataElement">${paiduiVO.maxNumber}</div>
-	<div class="dataElement color_red">${paiduiVO.currentNumber}</div>
-	`if(paiduiVO.currentNumber == 0){
-		<div class="dataElement"><input type="button" disabled="disabled" name="" style="color: gray;" class="styleBtn corner " value="消费" onclick="Merchant.finish('${paiduiVO.numberOfSeat}','${paiduiVO.currentNumber}','${haomaVO.merchantId}');"/></div>
-		<div class="dataElement"><input type="button" disabled="disabled" name="" style="color: gray;" class="styleBtn corner " value="过期" onclick="Merchant.expired('${paiduiVO.numberOfSeat}','${paiduiVO.currentNumber}','${haomaVO.merchantId}');"/></div>
-	`}else{
-		<div class="dataElement"><input type="button" name="" class="styleBtn corner " value="消费" onclick="Merchant.finish('${paiduiVO.numberOfSeat}','${paiduiVO.currentNumber}','${haomaVO.merchantId}');"/></div>
-		<div class="dataElement"><input type="button" name="" class="styleBtn corner " value="过期" onclick="Merchant.expired('${paiduiVO.numberOfSeat}','${paiduiVO.currentNumber}','${haomaVO.merchantId}');"/></div>
-	`}
-</div>
-`}
+<!-- Default panel contents -->
+<div class="panel-heading">排队实时情况</div>
+<!-- Table -->
+<table class="table" >
+   <tr align="center">
+    <td>人桌</td>
+    <td>已取消排队数</td>
+    <td>已过期排队数</td>
+    <td>消费成功数</td>
+    <td>当前最大排队号码</td>
+    <td>当前排队号码</td>
+    <td>消费操作</td>
+    <td>过期操作</td>
+   </tr>
+   `for(PaiduiVO paiduiVO : haomaVO.paiduiVOList){
+   	<tr align="center">
+   		<td><button type="button" class="btn btn-primary col-md-6" style="float: none; width: 50px;">${paiduiVO.numberOfSeat}</button></td>
+   		<td><button type="button" class="btn btn-primary col-md-6" style="float: none; width: 50px;">${paiduiVO.canceled}</button></td>
+   		<td><button type="button" class="btn btn-primary col-md-6" style="float: none; width: 50px;">${paiduiVO.expired}</button></td>
+   		<td><button type="button" class="btn btn-primary col-md-6" style="float: none; width: 50px;">${paiduiVO.finished}</button></td>
+   		<td><button type="button" class="btn btn-warning col-md-6" style="float: none; width: 50px;">${paiduiVO.maxNumber}</button></td>
+   		<td><button type="button" class="btn btn-danger col-md-6" style="float: none; width: 50px;">${paiduiVO.currentNumber}</button></td>
+   		<td><button type="button" class="btn btn-primary col-md-6" style="float: none; width: 50px;" 
+   		`if(paiduiVO.currentNumber == 0){
+   			disabled="disabled"
+   		`}
+   		onclick="Merchant.finish('${paiduiVO.numberOfSeat}','${paiduiVO.currentNumber}','${haomaVO.merchantId}');">消费</button></td>
+   		<td><button type="button" class="btn btn-primary col-md-6" style="float: none; width: 50px;" 
+   		`if(paiduiVO.currentNumber == 0){
+   			disabled="disabled"
+   		`}
+   		onclick="Merchant.expired('${paiduiVO.numberOfSeat}','${paiduiVO.currentNumber}','${haomaVO.merchantId}');">过期</button></td>
+   	</tr>
+   `}
+</table>

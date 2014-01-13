@@ -213,7 +213,7 @@ function refresh(mid){
 		dataType:"HTML",
 		data:{"mid":mid},
 		success:function(data){
-			$("#dataDetailsDiv").html(data);
+			$("#autoRefreshDiv").html(data);
 		},
 		error:function(){
 			alert("服务器维护中，马上就好。");
