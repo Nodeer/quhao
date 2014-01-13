@@ -187,6 +187,22 @@ public class SelfManagementController extends BaseController {
 	public static void goPaiduiPage() {
 		String mid = params.get("mid");
 		Haoma haoma = Haoma.findByMerchantId(mid);
+		
+		Iterator ite = haoma.haomaMap.keySet().iterator();
+		while(ite.hasNext()){
+			Integer key = (Integer)ite.next();
+			Paidui p = haoma.haomaMap.get(key);
+			if(!p.enable){
+				continue;
+			}
+			
+			// if maxNumber > 0 and currentNumber == 0, then set currentNumber to 1
+			if(p.maxNumber > 0 && p.currentNumber == 0 ){
+				p.currentNumber = 1;
+				haoma.save();
+			}
+		}
+		
 		HaomaVO haomaVO = HaomaVO.build(haoma);
 
 		String uid = Session.current().get(Constants.SESSION_USERNAME);

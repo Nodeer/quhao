@@ -241,18 +241,50 @@ window.setInterval = function(callback,timeout,param){
 
 //-->
 
+
+/**
+ * finish one reservation confirmation
+ */
+Merchant.finishConfirm = function(seatNumber, currentNumber, mid){
+	$("#xiaofei_confirm").remove();
+	var modalHTML = ""+
+	"<div class=\"modal fade\" id=\"xiaofei_confirm\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">"+
+	  "<div class=\"modal-dialog\">"+
+	    "<div class=\"modal-content\">"+
+	      "<div class=\"modal-header\">"+
+	        "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>"+
+	        "<h4 class=\"modal-title\" id=\"xiaofei_confirm_title\"></h4>"+
+	      "</div>"+
+	      "<div class=\"modal-body\" id=\"xiaofei_confirm_body\">"+
+	      "</div>"+
+	      "<div class=\"modal-footer\">"+
+	      	"<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">取消</button>"+
+	        "<button type=\"button\" class=\"btn btn-primary\" onclick=\"Merchant.finish('"+seatNumber+"','"+ currentNumber+"','"+ mid+"');\">确定</button>"+
+	      "</div>"+
+	    "</div>"+
+	  "</div>"+
+	"</div>";
+	
+	$("#paiduiPageBody").append(modalHTML);
+	$("#xiaofei_confirm_title").html("请确认");
+	$("#xiaofei_confirm_body").html("确认第<font style='color: red;'>"+currentNumber+"</font>号消费吗？");
+	$("#xiaofei_confirm").modal();
+}
+
+
 /**
  * finish one reservation
  */
 Merchant.finish = function(seatNumber, currentNumber, mid){
+	$("#xiaofei_confirm").modal("hide");
 	$.ajax({
 		type:"POST",
 		url:"/b/w/finishByMerchant",
-		dataType:"HTML",
+		dataType:"JSON",
 		data:{"currentNumber":currentNumber,"seatNumber":seatNumber,"mid":mid},
 		success:function(data){
 			if(data == true){
-				alert("success");
+				window.location.reload();
 			}else{
 				alert("操作失败");
 			}

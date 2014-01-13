@@ -5,17 +5,15 @@ import java.util.Date;
 import java.util.List;
 
 import org.bson.types.ObjectId;
+import org.joda.time.DateTime;
 
-import play.modules.morphia.Model.MorphiaQuery;
 import play.modules.morphia.Model.NoAutoTimestamp;
-
 import cn.bran.japid.util.StringUtils;
 
 import com.google.code.morphia.annotations.Entity;
 import com.withiter.common.Constants.CreditStatus;
 import com.withiter.common.Constants.ReservationStatus;
 import com.withiter.models.merchant.Haoma;
-import com.withiter.models.merchant.Merchant;
 
 @Entity
 @NoAutoTimestamp
@@ -274,7 +272,7 @@ public class Reservation extends ReservationEntityDef {
 	 */
 	public static Reservation findReservationFinishByMerchant(int seatNumber, int currentNumber, String mid){
 		MorphiaQuery q = Reservation.q();
-		q.filter("created", ">" + (System.currentTimeMillis() - 1000l*60*60*24))
+		q.filter("created >", (new DateTime(System.currentTimeMillis() - 1000l*60*60*24).toDate()))
 		.filter("merchantId", mid)
 		.filter("status", "active")
 		.filter("seatNumber", seatNumber)
