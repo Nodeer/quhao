@@ -13,14 +13,13 @@
   		  class="active"
   		`}
   	><a href="javascript:void(0);" onclick="Merchant.goPaiduiPage('${bmivo.mid}');">用户排队管理</a></li>
-  `}
-  `if(bmivo.merchantExist){
-    <li><a href="javascript:void(0);" onclick="Merchant.goStatisticPage('${bmivo.mid}');">消费统计管理</a></li>
+    <li><a href="javascript:void(0);" onclick="javascript:alert('Coming soon..');return;Merchant.goStatisticPage('${bmivo.mid}');">消费统计管理</a></li>
   `}
 
   <li><a href="#about" data-toggle="modal" data-target="#about" onclick="Merchant.about();">关于</a></li>
   <li><a href="#contact" data-toggle="modal" data-target="#contactus" onclick="Merchant.contactus();">联系我们</a></li>
-   
+  
+  <!--  
   <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">更多 <b class="caret"></b></a>
     <ul class="dropdown-menu">
@@ -31,6 +30,7 @@
       <li><a href="#">One more separated link</a></li>
     </ul>
   </li>
+   -->
 </ul>
 <ul class="nav navbar-nav navbar-right">
   <li><a href="javascript:void(0);" onclick="Merchant.goPersonalPage('${bmivo.aid}');">个人信息管理</a></li>
