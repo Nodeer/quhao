@@ -243,6 +243,58 @@ window.setInterval = function(callback,timeout,param){
 
 
 /**
+ * about modal
+ */
+Merchant.about = function(){
+	$("#about").remove();
+	var modalHTML = ""+
+	"<div class=\"modal fade\" id=\"about\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">"+
+	  "<div class=\"modal-dialog\">"+
+	    "<div class=\"modal-content\">"+
+	      "<div class=\"modal-header\">"+
+	        "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>"+
+	        "<h4 class=\"modal-title\" id=\"about_title\">关于</h4>"+
+	      "</div>"+
+	      "<div class=\"modal-body\" id=\"about_body\">排队不用等，从取号开始"+
+	      "</div>"+
+	      "<div class=\"modal-footer\">"+
+	      	"<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">关闭</button>"+
+	      "</div>"+
+	    "</div>"+
+	  "</div>"+
+	"</div>";
+	
+	$("body").append(modalHTML);
+	$("#about").modal();
+}
+
+/**
+ * about modal
+ */
+Merchant.contactus = function(){
+	$("#contactus").remove();
+	var modalHTML = ""+
+	"<div class=\"modal fade\" id=\"contactus\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">"+
+	  "<div class=\"modal-dialog\">"+
+	    "<div class=\"modal-content\">"+
+	      "<div class=\"modal-header\">"+
+	        "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>"+
+	        "<h4 class=\"modal-title\" id=\"about_title\">联系我们</h4>"+
+	      "</div>"+
+	      "<div class=\"modal-body\" id=\"about_body\">Email : support@quhao.com"+
+	      "</div>"+
+	      "<div class=\"modal-footer\">"+
+	      	"<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">关闭</button>"+
+	      "</div>"+
+	    "</div>"+
+	  "</div>"+
+	"</div>";
+	
+	$("body").append(modalHTML);
+	$("#contactus").modal();
+}
+
+/**
  * finish one reservation confirmation
  */
 Merchant.finishConfirm = function(seatNumber, currentNumber, mid){
