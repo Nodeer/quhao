@@ -313,7 +313,8 @@ public class MerchantController extends BaseController {
 	 *            the id of reservation
 	 */
 	public static void cancel(String reservationId) {
-		Reservation.cancel(reservationId);
+		boolean flag = Reservation.cancel(reservationId);
+		renderJSON(flag);
 	}
 
 	/**
@@ -322,9 +323,10 @@ public class MerchantController extends BaseController {
 	 * @param reservationId
 	 *            the id of reservation
 	 */
-	public static void finish(String reservationId) {
-		Reservation.finish(reservationId);
-	}
+	
+//	public static void finish(String reservationId) {
+//		Reservation.finish(reservationId);
+//	}
 
 	/**
 	 * Expire one reservation by reservation id
@@ -332,9 +334,9 @@ public class MerchantController extends BaseController {
 	 * @param reservationId
 	 *            the id of reservation
 	 */
-	public static void expire(String reservationId) {
-		Reservation.expire(reservationId);
-	}
+//	public static void expire(String reservationId) {
+//		Reservation.expire(reservationId);
+//	}
 
 	/**
 	 * Top merchant 列表

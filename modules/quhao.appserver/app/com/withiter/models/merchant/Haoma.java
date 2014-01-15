@@ -1,6 +1,7 @@
 package com.withiter.models.merchant;
 
 import java.util.Date;
+import java.util.Iterator;
 
 import com.withiter.common.Constants.ReservationStatus;
 import com.withiter.models.account.Reservation;
@@ -110,5 +111,31 @@ public class Haoma extends HaomaEntityDef {
 		}
 		haoma.save();
 		return haoma;
+	}
+	
+	public void updateSelf(){
+		Iterator ite = this.haomaMap.keySet().iterator();
+		while(ite.hasNext()){
+			Integer key = (Integer)ite.next();
+			Paidui p = this.haomaMap.get(key);
+			if(!p.enable){
+				continue;
+			}
+			
+			// if maxNumber > 0 and currentNumber == 0, then set currentNumber to 1
+			if(p.maxNumber > 0 && p.currentNumber == 0 ){
+				p.currentNumber = 1;
+				this.save();
+			}
+			
+			// check current number is valid or not, if not valid: current number ++
+			// otherwise save current number.
+			Reservation r = Reservation.queryForCancel(merchantId, key, p.currentNumber);
+			while(r !=null && !r.valid){
+				p.currentNumber += 1;
+				this.save();
+				r = Reservation.queryForCancel(merchantId, key, p.currentNumber);
+			}
+		}
 	}
 }

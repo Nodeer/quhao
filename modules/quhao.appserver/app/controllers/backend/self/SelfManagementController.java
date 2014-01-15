@@ -187,21 +187,7 @@ public class SelfManagementController extends BaseController {
 	public static void goPaiduiPage() {
 		String mid = params.get("mid");
 		Haoma haoma = Haoma.findByMerchantId(mid);
-		
-		Iterator ite = haoma.haomaMap.keySet().iterator();
-		while(ite.hasNext()){
-			Integer key = (Integer)ite.next();
-			Paidui p = haoma.haomaMap.get(key);
-			if(!p.enable){
-				continue;
-			}
-			
-			// if maxNumber > 0 and currentNumber == 0, then set currentNumber to 1
-			if(p.maxNumber > 0 && p.currentNumber == 0 ){
-				p.currentNumber = 1;
-				haoma.save();
-			}
-		}
+		haoma.updateSelf();
 		
 		HaomaVO haomaVO = HaomaVO.build(haoma);
 
@@ -239,20 +225,22 @@ public class SelfManagementController extends BaseController {
 		String mid = params.get("mid");
 		Haoma haoma = Haoma.findByMerchantId(mid);
 		
-		Iterator ite = haoma.haomaMap.keySet().iterator();
-		while(ite.hasNext()){
-			Integer key = (Integer)ite.next();
-			Paidui p = haoma.haomaMap.get(key);
-			if(!p.enable){
-				continue;
-			}
-			
-			// if maxNumber > 0 and currentNumber == 0, then set currentNumber to 1
-			if(p.maxNumber > 0 && p.currentNumber == 0 ){
-				p.currentNumber = 1;
-				haoma.save();
-			}
-		}
+		haoma.updateSelf();
+		
+//		Iterator ite = haoma.haomaMap.keySet().iterator();
+//		while(ite.hasNext()){
+//			Integer key = (Integer)ite.next();
+//			Paidui p = haoma.haomaMap.get(key);
+//			if(!p.enable){
+//				continue;
+//			}
+//			
+//			// if maxNumber > 0 and currentNumber == 0, then set currentNumber to 1
+//			if(p.maxNumber > 0 && p.currentNumber == 0 ){
+//				p.currentNumber = 1;
+//				haoma.save();
+//			}
+//		}
 		
 		HaomaVO haomaVO = HaomaVO.build(haoma);
 		renderJapidWith("japidviews.backend.self.SelfManagementController.goPaiduiPageRefresh", haomaVO);
@@ -274,8 +262,8 @@ public class SelfManagementController extends BaseController {
 
 		Reservation r = Reservation.findReservationForHandle(seatNumber, currentNumber, mid);
 		if (r != null) {
-			Reservation.finish(r.id());
-			renderJSON(true);
+			boolean flag = Reservation.finish(r.id());
+			renderJSON(flag);
 		} else {
 			renderJSON(false);
 		}
@@ -297,8 +285,8 @@ public class SelfManagementController extends BaseController {
 
 		Reservation r = Reservation.findReservationForHandle(seatNumber, currentNumber, mid);
 		if (r != null) {
-			Reservation.expire(r.id());
-			renderJSON(true);
+			boolean flag = Reservation.expire(r.id());
+			renderJSON(flag);
 		} else {
 			renderJSON(false);
 		}
