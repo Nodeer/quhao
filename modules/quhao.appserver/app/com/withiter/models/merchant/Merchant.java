@@ -93,7 +93,7 @@ public class Merchant extends MerchantEntityDef {
 		return paginate(q, page);
 
 	}
-	
+
 	@Override
 	public String toString() {
 		String telStr = "";

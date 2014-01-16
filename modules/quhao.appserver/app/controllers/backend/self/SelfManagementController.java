@@ -86,24 +86,27 @@ public class SelfManagementController extends BaseController {
 		String address = params.get("address");
 		String tel = params.get("tel");
 		String cateType = params.get("cateType");
+		String cateName = params.get("cateName");
 		String openTime = params.get("openTime");
 		String closeTime = params.get("closeTime");
 		String merchantImage = params.get("merchantImage");
 
 		String[] seatType = params.getAll("seatType");
-		for (int i = 0; i < seatType.length; i++) {
-			System.out.print(seatType[i] + ",");
-		}
-
-		System.out.println("==========");
-
-		System.out.println(merchantName);
-		System.out.println(address);
-		System.out.println(tel);
-		System.out.println(cateType);
-		System.out.println(openTime);
-		System.out.println(closeTime);
-		System.out.println(merchantImage);
+		
+		// TODO remove below codes
+//		for (int i = 0; i < seatType.length; i++) {
+//			System.out.print(seatType[i] + ",");
+//		}
+//
+//		System.out.println("==========");
+//
+//		System.out.println(merchantName);
+//		System.out.println(address);
+//		System.out.println(tel);
+//		System.out.println(cateType);
+//		System.out.println(openTime);
+//		System.out.println(closeTime);
+//		System.out.println(merchantImage);
 
 		if (StringUtils.isEmpty(mid)) {
 			m = new Merchant();
@@ -122,6 +125,7 @@ public class SelfManagementController extends BaseController {
 		m.address = address;
 		m.telephone = tel.split(",");
 		m.cateType = cateType;
+		m.cateName = cateName;
 		m.openTime = openTime;
 		m.closeTime = closeTime;
 		m.enable = true;

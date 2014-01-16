@@ -35,7 +35,7 @@ public abstract class QuhaoActivity extends Activity {
 		try {
 			super.onCreate(savedInstanceState);
 			QuhaoLog.i(TAG, "QuhaoActivity onCreate invoked");
-			QuhaoLog.i(TAG, "QuhaoActivity inited : " + inited);
+			QuhaoLog.i(TAG, "QuhaoActivity already inited : " + inited);
 			if (!inited) {
 				initConfig();
 				inited = true;
@@ -52,17 +52,6 @@ public abstract class QuhaoActivity extends Activity {
 
 	@SuppressLint("NewApi")
 	private void initConfig() throws IOException {
-		QuhaoLog.i(TAG, "start to init configurations from application.properties");
-		InputStream input = getResources().openRawResource(R.raw.application);
-		BufferedReader read = new BufferedReader(new InputStreamReader(input));
-		String line = "";
-		while ((line = read.readLine()) != null) {
-			if (line.contains("app.server")) {
-				QuhaoConstant.HTTP_URL = line.split("=")[1];
-				QuhaoLog.i(TAG, "server url is : " + QuhaoConstant.HTTP_URL);
-			}
-		}
-
 		// Get the value of test from AndroidManifest.xml
 		try {
 			ApplicationInfo appInfo = this.getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);

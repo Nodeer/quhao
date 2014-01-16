@@ -15,12 +15,13 @@ import android.widget.Toast;
 import com.withiter.quhao.R;
 
 public class PhoneTool {
-	
+
 	private static int screenHeight;
 	private static int screenwidth;
 
 	/**
 	 * Get the device height
+	 * 
 	 * @param cx
 	 * @return
 	 */
@@ -32,6 +33,7 @@ public class PhoneTool {
 
 	/**
 	 * Get the device width
+	 * 
 	 * @param cx
 	 * @return
 	 */
@@ -41,20 +43,22 @@ public class PhoneTool {
 		return dm.heightPixels;
 	}
 
-	public static void setScreenHeight(int height){
+	public static void setScreenHeight(int height) {
 		screenHeight = height;
 	}
-	public static void setScreenWidth(int width){
+
+	public static void setScreenWidth(int width) {
 		screenwidth = width;
 	}
-	
-	public static int getScreenHeight(){
+
+	public static int getScreenHeight() {
 		return screenHeight;
 	}
-	public static int getScreenWidth(){
+
+	public static int getScreenWidth() {
 		return screenwidth;
 	}
-	
+
 	// SD卡的判断，如果没有SD卡，则对任务进行操作前给用户提示
 	public static Boolean isSDCardisAvailable() {
 		String state = Environment.getExternalStorageState();
@@ -65,24 +69,19 @@ public class PhoneTool {
 
 	// 檢查網絡
 	public static boolean isNetworkAvailable(Context cx) {
-		ConnectivityManager cm = (ConnectivityManager) cx
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager cm = (ConnectivityManager) cx.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo info = cm.getActiveNetworkInfo();
 		return (info != null && info.isConnected());
 	}
 
 	public static void warningDialog(Context cx, int msgid) {
-		new AlertDialog.Builder(cx)
-				.setTitle(R.string.warning)
-				.setMessage(msgid)
-				// .setIcon(android.R.drawable.)
-				.setPositiveButton(R.string.btn_ok,
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog,
-									int whichButton) {
-								dialog.dismiss();
-							}
-						}).show();
+		new AlertDialog.Builder(cx).setTitle(R.string.warning).setMessage(msgid)
+		// .setIcon(android.R.drawable.)
+				.setPositiveButton(R.string.btn_ok, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						dialog.dismiss();
+					}
+				}).show();
 	}
 
 	public static String getFileNameByPath(String path) {

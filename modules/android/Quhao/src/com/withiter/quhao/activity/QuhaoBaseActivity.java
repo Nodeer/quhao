@@ -50,7 +50,6 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// 检查网络
 		networkOK = PhoneTool.isNetworkAvailable(this);
 		btnCategory = (Button) findViewById(R.id.btnMerchantList);
 		btnNearby = (Button) findViewById(R.id.btnNearby);

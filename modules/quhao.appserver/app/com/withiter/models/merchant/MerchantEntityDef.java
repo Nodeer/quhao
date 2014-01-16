@@ -21,6 +21,7 @@ public abstract class MerchantEntityDef extends BaseModel {
 	public String poiId;
 	
 	public String cateType;
+	public String cateName;
 	public String merchantImage = "";
 	
 	public String cityCode;
