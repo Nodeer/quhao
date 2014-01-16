@@ -1,22 +1,46 @@
 `import vo.account.AccountVO;
 `args AccountVO avo
 
-<div class="pop_logIn edit_merchant" style="margin-top: 80px;">
-<h2>修改账号密码</h2>
+<form class="form-horizontal" role="form">
+  <input type="hidden" name="uid" id="uid" value="${avo.uid}" /> 
+  
+  <div style="display: none;" id="dangerAlert" class="alert alert-danger alert-dismissable">
+  	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  	<strong>注意！</strong> <font id="person_tip"></font>
+  </div>
+  <div style="display: none;" id="successAlert" class="alert alert-success alert-dismissable">
+  	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+  	<strong>恭喜！</strong> <font id="person_success_tip"></font>
+  </div>
 
-<form id="merchantForm" action="/b/w/editMerchant" enctype="multipart/form-data" method="post" class="editmerchantForm">
-	
-	<input type="hidden" name="uid" id="uid" value="${avo.uid}" /> 
-	<fieldset class="fieldset">
-		<ul>
-			<li><div class="w200">原始密码：</div><input type="password" name="oPwd" id="oPwd" value="" placeHolder="原始密码" class="textInput"/></li>
-			<li><div class="w200">新密码：</div><input type="password" name="nPwd" id="nPwd" value="" placeHolder="新密码" class="textInput"/></li>
-			<li><div class="w200">重复密码：</div><input type="password" name="nPwdR" id="nPwdR" value="" placeHolder="重复新密码" class="textInput"/></li>
-			<li class="buttonBox">
-				<input type="reset" name="" style="margin-left: 60px; margin-right: 100px;" class="styleBtn corner " value="重&nbsp;&nbsp;&nbsp;&nbsp;置" />
-				<input type="button" name="" class="styleBtn corner " value="提&nbsp;&nbsp;&nbsp;&nbsp;交" onclick="Account.updatePwd();"/>
-			</li>
-		</ul>
-	</fieldset>
+  <div class="form-group">
+    <label class="col-sm-4 control-label"></label>
+    <div class="col-sm-5">
+      <h2>修改账号密码</h2>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="oPwd" class="col-sm-4 control-label">原始密码：</label>
+    <div class="col-sm-5">
+      <input type="password" maxlength="12" class="form-control" placeholder="原始密码" name="oPwd" id="oPwd" value="">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="nPwd" class="col-sm-4 control-label">新密码：</label>
+    <div class="col-sm-5">
+      <input type="password" maxlength="12" class="form-control" placeholder="新密码" name="nPwd" id="nPwd" value="">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="nPwdR" class="col-sm-4 control-label">重复密码：</label>
+    <div class="col-sm-5">
+      <input type="password" maxlength="12" class="form-control" placeholder="重复密码" name="nPwdR" id="nPwdR" value="">
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-4 col-sm-10">
+      <button type="reset" class="btn btn-primary">重&nbsp;&nbsp;&nbsp;&nbsp;置</button>
+      <button type="button" class="btn btn-primary" onclick="Account.updatePwd();">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
+    </div>
+  </div>
 </form>
-</div>

@@ -195,8 +195,8 @@ Merchant.goPaiduiPage = function(mid){
 	window.location.href="/b/w/goPaiduiPage?mid="+mid;
 }
 
-Merchant.goPersonalPage = function(aid){
-	window.location.href="/b/w/goPersonalPage?aid="+aid;
+Merchant.goPersonalPage = function(aid, mid){
+	window.location.href="/b/w/goPersonalPage?aid="+aid+"&mid="+mid;
 }
 Merchant.goStatisticPage = function(mid){
 	window.location.href="/b/w/goStatisticPage?mid="+mid;

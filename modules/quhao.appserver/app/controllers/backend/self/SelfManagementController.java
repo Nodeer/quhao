@@ -204,7 +204,12 @@ public class SelfManagementController extends BaseController {
 		String aid = params.get("aid");
 		Account account = Account.findById(aid);
 		AccountVO avo = AccountVO.build(account);
-		renderJapid(avo);
+		
+		String mid = params.get("mid");
+		Merchant merchant = Merchant.findById(mid);
+		BackendMerchantInfoVO bmivo = BackendMerchantInfoVO.build(merchant, account);
+		
+		renderJapid(avo, bmivo);
 	}
 
 	// TODO add statistic report here

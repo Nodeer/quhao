@@ -1,5 +1,6 @@
 `import static press.Plugin.*;
 `import vo.account.AccountVO;
+`import vo.BackendMerchantInfoVO
 `extends base_layout
 `set cssAndJs
 $addJS("account.js", true)
@@ -9,16 +10,45 @@ $addCSS("backend.css", true)
 `
 `set title:i18n("取号啦 - 个人信息管理")
 
-`args AccountVO avo
+`args AccountVO avo, BackendMerchantInfoVO bmivo
 
 <!DOCTYPE html>
 <html lang="cn">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link href="/public/images/common/quhao_favicon.jpg" type="image/png" rel="shortcut icon">
-<title>取号啦 - 商家后台管理</title>
 </head>
-<body class="backendBG" id="fatherDIV">
-	`t personEdit(avo)
+
+<body id="paiduiPageBody">
+    <div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+      <div class="container">
+        <div class="collapse navbar-collapse">
+          `t merchantMenu(bmivo,"person")
+        </div><!-- /.nav-collapse -->
+      </div><!-- /.container -->
+    </div><!-- /.navbar -->
+
+    <div class="container">
+      <div class="row row-offcanvas row-offcanvas-right">
+        <div class="col-xs-12 col-sm-12">
+          <p class="pull-right visible-xs">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+          </p>
+          <div class="jumbotron" style="font-size: 13px; background-color: white; border: solid #eee 1px;">
+          		<div class="alert alert-danger" style="display: none;" id="tips"></div>
+          		
+		        <p class="lead">
+		        	<!-- form begin -->
+					`t personEdit(avo)
+		        	<!-- form end -->
+		        </p>
+          </div>
+        </div><!--/span-->
+      </div><!--/row-->
+
+	  <!-- footer -->
+      `t merchantFoot
+	  <!-- footer -->
+    </div><!--/.container-->
+    
 </body>
 </html>
