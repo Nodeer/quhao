@@ -45,8 +45,6 @@
 		<meta-data android:name="test" android:value="true" />
 		<!-- TODO: WARNING 部署时请修改test的值为false -->
 
-		<!-- Server Request URL -->
-		<meta-data android:name="ServerURL" android:value="http://192.168.1.20:9081/" />
 		<!-- 您从高德网站获取的APP KEY -->
 		<meta-data android:name="com.amap.api.v2.apikey" android:value="9e01e3340b4c35140eaa1a334c2a20c3" />
 		<!-- 渠道商编号 -->
