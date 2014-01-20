@@ -131,7 +131,7 @@ public class Haoma extends HaomaEntityDef {
 			// check current number is valid or not, if not valid: current number ++
 			// otherwise save current number.
 			Reservation r = Reservation.queryForCancel(merchantId, key, p.currentNumber);
-			while(r !=null && !r.valid){
+			while(r !=null && r.valid){
 				p.currentNumber += 1;
 				this.save();
 				r = Reservation.queryForCancel(merchantId, key, p.currentNumber);
