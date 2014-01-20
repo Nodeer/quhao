@@ -103,6 +103,7 @@
 
                 <TextView
                     android:id="@+id/seatNo"
+                    android:drawableRight="@drawable/btn_expand_background"
                     android:layout_width="0.0px"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6.0dip"
@@ -113,13 +114,6 @@
                     android:textAppearance="?android:textAppearanceMedium"
                     android:textColor="#ff000000"
                     android:textSize="16.0sp" />
-
-                <Button
-                    android:id="@+id/btn_seatNo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/btn_expand_background"
-                    android:gravity="right|center" />
             </LinearLayout>
 
             <LinearLayout

@@ -1,5 +1,6 @@
 package com.withiter.quhao.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -100,9 +101,11 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 		myNumberLayout = (LinearLayout) findViewById(R.id.myNoLayout);
 		myNumberView = (TextView) findViewById(R.id.myNumber);
 		btnGetNumberLayout = (LinearLayout) findViewById(R.id.btn_GetNumberLayout);
-		btnSeatNo = (Button) findViewById(R.id.btn_seatNo);
+//		btnSeatNo = (Button) findViewById(R.id.btn_seatNo);
 		btnGetNo = (Button) findViewById(R.id.btn_GetNumber);
 
+		
+		QuhaoLog.d(TAG, "merchantName:" + merchantName);
 		merchantNameView.setText(merchantName);
 		GetNumberActivity.this.findViewById(R.id.loadingbar).setVisibility(View.GONE);
 		GetNumberActivity.this.findViewById(R.id.merchantNameLayout).setVisibility(View.VISIBLE);
@@ -156,10 +159,10 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
 
-				btnSeatNo.setVisibility(View.GONE);
+				seatNoView.setCompoundDrawables(null, null, null, null);
+				seatNoView.setClickable(false);
 				seatNoView.setText(reservation.seatNumber);
 				currentNumberView.setText(reservation.currentNumber);
-				// currentNoLayout.setVisibility(View.GONE);
 				btnGetNumberLayout.setVisibility(View.GONE);
 				myNumberLayout.setVisibility(View.VISIBLE);
 				myNumberView.setText(reservation.myNumber);
@@ -207,7 +210,7 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 
 					seatNoView.setText(currentPaidui.seatNo);
 					currentNumberView.setText(String.valueOf(currentPaidui.currentNumber));
-					btnSeatNo.setOnClickListener(GetNumberActivity.this);
+					seatNoView.setOnClickListener(GetNumberActivity.this);
 
 					seatNoView.addTextChangedListener(new TextWatcher() {
 						@Override
@@ -402,7 +405,7 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 		// 设置已点击标志，避免快速重复点击
 		isClick = true;
 		switch (v.getId()) {
-		case R.id.btn_seatNo:
+		case R.id.seatNo:
 			String str = String.valueOf(seatNoView.getText());
 			for (int i = 0; i < seatNos.length; i++) {
 				if (str == seatNos[i]) {
