@@ -57,7 +57,7 @@ public class QHClientApplication extends Application {
 		QuhaoLog.i(TAG, "onCreate method is called");
 		QHClientApplication.mContext = this;
 		// isLogined = false;
-		// instance = this;
+		instance = this;
 		initServerConfig();
 		initAccountConfig();
 		initSDCardConfig();

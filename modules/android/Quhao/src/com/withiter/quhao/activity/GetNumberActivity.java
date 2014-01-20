@@ -207,19 +207,15 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 
 					seatNoView.setText(currentPaidui.seatNo);
 					currentNumberView.setText(String.valueOf(currentPaidui.currentNumber));
-
 					btnSeatNo.setOnClickListener(GetNumberActivity.this);
 
 					seatNoView.addTextChangedListener(new TextWatcher() {
-
 						@Override
 						public void onTextChanged(CharSequence s, int start, int before, int count) {
-
 						}
 
 						@Override
 						public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
 						}
 
 						@Override
