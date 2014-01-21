@@ -108,9 +108,9 @@
 	<string name="more_setting">系统设置</string>
 	<string name="more_new_version">检查更新</string>
 	<string name="more_opinion">意见反馈</string>
-	<string name="more_share">推荐</string>
+	<string name="more_share">分享推荐</string>
 	<string name="more_aboutus">关于我们</string>
-	<string name="more_help">帮助</string>
+	<string name="more_help">使用帮助</string>
 	<string name="more_setting_cleanpicture">清除本地缓存图片</string>
     <string name="more_setting_cleancache">清除本地缓存数据</string>
     <string name="more_setting_showimage">2G/3G网络无图浏览(节省流量)</string>
@@ -118,6 +118,8 @@
     <string name="more_company_intro">聪明的排队让生活更有效率！</string>
     <string name="more_versioncode">软件版本：</string>
     <string name="super_detail_service_phone">客服电话：</string>
+    <string name="more_weibo">官方微博：</string>
+    <string name="more_weibo_value">\@取号啦</string>
     <string name="more_web_location">网\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020址：</string>
     <string name="more_domain">http://www.quhao.la</string>
     <string name="more_option_hint">留下您的宝贵意见，我们将持续改进产品（最多不能超过500字）</string>
