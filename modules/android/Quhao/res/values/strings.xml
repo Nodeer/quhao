@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">取号</string>
+    <string name="app_name">取号啦</string>
     <string name="action_settings">Settings</string>
     
     <string name="btn_ok">确定</string>
@@ -115,10 +115,11 @@
     <string name="more_setting_cleancache">清除本地缓存数据</string>
     <string name="more_setting_showimage">2G/3G网络无图浏览(节省流量)</string>
     <string name="sys_option">无图浏览:为节省流量,2G/3G网络状态下不加载图片,使用WIFI网络正常显示图片.</string>
-    <string name="more_company_intro">取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。取号不用等。</string>
+    <string name="more_company_intro">聪明的排队让生活更有效率！</string>
     <string name="more_versioncode">软件版本：</string>
     <string name="super_detail_service_phone">客服电话：</string>
     <string name="more_web_location">网\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020址：</string>
+    <string name="more_domain">http://www.quhao.la</string>
     <string name="more_option_hint">留下您的宝贵意见，我们将持续改进产品（最多不能超过500字）</string>
     <string name="more_option_phone_hint">手机号码或邮箱地址</string>
     <string name="committing">正在提交中&#8230;&#8230;&#8230;</string>

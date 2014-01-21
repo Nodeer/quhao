@@ -35,125 +35,134 @@
             android:textColor="#ff000000" />
     </RelativeLayout>
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1.0"
-        android:fillViewport="true" >
+        android:layout_height="wrap_content"
+        android:background="#ffffffff"
+        android:gravity="center"
+        android:orientation="vertical" >
 
-        <LinearLayout
+        <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffffff"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:layout_marginTop="30dip"
             android:gravity="center"
-            android:orientation="vertical" >
+            android:text="@string/app_name"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
 
-            <LinearLayout
-                android:id="@+id/more_settings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingBottom="10dip"
-                android:paddingTop="10dip" >
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dip"
+            android:layout_marginBottom="30dip"
+            android:layout_marginLeft="20dip"
+            android:layout_marginRight="20dip"
+            android:layout_marginTop="30dip"
+            android:background="#696969" />
 
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dip"
-                    android:layout_marginRight="10dip"
-                    android:gravity="center_vertical"
-                    android:text="@string/more_company_intro"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-            </LinearLayout>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:gravity="center"
+            android:text="@string/more_company_intro"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+    </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/more_version"
-                android:layout_width="292dp"
-                android:layout_height="55dp"
-                android:layout_marginTop="20dip"
-                android:background="@drawable/form_border_top"
-                android:gravity="center_vertical"
-                android:orientation="horizontal" >
+    <LinearLayout
+        android:id="@+id/more_version"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:layout_marginTop="20dip"
+        android:background="@drawable/form_border_top"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dip"
-                    android:gravity="center_vertical"
-                    android:text="@string/more_versioncode"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dip"
+            android:gravity="center_vertical"
+            android:text="@string/more_versioncode"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/about_us_version"
-                    android:layout_width="0dip"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="@string/empty"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-            </LinearLayout>
+        <TextView
+            android:id="@+id/about_us_version"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="@string/empty"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+    </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/more_option"
-                android:layout_width="292dp"
-                android:layout_height="55dp"
-                android:background="@drawable/form_border_middle"
-                android:gravity="center_vertical"
-                android:orientation="horizontal" >
+    <LinearLayout
+        android:id="@+id/more_option"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:background="@drawable/form_border_middle"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dip"
-                    android:gravity="center_vertical"
-                    android:text="@string/super_detail_service_phone"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dip"
+            android:gravity="center_vertical"
+            android:text="@string/super_detail_service_phone"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
-                <TextView
-                    android:id="@+id/about_us_phone"
-                    android:layout_width="0dip"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:autoLink="phone"
-                    android:gravity="center_vertical"
-                    android:text="110"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-            </LinearLayout>
+        <TextView
+            android:id="@+id/about_us_phone"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:autoLink="phone"
+            android:gravity="center_vertical"
+            android:text="110"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+    </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/more_aboutus"
-                android:layout_width="292dp"
-                android:layout_height="55dp"
-                android:background="@drawable/form_border_bottom"
-                android:gravity="center_vertical"
-                android:orientation="horizontal" >
+    <LinearLayout
+        android:id="@+id/more_aboutus"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:background="@drawable/form_border_bottom"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dip"
-                    android:gravity="center_vertical"
-                    android:text="@string/more_web_location"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dip"
+            android:gravity="center_vertical"
+            android:text="@string/more_web_location"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
-                <TextView
-                    android:layout_width="0dip"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:autoLink="web"
-                    android:gravity="center_vertical"
-                    android:text="www.withiter.com"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+        <TextView
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:autoLink="web"
+            android:gravity="center_vertical"
+            android:text="@string/more_domain"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+    </LinearLayout>
 
 </LinearLayout>
