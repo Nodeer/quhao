@@ -12,7 +12,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.withiter.quhao.util.ExceptionUtil;
+import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.vo.AppVersionVO;
 import com.withiter.quhao.vo.Category;
 import com.withiter.quhao.vo.Comment;
 import com.withiter.quhao.vo.Credit;
@@ -27,6 +30,8 @@ import com.withiter.quhao.vo.TopMerchant;
 
 public class ParseJson {
 
+	private static String TAG = ParseJson.class.getName();
+	
 	// TODO need to optimize these methods
 
 	public static Collection<? extends Category> getCategorys(String buf) {
@@ -46,47 +51,6 @@ public class ParseJson {
 				if (obj.has("count")) {
 					count = Long.valueOf(obj.optString("count"));
 				}
-				
-				/*
-				if (obj.has("cateType")) {
-					categoryType = obj.getString("cateType");
-					if (categoryType.equals("benbangcai"))
-						catTypeToString = "本帮菜";
-					if (categoryType.equals("chuancai"))
-						catTypeToString = "川菜";
-					if (categoryType.equals("haixian"))
-						catTypeToString = "海鲜";
-					if (categoryType.equals("hanguoliaoli"))
-						catTypeToString = "火锅料理";
-					if (categoryType.equals("mianbaodangao"))
-						catTypeToString = "面包蛋糕";
-					if (categoryType.equals("dongnanyacai"))
-						catTypeToString = "东南亚菜";
-					if (categoryType.equals("huoguo"))
-						catTypeToString = "火锅";
-					if (categoryType.equals("ribenliaoli"))
-						catTypeToString = "日本料理";
-					if (categoryType.equals("shaokao"))
-						catTypeToString = "烧烤";
-					if (categoryType.equals("tianpinyinpin"))
-						catTypeToString = "甜品饮料";
-					if (categoryType.equals("xiangcai"))
-						catTypeToString = "湘菜";
-					if (categoryType.equals("xican"))
-						catTypeToString = "西餐";
-					if (categoryType.equals("xinjiangqingzhen"))
-						catTypeToString = "新疆清真";
-					if (categoryType.equals("yuecaiguan"))
-						catTypeToString = "粤菜馆";
-					if (categoryType.equals("zhongcancaixi"))
-						catTypeToString = "中餐菜系";
-					if (categoryType.equals("zizhucan"))
-						catTypeToString = "自助餐";
-					if (categoryType.equals("xiaochikuaican"))
-						catTypeToString = "小吃快餐";
-				}
-
-				*/
 				
 				if (obj.has("cateType")) {
 					categoryType = obj.optString("cateType");
@@ -566,5 +530,19 @@ public class ParseJson {
 		}
 
 		return signup;
+	}
+	
+	public static AppVersionVO convertToAppVersionVO(String result){
+		try {
+			JSONObject json = new JSONObject(result);
+			int android = json.optInt("android");
+			int ios = json.optInt("ios");
+			AppVersionVO avo = new AppVersionVO(android, ios);
+			return avo;
+		} catch (JSONException e) {
+			e.printStackTrace();
+			QuhaoLog.e(TAG, ExceptionUtil.getTrace(e));
+			return null;
+		}
 	}
 }

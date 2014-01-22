@@ -14,6 +14,8 @@ GET     /favicon.ico                        staticFile:public/images/applyful_fa
 GET     /                     		  		LandingController.index
 
 # Routes for Android & IOS clients
+GET		/app/{action}						AppController.{action}
+
 # Routes for Android & IOS clients
 
 # Category
