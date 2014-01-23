@@ -401,6 +401,50 @@ Merchant.expired = function(seatNumber, currentNumber, mid){
 	});
 }
 
+Merchant.quhaoOnsiteConfirm = function(seatNumber, mid){
+	$("#xianchangquhao_confirm").remove();
+	var modalHTML = ""+
+	"<div class=\"modal fade\" id=\"xianchangquhao_confirm\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">"+
+	  "<div class=\"modal-dialog\">"+
+	    "<div class=\"modal-content\">"+
+	      "<div class=\"modal-header\">"+
+	        "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>"+
+	        "<h4 class=\"modal-title\" id=\"xianchangquhao_confirm_title\"></h4>"+
+	      "</div>"+
+	      "<div class=\"modal-body\" id=\"xianchangquhao_confirm_body\">"+
+	      "</div>"+
+	      "<div class=\"modal-footer\">"+
+	      	"<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">取消</button>"+
+	        "<button type=\"button\" class=\"btn btn-primary\" onclick=\"Merchant.quhaoOnsite('"+seatNumber+"','"+ mid+"');\">确定</button>"+
+	      "</div>"+
+	    "</div>"+
+	  "</div>"+
+	"</div>";
+	
+	$("#paiduiPageBody").append(modalHTML);
+	$("#xianchangquhao_confirm_title").html("现场取号");
+	
+	// body content
+	var bodyContainer = document.createElement("div");
+	$(bodyContainer).addClass("form-group");
+	
+	var inputDiv = document.createElement("div");
+	$(inputDiv).addClass("col-sm-8");
+	var inputElement = document.createElement("input");
+	$(inputElement).attr("type","telphone").addClass("form-control").attr("id", "inputTel").attr("placeholder","输入手机号码");
+	
+	$(inputElement).bind("keydown",function(){
+		console.log("aaaa");
+	});
+	
+	inputDiv.appendChild(inputElement);
+	bodyContainer.appendChild(inputDiv);
+	
+	$("#xianchangquhao_confirm_body").html(bodyContainer);
+	$("#xianchangquhao_confirm").modal();
+}
+
+
 Merchant.logout = function(aid){
 	$.ajax({
 		type:"POST",
