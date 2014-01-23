@@ -186,7 +186,7 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 			public void onClick(View v) {
 				if (activity instanceof PersonCenterActivity) {
 					QuhaoLog.i(TAG, "refresh PersonCenterActivity page");
-					((PersonCenterActivity) activity).refreshUI();
+					((PersonCenterActivity) activity).onResume();
 //					((PersonCenterActivity) activity).recreate();
 					return;
 				}

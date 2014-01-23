@@ -20,6 +20,7 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.util.encrypt.DesUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
@@ -383,6 +384,67 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 
 	@Override
 	protected void onResume() {
+		if(QHClientApplication.getInstance().isLogined)
+		{
+			String phone = SharedprefUtil.get(this, QuhaoConstant.PHONE, "");
+			String password = SharedprefUtil.get(this, QuhaoConstant.PASSWORD, "");
+			if (StringUtils.isNull(phone) || StringUtils.isNull(password)) {
+				QHClientApplication.getInstance().isLogined = false;
+				Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_LONG).show();
+				refreshUI();
+			}
+			else
+			{
+				String decryptPassword = new DesUtils().decrypt(password);
+				String url = "AccountController/login?phone=" + phone + "&password=" + decryptPassword;
+				try {
+					String result = CommonHTTPRequest.post(url);
+					if(StringUtils.isNull(result)){
+						QHClientApplication.getInstance().isLogined = false;
+						Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_LONG).show();
+					}
+					else
+					{
+						LoginInfo loginInfo = ParseJson.getLoginInfo(result);
+						AccountInfo account = new AccountInfo();
+						account.build(loginInfo);
+						QuhaoLog.d(TAG, account.msg);
+
+						if (account.msg.equals("fail")) {
+//							SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
+							QHClientApplication.getInstance().isLogined = false;
+							Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_LONG).show();
+						}
+						else if (account.msg.equals("success")) 
+						{
+							SharedprefUtil.put(this, QuhaoConstant.ACCOUNT_ID, loginInfo.accountId);
+							SharedprefUtil.put(this, QuhaoConstant.PHONE, phone);
+							String encryptPassword = new DesUtils().encrypt(password);
+							SharedprefUtil.put(this, QuhaoConstant.PASSWORD, encryptPassword);
+							String isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_AUTO_LOGIN, "false");
+							SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN, isAutoLogin);
+							QHClientApplication.getInstance().accountInfo = account;
+							QHClientApplication.getInstance().phone = phone;
+							QHClientApplication.getInstance().isLogined = true;
+						}
+						else
+						{
+							QHClientApplication.getInstance().isLogined = false;
+							Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_LONG).show();
+						}
+					}
+					refreshUI();
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+					QuhaoLog.e(TAG, e);
+					QHClientApplication.getInstance().isLogined = false;
+					Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_LONG).show();
+					refreshUI();
+				}
+			}
+			
+		}
 		super.onResume();
 	}
 

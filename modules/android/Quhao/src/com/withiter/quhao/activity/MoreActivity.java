@@ -82,6 +82,10 @@ public class MoreActivity extends QuhaoBaseActivity {
 		loginStatusImg = (ImageView) this.findViewById(R.id.more_login_status_img);
 		loginStatusTxt = (TextView) this.findViewById(R.id.more_login_status_txt);
 
+		refreshLoginStatus();
+	}
+
+	private void refreshLoginStatus() {
 		boolean loginStatus = QHClientApplication.getInstance().isLogined;
 		if (loginStatus) {
 			loginStatusImg.setImageResource(R.drawable.login_status);
@@ -286,6 +290,12 @@ public class MoreActivity extends QuhaoBaseActivity {
 		}
 	};
 
+	@Override
+	protected void onResume() {
+		refreshLoginStatus();
+		super.onResume();
+	}
+	
 	@Override
 	public boolean onTouch(View arg0, MotionEvent arg1) {
 		// TODO Auto-generated method stub

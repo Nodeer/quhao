@@ -113,6 +113,7 @@ public class QHClientApplication extends Application {
 		String isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_AUTO_LOGIN, "");
 
 		if (!Boolean.getBoolean(isAutoLogin) || StringUtils.isNull(phone) || StringUtils.isNull(password)) {
+			
 			return;
 		}
 
@@ -121,7 +122,8 @@ public class QHClientApplication extends Application {
 		try {
 			String result = CommonHTTPRequest.post(url);
 			if(StringUtils.isNull(result)){
-				SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
+//				SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
+				this.isLogined = false;
 				Toast.makeText(this, "自动登陆失败，请进入个人中心登陆", Toast.LENGTH_LONG).show();
 				return;
 			}
@@ -132,7 +134,8 @@ public class QHClientApplication extends Application {
 			QuhaoLog.d(TAG, account.msg);
 
 			if (account.msg.equals("fail")) {
-				SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
+				this.isLogined = false;
+//				SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
 				Toast.makeText(this, "自动登陆失败，请进入个人中心登陆", Toast.LENGTH_LONG).show();
 				return;
 			}
@@ -151,6 +154,7 @@ public class QHClientApplication extends Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 			QuhaoLog.e(TAG, e);
+			this.isLogined = false;
 			Toast.makeText(this, "自动登陆失败，请进入个人中心登陆", Toast.LENGTH_LONG).show();
 		}
 	}
