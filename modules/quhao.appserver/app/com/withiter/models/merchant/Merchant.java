@@ -8,6 +8,8 @@ import java.util.regex.Pattern;
 import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 
+import play.modules.morphia.Model.MorphiaQuery;
+
 import cn.bran.japid.util.StringUtils;
 
 import com.google.code.morphia.annotations.Entity;
@@ -80,8 +82,10 @@ public class Merchant extends MerchantEntityDef {
 	 * @param date joinedDate Of Merchant
 	 * @return the newest merchants
 	 */
-	public static List<Merchant> findByDate(int page,String date,String sortBy) {
+	public static List<Merchant> findByDate(String cateType,String date,String sortBy) {
 		MorphiaQuery q = Merchant.q();
+		q.filter("cateType", cateType);
+
 		if(null!=date){
 			q.filter("joinedDate >",date);
 		}else{
@@ -90,10 +94,9 @@ public class Merchant extends MerchantEntityDef {
 		if (!StringUtils.isEmpty(sortBy)) {
 			q = sortBy(q, sortBy);
 		}
-		return paginate(q, page);
-
+		return q.asList();
 	}
-
+	
 	@Override
 	public String toString() {
 		String telStr = "";

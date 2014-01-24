@@ -342,10 +342,16 @@ public class Reservation extends ReservationEntityDef {
 		c.set(Calendar.SECOND, 0);
 		
 		// query latest one day's reservation
+//		q.filter("created >", (new DateTime(c.getTimeInMillis()).toDate()));
+//		q.filter("merchantId", merchantId).filter("seatNumber", seatNumber);
+//		q.filter("myNumber", currentNumber);
+
 		q.filter("created >", (new DateTime(c.getTimeInMillis()).toDate()));
 		q.filter("merchantId", merchantId).filter("seatNumber", seatNumber);
-		q.filter("myNumber", currentNumber);
-		
+		q.filter("myNumber>", currentNumber);
+		q.filter("valid", "true");
+		q.order("myNumber").limit(1);
+
 		return q.first();
 	}
 }

@@ -15,6 +15,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import play.modules.morphia.Model.MorphiaQuery;
 import play.mvc.Before;
 import play.mvc.Http.Header;
 import vo.CategoryVO;
@@ -345,10 +346,10 @@ public class MerchantController extends BaseController {
 	 * @param date
 	 *            日期
 	 */
-	public static void getLastMerchants(int page, String date, String sortBy) {
+	public static void getLastMerchants(int page, String cateType , String date, String sortBy) {
 		page = (page == 0) ? 1 : page;
 
-		List<Merchant> merchantList = Merchant.findByDate(page, date, sortBy);
+		List<Merchant> merchantList = Merchant.findByDate(cateType, date, sortBy);
 		List<MerchantVO> merchantVOList = new ArrayList<MerchantVO>();
 		for (Merchant m : merchantList) {
 			merchantVOList.add(MerchantVO.build(m));
@@ -356,5 +357,4 @@ public class MerchantController extends BaseController {
 		renderJSON(merchantVOList);
 
 	}
-	
 }
