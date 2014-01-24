@@ -8,7 +8,7 @@ import com.withiter.models.account.Reservation;
 
 public class ReservationVO {
 	public String id;
-	public boolean tipKey = false;
+	public boolean tipKey = false;					// true means success, false means failure
 	public String tipValue = "";
 	public boolean isCommented = false;
 	public String accountId;

@@ -1,9 +1,17 @@
 package com.withiter.models.merchant;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Iterator;
 
+import org.apache.commons.httpclient.HttpException;
+
+import play.Play;
+
+import cn.bran.japid.util.StringUtils;
+
 import com.withiter.common.Constants.ReservationStatus;
+import com.withiter.common.sms.business.SMSBusiness;
 import com.withiter.models.account.Reservation;
 
 /**
@@ -59,8 +67,7 @@ public class Haoma extends HaomaEntityDef {
 	 *            座位数
 	 * @return Reservation
 	 */
-	public synchronized static Reservation nahao(String accountId, String mid, int seatNumber) {
-
+	public synchronized static Reservation nahao(String accountId, String mid, int seatNumber, String tel) {
 		Haoma haoma = Haoma.findByMerchantId(mid);
 		Paidui paidui = haoma.haomaMap.get(seatNumber);
 		paidui.enable = true;
@@ -68,7 +75,9 @@ public class Haoma extends HaomaEntityDef {
 		haoma.save();
 
 		Reservation reservation = new Reservation();
-		reservation.accountId = accountId;
+		if(StringUtils.isEmpty(tel)){
+			reservation.accountId = accountId;
+		}
 		reservation.merchantId = mid;
 		reservation.myNumber = paidui.maxNumber;
 		reservation.seatNumber = seatNumber;
@@ -77,7 +86,7 @@ public class Haoma extends HaomaEntityDef {
 		reservation.created = new Date();
 		reservation.modified = new Date();
 		reservation.save();
-
+		
 		return reservation;
 	}
 

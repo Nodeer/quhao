@@ -403,25 +403,44 @@ Merchant.expired = function(seatNumber, currentNumber, mid){
 
 Merchant.quhaoOnsiteConfirm = function(seatNumber, mid){
 	$("#xianchangquhao_confirm").remove();
-	var modalHTML = ""+
-	"<div class=\"modal fade\" id=\"xianchangquhao_confirm\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myModalLabel\" aria-hidden=\"true\">"+
-	  "<div class=\"modal-dialog\">"+
-	    "<div class=\"modal-content\">"+
-	      "<div class=\"modal-header\">"+
-	        "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>"+
-	        "<h4 class=\"modal-title\" id=\"xianchangquhao_confirm_title\"></h4>"+
-	      "</div>"+
-	      "<div class=\"modal-body\" id=\"xianchangquhao_confirm_body\">"+
-	      "</div>"+
-	      "<div class=\"modal-footer\">"+
-	      	"<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">取消</button>"+
-	        "<button type=\"button\" class=\"btn btn-primary\" onclick=\"Merchant.quhaoOnsite('"+seatNumber+"','"+ mid+"');\">确定</button>"+
-	      "</div>"+
-	    "</div>"+
-	  "</div>"+
-	"</div>";
 	
-	$("#paiduiPageBody").append(modalHTML);
+	var divModalFade = document.createElement("div");
+	$(divModalFade).addClass("modal fade").attr("id","xianchangquhao_confirm").attr("tabindex","-1").attr("role","dialog").attr("aria-labelledby","myModalLabel").attr("aria-hidden","true");
+	
+	var divModalDialog = document.createElement("div");
+	$(divModalDialog).addClass("modal-dialog");
+	
+	var divModalContent = document.createElement("div");
+	$(divModalContent).addClass("modal-content");
+	
+	var divModalHeader = document.createElement("div");
+	$(divModalHeader).addClass("modal-header");
+	var btnClose = document.createElement("button");
+	$(btnClose).attr("type","button").addClass("close").attr("data-dismiss","modal").attr("aria-hidden","true").html("&times;");
+	var modalTitle = document.createElement("h4");
+	$(modalTitle).addClass("modal-title").attr("id","xianchangquhao_confirm_title");
+	divModalHeader.appendChild(btnClose);
+	divModalHeader.appendChild(modalTitle);
+	
+	var modalBody = document.createElement("div");
+	$(modalBody).addClass("modal-body").attr("id","xianchangquhao_confirm_body");
+	
+	var modalFooter = document.createElement("div");
+	$(modalFooter).addClass("modal-footer");
+	var btnCancel = document.createElement("button");
+	$(btnCancel).attr("type","button").addClass("btn btn-primary").attr("data-dismiss","modal").text("取消");
+	var btnOK = document.createElement("button");
+	$(btnOK).attr("type","button").addClass("btn btn-primary").text("确定");
+	modalFooter.appendChild(btnCancel);
+	modalFooter.appendChild(btnOK);
+	
+	divModalContent.appendChild(divModalHeader);
+	divModalContent.appendChild(modalBody);
+	divModalContent.appendChild(modalFooter);
+	divModalDialog.appendChild(divModalContent);
+	divModalFade.appendChild(divModalDialog);
+	
+	$("#paiduiPageBody").append(divModalFade);
 	$("#xianchangquhao_confirm_title").html("现场取号");
 	
 	// body content
@@ -431,10 +450,21 @@ Merchant.quhaoOnsiteConfirm = function(seatNumber, mid){
 	var inputDiv = document.createElement("div");
 	$(inputDiv).addClass("col-sm-8");
 	var inputElement = document.createElement("input");
-	$(inputElement).attr("type","telphone").addClass("form-control").attr("id", "inputTel").attr("placeholder","输入手机号码");
+	$(inputElement).attr("type","telphone").addClass("form-control").
+	attr("maxlength","11").attr("id", "inputTel").attr("placeholder","输入手机号码");
 	
-	$(inputElement).bind("keydown",function(){
-		console.log("aaaa");
+	$(inputElement).keyup(function( event ) {
+		this.value=this.value.replace(/\D/g,'');
+	});
+	
+	$(btnOK).bind("click",function(){
+		var validate = Common.mobile($("#inputTel").val());
+		if(!validate){
+			$("#errorTelMsg").remove();
+			$("#xianchangquhao_confirm_title").append("<font id=\"errorTelMsg\" color=\"red\" style=\"padding-left:20px;\">请输入正确的手机号码</font>");
+			return;
+		}
+		Merchant.quhaoOnsite(seatNumber,mid,$(inputElement).val());
 	});
 	
 	inputDiv.appendChild(inputElement);
@@ -442,6 +472,32 @@ Merchant.quhaoOnsiteConfirm = function(seatNumber, mid){
 	
 	$("#xianchangquhao_confirm_body").html(bodyContainer);
 	$("#xianchangquhao_confirm").modal();
+}
+
+function hideModal(){
+	$("#xianchangquhao_confirm").modal("hide");
+	window.location.reload();
+}
+
+Merchant.quhaoOnsite = function(seatNumber, mid, tel){
+	$.ajax({
+		type:"POST",
+		url:"/b/w/quhaoOnsite",
+		dataType:"JSON",
+		data:{"tel":tel,"seatNumber":seatNumber,"mid":mid},
+		success:function(data){
+			if(data.tipKey == true){
+				$("#errorTelMsg").remove();
+				$("#xianchangquhao_confirm_title").append("<font id=\"errorTelMsg\" color=\"red\" style=\"padding-left:20px;\">排队号已发送到手机，3秒后自动关闭此对话框</font>");
+				setTimeout('hideModal()',3000);
+			}else{
+				alert("服务器维护中，马上就好。");
+			}
+		},
+		error:function(){
+			alert("服务器维护中，马上就好。");
+		}
+	});
 }
 
 

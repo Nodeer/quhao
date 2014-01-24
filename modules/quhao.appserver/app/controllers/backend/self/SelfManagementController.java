@@ -4,11 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.httpclient.HttpException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,13 +28,17 @@ import cn.bran.japid.util.StringUtils;
 
 import com.mongodb.gridfs.GridFSInputFile;
 import com.withiter.common.Constants;
+import com.withiter.common.Constants.CreditStatus;
+import com.withiter.common.sms.business.SMSBusiness;
 import com.withiter.models.account.Account;
+import com.withiter.models.account.Credit;
 import com.withiter.models.account.Reservation;
 import com.withiter.models.backendMerchant.MerchantAccountRel;
 import com.withiter.models.merchant.Category;
 import com.withiter.models.merchant.Haoma;
 import com.withiter.models.merchant.Merchant;
 import com.withiter.models.merchant.Paidui;
+import com.withiter.utils.ExceptionUtil;
 
 import controllers.BaseController;
 import controllers.UploadController;
@@ -51,7 +57,7 @@ public class SelfManagementController extends BaseController {
 			renderJapidWith("japidviews.backend.merchant.MerchantManagementController.index");
 		}
 	}
-	
+
 	/*
 	 * 1) account information(included information:email or phone...) 2)
 	 * Merchant information(included information:name, address...)
@@ -92,21 +98,6 @@ public class SelfManagementController extends BaseController {
 		String merchantImage = params.get("merchantImage");
 
 		String[] seatType = params.getAll("seatType");
-		
-		// TODO remove below codes
-//		for (int i = 0; i < seatType.length; i++) {
-//			System.out.print(seatType[i] + ",");
-//		}
-//
-//		System.out.println("==========");
-//
-//		System.out.println(merchantName);
-//		System.out.println(address);
-//		System.out.println(tel);
-//		System.out.println(cateType);
-//		System.out.println(openTime);
-//		System.out.println(closeTime);
-//		System.out.println(merchantImage);
 
 		if (StringUtils.isEmpty(mid)) {
 			m = new Merchant();
@@ -192,7 +183,7 @@ public class SelfManagementController extends BaseController {
 		String mid = params.get("mid");
 		Haoma haoma = Haoma.findByMerchantId(mid);
 		haoma.updateSelf();
-		
+
 		HaomaVO haomaVO = HaomaVO.build(haoma);
 
 		String uid = Session.current().get(Constants.SESSION_USERNAME);
@@ -208,11 +199,11 @@ public class SelfManagementController extends BaseController {
 		String aid = params.get("aid");
 		Account account = Account.findById(aid);
 		AccountVO avo = AccountVO.build(account);
-		
+
 		String mid = params.get("mid");
 		Merchant merchant = Merchant.findById(mid);
 		BackendMerchantInfoVO bmivo = BackendMerchantInfoVO.build(merchant, account);
-		
+
 		renderJapid(avo, bmivo);
 	}
 
@@ -233,24 +224,9 @@ public class SelfManagementController extends BaseController {
 	public static void paiduiPageAutoRefresh() {
 		String mid = params.get("mid");
 		Haoma haoma = Haoma.findByMerchantId(mid);
-		
+
 		haoma.updateSelf();
-		
-//		Iterator ite = haoma.haomaMap.keySet().iterator();
-//		while(ite.hasNext()){
-//			Integer key = (Integer)ite.next();
-//			Paidui p = haoma.haomaMap.get(key);
-//			if(!p.enable){
-//				continue;
-//			}
-//			
-//			// if maxNumber > 0 and currentNumber == 0, then set currentNumber to 1
-//			if(p.maxNumber > 0 && p.currentNumber == 0 ){
-//				p.currentNumber = 1;
-//				haoma.save();
-//			}
-//		}
-		
+
 		HaomaVO haomaVO = HaomaVO.build(haoma);
 		renderJapidWith("japidviews.backend.self.SelfManagementController.goPaiduiPageRefresh", haomaVO);
 	}
@@ -262,8 +238,8 @@ public class SelfManagementController extends BaseController {
 		String cNumber = params.get("currentNumber");
 		String sNumber = params.get("seatNumber");
 		String mid = params.get("mid");
-		
-		if(StringUtils.isEmpty(cNumber) || StringUtils.isEmpty(sNumber) || StringUtils.isEmpty(mid)){
+
+		if (StringUtils.isEmpty(cNumber) || StringUtils.isEmpty(sNumber) || StringUtils.isEmpty(mid)) {
 			renderJSON(false);
 		}
 		int currentNumber = Integer.parseInt(cNumber);
@@ -277,7 +253,7 @@ public class SelfManagementController extends BaseController {
 			renderJSON(false);
 		}
 	}
-	
+
 	/**
 	 * expire one reservation by merchant
 	 */
@@ -285,8 +261,8 @@ public class SelfManagementController extends BaseController {
 		String cNumber = params.get("currentNumber");
 		String sNumber = params.get("seatNumber");
 		String mid = params.get("mid");
-		
-		if(StringUtils.isEmpty(cNumber) || StringUtils.isEmpty(sNumber) || StringUtils.isEmpty(mid)){
+
+		if (StringUtils.isEmpty(cNumber) || StringUtils.isEmpty(sNumber) || StringUtils.isEmpty(mid)) {
 			renderJSON(false);
 		}
 		int currentNumber = Integer.parseInt(cNumber);
@@ -299,6 +275,57 @@ public class SelfManagementController extends BaseController {
 		} else {
 			renderJSON(false);
 		}
+	}
+
+	/**
+	 * 现场输入手机号取号
+	 */
+	public static void quhaoOnsite() {
+		String tel = params.get("tel");
+		String seatN = params.get("seatNumber");
+		String mid = params.get("mid");
+
+		ReservationVO rvo = new ReservationVO();
+		if (StringUtils.isEmpty(tel) || StringUtils.isEmpty(seatN) || StringUtils.isEmpty(mid)) {
+			rvo.tipKey = false;
+			rvo.tipValue = "NAHAO_FAILED";
+			renderJSON(rvo);
+		}
+
+		int seatNumber = Integer.parseInt(seatN);
+		Reservation reservation = Haoma.nahao(null, mid, seatNumber, tel);
+		Haoma haomaNew = Haoma.findByMerchantId(mid);
+		rvo.currentNumber = haomaNew.haomaMap.get(seatNumber).currentNumber;
+		int cancelCount = (int) Reservation.findCountBetweenCurrentNoAndMyNumber(mid, haomaNew.haomaMap.get(seatNumber).currentNumber, reservation.myNumber, seatNumber);
+		rvo.beforeYou = reservation.myNumber - (haomaNew.haomaMap.get(seatNumber).currentNumber + cancelCount);
+		rvo.tipKey = true;
+		rvo.tipValue = "NAHAO_SUCCESS";
+		rvo.build(reservation);
+
+		// send message
+		// TODO need to verify send message function
+		String paiduihaoTip = Play.configuration.getProperty("service.sms.paiduihao");
+		String qianmianTip = Play.configuration.getProperty("service.sms.qianmian");
+		String content = paiduihaoTip + reservation.myNumber + ", " + qianmianTip + rvo.beforeYou;
+		try {
+			int i = SMSBusiness.sendSMS(tel, content);
+			if (i < 0) {
+				rvo.tipKey = false;
+				rvo.tipValue = "发送短信失败";
+			}
+		} catch (HttpException e) {
+			rvo.tipKey = false;
+			rvo.tipValue = "发送短信失败";
+			e.printStackTrace();
+			logger.error(ExceptionUtil.getTrace(e));
+		} catch (IOException e) {
+			rvo.tipKey = false;
+			rvo.tipValue = "发送短信失败";
+			e.printStackTrace();
+			logger.error(ExceptionUtil.getTrace(e));
+		}
+
+		renderJSON(rvo);
 	}
 
 	private static GridFSInputFile uploadFirst(String param, String mid) {
