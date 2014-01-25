@@ -306,7 +306,8 @@ public class SelfManagementController extends BaseController {
 		// TODO need to verify send message function
 		String paiduihaoTip = Play.configuration.getProperty("service.sms.paiduihao");
 		String qianmianTip = Play.configuration.getProperty("service.sms.qianmian");
-		String content = paiduihaoTip + reservation.myNumber + ", " + qianmianTip + rvo.beforeYou;
+		String apptuijian = Play.configuration.getProperty("service.sms.apptuijian");
+		String content = paiduihaoTip + reservation.myNumber + ", " + qianmianTip + rvo.beforeYou+","+apptuijian;
 		try {
 			int i = SMSBusiness.sendSMS(tel, content);
 			if (i < 0) {
