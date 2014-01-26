@@ -303,25 +303,33 @@ public class SelfManagementController extends BaseController {
 		rvo.build(reservation);
 
 		// send message
-		// TODO need to verify send message function
 		String paiduihaoTip = Play.configuration.getProperty("service.sms.paiduihao");
 		String qianmianTip = Play.configuration.getProperty("service.sms.qianmian");
 		String apptuijian = Play.configuration.getProperty("service.sms.apptuijian");
-		String content = paiduihaoTip + reservation.myNumber + ", " + qianmianTip + rvo.beforeYou+","+apptuijian;
+		String content = paiduihaoTip + reservation.myNumber + ", " + qianmianTip + rvo.beforeYou + "," + apptuijian;
 		try {
 			int i = SMSBusiness.sendSMS(tel, content);
-			if (i < 0) {
-				rvo.tipKey = false;
-				rvo.tipValue = "发送短信失败";
+			int j = 0;
+			while (i < 0) {
+				i = SMSBusiness.sendSMS(tel, content);
+				j++;
+				if (j == 3) {
+					Haoma.nahaoRollback(reservation);
+					rvo.tipValue = "发送短信失败，请重新发送";
+					rvo.tipKey = false;
+					break;
+				}
 			}
 		} catch (HttpException e) {
+			Haoma.nahaoRollback(reservation);
+			rvo.tipValue = "发送短信失败，请重新发送";
 			rvo.tipKey = false;
-			rvo.tipValue = "发送短信失败";
 			e.printStackTrace();
 			logger.error(ExceptionUtil.getTrace(e));
 		} catch (IOException e) {
+			Haoma.nahaoRollback(reservation);
+			rvo.tipValue = "发送短信失败，请重新发送";
 			rvo.tipKey = false;
-			rvo.tipValue = "发送短信失败";
 			e.printStackTrace();
 			logger.error(ExceptionUtil.getTrace(e));
 		}

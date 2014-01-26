@@ -89,6 +89,27 @@ public class Haoma extends HaomaEntityDef {
 		
 		return reservation;
 	}
+	
+	/**
+	 * 拿号（同步方法）
+	 * 
+	 * @param accountId
+	 *            用户id
+	 * @param mid
+	 *            商家id
+	 * @param seatNumber
+	 *            座位数
+	 * @return Reservation
+	 */
+	public synchronized static void nahaoRollback(Reservation reservation) {
+		Haoma haoma = Haoma.findByMerchantId(reservation.merchantId);
+		Paidui paidui = haoma.haomaMap.get(reservation.seatNumber);
+		paidui.maxNumber -= 1;
+		haoma.save();
+		reservation.valid = false;
+		reservation.status = ReservationStatus.canceled;
+		reservation.save();
+	}
 
 	/**
 	 * 更新X人座位的finished, canceled, expired 数量

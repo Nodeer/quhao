@@ -11,7 +11,6 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.withiter.jobs.CategoryJob;
 import com.withiter.models.merchant.Tese;
 import com.withiter.models.merchant.TopMerchant;
 
