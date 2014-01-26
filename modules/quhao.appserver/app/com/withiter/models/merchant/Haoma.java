@@ -75,9 +75,13 @@ public class Haoma extends HaomaEntityDef {
 		haoma.save();
 
 		Reservation reservation = new Reservation();
-		if(StringUtils.isEmpty(tel)){
-			reservation.accountId = accountId;
-		}
+		
+		//TODO :wjzwjz why accountId have value when tel have to be null? if like this, how can i find the reservation by account at phone client?
+//		if(StringUtils.isEmpty(tel)){
+//			reservation.accountId = accountId;
+//		}
+		reservation.accountId = accountId;
+		
 		reservation.merchantId = mid;
 		reservation.myNumber = paidui.maxNumber;
 		reservation.seatNumber = seatNumber;
