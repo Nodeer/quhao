@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.withiter.quhao.R;
+import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.vo.Comment;
 
 public class CommentAccountAdapter extends BaseAdapter {
@@ -84,6 +85,10 @@ public class CommentAccountAdapter extends BaseAdapter {
 			}
 
 			holder.nickName.setText(comment.nickName);
+			if(StringUtils.isNull(comment.nickName))
+			{
+				holder.nickName.setText("匿名");
+			}
 			holder.modified.setText(comment.modified);
 			holder.merchantName.setText(comment.merchantName);
 			holder.merchantAddress.setText(comment.merchantAddress);

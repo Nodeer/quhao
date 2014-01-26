@@ -12,7 +12,9 @@ import java.util.HashMap;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
+import com.withiter.quhao.util.encrypt.DesUtils;
 import com.withiter.quhao.util.tool.ImageUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SDTool;
@@ -120,9 +122,6 @@ public class AsyncImageLoader {
 	public Drawable loadDrawable(String imageUrl) {
 
 		try{
-			if (QuhaoConstant.test) {
-				imageUrl = imageUrl.replace("localhost", QuhaoConstant.HTTP_URL);
-			}
 
 			QuhaoLog.i(TAG, "imageUrl: " + imageUrl);
 
@@ -161,6 +160,9 @@ public class AsyncImageLoader {
 		HttpURLConnection conn = null;
 		InputStream is = null;
 		try {
+			if (QuhaoConstant.test) {
+				url = url.replace("http://localhost:9081/", QuhaoConstant.HTTP_URL);
+			}
 			picUrl = new URL(url);
 			conn = (HttpURLConnection) picUrl.openConnection();
 			conn.setConnectTimeout(20000);
@@ -171,8 +173,10 @@ public class AsyncImageLoader {
 			is = conn.getInputStream();
 
 			if (SDTool.instance().SD_EXIST && picSize < SDTool.instance().getSDFreeSize()) {
+				
 				File file = ImageUtil.getInstance().saveFile(url, is);
-				d = Drawable.createFromPath(file.getPath());
+				String path = file.getPath();
+				d = Drawable.createFromPath(path);
 				return d;
 			}
 
