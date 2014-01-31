@@ -1,5 +1,7 @@
 package vo.account;
 
+import java.util.Date;
+
 import com.withiter.models.account.Credit;
 
 public class CreditVO {
@@ -54,6 +56,8 @@ public class CreditVO {
 	 */
 	public String status;
 	
+	public Date created = new Date();
+
 	public void build(Credit credit) {
 		
 		this.accountId = credit.accountId;
@@ -61,6 +65,7 @@ public class CreditVO {
 		this.reservationId = credit.reservationId;
 		this.cost = credit.cost;
 		this.jifen=credit.jifen;
+		this.created = credit.created;
 		this.status = credit.status.toString();
 	}
 
