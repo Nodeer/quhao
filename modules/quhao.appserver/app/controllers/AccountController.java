@@ -1,6 +1,8 @@
 package controllers;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -380,6 +382,11 @@ public class AccountController extends BaseController {
 			merchant = Merchant.findById(reservation.merchantId);
 			reservationVO.merchantName = merchant.name;
 			reservationVO.merchantAddress = merchant.address;
+			try {
+				reservationVO.merchantImage = URLDecoder.decode(merchant.merchantImage, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 			reservationVO.build(reservation);
 			currentReservationVOs.add(reservationVO);
 		}
@@ -405,6 +412,11 @@ public class AccountController extends BaseController {
 			merchant = Merchant.findById(reservation.merchantId);
 			reservationVO.merchantName = merchant.name;
 			reservationVO.merchantAddress = merchant.address;
+			try {
+				reservationVO.merchantImage = URLDecoder.decode(merchant.merchantImage, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 			reservationVO.build(reservation);
 			histroytReservationVOs.add(reservationVO);
 		}

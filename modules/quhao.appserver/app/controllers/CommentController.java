@@ -117,7 +117,7 @@ public class CommentController  extends BaseController{
 	}
 	
 	/**
-	 *  根据商家ID获取评论
+	 *  根据用户ID获取评论
 	 * @return 评论
 	 * @param  date 日期
 	 */
