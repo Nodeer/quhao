@@ -262,12 +262,7 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 			try {
 				QuhaoLog.v(TAG, "get seat numbers data form server begin");
 				String accountId = SharedprefUtil.get(GetNumberActivity.this, QuhaoConstant.ACCOUNT_ID, "");
-				String buf = CommonHTTPRequest.get("nahao?accountId=" + accountId + "&mid=" + merchantId + "&seatNumber=" + currentPaidui.seatNo); // TODO
-																																					// :
-																																					// need
-																																					// to
-																																					// change
-																																					// wjzwjz
+				String buf = CommonHTTPRequest.get("nahao?accountId=" + accountId + "&mid=" + merchantId + "&seatNumber=" + currentPaidui.seatNo);
 				// + GetNumberActivity.this.merchantId);
 				if (StringUtils.isNull(buf)) {
 					Toast.makeText(GetNumberActivity.this, "当前网络异常，请重新拿号。", Toast.LENGTH_LONG).show();
@@ -283,6 +278,8 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 					getNoUpdateHandler.obtainMessage(200, reservation).sendToTarget();
 				}
 			} catch (Exception e) {
+				Toast.makeText(GetNumberActivity.this, "当前网络异常，请重新拿号。", Toast.LENGTH_LONG).show();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				e.printStackTrace();
 			} finally {
 				progress.closeProgress();
@@ -300,12 +297,7 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 		public void run() {
 			try {
 				QuhaoLog.v(TAG, "get seat numbers data form server begin");
-				String buf = CommonHTTPRequest.get("getCurrentNo?id=" + merchantId + "&seatNo=" + currentPaidui.seatNo); // TODO
-																															// :
-																															// need
-																															// to
-																															// change
-																															// wjzwjz
+				String buf = CommonHTTPRequest.get("getCurrentNo?id=" + merchantId + "&seatNo=" + currentPaidui.seatNo); 
 				// + GetNumberActivity.this.merchantId);
 				if (StringUtils.isNull(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);

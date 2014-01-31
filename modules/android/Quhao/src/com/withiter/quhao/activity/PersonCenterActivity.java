@@ -240,8 +240,10 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 						}
 					}
 				} catch (Exception e) {
+					Toast.makeText(PersonCenterActivity.this, "签到失败", Toast.LENGTH_LONG).show();
 					e.printStackTrace();
 				} finally {
+					refreshUI();
 					progressDialogUtil.closeProgress();
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				}
@@ -391,7 +393,6 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			if (StringUtils.isNull(phone) || StringUtils.isNull(password)) {
 				QHClientApplication.getInstance().isLogined = false;
 				Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_LONG).show();
-				refreshUI();
 			}
 			else
 			{
@@ -433,18 +434,18 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 							Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_LONG).show();
 						}
 					}
-					refreshUI();
 					
 				} catch (Exception e) {
 					e.printStackTrace();
 					QuhaoLog.e(TAG, e);
 					QHClientApplication.getInstance().isLogined = false;
 					Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_LONG).show();
-					refreshUI();
+					
 				}
 			}
 			
 		}
+		refreshUI();
 		super.onResume();
 	}
 

@@ -224,7 +224,7 @@ public class MerchantController extends BaseController {
 				rvo = new ReservationVO();
 
 				int canclCount = (int) Reservation.findCountBetweenCurrentNoAndMyNumber(mid, paidui.currentNumber, r.myNumber, r.seatNumber);
-				rvo.beforeYou = r.myNumber - (paidui.currentNumber + canclCount);
+				rvo.beforeYou = r.myNumber - (paidui.currentNumber + canclCount) -1;
 				rvo.currentNumber = paidui.currentNumber;
 				rvo.build(r);
 				rvos.add(rvo);
@@ -271,7 +271,7 @@ public class MerchantController extends BaseController {
 			Haoma haomaNew = Haoma.findByMerchantId(mid);
 			rvo.currentNumber = haomaNew.haomaMap.get(seatNumber).currentNumber;
 			int cancelCount = (int) Reservation.findCountBetweenCurrentNoAndMyNumber(mid, haomaNew.haomaMap.get(seatNumber).currentNumber, reservation.myNumber, seatNumber);
-			rvo.beforeYou = reservation.myNumber - (haomaNew.haomaMap.get(seatNumber).currentNumber + cancelCount);
+			rvo.beforeYou = reservation.myNumber - (haomaNew.haomaMap.get(seatNumber).currentNumber + cancelCount) -1;
 			rvo.tipKey = true;
 			rvo.tipValue = "NAHAO_SUCCESS";
 			rvo.build(reservation);

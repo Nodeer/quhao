@@ -1,6 +1,7 @@
 package com.withiter.quhao.activity;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
@@ -30,6 +31,7 @@ import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SharedprefUtil;
 import com.withiter.quhao.vo.LoginInfo;
+import com.withiter.quhao.vo.ReservationVO;
 
 public class LoginActivity extends QuhaoBaseActivity {
 
@@ -215,8 +217,30 @@ public class LoginActivity extends QuhaoBaseActivity {
 				if (StringUtils.isNotNull(activityName)) {
 					Intent intent = new Intent();
 					if (MerchantDetailActivity.class.getName().equals(activityName)) {
-						intent.putExtra("merchantId", (String) transfortParams.get("merchantId"));
-						intent.setClass(LoginActivity.this, GetNumberActivity.class);
+						try {
+							intent.putExtra("merchantId", (String) transfortParams.get("merchantId"));
+							String accountId = QHClientApplication.getInstance().accountInfo.accountId;
+							String buf = CommonHTTPRequest.get("getReservations?accountId=" + accountId + "&mid=" + transfortParams.get("merchantId"));
+							if (StringUtils.isNull(buf) || "[]".equals(buf)) {
+								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+								intent.setClass(LoginActivity.this, GetNumberActivity.class);
+							} else {
+								List<ReservationVO> rvos = ParseJson.getReservations(buf);
+								if(null != rvos && !rvos.isEmpty())
+								{
+									Toast.makeText(LoginActivity.this, "已有该商家的排队号吗！", Toast.LENGTH_LONG).show();
+									intent.setClass(LoginActivity.this, MerchantDetailActivity.class);
+								}
+								else
+								{
+									intent.setClass(LoginActivity.this, GetNumberActivity.class);
+								}
+							}
+						} catch (Exception e) {
+							
+							e.printStackTrace();
+						}
+						
 					} else if (PersonCenterActivity.class.getName().equals(activityName)) {
 						intent.setClass(LoginActivity.this, PersonCenterActivity.class);
 						Bundle mBundle = new Bundle();  
@@ -229,7 +253,6 @@ public class LoginActivity extends QuhaoBaseActivity {
 					} else if ("com.withiter.quhao.activity.RegisterActivity".equals(activityName)) {
 						intent.setClass(LoginActivity.this, PersonCenterActivity.class);
 						Bundle mBundle = new Bundle();  
-						
 						QuhaoLog.d(TAG, "(AccountInfo)msg.obj : " + ((AccountInfo)msg.obj).password);
 				        mBundle.putSerializable("account", (AccountInfo)msg.obj);  
 				        intent.putExtras(mBundle);  

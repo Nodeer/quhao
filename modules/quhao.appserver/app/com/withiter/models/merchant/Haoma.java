@@ -75,9 +75,13 @@ public class Haoma extends HaomaEntityDef {
 		haoma.save();
 
 		Reservation reservation = new Reservation();
-		if(StringUtils.isEmpty(tel)){
-			reservation.accountId = accountId;
-		}
+		
+		//TODO :wjzwjz why accountId have value when tel have to be null? if like this, how can i find the reservation by account at phone client?
+//		if(StringUtils.isEmpty(tel)){
+//			reservation.accountId = accountId;
+//		}
+		reservation.accountId = accountId;
+		
 		reservation.merchantId = mid;
 		reservation.myNumber = paidui.maxNumber;
 		reservation.seatNumber = seatNumber;
@@ -88,6 +92,27 @@ public class Haoma extends HaomaEntityDef {
 		reservation.save();
 		
 		return reservation;
+	}
+	
+	/**
+	 * 拿号（同步方法）
+	 * 
+	 * @param accountId
+	 *            用户id
+	 * @param mid
+	 *            商家id
+	 * @param seatNumber
+	 *            座位数
+	 * @return Reservation
+	 */
+	public synchronized static void nahaoRollback(Reservation reservation) {
+		Haoma haoma = Haoma.findByMerchantId(reservation.merchantId);
+		Paidui paidui = haoma.haomaMap.get(reservation.seatNumber);
+		paidui.maxNumber -= 1;
+		haoma.save();
+		reservation.valid = false;
+		reservation.status = ReservationStatus.canceled;
+		reservation.save();
 	}
 
 	/**

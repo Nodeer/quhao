@@ -123,8 +123,7 @@ public class Merchant extends MerchantEntityDef {
 	}
 
 	// TODO add comments here
-	public static List<Merchant> findbyReservations(
-			List<Reservation> reservations) {
+	public static List<Merchant> findbyReservations(List<Reservation> reservations) {
 		/*
 		String whereSql = "where 1=1 ";
 		if (null != reservations && !reservations.isEmpty()) {

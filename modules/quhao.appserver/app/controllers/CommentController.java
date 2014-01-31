@@ -27,11 +27,11 @@ public class CommentController  extends BaseController{
 	 */
 	public static void updateComment(String rid,int kouwei,int huanjing,int fuwu,int xingjiabi,String content,int grade,String averageCost,String cost) {
 		if (StringUtils.isEmpty(rid)||rid.equals("(null)")) {
-			renderJSON("服务器错误");
+			renderJSON("error");
 		}
 		Reservation reservation = Reservation.findByRid(rid);
 		if (reservation == null) {
-			renderText("服务器错误");
+			renderText("error");
 		}else{
 			if(!reservation.isCommented){
 				Account account = Account.findById(reservation.accountId);

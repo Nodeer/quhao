@@ -67,6 +67,7 @@ public class SMSBusiness {
 		}
 		
 		HttpClient client = new HttpClient();
+		client.getHttpConnectionManager().getParams().setConnectionTimeout(5000);
 		PostMethod post = new PostMethod("http://utf8.sms.webchinese.cn");
 		post.addRequestHeader("Content-Type",
 				"application/x-www-form-urlencoded;charset=utf8");// 在头文件中设置转码

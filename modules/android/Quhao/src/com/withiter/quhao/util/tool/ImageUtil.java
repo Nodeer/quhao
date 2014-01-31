@@ -9,8 +9,10 @@ import java.io.OutputStream;
 import com.withiter.quhao.activity.GetNumberActivity;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.util.encrypt.DesUtils;
 
 import android.os.Environment;
+import android.util.Log;
 
 /**
  * 
@@ -68,10 +70,12 @@ public class ImageUtil {
 		if (StringUtils.isNull(imageUrl)) {
 			return null;
 		}
+		
 		String fileName = imageUrl.split("\\?fileName=")[1];
+		String newFileName = DesUtils.byteArr2HexStr(fileName.getBytes());
 		File file = null;
 		try {
-			file = new File(cacheDir, fileName);
+			file = new File(cacheDir, newFileName);
 			if (!file.exists()) {
 				file.createNewFile();
 				OutputStream os = new FileOutputStream(file);
@@ -87,7 +91,8 @@ public class ImageUtil {
 				os.close();
 			}
 
-		} catch (Exception e) {
+		} catch (Throwable e) {
+			Log.e(fileName, e.getMessage());
 			e.printStackTrace();
 		}
 		return file;

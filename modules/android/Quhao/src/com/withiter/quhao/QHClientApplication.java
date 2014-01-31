@@ -112,7 +112,7 @@ public class QHClientApplication extends Application {
 		String password = SharedprefUtil.get(this, QuhaoConstant.PASSWORD, "");
 		String isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_AUTO_LOGIN, "");
 
-		if (!Boolean.getBoolean(isAutoLogin) || StringUtils.isNull(phone) || StringUtils.isNull(password)) {
+		if (!"false".equals(isAutoLogin) || StringUtils.isNull(phone) || StringUtils.isNull(password)) {
 			
 			return;
 		}

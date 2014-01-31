@@ -72,12 +72,12 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 		imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 		
         // no content on top merchant grid
-		if (StringUtils.isNull(topMerchant.id)) {
+		if (StringUtils.isNull(topMerchant.merchantImage)) {
 			imageView.setImageResource(R.drawable.no_logo);
 			return imageView;
 		}
 		
-		String imageUrl = topMerchant.url;
+		String imageUrl = topMerchant.merchantImage;
 		QuhaoLog.d(TAG, "asyncImageLoader, the imageUrl is : " + imageUrl);
 		if (StringUtils.isNotNull(imageUrl)) {
 			cachedImage = asyncImageLoader.loadDrawable(imageUrl, position);

@@ -42,7 +42,7 @@ public class TopMerchant {
 	public TopMerchant(String id, String mid, String imgUrl, String name) {
 		this.id = id;
 		this.mid = mid;
-		this.url = imgUrl;
+		this.merchantImage = imgUrl;
 		this.name = name;
 	}
 }
