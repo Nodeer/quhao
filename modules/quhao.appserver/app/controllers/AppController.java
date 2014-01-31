@@ -10,7 +10,7 @@ public class AppController extends BaseController {
 	
 	public static void appCode(){
 		String android = Play.configuration.getProperty("app.versioncode.android");
-		String ios = Play.configuration.getProperty("app.versioncode.android");
+		String ios = Play.configuration.getProperty("app.versioncode.ios");
 		AppVersionVO avo = new AppVersionVO(android, ios);
 		renderJSON(avo);
 	}
