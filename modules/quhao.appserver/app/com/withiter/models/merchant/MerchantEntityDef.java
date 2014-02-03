@@ -55,6 +55,8 @@ public abstract class MerchantEntityDef extends BaseModel {
 	public String closeTime;	
 	public int markedCount;
 	public boolean enable = false;
+	
+	// TODO change to Date
 	public String joinedDate = new Date().toString();
 	
 	/**
