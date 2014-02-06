@@ -51,6 +51,8 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 	private Button editPasswordBtn;
 
 	private final int UNLOCK_CLICK = 1000;
+	
+	private ProgressDialogUtil progress;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -100,8 +102,8 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 	}
 
 	public void refreshUI() {
-		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
-		progressDialogUtil.showProgress();
+		progress = new ProgressDialogUtil(this, R.string.empty, R.string.connecting, false);
+		progress.showProgress();
 		// if haven't login, prompt the login dialog
 		// no need to check auto login from SharedPreference
 		// because when APP start up, the action had been performed
@@ -116,10 +118,10 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			} else {
 				loginBtn.setVisibility(View.VISIBLE);
 				regBtn.setVisibility(View.VISIBLE);
-				progressDialogUtil.closeProgress();
+				progress.closeProgress();
 			}
 		} else {
-			progressDialogUtil.closeProgress();
+			progress.closeProgress();
 		}
 
 	}
@@ -143,7 +145,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		if ("true".equals(account.isSignIn)) {
 			signInLayout.setEnabled(false);
 		}
-		progressDialogUtil.closeProgress();
+		progress.closeProgress();
 	}
 
 	private Handler accountUpdateHandler = new Handler() {
