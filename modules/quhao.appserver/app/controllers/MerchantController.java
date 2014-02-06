@@ -77,10 +77,10 @@ public class MerchantController extends BaseController {
 			logger.debug("The caller agent is pc : " + !mobileAgent);
 		}
 
-		if (!session.contains(Constants.SESSION_USERNAME)) {
-			logger.debug("no session is found in Constants.SESSION_USERNAME");
-			renderJapidWith("japidviews.backend.merchant.MerchantManagementController.index");
-		}
+//		if (!session.contains(Constants.SESSION_USERNAME)) {
+//			logger.debug("no session is found in Constants.SESSION_USERNAME");
+//			renderJapidWith("japidviews.backend.merchant.MerchantManagementController.index");
+//		}
 	}
 
 	/**
