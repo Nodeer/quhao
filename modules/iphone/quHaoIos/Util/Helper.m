@@ -164,7 +164,7 @@
     if([NSUserName() compare:@"sam"]==0){
         ip=@"http://localhost:9081";
     }else{
-        
+        ip=@"http://192.168.2.101:9081";
     }
     return ip;
 }
