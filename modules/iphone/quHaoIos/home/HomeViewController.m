@@ -25,6 +25,7 @@
 
 -(void)loadNavigationItem
 {
+    self.view.backgroundColor=[UIColor whiteColor];
     CGSize size=CGSizeMake(500,44);
     [self.navigationController.navigationBar setBackgroundImage:[Helper reSizeImage:@"title.jpg" toSize:size] forBarMetrics:UIBarMetricsDefault];
     
