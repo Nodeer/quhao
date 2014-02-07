@@ -1,0 +1,341 @@
+//
+//  MineViewController.m
+//  quHaoApp
+//
+//  Created by sam on 13-7-28.
+//  Copyright (c) 2013年 sam. All rights reserved.
+//
+
+#import "MineViewController.h"
+
+@interface MineViewController ()
+
+@end
+
+@implementation MineViewController
+@synthesize egoImgView;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        self.title=@"我的";
+        self.tabBarItem.image = [UIImage imageNamed:@"mine"];
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    UIView  *view=[[UIView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
+    view.backgroundColor=[UIColor whiteColor];
+    self.view=view;
+    _mineView=[[UITableView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, kDeviceHeight) style:UITableViewStylePlain];
+    _mineView.dataSource=self;
+    _mineView.delegate=self;
+    _mineView.backgroundColor=[UIColor whiteColor];
+    _mineView.indicatorStyle=UIScrollViewIndicatorStyleWhite;
+    [self.view addSubview:_mineView];
+    
+    CGSize size=CGSizeMake(500,44);
+    [self.navigationController.navigationBar setBackgroundImage:[Helper reSizeImage:@"title.jpg" toSize:size] forBarMetrics:UIBarMetricsDefault];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(noticeUpdateHandler:) name:@"Notification_NoticeUpdate" object:nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    helper=[Helper new];
+    //登录判断
+    if (userInfo==nil) {
+        userInfo= [UserInfo alloc];
+    }
+    if (helper.isCookie == NO) {
+        UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"请登录后查看信息" delegate:self cancelButtonTitle:@"返回" destructiveButtonTitle:nil otherButtonTitles:@"登录", nil];
+        [sheet showInView:[UIApplication sharedApplication].keyWindow];
+    }
+    //如果已经登录 则判断是否是刚刚登录  如果是  则刷新要不要？
+    else if(self.isLoginJustNow)
+    {
+        self.isLoginJustNow = NO;
+        helper.viewBeforeLogin = nil;
+        helper.viewNameBeforeLogin = nil;
+        [self reload];
+        [_mineView reloadData];
+    }
+    //如果cookie存在且不是刚刚登录的话
+    else if(!self.isLoginJustNow&&helper.isCookie==YES){
+        self.isLoginJustNow = NO;
+        helper.viewBeforeLogin = nil;
+        helper.viewNameBeforeLogin = nil;
+        [self reload];
+        
+        [_mineView reloadData];
+    }
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 5;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    int row = [indexPath row];
+    if(row==0){
+        return 130;
+    }else if(row==1){
+        return 76;
+    }
+    return 53;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    cell.backgroundColor = [UIColor whiteColor];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellTableIdentifier"];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellTabeIndentifier"];
+        if ([indexPath row] ==0 ) {//用户行
+            self.egoImgView = [[EGOImageView alloc] initWithFrame:CGRectMake(10, 10, 110, 110)];
+            self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
+            [cell.contentView addSubview:self.egoImgView];
+            if (![[Helper returnUserString:@"showImage"] boolValue]||nil==userInfo.imgUrl||[userInfo.imgUrl isEqualToString:@""])
+            {
+                self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
+            }
+            else
+            {
+                self.egoImgView.imageURL = [NSURL URLWithString:userInfo.imgUrl];
+            }
+            
+            UILabel *_numberLabel = [Helper getCustomLabel:@"" font:18 rect:CGRectMake(egoImgView.frame.origin.x+egoImgView.frame.size.width+15,20, 220, 35)];
+            if(userInfo.username==nil||[userInfo.username isEqualToString:@""]){
+                _numberLabel.text=@"您还没有登录哦";
+            }else{
+                _numberLabel.text=[NSString stringWithFormat:@"%@%@",@"qh",userInfo.phone];
+            }
+            _numberLabel.font = [UIFont systemFontOfSize:18];
+            [cell.contentView addSubview:_numberLabel];
+            
+            UILabel *_jfLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@ %d",@"剩余积分 ",userInfo.jifen] font:18 rect:CGRectMake(_numberLabel.frame.origin.x, _numberLabel.frame.origin.y+_numberLabel.frame.size.height+3, 190, 35)];
+            _jfLabel.font = [UIFont systemFontOfSize:18];
+            [cell.contentView addSubview:_jfLabel];
+            
+        }else if ([indexPath row] ==1 ) { //签到和点评           
+            UILabel *_qdLabel = [Helper getCustomLabel:@"签到" font:18 rect:CGRectMake(90, 12, 60, 30)];
+            if(userInfo.isSignIn){
+                _qdLabel.textColor=[UIColor blackColor];
+            }else{
+                _qdLabel.textColor=[UIColor redColor];
+                UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickUILable:)];
+                _qdLabel.userInteractionEnabled=YES;
+                _qdLabel.font = [UIFont systemFontOfSize:18];
+                [_qdLabel addGestureRecognizer:tapGesture];
+            }
+            [cell.contentView addSubview:_qdLabel];
+            
+            UILabel *_qdValueLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%d",userInfo.signIn] font:18 rect:CGRectMake(_qdLabel.frame.origin.x+10, _qdLabel.frame.size.height+8, 60, 30)];
+            _qdValueLabel.font = [UIFont systemFontOfSize:18];
+            [cell.contentView addSubview:_qdValueLabel];
+            
+            UILabel *_dpLabel = [Helper getCustomLabel:@"点评" font:18 rect:CGRectMake(_qdLabel.frame.origin.x+_qdLabel.frame.size.width+35, _qdLabel.frame.origin.y, _qdLabel.frame.size.width, 30)];
+            UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickDp:)];
+            _dpLabel.userInteractionEnabled=YES;
+            _dpLabel.font = [UIFont systemFontOfSize:18];
+            [_dpLabel addGestureRecognizer:tapGesture];
+            [cell.contentView addSubview:_dpLabel];
+            
+            UILabel *_dpValueLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%d",userInfo.dianping] font:18 rect:CGRectMake(_dpLabel.frame.origin.x+18, _dpLabel.frame.size.height+8, 60, 30)];
+            UITapGestureRecognizer *tapGesture2=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickDp:)];
+            _dpValueLabel.userInteractionEnabled=YES;
+            [_dpValueLabel addGestureRecognizer:tapGesture2];
+            _dpValueLabel.font = [UIFont systemFontOfSize:18];
+            [cell.contentView addSubview:_dpValueLabel];
+            
+        }else if ([indexPath row] == 2) {
+            
+            cell.textLabel.text = @"当前取号情况";
+            cell.imageView.image = [UIImage imageNamed:@"mine_dqqh"];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [Helper arrowStyle:cell];
+
+        }else if ([indexPath row] == 3) {
+            
+            cell.textLabel.text = @"历史取号情况";
+            cell.imageView.image = [UIImage imageNamed:@"mine_lsqh"];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [Helper arrowStyle:cell];
+
+        }else if ([indexPath row] == 4) {
+            
+            cell.textLabel.text = @"积分消费情况";
+            cell.imageView.image = [UIImage imageNamed:@"mine_jfsf"];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [Helper arrowStyle:cell];
+
+        }
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    }
+    return cell;
+    
+}
+
+//设置cell的事件
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    int row = [indexPath row];
+    if (row ==3) {
+        [self pushHistoryMerchart];
+    }else if(row==2){
+        [self pushCurrentMerchart];
+    }else if(row==4){
+        [self pushCreditView];
+    }
+}
+
+//点击签到的
+-(void)onClickUILable:(UITapGestureRecognizer *)sender
+{        
+    if([Helper isConnectionAvailable]){
+        NSString *urlStr=[NSString stringWithFormat:@"%@%@?accountId=%@",[Helper getIp],signIn_url,userInfo.accountId];
+        NSString *response =[QuHaoUtil requestDb:urlStr];
+        if([response isEqualToString:@""]){
+            //异常处理
+            [Helper showHUD2:@"服务器错误，请稍后再试" andView:self.view andSize:130];
+        }else{
+            NSDictionary *jsonObjects=[QuHaoUtil analyseDataToDic:response];
+            if(jsonObjects==nil){
+                //解析错误
+                [Helper showHUD2:@"服务器错误，请稍后再试" andView:self.view andSize:130];
+            }else{
+                if(jsonObjects.count!=0){
+                    int errorCode=[[jsonObjects valueForKey:@"errorCode"] intValue];
+                    if (errorCode==1) {
+                        [Helper showHUD2:@"签到成功" andView:self.view andSize:100];
+                        [self reload];
+                        [_mineView reloadData];
+                        
+                    }else{
+                        [Helper showHUD2:@"服务器错误，请稍后再试" andView:self.view andSize:130];
+                    }
+                }
+            }
+        }
+    }else{
+        [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
+    }
+}
+
+//点击点评
+-(void)onClickDp:(UITapGestureRecognizer *)sender{
+    CommentViewController *history = [[CommentViewController alloc] init];
+    history.accountOrMerchantId=userInfo.accountId;
+    history.title = @"我的评论";
+    history.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:history animated:YES];
+}
+
+//点击历史取号
+- (void)pushHistoryMerchart
+{
+    MerchartHistoryController *history = [[MerchartHistoryController alloc] init];
+    history.accouId=userInfo.accountId;
+    history.title = @"历史取号情况";
+    history.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:history animated:YES];
+    
+}
+
+//点击当前取号
+- (void)pushCurrentMerchart
+{
+    CurrentViewController *current = [[CurrentViewController alloc] init];
+    current.accouId=userInfo.accountId;
+    current.title = @"当前取号情况";
+    current.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:current animated:YES];
+    
+}
+
+//点击消费情况
+- (void)pushCreditView
+{
+    CreditViewController *credit = [[CreditViewController alloc] init];
+    credit.accouId=userInfo.accountId;
+    credit.title = @"积分消费情况";
+    credit.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:credit animated:YES];
+    
+}
+
+
+-(void)reload
+{
+    NSString *urlStr=[NSString stringWithFormat:@"%@%@%@",[Helper getIp],person_url,helper.getUserName];
+    NSString *response =[QuHaoUtil requestDb:urlStr];
+    
+    if([response isEqualToString:@""]){
+        //异常处理
+        [Helper showHUD2:@"服务器错误，请稍后再试" andView:self.view andSize:130];
+        //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"数据错误，请稍后再试" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+        //[alert show];
+    }else{
+        NSArray *jsonObjects=[QuHaoUtil analyseData:response];
+        if(jsonObjects==nil){
+            //解析错误
+            [Helper showHUD2:@"服务器错误，请稍后再试" andView:self.view andSize:130];
+        }else{
+            userInfo.username=[jsonObjects valueForKey:@"nickname"];
+            userInfo.jifen=[[jsonObjects valueForKey:@"jifen"] intValue];
+            userInfo.signIn=[[jsonObjects valueForKey:@"signIn"] intValue];
+            userInfo.dianping=[[jsonObjects valueForKey:@"dianping"] intValue];
+            userInfo.phone=[jsonObjects valueForKey:@"phone"];
+            userInfo.accountId=[jsonObjects valueForKey:@"accountId"];
+            userInfo.userImage=[jsonObjects valueForKey:@"userImage"];
+            userInfo.isSignIn=[[jsonObjects valueForKey:@"isSignIn"] boolValue];
+        }
+    }
+}
+
+//登录事件
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
+    if ([buttonTitle isEqualToString:@"登录"]) {
+        LoginView *loginView = [[LoginView alloc] init];
+        loginView.isPopupByNotice = YES;
+        helper.viewBeforeLogin = self;
+        helper.viewNameBeforeLogin = @"MineViewController";
+        loginView.helper=helper;
+        loginView.hidesBottomBarWhenPushed=YES;
+        [self.navigationController pushViewController:loginView animated:YES];
+        return;
+    }
+}
+
+//登录监听
+- (void)noticeUpdateHandler:(NSNotification *)notification
+{
+         UserInfo * temp = (UserInfo *)[notification object];
+         userInfo.phone=temp.phone;
+         userInfo.username=temp.username;
+         userInfo.signIn=temp.signIn;
+         userInfo.dianping=temp.dianping;
+         userInfo.accountId=temp.accountId;
+         userInfo.userImage=temp.userImage;
+         userInfo.isSignIn=temp.isSignIn;
+}
+#pragma mark - View lifecycle
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    _mineView = nil;
+}
+@end

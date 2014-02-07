@@ -1,0 +1,54 @@
+//
+// Prefix header for all source files of the 'quHaoIos' target in the 'quHaoIos' project
+//
+
+#import <Availability.h>
+
+#ifndef __IPHONE_3_0
+#warning "This project uses features only available in iOS SDK 3.0 and later."
+#endif
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+#endif
+#define kDeviceHeight     [UIScreen mainScreen].bounds.size.height
+#define kDeviceWidth     [UIScreen mainScreen].bounds.size.width
+#define homeView_list_url @"/nextPage?cateType="
+#define homeView_last_url @"/lastest?cateType="
+#define login_url @"/login"
+#define person_url @"/getPersonalInfo?phone="
+#define history_list_url @"/getHistoryMerchants?accountId="
+#define authCode_url @"/generateAuthCode?os=IOS&mobile="
+#define register_url @"/signupWithMobile?os=IOS&mobile="
+#define currentMerchant_url @"/getCurrentMerchants?accountId="
+#define getAuthCode_url @"/getAuthCode?mobile="
+#define updatePassCode_url @"/updatePassCode?mobile="
+#define nahao_url @"/nahao"
+#define getReservation_url @"/getReservations"
+#define getCurrentNo_url @"/getCurrentNo"
+#define updateComment_url @"/updateComment"
+#define getLatestComment_url @"/getComment"
+#define merchant_url @"/merchant"
+#define credit_url @"/getCreditCost"
+#define signIn_url @"/signIn"
+#define opinion_url @"/createOpinion"
+#define commentOfAccount_url @"/getCommentsByAccountId?accountId="
+#define commentOfMerchart_url @"/getCommentsByMid?mid="
+#define allCategories_url @"/allCategories"
+#define getLastestVersion @"/app/appCode"
+#define queryMerchantByPoiId @"/queryMerchantByPoiId?poiId="
+#define getTopMerchants @"/getTopMerchants?x="
+#define AppID @"1.0.0"
+
+#define AppVersion @"1.0.0"
+
+//com.sina.weibo
+#define kAppKey         @"1954689646"
+#define kRedirectURI    @"https://api.weibo.com/oauth2/default.html"
+#define OAuth_URL       @"https://api.weibo.com/oauth2/authorize"
+#define ACCESS_TOKEN_URL @"https://api.weibo.com/oauth2/access_token"
+#define APP_SECRET      @"354c6bb1c9611b1884439eb2dea12f31"
+#define GET_UID_URL     @"https://api.weibo.com/2/account/get_uid.json"
+#define WEIBO_UPDATE    @"https://api.weibo.com/2/statuses/update.json"//发送文字微博
+
