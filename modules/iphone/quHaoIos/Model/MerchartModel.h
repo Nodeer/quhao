@@ -32,5 +32,7 @@
 //poi查询返回的商家的唯一id
 @property (nonatomic,strong) NSString *pguid;
 @property (nonatomic,strong) NSString *commentContent;
+//是否被关注
+@property BOOL isAttention;
 
 @end
