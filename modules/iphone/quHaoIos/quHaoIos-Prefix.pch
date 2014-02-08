@@ -30,6 +30,7 @@
 #define updateComment_url @"/updateComment"
 #define getLatestComment_url @"/getComment"
 #define merchant_url @"/merchant"
+#define merchant_newurl @"/merchantNew"
 #define credit_url @"/getCreditCost"
 #define signIn_url @"/signIn"
 #define opinion_url @"/createOpinion"
@@ -39,6 +40,8 @@
 #define getLastestVersion @"/app/appCode"
 #define queryMerchantByPoiId @"/queryMerchantByPoiId?poiId="
 #define getTopMerchants @"/getTopMerchants?x="
+#define updateAttention @"/updateAttention"
+
 #define AppID @"1.0.0"
 
 #define AppVersion @"1.0.0"
