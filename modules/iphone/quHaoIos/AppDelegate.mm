@@ -18,7 +18,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     //s设置 UserAgent
-    [ASIHTTPRequest setDefaultUserAgentString:[NSString stringWithFormat:@"%@/", [Helper getOSVersion]]];
+    [ASIHTTPRequest setDefaultUserAgentString:@"QuhaoiPhone"];
     
     //系统托盘
     //[application setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
