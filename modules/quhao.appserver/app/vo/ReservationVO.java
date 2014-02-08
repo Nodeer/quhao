@@ -24,6 +24,7 @@ public class ReservationVO {
 	public String merchantAddress;
 	public String merchantImage;
 
+
 	public void build(Reservation r){
 		this.id = r.id();
 		this.accountId = r.accountId;

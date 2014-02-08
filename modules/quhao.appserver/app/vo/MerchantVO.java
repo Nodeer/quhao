@@ -66,6 +66,8 @@ public class MerchantVO {
 	public float commentFuwu;
 	public String commentContent;
 	public String commentDate;
+	//是否关注商家
+	public boolean isAttention;
 	
 	public static MerchantVO build(Merchant m) {
 		MerchantVO vo = new MerchantVO();
@@ -144,6 +146,51 @@ public class MerchantVO {
 		vo.commentKouwei = c.kouwei;
 		vo.commentXingjiabi = c.xingjiabi;
 		
+		return vo;
+	}
+	
+	public static MerchantVO build(Merchant m, Comment c,boolean isAttention) {
+		MerchantVO vo = new MerchantVO();
+		vo.id = m.id();
+		vo.address = m.address;
+		vo.averageCost = m.averageCost;
+		vo.cateType = m.cateType;
+		vo.closeTime = m.closeTime;
+		vo.description = m.description;
+		vo.enable = m.enable;
+		vo.fuwu = m.fuwu;
+		vo.grade = m.grade;
+		vo.huanjing = m.huanjing;
+		vo.joinedDate = m.joinedDate;
+		vo.kouwei = m.kouwei;
+		vo.markedCount = m.markedCount;
+		vo.name = m.name;
+		vo.nickName = m.nickName;
+		vo.openTime = m.openTime;
+		vo.tags = m.tags;
+		vo.telephone = m.telephone;
+		vo.teses = m.teses;
+		vo.xingjiabi = m.xingjiabi;
+		vo.x = m.x;
+		vo.y = m.y;
+		vo.seatType = m.seatType;
+		
+		try {
+			vo.merchantImage = URLDecoder.decode(m.merchantImage, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		vo.commentAverageCost = c.averageCost;
+		vo.commentContent = StringUtils.isEmpty(c.content) ? "暂无评论" : c.content;
+		vo.commentDate = StringUtils.isEmpty(c.content) ? "" : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(c.modified);
+		vo.commentFuwu = c.fuwu;
+		vo.commentHuanjing = c.huanjing;
+		vo.commentKouwei = c.kouwei;
+		vo.commentXingjiabi = c.xingjiabi;
+		
+		vo.isAttention=isAttention;
 		return vo;
 	}
 }

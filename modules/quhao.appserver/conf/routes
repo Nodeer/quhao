@@ -34,6 +34,7 @@ GET     /lastest							MerchantController.getLastMerchants
 GET     /getCurrentNo						MerchantController.getCurrentNo
 GET     /getReservations					MerchantController.getReservations
 GET     /cancel								MerchantController.cancel
+GET		/merchantNew					    MerchantController.merchantNew
 
 # Accounts
 GET		/accounts							rsecure.Secure.accounts
@@ -55,6 +56,9 @@ GET		/getCommentsByMid					CommentController.getCommentsByMid
 GET		/getCommentsByAccountId				CommentController.getCommentsByAccountId
 GET		/getComment							CommentController.getComment
 GET		/getCommentsById					CommentController.getCommentsById
+
+# Attention
+GET     /updateAttention					AttentionController.updateAttention
 
 # Help
 GET		/help								HelpController.help

@@ -30,6 +30,7 @@ import com.withiter.common.Constants.CreditStatus;
 import com.withiter.models.account.Account;
 import com.withiter.models.account.Credit;
 import com.withiter.models.account.Reservation;
+import com.withiter.models.merchant.Attention;
 import com.withiter.models.merchant.Category;
 import com.withiter.models.merchant.Comment;
 import com.withiter.models.merchant.Haoma;
@@ -56,7 +57,6 @@ public class MerchantController extends BaseController {
 		boolean mobileAgent = false;
 
 		Header userAgentHeader = request.headers.get("user-agent");
-		
 		if (userAgentHeader.values.contains("QuhaoAndroid")) {
 			mobileAgent = true;
 			logger.debug("The caller agent is mobile : " + mobileAgent);
@@ -147,6 +147,29 @@ public class MerchantController extends BaseController {
 		renderJSON(MerchantVO.build(m, c));
 	}
 	
+	/**
+	 * 返回商家详细信息（增加了用户是否关注商家）
+	 * 
+	 * @param id 商家id
+	 * @param accountId 用户id
+	 */
+	public static void merchantNew(String id,String accountId) {
+		Merchant m = Merchant.findByMid(id);
+		Comment c = Comment.latestOne(id);
+		if (c == null) {
+			c = new Comment();
+			c.mid = id;
+		}
+		
+		Attention attention =Attention.getAttentionById(id, accountId);
+		boolean isAttention=false;
+		if(attention==null){
+			isAttention=false;
+		}else{
+			isAttention=attention.flag;
+		}
+		renderJSON(MerchantVO.build(m, c,isAttention));
+	}
 	
 	/**
 	 * 返回商家详细信息
@@ -226,6 +249,7 @@ public class MerchantController extends BaseController {
 				int canclCount = (int) Reservation.findCountBetweenCurrentNoAndMyNumber(mid, paidui.currentNumber, r.myNumber, r.seatNumber);
 				rvo.beforeYou = r.myNumber - (paidui.currentNumber + canclCount) -1;
 				rvo.currentNumber = paidui.currentNumber;
+				
 				rvo.build(r);
 				rvos.add(rvo);
 			}
