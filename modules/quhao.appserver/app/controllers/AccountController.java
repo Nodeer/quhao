@@ -335,6 +335,10 @@ public class AccountController extends BaseController {
 		} else if (!account.isSignIn) {
 			account.signIn = account.signIn + 1;
 			account.isSignIn = true;
+			long count = Comment.getCommentCountByAccountId(account.id());
+			loginVO.dianping = count;
+			session.put(Constants.SESSION_USERNAME, account.id());
+			session.put(account.id(), account.id());
 			if(account.signIn%5==0){
 				account.jifen=account.jifen+exchangePer;
 				// 增加积分消费
@@ -351,7 +355,7 @@ public class AccountController extends BaseController {
 
 			}
 			account.save();
-						
+			
 			loginVO.errorCode = 1;
 			loginVO.msg = "success";
 			loginVO.build(account);
