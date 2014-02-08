@@ -67,12 +67,17 @@
 {
     [super viewDidLoad];
     self.single = [[MerchartModel alloc] init];
+    accountID=@"";
+    Helper *helper=[Helper new];
+    if (helper.isCookie == YES){
+        accountID=helper.getUID;
+    }
     if([Helper isConnectionAvailable]){
         
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.labelText = NSLocalizedString(@"正在加载", nil);
         hud.square = YES;
-        NSString *url = [NSString stringWithFormat:@"%@%@?id=%@",[Helper getIp],merchant_url, merchartID];
+        NSString *url = [NSString stringWithFormat:@"%@%@?id=%@&accountId=%@",[Helper getIp],merchant_newurl, merchartID,accountID];
         NSString *response =[QuHaoUtil requestDb:url];
         [hud hide:YES];
         if([response isEqualToString:@""]){
@@ -101,6 +106,7 @@
                 single.commentContent=[jsonObjects objectForKey:@"commentContent"];
                 single.description=[jsonObjects objectForKey:@"description"];
                 single.seatType=[jsonObjects objectForKey:@"seatType"];
+                single.isAttention=[[jsonObjects objectForKey:@"isAttention"] boolValue];
                 
             }
         }
@@ -108,9 +114,7 @@
         [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
     }
     
-    Helper *helper=[Helper new];
-    if (helper.isCookie == YES){
-        accountID=helper.getUID;
+    if (![accountID isEqualToString:@""]){
         [self reloadReversion];
     }
     [_detailView reloadData];
@@ -149,6 +153,34 @@
 {
     ShareViewController *share = [[ShareViewController alloc] init];
     [self.navigationController pushViewController:share animated:YES];
+}
+
+//关注的点击事件
+- (void)clickGz:(id)sender
+{
+    UIButton* btn=(UIButton*)sender;
+    Helper *helper=[Helper new];
+    if (helper.isCookie == NO) {
+        LoginView *loginView = [[LoginView alloc] init];
+        loginView.isPopupByNotice = YES;
+        helper.viewBeforeLogin = self;
+        helper.viewNameBeforeLogin = @"MerchartDetail";
+        loginView.helper=helper;
+        loginView.hidesBottomBarWhenPushed=YES;
+        [self.navigationController pushViewController:loginView animated:YES];
+        return;
+    }else{
+        NSString *url = [NSString stringWithFormat:@"%@%@?accountId=%@&mid=%@&flag=%d",[Helper getIp],updateAttention, accountID,merchartID,btn.tag];
+        NSString *response =[QuHaoUtil requestDb:url];
+        if([response isEqualToString:@"success"]){
+            if(btn.tag==1){
+                single.isAttention=false;
+            }else{
+                single.isAttention=true;
+            }
+        }
+        [_detailView reloadData];
+    }
 }
 
 //加载用户的座位信息
@@ -232,18 +264,34 @@
         {
             self.egoImgView.imageURL = [NSURL URLWithString:single.imgUrl];
         }
+       
         
-        UILabel *_titleLabel = [Helper getCustomLabel:single.name font:18 rect:CGRectMake(egoImgView.frame.origin.x+egoImgView.frame.size.width+5, 10, 190, 30)];
+        UILabel *_titleLabel = [Helper getCustomLabel:single.name font:18 rect:CGRectMake(egoImgView.frame.origin.x+egoImgView.frame.size.width+5, 10, 190, 25)];
         [cell.contentView addSubview:_titleLabel];
         
+        CGRect frame2 = CGRectMake( kDeviceWidth-70, 35, 70, 20 );
+        UIButton *dlButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        dlButton.frame=frame2;
+        [dlButton addTarget:self action:@selector(clickGz:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.contentView addSubview:dlButton];
+        
+        if(single.isAttention){
+            [dlButton setTitle:@"取消关注" forState:UIControlStateNormal];
+            dlButton.tag=1;
+        }else{
+            [dlButton setTitle:@"+关注" forState:UIControlStateNormal];
+            dlButton.tag=0;
+        }
+        
         UILabel *_costLabel=[[UILabel alloc]initWithFrame:CGRectZero];
-        _costLabel.frame=CGRectMake(_titleLabel.frame.origin.x+10, _titleLabel.frame.origin.y+_titleLabel.frame.size.height+10, _titleLabel.frame.size.width, 20);
+        _costLabel.frame=CGRectMake(_titleLabel.frame.origin.x+10, _titleLabel.frame.origin.y+_titleLabel.frame.size.height+20, _titleLabel.frame.size.width, 18);
         _costLabel.text=[NSString stringWithFormat:@"%@%.2lf%@%.2lf",@" 人均:¥",single.averageCost,@"    性价比:",single.xingjiabi];
         _costLabel.font=[UIFont systemFontOfSize:12];
+
         [cell.contentView addSubview:_costLabel];
         
         UILabel *_pjLabel=[[UILabel alloc]initWithFrame:CGRectZero];
-        _pjLabel.frame=CGRectMake(_titleLabel.frame.origin.x+10, _costLabel.frame.origin.y+_costLabel.frame.size.height, _titleLabel.frame.size.width, 20);
+        _pjLabel.frame=CGRectMake(_titleLabel.frame.origin.x+10, _costLabel.frame.origin.y+_costLabel.frame.size.height, _titleLabel.frame.size.width, 18);
         _pjLabel.text=[NSString stringWithFormat:@"%@%.2lf%@%.2lf%@%.2lf",@" 口味:",single.kouwei,@"    环境:",single.huanjing,@"    服务:",single.fuwu];
         _pjLabel.font=[UIFont systemFontOfSize:12];
         [cell.contentView addSubview:_pjLabel];
