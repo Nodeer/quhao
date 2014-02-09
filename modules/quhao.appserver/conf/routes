@@ -60,6 +60,9 @@ GET		/getCommentsById					CommentController.getCommentsById
 # Attention
 GET     /updateAttention					AttentionController.updateAttention
 
+# Open
+GET     /openService						OpenController.openService
+
 # Help
 GET		/help								HelpController.help
 

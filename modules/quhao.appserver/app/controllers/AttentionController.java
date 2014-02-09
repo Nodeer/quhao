@@ -1,15 +1,9 @@
 package controllers;
 
-import java.util.Date;
-
-import com.withiter.common.Constants.CreditStatus;
-import com.withiter.models.account.Account;
-import com.withiter.models.account.Credit;
 import com.withiter.models.merchant.Attention;
-import com.withiter.models.merchant.Comment;
-import com.withiter.utils.StringUtils;
 
 public class AttentionController extends BaseController{
+	
 	/**
 	 *  商家评价
 	 * 
