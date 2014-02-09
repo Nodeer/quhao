@@ -33,8 +33,6 @@
     _detailView.backgroundColor=[UIColor whiteColor];
     _detailView.indicatorStyle=UIScrollViewIndicatorStyleWhite;
     [self.view addSubview:_detailView];
-    [self loadNavigationItem];
-
 }
 
 -(void)loadNavigationItem
@@ -45,22 +43,29 @@
     [backButton addTarget:self action:@selector(clickToHome:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
-    
-    CustomToolbar* tools = [[CustomToolbar alloc] initWithFrame:CGRectMake(0, 0, 115, 35)];
-    NSMutableArray* buttons = [[NSMutableArray alloc] initWithCapacity:2];
-    
-    UIButton *fxBtn=[Helper getBackBtn:@"button.png" title:@" 分 享" rect:CGRectMake( 0, 7, 50, 30 )];
-    [fxBtn addTarget:self action:@selector(clickShare:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithCustomView:fxBtn];
-    [buttons addObject:anotherButton];
-
-    UIButton *qhBtn=[Helper getBackBtn:@"button.png" title:@" 取 号" rect:CGRectMake( 0, 7, 50, 30 )];
-    [qhBtn addTarget:self action:@selector(clickQuhao:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *anotherButton1 = [[UIBarButtonItem alloc] initWithCustomView:qhBtn];
-    [buttons addObject:anotherButton1];
-    [tools setItems:buttons animated:NO];
-    UIBarButtonItem *myBtn = [[UIBarButtonItem alloc] initWithCustomView:tools];
-    self.navigationItem.rightBarButtonItem = myBtn;
+    //商家禁用 不能取号
+    if (single.enable){
+        CustomToolbar* tools = [[CustomToolbar alloc] initWithFrame:CGRectMake(0, 0, 115, 35)];
+        NSMutableArray* buttons = [[NSMutableArray alloc] initWithCapacity:2];
+        
+        UIButton *fxBtn=[Helper getBackBtn:@"button.png" title:@"分 享" rect:CGRectMake( 0, 0, 50, 30 )];
+        [fxBtn addTarget:self action:@selector(clickShare:) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithCustomView:fxBtn];
+        [buttons addObject:anotherButton];
+        
+        UIButton *qhBtn=[Helper getBackBtn:@"button.png" title:@"取 号" rect:CGRectMake( 0, 0, 50, 30 )];
+        [qhBtn addTarget:self action:@selector(clickQuhao:) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem *anotherButton1 = [[UIBarButtonItem alloc] initWithCustomView:qhBtn];
+        [buttons addObject:anotherButton1];
+        [tools setItems:buttons animated:NO];
+        UIBarButtonItem *myBtn = [[UIBarButtonItem alloc] initWithCustomView:tools];
+        self.navigationItem.rightBarButtonItem = myBtn;
+    }else{
+        UIButton *btn=[Helper getBackBtn:@"button.png" title:@"分 享" rect:CGRectMake( 0, 7, 50, 30 )];
+        [btn addTarget:self action:@selector(clickShare:) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem *btnItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
+        self.navigationItem.rightBarButtonItem = btnItem;
+    }
 }
 
 - (void)viewDidLoad
@@ -107,7 +112,7 @@
                 single.description=[jsonObjects objectForKey:@"description"];
                 single.seatType=[jsonObjects objectForKey:@"seatType"];
                 single.isAttention=[[jsonObjects objectForKey:@"isAttention"] boolValue];
-                
+                single.enable=[[jsonObjects objectForKey:@"enable"] boolValue];
             }
         }
     }else{
@@ -117,6 +122,7 @@
     if (![accountID isEqualToString:@""]){
         [self reloadReversion];
     }
+    [self loadNavigationItem];
     [_detailView reloadData];
     [self initMapView];
 }
@@ -148,6 +154,22 @@
     [self.navigationController  popViewControllerAnimated:YES];
 }
 
+//希望开通取号
+- (void)clickKt:(id)sender
+{
+    if([Helper isConnectionAvailable]){
+        NSString *url = [NSString stringWithFormat:@"%@%@?accountId=%@&mid=%@",[Helper getIp],openService, accountID,merchartID];
+        NSString *response =[QuHaoUtil requestDb:url];
+        if([response isEqualToString:@"success"]){
+            [Helper showHUD2:@"建议成功" andView:self.view andSize:100];
+        }else{
+            [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+        }
+    }else{
+        [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
+    }
+}
+
 //分享微博
 - (void)clickShare:(id)sender
 {
@@ -158,28 +180,32 @@
 //关注的点击事件
 - (void)clickGz:(id)sender
 {
-    UIButton* btn=(UIButton*)sender;
-    Helper *helper=[Helper new];
-    if (helper.isCookie == NO) {
-        LoginView *loginView = [[LoginView alloc] init];
-        loginView.isPopupByNotice = YES;
-        helper.viewBeforeLogin = self;
-        helper.viewNameBeforeLogin = @"MerchartDetail";
-        loginView.helper=helper;
-        loginView.hidesBottomBarWhenPushed=YES;
-        [self.navigationController pushViewController:loginView animated:YES];
-        return;
-    }else{
-        NSString *url = [NSString stringWithFormat:@"%@%@?accountId=%@&mid=%@&flag=%d",[Helper getIp],updateAttention, accountID,merchartID,btn.tag];
-        NSString *response =[QuHaoUtil requestDb:url];
-        if([response isEqualToString:@"success"]){
-            if(btn.tag==1){
-                single.isAttention=false;
-            }else{
-                single.isAttention=true;
+    if([Helper isConnectionAvailable]){
+        UIButton* btn=(UIButton*)sender;
+        Helper *helper=[Helper new];
+        if (helper.isCookie == NO) {
+            LoginView *loginView = [[LoginView alloc] init];
+            loginView.isPopupByNotice = YES;
+            helper.viewBeforeLogin = self;
+            helper.viewNameBeforeLogin = @"MerchartDetail";
+            loginView.helper=helper;
+            loginView.hidesBottomBarWhenPushed=YES;
+            [self.navigationController pushViewController:loginView animated:YES];
+            return;
+        }else{
+            NSString *url = [NSString stringWithFormat:@"%@%@?accountId=%@&mid=%@&flag=%d",[Helper getIp],updateAttention, accountID,merchartID,btn.tag];
+            NSString *response =[QuHaoUtil requestDb:url];
+            if([response isEqualToString:@"success"]){
+                if(btn.tag==1){
+                    single.isAttention=false;
+                }else{
+                    single.isAttention=true;
+                }
             }
+            [_detailView reloadData];
         }
-        [_detailView reloadData];
+    }else{
+        [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
     }
 }
 
@@ -266,15 +292,15 @@
         }
        
         
-        UILabel *_titleLabel = [Helper getCustomLabel:single.name font:18 rect:CGRectMake(egoImgView.frame.origin.x+egoImgView.frame.size.width+5, 10, 190, 25)];
+        UILabel *_titleLabel = [Helper getCustomLabel:single.name font:18 rect:CGRectMake(egoImgView.frame.origin.x+egoImgView.frame.size.width+5, 5, 190, 25)];
         [cell.contentView addSubview:_titleLabel];
         
-        CGRect frame2 = CGRectMake( kDeviceWidth-70, 35, 70, 20 );
         UIButton *dlButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        dlButton.frame=frame2;
+        dlButton.frame=CGRectMake( kDeviceWidth-70, 30, 60, 25 );
+        dlButton.titleLabel.font = [UIFont systemFontOfSize:12];
+        //[dlButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [dlButton addTarget:self action:@selector(clickGz:) forControlEvents:UIControlEventTouchUpInside];
         [cell.contentView addSubview:dlButton];
-        
         if(single.isAttention){
             [dlButton setTitle:@"取消关注" forState:UIControlStateNormal];
             dlButton.tag=1;
@@ -282,9 +308,19 @@
             [dlButton setTitle:@"+关注" forState:UIControlStateNormal];
             dlButton.tag=0;
         }
+        //商家禁用 增加希望开通
+        if (!single.enable){
+            UIButton *ktButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+            ktButton.frame=CGRectMake(dlButton.frame.origin.x-70, 30, 60, 25 );
+            [ktButton setTitle: @"希望开通" forState: UIControlStateNormal];
+            //[ktButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            ktButton.titleLabel.font = [UIFont systemFontOfSize:12.0f];
+            [ktButton addTarget:self action:@selector(clickKt:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.contentView addSubview:ktButton];
+        }
         
         UILabel *_costLabel=[[UILabel alloc]initWithFrame:CGRectZero];
-        _costLabel.frame=CGRectMake(_titleLabel.frame.origin.x+10, _titleLabel.frame.origin.y+_titleLabel.frame.size.height+20, _titleLabel.frame.size.width, 18);
+        _costLabel.frame=CGRectMake(_titleLabel.frame.origin.x+10, dlButton.frame.origin.y+dlButton.frame.size.height, _titleLabel.frame.size.width, 18);
         _costLabel.text=[NSString stringWithFormat:@"%@%.2lf%@%.2lf",@" 人均:¥",single.averageCost,@"    性价比:",single.xingjiabi];
         _costLabel.font=[UIFont systemFontOfSize:12];
 
