@@ -41,6 +41,7 @@
 #define queryMerchantByPoiId @"/queryMerchantByPoiId?poiId="
 #define getTopMerchants @"/getTopMerchants?x="
 #define updateAttention @"/updateAttention"
+#define openService @"/openService"
 
 #define AppID @"1.0.0"
 
