@@ -161,12 +161,14 @@ public class MerchantController extends BaseController {
 			c.mid = id;
 		}
 		
-		Attention attention =Attention.getAttentionById(id, accountId);
 		boolean isAttention=false;
-		if(attention==null){
-			isAttention=false;
-		}else{
-			isAttention=attention.flag;
+		if(!accountId.equals("")){
+			Attention attention =Attention.getAttentionById(id, accountId);
+			if(attention==null){
+				isAttention=false;
+			}else{
+				isAttention=attention.flag;
+			}
 		}
 		renderJSON(MerchantVO.build(m, c,isAttention));
 	}
