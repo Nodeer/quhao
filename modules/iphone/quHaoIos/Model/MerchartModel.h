@@ -34,5 +34,6 @@
 @property (nonatomic,strong) NSString *commentContent;
 //是否被关注
 @property BOOL isAttention;
-
+//是否已经开通
+@property BOOL enable;
 @end
