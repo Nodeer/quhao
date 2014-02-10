@@ -45,7 +45,7 @@ public class MerchantVO {
 	public String closeTime;	
 	public int markedCount;
 	public boolean enable = false;
-	public String joinedDate = new Date().toString();
+	public Date joinedDate = new Date();
 	
 	/**
 	 * add by CROSS 2013-9-27

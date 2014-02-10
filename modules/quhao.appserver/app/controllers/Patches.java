@@ -218,7 +218,7 @@ public class Patches extends BaseController {
 						m.nickName = "";
 						//m.cateType = fileName;
 						m.enable = false;
-						m.joinedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()).toString();
+						m.joinedDate = new Date();
 						
 						m.save();
 					
@@ -338,7 +338,7 @@ public class Patches extends BaseController {
 		m.nickName = (s[13].split(":").length == 1) ? "" : s[13].split(":")[1].trim();
 		m.cateType = fileName;
 		m.enable = (s[15].split(":").length == 1) ? false : Boolean.parseBoolean(s[15].split(":")[1].trim());
-		m.joinedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()).toString();
+		m.joinedDate = new Date();
 		
 		List<String> tags = new ArrayList<String>();
 		if(s[17].split(":")[1].equalsIgnoreCase("\\[\\]")){
@@ -382,7 +382,7 @@ public class Patches extends BaseController {
 		m.nickName = (s[13].split(":").length == 1) ? "" : s[13].split(":")[1].trim();
 		m.cateType = fileName;
 		m.enable = (s[15].split(":").length == 1) ? false : Boolean.parseBoolean(s[15].split(":")[1].trim());
-		m.joinedDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()).toString();
+		m.joinedDate = new Date();
 		
 		List<String> tags = new ArrayList<String>();
 		if(s[17].split(":")[1].equalsIgnoreCase("\\[\\]")){

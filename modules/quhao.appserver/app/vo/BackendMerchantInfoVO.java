@@ -34,7 +34,7 @@ public class BackendMerchantInfoVO {
 	public String openTime;
 	public String closeTime;	
 	public int markedCount;
-	public String joinedDate = new Date().toString();
+	public Date joinedDate = new Date();
 	public boolean enable = false;
 	public String x;
 	public String y;

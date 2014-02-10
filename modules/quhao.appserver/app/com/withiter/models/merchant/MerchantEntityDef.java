@@ -57,7 +57,7 @@ public abstract class MerchantEntityDef extends BaseModel {
 	public boolean enable = false;
 	
 	// TODO change to Date
-	public String joinedDate = new Date().toString();
+	public Date joinedDate = new Date();
 	
 	/**
 	 * add by CROSS 2013-9-27
