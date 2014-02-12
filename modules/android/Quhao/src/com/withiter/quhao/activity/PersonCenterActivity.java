@@ -209,7 +209,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			break;
 		case R.id.signInLayout:
 			if (QHClientApplication.getInstance().isLogined) {
-				String accountId = SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "false");
+				String accountId = SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "");
 				try {
 					String result = CommonHTTPRequest.get("AccountController/signIn?accountId=" + accountId);
 					QuhaoLog.i(TAG, result);
@@ -230,7 +230,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 							return;
 						}
 						if (loginInfo.msg.equals("success")) {
-							QHClientApplication.getInstance().isLogined = false;
+							QHClientApplication.getInstance().isLogined = true;
 							
 							nickName.setText(loginInfo.nickName);
 							mobile.setText(loginInfo.phone);
@@ -390,16 +390,14 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 	protected void onResume() {
 		if(QHClientApplication.getInstance().isLogined)
 		{
-			String phone = SharedprefUtil.get(this, QuhaoConstant.PHONE, "");
-			String password = SharedprefUtil.get(this, QuhaoConstant.PASSWORD, "");
-			if (StringUtils.isNull(phone) || StringUtils.isNull(password)) {
+			String accountId = SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "");
+			if (StringUtils.isNull(accountId)) {
 				QHClientApplication.getInstance().isLogined = false;
 				Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_LONG).show();
 			}
 			else
 			{
-				String decryptPassword = new DesUtils().decrypt(password);
-				String url = "AccountController/login?phone=" + phone + "&password=" + decryptPassword;
+				String url = "AccountController/queryByAccountId?accountId=" + accountId;
 				try {
 					String result = CommonHTTPRequest.post(url);
 					if(StringUtils.isNull(result)){
@@ -421,13 +419,13 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 						else if (account.msg.equals("success")) 
 						{
 							SharedprefUtil.put(this, QuhaoConstant.ACCOUNT_ID, loginInfo.accountId);
-							SharedprefUtil.put(this, QuhaoConstant.PHONE, phone);
-							String encryptPassword = new DesUtils().encrypt(password);
+							SharedprefUtil.put(this, QuhaoConstant.PHONE, loginInfo.phone);
+							String encryptPassword = new DesUtils().decrypt(loginInfo.password);
 							SharedprefUtil.put(this, QuhaoConstant.PASSWORD, encryptPassword);
 							String isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_AUTO_LOGIN, "false");
 							SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN, isAutoLogin);
 							QHClientApplication.getInstance().accountInfo = account;
-							QHClientApplication.getInstance().phone = phone;
+							QHClientApplication.getInstance().phone = loginInfo.phone;
 							QHClientApplication.getInstance().isLogined = true;
 						}
 						else
