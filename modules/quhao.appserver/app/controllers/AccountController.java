@@ -310,6 +310,37 @@ public class AccountController extends BaseController {
 		renderJSON(loginVO);
 	}
 
+	/**
+	 * login with mobile or email
+	 * 
+	 * @param phone
+	 *            the mobile number
+	 * @param email
+	 *            the email
+	 * @param password
+	 *            the password
+	 */
+	public static void queryByAccountId(String accountId) {
+		LoginVO loginVO = new LoginVO();
+		Account account = account = Account.findById(accountId);
+
+		if (account != null) {
+			loginVO.msg = "success";
+			loginVO.errorCode = 0;
+			loginVO.build(account);
+			long count = Comment.getCommentCountByAccountId(account.id());
+			loginVO.dianping = count;
+			session.put(Constants.SESSION_USERNAME, account.id());
+			session.put(account.id(), account.id());
+
+			logger.debug(session.getId());
+		} else {
+			loginVO.errorCode = -1;
+			loginVO.msg = "fail";
+		}
+		renderJSON(loginVO);
+	}
+	
 	public static void logout() {
 
 	}
