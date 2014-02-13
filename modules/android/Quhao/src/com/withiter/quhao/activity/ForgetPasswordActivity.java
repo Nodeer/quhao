@@ -123,8 +123,9 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 						SharedprefUtil.remove(ForgetPasswordActivity.this, QuhaoConstant.IS_AUTO_LOGIN);
 //						SharedprefUtil.remove(ForgetPasswordActivity.this, QuhaoConstant.IS_LOGIN);
 						SharedprefUtil.put(ForgetPasswordActivity.this, QuhaoConstant.PHONE, loginName);
-						password = new DesUtils().encrypt(password);
-						SharedprefUtil.put(ForgetPasswordActivity.this, QuhaoConstant.PASSWORD, password);
+						
+						String HexedPwd = new DesUtils().encrypt(password.trim());
+						SharedprefUtil.put(ForgetPasswordActivity.this, QuhaoConstant.PASSWORD, HexedPwd);
 						QHClientApplication.getInstance().isLogined = false;
 						Intent intent = new Intent();
 						intent.putExtra("activityName", ForgetPasswordActivity.class.getName());
