@@ -322,7 +322,7 @@ public class AccountController extends BaseController {
 	 */
 	public static void queryByAccountId(String accountId) {
 		LoginVO loginVO = new LoginVO();
-		Account account = account = Account.findById(accountId);
+		Account account = Account.findById(accountId);
 
 		if (account != null) {
 			loginVO.msg = "success";
