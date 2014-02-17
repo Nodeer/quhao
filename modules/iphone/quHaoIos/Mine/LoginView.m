@@ -23,21 +23,23 @@
     //helper=[Helper new];
     self.navigationItem.title = @"登录";
     //决定是否显示用户名以及密码
-    NSString *name = helper.getUserName;
-    NSString *pwd = helper.getPwd;
-    if (name && ![name isEqualToString:@""]) {
-        self.txt_Name.text = name;
+    if([[Helper returnUserString:@"autoLogin"] boolValue]){
+        NSString *name = helper.getUserName;
+        NSString *pwd = helper.getPwd;
+        if (name && ![name isEqualToString:@""]) {
+            self.txt_Name.text = name;
+        }
+        if (pwd && ![pwd isEqualToString:@""]) {
+            self.txt_Pwd.text = pwd;
+        }
     }
-    if (pwd && ![pwd isEqualToString:@""]) {
-        self.txt_Pwd.text = pwd;
-    }
-    
+        
     UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 7, 50, 35 )];
     [backButton addTarget:self action:@selector(clickToHome:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
-    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 忘记密码" rect:CGRectMake( 0, 7, 70, 30 )];
+    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 忘记密码" rect:CGRectMake( 0, 0, 70, 35 )];
     [btnButton addTarget:self action:@selector(forgetMd:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:btnButton];
     self.navigationItem.rightBarButtonItem = buttonItem;
@@ -136,6 +138,10 @@
         case 0:
         {
             [helper saveCookie:YES];
+            
+            NSNumber *convertSwitchStatus=[[NSNumber alloc] initWithBool:self.switch_Remember.isOn];
+            [[NSUserDefaults standardUserDefaults] setObject:convertSwitchStatus forKey:@"autoLogin"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
 
             if (isPopupByNotice == NO)
             {
