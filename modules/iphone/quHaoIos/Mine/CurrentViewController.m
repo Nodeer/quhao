@@ -90,7 +90,7 @@
     }
     cell.merchartModel=_merchartsArray[indexPath.row];
     [Helper arrowStyle:cell];
-    
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return cell;
 }
 

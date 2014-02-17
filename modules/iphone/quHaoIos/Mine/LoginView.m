@@ -39,7 +39,7 @@
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
-    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 忘记密码" rect:CGRectMake( 0, 0, 70, 35 )];
+    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 忘记密码" rect:CGRectMake( 0, 0, 80, 35 )];
     [btnButton addTarget:self action:@selector(forgetMd:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:btnButton];
     self.navigationItem.rightBarButtonItem = buttonItem;

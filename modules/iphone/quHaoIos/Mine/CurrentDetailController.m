@@ -207,17 +207,21 @@
                 seatLabel.textAlignment = NSTextAlignmentCenter;
                 [cell.contentView addSubview:seatLabel];
             }else{
+                NSString *value = [NSString stringWithFormat:@"%@%@",@" 座位人数:",[reservation.seatNumber description]];
+                UILabel *seatLabel = [Helper getCustomLabel:value font:15 rect:CGRectMake(40, 30, 130, 15)];
+                [cell.contentView addSubview:seatLabel];
+                
                 NSString *current = [NSString stringWithFormat:@"%@%@",@" 当前号码:",[reservation.currentNumber description]];
-                UILabel *currentLabel = [Helper getCustomLabel:current font:15 rect:CGRectMake(8, 36, 110, 15)];
+                UILabel *currentLabel = [Helper getCustomLabel:current font:15 rect:CGRectMake(175, 30, 130, 15)];
                 [cell.contentView addSubview:currentLabel];
                 
                 NSString *my = [NSString stringWithFormat:@"%@%@",@" 我的号码:",[reservation.myNumber description]];
-                UILabel *teamLabel = [Helper getCustomLabel:my font:15 rect:CGRectMake(115, 36, 110, 15)];
+                UILabel *teamLabel = [Helper getCustomLabel:my font:15 rect:CGRectMake(40, 52, 130, 15)];
                 [cell.contentView addSubview:teamLabel];
                 
-                NSString *value = [NSString stringWithFormat:@"%@%@",@" 座位人数:",[reservation.seatNumber description]];
-                UILabel *seatLabel = [Helper getCustomLabel:value font:15 rect:CGRectMake(225, 36, 90, 15)];
-                [cell.contentView addSubview:seatLabel];
+                NSString *before = [NSString stringWithFormat:@"%@%@",@" 在你前面:",[reservation.beforeYou description]];
+                UILabel *beforeLabel = [Helper getCustomLabel:before font:15 rect:CGRectMake(175, 52, 130, 15)];
+                [cell.contentView addSubview:beforeLabel];
             }
         }else if ([indexPath row] == 2) {//商家地址
             cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"address.jpg" toSize:CGSizeMake(320,35)]];
@@ -249,7 +253,7 @@
             cell.textLabel.font = [UIFont boldSystemFontOfSize:16];
         }else if ([indexPath row] == 5){
             cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tj.jpg"]];
-            UILabel *nameLabel = [Helper getCustomLabel:@"  网友推荐:" font:16 rect:CGRectMake(0, 5, 80, 15)];
+            UILabel *nameLabel = [Helper getCustomLabel:@"  网友推荐:" font:16 rect:CGRectMake(0, 15, 80, 15)];
             [cell.contentView addSubview:nameLabel];
             
             NSString *tagStr=@"  ";
