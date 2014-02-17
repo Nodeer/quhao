@@ -48,12 +48,12 @@
         CustomToolbar* tools = [[CustomToolbar alloc] initWithFrame:CGRectMake(0, 0, 115, 35)];
         NSMutableArray* buttons = [[NSMutableArray alloc] initWithCapacity:2];
         
-        UIButton *fxBtn=[Helper getBackBtn:@"button.png" title:@"分 享" rect:CGRectMake( 0, 0, 50, 30 )];
+        UIButton *fxBtn=[Helper getBackBtn:@"button.png" title:@"分 享" rect:CGRectMake( 0, 0, 50, 35 )];
         [fxBtn addTarget:self action:@selector(clickShare:) forControlEvents:UIControlEventTouchUpInside];
         UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithCustomView:fxBtn];
         [buttons addObject:anotherButton];
         
-        UIButton *qhBtn=[Helper getBackBtn:@"button.png" title:@"取 号" rect:CGRectMake( 0, 0, 50, 30 )];
+        UIButton *qhBtn=[Helper getBackBtn:@"button.png" title:@"取 号" rect:CGRectMake( 0, 0, 50, 35 )];
         [qhBtn addTarget:self action:@selector(clickQuhao:) forControlEvents:UIControlEventTouchUpInside];
         UIBarButtonItem *anotherButton1 = [[UIBarButtonItem alloc] initWithCustomView:qhBtn];
         [buttons addObject:anotherButton1];
@@ -61,7 +61,7 @@
         UIBarButtonItem *myBtn = [[UIBarButtonItem alloc] initWithCustomView:tools];
         self.navigationItem.rightBarButtonItem = myBtn;
     }else{
-        UIButton *btn=[Helper getBackBtn:@"button.png" title:@"分 享" rect:CGRectMake( 0, 7, 50, 30 )];
+        UIButton *btn=[Helper getBackBtn:@"button.png" title:@"分 享" rect:CGRectMake( 0, 7, 50, 35 )];
         [btn addTarget:self action:@selector(clickShare:) forControlEvents:UIControlEventTouchUpInside];
         UIBarButtonItem *btnItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
         self.navigationItem.rightBarButtonItem = btnItem;
@@ -388,7 +388,7 @@
         cell.textLabel.font = [UIFont boldSystemFontOfSize:16];
     }else if ([indexPath row] == 5){
         cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tj.jpg"]];
-        UILabel *nameLabel = [Helper getCustomLabel:@"  网友推荐:" font:16 rect:CGRectMake(0, 5, 80, 15)];
+        UILabel *nameLabel = [Helper getCustomLabel:@"  网友推荐:" font:16 rect:CGRectMake(0, 15, 80, 15)];
         [cell.contentView addSubview:nameLabel];
         
         NSString *tagStr=@"  ";
