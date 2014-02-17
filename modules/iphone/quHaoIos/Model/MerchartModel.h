@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface MerchartModel : NSObject
+
 @property(nonatomic,strong) NSString * id ;
 @property (nonatomic,strong) NSString * name ;
 @property float averageCost;

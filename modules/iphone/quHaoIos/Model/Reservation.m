@@ -9,4 +9,17 @@
 #import "Reservation.h"
 
 @implementation Reservation
+
+@synthesize id;
+@synthesize name;
+@synthesize tipValue;
+@synthesize accountId;
+@synthesize merchantId;
+@synthesize seatNumber;
+@synthesize myNumber;
+@synthesize beforeYou;
+@synthesize currentNumber;
+@synthesize imgUrl;
+@synthesize isCommented;
+
 @end

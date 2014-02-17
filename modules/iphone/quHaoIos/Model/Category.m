@@ -10,4 +10,9 @@
 
 @implementation Category
 
+@synthesize text;
+@synthesize count;
+@synthesize cateType;
+@synthesize imgUrl;
+
 @end

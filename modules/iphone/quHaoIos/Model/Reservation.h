@@ -21,4 +21,5 @@
 @property(nonatomic,strong)NSString*  currentNumber ;
 @property (nonatomic,strong) NSString *imgUrl;
 @property BOOL isCommented;
+
 @end

@@ -9,6 +9,7 @@
 #import "UserInfo.h"
 
 @implementation UserInfo
+
 @synthesize accountId;
 @synthesize username;
 @synthesize jifen;

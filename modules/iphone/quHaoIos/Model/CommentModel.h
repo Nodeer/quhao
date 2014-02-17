@@ -21,5 +21,6 @@
 @property int grade;
 @property (nonatomic,strong) NSString *content;
 @property (nonatomic,strong) NSString *created;
+
 @end
 

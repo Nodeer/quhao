@@ -9,4 +9,16 @@
 #import "Credit.h"
 
 @implementation Credit
+
+@synthesize merchantId;
+@synthesize merchantName;
+@synthesize merchantAddress;
+@synthesize reservationId;
+@synthesize seatNumber;
+@synthesize myNumber;
+@synthesize cost;
+@synthesize status;
+@synthesize jifen;
+@synthesize created;
+
 @end
