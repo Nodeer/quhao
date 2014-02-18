@@ -69,6 +69,10 @@ public class MerchantVO {
 	//是否关注商家
 	public boolean isAttention;
 	
+	/**
+	 * @param m
+	 * @return
+	 */
 	public static MerchantVO build(Merchant m) {
 		MerchantVO vo = new MerchantVO();
 		vo.id = m.id();

@@ -108,6 +108,10 @@ public class SelfManagementController extends BaseController {
 			rel.save();
 		} else {
 			m = Merchant.findById(mid);
+			MerchantAccountRel rel = new MerchantAccountRel();
+			rel.mid = m.id();
+			rel.uid = uid;
+			rel.save();
 		}
 		if (!StringUtils.isEmpty(merchantName)) {
 			m.name = merchantName;

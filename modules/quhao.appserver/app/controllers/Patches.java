@@ -64,7 +64,7 @@ public class Patches extends BaseController {
 	 * 从data/merchants导入商家信息
 	 * @throws IOException
 	 */
-	public static void importMerchants1() throws IOException{
+	public static void importMerchantsFromAMAPData() throws IOException{
 		logger.info(Patches.class.getName()+" start to importMerchants.");
 		long start = System.currentTimeMillis();
 		String dir = MERCHANT_CSV_FOLDER;
@@ -201,24 +201,6 @@ public class Patches extends BaseController {
 						{
 							m.cateType = "zhongcancaixi";
 						}
-						
-						m.averageCost = 0;
-						
-						m.openTime = "";
-						m.closeTime = "";
-						m.description = "";
-						m.fuwu = 0;
-						m.huanjing = 0;
-						m.kouwei = 0;
-						m.xingjiabi = 0;
-						
-						m.grade = 0;
-						m.markedCount = 0;
-						
-						m.nickName = "";
-						//m.cateType = fileName;
-						m.enable = false;
-						m.joinedDate = new Date();
 						
 						m.save();
 					

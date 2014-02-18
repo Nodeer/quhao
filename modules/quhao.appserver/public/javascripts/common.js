@@ -4,7 +4,7 @@
 
 Common = {};
 
-Common.REGEX_TELEPHONE = /^(0[0-9]{2,3}\/-)?([2-9][0-9]{6,7})+(\/-[0-9]{1,4})?$/;
+Common.REGEX_TELEPHONE = /^((0\d{2,3})-)(\d{7,8})(-(\d{3,}))?$/;
 Common.REGEX_MOBILE = /(^0?[1][358][0-9]{9}$)/;
 // Common.REGEX_EMAIL =
 // /^[a-zA-Z0-9_\.\-]+\/@([a-zA-Z0-9\-]+\.)+[a-zA-Z0-9]{2,4}$/;

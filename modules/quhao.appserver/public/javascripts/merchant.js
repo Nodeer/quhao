@@ -23,9 +23,9 @@ Merchant.ajaxSearch = function(keyword,type){
 				$("#merchantName").autocomplete({
 					source: availableNames,
 					select: function( event, ui ) {
-						alert(ui.item.label);
-						alert(ui.item.value);
-						alert(ui.item.key);
+						console.log(ui.item.label);
+						console.log(ui.item.value);
+						console.log(ui.item.key);
 						
 						$.ajax({
 							type:"GET",
@@ -34,11 +34,14 @@ Merchant.ajaxSearch = function(keyword,type){
 							data:{"id":ui.item.key},
 							success:function(data){
 								console.log(data);
+								console.log(data.id);
+								$("#mid").val(data.id);
 								$("#description").val(data.description);
 								
 								// add merchant image here
 								$("#address").val(data.address);
 								$("#tel").val(data.telephone);
+								Merchant.enableEdit();
 							},
 							error:function(){
 								alert("服务器维护中，马上就好。");
@@ -161,10 +164,17 @@ Merchant.validate = function(){
 		$("html,body").animate({scrollTop: $("#body").offset().top}, 200); 
 		return false;
 	}
-	if(!Common.number(tel)){
-		$("#tips").html("请输入正确的联系方式，格式02183004700").show();
-		$("html,body").animate({scrollTop: $("#body").offset().top}, 200);
-		return false;
+	
+	var tels = tel.split(",");
+	var telsLength = tels.length;
+	console.log(tels);
+	console.log(telsLength);
+	for(var i=0; i < telsLength; i++){
+		if(!Common.tel(tels[i])){
+			$("#tips").html("请输入正确的联系方式，格式021-83004700").show();
+			$("html,body").animate({scrollTop: $("#body").offset().top}, 200);
+			return false;
+		}
 	}
 	
 	
@@ -183,6 +193,14 @@ Merchant.validate = function(){
 		$("html,body").animate({scrollTop: $("#body").offset().top}, 200); 
 		return false;
 	}
+	
+	var timeTest = closeTime.split(":")[0] - openTime.split(":")[0];
+	if(timeTest <= 0){
+		$("#tips").html("营业时间（结束）必须晚于营业时间（开始）").show();
+		$("html,body").animate({scrollTop: $("#body").offset().top}, 200); 
+		return false;
+	}
+	
 	if(i == 21){
 		$("#tips").html("请至少选择一个桌位类型").show();
 		$("html,body").animate({scrollTop: $("#body").offset().top}, 200); 

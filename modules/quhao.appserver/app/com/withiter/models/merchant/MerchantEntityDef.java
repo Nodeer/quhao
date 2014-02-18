@@ -12,58 +12,44 @@ import com.withiter.models.BaseModel;
 
 public abstract class MerchantEntityDef extends BaseModel {
 	@Indexed
-	public String name = "";
+	public String name = "";								// 商家名称 default value from AMAP
 	@Indexed
-	public String address = "";
+	public String address = "";								// 商家地址 default value from AMAP
 	@Indexed
-	public String[] telephone = {""};
+	public String[] telephone = {""};						// 商家电话 default value from AMAP
 	
-	public String poiId;
+	public String poiId;									// 高德地图唯一标示 value from AMAP
+	public String cateType;									// 口味 default value from AMAP
+	public String cateName;									// 口味（中文）
+	public String merchantImage = "";						// 商家 LOGO
 	
-	public String cateType;
-	public String cateName;
-	public String merchantImage = "";
+	public String cityCode;									// 商家所在城市码 value from AMAP
+	public String postcode;									// 商家PostCode（如：上海021）value from AMAP
+	public String email;									// 商家邮箱 value from AMAP
+	public String website;									// 商家网址 value from AMAP
+	public Set merchantImageSet = new HashSet<String>();	// 存放商家展示图片
 	
-	public String cityCode;
-	
-	public String postcode;
-	
-	public String email;
-	
-	public String website;
-	
-	public Set merchantImageSet = new HashSet<String>();
-	
-	// 百度坐标
-	public String x;
-	public String y;
-	
-	public List<String> tags = null;
-	
-	public float averageCost = 0f;
-	public float grade = 0f;
-	public float kouwei = 0f;
-	public float huanjing = 0f;
-	public float fuwu = 0f;
-	public float xingjiabi = 0f;
+	// 高德坐标
+	public String x;										// 商家地图X坐标 value from AMAP
+	public String y;										// 商家地图Y坐标 value from AMAP
+	public List<String> tags = null;						// 商家关键字
+	public float averageCost = 0f;							// 人均消费
+	public float grade = 0f;								// 综合评价
+	public float kouwei = 0f;								// 口味评价
+	public float huanjing = 0f;								// 环境评价
+	public float fuwu = 0f;									// 服务评价
+	public float xingjiabi = 0f;							// 性价比评价
 	
 	@Reference
-	public List<Tese> teses;
-	public String nickName;
-	public String description;
-	public String openTime;
-	public String closeTime;	
-	public int markedCount;
-	public boolean enable = false;
-	
-	// TODO change to Date
-	public Date joinedDate = new Date();
-	
-	/**
-	 * add by CROSS 2013-9-27
-	 * eg: {2,4,6,8} 此商家有2人，4人，6人，8人桌
-	 */
-	public String[] seatType;
+	public List<Tese> teses;								// 商家特色
+	public String nickName = "";							// 商家别名
+	public String description = "";							// 商家描述
+	public String openTime;									// 营业开始时间
+	public String closeTime;								// 营业结束时间
+	public int markedCount = 0;								// 关注数
+	public boolean enable = false;							// 是否正常使用后台排队平台
+	public Date joinedDate = new Date();					// 导入数据库时间 
+	public String[] seatType;								// 桌位类型 eg: {2,4,6,8} 此商家有2人，4人，6人，8人桌
 	
 	public String gTelephone(){
 		StringBuilder sb = new StringBuilder();
