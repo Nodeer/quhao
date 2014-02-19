@@ -60,7 +60,6 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 	private TextView merchantNameView;
 	private TextView seatNoView;
 	private TextView currentNumberView;
-	private Button btnSeatNo;
 	private Button btnGetNo;
 	private TextView beforeYouView;
 	private TextView myNumberView;
@@ -101,7 +100,6 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 		myNumberLayout = (LinearLayout) findViewById(R.id.myNoLayout);
 		myNumberView = (TextView) findViewById(R.id.myNumber);
 		btnGetNumberLayout = (LinearLayout) findViewById(R.id.btn_GetNumberLayout);
-//		btnSeatNo = (Button) findViewById(R.id.btn_seatNo);
 		btnGetNo = (Button) findViewById(R.id.btn_GetNumber);
 
 		
@@ -167,6 +165,8 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 				myNumberLayout.setVisibility(View.VISIBLE);
 				myNumberView.setText(reservation.myNumber);
 				beforeYouLayout.setVisibility(View.VISIBLE);
+				LinearLayout nahaoSuccessTipLayout = (LinearLayout)findViewById(R.id.nahaoSuccessTipLayout);
+				nahaoSuccessTipLayout.setVisibility(View.VISIBLE);
 				beforeYouView.setText(reservation.beforeYou);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 

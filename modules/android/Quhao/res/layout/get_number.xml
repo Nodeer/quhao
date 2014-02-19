@@ -222,7 +222,32 @@
                     android:textColor="#ff000000"
                     android:textSize="16.0sp" />
             </LinearLayout>
+            
+            <!-- 拿号成功，提示用户 -->
+            <LinearLayout
+                android:id="@+id/nahaoSuccessTipLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/list_item_border"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="10.0dip"
+                android:visibility="gone" >
 
+                <TextView
+                    android:layout_width="0.0px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6.0dip"
+                    android:layout_weight="1.0"
+                    android:maxLines="2"
+                    android:text="@string/nahao_success_tip"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textColor="#ff000000"
+                    android:textSize="16.0sp" />
+            </LinearLayout>
+			<!-- 拿号成功，提示用户 -->
+            
             <LinearLayout
                 android:id="@+id/btn_GetNumberLayout"
                 android:layout_width="fill_parent"

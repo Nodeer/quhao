@@ -93,6 +93,7 @@
 	<string name="my_number">我的号码：</string>
 	<string name="before_you">在你前面：</string>
 	<string name="nahao">拿号</string>
+	<string name="nahao_success_tip">恭喜，拿号成功!当你前面排队人数少于5时，我们会发短信提醒您。如果你前面排队人数已经小于5人，直接去享受美味吧。</string>
 	<!-- get number end -->
 
 	<!-- jifen cost states -->

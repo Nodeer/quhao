@@ -189,6 +189,10 @@ public class Reservation extends ReservationEntityDef {
 			r.save();
 
 			String accountId = r.accountId;
+			if(accountId == null){
+				return true;
+			}
+			
 			Account account = Account.findById(accountId);
 			account.jifen = account.jifen + 1;
 			account.modified = new Date();
