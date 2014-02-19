@@ -138,7 +138,7 @@ public class NearbyActivity extends QuhaoBaseActivity implements AMapLocationLis
 		poiSearch.setOnPoiSearchListener(this);
 //		double lat = location.getLatitude();
 //		double lon = location.getLongitude();
-		LatLonPoint lp = new LatLonPoint(31.192172, 121.443025);
+		LatLonPoint lp = new LatLonPoint(31.235048, 121.474794);
 		poiSearch.setBound(new SearchBound(
 				lp, 1000));//设置搜索区域为以lp点为圆心，其周围1000米范围
 		try {
