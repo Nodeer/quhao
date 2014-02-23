@@ -14,6 +14,7 @@ public class ReservationVO {
 	public String currentNumber;
 	public boolean valid;
 	public String status;
+	public boolean isCommented;
 	
 	public String merchantName;
 	
@@ -25,7 +26,7 @@ public class ReservationVO {
 	}
 	
 	public ReservationVO(String rId,String accountId,String merchantId,String seatNumber,String myNumber,String beforeYou,
-			String currentNumber,boolean valid,boolean tipKey,String tipValue,String merchantName,String merchantAddress){
+			String currentNumber,boolean valid,boolean tipKey,String tipValue,String merchantName,String merchantAddress,boolean isCommented){
 		this.rId = rId;
 		this.accountId = accountId;
 		this.merchantId = merchantId;
@@ -40,5 +41,7 @@ public class ReservationVO {
 		this.tipValue = tipValue;
 		this.merchantName = merchantName;
 		this.merchantAddress = merchantAddress;
+		this.isCommented = isCommented;
+		
 	}
 }

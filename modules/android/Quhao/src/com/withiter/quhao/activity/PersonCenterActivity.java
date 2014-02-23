@@ -295,7 +295,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 
 				Intent intentCurrent = new Intent();
 				intentCurrent.putExtra("queryCondition", "current");
-				intentCurrent.setClass(this, QuhaoStatesActivity.class);
+				intentCurrent.setClass(this, QuhaoCurrentStatesActivity.class);
 				startActivity(intentCurrent);
 				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			} else {
@@ -318,7 +318,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				Intent intentHistory = new Intent();
 				intentHistory.putExtra("queryCondition", "history");
-				intentHistory.setClass(this, QuhaoStatesActivity.class);
+				intentHistory.setClass(this, QuhaoHistoryStatesActivity.class);
 				startActivity(intentHistory);
 				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			} else {

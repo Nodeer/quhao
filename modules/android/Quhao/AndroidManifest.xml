@@ -188,6 +188,16 @@
 		<activity android:name="com.withiter.quhao.activity.QuhaoStatesActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
 			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
 		<!-- current/history paidui list page -->
+		
+		<!-- current paidui list page -->
+		<activity android:name="com.withiter.quhao.activity.QuhaoCurrentStatesActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
+			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
+		<!-- current paidui list page -->
+		
+		<!-- history paidui list page -->
+		<activity android:name="com.withiter.quhao.activity.QuhaoHistoryStatesActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
+			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
+		<!-- history paidui list page -->
 
 		<!-- credit list page -->
 		<activity android:name="com.withiter.quhao.activity.CreditCostListActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"

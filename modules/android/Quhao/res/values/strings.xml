@@ -57,6 +57,8 @@
 	<!-- 当前/历史取号情况 -->
 	<string name="quhao_states_merchantName">商家名称 ：</string>
 	<string name="quhao_states_merchantAddress">商家地址 ：</string>
+	<string name="cancel_sequence">取消</string>
+	<string name="quhao_states_comment">点评</string>
 	<!-- 当前/历史取号情况 -->
 	
 	<!-- 个人中心 -->

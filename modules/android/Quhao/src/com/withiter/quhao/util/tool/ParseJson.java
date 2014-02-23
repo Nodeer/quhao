@@ -374,11 +374,12 @@ public class ParseJson {
 		String currentNumber = obj.optString("currentNumber");
 		boolean valid = obj.optBoolean("valid");
 		boolean tipKey = obj.optBoolean("tipKey");
+		boolean isCommented = obj.optBoolean("isCommented");
 		String tipValue = obj.optString("tipValue");
 		String merchantName = obj.optString("merchantName");
 		String merchantAddress = obj.optString("merchantAddress");
 
-		rvo = new ReservationVO(rId,accountId, merchantId, seatNumber, myNumber, beforeYou, currentNumber, valid, tipKey, tipValue, merchantName, merchantAddress);
+		rvo = new ReservationVO(rId,accountId, merchantId, seatNumber, myNumber, beforeYou, currentNumber, valid, tipKey, tipValue, merchantName, merchantAddress,isCommented);
 		return rvo;
 	}
 

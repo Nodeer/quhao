@@ -15,11 +15,10 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
-import com.withiter.quhao.adapter.ReservationForPaiduiAdapter;
+import com.withiter.quhao.adapter.ReservationForHistoryPaiduiAdapter;
 import com.withiter.quhao.exception.NoResultFromHTTPRequestException;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
@@ -31,33 +30,24 @@ import com.withiter.quhao.vo.ReservationVO;
  * Quhao states of Current/History
  * 
  */
-public class QuhaoStatesActivity extends QuhaoBaseActivity implements OnItemClickListener{
+public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity implements OnItemClickListener{
 
 	protected static boolean backClicked = false;
-	private static String TAG = QuhaoStatesActivity.class.getName();
+	private static String TAG = QuhaoHistoryStatesActivity.class.getName();
 
 	private List<ReservationVO> reservations;
-	private TextView titleView;
 	private ListView paiduiListView;
-	private String queryCondition;
-	private ReservationForPaiduiAdapter reservationForPaiduiAdapter;
+	private ReservationForHistoryPaiduiAdapter reservationForPaiduiAdapter;
 
+	private ProgressDialogUtil progress;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.paidui_list_layout);
 		super.onCreate(savedInstanceState);
 
-		queryCondition = this.getIntent().getStringExtra("queryCondition");
-		titleView = (TextView) findViewById(R.id.title);
-		if ("current".equals(queryCondition)) {
-			titleView.setText("当前取号情况(点击取消)");
-		} else if ("history".equals(queryCondition)) {
-			titleView.setText("历史取号情(点击评论)");
-		}
-
 		paiduiListView = (ListView) this.findViewById(R.id.paiduiListView);
-		paiduiListView.setOnItemClickListener(QuhaoStatesActivity.this);
+		paiduiListView.setOnItemClickListener(QuhaoHistoryStatesActivity.this);
 		btnBack.setOnClickListener(goBack(this));
 
 		initData();
@@ -69,17 +59,12 @@ public class QuhaoStatesActivity extends QuhaoBaseActivity implements OnItemClic
 			public void run() {
 				Looper.prepare();
 				try {
-					progressDialogUtil = new ProgressDialogUtil(QuhaoStatesActivity.this, R.string.empty, R.string.waitting, false);
+					progressDialogUtil = new ProgressDialogUtil(QuhaoHistoryStatesActivity.this, R.string.empty, R.string.waitting, false);
 					progressDialogUtil.showProgress();
 					
 					String url = "";
 					String accountId = QHClientApplication.getInstance().accountInfo.accountId;
-					if ("current".equals(queryCondition)) {
-						url = "getCurrentMerchants?accountId=" + accountId;
-					}
-					if ("history".equals(queryCondition)) {
-						url = "getHistoryMerchants?accountId=" + accountId;
-					}
+					url = "getHistoryMerchants?accountId=" + accountId;
 					
 					String buf = CommonHTTPRequest.get(url);
 					if (StringUtils.isNull(buf) || "[]".equals(buf)) {
@@ -110,7 +95,7 @@ public class QuhaoStatesActivity extends QuhaoBaseActivity implements OnItemClic
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
-				reservationForPaiduiAdapter = new ReservationForPaiduiAdapter(QuhaoStatesActivity.this, paiduiListView, reservations);
+				reservationForPaiduiAdapter = new ReservationForHistoryPaiduiAdapter(QuhaoHistoryStatesActivity.this, paiduiListView, reservations);
 				paiduiListView.setAdapter(reservationForPaiduiAdapter);
 				reservationForPaiduiAdapter.notifyDataSetChanged();
 				
@@ -129,10 +114,46 @@ public class QuhaoStatesActivity extends QuhaoBaseActivity implements OnItemClic
 		return false;
 	}
 	
-	
+	private void initDataForResume() {
+		Thread thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				Looper.prepare();
+				try {
+					progress = new ProgressDialogUtil(QuhaoHistoryStatesActivity.this, R.string.empty, R.string.waitting, false);
+					progress.showProgress();
+					
+					String url = "";
+					String accountId = QHClientApplication.getInstance().accountInfo.accountId;
+					url = "getHistoryMerchants?accountId=" + accountId;
+					
+					String buf = CommonHTTPRequest.get(url);
+					if (StringUtils.isNull(buf) || "[]".equals(buf)) {
+						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+						throw new NoResultFromHTTPRequestException();
+					} else {
+						reservations = new ArrayList<ReservationVO>();
+						reservations = ParseJson.getReservations(buf);
+						reservationsUpdateHandler.obtainMessage(200, reservations).sendToTarget();
+					}
+
+				} catch (Exception e) {
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+					e.printStackTrace();
+				} finally {
+					progress.closeProgress();
+					Looper.loop();
+				}
+
+			}
+		});
+		thread.start();
+
+	}
 	@Override
 	protected void onResume() {
 		backClicked = false;
+		initDataForResume();
 		super.onResume();
 	}
 
@@ -167,22 +188,12 @@ public class QuhaoStatesActivity extends QuhaoBaseActivity implements OnItemClic
 		isClick = true;
 		// 解锁
 		unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-		if ("current".equals(queryCondition)) {
-			ReservationVO reservation = reservations.get(position);
-			Intent intent = new Intent();
-			intent.putExtra("merchantId", reservation.merchantId);
-			intent.setClass(QuhaoStatesActivity.this, MerchantDetailActivity.class);
-			startActivity(intent);
-			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-		} else if ("history".equals(queryCondition)) {
-			ReservationVO reservation = reservations.get(position);
-			Intent intent = new Intent();
-			intent.putExtra("rId", reservation.rId);
-			intent.setClass(QuhaoStatesActivity.this, CreateCommentActivity.class);
-			startActivity(intent);
-			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-			
-		}
+		ReservationVO reservation = reservations.get(position);
+		Intent intent = new Intent();
+		intent.putExtra("rId", reservation.rId);
+		intent.setClass(QuhaoHistoryStatesActivity.this, CreateCommentActivity.class);
+		startActivity(intent);
+		overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 		
 	}
 }
