@@ -79,7 +79,8 @@ public class QuhaoLog {
 	private static void log(String tag, String msg, char level) {
 		
 		// 增加行号显示
-		StackTraceElement[] elements = Thread.currentThread().getStackTrace();
+		Throwable state = new Throwable();
+		StackTraceElement[] elements = state.getStackTrace();
 		if(elements != null && elements[2] != null){
 			int lineNumber = elements[2].getLineNumber();
 			msg = "line number "+lineNumber+": " + msg;
