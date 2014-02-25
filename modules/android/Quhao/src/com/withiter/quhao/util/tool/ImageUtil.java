@@ -63,6 +63,7 @@ public class ImageUtil {
 		QuhaoLog.d(TAG, "imageUrl : " + imageUrl);
 		String path = cacheDir.getPath() + "/"
 				+ imageUrl.split("\\?fileName=")[1];
+		QuhaoLog.d(TAG, "file on sd:"+path);
 		return path;
 	}
 

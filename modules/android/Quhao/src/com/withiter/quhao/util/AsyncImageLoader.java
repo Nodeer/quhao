@@ -57,10 +57,15 @@ public class AsyncImageLoader {
 
 			// get cached image from SD card
 			if (SDTool.instance().SD_EXIST) {
-				Drawable drawable = Drawable.createFromPath(ImageUtil
+				File f = new File(ImageUtil
 						.getInstance().getFilePath(imageUrl));
-				if (null != drawable) {
-					return drawable;
+				QuhaoLog.d(TAG, "f.exists():" + f.exists());
+				if(f.exists()){
+					Drawable drawable = Drawable.createFromPath(ImageUtil
+							.getInstance().getFilePath(imageUrl));
+					if (null != drawable) {
+						return drawable;
+					}
 				}
 			}
 
@@ -101,6 +106,7 @@ public class AsyncImageLoader {
 	public Drawable loadDrawable(String imageUrl, int position) {
 		// get cached image from memory
 		if (imageCache.containsKey(imageUrl)) {
+			QuhaoLog.d(TAG, "get cached image from memory");
 			SoftReference<Drawable> softReference = imageCache.get(imageUrl);
 			Drawable drawable = softReference.get();
 			if (drawable != null) {
@@ -110,13 +116,19 @@ public class AsyncImageLoader {
 
 		// get cached image from SD card
 		if (SDTool.instance().SD_EXIST) {
-			Drawable drawable = Drawable.createFromPath(ImageUtil.getInstance()
+			QuhaoLog.d(TAG, "get cached image from SD card");
+			File f = new File(ImageUtil.getInstance()
 					.getFilePath(imageUrl));
-			if (null != drawable) {
-				return drawable;
+			if(f.exists()){
+				Drawable drawable = Drawable.createFromPath(ImageUtil.getInstance()
+						.getFilePath(imageUrl));
+				if (null != drawable) {
+					return drawable;
+				}
 			}
 		}
 
+		QuhaoLog.d(TAG, "load image from url, the url is : "+imageUrl);
 		Drawable drawable = loadImageFromUrl(imageUrl);
 		imageCache.put(imageUrl, new SoftReference<Drawable>(drawable));
 
@@ -165,6 +177,7 @@ public class AsyncImageLoader {
 
 	}
 
+	
 	public static Drawable loadImageFromUrl(String url) {
 		URL picUrl;
 		Drawable d = null;
@@ -175,6 +188,7 @@ public class AsyncImageLoader {
 				url = url.replace("http://localhost:9081/",
 						QuhaoConstant.HTTP_URL);
 			}
+			QuhaoLog.d(TAG, url);
 			picUrl = new URL(url);
 			conn = (HttpURLConnection) picUrl.openConnection();
 			conn.setConnectTimeout(20000);

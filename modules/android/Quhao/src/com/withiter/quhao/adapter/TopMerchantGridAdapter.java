@@ -4,6 +4,9 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -23,6 +26,7 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 	private List<? extends Object> list;
 	private AsyncImageLoader asyncImageLoader;
 	private Context context;
+	Drawable cachedImage = null;
 
 	private static int getViewTimes = 0;
 
@@ -50,12 +54,11 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		final ImageView imageView;
 		QuhaoLog.i(TAG, "getView times : " + (getViewTimes++));
 		QuhaoLog.i(TAG, "getView " + position + " " + convertView);
 
-		Drawable cachedImage = null;
 		TopMerchant topMerchant = (TopMerchant) this.getItem(position);
 
 		final int defaultWidth = PhoneTool.getScreenWidth() / 3;
@@ -77,16 +80,24 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 			return imageView;
 		}
 		
-		String imageUrl = topMerchant.merchantImage;
+		final String imageUrl = topMerchant.merchantImage;
 		QuhaoLog.d(TAG, "asyncImageLoader, the imageUrl is : " + imageUrl);
 		if (StringUtils.isNotNull(imageUrl)) {
-			cachedImage = asyncImageLoader.loadDrawable(imageUrl, position);
-			imageView.setImageDrawable(cachedImage);
+			
+			// Android 4.0 之后不能在主线程中请求HTTP请求
+			new Thread(new Runnable(){
+			    @Override
+			    public void run() {
+			    	cachedImage = asyncImageLoader.loadDrawable(imageUrl, position);
+					imageView.setImageDrawable(cachedImage);
+			    }
+			}).start();
+			
 		}
 		
         return imageView;
 	}
-
+	
 	class ViewHolder {
 		ImageView img;
 		TextView itemView;

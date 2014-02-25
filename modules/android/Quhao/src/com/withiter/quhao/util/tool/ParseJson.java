@@ -88,7 +88,8 @@ public class ParseJson {
 				if (obj.has("merchantImage")) {
 					// TODO test here
 					if (QuhaoConstant.test) {
-						imgUrl = obj.getString("merchantImage").replace("localhost", "10.0.2.2");
+						imgUrl = obj.getString("merchantImage").replace("http://localhost:9081/", QuhaoConstant.HTTP_URL);
+						System.out.println(imgUrl);
 					} else {
 						imgUrl = obj.getString("merchantImage");
 					}
