@@ -74,6 +74,7 @@ public class MainActivity extends QuhaoBaseActivity {
 
 		// search function
 		searchTextView = (EditText) findViewById(R.id.edit_search);
+		searchTextView.clearFocus(); 
 		searchTextView.setOnClickListener(goMerchantsSearch(MainActivity.this));
 
 		// all categories
