@@ -240,11 +240,18 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					}
 					
 					// get image from memory/SDCard/URL stream
-					AsyncImageLoader asynImageLoader = new AsyncImageLoader();
-					Drawable drawable = asynImageLoader.loadDrawable(merchant.merchantImage);
-					if (drawable != null) {
-						merchantImg.setImageDrawable(drawable);
-					}
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							// TODO Auto-generated method stub
+							AsyncImageLoader asynImageLoader = new AsyncImageLoader();
+							Drawable drawable = asynImageLoader.loadDrawable(merchant.merchantImage);
+							if (drawable != null) {
+								// update merchant image
+								updateMerchantImageHandler.obtainMessage(0, drawable).sendToTarget();
+							}
+						}
+					}).start();
 
 					// check the merchant is enabled
 					if (m.enable) {
@@ -311,8 +318,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					if(QHClientApplication.getInstance().isLogined){
 						getCurrentNo();
 					}
-					else
-					{
+					else {
 						progressDialogUtil.closeProgress();
 					}
 					critiqueLayout.setOnClickListener(MerchantDetailActivity.this);
@@ -322,6 +328,15 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		}
 	};
 
+	private Handler updateMerchantImageHandler = new Handler(){
+		public void handleMessage(Message msg) {
+			if(msg.what == 0){
+				
+				merchantImg.setImageDrawable((Drawable) msg.obj);
+			}
+		};
+	};
+	
 	private Handler reservationUpdateHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {

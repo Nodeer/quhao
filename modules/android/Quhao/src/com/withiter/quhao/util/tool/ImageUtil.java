@@ -68,15 +68,16 @@ public class ImageUtil {
 	}
 
 	public File saveFile(String imageUrl, InputStream is) {
+		QuhaoLog.i(TAG, "start to save image to SD card, the image url is : " + imageUrl);
 		if (StringUtils.isNull(imageUrl)) {
 			return null;
 		}
 		
 		String fileName = imageUrl.split("\\?fileName=")[1];
-		String newFileName = DesUtils.byteArr2HexStr(fileName.getBytes());
+//		String newFileName = DesUtils.byteArr2HexStr(fileName.getBytes());
 		File file = null;
 		try {
-			file = new File(cacheDir, newFileName);
+			file = new File(cacheDir, fileName);
 			if (!file.exists()) {
 				file.createNewFile();
 				OutputStream os = new FileOutputStream(file);

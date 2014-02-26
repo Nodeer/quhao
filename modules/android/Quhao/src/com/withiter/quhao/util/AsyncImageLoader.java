@@ -180,6 +180,7 @@ public class AsyncImageLoader {
 					return drawable;
 				}
 			}
+			
 			drawable = loadImageFromUrl(imageUrl);
 			imageCache.put(imageUrl, new SoftReference<Drawable>(drawable));
 			return drawable;
