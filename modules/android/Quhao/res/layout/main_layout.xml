@@ -15,12 +15,19 @@
         android:focusable="true"   
 		android:focusableInTouchMode="true">
 
+        <View android:layout_width="0dip" 
+            android:layout_height="0dip"
+            android:focusableInTouchMode="true" 
+            />
+        
         <EditText
             android:id="@+id/edit_search"
+            android:windowSoftInputMode="adjustPan|stateHidden"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableRight="@drawable/category_search_btn"
+            android:focusable="false"
             android:gravity="left|center"
             android:hint="@string/search_placeholder"
             android:textAppearance="?android:textAppearanceMedium" />

@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.CategoryGridAdapter;
@@ -43,7 +44,7 @@ public class MainActivity extends QuhaoBaseActivity {
 	private String TAG = MainActivity.class.getName();
 	protected ListView topMerchantListView;
 	private GridView topMerchantsGird;
-	private EditText searchTextView;
+	private TextView searchTextView;
 	private List<TopMerchant> topMerchants;
 	private GridView categorysGird;
 	protected ProgressDialogUtil progressCategory;
@@ -76,6 +77,8 @@ public class MainActivity extends QuhaoBaseActivity {
 		searchTextView = (EditText) findViewById(R.id.edit_search);
 		searchTextView.clearFocus(); 
 		searchTextView.setOnClickListener(goMerchantsSearch(MainActivity.this));
+		InputMethodManager inputMethodManager = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
+		inputMethodManager.hideSoftInputFromWindow(searchTextView.getWindowToken(), 0);
 
 		// all categories
 		categorys = new ArrayList<Category>();
@@ -262,26 +265,26 @@ public class MainActivity extends QuhaoBaseActivity {
 		return false;
 	}
 
-	@Override
-	public boolean dispatchTouchEvent(MotionEvent ev) {
-
-		InputMethodManager m = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		if (m != null) {
-//			if(this.getCurrentFocus()!=null && this.getCurrentFocus().getWindowToken() != null)
-//			{
-//				m.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+//	@Override
+//	public boolean dispatchTouchEvent(MotionEvent ev) {
+//
+//		InputMethodManager m = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//		if (m != null) {
+////			if(this.getCurrentFocus()!=null && this.getCurrentFocus().getWindowToken() != null)
+////			{
+////				m.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+////			}
+//			
+//			//R.id.login
+//			//m.hideSoftInputFromWindow(passwordText.getWindowToken(), 0);
+//			//m.hideSoftInputFromWindow(loginNameText.getWindowToken(), 0);
+//			if(m.isActive()){
+//				m.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
 //			}
-			
-			//R.id.login
-			//m.hideSoftInputFromWindow(passwordText.getWindowToken(), 0);
-			//m.hideSoftInputFromWindow(loginNameText.getWindowToken(), 0);
-			if(m.isActive()){
-				m.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
-			}
-			
-			
-		}
-
-		return super.dispatchTouchEvent(ev);
-	}
+//			
+//			
+//		}
+//
+//		return super.dispatchTouchEvent(ev);
+//	}
 }
