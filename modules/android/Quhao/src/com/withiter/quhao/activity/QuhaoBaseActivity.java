@@ -2,11 +2,15 @@ package com.withiter.quhao.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
@@ -167,7 +171,6 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 				Intent intent = new Intent(activity, NearbyActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(intent);
-//				overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 			}
 		};
 		return clickListener;
@@ -192,6 +195,7 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 				}
 				// no need to check login status here.
 				Intent intent = new Intent(activity, PersonCenterActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(intent);
 			}
 		};
@@ -212,7 +216,6 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 				Intent intent = new Intent(activity, MoreActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(intent);
-//				overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 			}
 		};
 		return clickListener;
@@ -229,4 +232,37 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 		};
 		return clickListener;
 	}
+	
+//	@Override
+//	public boolean onKeyDown(int keyCode, KeyEvent event) {
+//	    if(keyCode == KeyEvent.KEYCODE_BACK) {
+//	        // 监控返回键
+//	        new Builder(QuhaoBaseActivity.this).setTitle("提示")
+//	                .setIconAttribute(android.R.attr.alertDialogIcon)
+//	                .setMessage("确定要退出吗?")
+//	                .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+//	                    @Override
+//	                    public void onClick(DialogInterface dialog, int which) {
+////	                    	QuhaoBaseActivity.this.finish();
+////	                    	finish();
+////	                    	System.exit(0);
+////	                    	android.os.Process.killProcess(android.os.Process.myPid());
+////	                    	ActivityManager activityMgr=(ActivityManager)QuhaoBaseActivity.this.getSystemService(ACTIVITY_SERVICE);
+////	                        activityMgr.killBackgroundProcesses("com.withiter.quhao");
+////	                    	QuhaoBaseActivity.this.moveTaskToBack(true);
+////	                    	Intent intent = new Intent(Intent.ACTION_MAIN);
+////	                    	intent.addCategory(Intent.CATEGORY_HOME);
+////	                    	intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+////	                    	startActivity(intent);
+//	                    }})
+//	                .setNegativeButton("取消", null)
+//	                .create().show();
+//	        return false;
+//	    } else if(keyCode == KeyEvent.KEYCODE_MENU) {
+//	        // 监控菜单键
+////	        Toast.makeText(QuhaoBaseActivity.this, "Menu", Toast.LENGTH_SHORT).show();
+//	        return false;
+//	    }
+//	    return super.onKeyDown(keyCode, event);
+//	}
 }
