@@ -243,7 +243,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					new Thread(new Runnable() {
 						@Override
 						public void run() {
-							// TODO Auto-generated method stub
 							AsyncImageLoader asynImageLoader = new AsyncImageLoader();
 							Drawable drawable = asynImageLoader.loadDrawable(merchant.merchantImage);
 							if (drawable != null) {
@@ -310,7 +309,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 							intent.putExtra("merchantId", merchantId);
 							intent.putExtra("merchantName", merchant.name);
 							startActivity(intent);
-							overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+							overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 						}
 					});
 
