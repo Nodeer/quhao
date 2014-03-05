@@ -389,6 +389,7 @@ public class NearbyActivity extends QuhaoBaseActivity implements AMapLocationLis
 				if (StringUtils.isNull(buf) || "[]".equals(buf)) {
 					progressDialogUtil.closeProgress();
 					AlertDialog.Builder builder = new Builder(this);
+					builder.setTitle("温馨提示");
 					builder.setMessage("对不起，该商家未在取号系统注册。");
 					builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 						@Override

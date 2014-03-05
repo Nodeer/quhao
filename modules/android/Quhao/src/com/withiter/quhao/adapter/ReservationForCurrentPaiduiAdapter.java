@@ -115,6 +115,7 @@ public class ReservationForCurrentPaiduiAdapter extends BaseAdapter {
 				public void onClick(View v) {
 					
 					AlertDialog.Builder builder = new Builder(activity);
+					builder.setTitle("温馨提示");
 					builder.setMessage("您确定要取消该号码吗？");
 					builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 						@Override

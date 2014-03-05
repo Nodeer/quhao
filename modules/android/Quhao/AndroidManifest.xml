@@ -84,31 +84,31 @@
 
 		<!-- nearby page -->
 		<activity android:name="com.withiter.quhao.activity.NearbyActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
-			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
+			android:screenOrientation="portrait"  />
 		<!-- nearby page -->
 
 
 		<!-- personal page -->
 		<activity android:name="com.withiter.quhao.activity.PersonCenterActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
-			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
+			android:screenOrientation="portrait" />
 		<!-- personal page -->
 
 
 		<!-- more page -->
 		<activity android:name="com.withiter.quhao.activity.MoreActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
-			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
+			android:screenOrientation="portrait"  />
 		<!-- more page -->
 
 
 		<!-- merchant list page -->
 		<activity android:name="com.withiter.quhao.activity.MerchantListActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
-			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
+			android:screenOrientation="portrait"  />
 		<!-- merchant list page -->
 
 
 		<!-- merchant details page -->
 		<activity android:name="com.withiter.quhao.activity.MerchantDetailActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
-			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
+			android:screenOrientation="portrait"  />
 		<!-- merchant details page -->
 
 
@@ -121,7 +121,7 @@
 
 		<!-- get number page -->
 		<activity android:name="com.withiter.quhao.activity.GetNumberActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
-			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
+			android:screenOrientation="portrait"  />
 		<!-- get number page -->
 
 
@@ -138,37 +138,37 @@
 
 		<!-- get number page -->
 		<activity android:name="com.withiter.quhao.activity.MerchantLBSActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
-			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
+			android:screenOrientation="portrait"  />
 		<!-- get number page -->
 
 		<!-- comments page -->
 		<activity android:name="com.withiter.quhao.activity.CommentsMerchantActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
-			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
+			android:screenOrientation="portrait"  />
 		<!-- comments page -->
 
 		<!-- comments page -->
 		<activity android:name="com.withiter.quhao.activity.CommentsAccountActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
-			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
+			android:screenOrientation="portrait"  />
 		<!-- comments page -->
 
 		<!-- settings page -->
 		<activity android:name="com.withiter.quhao.activity.SettingsActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
-			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
+			android:screenOrientation="portrait"  />
 		<!-- settings page -->
 
 		<!-- opinion page -->
 		<activity android:name="com.withiter.quhao.activity.OpinionActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
-			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
+			android:screenOrientation="portrait"  />
 		<!-- opinion page -->
 
 		<!-- about us page -->
 		<activity android:name="com.withiter.quhao.activity.AboutUsActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
-			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
+			android:screenOrientation="portrait"  />
 		<!-- about us page -->
 
 		<!-- help page -->
 		<activity android:name="com.withiter.quhao.activity.HelpActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
-			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
+			android:screenOrientation="portrait"  />
 		<!-- help page -->
 
 		<!-- share page -->
@@ -178,37 +178,37 @@
 
 		<!-- share sina page -->
 		<activity android:name="com.withiter.quhao.activity.SinaInfoActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
-			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
+			android:screenOrientation="portrait"  />
 		<!-- share sina page -->
 
 		<!-- current/history paidui list page -->
 		<activity android:name="com.withiter.quhao.activity.QuhaoStatesActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
-			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
+			android:screenOrientation="portrait"  />
 		<!-- current/history paidui list page -->
 		
 		<!-- current paidui list page -->
 		<activity android:name="com.withiter.quhao.activity.QuhaoCurrentStatesActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
-			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
+			android:screenOrientation="portrait"  />
 		<!-- current paidui list page -->
 		
 		<!-- history paidui list page -->
 		<activity android:name="com.withiter.quhao.activity.QuhaoHistoryStatesActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
-			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
+			android:screenOrientation="portrait"  />
 		<!-- history paidui list page -->
 
 		<!-- credit list page -->
 		<activity android:name="com.withiter.quhao.activity.CreditCostListActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
-			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
+			android:screenOrientation="portrait"  />
 		<!-- credit list page -->
 
 		<!-- around merchant list page -->
 		<activity android:name="com.withiter.quhao.activity.ForgetPasswordActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
-			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
+			android:screenOrientation="portrait"  />
 		<!-- around merchant list page -->
 
 		<!-- create comment page -->
 		<activity android:name="com.withiter.quhao.activity.CreateCommentActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
-			android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar" />
+			android:screenOrientation="portrait"  />
 		<!-- create comment page -->
 	</application>
 

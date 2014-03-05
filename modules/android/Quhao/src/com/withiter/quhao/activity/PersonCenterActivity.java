@@ -253,6 +253,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				AlertDialog.Builder builder = new Builder(this);
+				builder.setTitle("温馨提示");
 				builder.setMessage("请先登录");
 				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 					@Override
@@ -278,6 +279,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				AlertDialog.Builder builder = new Builder(this);
+				builder.setTitle("温馨提示");
 				builder.setMessage("请先登录");
 				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 					@Override
@@ -302,6 +304,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				AlertDialog.Builder builder = new Builder(this);
+				builder.setTitle("温馨提示");
 				builder.setMessage("请先登录");
 				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 					@Override
@@ -324,15 +327,16 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			} else {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				AlertDialog.Builder builder = new Builder(this);
-				builder.setMessage("请先登录");
-				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+				Builder dialog = new AlertDialog.Builder(this);
+				dialog.setTitle("温馨提示");
+				dialog.setMessage("请先登录");
+				dialog.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
 					}
 				});
-				builder.create().show();
+				dialog.create().show();
 			}
 			break;
 		case R.id.credit_cost_layout:
@@ -346,7 +350,8 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			} else {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				AlertDialog.Builder builder = new Builder(this);
+				Builder builder = new AlertDialog.Builder(this);
+				builder.setTitle("温馨提示");
 				builder.setMessage("请先登录");
 				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 					@Override
@@ -355,6 +360,10 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 					}
 				});
 				builder.create().show();
+				
+//				Builder dialog = new AlertDialog.Builder(this);
+//				dialog.setTitle("温馨提示").setMessage("请先登录").setPositiveButton("确定", null);
+//				dialog.show();
 			}
 			break;
 		case R.id.editPassword:
@@ -368,15 +377,17 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			} else {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				AlertDialog.Builder builder = new Builder(this);
-				builder.setMessage("请先登录");
-				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
-				builder.create().show();
+//				AlertDialog.Builder builder = new Builder(this);
+//				builder.setTitle("温馨提示");
+//				builder.setMessage("请先登录");
+//				builder.setPositiveButton("确认", null);
+//				builder.show();
+				Builder dialog = new AlertDialog.Builder(this);
+				dialog.setTitle("温馨提示").setMessage("请先登录").setPositiveButton("确定", null);
+				dialog.show();
+//				Builder dialog = new AlertDialog.Builder(MainActivity.this);
+//				dialog.setTitle("温馨提示").setMessage("推荐商家虚席以待").setPositiveButton("确定", null);
+//				dialog.show();
 			}
 			break;
 		default:
