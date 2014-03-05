@@ -310,7 +310,7 @@ public class SelfManagementController extends BaseController {
 		String paiduihaoTip = Play.configuration.getProperty("service.sms.paiduihao");
 		String qianmianTip = Play.configuration.getProperty("service.sms.qianmian");
 		String apptuijian = Play.configuration.getProperty("service.sms.apptuijian");
-		String content = paiduihaoTip + reservation.myNumber + ", " + qianmianTip + rvo.beforeYou + "," + apptuijian;
+		String content = paiduihaoTip + reservation.myNumber + qianmianTip + rvo.beforeYou + apptuijian;
 		try {
 			int i = SMSBusiness.sendSMS(tel, content);
 			int j = 0;
