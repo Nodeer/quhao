@@ -9,10 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "ASIHTTPRequest.h"
 #import "Helper.h"
+#import "UIScrollView+ScrollViewCategory.h"
+#import "QuHaoUtil.h"
 @interface ForgetViewController  : UIViewController<UITextFieldDelegate>
-@property (strong,nonatomic) UITextField *accountField;
-@property (strong,nonatomic) UITextField *mdField;
-@property (strong,nonatomic) UITextField *passField;
-@property (strong,nonatomic) UITextField *confirmPassField;
+
+@property (strong, nonatomic) IBOutlet UITextField *accountField;
+@property (strong, nonatomic) IBOutlet UITextField *mdField;
+@property (strong, nonatomic) IBOutlet UITextField *passField;
+@property (strong, nonatomic) IBOutlet UITextField *confirmPassField;
+//获取验证码
+- (IBAction)hqCode:(id)sender;
 
 @end
