@@ -18,8 +18,8 @@
 @interface MineViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate>
 {
     UITableView *_mineView;
-    Helper *helper;
-    UserInfo * userInfo;
+    Helper *_helper;
+    UserInfo * _userInfo;
 }
 
 @property BOOL isLoginJustNow;

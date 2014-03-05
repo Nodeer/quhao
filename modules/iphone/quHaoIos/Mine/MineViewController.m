@@ -46,12 +46,12 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    helper=[Helper new];
+    _helper=[Helper new];
     //登录判断
-    if (userInfo==nil) {
-        userInfo= [UserInfo alloc];
+    if (_userInfo==nil) {
+        _userInfo= [UserInfo alloc];
     }
-    if (helper.isCookie == NO) {
+    if (_helper.isCookie == NO) {
         UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"请登录后查看信息" delegate:self cancelButtonTitle:@"返回" destructiveButtonTitle:nil otherButtonTitles:@"登录", nil];
         [sheet showInView:[UIApplication sharedApplication].keyWindow];
     }
@@ -59,16 +59,16 @@
     else if(self.isLoginJustNow)
     {
         self.isLoginJustNow = NO;
-        helper.viewBeforeLogin = nil;
-        helper.viewNameBeforeLogin = nil;
+        _helper.viewBeforeLogin = nil;
+        _helper.viewNameBeforeLogin = nil;
         [self reload];
         [_mineView reloadData];
     }
     //如果cookie存在且不是刚刚登录的话
-    else if(!self.isLoginJustNow&&helper.isCookie==YES){
+    else if(!self.isLoginJustNow&&_helper.isCookie==YES){
         self.isLoginJustNow = NO;
-        helper.viewBeforeLogin = nil;
-        helper.viewNameBeforeLogin = nil;
+        _helper.viewBeforeLogin = nil;
+        _helper.viewNameBeforeLogin = nil;
         [self reload];
         
         [_mineView reloadData];
@@ -105,31 +105,31 @@
             self.egoImgView = [[EGOImageView alloc] initWithFrame:CGRectMake(10, 10, 110, 110)];
             self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
             [cell.contentView addSubview:self.egoImgView];
-            if (![[Helper returnUserString:@"showImage"] boolValue]||nil==userInfo.imgUrl||[userInfo.imgUrl isEqualToString:@""])
+            if (![[Helper returnUserString:@"showImage"] boolValue]||nil==_userInfo.imgUrl||[_userInfo.imgUrl isEqualToString:@""])
             {
                 self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
             }
             else
             {
-                self.egoImgView.imageURL = [NSURL URLWithString:userInfo.imgUrl];
+                self.egoImgView.imageURL = [NSURL URLWithString:_userInfo.imgUrl];
             }
             
             UILabel *_numberLabel = [Helper getCustomLabel:@"" font:18 rect:CGRectMake(egoImgView.frame.origin.x+egoImgView.frame.size.width+15,20, 220, 35)];
-            if(userInfo.username==nil||[userInfo.username isEqualToString:@""]){
+            if(_userInfo.username==nil||[_userInfo.username isEqualToString:@""]){
                 _numberLabel.text=@"您还没有登录哦";
             }else{
-                _numberLabel.text=[NSString stringWithFormat:@"%@%@",@"qh",userInfo.phone];
+                _numberLabel.text=[NSString stringWithFormat:@"%@%@",@"qh",_userInfo.phone];
             }
             _numberLabel.font = [UIFont systemFontOfSize:18];
             [cell.contentView addSubview:_numberLabel];
             
-            UILabel *_jfLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@ %d",@"剩余积分 ",userInfo.jifen] font:18 rect:CGRectMake(_numberLabel.frame.origin.x, _numberLabel.frame.origin.y+_numberLabel.frame.size.height+3, 190, 35)];
+            UILabel *_jfLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@ %d",@"剩余积分 ",_userInfo.jifen] font:18 rect:CGRectMake(_numberLabel.frame.origin.x, _numberLabel.frame.origin.y+_numberLabel.frame.size.height+3, 190, 35)];
             _jfLabel.font = [UIFont systemFontOfSize:18];
             [cell.contentView addSubview:_jfLabel];
             
         }else if ([indexPath row] ==1 ) { //签到和点评           
             UILabel *_qdLabel = [Helper getCustomLabel:@"签到" font:18 rect:CGRectMake(90, 12, 60, 30)];
-            if(userInfo.isSignIn){
+            if(_userInfo.isSignIn){
                 _qdLabel.textColor=[UIColor blackColor];
             }else{
                 _qdLabel.textColor=[UIColor redColor];
@@ -140,7 +140,7 @@
             }
             [cell.contentView addSubview:_qdLabel];
             
-            UILabel *_qdValueLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%d",userInfo.signIn] font:18 rect:CGRectMake(_qdLabel.frame.origin.x+10, _qdLabel.frame.size.height+8, 60, 30)];
+            UILabel *_qdValueLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%d",_userInfo.signIn] font:18 rect:CGRectMake(_qdLabel.frame.origin.x+10, _qdLabel.frame.size.height+8, 60, 30)];
             _qdValueLabel.font = [UIFont systemFontOfSize:18];
             [cell.contentView addSubview:_qdValueLabel];
             
@@ -151,7 +151,7 @@
             [_dpLabel addGestureRecognizer:tapGesture];
             [cell.contentView addSubview:_dpLabel];
             
-            UILabel *_dpValueLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%d",userInfo.dianping] font:18 rect:CGRectMake(_dpLabel.frame.origin.x+18, _dpLabel.frame.size.height+8, 60, 30)];
+            UILabel *_dpValueLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%d",_userInfo.dianping] font:18 rect:CGRectMake(_dpLabel.frame.origin.x+18, _dpLabel.frame.size.height+8, 60, 30)];
             UITapGestureRecognizer *tapGesture2=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickDp:)];
             _dpValueLabel.userInteractionEnabled=YES;
             [_dpValueLabel addGestureRecognizer:tapGesture2];
@@ -204,7 +204,7 @@
 -(void)onClickUILable:(UITapGestureRecognizer *)sender
 {        
     if([Helper isConnectionAvailable]){
-        NSString *urlStr=[NSString stringWithFormat:@"%@%@?accountId=%@",[Helper getIp],signIn_url,userInfo.accountId];
+        NSString *urlStr=[NSString stringWithFormat:@"%@%@?accountId=%@",[Helper getIp],signIn_url,_userInfo.accountId];
         NSString *response =[QuHaoUtil requestDb:urlStr];
         if([response isEqualToString:@""]){
             //异常处理
@@ -236,7 +236,7 @@
 //点击点评
 -(void)onClickDp:(UITapGestureRecognizer *)sender{
     CommentViewController *history = [[CommentViewController alloc] init];
-    history.accountOrMerchantId=userInfo.accountId;
+    history.accountOrMerchantId=_userInfo.accountId;
     history.title = @"我的评论";
     history.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:history animated:YES];
@@ -246,7 +246,7 @@
 - (void)pushHistoryMerchart
 {
     MerchartHistoryController *history = [[MerchartHistoryController alloc] init];
-    history.accouId=userInfo.accountId;
+    history.accouId=_userInfo.accountId;
     history.title = @"历史取号情况";
     history.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:history animated:YES];
@@ -257,7 +257,7 @@
 - (void)pushCurrentMerchart
 {
     CurrentViewController *current = [[CurrentViewController alloc] init];
-    current.accouId=userInfo.accountId;
+    current.accouId=_userInfo.accountId;
     current.title = @"当前取号情况";
     current.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:current animated:YES];
@@ -268,7 +268,7 @@
 - (void)pushCreditView
 {
     CreditViewController *credit = [[CreditViewController alloc] init];
-    credit.accouId=userInfo.accountId;
+    credit.accouId=_userInfo.accountId;
     credit.title = @"积分消费情况";
     credit.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:credit animated:YES];
@@ -278,7 +278,7 @@
 
 -(void)reload
 {
-    NSString *urlStr=[NSString stringWithFormat:@"%@%@%@",[Helper getIp],person_url,helper.getUserName];
+    NSString *urlStr=[NSString stringWithFormat:@"%@%@%@",[Helper getIp],person_url,[Helper getUserName]];
     NSString *response =[QuHaoUtil requestDb:urlStr];
     
     if([response isEqualToString:@""]){
@@ -292,14 +292,14 @@
             //解析错误
             [Helper showHUD2:@"服务器错误，请稍后再试" andView:self.view andSize:130];
         }else{
-            userInfo.username=[jsonObjects valueForKey:@"nickname"];
-            userInfo.jifen=[[jsonObjects valueForKey:@"jifen"] intValue];
-            userInfo.signIn=[[jsonObjects valueForKey:@"signIn"] intValue];
-            userInfo.dianping=[[jsonObjects valueForKey:@"dianping"] intValue];
-            userInfo.phone=[jsonObjects valueForKey:@"phone"];
-            userInfo.accountId=[jsonObjects valueForKey:@"accountId"];
-            userInfo.userImage=[jsonObjects valueForKey:@"userImage"];
-            userInfo.isSignIn=[[jsonObjects valueForKey:@"isSignIn"] boolValue];
+            _userInfo.username=[jsonObjects valueForKey:@"nickname"];
+            _userInfo.jifen=[[jsonObjects valueForKey:@"jifen"] intValue];
+            _userInfo.signIn=[[jsonObjects valueForKey:@"signIn"] intValue];
+            _userInfo.dianping=[[jsonObjects valueForKey:@"dianping"] intValue];
+            _userInfo.phone=[jsonObjects valueForKey:@"phone"];
+            _userInfo.accountId=[jsonObjects valueForKey:@"accountId"];
+            _userInfo.userImage=[jsonObjects valueForKey:@"userImage"];
+            _userInfo.isSignIn=[[jsonObjects valueForKey:@"isSignIn"] boolValue];
         }
     }
 }
@@ -310,10 +310,10 @@
     NSString *buttonTitle = [actionSheet buttonTitleAtIndex:buttonIndex];
     if ([buttonTitle isEqualToString:@"登录"]) {
         LoginView *loginView = [[LoginView alloc] init];
-        loginView.isPopupByNotice = YES;
-        helper.viewBeforeLogin = self;
-        helper.viewNameBeforeLogin = @"MineViewController";
-        loginView.helper=helper;
+        loginView._isPopupByNotice = YES;
+        _helper.viewBeforeLogin = self;
+        _helper.viewNameBeforeLogin = @"MineViewController";
+        loginView.helper=_helper;
         loginView.hidesBottomBarWhenPushed=YES;
         [self.navigationController pushViewController:loginView animated:YES];
         return;
@@ -324,13 +324,13 @@
 - (void)noticeUpdateHandler:(NSNotification *)notification
 {
          UserInfo * temp = (UserInfo *)[notification object];
-         userInfo.phone=temp.phone;
-         userInfo.username=temp.username;
-         userInfo.signIn=temp.signIn;
-         userInfo.dianping=temp.dianping;
-         userInfo.accountId=temp.accountId;
-         userInfo.userImage=temp.userImage;
-         userInfo.isSignIn=temp.isSignIn;
+         _userInfo.phone=temp.phone;
+         _userInfo.username=temp.username;
+         _userInfo.signIn=temp.signIn;
+         _userInfo.dianping=temp.dianping;
+         _userInfo.accountId=temp.accountId;
+         _userInfo.userImage=temp.userImage;
+         _userInfo.isSignIn=temp.isSignIn;
 }
 #pragma mark - View lifecycle
 - (void)viewDidUnload
