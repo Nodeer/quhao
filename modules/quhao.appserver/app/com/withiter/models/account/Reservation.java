@@ -34,7 +34,35 @@ public class Reservation extends ReservationEntityDef {
 		q.filter("accountId", accountId).filter("valid", true);
 		return q.asList();
 	}
+	
+	/**
+	 * 获取到第index个reservation
+	 * @param merchantId 商家id
+	 * @param seatNumber 座位类型
+	 * @param index 第index个reservation
+	 * @return Reservation
+	 */
+	public static Reservation findReservationForSMSRemind(String merchantId, int seatNumber, int index){
+		MorphiaQuery q = Reservation.q();
+		Merchant m = Merchant.findByMid(merchantId);
 
+		Calendar c = Calendar.getInstance();
+		String openTime = m.openTime;
+		int openTimeHour = Integer.parseInt(openTime.split(":")[0]);
+		c.set(Calendar.AM_PM, Calendar.AM);
+		c.set(Calendar.HOUR, openTimeHour);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		
+		// query latest one day's reservation
+		q.filter("created >", (new DateTime(c.getTimeInMillis()).toDate()));
+		q.filter("merchantId", merchantId).filter("seatNumber", seatNumber);
+		q.filter("valid", "true");
+		// 得到第index个Reservation
+		q.order("created").offset(index);
+		return q.first();
+	}
+	
 	/**
 	 * get next page current reservations by account ID
 	 * 
@@ -269,6 +297,7 @@ public class Reservation extends ReservationEntityDef {
 	 * @param mid
 	 * @return
 	 */
+	// TODO ??
 	public static long findPreviousNo(String mid, int seatNumber) {
 		MorphiaQuery q = Reservation.q();
 		q.filter("merchantId", mid).filter("seatNumber", seatNumber);

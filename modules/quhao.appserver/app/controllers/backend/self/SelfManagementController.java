@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.httpclient.HttpException;
@@ -252,6 +253,7 @@ public class SelfManagementController extends BaseController {
 		Reservation r = Reservation.findReservationForHandle(seatNumber, currentNumber, mid);
 		if (r != null) {
 			boolean flag = Reservation.finish(r.id());
+			smsRemind(mid, seatNumber);
 			renderJSON(flag);
 		} else {
 			renderJSON(false);
@@ -275,10 +277,38 @@ public class SelfManagementController extends BaseController {
 		Reservation r = Reservation.findReservationForHandle(seatNumber, currentNumber, mid);
 		if (r != null) {
 			boolean flag = Reservation.expire(r.id());
+			smsRemind(mid, seatNumber);
 			renderJSON(flag);
 		} else {
 			renderJSON(false);
 		}
+	}
+	
+	private static void smsRemind(String mid, int seatNumber){
+		Reservation r = Reservation.findReservationForSMSRemind(mid, seatNumber, 5);
+		String aid = r.accountId;
+		Account account = Account.findById(aid);
+		// send message
+		String remind = Play.configuration.getProperty("service.sms.remind");
+		try {
+			int i = SMSBusiness.sendSMS(account.phone, remind);
+			int j = 0;
+			while (i < 0) {
+				i = SMSBusiness.sendSMS(account.phone, remind);
+				j++;
+				if (j == 3) {
+					logger.error("发送提醒短信失败");
+					break;
+				}
+			}
+		} catch (HttpException e) {
+			e.printStackTrace();
+			logger.error(ExceptionUtil.getTrace(e));
+		} catch (IOException e) {
+			e.printStackTrace();
+			logger.error(ExceptionUtil.getTrace(e));
+		}
+
 	}
 
 	/**
