@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -28,6 +29,7 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
+import com.amap.api.maps.LocationSource;
 import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.core.PoiItem;
@@ -42,7 +44,7 @@ import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 
-public class NearbyActivity extends QuhaoBaseActivity implements AMapLocationListener,OnPoiSearchListener,OnScrollListener,OnItemClickListener{
+public class NearbyActivity extends QuhaoBaseActivity implements AMapLocationListener,OnPoiSearchListener,OnScrollListener,OnItemClickListener,LocationSource{
 
 	private LocationManagerProxy mAMapLocManager = null;
 	
@@ -84,8 +86,8 @@ public class NearbyActivity extends QuhaoBaseActivity implements AMapLocationLis
 		btnPerson.setOnClickListener(goPersonCenter(this));
 		btnMore.setOnClickListener(goMore(this));
 		
-		mAMapLocManager = LocationManagerProxy.getInstance(this);
 		
+		mAMapLocManager = LocationManagerProxy.getInstance(this);
 		mAMapLocManager.requestLocationUpdates(LocationProviderProxy.AMapNetwork, 1000, 10, this);
 
 		merchantsListView = (ListView) this.findViewById(R.id.merchantsListView);
@@ -96,7 +98,27 @@ public class NearbyActivity extends QuhaoBaseActivity implements AMapLocationLis
 		bt.setOnClickListener(this);
 		merchantsListView.addFooterView(moreView);
 		merchantsListView.setNextFocusDownId(R.id.merchantsListView);
-		queryMerchants();
+//		Thread queryMerchantsThread = new Thread(new Runnable() {
+//			
+//			@Override
+//			public void run() {
+//				try
+//				{
+//					Looper.prepare();
+//					queryMerchants();
+//					
+//				}catch (Exception e) {
+//					
+//				}
+//				finally
+//				{
+//					Looper.loop();
+//				}
+//				
+//				
+//			}
+//		});
+//		queryMerchantsThread.start();
 	}
 
 	protected Handler updatePoiItemsHandler = new Handler() {
@@ -322,7 +344,28 @@ public class NearbyActivity extends QuhaoBaseActivity implements AMapLocationLis
 				&& lastVisibleIndex == nearByAdapter.getCount()) {
 			pg.setVisibility(View.VISIBLE);
 			bt.setVisibility(View.GONE);
-			nextSearch();
+			
+			Thread queryMerchantsThread = new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					try
+					{
+						Looper.prepare();
+						nextSearch();
+						
+					}catch (Exception e) {
+						
+					}
+					finally
+					{
+						Looper.loop();
+					}
+					
+					
+				}
+			});
+			queryMerchantsThread.start();
 		}
 	}
 
@@ -357,7 +400,27 @@ public class NearbyActivity extends QuhaoBaseActivity implements AMapLocationLis
 		case R.id.bt_load:
 			pg.setVisibility(View.VISIBLE);
 			bt.setVisibility(View.GONE);
-			nextSearch();
+			Thread queryMerchantsThread = new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					try
+					{
+						Looper.prepare();
+						nextSearch();
+						
+					}catch (Exception e) {
+						
+					}
+					finally
+					{
+						Looper.loop();
+					}
+					
+					
+				}
+			});
+			queryMerchantsThread.start();
 			
 			break;
 		default:
@@ -365,6 +428,7 @@ public class NearbyActivity extends QuhaoBaseActivity implements AMapLocationLis
 		}
 	}
 
+	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
@@ -411,6 +475,7 @@ public class NearbyActivity extends QuhaoBaseActivity implements AMapLocationLis
 			{
 				progressDialogUtil.closeProgress();
 				AlertDialog.Builder builder = new Builder(this);
+				builder.setTitle("温馨提示");
 				builder.setMessage("对不起，该商家未在取号系统注册。");
 				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 					@Override
@@ -425,6 +490,7 @@ public class NearbyActivity extends QuhaoBaseActivity implements AMapLocationLis
 			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			AlertDialog.Builder builder = new Builder(this);
+			builder.setTitle("温馨提示");
 			builder.setMessage("对不起，网络异常。");
 			builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 				@Override
@@ -437,6 +503,18 @@ public class NearbyActivity extends QuhaoBaseActivity implements AMapLocationLis
 		} finally {
 			
 		}
+		
+	}
+
+	@Override
+	public void activate(OnLocationChangedListener arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deactivate() {
+		// TODO Auto-generated method stub
 		
 	}
 }
