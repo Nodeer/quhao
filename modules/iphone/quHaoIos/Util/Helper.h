@@ -18,6 +18,11 @@
 #import "ASIFormDataRequest.h"
 @interface Helper : NSObject
 
+//是否已经登录
+@property BOOL isLogin;
+@property (strong, nonatomic) UIViewController * viewBeforeLogin;
+@property (copy, nonatomic) NSString * viewNameBeforeLogin;
+
 //提示框
 + (void)showHUD:(NSString *)text andView:(UIView *)view andHUD:(MBProgressHUD *)hud;
 + (void)showHUD2:(NSString *)text andView:(UIView *)view andSize:(float)width;
@@ -45,30 +50,20 @@
 +(void)saveCache:(int)type andID:(int)_id andString:(NSString *)str;
 //读取缓存
 +(NSString *)getCache:(int)type andID:(int)_id;
-
 +(void)ToastNotification:(NSString *)text andView:(UIView *)view andLoading:(BOOL)isLoading andIsBottom:(BOOL)isBottom;
 //获取字典中值
 +(NSString *) returnUserString:(NSString *)type;
-
-//是否已经登录
-@property BOOL isLogin;
-@property (strong, nonatomic) UIViewController * viewBeforeLogin;
-@property (copy, nonatomic) NSString * viewNameBeforeLogin;
-
 + (UIColor *)getBackgroundColor;
 + (UIColor *)getCellBackgroundColor;
-
 + (UIColor *)getColorForCell:(int)row;
-
+//获取帐号密码
+-(NSString *)getUserName;
+-(NSString *)getPwd;
 + (void)ReleaseWebView:(UIWebView *)webView;
-
-
 
 +(Helper *) Instance;
 -(void)saveCookie:(BOOL)_isLogin;
 -(NSString *)getUID;
--(NSString *)getUserName;
--(NSString *)getPwd;
 +(NSString *)formatDate:(NSString*)dateStr;
 +(void)saveUID:(NSString*)uid;
 -(void)saveUserNameAndPwd:(NSString *)userName andPwd:(NSString *)pwd;
