@@ -40,7 +40,6 @@
 +(UIButton *)getBackBtn:(NSString *)imgName title:(NSString *)name rect:(CGRect)size;
 //按字号文字设置label
 +(UILabel *)getCustomLabel:(NSString *)text font:(CGFloat) fontSize rect:(CGRect)labelRect;
-
 +(UILabel *)getLabel:(NSString *)text font:(CGFloat) fontSize rect:(CGRect)labelRect;
 //查看网络链接
 +(BOOL) isConnectionAvailable;
@@ -53,24 +52,32 @@
 +(void)ToastNotification:(NSString *)text andView:(UIView *)view andLoading:(BOOL)isLoading andIsBottom:(BOOL)isBottom;
 //获取字典中值
 +(NSString *) returnUserString:(NSString *)type;
+//配置View背景色
 + (UIColor *)getBackgroundColor;
+//配置cell背景色
 + (UIColor *)getCellBackgroundColor;
+//按行配置cell背景色
 + (UIColor *)getColorForCell:(int)row;
 //获取帐号密码
--(NSString *)getUserName;
--(NSString *)getPwd;
-+ (void)ReleaseWebView:(UIWebView *)webView;
-
-+(Helper *) Instance;
--(void)saveCookie:(BOOL)_isLogin;
--(NSString *)getUID;
-+(NSString *)formatDate:(NSString*)dateStr;
-+(void)saveUID:(NSString*)uid;
++(NSString *)getUserName;
++(NSString *)getPwd;
+//保存帐号密码
 -(void)saveUserNameAndPwd:(NSString *)userName andPwd:(NSString *)pwd;
+//保存登陆状态
+-(void)saveCookie:(BOOL)_isLogin;
+//获取UID
+-(NSString *)getUID;
+//保存UID
++(void)saveUID:(NSString*)uid;
+//格式化时间
++(NSString *)formatDate:(NSString*)dateStr;
++ (void)ReleaseWebView:(UIWebView *)webView;
 + (void)clearWebViewBackground:(UIWebView *)webView;
 + (UserInfo *)getUserNotice:(ASIHTTPRequest *)request;
 + (ApiError *)getApiError:(ASIHTTPRequest *)request;
++ (ApiError *)getApiError2:(NSString *)response;
 + (void)TakeException:(NSException *)exception;
 + (void)CancelRequest:(ASIHTTPRequest *)request;
 + (NSString *)getOSVersion;
++(Helper *) Instance;
 @end

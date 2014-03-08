@@ -162,9 +162,10 @@
 {
     NSString *ip=nil;
     if([NSUserName() compare:@"sam"]==0){
-        ip=@"http://localhost:9081";
+        ip=@"http://192.168.2.102:9081";
     }else{
-        ip=@"http://192.168.2.101:9081";
+        ip=@"http://localhost:9081";
+
     }
     return ip;
 }
@@ -198,13 +199,9 @@
     return [[NSUserDefaults standardUserDefaults] objectForKey:type];
 }
 
-
-
-
 + (UIColor *)getBackgroundColor
 {
     return [UIColor whiteColor];
-    //return [UIColor colorWithRed:235.0/255 green:235.0/255 blue:243.0/255 alpha:1.0];
 }
 + (UIColor *)getCellBackgroundColor
 {
@@ -219,11 +216,16 @@
     [UIColor colorWithRed:248.0/255.0 green:249.0/255.0 blue:249.0/255.0 alpha:1.0];
 }
 
-+ (void)ReleaseWebView:(UIWebView *)webView
++ (NSString *)getUserName
 {
-    [webView stopLoading];
-    [webView setDelegate:nil];
-    webView = nil;
+    NSUserDefaults * settings = [NSUserDefaults standardUserDefaults];
+    return [settings objectForKey:@"UserName"];
+}
++ (NSString *)getPwd
+{
+    NSUserDefaults * settings = [NSUserDefaults standardUserDefaults];
+    NSString * temp = [settings objectForKey:@"Password"];
+    return [AESCrypt decrypt:temp password:@"pwd"];
 }
 
 -(void)saveCookie:(BOOL)_isLogin
@@ -232,18 +234,6 @@
     [setting removeObjectForKey:@"cookie"];
     [setting setObject:_isLogin ? @"1" : @"0" forKey:@"cookie"];
     [setting synchronize];
-}
-
--(NSString *)getUserName
-{
-    NSUserDefaults * settings = [NSUserDefaults standardUserDefaults];
-    return [settings objectForKey:@"UserName"];
-}
--(NSString *)getPwd
-{
-    NSUserDefaults * settings = [NSUserDefaults standardUserDefaults];
-    NSString * temp = [settings objectForKey:@"Password"];
-    return [AESCrypt decrypt:temp password:@"pwd"];
 }
 
 + (void)clearWebViewBackground:(UIWebView *)webView
@@ -279,6 +269,13 @@
     [outputFormatter setLocale:[NSLocale currentLocale]];
     [outputFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     return  [outputFormatter stringFromDate:inputDate];
+}
+
++ (void)ReleaseWebView:(UIWebView *)webView
+{
+    [webView stopLoading];
+    [webView setDelegate:nil];
+    webView = nil;
 }
 
 +(void)saveUID:(NSString*)uid
