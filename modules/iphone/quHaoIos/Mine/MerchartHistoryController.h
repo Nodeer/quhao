@@ -17,10 +17,10 @@
 @private
     NSMutableArray *_reservationArray;
     BOOL _reloading;
-    BOOL loadFlag;
-    int prevItemCount;
+    BOOL _loadFlag;
+    int _prevItemCount;
     //上拉刷新用的页码
-    int pageIndex;
+    int _pageIndex;
     //上拉刷新的view
     MJRefreshFooterView *_footer;
 }
@@ -30,9 +30,9 @@
 -(void)loadNavigationItem;
 //弹出历史信息页面
 - (void)pushHistoryDetail:(Reservation *)model andNavController:(UINavigationController *)navController;
-
 //请求服务端获取数据
 -(void)requestData:(NSString *)urlStr withPage:(int)page;
+
 @end
 
 

@@ -12,6 +12,7 @@
 #import <QuartzCore/CALayer.h>
 #import "SBJsonParser.h"
 #import "QuHaoUtil.h"
+#import "UIScrollView+ScrollViewCategory.h"
 @interface AppraiseViewController : UIViewController<RatingDelegate,UITextViewDelegate,UITextFieldDelegate>
 @property (strong,nonatomic)RatingControl *customNumberOfStars;
 @property (strong,nonatomic)RatingControl *fwNumberOfStars;

@@ -30,14 +30,33 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //添加的代码
+    //添加上面的导航
     [self loadNavigationItem];
     _reservationArray = [[NSMutableArray alloc] initWithCapacity:20];
     _reloading = NO;
-    pageIndex=1;
+    _pageIndex=1;
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [_reservationArray removeAllObjects];
+    _reservationArray = [[NSMutableArray alloc] initWithCapacity:20];
     
-    [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],history_list_url,self.accouId] withPage:pageIndex];
-    [self addFooter];
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:HUD];
+    //如果设置此属性则当前的view置于后台
+    HUD.dimBackground = YES;
+    //设置对话框文字
+    HUD.labelText = @"正在加载...";
+    //显示对话框
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],history_list_url,self.accouId] withPage:_pageIndex];
+        [self.tableView reloadData];
+    } completionBlock:^{
+        //操作执行完后取消对话框
+        [HUD removeFromSuperview];
+        [self addFooter];
+    }];
 }
 
 //上拉加载更多
@@ -46,9 +65,9 @@
     MJRefreshFooterView *footer = [MJRefreshFooterView footer];
     footer.scrollView = self.tableView;
     footer.beginRefreshingBlock = ^(MJRefreshBaseView *refreshView) {
-        prevItemCount = [_reservationArray count];
-        ++pageIndex;
-        [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],history_list_url,self.accouId] withPage:pageIndex];
+        _prevItemCount = [_reservationArray count];
+        ++_pageIndex;
+        [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],history_list_url,self.accouId] withPage:_pageIndex];
         [self performSelector:@selector(doneWithView:) withObject:refreshView afterDelay:1.0];
         
     };
@@ -71,6 +90,11 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if ([_reservationArray count]==0) {
+        self.tableView.separatorStyle = NO;
+    }else{
+        self.tableView.separatorStyle = YES;
+    }
     return [_reservationArray count];
 }
 
@@ -82,7 +106,7 @@
 //dataSource
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {  
-    static NSString *cellIdentify=@"cell";
+    static NSString *cellIdentify=@"historyCell";
     HistoryCell *cell=[tableView dequeueReusableCellWithIdentifier:cellIdentify];
     //检查视图中有没闲置的单元格
     if(cell==nil){
@@ -121,7 +145,7 @@
 }
 
 -(void)requestData:(NSString *)urlStr withPage:(int)page
-{   loadFlag=YES;
+{   _loadFlag=YES;
     if ([Helper isConnectionAvailable]){
         NSString *str1= [NSString stringWithFormat:@"%@&page=%d", urlStr, page];
         NSString *response =[QuHaoUtil requestDb:str1];
@@ -149,8 +173,13 @@
     }//如果没有网络连接
     else
     {
-        loadFlag = NO;
+        _loadFlag = NO;
         [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
     }
+}
+
+-(void)dealloc
+{
+    _footer=nil;
 }
 @end

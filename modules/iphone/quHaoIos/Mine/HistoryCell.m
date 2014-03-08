@@ -27,10 +27,17 @@
     [self.contentView addSubview:self.egoImgView];
     
     _titleLabel=[[UILabel alloc]initWithFrame:CGRectZero];
+    _titleLabel.frame=CGRectMake(self.egoImgView.frame.origin.x+self.egoImgView.frame.size.width+5, 10, 200, 30);
     _titleLabel.backgroundColor=[UIColor clearColor];
     _titleLabel.textColor=[UIColor blackColor];
     _titleLabel.font=[UIFont boldSystemFontOfSize:18];
     [self.contentView addSubview:_titleLabel];
+    
+    pjLabel=[[UILabel alloc]initWithFrame:CGRectZero];
+    pjLabel.backgroundColor=[UIColor clearColor];
+    pjLabel.textColor=[UIColor grayColor];
+    [self.contentView addSubview:pjLabel];
+    pjLabel.frame=CGRectMake(self.egoImgView.frame.origin.x+self.egoImgView.frame.size.width+10,45, 200, 30);
 }
 
 -(void) setSelected:(BOOL)selected animated:(BOOL)animated
@@ -49,18 +56,13 @@
     {
         self.egoImgView.imageURL = [NSURL URLWithString:self.reservationModel.imgUrl];
     }
-
     
-    _titleLabel.frame=CGRectMake(self.egoImgView.frame.origin.x+self.egoImgView.frame.size.width+5, 10, 200, 30);
     _titleLabel.text=self.reservationModel.name;
     
     if (!self.reservationModel.isCommented) {
-        pjLabel=[[UILabel alloc]initWithFrame:CGRectZero];
-        pjLabel.backgroundColor=[UIColor clearColor];
-        pjLabel.textColor=[UIColor grayColor];
-        [self.contentView addSubview:pjLabel];
-        pjLabel.frame=CGRectMake(self.egoImgView.frame.origin.x+self.egoImgView.frame.size.width+10,45, 200, 30);
         pjLabel.text=@"待评价";
+    }else{
+        pjLabel.text=@"";
     }
 }
 -(void)dealloc
