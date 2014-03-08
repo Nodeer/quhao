@@ -31,20 +31,40 @@
     [self loadNavigationItem];
     _merchartsArray = [[NSMutableArray alloc] initWithCapacity:20];
     _reloading = NO;
-    pageIndex=1;
-    [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],currentMerchant_url,self.accouId] withPage:pageIndex];
-    [self addFooter];
+    _pageIndex=1;
 }
 
+-(void)viewDidAppear:(BOOL)animated
+{
+    [_merchartsArray removeAllObjects];
+    _merchartsArray = [[NSMutableArray alloc] initWithCapacity:20];
+
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:HUD];
+    //如果设置此属性则当前的view置于后台
+    HUD.dimBackground = YES;
+    //设置对话框文字
+    HUD.labelText = @"正在加载...";
+    //显示对话框
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],currentMerchant_url,self.accouId] withPage:_pageIndex];
+        [self.tableView reloadData];
+        sleep(3);
+    } completionBlock:^{
+        //操作执行完后取消对话框
+        [HUD removeFromSuperview];
+    }];
+    [self addFooter];
+}
 //上拉加载更多
 - (void)addFooter
 {
     MJRefreshFooterView *footer = [MJRefreshFooterView footer];
     footer.scrollView = self.tableView;
     footer.beginRefreshingBlock = ^(MJRefreshBaseView *refreshView) {
-        prevItemCount = [_merchartsArray count];
-        ++pageIndex;
-        [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],currentMerchant_url,self.accouId] withPage:pageIndex];
+        _prevItemCount = [_merchartsArray count];
+        ++_pageIndex;
+        [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],currentMerchant_url,self.accouId] withPage:_pageIndex];
         [self performSelector:@selector(doneWithView:) withObject:refreshView afterDelay:1.0];
         
     };
@@ -72,6 +92,11 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if ([_merchartsArray count]==0) {
+        self.tableView.separatorStyle = NO;
+    }else{
+        self.tableView.separatorStyle = YES;
+    }
     return [_merchartsArray count];
 }
 
@@ -82,7 +107,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentify=@"cell";
+    static NSString *cellIdentify=@"currentView";
     HomeCell *cell=[tableView dequeueReusableCellWithIdentifier:cellIdentify];
     //检查视图中有没闲置的单元格
     if(cell==nil){
@@ -117,7 +142,7 @@
 
 -(void)requestData:(NSString *)urlStr withPage:(int)page
 {
-    loadFlag=YES;
+    _loadFlag=YES;
     if ([Helper isConnectionAvailable]){
         NSString *str1= [NSString stringWithFormat:@"%@&page=%d", urlStr, page];
         NSString *response =[QuHaoUtil requestDb:str1];
@@ -136,7 +161,7 @@
     }//如果没有网络连接
     else
     {
-        loadFlag = NO;
+        _loadFlag = NO;
         [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
     }
 }
@@ -147,10 +172,16 @@
     for(int i=0; i < [objects count];i++ ){
         MerchartModel *model=[[MerchartModel alloc]init];
         model.name=[[objects objectAtIndex:i] objectForKey:@"merchantName"];
-        model.averageCost=[[[objects objectAtIndex:i] objectForKey:@"averageCost"] floatValue];
         model.id=[[objects objectAtIndex:i] objectForKey:@"merchantId"];
+        model.reservationId=[[objects objectAtIndex:i] objectForKey:@"id"];
+        model.averageCost=[[[objects objectAtIndex:i] objectForKey:@"averageCost"] boolValue];
         model.imgUrl=[[objects objectAtIndex:i] objectForKey:@"merchantImage"];
         [_merchartsArray addObject:model];
     }
+}
+
+-(void)dealloc
+{
+    _footer=nil;
 }
 @end

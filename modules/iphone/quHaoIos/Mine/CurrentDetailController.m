@@ -46,6 +46,12 @@
     [backButton addTarget:self action:@selector(clickToHome:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
+    
+
+    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 取消号码" rect:CGRectMake( 0, 0, 80, 35 )];
+    [btnButton addTarget:self action:@selector(clickCancel:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:btnButton];
+    self.navigationItem.rightBarButtonItem = buttonItem;
 }
 
 - (void)viewDidLoad
@@ -100,6 +106,22 @@
     [self.navigationController  popViewControllerAnimated:YES];
 }
 
+- (void)clickCancel:(id)sender
+{
+    if([Helper isConnectionAvailable]){
+        NSString *url = [NSString stringWithFormat:@"%@%@?reservationId=%@",[Helper getIp],cancelQuhao, reservation.id];
+        NSString *response =[QuHaoUtil requestDb:url];
+        if(response){
+            [Helper showHUD2:@"已取消排队号码" andView:self.view andSize:100];
+            [self performSelector:@selector(clickToHome:) withObject:nil afterDelay:1.0f];
+        }else{
+            [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+        }
+    }else{
+        [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
+    }
+
+}
 //加载用户的座位信息
 -(void)reloadReversion
 {
@@ -121,6 +143,7 @@
                 [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
             }else{
                 if(jsonObjects.count!=0){
+                    reservation.id=[[jsonObjects objectAtIndex:0] objectForKey:@"id"];
                     reservation.accountId=[[jsonObjects objectAtIndex:0] objectForKey:@"accountId"];
                     reservation.seatNumber=[[jsonObjects objectAtIndex:0]  objectForKey:@"seatNumber"];
                     reservation.myNumber=[[jsonObjects objectAtIndex:0]  objectForKey:@"myNumber"];

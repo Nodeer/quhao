@@ -12,15 +12,16 @@
 #import "CurrentDetailController.h"
 #import "MJRefreshFooterView.h"
 #import "MerchartDetail.h"
+#import "MBProgressHUD.h"
 @interface CurrentViewController : UITableViewController
 {
 @private
     NSMutableArray *_merchartsArray;
     BOOL _reloading;
-    BOOL loadFlag;
-    int prevItemCount;
+    BOOL _loadFlag;
+    int _prevItemCount;
     //上拉刷新用的页码
-    int pageIndex;
+    int _pageIndex;
     //上拉刷新的view
     MJRefreshFooterView *_footer;
 }
