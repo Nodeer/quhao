@@ -18,10 +18,10 @@
 #import "OAuthWebViewController.h"
 @interface SettingView : UIViewController<UITableViewDataSource, UITableViewDelegate,UIAlertViewDelegate>
 {
-    NSArray * settings;
-    NSMutableDictionary * settingsInSection;
-    BOOL showImage;//是否显示图片  
-    NSString *plistPath;//文件存储位置 
+    NSArray * _settings;
+    NSMutableDictionary * _settingsInSection;
+    BOOL _showImage;//是否显示图片
+    NSString *_plistPath;//文件存储位置
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *tableSettings;

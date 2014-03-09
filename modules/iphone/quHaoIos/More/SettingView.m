@@ -56,9 +56,9 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"showImage"]==nil){
-        showImage=1;
+        _showImage=1;
     }else{
-        showImage=[[Helper returnUserString:@"showImage"] boolValue];
+        _showImage=[[Helper returnUserString:@"showImage"] boolValue];
     }
     [self refresh];
 }
@@ -194,7 +194,7 @@
         UISwitch *Switch=[[UISwitch alloc] initWithFrame:CGRectMake(220, 11, 79, 27)];
         [Switch addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
         Switch.tag=101;
-        Switch.on=showImage;
+        Switch.on=_showImage;
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
 
         [cell.contentView addSubview:Switch];
