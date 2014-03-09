@@ -1,6 +1,5 @@
 package com.withiter.models.account;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -55,9 +54,11 @@ public class Reservation extends ReservationEntityDef {
 		c.set(Calendar.SECOND, 0);
 		
 		// query latest one day's reservation
-		q.filter("created >", (new DateTime(c.getTimeInMillis()).toDate()));
+		
+		// TODO need check the query conditions
+		q.filter("created >", new DateTime(c.getTimeInMillis()).toDate());
 		q.filter("merchantId", merchantId).filter("seatNumber", seatNumber);
-		q.filter("valid", "true");
+		q.filter("valid", true);
 		// 得到第index个Reservation
 		q.order("created").offset(index);
 		return q.first();

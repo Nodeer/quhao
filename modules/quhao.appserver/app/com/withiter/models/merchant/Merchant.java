@@ -9,7 +9,7 @@ import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 
 import play.modules.morphia.Model.MorphiaQuery;
-
+import play.modules.morphia.Model.NoAutoTimestamp;
 import cn.bran.japid.util.StringUtils;
 
 import com.google.code.morphia.annotations.Entity;

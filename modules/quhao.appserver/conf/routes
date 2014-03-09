@@ -29,6 +29,7 @@ GET		/queryMerchantByPoiId				MerchantController.queryMerchantByPoiId
 GET		/quhao								MerchantController.quhao
 GET		/getTopMerchants					MerchantController.getTopMerchants
 GET		/nahao								MerchantController.nahao
+POST	/nahao								MerchantController.nahao
 GET		/search								MerchantController.getMerchantsByName
 GET     /lastest							MerchantController.getLastMerchants
 GET     /getCurrentNo						MerchantController.getCurrentNo
