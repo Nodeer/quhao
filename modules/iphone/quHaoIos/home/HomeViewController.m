@@ -39,108 +39,125 @@
 - (void)viewDidLoad
 {
     [self loadNavigationItem];
-    
     if([Helper isConnectionAvailable]){
-        //处理topMerchant
-        topArray= [[NSMutableArray alloc] init];
-        NSString *topUrl=[NSString stringWithFormat:@"%@%@%d",[Helper getIp],getTopMerchants,4];
-        NSString *response1 =[QuHaoUtil requestDb:topUrl];
-        if([response1 isEqualToString:@""]){
-            //异常处理
-            [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
-        }else{
-            NSArray *jsonObjects=[QuHaoUtil analyseData:response1];
-            if(jsonObjects==nil){
-                //解析错误
-                [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
-            }else{
-                for(int i=0; i < [jsonObjects count];i++ ){
-                    MerchartModel *model=[[MerchartModel alloc]init];
-                    model.name=[[jsonObjects objectAtIndex:i] objectForKey:@"name"];
-                    model.id=[[jsonObjects objectAtIndex:i] objectForKey:@"mid"];
-                    model.imgUrl=[[jsonObjects objectAtIndex:i] objectForKey:@"merchantImage"];
-                    [topArray addObject:model];
-                }
-            }
-        }
-        
-        //加载category
-        NSString *urlStr=[NSString stringWithFormat:@"%@%@",[Helper getIp],allCategories_url];
-        NSString *response =[QuHaoUtil requestDb:urlStr];
-        if([response isEqualToString:@""]){
-            //异常处理
-            [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
-        }else{
-            NSArray *jsonObjects=[QuHaoUtil analyseData:response];
-            if(jsonObjects==nil){
-                //解析错误
-                [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
-            }else{
-                categoryArray = [[NSMutableArray alloc] init];
-                for(int i=0; i < [jsonObjects count]; ){
-                    Category *c = [[Category alloc] init];
-                    NSString *value1 = [[jsonObjects objectAtIndex:i] objectForKey:@"cateType"];
-                    NSString *value2 = [[jsonObjects objectAtIndex:i] objectForKey:@"count"];
-                    c.cateType=value1;
-                    if([value1 isEqualToString:@"benbangcai"]){
-                        value1 = @"本帮菜";
-                    }
-                    if([value1 isEqualToString:@"hanguoliaoli"]){
-                        value1 = @"韩国料理";
-                    }
-                    if([value1 isEqualToString:@"huoguo"]){
-                        value1 = @"火锅";
-                    }
-                    if([value1 isEqualToString:@"ribenliaoli"]){
-                        value1 = @"日本料理";
-                    }
-                    if([value1 isEqualToString:@"xiangcai"]){
-                        value1 = @"湘菜";
-                    }
-                    if([value1 isEqualToString:@"chuancai"]){
-                        value1 = @"川菜";
-                    }
-                    if([value1 isEqualToString:@"dongnanyacai"]){
-                        value1 = @"东南亚菜";
-                    }
-                    if([value1 isEqualToString:@"haixian"]){
-                        value1 = @"海鲜";
-                    }
-                    if([value1 isEqualToString:@"shaokao"]){
-                        value1 = @"烧烤";
-                    }
-                    if([value1 isEqualToString:@"xican"]){
-                        value1 = @"西餐";
-                    }
-                    if([value1 isEqualToString:@"xinjiangqingzhen"]){
-                        value1 = @"新疆清真";
-                    }
-                    if([value1 isEqualToString:@"yuecaiguan"]){
-                        value1 = @"粤菜馆";
-                    }
-                    if([value1 isEqualToString:@"zhongcancaixi"]){
-                        value1 = @"中餐菜系";
-                    }
-                    if([value1 isEqualToString:@"zizhucan"]){
-                        value1 = @"自助餐";
-                    }
-                    
-                    NSString *lableText = [[[value1 stringByAppendingString:@"("] stringByAppendingString:[value2 description]] stringByAppendingString:@")"];
-                    c.text = lableText;
-                    c.count = value2;
-                    [categoryArray insertObject:c atIndex:i];
-                    
-                    i++;
-                    
-                }
-                [self topSetOrReset];
+        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:HUD];
+        //如果设置此属性则当前的view置于后台
+        HUD.dimBackground = YES;
+        //设置对话框文字
+        HUD.labelText = @"正在加载...";
+        //显示对话框
+        [HUD showAnimated:YES whileExecutingBlock:^{
+            [self createView];
+        } completionBlock:^{
+            //操作执行完后取消对话框
+            [HUD removeFromSuperview];
+            [self topSetOrReset];
+            
+            [self menuSetOrReset];
 
-                [self menuSetOrReset];
-            }
-        }
+        }];
     }else
     {
         [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
+    }
+}
+
+-(void)createView
+{
+    //处理topMerchant
+    _topArray= [[NSMutableArray alloc] init];
+    NSString *topUrl=[NSString stringWithFormat:@"%@%@%d",[Helper getIp],getTopMerchants,4];
+    NSString *response1 =[QuHaoUtil requestDb:topUrl];
+    if([response1 isEqualToString:@""]){
+        //异常处理
+        [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+    }else{
+        NSArray *jsonObjects=[QuHaoUtil analyseData:response1];
+        if(jsonObjects==nil){
+            //解析错误
+            [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+        }else{
+            for(int i=0; i < [jsonObjects count];i++ ){
+                MerchartModel *model=[[MerchartModel alloc]init];
+                model.name=[[jsonObjects objectAtIndex:i] objectForKey:@"name"];
+                model.id=[[jsonObjects objectAtIndex:i] objectForKey:@"mid"];
+                model.imgUrl=[[jsonObjects objectAtIndex:i] objectForKey:@"merchantImage"];
+                [_topArray addObject:model];
+            }
+        }
+    }
+    
+    //加载category
+    NSString *urlStr=[NSString stringWithFormat:@"%@%@",[Helper getIp],allCategories_url];
+    NSString *response =[QuHaoUtil requestDb:urlStr];
+    if([response isEqualToString:@""]){
+        //异常处理
+        [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+    }else{
+        NSArray *jsonObjects=[QuHaoUtil analyseData:response];
+        if(jsonObjects==nil){
+            //解析错误
+            [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+        }else{
+            _categoryArray = [[NSMutableArray alloc] init];
+            for(int i=0; i < [jsonObjects count]; ){
+                Category *c = [[Category alloc] init];
+                NSString *value1 = [[jsonObjects objectAtIndex:i] objectForKey:@"cateType"];
+                NSString *value2 = [[jsonObjects objectAtIndex:i] objectForKey:@"count"];
+                c.cateType=value1;
+                if([value1 isEqualToString:@"benbangcai"]){
+                    value1 = @"本帮菜";
+                }
+                if([value1 isEqualToString:@"hanguoliaoli"]){
+                    value1 = @"韩国料理";
+                }
+                if([value1 isEqualToString:@"huoguo"]){
+                    value1 = @"火锅";
+                }
+                if([value1 isEqualToString:@"ribenliaoli"]){
+                    value1 = @"日本料理";
+                }
+                if([value1 isEqualToString:@"xiangcai"]){
+                    value1 = @"湘菜";
+                }
+                if([value1 isEqualToString:@"chuancai"]){
+                    value1 = @"川菜";
+                }
+                if([value1 isEqualToString:@"dongnanyacai"]){
+                    value1 = @"东南亚菜";
+                }
+                if([value1 isEqualToString:@"haixian"]){
+                    value1 = @"海鲜";
+                }
+                if([value1 isEqualToString:@"shaokao"]){
+                    value1 = @"烧烤";
+                }
+                if([value1 isEqualToString:@"xican"]){
+                    value1 = @"西餐";
+                }
+                if([value1 isEqualToString:@"xinjiangqingzhen"]){
+                    value1 = @"新疆清真";
+                }
+                if([value1 isEqualToString:@"yuecaiguan"]){
+                    value1 = @"粤菜馆";
+                }
+                if([value1 isEqualToString:@"zhongcancaixi"]){
+                    value1 = @"中餐菜系";
+                }
+                if([value1 isEqualToString:@"zizhucan"]){
+                    value1 = @"自助餐";
+                }
+                
+                NSString *lableText = [[[value1 stringByAppendingString:@"("] stringByAppendingString:[value2 description]] stringByAppendingString:@")"];
+                c.text = lableText;
+                c.count = value2;
+                [_categoryArray insertObject:c atIndex:i];
+                
+                i++;
+                
+            }
+        }
     }
 }
 
@@ -153,7 +170,7 @@
 }
 
 -(void)populateTop {
-    for (MerchartModel *m in topArray) {
+    for (MerchartModel *m in _topArray) {
         UIControl *topItem = [self createTopItem:m];
         [self.view addSubview:topItem];
     }
@@ -169,7 +186,7 @@
 
 -(void)populateMenu {
     
-    for (Category *cate in categoryArray) {
+    for (Category *cate in _categoryArray) {
         UIControl *menuItem = [self createMenuItem:cate];
         [self.view addSubview:menuItem];
     }
@@ -183,17 +200,8 @@
     [self.navigationController pushViewController:sView animated:YES];
 }
 
--(UIScrollView *)setInitWithColumns:(int)col marginSize:(CGFloat)margin gutterSize:(CGFloat)gutter rowHeight:(CGFloat)height{
-//    CGRect windowSize = [[UIScreen mainScreen] applicationFrame];
-//    
-//    // To iOS, width is height in landscape
-//    _rotation = [UIApplication sharedApplication].statusBarOrientation;
-//    if (UIInterfaceOrientationIsLandscape(_rotation)) {
-//        CGFloat width = windowSize.size.height;
-//        CGFloat height = windowSize.size.width;
-//        windowSize = CGRectMake(windowSize.origin.x, windowSize.origin.y, width, height);
-//    }
-    
+-(UIScrollView *)setInitWithColumns:(int)col marginSize:(CGFloat)margin gutterSize:(CGFloat)gutter rowHeight:(CGFloat)height
+{
     _menuView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, kDeviceHeight)];
     
     if (_menuView) {
@@ -310,20 +318,6 @@
     [imageView addGestureRecognizer:tapGesture2];
     [item addSubview:imageView];
     
-//    CGRect titleFrame = CGRectMake(margin, 70, parentFrame.size.width, 15);
-//    UICustomLabel *titleLabel = [[UICustomLabel alloc] initWithFrame:titleFrame];
-//    titleLabel.text =model.name;
-//    titleLabel.textAlignment=NSTextAlignmentCenter;
-//    titleLabel.backgroundColor = [UIColor clearColor];
-//    titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:11];
-//    titleLabel.adjustsFontSizeToFitWidth = YES;
-//    titleLabel.contentMode = UIViewContentModeScaleAspectFit;
-//    titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
-//    UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickUILable:)];
-//    titleLabel.userInteractionEnabled=YES;
-//    
-//    [titleLabel addGestureRecognizer:tapGesture];
-//    [item addSubview:titleLabel];
     return item;
 }
 
