@@ -15,17 +15,17 @@
     @private
     NSMutableArray *_merchartsArray;
     BOOL _reloading;
-    BOOL loadFlag;
-    int prevItemCount;
+    BOOL _loadFlag;
+    int _prevItemCount;
     //上拉刷新用的页码
-    int pageIndex;
+    int _pageIndex;
     
     //下拉刷新的view
     MJRefreshHeaderView *_header;
     //上拉刷新的view
     MJRefreshFooterView *_footer;
     //判断是上拉还是下拉 1 上拉 2下拉
-    int whichView;
+    int _whichView;
 }
 
 @property (strong,nonatomic) NSString * currentDateStr;

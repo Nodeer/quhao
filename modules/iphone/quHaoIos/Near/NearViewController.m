@@ -39,7 +39,6 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidLoad];
     CGSize size=CGSizeMake(500,44);
     [self.navigationController.navigationBar setBackgroundImage:[Helper reSizeImage:@"title.jpg" toSize:size] forBarMetrics:UIBarMetricsDefault];
     
@@ -50,15 +49,15 @@
     [self.tableView registerClass:[NearCell class] forCellReuseIdentifier:@"cell"];
     if([Helper isConnectionAvailable]){
         if([_merchartsArray count]==0){
+            
+
+            
             MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            hud.removeFromSuperViewOnHide =YES;
-            //hud.mode = MBProgressHUDModeText;
-            hud.labelText = NSLocalizedString(@"正在加载...", nil);
-            hud.minSize = CGSizeMake(90.0f, 90.0f);
+            hud.labelText = NSLocalizedString(@"正在加载", nil);
             hud.square = YES;
             [self refreshAction];
-            [hud hide:YES afterDelay:2];
 
+            [hud hide:YES];
             [self addFooter];
         }
     }//如果没有网络连接
@@ -99,6 +98,11 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if ([_merchartsArray count]==0) {
+        self.tableView.separatorStyle = NO;
+    }else{
+        self.tableView.separatorStyle = YES;
+    }
     return [_merchartsArray count];
 }
 
@@ -244,11 +248,10 @@
     [super viewDidDisappear:animated];
 }
 
-- (void)viewDidUnload
+- (void)dealloc
 {
-    [super viewDidUnload];
     _merchartsArray=nil;
+    _footer=nil;
 }
-
 @end
 

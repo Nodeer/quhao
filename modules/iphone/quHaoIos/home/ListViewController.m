@@ -26,26 +26,39 @@
     _merchartsArray = [[NSMutableArray alloc] initWithCapacity:20];
 
     _reloading = NO;
-    pageIndex=1;
-    whichView=1;
+    _pageIndex=1;
+    _whichView=1;
     //注册
-    [self.tableView registerClass:[HomeCell class] forCellReuseIdentifier:@"cell"];
-    
-    [self requestData:[NSString stringWithFormat:@"%@%@%@&sortBy=joinedDate",[Helper getIp],homeView_list_url,self.cateType] withPage:pageIndex];
-
-    //得到初始化页面的时间 下拉刷新取的是该时间以后的
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-
-    NSString *currentDateStr = [dateFormatter  stringFromDate:[NSDate date]];
-    NSDate * dates=[dateFormatter dateFromString:currentDateStr] ;
-    //NSDate * dates=[dateFormatter dateFromString:@"2012-08-01 12:22:33"] ;
-
-    self.currentDateStr = [QuHaoUtil returnFormatString:[dateFormatter  stringFromDate:dates]];
-
-    [self addHeader];
-    
-    [self addFooter];
+    [self.tableView registerClass:[HomeCell class] forCellReuseIdentifier:@"ListCell"];
+    if ([Helper isConnectionAvailable]){
+        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:HUD];
+        //如果设置此属性则当前的view置于后台
+        HUD.dimBackground = YES;
+        //设置对话框文字
+        HUD.labelText = @"正在加载...";
+        //显示对话框
+        [HUD showAnimated:YES whileExecutingBlock:^{
+            //得到初始化页面的时间 下拉刷新取的是该时间以后的
+            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+            
+            NSString *currentDateStr = [dateFormatter  stringFromDate:[NSDate date]];
+            NSDate * dates=[dateFormatter dateFromString:currentDateStr] ;
+            //NSDate * dates=[dateFormatter dateFromString:@"2012-08-01 12:22:33"] ;
+            self.currentDateStr = [QuHaoUtil returnFormatString:[dateFormatter  stringFromDate:dates]];
+            
+            [self requestData:[NSString stringWithFormat:@"%@%@%@&sortBy=joinedDate",[Helper getIp],homeView_list_url,self.cateType] withPage:_pageIndex];
+            [self.tableView reloadData];
+        } completionBlock:^{
+            //操作执行完后取消对话框
+            [HUD removeFromSuperview];
+            [self addHeader];
+            [self addFooter];
+        }];
+    }else{
+        [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
+    }
 }
 
 -(void)loadNavigationItem
@@ -55,7 +68,7 @@
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
-    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 搜 索" rect:CGRectMake( 0, 7, 50, 30 )];
+    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 搜 索" rect:CGRectMake( 0, 7, 50, 35 )];
     [btnButton addTarget:self action:@selector(clickSearch:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:btnButton];
     self.navigationItem.rightBarButtonItem = buttonItem;
@@ -81,8 +94,8 @@
     header.beginRefreshingBlock = ^(MJRefreshBaseView *refreshView) {
         // 进入刷新状态就会回调这个Block
         
-        prevItemCount = [_merchartsArray count];
-        whichView=2;
+        _prevItemCount = [_merchartsArray count];
+        _whichView=2;
         
         [self requestData:[NSString stringWithFormat:@"%@%@%@&date=%@",[Helper getIp],homeView_last_url,self.cateType,self.currentDateStr]
                  withPage:0];
@@ -99,10 +112,10 @@
     MJRefreshFooterView *footer = [MJRefreshFooterView footer];
     footer.scrollView = self.tableView;
     footer.beginRefreshingBlock = ^(MJRefreshBaseView *refreshView) {
-        prevItemCount = [_merchartsArray count];
-        ++pageIndex;
-        whichView=1;
-        [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],homeView_list_url,self.cateType]  withPage:pageIndex];
+        _prevItemCount = [_merchartsArray count];
+        ++_pageIndex;
+        _whichView=1;
+        [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],homeView_list_url,self.cateType]  withPage:_pageIndex];
         [self performSelector:@selector(doneWithView:) withObject:refreshView afterDelay:1.0];
         
     };
@@ -119,6 +132,11 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if ([_merchartsArray count]==0) {
+        self.tableView.separatorStyle = NO;
+    }else{
+        self.tableView.separatorStyle = YES;
+    }
     return [_merchartsArray count];
 }
 
@@ -136,7 +154,7 @@
 //dataSource
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-        static NSString *cellIdentify=@"cell";
+        static NSString *cellIdentify=@"ListCell";
         HomeCell *cell=[tableView dequeueReusableCellWithIdentifier:cellIdentify];
         //检查视图中有没闲置的单元格
         if(cell==nil){
@@ -179,7 +197,7 @@
 
 -(void)requestData:(NSString *)urlStr withPage:(int)page
 {
-   loadFlag=YES;
+  _loadFlag=YES;
   if ([Helper isConnectionAvailable]){
       NSString *str1= [NSString stringWithFormat:@"%@&page=%d", urlStr, page];
       NSString *response =[QuHaoUtil requestDb:str1];
@@ -192,7 +210,7 @@
               //解析错误
               [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
           }else{
-              if(whichView==1){
+              if(_whichView==1){
                   [self addAfterInfo:jsonObjects];
                }else{
                   [self addBeforeInfo:jsonObjects];
@@ -212,7 +230,7 @@
           [self addAfterInfo:jsonObjects];
           [self.tableView reloadData];
       }else{
-          loadFlag = NO;
+          _loadFlag = NO;
           [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
       }
   }
