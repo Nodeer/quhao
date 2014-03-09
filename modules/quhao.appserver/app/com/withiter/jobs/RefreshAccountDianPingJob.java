@@ -34,7 +34,7 @@ public class RefreshAccountDianPingJob extends Job {
 				List<Account> accounts = Account.findAll();
 				
 				for (Account account : accounts) {
-					long commentCount = Comment.findbyAccountId(account.getId());
+					int commentCount = Comment.findbyAccountId(account.getId());
 					account.dianping = commentCount;
 					account.save();
 				}

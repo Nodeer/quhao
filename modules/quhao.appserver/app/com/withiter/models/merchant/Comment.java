@@ -120,12 +120,12 @@ public class Comment extends CommentEntityDef {
 		return paginate(q, page);
 	}
 	
-	public static long findbyAccountId(Object accountId) {
+	public static int findbyAccountId(Object accountId) {
 		
 		MorphiaQuery q = Comment.q();
 		q.filter("accountId",accountId);
 		
-		return q.count();
+		return (int) q.count();
 	}
 
 }
