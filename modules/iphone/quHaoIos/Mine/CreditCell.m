@@ -25,19 +25,24 @@
 {
       
     _titleLabel=[[UILabel alloc]initWithFrame:CGRectZero];
+    _titleLabel.frame=CGRectMake(5, 5, 300, 30);
     _titleLabel.backgroundColor=[UIColor clearColor];
     _titleLabel.textColor=[UIColor blackColor];
     _titleLabel.font=[UIFont fontWithName:@"AppleGothic" size:17.0];
     [self.contentView addSubview:_titleLabel];
     
-    pjLabel=[[UILabel alloc]initWithFrame:CGRectZero];
-    pjLabel.backgroundColor=[UIColor clearColor];
-    pjLabel.font=[UIFont fontWithName:@"CourierNewPSMT" size:13.0];
-    [self.contentView addSubview:pjLabel];
+    _pjLabel=[[UILabel alloc]initWithFrame:CGRectZero];
+    _pjLabel.frame=CGRectMake(10,40, 140, 30);
+    _pjLabel.backgroundColor=[UIColor clearColor];
+    _pjLabel.font=[UIFont fontWithName:@"CourierNewPSMT" size:13.0];
+    [self.contentView addSubview:_pjLabel];
     
-    timeLabel=[[UILabel alloc] initWithFrame:CGRectZero];
-    timeLabel.font=[UIFont fontWithName:@"CourierNewPSMT" size:13.0];
-    [self.contentView addSubview:timeLabel];
+    _timeLabel=[[UILabel alloc] initWithFrame:CGRectZero];
+    _timeLabel.font=[UIFont fontWithName:@"CourierNewPSMT" size:13.0];
+    _timeLabel.frame=CGRectMake(150, _pjLabel.frame.origin.y, 160, 30);
+    _timeLabel.backgroundColor=[UIColor whiteColor];
+    _timeLabel.textAlignment=NSTextAlignmentRight;
+    [self.contentView addSubview:_timeLabel];
 }
 
 -(void) setSelected:(BOOL)selected animated:(BOOL)animated
@@ -48,25 +53,22 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-        
-    _titleLabel.frame=CGRectMake(5, 5, 300, 30);
     _titleLabel.text=self.creditModel.merchantName;
-    NSString * credit=@"";
     if (![self.creditModel.status isEqualToString:@""]) {
-        pjLabel.frame=CGRectMake(10,40, 140, 30);
         if ([creditModel.status isEqualToString:@"finished"]) {
-            credit=[NSString stringWithFormat:@"%@%d%@",@"完成取号，获得",creditModel.jifen,@"积分"];
+            _pjLabel.text=[NSString stringWithFormat:@"%@%d%@",@"完成取号，获得",creditModel.jifen,@"积分"];
         }else if ([creditModel.status isEqualToString:@"getNumber"]) {
-            credit=[NSString stringWithFormat:@"%@%d%@",@"取号，减少",creditModel.jifen,@"积分"];
+            _pjLabel.text=[NSString stringWithFormat:@"%@%d%@",@"取号，减少",creditModel.jifen,@"积分"];
         }else if ([creditModel.status isEqualToString:@"exchange"]) {
-            credit=[NSString stringWithFormat:@"%@%d%@",@"签到满5次，获得",creditModel.jifen,@"积分"];
+            _pjLabel.text=[NSString stringWithFormat:@"%@%d%@",@"签到满5次，获得",creditModel.jifen,@"积分"];
+        }else if ([creditModel.status isEqualToString:@"comment"]) {
+            _pjLabel.text=[NSString stringWithFormat:@"%@%d%@",@"评价，获得",creditModel.jifen,@"积分"];
         }
-        pjLabel.text=credit;
 
-        timeLabel.frame=CGRectMake(150, pjLabel.frame.origin.y, 160, 30);
-        timeLabel.text=[Helper formatDate:creditModel.created];
-        timeLabel.backgroundColor=[UIColor whiteColor];
-        timeLabel.textAlignment=NSTextAlignmentRight;
+        _timeLabel.text=[Helper formatDate:creditModel.created];
+    }else{
+        _pjLabel.text=@"";
+
     }
 }
 @end

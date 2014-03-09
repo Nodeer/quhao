@@ -18,13 +18,13 @@
     NSMutableArray *_commentsArray;
     BOOL _reloading;
     BOOL loadFlag;
-    int prevItemCount;
+    int _prevItemCount;
     //上拉刷新用的页码
-    int pageIndex;
+    int _pageIndex;
     //上拉刷新的view
     MJRefreshFooterView *_footer;
-    CGFloat cellHeight;
-    NSString *url;
+    CGFloat _cellHeight;
+    NSString *_url;
 }
 
 @property (strong,nonatomic) NSString * accountOrMerchantId;

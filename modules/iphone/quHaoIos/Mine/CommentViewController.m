@@ -22,20 +22,33 @@
     //添加上面的导航
     [self loadNavigationItem];
     //添加的代码
-    cellHeight=100.0;
+    _cellHeight=100.0;
     _commentsArray = [[NSMutableArray alloc] initWithCapacity:20];
     _reloading = NO;
-    pageIndex=1;
+    _pageIndex=1;
     //注册
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
     if(self.whichComment==1){
-        url=commentOfMerchart_url;
+        _url=commentOfMerchart_url;
     }else{
-        url=commentOfAccount_url;
+        _url=commentOfAccount_url;
     }
-    [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],url,self.accountOrMerchantId] withPage:pageIndex];
-
-    [self addFooter];
+    
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:HUD];
+    //如果设置此属性则当前的view置于后台
+    HUD.dimBackground = YES;
+    //设置对话框文字
+    HUD.labelText = @"正在加载...";
+    //显示对话框
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],_url,self.accountOrMerchantId] withPage:_pageIndex];
+        [self.tableView reloadData];
+    } completionBlock:^{
+        //操作执行完后取消对话框
+        [HUD removeFromSuperview];
+        [self addFooter];
+    }];
 }
 
 -(void)loadNavigationItem
@@ -58,9 +71,9 @@
     MJRefreshFooterView *footer = [MJRefreshFooterView footer];
     footer.scrollView = self.tableView;
     footer.beginRefreshingBlock = ^(MJRefreshBaseView *refreshView) {
-        prevItemCount = [_commentsArray count];
-        ++pageIndex;
-        [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],url,self.accountOrMerchantId]  withPage:pageIndex];
+        _prevItemCount = [_commentsArray count];
+        ++_pageIndex;
+        [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],_url,self.accountOrMerchantId]  withPage:_pageIndex];
         [self performSelector:@selector(doneWithView:) withObject:refreshView afterDelay:1.0];
         
     };
@@ -77,8 +90,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if ([_commentsArray count]==0) {
+        self.tableView.separatorStyle = NO;
+    }else{
+        self.tableView.separatorStyle = YES;
+    }
     return [_commentsArray count];
 }
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     cell.backgroundColor = [UIColor whiteColor];
@@ -100,23 +119,23 @@
                                                context:nil];
     CGSize size = rect.size;
     CGFloat height = MAX(size.height, 44.0f);
-    cellHeight=height + (CELL_CONTENT_MARGIN * 2)+20;
+    _cellHeight=height + (CELL_CONTENT_MARGIN * 2)+20;
     
-    return cellHeight;
+    return _cellHeight;
 }
 
-//dataSource
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {    
     UITableViewCell *cell;
     UILabel *label = nil;
-    
-    cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    static NSString *cellIdentify=@"commentCell";
+    cell = [tableView dequeueReusableCellWithIdentifier:cellIdentify];
     if (cell == nil)
     {
         CommentModel *cm = [_commentsArray objectAtIndex:[indexPath row]];
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
-        UILabel *_titleLabel = [Helper getCustomLabel:cm.merchantName font:14 rect:CGRectMake(5, 5, 300, 20)];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentify];
+
+        UILabel *_titleLabel = [Helper getCustomLabel:cm.merchantName font:15 rect:CGRectMake(5, 5, 300, 20)];
         [[cell contentView] addSubview:_titleLabel];
         
         UILabel *timeLabel = [Helper getCustomLabel:[Helper formatDate:cm.created] font:12 rect:CGRectMake(180, _titleLabel.frame.origin.y+_titleLabel.frame.size.height, 150, 10)];

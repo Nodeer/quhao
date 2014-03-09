@@ -34,9 +34,23 @@
     [self loadNavigationItem];
     _creditArray = [[NSMutableArray alloc] initWithCapacity:0];
     _reloading = NO;
-    pageIndex=1;
-    [self requestData:[NSString stringWithFormat:@"%@%@?accountId=%@",[Helper getIp],credit_url,self.accouId] withPage:pageIndex];
-    [self addFooter];
+    _pageIndex=1;
+    
+    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:HUD];
+    //如果设置此属性则当前的view置于后台
+    HUD.dimBackground = YES;
+    //设置对话框文字
+    HUD.labelText = @"正在加载...";
+    //显示对话框
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        [self requestData:[NSString stringWithFormat:@"%@%@?accountId=%@",[Helper getIp],credit_url,self.accouId] withPage:_pageIndex];
+        [self.tableView reloadData];
+    } completionBlock:^{
+        //操作执行完后取消对话框
+        [HUD removeFromSuperview];
+        [self addFooter];
+    }];
 }
 
 //上拉加载更多
@@ -45,9 +59,9 @@
     MJRefreshFooterView *footer = [MJRefreshFooterView footer];
     footer.scrollView = self.tableView;
     footer.beginRefreshingBlock = ^(MJRefreshBaseView *refreshView) {
-        prevItemCount = [_creditArray count];
-        ++pageIndex;
-        [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],currentMerchant_url,self.accouId] withPage:pageIndex];
+        _prevItemCount = [_creditArray count];
+        ++_pageIndex;
+        [self requestData:[NSString stringWithFormat:@"%@%@?accountId=%@",[Helper getIp],credit_url,self.accouId] withPage:_pageIndex];
         [self performSelector:@selector(doneWithView:) withObject:refreshView afterDelay:1.0];
         
     };
@@ -69,6 +83,11 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if ([_creditArray count]==0) {
+        self.tableView.separatorStyle = NO;
+    }else{
+        self.tableView.separatorStyle = YES;
+    }
     return [_creditArray count];
 }
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -79,7 +98,7 @@
 //dataSource
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentify=@"cell";
+    static NSString *cellIdentify=@"creditCell";
     CreditCell *cell=[tableView dequeueReusableCellWithIdentifier:cellIdentify];
     //检查视图中有没闲置的单元格
     if(cell==nil){
@@ -95,7 +114,7 @@
 
 -(void)requestData:(NSString *)urlStr withPage:(int)page
 {
-    loadFlag=YES;
+    _loadFlag=YES;
     if ([Helper isConnectionAvailable]){
         NSString *str1= [NSString stringWithFormat:@"%@&page=%d", urlStr, page];
         NSString *response =[QuHaoUtil requestDb:str1];
@@ -115,6 +134,7 @@
                     model.status=[[jsonObjects objectAtIndex:i] objectForKey:@"status"];
                     model.seatNumber=[[jsonObjects objectAtIndex:i] objectForKey:@"seatNumber"];
                     model.myNumber=[[jsonObjects objectAtIndex:i] objectForKey:@"myNumber"];
+                    model.jifen=fabs([[[jsonObjects objectAtIndex:i] objectForKey:@"jifen"] integerValue]);
                     model.reservationId=[[jsonObjects objectAtIndex:i] objectForKey:@"reservationId"];
                     model.cost=[[[jsonObjects objectAtIndex:i] objectForKey:@"cost"] boolValue];
                     model.created=[[jsonObjects objectAtIndex:i] objectForKey:@"created"];
@@ -126,7 +146,7 @@
     }//如果没有网络连接
     else
     {
-        loadFlag = NO;
+        _loadFlag = NO;
         [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
     }
 }

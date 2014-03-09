@@ -19,10 +19,10 @@
 @private
     NSMutableArray *_creditArray;
     BOOL _reloading;
-    BOOL loadFlag;
-    int prevItemCount;
+    BOOL _loadFlag;
+    int _prevItemCount;
     //上拉刷新用的页码
-    int pageIndex;
+    int _pageIndex;
     //上拉刷新的view
     MJRefreshFooterView *_footer;
 }

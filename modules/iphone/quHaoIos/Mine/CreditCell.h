@@ -11,9 +11,9 @@
 @interface CreditCell : UITableViewCell
 {
     UILabel *_titleLabel;
-    UILabel *pjLabel;
-    UILabel *timeLabel;
-    Credit *creditModel;
+    UILabel *_pjLabel;
+    UILabel *_timeLabel;
+    Credit *_creditModel;
     
 }
 @property(nonatomic,strong) Credit *creditModel;
