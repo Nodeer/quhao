@@ -103,10 +103,10 @@ public class Comment extends CommentEntityDef {
 	 * @param id of account
 	 * @return count
 	 */
-	public static long getCommentCountByAccountId(String aid) {
+	public static int getCommentCountByAccountId(String aid) {
 		MorphiaQuery q = Comment.q();
 		q.filter("accountId", aid);
-		return q.count();
+		return (int)q.count();
 	}
 
 	public static List<Comment> findbyAccountId(int page, String accountId,

@@ -293,7 +293,7 @@ public class AccountController extends BaseController {
 				loginVO.msg = "success";
 				loginVO.errorCode = 0;
 				loginVO.build(account);
-				long count = Comment.getCommentCountByAccountId(account.id());
+				int count = Comment.getCommentCountByAccountId(account.id());
 				loginVO.dianping = count;
 				session.put(Constants.SESSION_USERNAME, account.id());
 				session.put(account.id(), account.id());
@@ -328,7 +328,7 @@ public class AccountController extends BaseController {
 			loginVO.msg = "success";
 			loginVO.errorCode = 0;
 			loginVO.build(account);
-			long count = Comment.getCommentCountByAccountId(account.id());
+			int count = Comment.getCommentCountByAccountId(account.id());
 			loginVO.dianping = count;
 			session.put(Constants.SESSION_USERNAME, account.id());
 			session.put(account.id(), account.id());
@@ -366,7 +366,7 @@ public class AccountController extends BaseController {
 		} else if (!account.isSignIn) {
 			account.signIn = account.signIn + 1;
 			account.isSignIn = true;
-			long count = Comment.getCommentCountByAccountId(account.id());
+			int count = Comment.getCommentCountByAccountId(account.id());
 			loginVO.dianping = count;
 			session.put(Constants.SESSION_USERNAME, account.id());
 			session.put(account.id(), account.id());
