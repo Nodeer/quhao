@@ -26,7 +26,7 @@ public class LoginVO {
 	public int jifen;
 	public int signIn;
 	public boolean isSignIn = false;
-	public long dianping;
+	public int dianping;
 	public int zhaopian;
 	
 	public LoginVO(){
