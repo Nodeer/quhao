@@ -1,11 +1,15 @@
 package com.withiter.quhao.activity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,7 +24,6 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
-import com.withiter.quhao.util.encrypt.DesUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
@@ -145,6 +148,10 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		if ("true".equals(account.isSignIn)) {
 			signInLayout.setEnabled(false);
 		}
+		else
+		{
+			signInLayout.setEnabled(true);
+		}
 		progress.closeProgress();
 	}
 
@@ -171,6 +178,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 					if ("true".equals(loginInfo.isSignIn)) {
 						signInLayout.setEnabled(false);
 					}
+					
 				}
 			}
 		}
@@ -187,69 +195,61 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		isClick = true;
 
 		// 解锁
-		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
-		progressDialogUtil.showProgress();
+		
 
 		switch (v.getId()) {
 		case R.id.login:
-			progressDialogUtil.closeProgress();
+			progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
+			progressDialogUtil.showProgress();
+			
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			Intent intent = new Intent(this, LoginActivity.class);
 			intent.putExtra("activityName", this.getClass().getName());
 			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			startActivity(intent);
+			progressDialogUtil.closeProgress();
+			this.finish();
 			break;
 		case R.id.register:
-			progressDialogUtil.closeProgress();
+			progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
+			progressDialogUtil.showProgress();
+			
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			Intent intentReg = new Intent(this, RegisterActivity.class);
 			intentReg.putExtra("activityName", this.getClass().getName());
 			intentReg.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			startActivity(intentReg);
+			progressDialogUtil.closeProgress();
 			break;
 		case R.id.signInLayout:
+			progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
+			progressDialogUtil.showProgress();
 			if (QHClientApplication.getInstance().isLogined) {
-				String accountId = SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "");
-				try {
-					String result = CommonHTTPRequest.get("AccountController/signIn?accountId=" + accountId);
-					QuhaoLog.i(TAG, result);
-					if (StringUtils.isNull(result)) {
-					} else {
-						loginInfo = ParseJson.getLoginInfo(result);
-						AccountInfo account = new AccountInfo();
-						account.build(loginInfo);
-//						SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "true");
-						QHClientApplication.getInstance().accountInfo = account;
-						QHClientApplication.getInstance().isLogined = true;
-
-						QuhaoLog.i(TAG, loginInfo.msg);
-						if (loginInfo.msg.equals("fail")) {
-//							SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "false");
-							QHClientApplication.getInstance().isLogined = false;
-							Toast.makeText(PersonCenterActivity.this, "签到失败", Toast.LENGTH_LONG).show();
-							return;
+				
+				Thread thread = new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						try
+						{
+							Looper.prepare();
+							signIn();
 						}
-						if (loginInfo.msg.equals("success")) {
-							QHClientApplication.getInstance().isLogined = true;
-							
-							nickName.setText(loginInfo.nickName);
-							mobile.setText(loginInfo.phone);
-							jifen.setText(loginInfo.jifen);
-							
-							value_qiandao.setText(loginInfo.signIn);
-							value_dianpin.setText(loginInfo.dianping);
-							signInLayout.setEnabled(false);
+						catch(Exception e)
+						{
+							QuhaoLog.e(TAG, e.getMessage());
 						}
+						finally
+						{
+							Looper.loop();
+						}
+						
+						
 					}
-				} catch (Exception e) {
-					Toast.makeText(PersonCenterActivity.this, "签到失败", Toast.LENGTH_LONG).show();
-					e.printStackTrace();
-				} finally {
-					refreshUI();
-					progressDialogUtil.closeProgress();
-					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				}
+				});
+				thread.start();
 			} else {
+				
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				AlertDialog.Builder builder = new Builder(this);
@@ -265,6 +265,8 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			}
 			break;
 		case R.id.dianpingLayout:
+			progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
+			progressDialogUtil.showProgress();
 			if (QHClientApplication.getInstance().isLogined) {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -291,6 +293,8 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			}
 			break;
 		case R.id.current_paidui_layout:
+			progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
+			progressDialogUtil.showProgress();
 			if (QHClientApplication.getInstance().isLogined) {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -316,6 +320,8 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			}
 			break;
 		case R.id.history_paidui_layout:
+			progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
+			progressDialogUtil.showProgress();
 			if (QHClientApplication.getInstance().isLogined) {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -340,6 +346,8 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			}
 			break;
 		case R.id.credit_cost_layout:
+			progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
+			progressDialogUtil.showProgress();
 			if (QHClientApplication.getInstance().isLogined) {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -367,6 +375,8 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			}
 			break;
 		case R.id.editPassword:
+			progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
+			progressDialogUtil.showProgress();
 			if (QHClientApplication.getInstance().isLogined) {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -374,6 +384,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				intentCredit.setClass(this, CreditCostListActivity.class);
 				startActivity(intentCredit);
 				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+				this.finish();
 			} else {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -397,8 +408,88 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		}
 	}
 
+	private void signIn() {
+		String accountId = SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "");
+		try {
+			String result = CommonHTTPRequest.get("AccountController/signIn?accountId=" + accountId);
+			QuhaoLog.i(TAG, result);
+			if (StringUtils.isNull(result)) {
+			} else {
+				loginInfo = ParseJson.getLoginInfo(result);
+				AccountInfo account = new AccountInfo();
+				account.build(loginInfo);
+//						SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "true");
+				QHClientApplication.getInstance().accountInfo = account;
+				QHClientApplication.getInstance().isLogined = true;
+
+				QuhaoLog.i(TAG, loginInfo.msg);
+				if (loginInfo.msg.equals("fail")) {
+//							SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "false");
+					QHClientApplication.getInstance().isLogined = false;
+					Map<String, Object> toastParams = new HashMap<String, Object>();
+					toastParams.put("activity", PersonCenterActivity.this);
+					toastParams.put("text", "签到失败");
+					toastParams.put("toastLength", Toast.LENGTH_LONG);
+					toastHandler.obtainMessage(1000, toastParams).sendToTarget();
+					return;
+				}
+				if (loginInfo.msg.equals("success")) {
+					Map<String, Object> toastParams = new HashMap<String, Object>();
+					QHClientApplication.getInstance().isLogined = true;
+					toastParams.put("activity", PersonCenterActivity.this);
+					toastParams.put("text", "签到OK");
+					toastParams.put("toastLength", Toast.LENGTH_LONG);
+					toastHandler.obtainMessage(1000, toastParams).sendToTarget();
+					accountUpdateHandler.obtainMessage(200, account).sendToTarget();
+				}
+			}
+		} catch (Exception e) {
+			accountUpdateHandler.obtainMessage(200, null).sendToTarget();
+			Toast.makeText(PersonCenterActivity.this, "签到失败", Toast.LENGTH_LONG).show();
+			e.printStackTrace();
+		} finally {
+			
+			progressDialogUtil.closeProgress();
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+		}
+	}
+
+	protected Handler refreshUIHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			if (msg.what == UNLOCK_CLICK) {
+				refreshUI();
+			}
+		}
+	};
 	@Override
 	protected void onResume() {
+		Thread thread = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				try
+				{
+					Looper.prepare();
+					queryAccountByAccountId();
+					refreshUIHandler.sendEmptyMessage(UNLOCK_CLICK);
+					
+				}catch(Exception e)
+				{
+					QuhaoLog.e(TAG, e.getMessage());
+				}finally
+				{
+					Looper.loop();
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				}
+				
+				
+			}
+		});
+		thread.start();
+		super.onResume();
+	}
+
+	private void queryAccountByAccountId() {
 		if(QHClientApplication.getInstance().isLogined)
 		{
 			String accountId = SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "");
@@ -431,8 +522,8 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 						{
 							SharedprefUtil.put(this, QuhaoConstant.ACCOUNT_ID, loginInfo.accountId);
 							SharedprefUtil.put(this, QuhaoConstant.PHONE, loginInfo.phone);
-							String encryptPassword = new DesUtils().decrypt(loginInfo.password);
-							SharedprefUtil.put(this, QuhaoConstant.PASSWORD, encryptPassword);
+//							String encryptPassword = new DesUtils().decrypt(loginInfo.password);
+							SharedprefUtil.put(this, QuhaoConstant.PASSWORD, loginInfo.password);
 							String isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_AUTO_LOGIN, "false");
 							SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN, isAutoLogin);
 							QHClientApplication.getInstance().accountInfo = account;
@@ -456,8 +547,6 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			}
 			
 		}
-		refreshUI();
-		super.onResume();
 	}
 
 	@Override

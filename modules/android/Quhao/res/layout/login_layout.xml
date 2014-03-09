@@ -1,128 +1,188 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="#ffffffff"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:id="@+id/linear"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_denglu1"
-        android:gravity="center"
-        android:orientation="vertical" >
+        android:background="@drawable/common_top_bar_bg1"
+        android:gravity="center_vertical"
+        android:paddingBottom="5dip"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
+        android:paddingTop="5dip" >
 
+        <!-- back button -->
         <Button
-            android:id="@+id/close"
+            android:id="@+id/back_btn"
+            android:layout_width="60dip"
+            android:layout_height="40dip"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="@string/btn_back"
+            android:background="@drawable/btn_back_background"
+            android:gravity="center|center_vertical"
+            android:textColor="#ff000000"
+            android:textSize="14.0sp" />
+        <!-- back button -->
+
+
+        <!-- quhao button -->
+        <Button
+            android:id="@+id/login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="-122dip"
-            android:background="@drawable/mbtn_close" />
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/btn_weight"
+            android:text="登录"
+            android:textAppearance="?android:textAppearanceMediumInverse"
+            android:textColor="#ff000000"
+            android:textSize="14.0sp" 
+            />
+        <!-- quhao button -->
+        
+        <!-- login button 
+        <Button
+            android:id="@+id/btn_loginr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/btn_weight"
+            android:text="@string/login"
+            android:textAppearance="?android:textAppearanceMediumInverse"
+            android:textColor="#ff000000"
+            android:textSize="14.0sp" 
+            android:visibility="invisible"
+            /> -->
+        <!-- login button -->
 
         <TextView
-            android:id="@+id/person_center_login_result"
+            android:id="@+id/merchant_detail_merchantName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/empty" 
-            />
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="用户登录"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="#ff000000"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1.0"
+        android:fillViewport="true" >
 
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="45dip"
-            android:layout_marginRight="35dip"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/pannel_login_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/radioPhone" />
-
-            <EditText
-                android:id="@+id/login_name"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shuru"
-                android:hint=""
-                android:paddingLeft="4dip"
-                android:paddingRight="4dip"
-                android:singleLine="true" >
-            </EditText>
-
-            <TextView
-                android:id="@+id/pannel_login_password"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/radioPassword" />
-
-            <EditText
-                android:id="@+id/edit_pass"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shuru"
-                android:hint=""
-                android:inputType="textPassword"
-                android:paddingLeft="4dip"
-                android:paddingRight="4dip"
-                android:singleLine="true" >
-            </EditText>
-        </LinearLayout>
-		<LinearLayout
-	        android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-	        android:gravity="center_vertical"
-	        android:orientation="horizontal"
-	        android:paddingBottom="10dip"
-	        android:paddingTop="10dip" >
+	        android:id="@+id/linear"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:gravity="top|center"
+	        android:orientation="vertical" >
 	
 	        <TextView
-	            android:layout_width="0dip"
-	            android:layout_height="wrap_content"
-	            android:layout_marginLeft="10dip"
-	            android:layout_weight="1"
-	            android:gravity="center_vertical"
-	            android:text="下次自动登录:"
-	            android:textColor="@color/black"
-	            android:textSize="14sp" />
-	
-	        <ImageView
-	            android:id="@+id/isAutoLogin"
+	            android:id="@+id/person_center_login_result"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_marginRight="10dip"
-	            android:adjustViewBounds="true"
-	            android:src="@drawable/checkbox_unchecked" />
-    	</LinearLayout>
-        <RelativeLayout
-            android:id="@+id/linebar"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dip"
-            android:orientation="horizontal"
-            android:paddingLeft="50dip"
-            android:paddingRight="25dip" >
-
-            <Button
-                android:id="@+id/login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:background="@drawable/mbtn_login_1" >
-            </Button>
-
-            <Button
-			    android:id="@+id/forgetPassword"
-			    android:layout_width="wrap_content"
+	            android:layout_marginTop="5dip"
+	            android:layout_gravity="center"
+	            android:text="@string/empty" 
+	            />
+	
+	        <LinearLayout
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginLeft="5dip"
+	            android:layout_marginRight="5dip"
+	            android:orientation="vertical" >
+	
+	            <TextView
+	                android:id="@+id/pannel_login_name"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:textSize="17sp"
+	                android:text="@string/radioPhone" />
+	
+	            <EditText
+	                android:id="@+id/login_name"
+	                android:layout_width="fill_parent"
+	                android:layout_height="wrap_content"
+	                android:hint=""
+	                android:paddingLeft="4dip"
+	                android:paddingRight="4dip"
+	                android:singleLine="true" >
+	            </EditText>
+	
+	            <TextView
+	                android:id="@+id/pannel_login_password"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:textSize="17sp"
+	                android:text="@string/radioPassword" />
+	
+	            <EditText
+	                android:id="@+id/edit_pass"
+	                android:layout_width="fill_parent"
+	                android:layout_height="wrap_content"
+	                android:hint=""
+	                android:inputType="textPassword"
+	                android:paddingLeft="4dip"
+	                android:paddingRight="4dip"
+	                android:singleLine="true" >
+	            </EditText>
+	        
+			<LinearLayout
+		        android:layout_width="fill_parent"
 			    android:layout_height="wrap_content"
-			    android:background="@drawable/btn_weight"
-			    android:text="忘记密码"
-			    android:layout_gravity="right|center_vertical"
-			    android:textAppearance="?android:textAppearanceMediumInverse"
-			    android:layout_alignParentRight="true"
-			    android:textColor="#ff000000"
-			    android:textSize="14.0sp" />
-        </RelativeLayout>
-    </LinearLayout>
+		        android:orientation="horizontal"
+				android:layout_marginLeft="5dip">
+		
+		        <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_gravity="left|center"
+		            android:layout_marginLeft="10dip"
+		            android:gravity="left|center"
+		            android:text="下次自动登录:"
+		            android:textColor="@color/black"
+		            android:textSize="14sp" />
+		
+		        <ImageView
+		            android:id="@+id/isAutoLogin"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_marginLeft="10dip"
+		            android:adjustViewBounds="true"
+		            android:src="@drawable/checkbox_unchecked" />
+	    	</LinearLayout>
+	    	</LinearLayout>
+	        <LinearLayout
+	            android:id="@+id/linebar"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="8dip"
+	            android:orientation="horizontal"
+	            android:paddingLeft="50dip"
+	            android:paddingRight="25dip" >
+	
+	            <Button
+				    android:id="@+id/forgetPassword"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    android:background="@drawable/btn_weight"
+				    android:text="忘记密码?"
+				    android:layout_gravity="right|center_vertical"
+				    android:textAppearance="?android:textAppearanceMediumInverse"
+				    android:textColor="#ff000000"
+				    android:textSize="14.0sp" />
+	        </LinearLayout>
+	    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

@@ -17,12 +17,13 @@
 
         <Button
             android:id="@+id/back_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dip"
+            android:layout_height="40dip"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:text="@string/btn_back"
             android:background="@drawable/btn_back_background"
-            android:gravity="left|center_vertical" />
+            android:gravity="center|center_vertical" />
 
         <TextView
             android:layout_width="wrap_content"

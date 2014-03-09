@@ -10,6 +10,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources.NotFoundException;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -59,7 +61,14 @@ public class QHClientApplication extends Application {
 		// isLogined = false;
 		instance = this;
 		initServerConfig();
-		initAccountConfig();
+		Thread accountThread = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				initAccountConfig();
+			}
+		});
+		accountThread.start();
 		initSDCardConfig();
 		super.onCreate();
 	}
@@ -112,7 +121,7 @@ public class QHClientApplication extends Application {
 		String password = SharedprefUtil.get(this, QuhaoConstant.PASSWORD, "");
 		String isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_AUTO_LOGIN, "");
 
-		if ("false".equals(isAutoLogin) || StringUtils.isNull(phone) || StringUtils.isNull(password)) {
+		if (StringUtils.isNull(isAutoLogin)|| "false".equals(isAutoLogin) || StringUtils.isNull(phone) || StringUtils.isNull(password)) {
 			
 			return;
 		}
@@ -120,11 +129,21 @@ public class QHClientApplication extends Application {
 		String decryptPassword = new DesUtils().decrypt(password);
 		String url = "AccountController/login?phone=" + phone + "&password=" + decryptPassword;
 		try {
+			Looper.prepare();
 			String result = CommonHTTPRequest.post(url);
 			if(StringUtils.isNull(result)){
 //				SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
 				this.isLogined = false;
-				Toast.makeText(this, "自动登陆失败，请进入个人中心登陆", Toast.LENGTH_LONG).show();
+				Handler handler = new Handler();
+				handler.post(new Runnable() {
+					
+					@Override
+					public void run() {
+						
+						Toast.makeText(QHClientApplication.this, "自动登陆失败，请进入个人中心登陆", Toast.LENGTH_LONG).show();
+						
+					}
+				});
 				return;
 			}
 			
@@ -136,7 +155,16 @@ public class QHClientApplication extends Application {
 			if (account.msg.equals("fail")) {
 				this.isLogined = false;
 //				SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
-				Toast.makeText(this, "自动登陆失败，请进入个人中心登陆", Toast.LENGTH_LONG).show();
+				Handler handler = new Handler();
+				handler.post(new Runnable() {
+					
+					@Override
+					public void run() {
+						
+						Toast.makeText(QHClientApplication.this, "自动登陆失败，请进入个人中心登陆", Toast.LENGTH_LONG).show();
+						
+					}
+				});
 				return;
 			}
 
@@ -155,7 +183,20 @@ public class QHClientApplication extends Application {
 			e.printStackTrace();
 			QuhaoLog.e(TAG, e);
 			this.isLogined = false;
-			Toast.makeText(this, "自动登陆失败，请进入个人中心登陆", Toast.LENGTH_LONG).show();
+			Handler handler = new Handler();
+			handler.post(new Runnable() {
+				
+				@Override
+				public void run() {
+					
+					Toast.makeText(QHClientApplication.this, "自动登陆失败，请进入个人中心登陆", Toast.LENGTH_LONG).show();
+					
+				}
+			});
+		}
+		finally
+		{
+			Looper.loop();
 		}
 	}
 

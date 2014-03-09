@@ -43,7 +43,7 @@ public class RegisterActivity extends QuhaoBaseActivity{
 
 	private Button registerBtn;
 
-	private Button colseBtn;
+	private Button backBtn;
 
 	private String loginName;
 	private String verifyCode;
@@ -65,13 +65,14 @@ public class RegisterActivity extends QuhaoBaseActivity{
 		password2Text = (EditText) this.findViewById(R.id.edit_pass_2);
 		verifyCodeBtn = (Button) this.findViewById(R.id.verify_code_button);
 		registerBtn = (Button) this.findViewById(R.id.register_btn);
-		colseBtn = (Button) this.findViewById(R.id.close);
 		
 		regResult = (TextView) this.findViewById(R.id.register_result);
 
-		colseBtn.setOnClickListener(this);
+		backBtn = (Button) this.findViewById(R.id.back_btn);
+		
 		registerBtn.setOnClickListener(this);
 		verifyCodeBtn.setOnClickListener(this);
+		backBtn.setOnClickListener(goBack(this));
 		TelephonyManager telephonyManager = (TelephonyManager) this
 				.getSystemService(Context.TELEPHONY_SERVICE);
 		String phone = telephonyManager.getLine1Number();
@@ -246,11 +247,6 @@ public class RegisterActivity extends QuhaoBaseActivity{
 				}
 			});
 			threadReg.start();
-			break;
-		case R.id.close:
-			progressDialogUtil.closeProgress();
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			this.finish();
 			break;
 		case R.id.verify_code_button:
 			Thread threadVerify = new Thread(new Runnable() {

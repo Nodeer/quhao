@@ -129,13 +129,13 @@
 
 		<!-- login page -->
 		<activity android:name="com.withiter.quhao.activity.LoginActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
-			android:screenOrientation="portrait" android:theme="@style/Theme.CustomDialog" />
+			android:screenOrientation="portrait"/>
 		<!-- login page -->
 
 
 		<!-- sign up page -->
 		<activity android:name="com.withiter.quhao.activity.RegisterActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
-			android:screenOrientation="portrait" android:theme="@style/Theme.CustomDialog" />
+			android:screenOrientation="portrait" />
 		<!-- sign up page -->
 
 		<!-- get number page -->

@@ -15,15 +15,19 @@
 
         <Button
             android:id="@+id/back_btn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="60dip"
+            android:layout_height="40dip"
+            android:layout_weight="1"
+            android:text="@string/btn_back"
             android:background="@drawable/btn_back_background"
-            android:gravity="left|center" />
+            android:gravity="center|center_vertical"
+            android:textColor="#ff000000"
+            android:textSize="14.0sp" />
 
         <EditText
             android:id="@+id/edit_search1"
             android:layout_width="0.0dip"
-            android:layout_weight="1"
+            android:layout_weight="19"
             android:layout_height="wrap_content"
             android:gravity="left|center"
             android:hint="@string/search_placeholder"

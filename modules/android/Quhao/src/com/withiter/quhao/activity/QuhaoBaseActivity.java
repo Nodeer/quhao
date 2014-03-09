@@ -1,9 +1,12 @@
 package com.withiter.quhao.activity;
 
+import java.util.Map;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog.Builder;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +18,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.QuhaoLog;
@@ -46,7 +50,22 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 	protected Handler unlockHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what == UNLOCK_CLICK) {
+				if(null != progressDialogUtil)
+				{
+					progressDialogUtil.closeProgress();
+				}
 				isClick = false;
+			}
+		}
+	};
+	protected Handler toastHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			if (msg.what == UNLOCK_CLICK) {
+				
+				Map<String, Object> toastParams = (Map<String, Object>) msg.obj;
+//				Toast.makeText((Context)toastParams.get("activity"), toastParams.get("text"), );
+				
+				Toast.makeText((Context)toastParams.get("activity"), Integer.parseInt(String.valueOf(toastParams.get("text"))), Integer.parseInt(String.valueOf(toastParams.get("toastLength")))).show();
 			}
 		}
 	};
