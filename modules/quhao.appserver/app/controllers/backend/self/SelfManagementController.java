@@ -285,7 +285,7 @@ public class SelfManagementController extends BaseController {
 	}
 	
 	private static void smsRemind(String mid, int seatNumber){
-		Reservation r = Reservation.findReservationForSMSRemind(mid, seatNumber, 5);
+		Reservation r = Reservation.findReservationForSMSRemind(mid, seatNumber, 4);
 		if(r == null){
 			return;
 		}

@@ -1,5 +1,7 @@
 package com.withiter.models.account;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -53,14 +55,23 @@ public class Reservation extends ReservationEntityDef {
 		c.set(Calendar.MINUTE, 0);
 		c.set(Calendar.SECOND, 0);
 		
-		// query latest one day's reservation
+		Calendar c2 = Calendar.getInstance();
+		String closeTime = m.closeTime;
+		int closeTimeHour = Integer.parseInt(closeTime.split(":")[0]);
+		c.set(Calendar.AM_PM, Calendar.AM);
+		c.set(Calendar.HOUR, closeTimeHour);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
 		
-		// TODO need check the query conditions
-		q.filter("created >", new DateTime(c.getTimeInMillis()).toDate());
+		// query latest one day's reservation
+		q.filter("created >", c.getTime());
+		q.filter("created <", c2.getTime());
 		q.filter("merchantId", merchantId).filter("seatNumber", seatNumber);
 		q.filter("valid", true);
+		
 		// 得到第index个Reservation
-		q.order("created").offset(index);
+		q.order("created");
+		q.offset(index);
 		return q.first();
 	}
 	
@@ -335,6 +346,7 @@ public class Reservation extends ReservationEntityDef {
 		return q.first();
 	}
 
+	// TODO need to verify
 	public static List<Reservation> findReservationsByMerchantIdandDate(String mid, Date beforeDate) {
 		MorphiaQuery q = Reservation.q();
 		q.filter("created >", new DateTime(beforeDate.getTime()).toDate()).filter("merchantId", mid);

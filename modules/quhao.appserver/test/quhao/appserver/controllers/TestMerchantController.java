@@ -86,7 +86,7 @@ public class TestMerchantController {//extends FunctionalTest{
 //		qMerchant.filter("name", "望湘园").limit(1); // hard code for test
 //		Merchant m = qMerchant.first();
 		String merchantId = "52e3c726036431505d9a9e20";
-		int seatNo = 9; // hard code for test
+		int seatNo = 13; // hard code for test
 		
 		for(int i = 0; i < accounts.size(); i++){
 			String accountId = accounts.get(i);
