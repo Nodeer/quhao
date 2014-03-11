@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -30,6 +31,8 @@ import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
+import com.withiter.quhao.util.tool.QuhaoConstant;
+import com.withiter.quhao.util.tool.SharedprefUtil;
 import com.withiter.quhao.vo.Merchant;
 import com.withiter.quhao.vo.ReservationVO;
 
@@ -43,6 +46,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	private final int UNLOCK_CLICK = 1000;
 	private Merchant merchant;
 	private Button btnGetNumber;
+	private Button btnOpen;
 	// private Button btnLogin;
 	private LinearLayout info;
 	private LinearLayout mapLayout;
@@ -79,6 +83,8 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		btnGetNumber = (Button) findViewById(R.id.btn_GetNumber);
 		btnGetNumber.setOnClickListener(getNumberClickListener());
 		
+		btnOpen = (Button) findViewById(R.id.btn_open);
+		btnOpen.setOnClickListener(this);
 		LayoutInflater inflater = LayoutInflater.from(this);
 		info = (LinearLayout) inflater.inflate(R.layout.merchant_detail_info, null);
 		LinearLayout scroll = (LinearLayout) findViewById(R.id.lite_list);
@@ -255,8 +261,10 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					// check the merchant is enabled
 					if (m.enable) {
 						btnGetNumber.setVisibility(View.VISIBLE);
+						btnOpen.setVisibility(View.GONE);
 					} else {
 						btnGetNumber.setVisibility(View.GONE);
+						btnOpen.setVisibility(View.VISIBLE);
 					}
 
 					merchantName.setText(m.name);
@@ -385,6 +393,56 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			{
 				Toast.makeText(this, "对不起，暂无评论。", Toast.LENGTH_LONG).show();
 			}
+			break;
+		case R.id.btn_open:
+			
+			Thread thread = new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					Looper.prepare();
+					progressDialogUtil = new ProgressDialogUtil(MerchantDetailActivity.this, R.string.empty, R.string.waitting_for_commit, false);
+					progressDialogUtil.showProgress();
+					
+					String accountId = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.ACCOUNT_ID, "");
+					String merchantId = merchant.id;
+					
+					try
+					{
+						try {
+							QuhaoLog.v(LOGTAG, "commit open service, account id  : " + accountId + " , merchant ID : " + merchantId);
+							String buf = CommonHTTPRequest.get("openService?mid=" + merchantId + "&accountId=" + accountId);
+							if (StringUtils.isNull(buf)) {
+								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+								Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_LONG).show();
+								progressDialogUtil.closeProgress();
+							} else {
+								Toast.makeText(MerchantDetailActivity.this, R.string.committing_success, Toast.LENGTH_LONG).show();
+								progressDialogUtil.closeProgress();
+							}
+
+						} catch (Exception e) {
+							progressDialogUtil.closeProgress();
+							Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_LONG).show();
+							unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+							e.printStackTrace();
+						} finally {
+							
+						}
+					}
+					catch(Exception e)
+					{
+						
+					}
+					finally
+					{
+						Looper.loop();
+					}
+					progressDialogUtil.closeProgress();
+					
+				}
+			});
+			thread.start();
 			break;
 		default:
 			break;

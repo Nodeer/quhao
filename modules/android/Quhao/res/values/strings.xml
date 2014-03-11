@@ -21,6 +21,7 @@
 	
 	<!-- 详细页面 -->
 	<string name="get_reservation">取号</string>
+	<string name="open_service">希望开通</string>
 	<string name="login">登陆</string>
 	<string name="renjun">人均￥</string>
 	<string name="zero">0</string>
@@ -47,6 +48,9 @@
 	<string name="net_error">网络异常，请重试!</string>
 	<string name="querying">正努力帮您加载美味信息&#8230;</string>
 	<string name="waitting">请稍等 &#8230; &#8230;</string>
+	<string name="waitting_for_commit">请稍等,正在提交您的意愿 &#8230;</string>
+	<string name="committing_failed">亲，对不起，提交失败，请稍候提交！</string>
+	<string name="committing_success">亲，提交成功，请静候佳音！</string>
 	<string name="radioPhone">手机:</string>
 	<string name="radioPassword">密码:</string>
 	<string name="radioEmail">邮箱</string>

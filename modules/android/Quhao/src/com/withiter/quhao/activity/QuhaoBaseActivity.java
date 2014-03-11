@@ -169,6 +169,7 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 					Intent intent = new Intent(activity, MainActivity.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 					startActivity(intent);
+					activity.finish();
 //					overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 				}
 			}
@@ -216,6 +217,7 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 				Intent intent = new Intent(activity, PersonCenterActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(intent);
+				activity.finish();
 			}
 		};
 		return clickListener;
@@ -235,6 +237,7 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 				Intent intent = new Intent(activity, MoreActivity.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(intent);
+				activity.finish();
 			}
 		};
 		return clickListener;
