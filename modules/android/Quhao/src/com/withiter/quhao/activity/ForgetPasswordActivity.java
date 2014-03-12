@@ -43,7 +43,7 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 
 	private Button submitBtn;
 
-	private Button colseBtn;
+	private Button backBtn;
 
 	private String loginName;
 	private String verifyCode;
@@ -65,11 +65,11 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 		password2Text = (EditText) this.findViewById(R.id.new_pass2);
 		verifyCodeBtn = (Button) this.findViewById(R.id.verify_code_button);
 		submitBtn = (Button) this.findViewById(R.id.submit);
-		colseBtn = (Button) this.findViewById(R.id.close);
+		backBtn = (Button) this.findViewById(R.id.back_btn);
 		
 		repassResult = (TextView) this.findViewById(R.id.repassword_result);
 
-		colseBtn.setOnClickListener(this);
+		backBtn.setOnClickListener(this);
 		submitBtn.setOnClickListener(this);
 		verifyCodeBtn.setOnClickListener(this);
 		String phone = SharedprefUtil.get(this, QuhaoConstant.PHONE, "");
@@ -264,9 +264,13 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 			});
 			thread.start();
 			break;
-		case R.id.close:
+		case R.id.back_btn:
 			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			Intent intent = new Intent();
+			intent.putExtra("activityName", ForgetPasswordActivity.class.getName());
+			intent.setClass(ForgetPasswordActivity.this, LoginActivity.class);
+			startActivity(intent);
 			this.finish();
 			break;
 		case R.id.verify_code_button:

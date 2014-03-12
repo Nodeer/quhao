@@ -19,7 +19,7 @@
 		<Button
 			android:id="@+id/register"
 			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
+			android:layout_height="40dip"
 			android:background="@drawable/btn_weight"
 			android:text="注册"
 			android:layout_gravity="left|center_vertical"
@@ -37,7 +37,7 @@
 		<Button
 		    android:id="@+id/login"
 		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
+		    android:layout_height="40dip"
 		    android:background="@drawable/btn_weight"
 		    android:text="登录"
 		    android:layout_gravity="right|center_vertical"
@@ -109,7 +109,7 @@
                     <Button
 					    android:id="@+id/editPassword"
 					    android:layout_width="wrap_content"
-					    android:layout_height="wrap_content"
+					    android:layout_height="40dip"
 					    android:background="@drawable/btn_weight"
 					    android:text="修改密码"
 					    android:visibility="gone"

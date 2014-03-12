@@ -173,7 +173,7 @@
         <Button
             android:id="@+id/btn_comment"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dip"
             android:background="@drawable/btn_weight"
             android:text="@string/quhao_states_comment"
             android:textAppearance="?android:textAppearanceMediumInverse"

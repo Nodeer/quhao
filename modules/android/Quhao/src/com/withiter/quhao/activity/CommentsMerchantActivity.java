@@ -9,6 +9,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.Button;
@@ -112,7 +113,7 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnScr
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.comments_merchant);
 

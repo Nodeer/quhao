@@ -208,7 +208,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			startActivity(intent);
 			progressDialogUtil.closeProgress();
-			this.finish();
+//			this.finish();
 			break;
 		case R.id.register:
 			progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
@@ -434,10 +434,11 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 					return;
 				}
 				if (loginInfo.msg.equals("success")) {
-					Map<String, Object> toastParams = new HashMap<String, Object>();
+					
 					QHClientApplication.getInstance().isLogined = true;
+					Map<String, Object> toastParams = new HashMap<String, Object>();
 					toastParams.put("activity", PersonCenterActivity.this);
-					toastParams.put("text", "签到OK");
+					toastParams.put("text", R.string.sign_in_success);
 					toastParams.put("toastLength", Toast.LENGTH_LONG);
 					toastHandler.obtainMessage(1000, toastParams).sendToTarget();
 					accountUpdateHandler.obtainMessage(200, account).sendToTarget();
