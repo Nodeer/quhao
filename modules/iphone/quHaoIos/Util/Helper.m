@@ -162,7 +162,7 @@
 {
     NSString *ip=nil;
     if([NSUserName() compare:@"sam"]==0){
-        ip=@"http://192.168.2.102:9081";
+        ip=@"http://192.168.2.101:9081";
     }else{
         ip=@"http://localhost:9081";
 
@@ -262,12 +262,13 @@
 {
     NSDateFormatter *inputFormatter = [[NSDateFormatter alloc] init];
     [inputFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
-    [inputFormatter setDateFormat:@"MMM d,yyyy HH:mm:ss aa"];
+    [inputFormatter setDateFormat:@"MMM d,yyyy hh:mm:ss aa"];
     NSDate* inputDate = [inputFormatter dateFromString:dateStr];
-    
+
     NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
     [outputFormatter setLocale:[NSLocale currentLocale]];
     [outputFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+       
     return  [outputFormatter stringFromDate:inputDate];
 }
 
