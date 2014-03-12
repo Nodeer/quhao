@@ -1,5 +1,7 @@
 package com.withiter.models.merchant;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -86,10 +88,17 @@ public class Merchant extends MerchantEntityDef {
 		MorphiaQuery q = Merchant.q();
 		q.filter("cateType", cateType);
 
-		if(null!=date){
-			q.filter("joinedDate >",date);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date dateTemp = new Date();
+		try {
+			dateTemp = sdf.parse(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}	
+		if(null != date){
+			q.filter("joinedDate >",dateTemp);
 		}else{
-			q.filter("joinedDate >",new Date().toString());
+			q.filter("joinedDate >",dateTemp);
 		}
 		if (!StringUtils.isEmpty(sortBy)) {
 			q = sortBy(q, sortBy);
