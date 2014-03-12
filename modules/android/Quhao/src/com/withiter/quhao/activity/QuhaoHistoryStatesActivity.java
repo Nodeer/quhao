@@ -30,7 +30,7 @@ import com.withiter.quhao.vo.ReservationVO;
  * Quhao states of Current/History
  * 
  */
-public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity implements OnItemClickListener{
+public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 
 	protected static boolean backClicked = false;
 	private static String TAG = QuhaoHistoryStatesActivity.class.getName();
@@ -43,11 +43,10 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity implements OnI
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.paidui_list_layout);
+		setContentView(R.layout.paidui_history_list_layout);
 		super.onCreate(savedInstanceState);
 
 		paiduiListView = (ListView) this.findViewById(R.id.paiduiListView);
-		paiduiListView.setOnItemClickListener(QuhaoHistoryStatesActivity.this);
 		btnBack.setOnClickListener(goBack(this));
 
 		initData();
@@ -175,25 +174,4 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity implements OnI
 		}
 	}
 
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
-		
-		// 已经点过，直接返回
-		if (isClick) {
-			return;
-		}
-
-		// 设置已点击标志，避免快速重复点击
-		isClick = true;
-		// 解锁
-		unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-		ReservationVO reservation = reservations.get(position);
-		Intent intent = new Intent();
-		intent.putExtra("rId", reservation.rId);
-		intent.setClass(QuhaoHistoryStatesActivity.this, CreateCommentActivity.class);
-		startActivity(intent);
-		overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-		
-	}
 }

@@ -121,33 +121,42 @@ public class ReservationForCurrentPaiduiAdapter extends BaseAdapter {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							dialog.dismiss();
-							progress = new ProgressDialogUtil(activity, R.string.empty, R.string.waitting, false);
-							progress.showProgress();
-							try {
-								String url = "";
-								url = "MerchantController/cancel?reservationId=" + reservationId;
-								
-								String buf = CommonHTTPRequest.get(url);
-								if (StringUtils.isNull(buf) || "[]".equals(buf)) {
-									throw new NoResultFromHTTPRequestException();
-							 	} else {
-							 		if("true".equals(buf.trim()))
-							 		{
-										activity.initData();
-							 		}
-							 		else
-							 		{
-										activity.initData();
-							 		}
-								}
+							Thread thread = new Thread(new Runnable()
+							{
 
-							} catch (Exception e) {
-								e.printStackTrace();
-							} finally {
-								progress.closeProgress();
-							}
-						}
-					});
+								@Override
+								public void run() {
+									Looper.prepare();
+									progress = new ProgressDialogUtil(activity, R.string.empty, R.string.waitting, false);
+									progress.showProgress();
+									try {
+										String url = "";
+										url = "MerchantController/cancel?reservationId=" + reservationId;
+										
+										String buf = CommonHTTPRequest.get(url);
+										if (StringUtils.isNull(buf) || "[]".equals(buf)) {
+											throw new NoResultFromHTTPRequestException();
+									 	} else {
+									 		if("true".equals(buf.trim()))
+									 		{
+												activity.initData();
+									 		}
+									 		else
+									 		{
+												activity.initData();
+									 		}
+										}
+
+									} catch (Exception e) {
+										e.printStackTrace();
+									} finally {
+										progress.closeProgress();
+										Looper.loop();
+									}
+								
+							}});
+							thread.start();
+					}});
 					builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
 						
 						@Override

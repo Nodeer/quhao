@@ -2,6 +2,7 @@ package com.withiter.quhao.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -94,40 +95,53 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 			
 			
 		}
-		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.committing, false);
-		progressDialogUtil.showProgress();
+		
 		switch (v.getId()) {
 		case R.id.submit:
-			try {
-				averageCost = avgCostEdit.getText().toString().trim();
-				comment = commentEdit.getText().toString().trim();
-				kouwei = (int) kouweiRatingBar.getRating();
-				huanjing = (int) huanjingRatingBar.getRating();
-				fuwu = (int) fuwuRatingBar.getRating();
-				xingjiabi = (int) xingjiabiRatingBar.getRating();
-				float gradeAvg = (kouwei + huanjing + fuwu + xingjiabi)/4;
-				int grade = Math.round(gradeAvg);
-				if(StringUtils.isNull(comment))
-				{
-					Toast.makeText(this, "请填写评论", Toast.LENGTH_LONG).show();
-					progressDialogUtil.closeProgress();
-					unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
-					return;
+			Thread thread = new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					
+					try {
+						Looper.prepare();
+						progressDialogUtil = new ProgressDialogUtil(CreateCommentActivity.this, R.string.empty, R.string.committing, false);
+						progressDialogUtil.showProgress();
+						averageCost = avgCostEdit.getText().toString().trim();
+						comment = commentEdit.getText().toString().trim();
+						kouwei = (int) kouweiRatingBar.getRating();
+						huanjing = (int) huanjingRatingBar.getRating();
+						fuwu = (int) fuwuRatingBar.getRating();
+						xingjiabi = (int) xingjiabiRatingBar.getRating();
+						float gradeAvg = (kouwei + huanjing + fuwu + xingjiabi)/4;
+						int grade = Math.round(gradeAvg);
+						if(StringUtils.isNull(comment))
+						{
+							Toast.makeText(CreateCommentActivity.this, "请填写评论", Toast.LENGTH_LONG).show();
+							progressDialogUtil.closeProgress();
+							unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+							return;
+						}
+					
+						CommonHTTPRequest.get("updateComment?rid=" + rId + "&kouwei=" + kouwei + "&huanjing=" + huanjing + "&fuwu=" + fuwu + "&xingjiabi=" + xingjiabi + "&grade=" + grade + "&averageCost=" + averageCost +  "&content=" + comment);
+						progressDialogUtil.closeProgress();
+						unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+						Toast.makeText(CreateCommentActivity.this, "评论成功", Toast.LENGTH_LONG).show();
+						CreateCommentActivity.this.finish();
+					} catch (Exception e) {
+						e.printStackTrace();
+						Toast.makeText(CreateCommentActivity.this, "网络异常", Toast.LENGTH_LONG).show();
+						progressDialogUtil.closeProgress();
+						unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+						CreateCommentActivity.this.finish();
+					}
+					finally
+					{
+						Looper.loop();
+					}
 				}
-			
-				CommonHTTPRequest.get("updateComment?rid=" + rId + "&kouwei=" + kouwei + "&huanjing=" + huanjing + "&fuwu=" + fuwu + "&xingjiabi=" + xingjiabi + "&grade=" + grade + "&averageCost=" + averageCost +  "&content=" + comment);
-				progressDialogUtil.closeProgress();
-				unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
-				Toast.makeText(this, "评论成功", Toast.LENGTH_LONG).show();
-				this.finish();
-			} catch (Exception e) {
-				e.printStackTrace();
-				Toast.makeText(this, "网络异常", Toast.LENGTH_LONG).show();
-				progressDialogUtil.closeProgress();
-				unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
-				this.finish();
-			}
-
+			});
+			thread.start();
 			break;
 		}
 

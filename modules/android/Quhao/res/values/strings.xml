@@ -84,6 +84,7 @@
 	<string name="current_paidui">当前取号情况</string>
 	<string name="history_paidui">历史取号情况</string>
 	<string name="history_jifen">积分消费情况</string>
+	<string name="sign_in_success">签到成功</string>
 	<!-- 个人中心 -->
 	
 	<!-- menu bar -->

@@ -94,7 +94,7 @@ public class LoginActivity extends QuhaoBaseActivity {
 		btnLogin = (Button) findViewById(R.id.login);
 		forgetPasswordBtn = (Button) findViewById(R.id.forgetPassword);
 
-		btnBack.setOnClickListener(goBack(this));
+		btnBack.setOnClickListener(this);
 		btnLogin.setOnClickListener(this);
 		forgetPasswordBtn.setOnClickListener(this);
 	}
@@ -151,10 +151,16 @@ public class LoginActivity extends QuhaoBaseActivity {
 			});
 			thread.start();
 			break;
+		case R.id.back_btn:
+			Intent intent = new Intent();
+			intent.setClass(this, PersonCenterActivity.class);
+			startActivity(intent);
+			this.finish();
+			break;
 		case R.id.forgetPassword:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			Intent intent = new Intent(this, ForgetPasswordActivity.class);
-			startActivity(intent);
+			Intent intent1 = new Intent(this, ForgetPasswordActivity.class);
+			startActivity(intent1);
 			System.gc();
 			finish();
 			break;
@@ -162,6 +168,17 @@ public class LoginActivity extends QuhaoBaseActivity {
 			break;
 		}
 	}
+	
+	private Handler loginFailedHandler = new Handler()
+	{
+		public void handleMessage(Message msg) {
+			if (msg.what == 200) {
+				super.handleMessage(msg);
+				loginResult.setText("用户名或密码错误，登陆失败");
+				passwordText.setText("");
+			}
+		}
+	};
 
 	private void login() {
 		Looper.prepare();
@@ -198,17 +215,20 @@ public class LoginActivity extends QuhaoBaseActivity {
 				QuhaoLog.i(TAG, "account.msg : " + account.msg);
 				
 				if (account.msg.equals("fail")) {
-					Handler handler = new Handler();
-					handler.post(new Runnable() {
-						
-						@Override
-						public void run() {
-							
-							loginResult.setText("用户名或密码错误，登陆失败");
-							passwordText.setText("");
-							
-						}
-					});
+					
+					loginFailedHandler.obtainMessage(200, null).sendToTarget();
+					
+//					Handler handler = new Handler();
+//					handler.post(new Runnable() {
+//						
+//						@Override
+//						public void run() {
+//							
+//							loginResult.setText("用户名或密码错误，登陆失败");
+//							passwordText.setText("");
+//							
+//						}
+//					});
 					progressLogin.closeProgress();
 					return;
 				}
