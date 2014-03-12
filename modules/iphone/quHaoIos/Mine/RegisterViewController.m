@@ -102,7 +102,7 @@
 
                 }else{
                     [Helper showHUD2:errorText andView:self.view  andSize:100];
-                    [self performSelector:@selector(clickToHome:) withObject:nil afterDelay:1.0f];
+                    [self performSelector:@selector(clickToMine:) withObject:nil afterDelay:1.0f];
                 }
             }
         }

@@ -91,6 +91,7 @@
 							<int key="IBUIReturnKeyType">9</int>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						</object>
+						<int key="IBUIClearButtonMode">3</int>
 						<object class="IBUIFontDescription" key="IBUIFontDescription" id="800499241">
 							<int key="type">1</int>
 							<double key="pointSize">14</double>
@@ -143,6 +144,7 @@
 							<int key="IBUIKeyboardType">4</int>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						</object>
+						<int key="IBUIClearButtonMode">3</int>
 						<reference key="IBUIFontDescription" ref="800499241"/>
 						<reference key="IBUIFont" ref="75259805"/>
 					</object>
@@ -222,8 +224,10 @@
 						<float key="IBUIMinimumFontSize">17</float>
 						<object class="IBUITextInputTraits" key="IBUITextInputTraits">
 							<int key="IBUIKeyboardType">2</int>
+							<bool key="IBUISecureTextEntry">YES</bool>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						</object>
+						<int key="IBUIClearButtonMode">3</int>
 						<reference key="IBUIFontDescription" ref="800499241"/>
 						<reference key="IBUIFont" ref="75259805"/>
 					</object>
@@ -266,8 +270,10 @@
 						<float key="IBUIMinimumFontSize">17</float>
 						<object class="IBUITextInputTraits" key="IBUITextInputTraits">
 							<int key="IBUIKeyboardType">2</int>
+							<bool key="IBUISecureTextEntry">YES</bool>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						</object>
+						<int key="IBUIClearButtonMode">3</int>
 						<reference key="IBUIFontDescription" ref="800499241"/>
 						<reference key="IBUIFont" ref="75259805"/>
 					</object>
