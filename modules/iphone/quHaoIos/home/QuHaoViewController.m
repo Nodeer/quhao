@@ -46,7 +46,7 @@
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
     //添加拿号按钮
-    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 拿 号" rect:CGRectMake( 0, 7, 50, 30 )];
+    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 拿 号" rect:CGRectMake( 0, 7, 50, 35 )];
     [btnButton addTarget:self action:@selector(clickNahao:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:btnButton];
     self.navigationItem.rightBarButtonItem = buttonItem;
@@ -104,7 +104,7 @@
 //拿号的请求方法
 -(void)reloadView
 {
-    if(reservation.seatNumber==nil||reservation.seatNumber==@""){
+    if(reservation.myNumber==nil||[reservation.myNumber isEqualToString:@"0"]){
         if([Helper isConnectionAvailable]){
             MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             hud.labelText = NSLocalizedString(@"正在加载", nil);
@@ -122,7 +122,7 @@
             
             reservation.accountId=[jsonObjects  objectForKey:@"accountId"];
             reservation.seatNumber=[jsonObjects  objectForKey:@"seatNumber"];
-            reservation.myNumber=[jsonObjects  objectForKey:@"myNumber"];
+            reservation.myNumber=[[jsonObjects  objectForKey:@"myNumber"] description];
             reservation.currentNumber=[jsonObjects  objectForKey:@"currentNumber"];
             reservation.beforeYou=[jsonObjects objectForKey:@"beforeYou"];
             reservation.merchantId=[jsonObjects objectForKey:@"merchantId"];
