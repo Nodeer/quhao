@@ -155,6 +155,11 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 			@Override
 			public void onClick(View v) {
 
+				if(isClick)
+				{
+					return;
+				}
+				isClick = true;
 				// do not change the code below
 				// 判断是否在当前页面, 需要刷新页面，重新加载数据，而不是调整activity的显示顺序。 Add by Cross
 				if (activity instanceof MainActivity) {
@@ -165,6 +170,7 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 					Intent intent = new Intent(activity, MainActivity.class);
 					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 					startActivity(intent);
+					unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
 					activity.finish();
 //					overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 				}

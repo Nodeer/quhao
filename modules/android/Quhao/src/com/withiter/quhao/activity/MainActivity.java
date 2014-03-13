@@ -218,11 +218,6 @@ public class MainActivity extends QuhaoBaseActivity {
 	 * get all categories from server and display them
 	 */
 	public void getCategoriesFromServerAndDisplay() {
-		if (isClick) {
-			return;
-		}
-
-		isClick = true;
 		progressCategory = new ProgressDialogUtil(this, R.string.empty, R.string.querying, false);
 		progressCategory.showProgress();
 		Thread t = new Thread() {
