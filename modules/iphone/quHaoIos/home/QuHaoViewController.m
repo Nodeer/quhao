@@ -133,10 +133,10 @@
             }else{
                 [_quHaoView reloadData];
                 if(reservation.beforeYou<=5){
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"恭喜：取号成功，由于在你前面排队的人数小于等于5人，为了避免排队号过期，请抓紧时间前往商家。" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"恭喜：取号成功，由于在你前面排队的不多于5桌，为了避免排队号过期，请抓紧时间前往商家。" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
                     [alert show];
                 }else{
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"恭喜：取号成功，当你的排号前还剩5位时，我们会用短信通知到你，继续享受你的免排队时间吧。" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"恭喜：取号成功，当你的排号前还剩5桌时，我们会用短信通知到你，继续享受你的免排队时间吧。" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
                     [alert show];
                 }
 
