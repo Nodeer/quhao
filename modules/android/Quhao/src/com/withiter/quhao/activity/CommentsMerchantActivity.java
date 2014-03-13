@@ -124,6 +124,10 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnScr
 		this.page = getIntent().getIntExtra("page", 1);
 		merchantNameView = (TextView) findViewById(R.id.merchantName);
 		merchantNameView.setText(merchantName);
+		if(StringUtils.isNotNull(merchantName) && merchantName.length()>10)
+		{
+			merchantNameView.setText(merchantName.substring(0, 10) + "...");
+		}
 
 		moreView = getLayoutInflater().inflate(R.layout.moredata, null);
 		bt = (Button) moreView.findViewById(R.id.bt_load);

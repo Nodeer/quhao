@@ -64,6 +64,10 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 
 		merchantNameView = (TextView) findViewById(R.id.name);
 		merchantNameView.setText(merchantName);
+		if(StringUtils.isNotNull(merchantName) && merchantName.length()>10)
+		{
+			merchantNameView.setText(merchantName.substring(0, 10) + "...");
+		}
 
 		mMapView = (MapView) findViewById(R.id.mapView);
 		mMapView.onCreate(savedInstanceState);
@@ -134,7 +138,25 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 			if (msg.what == 200) {
 				super.handleMessage(msg);
 
-				merchantNameView.setText(merchant.name);
+				if(null!=merchant)
+				{
+					merchantNameView.setText(merchant.name);
+					if(StringUtils.isNotNull(merchant.name) && merchant.name.length()>10)
+					{
+						merchantNameView.setText(merchant.name.substring(0, 10) + "...");
+					}
+					LatLng latLng = new LatLng(merchant.lat, merchant.lng);
+					MarkerOptions options = new MarkerOptions();
+					options.position(latLng).title(merchant.name).snippet(merchant.address).icon(BitmapDescriptorFactory.fromResource(R.drawable.menu_merchant_nearby)).perspective(true);
+
+					mAMap.addMarker(options);
+					update = CameraUpdateFactory.changeLatLng(latLng);
+
+					if (null != update) {
+						mAMap.moveCamera(update);
+					}
+				}
+				
 
 				/*
 				 * MerchantLocation location = null; for (int i = 0; i <
@@ -151,17 +173,6 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 				 * latLngs.add(latLng); } if (i==0) { update =
 				 * CameraUpdateFactory.changeLatLng(latLng); } }
 				 */
-
-				LatLng latLng = new LatLng(merchant.lat, merchant.lng);
-				MarkerOptions options = new MarkerOptions();
-				options.position(latLng).title(merchant.name).snippet(merchant.address).icon(BitmapDescriptorFactory.fromResource(R.drawable.menu_merchant_nearby)).perspective(true);
-
-				mAMap.addMarker(options);
-				update = CameraUpdateFactory.changeLatLng(latLng);
-
-				if (null != update) {
-					mAMap.moveCamera(update);
-				}
 
 			}
 

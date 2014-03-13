@@ -1,9 +1,7 @@
 package com.withiter.quhao.activity;
 
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -359,11 +357,11 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					TextView commentContent = (TextView) critiqueLayout.findViewById(R.id.comment_content);
 					TextView commentDate = (TextView) info.findViewById(R.id.comment_date);
 
-					commentRenjun.setText(commentRenjun.getText() + m.commentAverageCost);
-					commentFuwu.setText(commentFuwu.getText() + String.valueOf(m.commentFuwu));
-					commentHuanjing.setText(commentHuanjing.getText() + String.valueOf(m.commentHuanjing));
-					commentKouwei.setText(commentKouwei.getText() + String.valueOf(m.commentKouwei));
-					commentXingjiabi.setText(commentXingjiabi.getText() + String.valueOf(m.commentXingjiabi));
+					commentRenjun.setText(getString(R.string.renjun) + m.commentAverageCost);
+					commentFuwu.setText(getString(R.string.fuwu) + String.valueOf(m.commentFuwu));
+					commentHuanjing.setText(getString(R.string.huanjing) + String.valueOf(m.commentHuanjing));
+					commentKouwei.setText(getString(R.string.kouwei) + String.valueOf(m.commentKouwei));
+					commentXingjiabi.setText(getString(R.string.xingjiabi) + String.valueOf(m.commentXingjiabi));
 					commentContent.setText(m.commentContent);
 					commentDate.setText(m.commentDate);
 
