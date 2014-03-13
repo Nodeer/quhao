@@ -2,8 +2,8 @@ package com.withiter.quhao.util.tool;
 
 public class QuhaoConstant {
 
-//	public static String HTTP_URL = "http://192.168.0.20:9081/";
-	public static String HTTP_URL = "http://10.0.2.2:9081/";
+	public static String HTTP_URL = "http://192.168.2.101:9081/";
+//	public static String HTTP_URL = "http://10.0.2.2:9081/";
 	public static final String NEW_BODY = null;
 	public static final int ADVERTISE_PIC_MAX = 409600;
 	public static final String SHARED_PREFERENCES = "SHARED_PREFERENCES";

@@ -3,6 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#ffffffff"
+    android:gravity="right"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -30,21 +31,6 @@
         <!-- back button -->
 
 
-        <!-- quhao button -->
-        <Button
-            android:id="@+id/login"
-            android:layout_width="wrap_content"
-            android:layout_height="40dip"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/btn_weight"
-            android:text="登录"
-            android:textAppearance="?android:textAppearanceMediumInverse"
-            android:textColor="#ff000000"
-            android:textSize="14.0sp" 
-            />
-        <!-- quhao button -->
-        
         <!-- login button 
         <Button
             android:id="@+id/btn_loginr"
@@ -162,25 +148,54 @@
 		            android:src="@drawable/checkbox_unchecked" />
 	    	</LinearLayout>
 	    	</LinearLayout>
+
 	        <LinearLayout
 	            android:id="@+id/linebar"
 	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
+	            android:layout_height="40dip"
 	            android:layout_marginTop="8dip"
 	            android:orientation="horizontal"
 	            android:paddingLeft="50dip"
 	            android:paddingRight="25dip" >
-	
-	            <Button
-				    android:id="@+id/forgetPassword"
-				    android:layout_width="wrap_content"
-				    android:layout_height="40dip"
-				    android:background="@drawable/btn_weight"
-				    android:text="忘记密码?"
-				    android:layout_gravity="right|center_vertical"
-				    android:textAppearance="?android:textAppearanceMediumInverse"
-				    android:textColor="#ff000000"
-				    android:textSize="14.0sp" />
+
+	            <LinearLayout
+		            android:layout_width="wrap_content"
+		            android:layout_height="40dip"
+		            android:orientation="horizontal"
+		            android:layout_weight="1"
+		            android:gravity="left|center_vertical" >
+					<!-- login button -->
+			        <Button
+			            android:id="@+id/login"
+			            android:layout_width="60dip"
+			            android:layout_height="40dip"
+			            android:background="@drawable/btn_weight"
+			            android:text="登录"
+			            android:layout_gravity="left|center_vertical"
+			            android:textAppearance="?android:textAppearanceMediumInverse"
+			            android:textColor="#ff000000"
+			            android:textSize="14.0sp" 
+			            />
+			         <!-- login button -->
+		        </LinearLayout>
+		       <LinearLayout
+		            android:layout_width="wrap_content"
+		            android:layout_height="40dip"
+		            android:layout_weight="1"
+		            android:orientation="horizontal"
+		            android:paddingLeft="50dip"
+		            android:gravity="right|center_vertical" >
+		            <Button
+					    android:id="@+id/forgetPassword"
+					    android:layout_width="wrap_content"
+					    android:layout_height="40dip"
+					    android:background="@drawable/btn_weight"
+					    android:text="忘记密码?"
+					    android:layout_gravity="right|center_vertical"
+					    android:textAppearance="?android:textAppearanceMediumInverse"
+					    android:textColor="#ff000000"
+					    android:textSize="14.0sp" />
+	            </LinearLayout>
 	        </LinearLayout>
 	    </LinearLayout>
     </ScrollView>

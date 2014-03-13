@@ -389,8 +389,9 @@ public class ParseJson {
 		String tipValue = obj.optString("tipValue");
 		String merchantName = obj.optString("merchantName");
 		String merchantAddress = obj.optString("merchantAddress");
+		String merchantImage = obj.optString("merchantImage");
 
-		rvo = new ReservationVO(rId,accountId, merchantId, seatNumber, myNumber, beforeYou, currentNumber, valid, tipKey, tipValue, merchantName, merchantAddress,isCommented);
+		rvo = new ReservationVO(rId,accountId, merchantId, seatNumber, myNumber, beforeYou, currentNumber, valid, tipKey, tipValue, merchantName, merchantAddress,isCommented,merchantImage);
 		return rvo;
 	}
 

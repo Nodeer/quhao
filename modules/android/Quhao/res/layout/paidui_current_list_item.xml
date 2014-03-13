@@ -6,182 +6,234 @@
     android:gravity="center_vertical"
     android:orientation="horizontal" >
 
-    <LinearLayout android:id="@+id/merchantLayout"
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent" >
-    <!-- merchant name -->
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+            android:layout_width="100dip"
+            android:layout_height="100dip"
+            android:orientation="vertical"
+            android:padding="1.0dip" >
+			
+            <!-- merchant logo -->
+            <ImageView
+                android:id="@+id/merchantImg"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:padding="4dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:contentDescription="@string/empty"
+                />
+            <!-- merchant logo -->
+        </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:lineSpacingMultiplier="1.3"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
             android:paddingLeft="2.0dip"
-            android:text="@string/quhao_states_merchantName"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@color/deep_gray"
-            android:textSize="11.0sp" />
+            android:paddingTop="0dip" >
+			
+			<LinearLayout
+                android:id="@+id/tex2_lay1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0.0dip"
+                android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/merchantName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:lineSpacingMultiplier="1.3"
-            android:text="@string/empty"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@color/deep_gray"
-            android:textSize="11.0sp" />
-    </LinearLayout>
-    <!-- merchant name -->
+                <TextView
+                    android:id="@+id/merchantName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3.0dip"
+                    android:text="@string/empty"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textColor="#ff000000"
+                    android:singleLine="true"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:textSize="11.0sp" />
 
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0.0dip"
+                android:orientation="vertical" >
 
-    <!-- merchant address -->
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+                <TextView
+                    android:id="@+id/merchantAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3.0dip"
+                    android:text="@string/empty"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textColor="#ff000000"
+                    android:singleLine="true"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:textSize="11.0sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:lineSpacingMultiplier="1.3"
-            android:paddingLeft="2.0dip"
-            android:text="@string/quhao_states_merchantAddress"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@color/deep_gray"
-            android:textSize="11.0sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/tex2_lay2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0.0dip"
+                android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/merchantAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:lineSpacingMultiplier="1.3"
-            android:text="@string/empty"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@color/deep_gray"
-            android:textSize="11.0sp" />
-    </LinearLayout>
-    <!-- merchant address -->
+                <Button
+		            android:id="@+id/btn_cancel"
+		            android:layout_width="50dip"
+		            android:layout_height="30dip"
+		            android:background="@drawable/btn_weight"
+		            android:text="@string/cancel_sequence"
+		            android:textAppearance="?android:textAppearanceMediumInverse"
+		            android:textColor="#ff000000"
+		            android:textSize="14.0sp" 
+		            android:layout_gravity="right|center_vertical"
+		            />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/tex2_lay3"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0.0dip"
+                android:orientation="horizontal" >
+
+                <LinearLayout
+	                android:layout_width="fill_parent"
+	                android:layout_height="fill_parent"
+	                android:layout_marginTop="0.0dip"
+	                android:layout_weight="1"
+	                android:orientation="horizontal" >
+	                <TextView
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:layout_marginTop="3.0dip"
+	                    android:singleLine="true"
+	                    android:text="@string/my_number"
+	                    android:textAppearance="?android:textAppearanceMedium"
+	                    android:textColor="#ff000000"
+	                    android:textSize="10.0sp" />
 	
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+	                <!-- 我的号码-->
+	                <TextView
+	                    android:id="@+id/myNumber"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:layout_marginTop="3.0dip"
+	                    android:paddingRight="4.0dip"
+	                    android:singleLine="true"
+	                    android:text="@string/empty"
+	                    android:textAppearance="?android:textAppearanceMedium"
+	                    android:textColor="#ff000000"
+	                    android:textSize="10.0sp" />
+					<!-- 我的号码-->
+				</LinearLayout>
+				<LinearLayout
+	                android:layout_width="fill_parent"
+	                android:layout_height="fill_parent"
+	                android:layout_marginTop="0.0dip"
+	                android:layout_weight="1"
+	                android:orientation="horizontal" >
+					<!-- 座位人数-->
+	                <TextView
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:layout_marginLeft="3.0dip"
+	                    android:layout_marginTop="3.0dip"
+	                    android:singleLine="true"
+	                    android:text="@string/seat_number"
+	                    android:textAppearance="?android:textAppearanceMedium"
+	                    android:textColor="#ff000000"
+	                    android:textSize="10.0sp" />
+	
+	                <TextView
+	                    android:id="@+id/seatNo"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:layout_marginTop="3.0dip"
+	                    android:singleLine="true"
+	                    android:text="@string/zero"
+	                    android:textAppearance="?android:textAppearanceMedium"
+	                    android:textColor="#ff000000"
+	                    android:textSize="10.0sp" />
+	                <!-- 座位人数-->
+	            </LinearLayout>
+            </LinearLayout>
 
-        <!-- 我的号码-->
-        <TextView
-            android:layout_width="0.0px"
-            android:layout_height="wrap_content"
-            android:paddingLeft="2.0dip"
-            android:layout_weight="3.0"
-            android:lineSpacingMultiplier="1.3"
-            android:text="@string/my_number"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@color/deep_gray"
-            android:textSize="11.0sp" />
-
-        <TextView
-            android:id="@+id/myNumber"
-            android:layout_width="0.0px"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.0"
-            android:lineSpacingMultiplier="1.3"
-            android:text="@string/empty"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@color/deep_gray"
-            android:textSize="11.0sp" />
-        <!-- 我的号码-->
-
-        <!-- 座位人数-->
-        <TextView
-            android:layout_width="0.0px"
-            android:layout_height="wrap_content"
-            android:layout_weight="3.0"
-            android:lineSpacingMultiplier="1.3"
-            android:text="@string/seat_number"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@color/deep_gray"
-            android:textSize="11.0sp" />
-
-        <TextView
-            android:id="@+id/seatNo"
-            android:layout_width="0.0px"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.0"
-            android:lineSpacingMultiplier="1.3"
-            android:text="@string/empty"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@color/deep_gray"
-            android:textSize="11.0sp" />
-        <!-- 座位人数-->
-
-        <!-- 在你前面-->
-        <TextView
-            android:layout_width="0.0px"
-            android:layout_height="wrap_content"
-            android:layout_weight="3.0"
-            android:lineSpacingMultiplier="1.3"
-            android:text="@string/before_you"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@color/deep_gray"
-            android:textSize="11.0sp" />
-
-        <TextView
-            android:id="@+id/beforeYou"
-            android:layout_width="0.0px"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.0"
-            android:lineSpacingMultiplier="1.3"
-            android:text="@string/empty"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@color/deep_gray"
-            android:textSize="11.0sp" />
-        <!-- 在你前面-->
-
-        <!-- 当前号码 -->
-        <TextView
-            android:layout_width="0.0px"
-            android:layout_height="wrap_content"
-            android:layout_weight="3.0"
-            android:lineSpacingMultiplier="1.3"
-            android:text="@string/current_number"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@color/deep_gray"
-            android:textSize="11.0sp" />
-
-        <TextView
-            android:id="@+id/currentNumber"
-            android:layout_width="0.0px"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.0"
-            android:lineSpacingMultiplier="1.3"
-            android:text="@string/empty"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="@color/deep_gray"
-            android:textSize="11.0sp" />
-        <!-- 当前号码 -->
-    </LinearLayout>
-	</LinearLayout>
-	<!-- cancel layout -->
-    <LinearLayout android:id="@+id/cancelLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent" >
-
-         <!-- quhao button -->
-        <Button
-            android:id="@+id/btn_cancel"
-            android:layout_width="fill_parent"
-            android:layout_height="40dip"
-            android:background="@drawable/btn_weight"
-            android:text="@string/cancel_sequence"
-            android:textAppearance="?android:textAppearanceMediumInverse"
-            android:textColor="#ff000000"
-            android:textSize="14.0sp" 
-            android:gravity="center"
-            android:layout_gravity="center"
-            />
-        <!-- quhao button -->
-    </LinearLayout>
-    <!-- cancel layout  -->
+            <LinearLayout
+                android:id="@+id/text2_lay2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0.0dip"
+                android:orientation="horizontal" >
+				
+				<!-- 在你前面-->
+				<LinearLayout
+	                android:layout_width="fill_parent"
+	                android:layout_height="fill_parent"
+	                android:layout_marginTop="0.0dip"
+	                android:layout_weight="1"
+	                android:orientation="horizontal" >
+	                <TextView
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:layout_marginTop="3.0dip"
+	                    android:singleLine="true"
+	                    android:text="@string/before_you"
+	                    android:textAppearance="?android:textAppearanceMedium"
+	                    android:textColor="#ff000000"
+	                    android:textSize="10.0sp" />
+	
+	                <TextView
+	                    android:id="@+id/beforeYou"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:layout_marginTop="3.0dip"
+	                    android:paddingRight="4.0dip"
+	                    android:singleLine="true"
+	                    android:text="@string/zero"
+	                    android:textAppearance="?android:textAppearanceMedium"
+	                    android:textColor="#ff000000"
+	                    android:textSize="10.0sp" />
+                </LinearLayout>
+				<!-- 在你前面-->
+				
+				 <!-- 当前号码 -->
+				 <LinearLayout
+	                android:layout_width="fill_parent"
+	                android:layout_height="fill_parent"
+	                android:layout_marginTop="0.0dip"
+	                android:layout_weight="1"
+	                android:orientation="horizontal" >
+	                <TextView
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:layout_marginLeft="3.0dip"
+	                    android:layout_marginTop="3.0dip"
+	                    android:singleLine="true"
+	                    android:text="@string/current_number"
+	                    android:textAppearance="?android:textAppearanceMedium"
+	                    android:textColor="#ff000000"
+	                    android:textSize="10.0sp" />
+	
+	                <TextView
+	                    android:id="@+id/currentNumber"
+	                    android:layout_width="wrap_content"
+	                    android:layout_height="wrap_content"
+	                    android:layout_marginTop="3.0dip"
+	                    android:paddingRight="4.0dip"
+	                    android:singleLine="true"
+	                    android:text="@string/zero"
+	                    android:textAppearance="?android:textAppearanceMedium"
+	                    android:textColor="#ff000000"
+	                    android:textSize="10.0sp" />
+                </LinearLayout>
+				<!-- 当前号码 -->
+            </LinearLayout>
+        </LinearLayout>
 </LinearLayout>

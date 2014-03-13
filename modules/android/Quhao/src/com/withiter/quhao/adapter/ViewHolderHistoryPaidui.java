@@ -1,11 +1,11 @@
 package com.withiter.quhao.adapter;
 
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ViewHolderHistoryPaidui {
-		public LinearLayout merchantLayout;
+		public ImageView merchantImg;
 		public TextView merchantName;
 		public TextView merchantAddress;
 		public TextView myNumber;
