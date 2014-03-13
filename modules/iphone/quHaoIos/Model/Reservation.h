@@ -17,9 +17,9 @@
 @property (nonatomic,strong) NSString *merchantId;
 @property(nonatomic,strong)NSString* seatNumber;
 @property(nonatomic,strong)NSString*  myNumber ;
-@property(nonatomic,strong)NSString*  beforeYou ;
 @property(nonatomic,strong)NSString*  currentNumber ;
 @property (nonatomic,strong) NSString *imgUrl;
 @property BOOL isCommented;
+@property int  beforeYou ;
 
 @end

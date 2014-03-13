@@ -86,7 +86,7 @@
                     reservation.accountId=[[jsonObjects objectAtIndex:0]  objectForKey:@"accountId"];
                     reservation.seatNumber=[[jsonObjects objectAtIndex:0]  objectForKey:@"seatNumber"];
                     reservation.myNumber=[[jsonObjects objectAtIndex:0]  objectForKey:@"myNumber"];
-                    reservation.beforeYou=[[jsonObjects objectAtIndex:0] objectForKey:@"beforeYou"];
+                    reservation.beforeYou=[[[jsonObjects objectAtIndex:0] objectForKey:@"beforeYou"] intValue];
                     reservation.currentNumber=[[jsonObjects objectAtIndex:0] objectForKey:@"currentNumber"];
                     reservation.merchantId=[[jsonObjects objectAtIndex:0] objectForKey:@"merchantId"];
                 }
@@ -124,7 +124,7 @@
             reservation.seatNumber=[jsonObjects  objectForKey:@"seatNumber"];
             reservation.myNumber=[[jsonObjects  objectForKey:@"myNumber"] description];
             reservation.currentNumber=[jsonObjects  objectForKey:@"currentNumber"];
-            reservation.beforeYou=[jsonObjects objectForKey:@"beforeYou"];
+            reservation.beforeYou=[[jsonObjects objectForKey:@"beforeYou"] intValue];
             reservation.merchantId=[jsonObjects objectForKey:@"merchantId"];
             NSString *tip=[jsonObjects objectForKey:@"tipValue"];
             [hud hide:YES];
@@ -132,6 +132,14 @@
                 [Helper showHUD2:@"亲,没有积分可用了" andView:self.view andSize:100];
             }else{
                 [_quHaoView reloadData];
+                if(reservation.beforeYou<=5){
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"恭喜：取号成功，由于在你前面排队的人数小于等于5人，为了避免排队号过期，请抓紧时间前往商家。" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+                    [alert show];
+                }else{
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"恭喜：取号成功，当你的排号前还剩5位时，我们会用短信通知到你，继续享受你的免排队时间吧。" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+                    [alert show];
+                }
+
             }
         }else{
             [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
@@ -181,7 +189,7 @@
             }
         }else if ([indexPath row] == 3) {//在你前面
             if(reservation.accountId!=nil){
-                UILabel *label = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%@",@" 在你前面:    ",[reservation.beforeYou description]] font:18 rect:CGRectMake(5, 18, 150, 30)];
+                UILabel *label = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%d",@" 在你前面:    ",reservation.beforeYou ]font:18 rect:CGRectMake(5, 18, 150, 30)];
                 [cell.contentView addSubview:label];
             }
         }

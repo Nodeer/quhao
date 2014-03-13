@@ -133,7 +133,7 @@
         Helper *helper=[Helper new];
         if (helper.isCookie == NO) {
             LoginView *loginView = [[LoginView alloc] init];
-            loginView.isPopupByNotice = YES;
+            loginView._isPopupByNotice = YES;
             helper.viewBeforeLogin = self;
             helper.viewNameBeforeLogin = @"MerchartDetail";
             loginView.helper=helper;
@@ -185,7 +185,7 @@
         Helper *helper=[Helper new];
         if (helper.isCookie == NO) {
             LoginView *loginView = [[LoginView alloc] init];
-            loginView.isPopupByNotice = YES;
+            loginView._isPopupByNotice = YES;
             helper.viewBeforeLogin = self;
             helper.viewNameBeforeLogin = @"MerchartDetail";
             loginView.helper=helper;
@@ -233,7 +233,7 @@
                     reservation.accountId=[[jsonObjects objectAtIndex:0] objectForKey:@"accountId"];
                     reservation.seatNumber=[[jsonObjects objectAtIndex:0]  objectForKey:@"seatNumber"];
                     reservation.myNumber=[[jsonObjects objectAtIndex:0]  objectForKey:@"myNumber"];
-                    reservation.beforeYou=[[jsonObjects objectAtIndex:0] objectForKey:@"beforeYou"];
+                    reservation.beforeYou=[[[jsonObjects objectAtIndex:0] objectForKey:@"beforeYou"] intValue];
                     reservation.merchantId=[[jsonObjects objectAtIndex:0] objectForKey:@"merchantId"];
                     reservation.currentNumber=[[jsonObjects objectAtIndex:0] objectForKey:@"currentNumber"];
                 }
@@ -354,7 +354,7 @@
             UILabel *teamLabel = [Helper getCustomLabel:my font:15 rect:CGRectMake(40, 52, 130, 15)];
             [cell.contentView addSubview:teamLabel];
             
-            NSString *before = [NSString stringWithFormat:@"%@%@",@" 在你前面:",[reservation.beforeYou description]];
+            NSString *before = [NSString stringWithFormat:@"%@%d",@" 在你前面:",reservation.beforeYou];
             UILabel *beforeLabel = [Helper getCustomLabel:before font:15 rect:CGRectMake(175, 52, 130, 15)];
             [cell.contentView addSubview:beforeLabel];
         }
