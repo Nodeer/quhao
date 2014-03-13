@@ -47,7 +47,7 @@
             NSDate * dates=[dateFormatter dateFromString:currentDateStr] ;
             //NSDate * dates=[dateFormatter dateFromString:@"2012-08-01 12:22:33"] ;
             self.currentDateStr = [QuHaoUtil returnFormatString:[dateFormatter  stringFromDate:dates]];
-            
+            NSLog(@"==%@",self.currentDateStr);
             [self requestData:[NSString stringWithFormat:@"%@%@%@&sortBy=joinedDate",[Helper getIp],homeView_list_url,self.cateType] withPage:_pageIndex];
             [self.tableView reloadData];
         } completionBlock:^{
@@ -96,7 +96,7 @@
         
         _prevItemCount = [_merchartsArray count];
         _whichView=2;
-        
+        //page为0无效 暂时未做分页处理
         [self requestData:[NSString stringWithFormat:@"%@%@%@&date=%@",[Helper getIp],homeView_last_url,self.cateType,self.currentDateStr]
                  withPage:0];
         // 这里的refreshView其实就是header

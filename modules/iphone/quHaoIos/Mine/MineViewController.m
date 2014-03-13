@@ -115,7 +115,8 @@
             }
             
             UILabel *_numberLabel = [Helper getCustomLabel:@"" font:18 rect:CGRectMake(egoImgView.frame.origin.x+egoImgView.frame.size.width+15,20, 220, 35)];
-            if(_userInfo.username==nil||[_userInfo.username isEqualToString:@""]){
+            Helper *helper=[Helper new];
+            if (helper.isCookie == NO){
                 _numberLabel.text=@"您还没有登录哦";
             }else{
                 _numberLabel.text=[NSString stringWithFormat:@"%@%@",@"qh",_userInfo.phone];
