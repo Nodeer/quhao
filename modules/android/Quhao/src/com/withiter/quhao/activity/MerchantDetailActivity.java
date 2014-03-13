@@ -1,5 +1,6 @@
 package com.withiter.quhao.activity;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -277,7 +278,29 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 
 					// check the merchant is enabled
 					if (m.enable) {
-						btnGetNumber.setVisibility(View.VISIBLE);
+						Calendar cal = Calendar.getInstance();
+						int currentHour = cal.get(Calendar.HOUR_OF_DAY);
+						int openHour = 25;
+						
+						if(StringUtils.isNotNull(m.openTime))
+						{
+							openHour = Integer.valueOf(m.openTime.substring(0, m.openTime.indexOf(":")));
+						}
+						
+						int closeHour = 26;
+						if(StringUtils.isNotNull(m.closeTime))
+						{
+							closeHour = Integer.valueOf(m.closeTime.substring(0, m.closeTime.indexOf(":")));
+						}
+						if(currentHour<openHour || currentHour>closeHour)
+						{
+							btnGetNumber.setVisibility(View.GONE);
+						}
+						else
+						{
+							btnGetNumber.setVisibility(View.VISIBLE);
+						}
+						
 						btnOpen.setVisibility(View.GONE);
 					} else {
 						btnGetNumber.setVisibility(View.GONE);

@@ -1,6 +1,5 @@
 package com.withiter.quhao.activity;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -106,9 +105,9 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 		QuhaoLog.d(TAG, "merchantName:" + merchantName);
 		merchantNameView.setText(merchantName);
 		GetNumberActivity.this.findViewById(R.id.loadingbar).setVisibility(View.GONE);
-		GetNumberActivity.this.findViewById(R.id.merchantNameLayout).setVisibility(View.VISIBLE);
+		GetNumberActivity.this.findViewById(R.id.getNumberLayout).setVisibility(View.VISIBLE);
 
-		// getMerchantInfo();
+		getMerchantInfo();
 		getSeatNos();
 	}
 
