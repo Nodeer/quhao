@@ -89,6 +89,7 @@ public class ParseJson {
 					// TODO test here
 					if (QuhaoConstant.test) {
 						imgUrl = obj.getString("merchantImage").replace("http://localhost:9081/", QuhaoConstant.HTTP_URL);
+//						imgUrl = obj.getString("merchantImage").replace("http://localhost:9081/", "http://192.168.2.100:9081/");
 						System.out.println(imgUrl);
 					} else {
 						imgUrl = obj.getString("merchantImage");
@@ -161,6 +162,14 @@ public class ParseJson {
 		Merchant merchant;
 		String id = obj.optString("id");
 		String imgUrl = obj.optString("merchantImage");
+		// TODO: 
+		if (QuhaoConstant.test) {
+			imgUrl = obj.optString("merchantImage").replace("http://localhost:9081/", QuhaoConstant.HTTP_URL);
+//			imgUrl = obj.optString("merchantImage").replace("http://localhost:9081/", "http://192.168.2.100:9081/");
+			System.out.println(imgUrl);
+		} else {
+			imgUrl = obj.optString("merchantImage");
+		}
 		String name = obj.optString("name");
 		String address = obj.optString("address");
 		String phone = "";
@@ -208,7 +217,7 @@ public class ParseJson {
 
 		double lat = obj.optDouble("x");
 		double lng = obj.optDouble("y");
-
+		boolean isAttention = obj.optBoolean("isAttention");
 		merchant = new Merchant(id, imgUrl, name, address, phone, cateType, grade, averageCost, tags, kouwei, huanjing, fuwu, xingjiabi, teses, nickName, description, openTime, closeTime,
 				marketCount, enable, joinedDate, lat, lng);
 
@@ -227,6 +236,7 @@ public class ParseJson {
 		merchant.commentFuwu = commentFuwu;
 		merchant.commentContent = commentContent;
 		merchant.commentDate = commentDate;
+		merchant.isAttention = isAttention;
 
 		return merchant;
 	}

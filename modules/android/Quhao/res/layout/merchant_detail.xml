@@ -78,12 +78,12 @@
         <!-- login button -->
 
         <TextView
-            android:id="@+id/merchant_detail_merchantName"
+            
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="@string/empty"
+            android:text="@string/merchant_info"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="#ff000000"
             android:textSize="14sp" />

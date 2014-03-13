@@ -269,34 +269,9 @@ public class LoginActivity extends QuhaoBaseActivity {
 				loginResult.setText("登陆成功");
 				QuhaoLog.d(TAG, "login call back to " + activityName);
 
-				if (StringUtils.isNotNull(activityName)) {
-					Intent intent = new Intent();
-					if (MerchantDetailActivity.class.getName().equals(activityName)) {
-						try {
-							intent.putExtra("merchantId", (String) transfortParams.get("merchantId"));
-							String accountId = QHClientApplication.getInstance().accountInfo.accountId;
-							String buf = CommonHTTPRequest.get("getReservations?accountId=" + accountId + "&mid=" + transfortParams.get("merchantId"));
-							if (StringUtils.isNull(buf) || "[]".equals(buf)) {
-								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-								intent.setClass(LoginActivity.this, GetNumberActivity.class);
-							} else {
-								List<ReservationVO> rvos = ParseJson.getReservations(buf);
-								if(null != rvos && !rvos.isEmpty())
-								{
-									Toast.makeText(LoginActivity.this, "已有该商家的排队号吗！", Toast.LENGTH_LONG).show();
-									intent.setClass(LoginActivity.this, MerchantDetailActivity.class);
-								}
-								else
-								{
-									intent.setClass(LoginActivity.this, GetNumberActivity.class);
-								}
-							}
-						} catch (Exception e) {
-							
-							e.printStackTrace();
-						}
-						
-					} else if (PersonCenterActivity.class.getName().equals(activityName)) {
+				if (StringUtils.isNotNull(activityName) && !MerchantDetailActivity.class.getName().equals(activityName)) {
+					Intent intent = new Intent();//com.withiter.quhao.activity.MerchantDetailActivity  com.withiter.quhao.activity.MerchantDetailActivity
+					if (PersonCenterActivity.class.getName().equals(activityName)) {
 						intent.setClass(LoginActivity.this, PersonCenterActivity.class);
 						Bundle mBundle = new Bundle();  
 						
@@ -315,10 +290,60 @@ public class LoginActivity extends QuhaoBaseActivity {
 						intent.setClass(LoginActivity.this, PersonCenterActivity.class);
 					}
 					startActivity(intent);
+					progressLogin.closeProgress();
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+					finish();
 				}
-				progressLogin.closeProgress();
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				finish();
+				else
+				{
+					if (MerchantDetailActivity.class.getName().equals(activityName)) {
+						Thread thread = new Thread(new Runnable() {
+							
+							@Override
+							public void run() {
+								try {
+									Looper.prepare();
+									Intent intent = new Intent();
+									intent.putExtra("merchantId", (String) transfortParams.get("merchantId"));
+									String accountId = QHClientApplication.getInstance().accountInfo.accountId;
+									String buf = CommonHTTPRequest.get("getReservations?accountId=" + accountId + "&mid=" + transfortParams.get("merchantId"));
+									if (StringUtils.isNull(buf) || "[]".equals(buf)) {
+										unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+										intent.setClass(LoginActivity.this, GetNumberActivity.class);
+									} else {
+										List<ReservationVO> rvos = ParseJson.getReservations(buf);
+										if(null != rvos && !rvos.isEmpty())
+										{
+											Toast.makeText(LoginActivity.this, "已有该商家的排队号吗！", Toast.LENGTH_LONG).show();
+											intent.setClass(LoginActivity.this, MerchantDetailActivity.class);
+										}
+										else
+										{
+											intent.setClass(LoginActivity.this, GetNumberActivity.class);
+										}
+									}
+									startActivity(intent);
+									progressLogin.closeProgress();
+									LoginActivity.this.finish();
+								} catch (Exception e) {
+									Intent intent = new Intent();
+									intent.setClass(LoginActivity.this, MerchantDetailActivity.class);
+									startActivity(intent);
+									progressLogin.closeProgress();
+									Toast.makeText(LoginActivity.this, "网络异常，请稍候取号", Toast.LENGTH_LONG).show();
+									LoginActivity.this.finish();
+								}
+								finally
+								{
+									Looper.loop();
+								}
+								
+							}
+						});
+						thread.start();
+					}
+				}
+				
 			}
 		}
 	};

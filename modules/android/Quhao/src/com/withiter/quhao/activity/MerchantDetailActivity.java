@@ -1,6 +1,8 @@
 package com.withiter.quhao.activity;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -47,7 +49,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	private Merchant merchant;
 	private Button btnGetNumber;
 	private Button btnOpen;
-	// private Button btnLogin;
+	 private Button btnAttention;
 	private LinearLayout info;
 	private LinearLayout mapLayout;
 	private TextView merchantName;
@@ -79,7 +81,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
 
 		this.merchantId = getIntent().getStringExtra("merchantId");
-		this.merchantName = (TextView) findViewById(R.id.merchant_detail_merchantName);
+		
 		btnGetNumber = (Button) findViewById(R.id.btn_GetNumber);
 		btnGetNumber.setOnClickListener(getNumberClickListener());
 		
@@ -97,7 +99,21 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		this.merchantImg = (ImageView) info.findViewById(R.id.merchantImg);
 		this.merchantAddress = (TextView) info.findViewById(R.id.merchantAddress);
 		this.merchantPhone = (TextView) info.findViewById(R.id.merchantPhone);
-
+		
+		this.merchantName = (TextView) info.findViewById(R.id.merchant_detail_merchantName);
+		this.btnAttention = (Button) info.findViewById(R.id.btn_attention);
+		
+		btnAttention.setOnClickListener(this);
+		
+		if(!QHClientApplication.getInstance().isLogined)
+		{
+			btnAttention.setVisibility(View.GONE);
+		}
+		else
+		{
+			btnAttention.setVisibility(View.VISIBLE);
+		}
+		
 		this.merchantPhone.setClickable(true);
 		this.merchantPhone.setOnClickListener(new OnClickListener() {
 			@Override
@@ -206,8 +222,9 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		public void run() {
 			try {
 				QuhaoLog.v(LOGTAG, "get merchant details form server begin");
-				QuhaoLog.v(LOGTAG, "MerchantDetailActivity.this.merchantId : " + merchantId);
-				String buf = CommonHTTPRequest.get("merchant?id=" + merchantId);
+				String accountId = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.ACCOUNT_ID, "");
+				QuhaoLog.v(LOGTAG, "MerchantDetailActivity.this.merchantId : " + merchantId + ",account ID : " + accountId);
+				String buf = CommonHTTPRequest.get("merchantNew?id=" + merchantId + "&accountId=" + accountId);
 				if (StringUtils.isNull(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
@@ -268,6 +285,23 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					}
 
 					merchantName.setText(m.name);
+					if(!QHClientApplication.getInstance().isLogined)
+					{
+						btnAttention.setVisibility(View.GONE);
+					}
+					else
+					{
+						btnAttention.setVisibility(View.VISIBLE);
+						if(m.isAttention)
+						{
+							btnAttention.setText(R.string.cancel_attention);
+						}
+						else
+						{
+							btnAttention.setText(R.string.attention);
+						}
+					}
+					
 					mName = m.name;
 					merchantAddress.setText(m.address);
 					merchantPhone.setText(m.phone);
@@ -370,6 +404,62 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		}
 
 	};
+	
+	private Handler attentionHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.what == 200) {
+				super.handleMessage(msg);
+				String buf = String.valueOf(msg.obj);
+				if (StringUtils.isNull(buf)) {
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+					Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_LONG).show();
+					if(merchant.isAttention)
+					{
+						btnAttention.setText(R.string.cancel_attention);
+					}
+					else
+					{
+						btnAttention.setText(R.string.attention);
+					}
+					
+				} else {
+					if("success".equals(buf))
+					{
+						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+						Toast.makeText(MerchantDetailActivity.this, R.string.committing_success, Toast.LENGTH_LONG).show();
+						if(merchant.isAttention)
+						{
+							btnAttention.setText(R.string.attention);
+							merchant.isAttention = false;
+						}
+						else
+						{
+							btnAttention.setText(R.string.cancel_attention);
+							merchant.isAttention = true;
+						}
+					}
+					else
+					{
+						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+						Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_LONG).show();
+						if(merchant.isAttention)
+						{
+							btnAttention.setText(R.string.cancel_attention);
+						}
+						else
+						{
+							btnAttention.setText(R.string.attention);
+						}
+					}
+					
+				}
+				progressDialogUtil.closeProgress();
+			}
+
+		}
+
+	};
 
 	@Override
 	public void onClick(View v) {
@@ -407,42 +497,76 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					String accountId = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.ACCOUNT_ID, "");
 					String merchantId = merchant.id;
 					
-					try
-					{
-						try {
-							QuhaoLog.v(LOGTAG, "commit open service, account id  : " + accountId + " , merchant ID : " + merchantId);
-							String buf = CommonHTTPRequest.get("openService?mid=" + merchantId + "&accountId=" + accountId);
-							if (StringUtils.isNull(buf)) {
+					try {
+						QuhaoLog.v(LOGTAG, "commit open service, account id  : " + accountId + " , merchant ID : " + merchantId);
+						String buf = CommonHTTPRequest.get("openService?mid=" + merchantId + "&accountId=" + accountId);
+						if (StringUtils.isNull(buf)) {
+							unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+							Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_LONG).show();
+							
+						} else {
+							if("success".equals(buf))
+							{
+								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+								Toast.makeText(MerchantDetailActivity.this, R.string.committing_success, Toast.LENGTH_LONG).show();
+							}
+							else
+							{
 								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 								Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_LONG).show();
-								progressDialogUtil.closeProgress();
-							} else {
-								Toast.makeText(MerchantDetailActivity.this, R.string.committing_success, Toast.LENGTH_LONG).show();
-								progressDialogUtil.closeProgress();
 							}
-
-						} catch (Exception e) {
-							progressDialogUtil.closeProgress();
-							Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_LONG).show();
-							unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-							e.printStackTrace();
-						} finally {
 							
 						}
-					}
-					catch(Exception e)
-					{
-						
-					}
-					finally
-					{
+						progressDialogUtil.closeProgress();
+
+					} catch (Exception e) {
+						progressDialogUtil.closeProgress();
+						Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_LONG).show();
+						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+						e.printStackTrace();
+					} finally {
 						Looper.loop();
 					}
-					progressDialogUtil.closeProgress();
 					
 				}
 			});
 			thread.start();
+			break;
+			case R.id.btn_attention:
+			Thread thread1 = new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					Looper.prepare();
+					progressDialogUtil = new ProgressDialogUtil(MerchantDetailActivity.this, R.string.empty, R.string.waitting_for_commit, false);
+					progressDialogUtil.showProgress();
+					
+					String accountId = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.ACCOUNT_ID, "");
+					String merchantId = merchant.id;
+					int flag = 0;
+					if(!merchant.isAttention)
+					{
+						flag = 1;
+					}
+					
+					try {
+						QuhaoLog.v(LOGTAG, "pay attention to merchant, account id  : " + accountId + " , merchant ID : " + merchantId + ",flag : " + flag);
+						String buf = CommonHTTPRequest.get("updateAttention?mid=" + merchantId + "&accountId=" + accountId + "&flag=" + flag);
+						attentionHandler.obtainMessage(200, buf).sendToTarget();
+						
+
+					} catch (Exception e) {
+						progressDialogUtil.closeProgress();
+						Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_LONG).show();
+						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+						e.printStackTrace();
+					} finally {
+						Looper.loop();
+					}
+					
+				}
+			});
+			thread1.start();
 			break;
 		default:
 			break;
