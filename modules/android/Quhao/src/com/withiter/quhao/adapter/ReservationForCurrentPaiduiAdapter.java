@@ -70,7 +70,7 @@ public class ReservationForCurrentPaiduiAdapter extends BaseAdapter {
 			if (convertView == null) {
 				holder = new ViewHolderCurrentPaidui();
 				LayoutInflater inflator = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				convertView = inflator.inflate(R.layout.paidui_history_list_item1, null);
+				convertView = inflator.inflate(R.layout.paidui_current_list_item, null);
 				holder.merchantImg = (ImageView) convertView.findViewById(R.id.merchantImg);
 				holder.merchantName = (TextView) convertView.findViewById(R.id.merchantName);
 				holder.merchantAddress = (TextView) convertView.findViewById(R.id.merchantAddress);
