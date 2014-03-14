@@ -279,6 +279,7 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 				@Override
 				public void run() {
 					try {
+						Looper.prepare();
 						PoiResult result = poiSearch.searchPOI();
 						if (null != result && null != result.getQuery()) {
 							List<PoiItem> poiItemTemps = result.getPois();// 取得第一页的poiitem数据，页数从数字0开始
@@ -300,6 +301,10 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 					} catch (AMapException e) {
 						e.printStackTrace();
 					}// 异步搜索
+					finally
+					{
+						Looper.loop();
+					}
 				}
 			};
 			new Thread(runnable).start();
