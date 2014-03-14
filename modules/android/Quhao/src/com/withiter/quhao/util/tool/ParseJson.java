@@ -2,16 +2,23 @@ package com.withiter.quhao.util.tool;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.withiter.quhao.util.DateUtils;
 import com.withiter.quhao.util.ExceptionUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
@@ -474,8 +481,9 @@ public class ParseJson {
 		float huanjing = Float.valueOf(obj.optString("huanjing"));
 		float fuwu = Float.valueOf(obj.optString("fuwu"));
 		String content = obj.optString("content");
-		String created = obj.optString("created");
-		String modified = obj.optString("modified");
+		String created = DateUtils.formatDate(obj.optString("created"), "yyyy-MM-dd HH:mm:ss");
+		
+		String modified = DateUtils.formatDate(obj.optString("modified"), "yyyy-MM-dd HH:mm:ss");
 
 		comment = new Comment(uid, accountId, nickName, mid,merchantName,merchantAddress, rId, averageCost, xingjiabi, kouwei, huanjing, fuwu, content, created, modified);
 		return comment;

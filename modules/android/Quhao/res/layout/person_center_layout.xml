@@ -4,7 +4,6 @@
     android:layout_height="fill_parent"
     android:background="#ffffff"
     android:orientation="vertical" >
-
     <!-- title -->
 
     <FrameLayout
