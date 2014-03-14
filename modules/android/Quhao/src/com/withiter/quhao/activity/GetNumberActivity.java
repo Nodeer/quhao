@@ -2,6 +2,7 @@ package com.withiter.quhao.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -166,6 +167,17 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 				beforeYouLayout.setVisibility(View.VISIBLE);
 				LinearLayout nahaoSuccessTipLayout = (LinearLayout)findViewById(R.id.nahaoSuccessTipLayout);
 				nahaoSuccessTipLayout.setVisibility(View.VISIBLE);
+				TextView nahaosuccessTipView = (TextView) findViewById(R.id.nahao_success_tip);
+				if(Integer.parseInt(reservation.beforeYou)<5)
+				{
+					nahaosuccessTipView.setText(R.string.nahao_success_tip_5_less);
+				}
+				else
+				{
+					nahaosuccessTipView.setText(R.string.nahao_success_tip_5_more);
+				}
+				
+				
 				beforeYouView.setText(reservation.beforeYou);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 
@@ -259,6 +271,7 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 		@Override
 		public void run() {
 			try {
+				Looper.prepare();
 				QuhaoLog.v(TAG, "get seat numbers data form server begin");
 				String accountId = SharedprefUtil.get(GetNumberActivity.this, QuhaoConstant.ACCOUNT_ID, "");
 				String buf = CommonHTTPRequest.get("nahao?accountId=" + accountId + "&mid=" + merchantId + "&seatNumber=" + currentPaidui.seatNo);
@@ -274,7 +287,10 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 						GetNumberActivity.this.finish();
 						return;
 					}
-					getNoUpdateHandler.obtainMessage(200, reservation).sendToTarget();
+					else
+					{
+						getNoUpdateHandler.obtainMessage(200, reservation).sendToTarget();
+					}
 				}
 			} catch (Exception e) {
 				Toast.makeText(GetNumberActivity.this, "当前网络异常，请重新拿号。", Toast.LENGTH_LONG).show();
@@ -283,6 +299,7 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 			} finally {
 				progress.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				Looper.loop();
 			}
 		}
 	};
@@ -295,6 +312,7 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 		@Override
 		public void run() {
 			try {
+				Looper.prepare();
 				QuhaoLog.v(TAG, "get seat numbers data form server begin");
 				String buf = CommonHTTPRequest.get("getCurrentNo?id=" + merchantId + "&seatNo=" + currentPaidui.seatNo); 
 				// + GetNumberActivity.this.merchantId);
@@ -308,6 +326,10 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 			} catch (Exception e) {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				e.printStackTrace();
+			}
+			finally
+			{
+				Looper.loop();
 			}
 		}
 	};
@@ -331,6 +353,7 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 		@Override
 		public void run() {
 			try {
+				Looper.prepare();
 				QuhaoLog.v(TAG, "get seat numbers data form server begin, the merchantId is : " + merchantId);
 				String buf = CommonHTTPRequest.get("quhao?id=" + merchantId);
 				QuhaoLog.v(TAG, "get seat numbers data form server begin, buf is :" + buf);
@@ -349,6 +372,7 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 				e.printStackTrace();
 			} finally {
 				progress.closeProgress();
+				Looper.loop();
 			}
 		}
 	};
@@ -369,6 +393,7 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 		@Override
 		public void run() {
 			try {
+				Looper.prepare();
 				QuhaoLog.v(TAG, "get merchant data form server begin");
 				String buf = CommonHTTPRequest.get("merchant?id=" + GetNumberActivity.this.merchantId);
 				if (StringUtils.isNull(buf)) {
@@ -382,6 +407,10 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 			} catch (Exception e) {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				e.printStackTrace();
+			}
+			finally
+			{
+				Looper.loop();
 			}
 		}
 	};

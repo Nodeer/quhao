@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -109,6 +110,7 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 		@Override
 		public void run() {
 			try {
+				Looper.prepare();
 				String accountId = QHClientApplication.getInstance().accountInfo.accountId;
 				String buf = CommonHTTPRequest.get("getCreditCost?accountId=" + accountId + "&page=" + page);
 				if (StringUtils.isNull(buf) || "[]".equals(buf)) {
@@ -133,6 +135,7 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 				e.printStackTrace();
 			} finally {
 				progressDialogUtil.closeProgress();
+				Looper.loop();
 			}
 		}
 	};

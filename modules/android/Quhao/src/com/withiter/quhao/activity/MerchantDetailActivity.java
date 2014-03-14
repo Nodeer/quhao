@@ -155,6 +155,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		@Override
 		public void run() {
 			try {
+				Looper.prepare();
 				QuhaoLog.d(LOGTAG, "start to load paidui information from server side");
 				String accountId = QHClientApplication.getInstance().accountInfo.accountId;
 				String buf = CommonHTTPRequest.get("getReservations?accountId=" + accountId + "&mid=" + merchantId);
@@ -170,6 +171,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				e.printStackTrace();
 			} finally {
 				progressDialogUtil.closeProgress();
+				Looper.loop();
 			}
 		}
 	};
@@ -220,6 +222,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		@Override
 		public void run() {
 			try {
+				Looper.prepare();
 				QuhaoLog.v(LOGTAG, "get merchant details form server begin");
 				String accountId = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.ACCOUNT_ID, "");
 				QuhaoLog.v(LOGTAG, "MerchantDetailActivity.this.merchantId : " + merchantId + ",account ID : " + accountId);
@@ -236,7 +239,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				e.printStackTrace();
 			} finally {
-				
+				Looper.loop();
 			}
 		}
 	};

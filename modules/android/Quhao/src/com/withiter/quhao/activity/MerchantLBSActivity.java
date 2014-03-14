@@ -3,6 +3,7 @@ package com.withiter.quhao.activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -101,6 +102,7 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 		@Override
 		public void run() {
 			try {
+				Looper.prepare();
 				QuhaoLog.v(TAG, "get categorys data form server begin");
 				String buf = CommonHTTPRequest.get("merchant?id=" + MerchantLBSActivity.this.merchantId);
 				// + MerchantDetailActivity.this.merchantId);
@@ -127,6 +129,7 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
+				Looper.loop();
 			}
 		}
 	};

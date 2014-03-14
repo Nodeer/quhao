@@ -262,12 +262,13 @@
                 android:visibility="gone" >
 
                 <TextView
+                    android:id="@+id/nahao_success_tip"
                     android:layout_width="0.0px"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6.0dip"
                     android:layout_weight="1.0"
                     android:maxLines="2"
-                    android:text="@string/nahao_success_tip"
+                    android:text="@string/nahao_success_tip_5_less"
                     android:textAppearance="?android:textAppearanceMedium"
                     android:textColor="#ff000000"
                     android:textSize="10.0sp" />

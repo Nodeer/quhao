@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -170,6 +171,7 @@ public class MerchantsSearchActivity extends QuhaoBaseActivity {
 		@Override
 		public void run() {
 			try {
+				Looper.prepare();
 				Log.v(LOGTAG, "search merchants data from server begin : "
 						+ MerchantsSearchActivity.this.editSearch.getText());
 				if (null == MerchantsSearchActivity.this.editSearch.getText()
@@ -201,6 +203,7 @@ public class MerchantsSearchActivity extends QuhaoBaseActivity {
 				e.printStackTrace();
 			} finally {
 				progressMerchants.closeProgress();
+				Looper.loop();
 			}
 		}
 	};

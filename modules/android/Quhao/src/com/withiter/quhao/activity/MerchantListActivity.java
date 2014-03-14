@@ -6,6 +6,7 @@ import java.util.List;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
@@ -170,6 +171,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnScrollL
 		@Override
 		public void run() {
 			try {
+				Looper.prepare();
 				QuhaoLog.v(LOGTAG, "get categorys data form server begin");
 				String url = "MerchantController/nextPage?page=" + page + "&cateType=" + categoryType;
 				QuhaoLog.i(LOGTAG, "the request url is : " + url);
@@ -196,6 +198,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnScrollL
 				e.printStackTrace();
 			} finally {
 				progressMerchants.closeProgress();
+				Looper.loop();
 			}
 		}
 	};
