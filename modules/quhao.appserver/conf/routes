@@ -76,6 +76,9 @@ GET		/p        							Patches.index
 # opinion
 GET		/createOpinion						OpinionController.createOpinion
 
+# GaodeToMerchant
+GET		/updateGaodeToMerchant				GaodeToMerchantController.updateGaodeToMerchant
+
 # backend management
 *		/b/m/{action}						backend.merchant.MerchantManagementController.{action}
 *		/b/m								backend.merchant.MerchantManagementController.index
