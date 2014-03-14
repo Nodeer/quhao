@@ -21,6 +21,9 @@ GET		/app/{action}						AppController.{action}
 # Category
 GET		/allCategories						MerchantController.allCategories
 
+# Reservation
+GET		/pStatus								ReservationController.paiduiStatusForApp
+
 # Merchant
 GET		/nextPage							MerchantController.nextPage
 GET		/merchantByCategory					MerchantController.merchantByCategory
