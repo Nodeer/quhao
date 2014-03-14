@@ -281,12 +281,15 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 					try {
 						PoiResult result = poiSearch.searchPOI();
 						if (null != result && null != result.getQuery()) {
-							List<PoiItem> poiItems = result.getPois();// 取得第一页的poiitem数据，页数从数字0开始
-							if (null != poiItems && poiItems.size() > 0) {
-								if (poiItems.size() < 10) {
+							List<PoiItem> poiItemTemps = result.getPois();// 取得第一页的poiitem数据，页数从数字0开始
+							if (null != poiItemTemps && poiItemTemps.size() > 0) {
+								if (poiItemTemps.size() < 10) {
 									needToLoad = false;
 								}
-								Log.e("TAG111", String.valueOf(poiItems.size()));
+								poiItems.addAll(poiItemTemps);
+								updatePoiItemsHandler.obtainMessage(200, null)
+										.sendToTarget();
+								Log.e("TAG111", String.valueOf(poiItemTemps.size()));
 							} else {
 								needToLoad = false;
 							}
