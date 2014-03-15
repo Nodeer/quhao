@@ -30,42 +30,44 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.tableSettings.backgroundColor = [ UIColor colorWithRed: 0.907
+                                                         green: 0.907
+                                                          blue: 0.907
+                                                         alpha: 1.0  
+                                         ];
     self.settingsInSection = [[NSMutableDictionary alloc] initWithCapacity:3];
     //BOOL isLogin = [Helper Instance].isCookie;
     NSArray *first = [[NSArray alloc] initWithObjects:
                       [[SettingModel alloc] initWith:@"图片设置" andImg:@"image" andTag:1 andTitle2:nil],
-                      [[SettingModel alloc] initWith:@"注销" andImg:@"out" andTag:8 andTitle2:nil],
+                      [[SettingModel alloc] initWith:@"注销" andImg:@"logout_status" andTag:8 andTitle2:nil],
                       [[SettingModel alloc] initWith:@"清理缓存" andImg:@"clear" andTag:2 andTitle2:nil],
                       nil];
 
     NSArray *second = [[NSArray alloc] initWithObjects:
                       [[SettingModel alloc] initWith:@"分享微博" andImg:@"share" andTag:3 andTitle2:nil],
-                      [[SettingModel alloc] initWith:@"意见反馈" andImg:@"feedback" andTag:4 andTitle2:nil],
-                      [[SettingModel alloc] initWith:@"关于我们" andImg:@"about" andTag:5 andTitle2:nil],
-                      [[SettingModel alloc] initWith:@"检测更新" andImg:@"setting" andTag:6 andTitle2:nil],
+                      [[SettingModel alloc] initWith:@"意见反馈" andImg:@"opinion" andTag:4 andTitle2:nil],
+                      [[SettingModel alloc] initWith:@"关于我们" andImg:@"about_us" andTag:5 andTitle2:nil],
+                      [[SettingModel alloc] initWith:@"检测更新" andImg:@"check_vetsion" andTag:6 andTitle2:nil],
                       [[SettingModel alloc] initWith:@"帮助" andImg:@"help" andTag:7 andTitle2:nil],
                       nil];
     [self.settingsInSection setObject:first forKey:@"设置"];
     [self.settingsInSection setObject:second forKey:@"关于"];
     self.settings = [[NSArray alloc] initWithObjects:@"设置",@"关于",nil];
     
-    CGSize size=CGSizeMake(500,44);
+    CGSize size=CGSizeMake(kDeviceWidth,44);
     [self.navigationController.navigationBar setBackgroundImage:[Helper reSizeImage:@"title.jpg" toSize:size] forBarMetrics:UIBarMetricsDefault];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
+    
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"showImage"]==nil){
-        _showImage=1;
+        _showImage = 1;
     }else{
-        _showImage=[[Helper returnUserString:@"showImage"] boolValue];
+        _showImage = [[Helper returnUserString:@"showImage"] boolValue];
     }
-    [self refresh];
 }
 
 - (void)viewDidUnload
 {
     [self setTableSettings:nil];
+    
     [super viewDidUnload];
 }
 
@@ -134,7 +136,7 @@
         //注销
         case 8:
         {
-            Helper *helper=[Helper new];
+            Helper *helper = [Helper new];
             if (helper.isCookie == NO) {
                 [Helper ToastNotification:@"错误 您还没有登录,注销无效" andView:self.view andLoading:NO andIsBottom:NO];
                 return;
@@ -175,6 +177,7 @@
 {
     NSString *key = [settings objectAtIndex:section];
     NSArray *set = [settingsInSection objectForKey:key];
+
     return [set count];
 }
 
@@ -184,26 +187,26 @@
     NSUInteger row = [indexPath row];
     NSString *key = [settings objectAtIndex:section];
     NSArray *sets = [settingsInSection objectForKey:key];
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SettingTableIdentifier"];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"SettingTableIdentifier"];
+    NSString *CellIdentifier = [NSString stringWithFormat:@"SettingTableIdentifier%d%d",section,row];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+        
+        //设置图片按钮
+        if(indexPath.section == 0&&indexPath.row == 0){
+            UISwitch *switchview = [[UISwitch alloc] initWithFrame:CGRectZero];
+            [switchview addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
+            switchview.tag=101;
+            switchview.on=_showImage;
+            cell.accessoryView = switchview;
+            [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        }else{
+            [Helper arrowStyle:cell];
+        }
     }
-    //设置图片按钮
-    if(indexPath.section==0&&indexPath.row==0){
-        UISwitch *Switch=[[UISwitch alloc] initWithFrame:CGRectMake(220, 11, 79, 27)];
-        [Switch addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
-        Switch.tag=101;
-        Switch.on=_showImage;
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-
-        [cell.contentView addSubview:Switch];
-    }else if(indexPath.section==0&&(indexPath.row==1 || indexPath.row==2)){
-        [Helper arrowStyle:cell];
-    }
-    
     SettingModel *model = [sets objectAtIndex:row];
     cell.textLabel.text = model.title;
+    cell.textLabel.font = [UIFont systemFontOfSize:16];
     cell.imageView.image = [UIImage imageNamed:model.img];
     cell.tag = model.tag;
     return cell;
@@ -211,11 +214,12 @@
 
 -(void)switchAction:(UISwitch *)sender
 {
-    NSInteger switchTag=sender.tag;
-    BOOL switchStatus=sender.on;//Switch的状态
-    NSNumber *convertSwitchStatus=[[NSNumber alloc] initWithBool:switchStatus];
+    NSInteger switchTag = sender.tag;
+    BOOL switchStatus = sender.on;//Switch的状态
+    NSNumber *convertSwitchStatus = [[NSNumber alloc] initWithBool:switchStatus];
     switch (switchTag) {
         case 101:
+            
             [[NSUserDefaults standardUserDefaults] setObject:convertSwitchStatus forKey:@"showImage"];
             [[NSUserDefaults standardUserDefaults] synchronize];
             break;
@@ -228,18 +232,18 @@
 - (void)checkVersionNeedUpdate
 {
     if ([Helper isConnectionAvailable]){
-        NSString *str1=[NSString stringWithFormat:@"%@%@",[Helper getIp],getLastestVersion];
-        NSString *response =[QuHaoUtil requestDb:str1];
+        NSString *str1 = [NSString stringWithFormat:@"%@%@",[Helper getIp],getLastestVersion];
+        NSString *response = [QuHaoUtil requestDb:str1];
         if([response isEqualToString:@""]){
             //异常处理
             [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
         }else{
-            NSDictionary *jsonObjects=[QuHaoUtil analyseDataToDic:response];
-            if(jsonObjects==nil){
+            NSDictionary *jsonObjects = [QuHaoUtil analyseDataToDic:response];
+            if(jsonObjects == nil){
                 //解析错误
                 [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
             }else{
-                NSString * version=[jsonObjects objectForKey:@"ios"];
+                NSString * version = [jsonObjects objectForKey:@"ios"];
                 if ([SettingView getVersionNumber:version]>[SettingView getVersionNumber:AppVersion]) {
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"客户端有新版了\n您需要下载吗?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
                     [alert setTag: 1];
@@ -275,7 +279,7 @@
 //下载
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if ([alertView tag]==1 && buttonIndex == 1) {
+    if ([alertView tag] == 1 && buttonIndex == 1) {
         //根据应用的id打开appstore，并跳转到应用下载页面
         //NSString *appStoreLink = [NSString stringWithFormat:@"http://itunes.apple.com/cn/app/id%@",AppID];
         //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:appStoreLink]];
@@ -320,5 +324,10 @@
         auth.hidesBottomBarWhenPushed=YES;
         [navController pushViewController:auth animated:YES];
     }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    
+    return 15;
 }
 @end
