@@ -50,6 +50,7 @@ public class QuhaoConstant {
 	 * 下一頁url
 	 */
 	public static String NEXT_CMD = "";
+	public static String IS_2G3G_READ = "com.withiter.settings.2g3g.read.img";
 
 	/**
 	 * 更新時間

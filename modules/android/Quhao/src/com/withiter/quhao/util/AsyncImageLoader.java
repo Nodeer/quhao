@@ -7,21 +7,9 @@ import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -33,6 +21,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.ImageView;
 
+import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.util.tool.ImageUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SDTool;
@@ -180,9 +169,15 @@ public class AsyncImageLoader {
 					return drawable;
 				}
 			}
+			if(QHClientApplication.getInstance().canLoadImg)
+			{
+				drawable = loadImageFromUrl(imageUrl);
+				if(null != drawable)
+				{
+					imageCache.put(imageUrl, new SoftReference<Drawable>(drawable));
+				}
+			}
 			
-			drawable = loadImageFromUrl(imageUrl);
-			imageCache.put(imageUrl, new SoftReference<Drawable>(drawable));
 			return drawable;
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -336,8 +336,10 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					
 				} else {
 					// TODO : 没有位置时， 该怎么做， 应该返回到列表页面， 在酒店详细信息页面应该判断
-					Toast.makeText(MerchantDetailActivity.this, "此酒店没有座位了，请选择其他酒店。", Toast.LENGTH_LONG).show();
+					Toast.makeText(MerchantDetailActivity.this, "此酒店没有座位，请选择其他酒店。", Toast.LENGTH_LONG).show();
+					paiduiConditionLayout.setVisibility(View.GONE);
 				}
+				
 				progressSeatNos.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
@@ -446,6 +448,11 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 							Drawable drawable = asynImageLoader.loadDrawable(merchant.merchantImage);
 							if (drawable != null) {
 								// update merchant image
+								updateMerchantImageHandler.obtainMessage(0, drawable).sendToTarget();
+							}
+							else
+							{
+								drawable = getResources().getDrawable(R.drawable.no_logo);
 								updateMerchantImageHandler.obtainMessage(0, drawable).sendToTarget();
 							}
 						}

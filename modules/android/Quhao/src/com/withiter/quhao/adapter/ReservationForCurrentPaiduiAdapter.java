@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,8 +24,8 @@ import com.withiter.quhao.activity.MerchantDetailActivity;
 import com.withiter.quhao.activity.QuhaoCurrentStatesActivity;
 import com.withiter.quhao.exception.NoResultFromHTTPRequestException;
 import com.withiter.quhao.util.AsyncImageLoader;
-import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.AsyncImageLoader.ImageCallback;
+import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.vo.ReservationVO;

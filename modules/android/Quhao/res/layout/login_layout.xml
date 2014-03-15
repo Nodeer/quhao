@@ -30,23 +30,6 @@
             android:textSize="14.0sp" />
         <!-- back button -->
 
-
-        <!-- login button 
-        <Button
-            android:id="@+id/btn_loginr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/btn_weight"
-            android:text="@string/login"
-            android:textAppearance="?android:textAppearanceMediumInverse"
-            android:textColor="#ff000000"
-            android:textSize="14.0sp" 
-            android:visibility="invisible"
-            /> -->
-        <!-- login button -->
-
         <TextView
             android:id="@+id/merchant_detail_merchantName"
             android:layout_width="wrap_content"
@@ -167,10 +150,10 @@
 					<!-- login button -->
 			        <Button
 			            android:id="@+id/login"
-			            android:layout_width="60dip"
-			            android:layout_height="40dip"
+			            android:layout_width="wrap_content"
+			            android:layout_height="50dip"
 			            android:background="@drawable/btn_weight"
-			            android:text="登录"
+			            android:text="登  录"
 			            android:layout_gravity="left|center_vertical"
 			            android:textAppearance="?android:textAppearanceMediumInverse"
 			            android:textColor="#ff000000"
@@ -188,7 +171,7 @@
 		            <Button
 					    android:id="@+id/forgetPassword"
 					    android:layout_width="wrap_content"
-					    android:layout_height="40dip"
+					    android:layout_height="50dip"
 					    android:background="@drawable/btn_weight"
 					    android:text="忘记密码?"
 					    android:layout_gravity="right|center_vertical"

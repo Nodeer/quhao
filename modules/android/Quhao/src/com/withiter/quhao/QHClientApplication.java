@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.withiter.quhao.domain.AccountInfo;
+import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.encrypt.DesUtils;
@@ -44,6 +45,22 @@ public class QHClientApplication extends Application {
 	public AccountInfo accountInfo = null;			// Global attribute, indicates current login account
 	
 	public boolean isAuto = false;
+	
+	/**
+	 * 读取用户设置的时候在2G/3G下浏览图片 true: 
+	 */
+	public boolean is2G3GRead = false;
+	
+	/**
+	 * 是否是WIFI连接
+	 */
+	public boolean isWifiOpen = false;
+	
+	/**
+	 * 是否可以加载图片
+	 */
+	public boolean canLoadImg = false;
+	
 	public static Context mContext;
 	private static QHClientApplication instance;
 
@@ -82,6 +99,26 @@ public class QHClientApplication extends Application {
 	 */
 	private void initServerConfig(){
 		try {
+			
+			String is2G3GRead = SharedprefUtil.get(this, QuhaoConstant.IS_2G3G_READ, "true");
+
+			if ("true".equals(is2G3GRead)) {
+				this.is2G3GRead = true; 
+			} else {
+				this.is2G3GRead = false;
+			}
+			
+			this.isWifiOpen = ActivityUtil.isWifiOpen(this);
+			
+			if(this.is2G3GRead || (!this.is2G3GRead && this.isWifiOpen))
+			{
+				this.canLoadImg = true;
+			}
+			else
+			{
+				this.canLoadImg = false;
+			}
+			
 			QuhaoLog.i(TAG, "start to init configurations from application.properties");
 			InputStream input = getResources().openRawResource(R.raw.application);
 			BufferedReader read = new BufferedReader(new InputStreamReader(input));

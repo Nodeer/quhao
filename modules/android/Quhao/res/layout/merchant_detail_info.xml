@@ -70,12 +70,12 @@
                 <Button
 		            android:id="@+id/btn_attention"
 		            android:layout_width="wrap_content"
-		            android:layout_height="25dip"
+		            android:layout_height="50dip"
 		            android:background="@drawable/btn_weight"
 		            android:text="@string/attention"
 		            android:textAppearance="?android:textAppearanceMediumInverse"
 		            android:textColor="#ff000000"
-		            android:textSize="10.0sp" 
+		            android:textSize="14.0sp" 
 		            android:layout_gravity="right|center_vertical"
 		            />
 

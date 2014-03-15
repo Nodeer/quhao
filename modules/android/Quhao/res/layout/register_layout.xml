@@ -34,10 +34,10 @@
         <Button
             android:id="@+id/register_btn"
             android:layout_width="wrap_content"
-            android:layout_height="40dip"
+            android:layout_height="50dip"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="注册"
+            android:text="@string/register_3space"
             android:background="@drawable/btn_weight"
             android:textAppearance="?android:textAppearanceMediumInverse"
             android:textColor="#ff000000"
@@ -45,22 +45,6 @@
             />
         <!-- quhao button -->
         
-        <!-- login button 
-        <Button
-            android:id="@+id/btn_loginr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/btn_weight"
-            android:text="@string/login"
-            android:textAppearance="?android:textAppearanceMediumInverse"
-            android:textColor="#ff000000"
-            android:textSize="14.0sp" 
-            android:visibility="invisible"
-            /> -->
-        <!-- login button -->
-
         <TextView
             android:id="@+id/merchant_detail_merchantName"
             android:layout_width="wrap_content"
@@ -138,7 +122,7 @@
 	            android:orientation="horizontal" >
 	            <EditText
 	                android:id="@+id/verify_code"
-	                android:layout_width="220dp"
+	                android:layout_width="wrap_content"
 	                android:layout_height="40dp"
 	                android:layout_weight="0.42"
 	                android:hint="" >
@@ -147,8 +131,9 @@
 	            <Button
 	                android:id="@+id/verify_code_button"
 	                android:layout_width="wrap_content"
-	                android:layout_height="40dip"
+	                android:layout_height="50dip"
 	                android:background="@drawable/btn_weight"
+	                android:textSize="14sp"
             		android:textAppearance="?android:textAppearanceMediumInverse"
 	                android:text="获取验证码" >
 	            </Button>

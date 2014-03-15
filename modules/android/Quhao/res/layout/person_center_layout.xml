@@ -12,15 +12,13 @@
         android:background="@drawable/common_top_bar_bg"
         android:gravity="center_vertical"
         android:paddingBottom="5dip"
-        android:paddingLeft="5dip"
-        android:paddingRight="5dip"
         android:paddingTop="5dip" >
 		<Button
 			android:id="@+id/register"
 			android:layout_width="wrap_content"
-			android:layout_height="40dip"
+			android:layout_height="50dip"
 			android:background="@drawable/btn_weight"
-			android:text="注册"
+			android:text="@string/register_3space"
 			android:layout_gravity="left|center_vertical"
 			android:textAppearance="?android:textAppearanceMediumInverse"
 			android:textColor="#ff000000"
@@ -36,9 +34,9 @@
 		<Button
 		    android:id="@+id/login"
 		    android:layout_width="wrap_content"
-		    android:layout_height="40dip"
+		    android:layout_height="50dip"
 		    android:background="@drawable/btn_weight"
-		    android:text="登录"
+		    android:text="@string/login_3space"
 		    android:layout_gravity="right|center_vertical"
 		    android:textAppearance="?android:textAppearanceMediumInverse"
 		    android:textColor="#ff000000"
@@ -108,7 +106,7 @@
                     <Button
 					    android:id="@+id/editPassword"
 					    android:layout_width="wrap_content"
-					    android:layout_height="40dip"
+					    android:layout_height="50dip"
 					    android:background="@drawable/btn_weight"
 					    android:text="修改密码"
 					    android:visibility="gone"
