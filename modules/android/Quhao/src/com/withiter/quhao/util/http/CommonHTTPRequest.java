@@ -16,9 +16,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
-import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.util.QuhaoLog;
-import com.withiter.quhao.util.encrypt.DesUtils;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 
 public class CommonHTTPRequest {
@@ -51,6 +49,7 @@ public class CommonHTTPRequest {
 	public static String post(String url) throws ClientProtocolException, IOException {
 		String result = "";
 		String httpUrl = QuhaoConstant.HTTP_URL + url;
+		httpUrl = "http://192.168.2.100:9081/" + url;
 		QuhaoLog.d(TAG, "HTTP REQUEST POST, URL: " + httpUrl);
 		httpUrl = encodeURL(httpUrl);
 		HttpPost request = new HttpPost(httpUrl);
@@ -93,6 +92,7 @@ public class CommonHTTPRequest {
 	public static String get(String url) throws ClientProtocolException, IOException {
 		String result = "";
 		String httpUrl = QuhaoConstant.HTTP_URL + url;
+		httpUrl = "http://192.168.2.100:9081/" + url;
 		QuhaoLog.d(TAG, "HTTP REQUEST POST, URL: " + httpUrl);
 		httpUrl = encodeURL(httpUrl);
 		QuhaoLog.d(TAG, "HTTP REQUEST POST, URL after encode: " + httpUrl);

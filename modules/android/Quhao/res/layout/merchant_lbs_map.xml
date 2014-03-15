@@ -11,7 +11,7 @@
     	<Button android:id="@+id/back_btn" 
     	    android:layout_centerVertical="true"
            	android:layout_width="60dip"
-            android:layout_height="40dip"
+            android:layout_height="35dip"
             android:text="@string/btn_back"
             android:background="@drawable/btn_back_background"
             android:gravity="center|center_vertical"

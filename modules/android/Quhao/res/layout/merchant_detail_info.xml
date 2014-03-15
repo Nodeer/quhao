@@ -70,7 +70,7 @@
                 <Button
 		            android:id="@+id/btn_attention"
 		            android:layout_width="wrap_content"
-		            android:layout_height="50dip"
+		            android:layout_height="35dip"
 		            android:background="@drawable/btn_weight"
 		            android:text="@string/attention"
 		            android:textAppearance="?android:textAppearanceMediumInverse"

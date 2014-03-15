@@ -18,7 +18,7 @@
         <Button
             android:id="@+id/back_btn"
             android:layout_width="60dip"
-            android:layout_height="40dip"
+            android:layout_height="35dip"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:text="@string/btn_back"
