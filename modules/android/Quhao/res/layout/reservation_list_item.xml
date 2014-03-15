@@ -20,7 +20,7 @@
 		android:lineSpacingMultiplier="1.3" 
 		android:text="我的号码："
 		/>
-  	<TextView android:id="@+id/myNumber"
+  	<TextView android:id="@+id/myNumberReservation"
   		android:textAppearance="?android:textAppearanceMedium" 
   		android:textSize="10.0sp" 
   		android:textColor="@color/deep_gray" 
@@ -42,7 +42,7 @@
 		android:lineSpacingMultiplier="1.3" 
 		android:text="座位人数："
 		/>
-  	<TextView android:id="@+id/seatNo"
+  	<TextView android:id="@+id/seatNoReservation"
   		android:textAppearance="?android:textAppearanceMedium" 
   		android:textSize="10.0sp" 
   		android:textColor="@color/deep_gray" 
@@ -65,7 +65,7 @@
 		android:lineSpacingMultiplier="1.3" 
 		android:text="在你前面："
 		/>
-  	<TextView android:id="@+id/beforeYou"
+  	<TextView android:id="@+id/beforeYouReservation"
   		android:textAppearance="?android:textAppearanceMedium" 
   		android:textSize="10.0sp" 
   		android:textColor="@color/deep_gray" 
@@ -88,7 +88,7 @@
 		android:lineSpacingMultiplier="1.3" 
 		android:text="当前号码："
 		/>
-  	<TextView android:id="@+id/currentNumber"
+  	<TextView android:id="@+id/currentNumberReservation"
   		android:textAppearance="?android:textAppearanceMedium" 
   		android:textSize="10.0sp" 
   		android:textColor="@color/deep_gray" 

@@ -215,7 +215,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/currentNoLayout"
+        android:id="@+id/currentQuHaoLayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0.0dip"
@@ -248,6 +248,103 @@
             android:listSelector="@drawable/list_item_trans"
             android:scrollbarThumbVertical="@drawable/scrollbar"
             android:scrollbars="vertical" />
+    </LinearLayout>
+    
+    <LinearLayout android:id="@+id/paidui_condition_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0.0dip"
+        android:orientation="vertical" 
+        android:paddingBottom="10dip"
+        android:paddingTop="10dip"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/text_background"
+            android:gravity="center_vertical"
+            android:paddingBottom="1.0dip"
+            android:paddingLeft="10.0dip"
+            android:paddingRight="10.0dip"
+            android:paddingTop="1.0dip"
+            android:text="@string/paidui_condition"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="#ff000000"
+            android:textSize="16.0sp" />
+
+        <LinearLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:background="@drawable/list_item_border"
+	        android:clickable="true"
+	        android:gravity="center_vertical"
+	        android:orientation="vertical" >
+			<LinearLayout
+		        android:layout_width="fill_parent"
+		        android:layout_height="35dip"
+		        android:background="@drawable/list_item_border"
+		        android:clickable="true"
+		        android:gravity="center_vertical"
+		        android:orientation="horizontal" >
+		        <TextView
+		            android:layout_width="0.0px"
+		            android:layout_height="wrap_content"
+		            android:layout_marginLeft="6.0dip"
+		            android:layout_weight="1.0"
+		            android:maxLines="2"
+		            android:text="@string/seat_number"
+		            android:textAppearance="?android:textAppearanceMedium"
+		            android:textColor="#ff000000"
+		            android:textSize="14.0sp" />
+		
+		        <TextView
+		            android:id="@+id/seatNo"
+		            android:drawableRight="@drawable/btn_expand_background"
+		            android:layout_width="0.0px"
+		            android:layout_height="wrap_content"
+		            android:layout_marginLeft="6.0dip"
+		            android:layout_weight="1.0"
+		            android:maxLines="2"
+		            android:paddingLeft="6.0dip"
+		            android:text="@string/empty"
+		            android:gravity="center_vertical"
+		            android:textAppearance="?android:textAppearanceMedium"
+		            android:textColor="#ff000000"
+		            android:textSize="16.0sp" />
+			</LinearLayout>
+			<LinearLayout
+		        android:layout_width="fill_parent"
+		        android:layout_height="35dip"
+		        android:background="@drawable/list_item_border"
+		        android:clickable="true"
+		        android:gravity="center_vertical"
+		        android:orientation="horizontal">
+		        <TextView
+                    android:layout_width="0.0px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6.0dip"
+                    android:layout_weight="1.0"
+                    android:maxLines="2"
+                    android:text="@string/current_number"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textColor="#ff000000"
+                    android:textSize="14.0sp" />
+
+                <TextView
+                    android:id="@+id/currentNumber"
+                    android:layout_width="0.0px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6.0dip"
+                    android:layout_weight="1.0"
+                    android:maxLines="2"
+                    android:paddingLeft="6.0dip"
+                    android:text="@string/empty"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textColor="#ff000000"
+                    android:textSize="16.0sp" />
+			</LinearLayout>
+	    </LinearLayout>
     </LinearLayout>
 
     <!-- 地址 -->

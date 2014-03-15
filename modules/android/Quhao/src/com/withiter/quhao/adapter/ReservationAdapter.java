@@ -56,11 +56,11 @@ public class ReservationAdapter extends BaseAdapter {
 				convertView = inflator.inflate(R.layout.reservation_list_item,
 						null);
 				holder.myNumber = (TextView) convertView
-						.findViewById(R.id.myNumber);
+						.findViewById(R.id.myNumberReservation);
 				holder.seatNo = (TextView) convertView
-						.findViewById(R.id.seatNo);
-				holder.beforeYou = (TextView) convertView.findViewById(R.id.beforeYou);
-				holder.currentNumber = (TextView) convertView.findViewById(R.id.currentNumber);
+						.findViewById(R.id.seatNoReservation);
+				holder.beforeYou = (TextView) convertView.findViewById(R.id.beforeYouReservation);
+				holder.currentNumber = (TextView) convertView.findViewById(R.id.currentNumberReservation);
 
 			}
 			if (holder == null) {
