@@ -92,7 +92,14 @@ NSString* const GCDiscreetNotificationViewActivityKey = @"activity";
     
     CGFloat maxLabelWidth = self.view.frame.size.width - self.activityIndicator.frame.size.width * withActivity - baseWidth;
     CGSize maxLabelSize = CGSizeMake(maxLabelWidth, GCDiscreetNotificationViewHeight);
-    CGFloat textSizeWidth = (self.textLabel != nil) ? [self.textLabel sizeWithFont:self.label.font constrainedToSize:maxLabelSize lineBreakMode:NSLineBreakByTruncatingTail].width : 0;
+
+    #if IOS7_SDK_AVAILABLE
+      NSDictionary * tdic = [NSDictionary dictionaryWithObjectsAndKeys:self.label.font, NSFontAttributeName,nil];
+      CGFloat textSizeWidth =[self.textLabel boundingRectWithSize:maxLabelSize options:NSStringDrawingUsesLineFragmentOrigin |NSStringDrawingUsesFontLeading attributes:tdic context:nil].size.width;
+    #else
+       CGFloat textSizeWidth = (self.textLabel != nil) ? [self.textLabel sizeWithFont:self.label.font constrainedToSize:maxLabelSize lineBreakMode:NSLineBreakByTruncatingTail].width : 0;
+    #endif
+    
     
     CGFloat activityIndicatorWidth = (self.activityIndicator != nil) ? self.activityIndicator.frame.size.width : 0;
     CGRect bounds = CGRectMake(0, 0, baseWidth + textSizeWidth + activityIndicatorWidth, GCDiscreetNotificationViewHeight);
