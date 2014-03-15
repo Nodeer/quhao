@@ -44,10 +44,10 @@
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:btnButton];
     self.navigationItem.rightBarButtonItem = buttonItem;
     
-    UILabel *yjLabel = [Helper getCustomLabel:@"意  见" font:16 rect:CGRectMake(5, 5.0f, 310.0f, 20.0f)];
+    UILabel *yjLabel = [Helper getCustomLabel:@"意  见" font:16 rect:CGRectMake(5, 5.0f, kDeviceWidth-10, 20.0f)];
     [self.view addSubview:yjLabel];
 
-    self.textView = [[UITextView alloc] initWithFrame:CGRectMake(5, 25, 310, 120)];
+    self.textView = [[UITextView alloc] initWithFrame:CGRectMake(5, 25, kDeviceWidth-10, 120)];
     self.textView.layer.borderColor = UIColor.grayColor.CGColor;
     self.textView.layer.borderWidth = 1;
     self.textView.layer.cornerRadius = 6.0;
@@ -63,13 +63,13 @@
     self.textView.autoresizingMask = UIViewAutoresizingFlexibleHeight;//自适应高度
     [self.view addSubview: self.textView];
     
-    UILabel *sjLabel = [Helper getCustomLabel:@"手机号码" font:16 rect:CGRectMake(5, 140.0f, 320.0f, 20.0f)];
+    UILabel *sjLabel = [Helper getCustomLabel:@"手机号码" font:16 rect:CGRectMake(5, 140.0f, kDeviceWidth-10, 20.0f)];
     [self.view addSubview:sjLabel];
     
-    accountField = [[UITextField alloc] initWithFrame:CGRectMake(5, 165.0f, 310.0f, 31.0f)];
+    accountField = [[UITextField alloc] initWithFrame:CGRectMake(5, 165.0f, kDeviceWidth-10, 31.0f)];
     accountField.placeholder = @""; //默认显示的字
     accountField.layer.borderColor = UIColor.grayColor.CGColor;
-    accountField.layer.borderWidth = 0;
+    accountField.layer.borderWidth = 1;
     accountField.layer.cornerRadius = 6.0;
     accountField.layer.masksToBounds = YES;
     accountField.clipsToBounds = YES;
@@ -105,6 +105,10 @@
 {
     [self.textView resignFirstResponder];
     [accountField resignFirstResponder];
+    if([self.textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length==0){
+        [Helper showHUD2:@"亲,意见还没填写" andView:self.view andSize:100];
+        return;
+    }
     if([Helper isConnectionAvailable]){
         NSString *urlStr=[NSString stringWithFormat:@"%@%@?opinion=%@&contact=%@",[Helper getIp],opinion_url,[self.textView.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],accountField.text];
         NSString *response =[QuHaoUtil requestDb:urlStr];
@@ -115,6 +119,7 @@
             if([response isEqualToString:@"success"]){
                 //解析错误
                 [Helper showHUD2:@"提交成功" andView:self.view andSize:100];
+                [self performSelector:@selector(clickToHome:) withObject:nil afterDelay:1.0f];
             }else{
                 [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
             }
