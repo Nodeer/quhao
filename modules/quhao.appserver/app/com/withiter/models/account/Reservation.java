@@ -309,21 +309,6 @@ public class Reservation extends ReservationEntityDef {
 	 * @param mid
 	 * @return
 	 */
-	// TODO ??
-	public static long findPreviousNo(String mid, int seatNumber) {
-		MorphiaQuery q = Reservation.q();
-		q.filter("merchantId", mid).filter("seatNumber", seatNumber);
-		return q.max("myNumber");
-	}
-
-	/**
-	 * 
-	 * query previous number
-	 * 
-	 * @param accountId
-	 * @param mid
-	 * @return
-	 */
 	public static long findCountBetweenCurrentNoAndMyNumber(String mid, int currentNo, int myNumber, int seatNumber) {
 		MorphiaQuery q = Reservation.q();
 		q.filter("seatNumber", seatNumber).filter("merchantId", mid).filter("status", "canceled").filter("myNumber", "<" + myNumber).filter("myNumber", ">" + currentNo);
@@ -346,14 +331,17 @@ public class Reservation extends ReservationEntityDef {
 		return q.first();
 	}
 
-	// TODO need to verify
 	public static List<Reservation> findReservationsByMerchantIdandDate(String mid, Date beforeDate) {
 		MorphiaQuery q = Reservation.q();
 		q.filter("created >", new DateTime(beforeDate.getTime()).toDate()).filter("merchantId", mid);
 		return q.asList();
 	}
 
-	// TODO why need *365?
+	/**
+	 * 统计一年当中此商家的Reservation
+	 * @param mid 商家ID
+	 * @return
+	 */
 	public static List<Reservation> findReservationsByMerchantIdandDate(String mid) {
 		long duration = System.currentTimeMillis() - 1000l * 60 * 60 * 24 * 365;
 		Date d = new Date(duration);

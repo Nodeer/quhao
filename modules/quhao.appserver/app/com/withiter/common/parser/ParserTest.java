@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 
 import com.withiter.models.merchant.Category;
 import com.withiter.models.merchant.Merchant;
+import com.withiter.utils.ExceptionUtil;
 import com.withiter.utils.StringUtils;
 
 public class ParserTest {
@@ -377,14 +378,14 @@ public class ParserTest {
 					}
 					os.close();
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error(ExceptionUtil.getTrace(e));
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error(ExceptionUtil.getTrace(e));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error(ExceptionUtil.getTrace(e));
 		}
 	
 	}

@@ -290,6 +290,9 @@ public class SelfManagementController extends BaseController {
 			return;
 		}
 		String aid = r.accountId;
+		if(aid == null){
+			return;
+		}
 		Account account = Account.findById(aid);
 		// send message
 		String remind = Play.configuration.getProperty("service.sms.remind");
@@ -321,12 +324,19 @@ public class SelfManagementController extends BaseController {
 		String tel = params.get("tel");
 		String seatN = params.get("seatNumber");
 		String mid = params.get("mid");
-
+		
 		ReservationVO rvo = new ReservationVO();
 		if (StringUtils.isEmpty(tel) || StringUtils.isEmpty(seatN) || StringUtils.isEmpty(mid)) {
 			rvo.tipKey = false;
 			rvo.tipValue = "NAHAO_FAILED";
 			renderJSON(rvo);
+		}
+		
+		Account account = Account.findByPhone(tel);
+		if(account  == null){
+			Account a = new Account();
+			a.phone = tel;
+			a.save();
 		}
 
 		int seatNumber = Integer.parseInt(seatN);

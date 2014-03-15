@@ -24,6 +24,8 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.withiter.utils.ExceptionUtil;
+
 import play.Play;
 
 
@@ -83,13 +85,16 @@ public class CommonHTTPRequest {
 			urlConn.disconnect();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
+			logger.error(ExceptionUtil.getTrace(e));
 		} catch (IOException e) {
 			e.printStackTrace();
+			logger.error(ExceptionUtil.getTrace(e));
 		} finally {
 			try {
 				in.close();
 			} catch (IOException e) {
 				e.printStackTrace();
+				logger.error(ExceptionUtil.getTrace(e));
 			}
 			urlConn.disconnect();
 		}
@@ -130,17 +135,17 @@ public class CommonHTTPRequest {
 				logger.debug("get data from server : " + result);
 			}
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error(ExceptionUtil.getTrace(e));
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error(ExceptionUtil.getTrace(e));
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error(ExceptionUtil.getTrace(e));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error(ExceptionUtil.getTrace(e));
 		}
 
 		return result;
@@ -181,17 +186,17 @@ public class CommonHTTPRequest {
 				logger.debug("get data from server : " + result);
 			}
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error(ExceptionUtil.getTrace(e));
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error(ExceptionUtil.getTrace(e));
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error(ExceptionUtil.getTrace(e));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error(ExceptionUtil.getTrace(e));
 		}
 
 		return result;
