@@ -23,8 +23,6 @@
 
 -(void)loadView
 {
-    self.reservation = [[Reservation alloc] init];
-
     UIView  *view=[[UIView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
     self.view=view;
     _detailView=[[UITableView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, kDeviceHeight) style:UITableViewStylePlain];
@@ -39,33 +37,16 @@
 {
     self.title = NSLocalizedString(@"商家信息", @"商家信息");
     
-    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 7, 50, 35 )];
+    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 5, 50, 30 )];
     [backButton addTarget:self action:@selector(clickToHome:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    
     self.navigationItem.leftBarButtonItem = backButtonItem;
-    //商家禁用 不能取号
-    if (single.enable){
-        CustomToolbar* tools = [[CustomToolbar alloc] initWithFrame:CGRectMake(0, 0, 115, 35)];
-        NSMutableArray* buttons = [[NSMutableArray alloc] initWithCapacity:2];
-        
-        UIButton *fxBtn=[Helper getBackBtn:@"button.png" title:@"分 享" rect:CGRectMake( 0, 0, 50, 35 )];
-        [fxBtn addTarget:self action:@selector(clickShare:) forControlEvents:UIControlEventTouchUpInside];
-        UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithCustomView:fxBtn];
-        [buttons addObject:anotherButton];
-        
-        UIButton *qhBtn=[Helper getBackBtn:@"button.png" title:@"取 号" rect:CGRectMake( 0, 0, 50, 35 )];
-        [qhBtn addTarget:self action:@selector(clickQuhao:) forControlEvents:UIControlEventTouchUpInside];
-        UIBarButtonItem *anotherButton1 = [[UIBarButtonItem alloc] initWithCustomView:qhBtn];
-        [buttons addObject:anotherButton1];
-        [tools setItems:buttons animated:NO];
-        UIBarButtonItem *myBtn = [[UIBarButtonItem alloc] initWithCustomView:tools];
-        self.navigationItem.rightBarButtonItem = myBtn;
-    }else{
-        UIButton *btn=[Helper getBackBtn:@"button.png" title:@"分 享" rect:CGRectMake( 0, 7, 50, 35 )];
-        [btn addTarget:self action:@selector(clickShare:) forControlEvents:UIControlEventTouchUpInside];
-        UIBarButtonItem *btnItem = [[UIBarButtonItem alloc] initWithCustomView:btn];
-        self.navigationItem.rightBarButtonItem = btnItem;
-    }
+    
+    UIButton *qhBtn=[Helper getBackBtn:@"button.png" title:@"取 号" rect:CGRectMake( 0, 0, 40, 25 )];
+    [qhBtn addTarget:self action:@selector(clickQuhao:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *btnItem = [[UIBarButtonItem alloc] initWithCustomView:qhBtn];
+    self.navigationItem.rightBarButtonItem = btnItem;
 }
 
 - (void)viewDidLoad
@@ -230,6 +211,7 @@
                 [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
             }else{
                 if(jsonObjects.count!=0){
+                    self.reservation = [[Reservation alloc] init];
                     reservation.accountId=[[jsonObjects objectAtIndex:0] objectForKey:@"accountId"];
                     reservation.seatNumber=[[jsonObjects objectAtIndex:0]  objectForKey:@"seatNumber"];
                     reservation.myNumber=[[jsonObjects objectAtIndex:0]  objectForKey:@"myNumber"];
@@ -295,9 +277,17 @@
         UILabel *_titleLabel = [Helper getCustomLabel:single.name font:18 rect:CGRectMake(egoImgView.frame.origin.x+egoImgView.frame.size.width+5, 5, 190, 25)];
         [cell.contentView addSubview:_titleLabel];
         
+        
+        UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        shareButton.frame=CGRectMake( kDeviceWidth-50, 30, 50, 25 );
+        shareButton.titleLabel.font = [UIFont systemFontOfSize:13];
+        [shareButton setTitle:@"分 享" forState:UIControlStateNormal];
+        [shareButton addTarget:self action:@selector(clickShare:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.contentView addSubview:shareButton];
+        
         UIButton *dlButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        dlButton.frame=CGRectMake( kDeviceWidth-70, 30, 60, 25 );
-        dlButton.titleLabel.font = [UIFont systemFontOfSize:12];
+        dlButton.frame=CGRectMake(shareButton.frame.origin.x-70, 30, 60, 25 );
+        dlButton.titleLabel.font = [UIFont systemFontOfSize:13];
         //[dlButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [dlButton addTarget:self action:@selector(clickGz:) forControlEvents:UIControlEventTouchUpInside];
         [cell.contentView addSubview:dlButton];
@@ -305,7 +295,7 @@
             [dlButton setTitle:@"取消关注" forState:UIControlStateNormal];
             dlButton.tag=1;
         }else{
-            [dlButton setTitle:@"+关注" forState:UIControlStateNormal];
+            [dlButton setTitle:@"+关 注" forState:UIControlStateNormal];
             dlButton.tag=0;
         }
         //商家禁用 增加希望开通
@@ -314,7 +304,7 @@
             ktButton.frame=CGRectMake(dlButton.frame.origin.x-70, 30, 60, 25 );
             [ktButton setTitle: @"希望开通" forState: UIControlStateNormal];
             //[ktButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            ktButton.titleLabel.font = [UIFont systemFontOfSize:12.0f];
+            ktButton.titleLabel.font = [UIFont systemFontOfSize:13.0f];
             [ktButton addTarget:self action:@selector(clickKt:) forControlEvents:UIControlEventTouchUpInside];
             [cell.contentView addSubview:ktButton];
         }
@@ -332,12 +322,11 @@
         _pjLabel.font=[UIFont systemFontOfSize:12];
         [cell.contentView addSubview:_pjLabel];
     }else if ([indexPath row] ==1 ) { //取号情况的
-        CGSize size=CGSizeMake(320,75);
+        CGSize size=CGSizeMake(kDeviceWidth,75);
         cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"qhqk.jpg" toSize:size]];
         UILabel *nameLabel = [Helper getCustomLabel:@"  取号情况:" font:16 rect:CGRectMake(0, 5, 80, 15)];
         [cell.contentView addSubview:nameLabel];
-        
-        if(reservation.myNumber==nil||reservation.myNumber==@""){
+        if(reservation==nil){
             UILabel *seatLabel = [Helper getCustomLabel:@"   暂无信息" font:15 rect:CGRectMake(0, 32, 100, 35)];
             seatLabel.textAlignment = NSTextAlignmentCenter;
             [cell.contentView addSubview:seatLabel];
@@ -359,7 +348,7 @@
             [cell.contentView addSubview:beforeLabel];
         }
     }else if ([indexPath row] == 2) {//商家地址
-        cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"address.jpg" toSize:CGSizeMake(320,35)]];
+        cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"address.jpg" toSize:CGSizeMake(kDeviceWidth,35)]];
         
         UIImageView *_imgView=[[UIImageView alloc] initWithFrame:CGRectZero];
         _imgView.backgroundColor=[UIColor clearColor];
@@ -371,7 +360,7 @@
         [cell.contentView addSubview:mapLabel];
         [Helper arrowStyle:cell];
     }else if ([indexPath row] == 3) {//电话
-        cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"phone.jpg" toSize:CGSizeMake(320,35)]];
+        cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"phone.jpg" toSize:CGSizeMake(kDeviceWidth,35)]];
         UIImageView *_imgView=[[UIImageView alloc] initWithFrame:CGRectZero];
         _imgView.backgroundColor=[UIColor clearColor];
         _imgView.frame=CGRectMake(8, 7, 21, 26);
