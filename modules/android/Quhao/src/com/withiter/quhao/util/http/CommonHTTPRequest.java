@@ -21,23 +21,7 @@ import com.withiter.quhao.util.tool.QuhaoConstant;
 
 public class CommonHTTPRequest {
 
-	private static boolean useProxy = false;
 	private static String TAG = CommonHTTPRequest.class.getName();
-	private static String sessionID = "";
-
-	public static boolean isUseProxy() {
-		return useProxy;
-	}
-
-	public static void setUseProxy(boolean useProxy) {
-		CommonHTTPRequest.useProxy = useProxy;
-	}
-
-	private static void initProxy() {
-		System.getProperties().setProperty("proxySet", "true");
-		System.getProperties().setProperty("http.proxyHost", "www-proxy.ericsson.se");
-		System.getProperties().setProperty("http.proxyPort", "8080");
-	}
 
 	/**
 	 * A HTTP request(POST) with given URL
@@ -49,16 +33,10 @@ public class CommonHTTPRequest {
 	public static String post(String url) throws ClientProtocolException, IOException {
 		String result = "";
 		String httpUrl = QuhaoConstant.HTTP_URL + url;
-		httpUrl = "http://192.168.2.100:9081/" + url;
 		QuhaoLog.d(TAG, "HTTP REQUEST POST, URL: " + httpUrl);
 		httpUrl = encodeURL(httpUrl);
 		HttpPost request = new HttpPost(httpUrl);
 		request.setHeader("user-agent", "QuhaoAndroid");
-
-//		// if account logged in, add session to header
-//		if (QHClientApplication.getInstance().isLogined) {
-//			request.setHeader("quhao-android-session", new DesUtils().encrypt(QHClientApplication.getInstance().phone));
-//		}
 
 		HttpParams httpParameters = new BasicHttpParams();
 		// Set the timeout in milliseconds until a connection is established.
@@ -92,18 +70,11 @@ public class CommonHTTPRequest {
 	public static String get(String url) throws ClientProtocolException, IOException {
 		String result = "";
 		String httpUrl = QuhaoConstant.HTTP_URL + url;
-		httpUrl = "http://192.168.2.100:9081/" + url;
 		QuhaoLog.d(TAG, "HTTP REQUEST POST, URL: " + httpUrl);
 		httpUrl = encodeURL(httpUrl);
 		QuhaoLog.d(TAG, "HTTP REQUEST POST, URL after encode: " + httpUrl);
 		HttpGet request = new HttpGet(httpUrl);
 		request.setHeader("user-agent", "QuhaoAndroid");
-
-//		// if account logged in, add session to header
-//		QuhaoLog.d(TAG, "QHClientApplication.getInstance().isLogined: " + QHClientApplication.getInstance().isLogined);
-//		if (QHClientApplication.getInstance().isLogined) {
-//			request.setHeader("quhao-android-session", new DesUtils().encrypt(QHClientApplication.getInstance().phone));
-//		}
 
 		HttpParams httpParameters = new BasicHttpParams();
 		// Set the timeout in milliseconds until a connection is established.
