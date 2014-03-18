@@ -105,17 +105,6 @@
                         android:text="@string/noname"
                         android:textColor="#ff000000"
                         android:textSize="16.0sp" />
-                    <Button
-					    android:id="@+id/editPassword"
-					    android:layout_width="wrap_content"
-					    android:layout_height="35dip"
-					    android:background="@drawable/btn_weight"
-					    android:text="修改密码"
-					    android:visibility="gone"
-					    android:layout_gravity="right|center_vertical"
-					    android:textAppearance="?android:textAppearanceMediumInverse"
-					    android:textColor="#ff000000"
-					    android:textSize="14.0sp" />
                 </LinearLayout>
                 <!-- nickname -->
 

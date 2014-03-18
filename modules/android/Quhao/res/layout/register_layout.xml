@@ -29,22 +29,6 @@
             android:textSize="14.0sp"  />
         <!-- back button -->
 
-
-        <!-- quhao button -->
-        <Button
-            android:id="@+id/register_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="35dip"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="@string/register_3space"
-            android:background="@drawable/btn_weight"
-            android:textAppearance="?android:textAppearanceMediumInverse"
-            android:textColor="#ff000000"
-            android:textSize="14.0sp" 
-            />
-        <!-- quhao button -->
-        
         <TextView
             android:id="@+id/merchant_detail_merchantName"
             android:layout_width="wrap_content"
@@ -189,6 +173,28 @@
                 android:paddingLeft="4dip"
                 android:paddingRight="4dip">
             </EditText>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dip"
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="5dip"
+            android:orientation="vertical" >
+			<!-- register button -->
+	        <Button
+	            android:id="@+id/register_btn"
+	            android:layout_width="fill_parent"
+	            android:layout_height="35dip"
+	            android:text="@string/register_3space"
+	            android:background="@drawable/btn_weight"
+	            android:gravity="center"
+	            android:layout_gravity="center"
+	            android:textAppearance="?android:textAppearanceMediumInverse"
+	            android:textColor="#ff000000"
+	            android:textSize="14.0sp" 
+	            />
+	        <!-- register button -->
         </LinearLayout>
         </LinearLayout>
     </ScrollView>

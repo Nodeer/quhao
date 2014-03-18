@@ -51,7 +51,6 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 
 	private Button loginBtn;
 	private Button regBtn;
-	private Button editPasswordBtn;
 
 	private final int UNLOCK_CLICK = 1000;
 	
@@ -92,13 +91,11 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		historyPaiduiLayout.setOnClickListener(this);
 		creditCostLayout.setOnClickListener(this);
 
-		editPasswordBtn = (Button) this.findViewById(R.id.editPassword);
 		loginBtn = (Button) this.findViewById(R.id.login);
 		regBtn = (Button) this.findViewById(R.id.register);
 
 		loginBtn.setOnClickListener(this);
 		regBtn.setOnClickListener(this);
-		editPasswordBtn.setOnClickListener(this);
 
 		// other activity will invoke this method
 		refreshUI();
@@ -116,7 +113,6 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			if (account != null) {
 				loginBtn.setVisibility(View.GONE);
 				regBtn.setVisibility(View.GONE);
-				editPasswordBtn.setVisibility(View.VISIBLE);
 				updateUIData(account);
 			} else {
 				loginBtn.setVisibility(View.VISIBLE);
@@ -371,33 +367,6 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				
 //				Builder dialog = new AlertDialog.Builder(this);
 //				dialog.setTitle("温馨提示").setMessage("请先登录").setPositiveButton("确定", null);
-//				dialog.show();
-			}
-			break;
-		case R.id.editPassword:
-			progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
-			progressDialogUtil.showProgress();
-			if (QHClientApplication.getInstance().isLogined) {
-				progressDialogUtil.closeProgress();
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				Intent intentCredit = new Intent();
-				intentCredit.setClass(this, CreditCostListActivity.class);
-				startActivity(intentCredit);
-				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-				this.finish();
-			} else {
-				progressDialogUtil.closeProgress();
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-//				AlertDialog.Builder builder = new Builder(this);
-//				builder.setTitle("温馨提示");
-//				builder.setMessage("请先登录");
-//				builder.setPositiveButton("确认", null);
-//				builder.show();
-				Builder dialog = new AlertDialog.Builder(this);
-				dialog.setTitle("温馨提示").setMessage("请先登录").setPositiveButton("确定", null);
-				dialog.show();
-//				Builder dialog = new AlertDialog.Builder(MainActivity.this);
-//				dialog.setTitle("温馨提示").setMessage("推荐商家虚席以待").setPositiveButton("确定", null);
 //				dialog.show();
 			}
 			break;

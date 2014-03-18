@@ -311,6 +311,6 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 
 	@Override
 	public void onInfoWindowClick(Marker marker) {
-		Toast.makeText(this, "你点击了infoWindow窗口" + marker.getTitle(), Toast.LENGTH_LONG).show();
+//		Toast.makeText(this, "你点击了infoWindow窗口" + marker.getTitle(), Toast.LENGTH_LONG).show();
 	}
 }

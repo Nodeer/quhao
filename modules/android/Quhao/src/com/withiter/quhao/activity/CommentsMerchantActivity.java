@@ -15,7 +15,6 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.withiter.quhao.R;
@@ -36,7 +35,6 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnScr
 	
 	private String rId;
 
-	private TextView merchantNameView;
 	/**
 	 * the critiques queried from merchant
 	 */
@@ -122,12 +120,6 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnScr
 		this.merchantId = getIntent().getStringExtra("merchantId");
 		this.rId = getIntent().getStringExtra("rId");
 		this.page = getIntent().getIntExtra("page", 1);
-		merchantNameView = (TextView) findViewById(R.id.merchantName);
-		merchantNameView.setText(merchantName);
-		if(StringUtils.isNotNull(merchantName) && merchantName.length()>10)
-		{
-			merchantNameView.setText(merchantName.substring(0, 10) + "...");
-		}
 
 		moreView = getLayoutInflater().inflate(R.layout.moredata, null);
 		bt = (Button) moreView.findViewById(R.id.bt_load);

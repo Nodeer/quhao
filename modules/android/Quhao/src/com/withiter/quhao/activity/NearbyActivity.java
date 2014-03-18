@@ -48,7 +48,7 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 		AMapLocationListener, OnPoiSearchListener, OnScrollListener,
 		OnItemClickListener, LocationSource {
 
-	private LocationManagerProxy mAMapLocManager = null;
+	private LocationManagerProxy mAMapLocationManager = null;
 	private PoiSearch.Query query;
 	private PoiSearch poiSearch;
 	private PoiResult poiResult; // poi返回的结果
@@ -63,6 +63,12 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 	private boolean needToLoad = true;
 	private List<PoiItem> poiItems;
 
+	private boolean isFirstLocation = false;
+	
+	private AMapLocation firstLocation = null;
+	
+	private OnLocationChangedListener mListener;  
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -75,8 +81,8 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 		btnPerson.setOnClickListener(goPersonCenter(this));
 		btnMore.setOnClickListener(goMore(this));
 
-		mAMapLocManager = LocationManagerProxy.getInstance(this);
-		mAMapLocManager.requestLocationUpdates(
+		mAMapLocationManager = LocationManagerProxy.getInstance(this);
+		mAMapLocationManager.requestLocationUpdates(
 				LocationProviderProxy.AMapNetwork, 1000, 10, this);
 
 		merchantsListView = (ListView) this
@@ -220,18 +226,18 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 	@Override
 	protected void onPause() {
 		super.onPause();
-		if (mAMapLocManager != null) {
-			mAMapLocManager.removeUpdates(this);
+		if (mAMapLocationManager != null) {
+			mAMapLocationManager.removeUpdates(this);
 		}
 	}
 
 	@Override
 	protected void onDestroy() {
-		if (mAMapLocManager != null) {
-			mAMapLocManager.removeUpdates(this);
-			mAMapLocManager.destory();
+		if (mAMapLocationManager != null) {
+			mAMapLocationManager.removeUpdates(this);
+			mAMapLocationManager.destory();
 		}
-		mAMapLocManager = null;
+		mAMapLocationManager = null;
 		super.onDestroy();
 	}
 
@@ -263,7 +269,44 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 	@Override
 	public void onLocationChanged(AMapLocation location) {
 
+		/*
 		if (null != location) {
+			if(!isFirstLocation)
+			{
+				isFirstLocation = true;
+				firstLocation = location;
+				query = new PoiSearch.Query("", "餐厅", location.getCityCode());
+				query.setLimitDiscount(false);
+				query.setLimitGroupbuy(false);
+				poiSearch = new PoiSearch(this, query);
+				poiSearch.setOnPoiSearchListener(this);
+				double lat = location.getLatitude();
+				double lon = location.getLongitude();
+				LatLonPoint lp = new LatLonPoint(lat, lon);
+				poiSearch.setBound(new SearchBound(lp, 1000));// 设置搜索区域为以lp点为圆心，其周围1000米范围
+			}
+			else
+			{
+				float distance = firstLocation.distanceTo(location);
+				if(distance>100)
+				{
+					query = new PoiSearch.Query("", "餐厅", location.getCityCode());
+					query.setLimitDiscount(false);
+					query.setLimitGroupbuy(false);
+					poiSearch = new PoiSearch(this, query);
+					poiSearch.setOnPoiSearchListener(this);
+					double lat = location.getLatitude();
+					double lon = location.getLongitude();
+					LatLonPoint lp = new LatLonPoint(lat, lon);
+					poiSearch.setBound(new SearchBound(lp, 1000));// 设置搜索区域为以lp点为圆心，其周围1000米范围
+				}
+				else
+				{
+					return;
+				}
+				
+			}*/
+			
 			query = new PoiSearch.Query("", "餐厅", location.getCityCode());
 			query.setLimitDiscount(false);
 			query.setLimitGroupbuy(false);
@@ -309,7 +352,6 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 			};
 			new Thread(runnable).start();
 		}
-	}
 
 	@Override
 	public void onPoiItemDetailSearched(PoiItemDetail arg0, int arg1) {
@@ -486,14 +528,37 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 	}
 
 	@Override
-	public void activate(OnLocationChangedListener arg0) {
-		// TODO Auto-generated method stub
-
+	public void activate(OnLocationChangedListener listener) {
+		
+		mListener = listener;
+		if (mAMapLocationManager == null) {
+			try
+			{
+				mAMapLocationManager = LocationManagerProxy.getInstance(this);  
+	            /* 
+	             * mAMapLocManager.setGpsEnable(false);// 
+	             * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true 
+	             */  
+	            // Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效  
+	            mAMapLocationManager.requestLocationUpdates(  
+	                    LocationProviderProxy.AMapNetwork, 5000, 10, this);  
+			}catch(Exception e)
+			{
+				Log.e("gaode", e.getMessage());
+				e.printStackTrace();
+			}
+            
+        }  
 	}
 
 	@Override
 	public void deactivate() {
-		// TODO Auto-generated method stub
+		mListener = null;  
+        if (mAMapLocationManager != null) {  
+            mAMapLocationManager.removeUpdates(this);  
+            mAMapLocationManager.destory();  
+        }  
+        mAMapLocationManager = null;  
 
 	}
 }
