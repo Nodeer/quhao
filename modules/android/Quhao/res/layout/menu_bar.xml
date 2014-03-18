@@ -17,7 +17,7 @@
         android:layout_weight="1"
         android:background="@drawable/imagebutton_background"
         android:drawableTop="@drawable/menu_merchant_list"
-        android:paddingTop="10.0dip"
+        android:paddingTop="5.0dip"
         android:text="@string/menu_category_list"
         android:textColor="#ffffffff"
         android:textSize="10.0sp" />
@@ -29,7 +29,7 @@
         android:layout_weight="1"
         android:background="@drawable/imagebutton_background"
         android:drawableTop="@drawable/menu_merchant_nearby"
-        android:paddingTop="10.0dip"
+        android:paddingTop="5.0dip"
         android:text="@string/menu_nearby_merchant"
         android:textColor="#ffffffff"
         android:textSize="10.0sp" />
@@ -41,7 +41,7 @@
         android:layout_weight="1"
         android:background="@drawable/imagebutton_background"
         android:drawableTop="@drawable/menu_personal_center"
-        android:paddingTop="10.0dip"
+        android:paddingTop="5.0dip"
         android:text="@string/menu_person_center"
         android:textColor="#ffffffff"
         android:textSize="10.0sp" />
@@ -53,7 +53,7 @@
         android:layout_weight="1.0"
         android:background="@drawable/imagebutton_background"
         android:drawableTop="@drawable/toolbar_more"
-        android:paddingTop="10.0dip"
+        android:paddingTop="5.0dip"
         android:text="@string/menu_more"
         android:textColor="#ffffffff"
         android:textSize="10.0sp" />
