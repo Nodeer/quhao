@@ -179,7 +179,9 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				String accountId = QHClientApplication.getInstance().accountInfo.accountId;
 				String buf = CommonHTTPRequest.get("getReservations?accountId=" + accountId + "&mid=" + merchantId);
 				if (StringUtils.isNull(buf) || "[]".equals(buf)) {
-					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+					paiduiConditionLayout.setVisibility(View.VISIBLE);
+					Thread getSeatNosThread = new Thread(getSeatNosRunnable);
+					getSeatNosThread.start();
 				} else {
 					rvos = ParseJson.getReservations(buf);
 					reservationUpdateHandler.obtainMessage(200, rvos).sendToTarget();
@@ -458,59 +460,8 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						}
 					}).start();
 
-					// check the merchant is enabled
-					if (m.enable) {
-						Calendar cal = Calendar.getInstance();
-						int currentHour = cal.get(Calendar.HOUR_OF_DAY);
-						int openHour = 25;
-						
-						if(StringUtils.isNotNull(m.openTime))
-						{
-							openHour = Integer.valueOf(m.openTime.substring(0, m.openTime.indexOf(":")));
-						}
-						
-						int closeHour = 26;
-						if(StringUtils.isNotNull(m.closeTime))
-						{
-							closeHour = Integer.valueOf(m.closeTime.substring(0, m.closeTime.indexOf(":")));
-						}
-						if(currentHour<openHour || currentHour>closeHour)
-						{
-							btnGetNumber.setVisibility(View.GONE);
-						}
-						else
-						{
-							btnGetNumber.setVisibility(View.VISIBLE);
-						}
-						
-						btnOpen.setVisibility(View.GONE);
-						paiduiConditionLayout.setVisibility(View.VISIBLE);
-						Thread getSeatNosThread = new Thread(getSeatNosRunnable);
-						getSeatNosThread.start();
-					} else {
-						btnGetNumber.setVisibility(View.GONE);
-						btnOpen.setVisibility(View.VISIBLE);
-					}
-
-					merchantName.setText(m.name);
-					if(!QHClientApplication.getInstance().isLogined)
-					{
-						btnAttention.setVisibility(View.GONE);
-					}
-					else
-					{
-						btnAttention.setVisibility(View.VISIBLE);
-						if(m.isAttention)
-						{
-							btnAttention.setText(R.string.cancel_attention);
-						}
-						else
-						{
-							btnAttention.setText(R.string.attention);
-						}
-					}
-					
 					mName = m.name;
+					merchantName.setText(m.name);
 					merchantAddress.setText(m.address);
 					merchantPhone.setText(m.phone);
 					merchantBusinessTime.setText(m.openTime + "~" + m.closeTime);
@@ -563,17 +514,67 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						}
 					});
 
-					QuhaoLog.d(LOGTAG, "check login state on MerchantDetailActivity, isLogined : " + QHClientApplication.getInstance().isLogined);
-					if(m.enable){
-						if(QHClientApplication.getInstance().isLogined)
+					critiqueLayout.setOnClickListener(MerchantDetailActivity.this);
+					
+					
+					// check the merchant is enabled
+					if (m.enable) {
+						Calendar cal = Calendar.getInstance();
+						int currentHour = cal.get(Calendar.HOUR_OF_DAY);
+						int openHour = 25;
+						
+						if(StringUtils.isNotNull(m.openTime))
 						{
+							openHour = Integer.valueOf(m.openTime.substring(0, m.openTime.indexOf(":")));
+						}
+						
+						int closeHour = 26;
+						if(StringUtils.isNotNull(m.closeTime))
+						{
+							closeHour = Integer.valueOf(m.closeTime.substring(0, m.closeTime.indexOf(":")));
+						}
+						if(currentHour<openHour || currentHour>closeHour)
+						{
+							btnGetNumber.setVisibility(View.GONE);
+						}
+						else
+						{
+							btnGetNumber.setVisibility(View.VISIBLE);
+						}
+						
+						btnOpen.setVisibility(View.GONE);
+						
+						QuhaoLog.d(LOGTAG, "check login state on MerchantDetailActivity, isLogined : " + QHClientApplication.getInstance().isLogined);
+						if(!QHClientApplication.getInstance().isLogined)
+						{
+							btnAttention.setVisibility(View.GONE);
+							paiduiConditionLayout.setVisibility(View.VISIBLE);
+							currentQuHaoLayout.setVisibility(View.GONE);
+							Thread getSeatNosThread = new Thread(getSeatNosRunnable);
+							getSeatNosThread.start();
+						}
+						else
+						{
+							btnAttention.setVisibility(View.VISIBLE);
+							if(m.isAttention)
+							{
+								btnAttention.setText(R.string.cancel_attention);
+							}
+							else
+							{
+								btnAttention.setText(R.string.attention);
+							}
+							currentQuHaoLayout.setVisibility(View.VISIBLE);
 							getCurrentNo();
 						}
-					}
-					else {
+					} else {
+						btnGetNumber.setVisibility(View.GONE);
+						btnOpen.setVisibility(View.VISIBLE);
+						paiduiConditionLayout.setVisibility(View.GONE);
+						currentQuHaoLayout.setVisibility(View.GONE);
 						progressDialogUtil.closeProgress();
 					}
-					critiqueLayout.setOnClickListener(MerchantDetailActivity.this);
+
 				}
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
@@ -609,6 +610,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				reservationAdapter = new ReservationAdapter(MerchantDetailActivity.this, reservationListView, rvos);
 				reservationListView.setAdapter(reservationAdapter);
 				reservationAdapter.notifyDataSetChanged();
+				
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 

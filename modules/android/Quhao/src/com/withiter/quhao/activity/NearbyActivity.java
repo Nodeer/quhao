@@ -81,9 +81,9 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 		btnPerson.setOnClickListener(goPersonCenter(this));
 		btnMore.setOnClickListener(goMore(this));
 
-		mAMapLocationManager = LocationManagerProxy.getInstance(this);
-		mAMapLocationManager.requestLocationUpdates(
-				LocationProviderProxy.AMapNetwork, 1000, 10, this);
+//		mAMapLocationManager = LocationManagerProxy.getInstance(this);
+//		mAMapLocationManager.requestLocationUpdates(
+//				LocationProviderProxy.AMapNetwork, 1000, 10, this);
 
 		merchantsListView = (ListView) this
 				.findViewById(R.id.merchantsListView);
@@ -94,27 +94,27 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 		bt.setOnClickListener(this);
 		merchantsListView.addFooterView(moreView);
 		merchantsListView.setNextFocusDownId(R.id.merchantsListView);
-		// Thread queryMerchantsThread = new Thread(new Runnable() {
-		//
-		// @Override
-		// public void run() {
-		// try
-		// {
-		// Looper.prepare();
-		// queryMerchants();
-		//
-		// }catch (Exception e) {
-		//
-		// }
-		// finally
-		// {
-		// Looper.loop();
-		// }
-		//
-		//
-		// }
-		// });
-		// queryMerchantsThread.start();
+		 Thread queryMerchantsThread = new Thread(new Runnable() {
+		
+		 @Override
+		 public void run() {
+		 try
+		 {
+		 Looper.prepare();
+		 queryMerchants();
+		
+		 }catch (Exception e) {
+		
+		 }
+		 finally
+		 {
+		 Looper.loop();
+		 }
+		
+		
+		 }
+		 });
+		 queryMerchantsThread.start();
 	}
 
 	protected Handler updatePoiItemsHandler = new Handler() {
@@ -155,8 +155,8 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 		query.setLimitGroupbuy(false);
 		poiSearch = new PoiSearch(this, query);
 		poiSearch.setOnPoiSearchListener(this);
-		// double lat = location.getLatitude();
-		// double lon = location.getLongitude();
+//		 double lat = location.getLatitude();
+//		 double lon = location.getLongitude();
 		LatLonPoint lp = new LatLonPoint(31.235048, 121.474794);
 		poiSearch.setBound(new SearchBound(lp, 1000));// 设置搜索区域为以lp点为圆心，其周围1000米范围
 		try {
