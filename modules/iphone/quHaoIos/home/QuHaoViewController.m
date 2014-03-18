@@ -60,7 +60,7 @@
 -(void)createCurrentView
 {
     //背景
-    UIImageView *bgImgView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"qhqk.jpg" toSize:CGSizeMake(kDeviceWidth,75)]];
+    UIImageView *bgImgView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"qhmk.png" toSize:CGSizeMake(kDeviceWidth,75)]];
     bgImgView.frame=CGRectMake(5, 10, kDeviceWidth-10, 75);
     [self.view addSubview:bgImgView];
     
@@ -75,9 +75,9 @@
     _seatNumber=[Helper getCustomLabel:seat font:18 rect:CGRectMake(113, 18, 45, 30)];
     [self.view addSubview:_seatNumber];
 
-    UIImage *image= [UIImage   imageNamed:@"arrow_right.png"];
+    UIImage *image= [UIImage   imageNamed:@"arrow_down.png"];
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame = CGRectMake(160, 28, image.size.width, image.size.height);
+    button.frame = CGRectMake(140, 27, image.size.width, image.size.height);
     [button setBackgroundImage:image forState:UIControlStateNormal];
     [button addTarget:self action:@selector(dropdown:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
@@ -100,9 +100,9 @@
     }
     
     
-    UIImage *btnImage = [UIImage   imageNamed:@"dl.png"];
+    UIImage *btnImage = [UIImage   imageNamed:@"max_btn.png"];
     UIButton *nahaoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    nahaoBtn.frame = CGRectMake(40, 100, btnImage.size.width, btnImage.size.height);
+    nahaoBtn.frame = CGRectMake(10, 100, 300, 30);
     [nahaoBtn setBackgroundImage:btnImage forState:UIControlStateNormal];
     [nahaoBtn setTitle: @"拿 号" forState: UIControlStateNormal];
     [nahaoBtn addTarget:self action:@selector(clickNahao:) forControlEvents:UIControlEventTouchUpInside];

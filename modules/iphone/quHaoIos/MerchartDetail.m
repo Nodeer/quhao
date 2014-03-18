@@ -263,7 +263,7 @@
     if (cell == nil) {
           cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellTabeIndentifier"];
     if ([indexPath row] ==0 ) {//商家信息
-        CGSize size=CGSizeMake(320,100);
+        CGSize size=CGSizeMake(kDeviceWidth,100);
         cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"top.jpg" toSize:size]];
         //cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cell_select_highlight.png"]];        
         self.egoImgView = [[EGOImageView alloc] initWithFrame:CGRectMake(5, 10, 105, 80)];
@@ -279,7 +279,7 @@
         }
        
         
-        UILabel *_titleLabel = [Helper getCustomLabel:single.name font:18 rect:CGRectMake(egoImgView.frame.origin.x+egoImgView.frame.size.width+5, 5, 190, 25)];
+        UILabel *_titleLabel = [Helper getCustomLabel:single.name font:18 rect:CGRectMake(egoImgView.frame.origin.x+egoImgView.frame.size.width+5, 5, kDeviceWidth-110, 25)];
         [cell.contentView addSubview:_titleLabel];
         
         
@@ -327,7 +327,7 @@
         _pjLabel.font=[UIFont systemFontOfSize:12];
         [cell.contentView addSubview:_pjLabel];
     }else if ([indexPath row] ==1 ) { //取号情况的
-        CGSize size=CGSizeMake(kDeviceWidth,75);
+        CGSize size=CGSizeMake(kDeviceWidth-10,75);
         cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"qhqk.jpg" toSize:size]];
         UILabel *nameLabel = [Helper getCustomLabel:@"  取号情况:" font:16 rect:CGRectMake(0, 5, 80, 15)];
         [cell.contentView addSubview:nameLabel];
@@ -353,7 +353,7 @@
             [cell.contentView addSubview:beforeLabel];
         }
     }else if ([indexPath row] == 2) {//商家地址
-        cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"address.jpg" toSize:CGSizeMake(kDeviceWidth,35)]];
+        cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"address.jpg" toSize:CGSizeMake(kDeviceWidth-10,35)]];
         
         UIImageView *_imgView=[[UIImageView alloc] initWithFrame:CGRectZero];
         _imgView.backgroundColor=[UIColor clearColor];
@@ -365,7 +365,7 @@
         [cell.contentView addSubview:mapLabel];
         [Helper arrowStyle:cell];
     }else if ([indexPath row] == 3) {//电话
-        cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"phone.jpg" toSize:CGSizeMake(kDeviceWidth,35)]];
+        cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"phone.jpg" toSize:CGSizeMake(kDeviceWidth-10,35)]];
         UIImageView *_imgView=[[UIImageView alloc] initWithFrame:CGRectZero];
         _imgView.backgroundColor=[UIColor clearColor];
         _imgView.frame=CGRectMake(8, 7, 21, 26);
@@ -378,7 +378,7 @@
         [Helper arrowStyle:cell];        
     }else if ([indexPath row] == 4){
         cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"time.jpg"]];
-        cell.textLabel.text =[NSString stringWithFormat:@"%@%@至%@",@"营业时间:",single.openTime,single.openTime];
+        cell.textLabel.text =[NSString stringWithFormat:@"%@%@ 至 %@",@"营业时间:",single.openTime,single.openTime];
         cell.textLabel.font = [UIFont boldSystemFontOfSize:16];
     }else if ([indexPath row] == 5){
         cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tj.jpg"]];
@@ -393,7 +393,7 @@
             }
         }
         NSString *result=[[tagStr stringByReplacingOccurrencesOfString:@"[" withString:@"  "] stringByReplacingOccurrencesOfString:@"]" withString:@""];
-        UILabel *tjLabel = [Helper getCustomLabel:result font:14 rect:CGRectMake(10, 25, 295,65)];
+        UILabel *tjLabel = [Helper getCustomLabel:result font:14 rect:CGRectMake(10, 25, kDeviceWidth-10,65)];
         [tjLabel setNumberOfLines:0];
         [cell.contentView addSubview:tjLabel];
     }else if ([indexPath row] == 6){//点评
@@ -401,7 +401,7 @@
         UILabel *nameLabel = [Helper getCustomLabel:@"  点评:" font:16 rect:CGRectMake(0, 7, 70, 15)];
         [cell.contentView addSubview:nameLabel];
         
-        UILabel *dpLabel = [Helper getCustomLabel:single.commentContent font:14 rect:CGRectMake(10, 28, 295, 82)];
+        UILabel *dpLabel = [Helper getCustomLabel:single.commentContent font:14 rect:CGRectMake(10, 28, kDeviceWidth-10, 82)];
         [dpLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [dpLabel setMinimumScaleFactor:14];
         [dpLabel setNumberOfLines:0];
@@ -413,7 +413,7 @@
         UILabel *nameLabel = [Helper getCustomLabel:@"  商家描述:" font:16 rect:CGRectMake(0, 25, 100, 15)];
         [cell.contentView addSubview:nameLabel];
         
-        UILabel *msLabel = [Helper getCustomLabel:single.description font:14 rect:CGRectMake(10, 25, 295,65)];
+        UILabel *msLabel = [Helper getCustomLabel:single.description font:14 rect:CGRectMake(10, 25, kDeviceWidth-10,65)];
         [msLabel setNumberOfLines:0];
         [cell.contentView addSubview:msLabel];
     }
