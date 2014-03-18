@@ -17,39 +17,96 @@
 @synthesize merchartID;
 @synthesize accountID;
 @synthesize seatType;
+@synthesize popView;
+@synthesize coverView;
 -(void)loadView
 {
-    self.reservation = [[Reservation alloc] init];
-    UIView  *view=[[UIView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
-    self.view=view;
-    
-    _quHaoView=[[UITableView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, kDeviceHeight) style:UITableViewStylePlain];
-    _quHaoView.dataSource=self;
-    _quHaoView.delegate=self;
-    _quHaoView.backgroundColor=[UIColor whiteColor];
-    _quHaoView.indicatorStyle=UIScrollViewIndicatorStyleWhite;
-    [self.view addSubview:_quHaoView];
-    [self loadNavigationItem];
-    
-    showList = NO; //默认不显示下拉框
-    
-    [self reloadReversion];
-    [self reloadCurrent];
-}
-
--(void)loadNavigationItem
-{    
-    //self.title = NSLocalizedString(@"取号情况", @"取号情况");
-    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 7, 50, 35 )];
+    UIView  *view = [[UIView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
+    self.view = view;
+    self.view.backgroundColor = [UIColor whiteColor];
+    //button
+    UIButton *backButton = [Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 5, 50, 30 )];
     [backButton addTarget:self action:@selector(clickToHome:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
+    //加载取号信息
+    [self reloadReversion];
+    //默认不显示下拉框
+    _showList = NO;
+    //创建view上的座位信息
+    [self createCurrentView];
+
+    coverView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kDeviceWidth, kDeviceHeight)];
+    coverView.hidden = YES;
+    coverView.backgroundColor = [UIColor blackColor];
+    coverView.alpha = 0.3;
+    [self.view addSubview:coverView];
     
-    //添加拿号按钮
-    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 拿 号" rect:CGRectMake( 0, 7, 50, 35 )];
-    [btnButton addTarget:self action:@selector(clickNahao:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:btnButton];
-    self.navigationItem.rightBarButtonItem = buttonItem;
+    //创建下拉列表的view
+    popView = [[UITableView alloc] initWithFrame:CGRectMake(100, 45, 100 ,120)];
+    popView.delegate = self;
+    popView.dataSource = self;
+    popView.backgroundColor = [ UIColor colorWithRed: 0.907
+                                               green: 0.907
+                                                blue: 0.907
+                                               alpha: 1.0
+                               ];
+    popView.indicatorStyle=UIScrollViewIndicatorStyleBlack;
+    popView.hidden = YES;
+    [self.view addSubview:popView];
+}
+
+//创建view上的座位信息
+-(void)createCurrentView
+{
+    //背景
+    UIImageView *bgImgView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"qhqk.jpg" toSize:CGSizeMake(kDeviceWidth,75)]];
+    bgImgView.frame=CGRectMake(5, 10, kDeviceWidth-10, 75);
+    [self.view addSubview:bgImgView];
+    
+    NSString *seat = nil;
+    if(reservation == nil){
+        seat = @"2";
+    }else{
+        seat = [reservation.seatNumber description];
+    }
+    [self.view addSubview:[Helper getCustomLabel:@" 座位人数:    " font:18 rect:CGRectMake(10, 18, 110, 30)]];
+    
+    _seatNumber=[Helper getCustomLabel:seat font:18 rect:CGRectMake(113, 18, 45, 30)];
+    [self.view addSubview:_seatNumber];
+
+    UIImage *image= [UIImage   imageNamed:@"arrow_right.png"];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.frame = CGRectMake(160, 28, image.size.width, image.size.height);
+    [button setBackgroundImage:image forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(dropdown:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button];
+    
+    NSString *num=nil;
+    if(reservation==nil){
+        num=@"0";
+    }else{
+        num=[reservation.currentNumber description];
+    }
+    _currlabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%@",@" 当前号码:    ",num] font:18 rect:CGRectMake(_seatNumber.frame.origin.x+60 ,18 ,140 ,30)];
+    [self.view addSubview:_currlabel];
+    
+    if(reservation.accountId!=nil){
+        UILabel *mylabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%@",@" 我的号码:    ",[reservation.myNumber description]] font:18 rect:CGRectMake(10, _currlabel.frame.origin.y+30, 160, 30)];
+        [self.view addSubview:mylabel];
+        
+        UILabel *belabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%d",@" 在你前面:    ",reservation.beforeYou ]font:18 rect:CGRectMake(_seatNumber.frame.origin.x+60, _currlabel.frame.origin.y+30, 140, 30)];
+        [self.view addSubview:belabel];
+    }
+    
+    
+    UIImage *btnImage = [UIImage   imageNamed:@"dl.png"];
+    UIButton *nahaoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    nahaoBtn.frame = CGRectMake(40, 100, btnImage.size.width, btnImage.size.height);
+    [nahaoBtn setBackgroundImage:btnImage forState:UIControlStateNormal];
+    [nahaoBtn setTitle: @"拿 号" forState: UIControlStateNormal];
+    [nahaoBtn addTarget:self action:@selector(clickNahao:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:nahaoBtn];
 }
 
 - (void)clickToHome:(id)sender
@@ -72,23 +129,24 @@
         hud.square = YES;
         
         NSString *url = [NSString stringWithFormat:@"%@%@?accountId=%@&mid=%@",[Helper getIp],getReservation_url, accountID,merchartID];
-        NSString *response =[QuHaoUtil requestDb:url];
+        NSString *response = [QuHaoUtil requestDb:url];
         if([response isEqualToString:@""]){
             //异常处理
             [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
         }else{
-            NSArray *jsonObjects=[QuHaoUtil analyseData:response];
-            if(jsonObjects==nil){
+            NSArray *jsonObjects = [QuHaoUtil analyseData:response];
+            if(jsonObjects == nil){
                 //解析错误
                 [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
             }else{
                 if(jsonObjects.count!=0){
-                    reservation.accountId=[[jsonObjects objectAtIndex:0]  objectForKey:@"accountId"];
-                    reservation.seatNumber=[[jsonObjects objectAtIndex:0]  objectForKey:@"seatNumber"];
-                    reservation.myNumber=[[jsonObjects objectAtIndex:0]  objectForKey:@"myNumber"];
-                    reservation.beforeYou=[[[jsonObjects objectAtIndex:0] objectForKey:@"beforeYou"] intValue];
-                    reservation.currentNumber=[[jsonObjects objectAtIndex:0] objectForKey:@"currentNumber"];
-                    reservation.merchantId=[[jsonObjects objectAtIndex:0] objectForKey:@"merchantId"];
+                    self.reservation = [[Reservation alloc] init];
+                    reservation.accountId = [[jsonObjects objectAtIndex:0]  objectForKey:@"accountId"];
+                    reservation.seatNumber = [[jsonObjects objectAtIndex:0]  objectForKey:@"seatNumber"];
+                    reservation.myNumber = [[jsonObjects objectAtIndex:0]  objectForKey:@"myNumber"];
+                    reservation.beforeYou = [[[jsonObjects objectAtIndex:0] objectForKey:@"beforeYou"] intValue];
+                    reservation.currentNumber = [[jsonObjects objectAtIndex:0] objectForKey:@"currentNumber"];
+                    reservation.merchantId = [[jsonObjects objectAtIndex:0] objectForKey:@"merchantId"];
                 }
                 [hud hide:YES];
             }
@@ -98,40 +156,42 @@
     {
         [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
     }
-    [_quHaoView reloadData];
+    [self.view setNeedsDisplay];
 }
 
 //拿号的请求方法
 -(void)reloadView
 {
-    if(reservation.myNumber==nil||[reservation.myNumber isEqualToString:@"0"]){
+    if(reservation == nil){
         if([Helper isConnectionAvailable]){
             MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             hud.labelText = NSLocalizedString(@"正在加载", nil);
             hud.square = YES;
-            NSString *seatNumber=nil;
-            if(selectView!=nil){
-                NSInteger row =[selectView selectedRowInComponent:0];
-                seatNumber= [pickerData objectAtIndex:row];
-            }else{
-                seatNumber=@"2";
-            }
-            NSString *url = [NSString stringWithFormat:@"%@%@?accountId=%@&mid=%@&seatNumber=%@",[Helper getIp],nahao_url, accountID,merchartID,seatNumber];
-            NSString *response =[QuHaoUtil requestDb:url];
-            NSDictionary *jsonObjects=[QuHaoUtil analyseDataToDic:response];
-            
-            reservation.accountId=[jsonObjects  objectForKey:@"accountId"];
-            reservation.seatNumber=[jsonObjects  objectForKey:@"seatNumber"];
-            reservation.myNumber=[[jsonObjects  objectForKey:@"myNumber"] description];
-            reservation.currentNumber=[jsonObjects  objectForKey:@"currentNumber"];
-            reservation.beforeYou=[[jsonObjects objectForKey:@"beforeYou"] intValue];
-            reservation.merchantId=[jsonObjects objectForKey:@"merchantId"];
-            NSString *tip=[jsonObjects objectForKey:@"tipValue"];
+           
+            NSString *url = [NSString stringWithFormat:@"%@%@?accountId=%@&mid=%@&seatNumber=%@",[Helper getIp],nahao_url, accountID,merchartID,_seatNumber.text];
+            NSString *response = [QuHaoUtil requestDb:url];
+            NSDictionary *jsonObjects = [QuHaoUtil analyseDataToDic:response];
+            NSString *tip = [jsonObjects objectForKey:@"tipValue"];
             [hud hide:YES];
             if([tip isEqualToString:@"NO_MORE_JIFEN"]){
                 [Helper showHUD2:@"亲,没有积分可用了" andView:self.view andSize:100];
             }else{
-                [_quHaoView reloadData];
+                self.reservation = [[Reservation alloc] init];
+                reservation.accountId = [jsonObjects  objectForKey:@"accountId"];
+                reservation.seatNumber = [jsonObjects  objectForKey:@"seatNumber"];
+                reservation.myNumber = [[jsonObjects  objectForKey:@"myNumber"] description];
+                reservation.currentNumber = [jsonObjects  objectForKey:@"currentNumber"];
+                reservation.beforeYou = [[jsonObjects objectForKey:@"beforeYou"] intValue];
+                reservation.merchantId = [jsonObjects objectForKey:@"merchantId"];
+
+                if(reservation.accountId!=nil){
+                    UILabel *mylabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%@",@" 我的号码:    ",[reservation.myNumber description]] font:18 rect:CGRectMake(10, _currlabel.frame.origin.y+30, 160, 30)];
+                    [self.view addSubview:mylabel];
+                    
+                    UILabel *belabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%d",@" 在你前面:    ",reservation.beforeYou ]font:18 rect:CGRectMake(_seatNumber.frame.origin.x+60, _currlabel.frame.origin.y+30, 140, 30)];
+                    [self.view addSubview:belabel];
+                }
+                
                 if(reservation.beforeYou<=5){
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"恭喜：取号成功，由于在你前面排队的不多于5桌，为了避免排队号过期，请抓紧时间前往商家。" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
                     [alert show];
@@ -145,136 +205,106 @@
             [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
         }
     }else{
-        [Helper showHUD2:@"您已经拿过号了" andView:self.view andSize:100];
+        [Helper showHUD2:@"亲,您已经拿过号了" andView:self.view andSize:100];
     }
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return 4;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 55;
-}
-
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    cell.backgroundColor = [UIColor whiteColor];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellTableIdentifier"];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellTabeIndentifier"];
-        if ([indexPath row] ==0 ) {//座位人数
-            NSString *seat=nil;
-            if(reservation.seatNumber==nil||reservation.seatNumber==@""){
-                seat=@"2";
-            }else{
-                seat=[reservation.seatNumber description];
-            }
-            UILabel *nameLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%@",@" 座位人数:    ",seat] font:18 rect:CGRectMake(5, 18, 150, 30)];
-            [cell.contentView addSubview:nameLabel];
-            [Helper arrowStyle:cell];
-        }else if ([indexPath row] ==1 ) { //当前号码
-            UILabel *label = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%@",@" 当前号码:    ",[reservation.currentNumber description]] font:18 rect:CGRectMake(5, 18, 150, 30)];
-            [cell.contentView addSubview:label];
-        }else if ([indexPath row] == 2) {//我的号码
-            if(reservation.accountId!=nil){
-                UILabel *label = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%@",@" 我的号码:    ",[reservation.myNumber description]] font:18 rect:CGRectMake(5, 18, 150, 30)];
-                [cell.contentView addSubview:label];
-            }
-        }else if ([indexPath row] == 3) {//在你前面
-            if(reservation.accountId!=nil){
-                UILabel *label = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%d",@" 在你前面:    ",reservation.beforeYou ]font:18 rect:CGRectMake(5, 18, 150, 30)];
-                [cell.contentView addSubview:label];
-            }
-        }
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    }
-    return cell;
-}
-
--(void)dropdown{
-    selectView = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 230, 320, 150)];
-    // 指定Delegate
-    selectView.delegate=self;
-    // 显示选中框
-    showList = YES; //默认不显示下拉框
-    selectView.showsSelectionIndicator=YES;
-    [self.view addSubview:selectView];
-    pickerData = seatType;
-}
-
-#pragma mark Picker Date Source Methods
-//返回显示的列数
--(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
-{
-    return 1;
-}
-
-//返回当前列显示的行数
--(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{
-    return [pickerData count];
-}
-
-#pragma mark Picker Delegate Methods
-
-//返回当前行的内容,此处是将数组中数值添加到滚动的那个显示栏上
--(NSString*)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    return [pickerData objectAtIndex:row];
-}
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)componen
-{
-    [self reloadCurrent];
-}
-
-//加载用户的座位的信息
+#pragma mark 加载用户的座位的信息
 -(void)reloadCurrent
 {
     //用户拿过号以后就不请求服务器了
-    if(reservation.accountId==nil){
+    if(reservation.accountId == nil){
         if([Helper isConnectionAvailable]){
             MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             //hud.mode = MBProgressHUDModeText;
             hud.labelText = NSLocalizedString(@"正在加载", nil);
             hud.square = YES;
-            NSString *seatNumber=nil;
-            if(selectView!=nil){
-                NSInteger row =[selectView selectedRowInComponent:0];
-                seatNumber= [pickerData objectAtIndex:row];
-            }else{
-                seatNumber=@"2";
-            }
-            NSString *url = [NSString stringWithFormat:@"%@%@?id=%@&seatNo=%@",[Helper getIp],getCurrentNo_url,merchartID,seatNumber];
-            NSString *response =[QuHaoUtil requestDb:url];
+            NSString *url = [NSString stringWithFormat:@"%@%@?id=%@&seatNo=%@",[Helper getIp],getCurrentNo_url,merchartID,_seatNumber.text];
+            NSString *response = [QuHaoUtil requestDb:url];
             if([response isEqualToString:@""]){
                 //异常处理
                 [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
             }else{
-                reservation.currentNumber=response;
+                reservation.currentNumber = response;
                 
             }
             [hud hide:YES];
         }else{
             [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
         }
-        [_quHaoView reloadData];
+        [self.view setNeedsDisplay];
     }
 }
 
-//设置cell的事件
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+-(void)dropdown:(id)sender{
+    if (_showList) {//如果下拉框已显示，什么都不做
+        return;
+    }else {//如果下拉框尚未显示，则进行显示
+        //把dropdownList放到前面，防止下拉框被别的控件遮住
+        [popView.superview bringSubviewToFront:popView];
+        coverView.hidden = NO;
+        popView.hidden = NO;
+        _showList = YES;//显示下拉框
+
+        CGRect frame = popView.frame;
+        frame.size.height = 0;
+        popView.frame = frame;
+        frame.size.height = 120;
+        [UIView beginAnimations:@"ResizeForKeyBoard" context:nil];
+        [UIView setAnimationCurve:UIViewAnimationCurveLinear];
+        popView.frame = frame;
+        [UIView commitAnimations];
+    }
+}
+
+#pragma mark  popView的代码加载
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    int row = [indexPath row];
-    if (row ==0) {
-        [self dropdown];
+    return [seatType count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"popCell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] ;
+    }
+    
+    cell.textLabel.text = [seatType objectAtIndex:[indexPath row]];
+    cell.textLabel.font = [UIFont systemFontOfSize:13.0f];
+    cell.accessoryType  = UITableViewCellAccessoryNone;
+    cell.selectionStyle = UITableViewCellSelectionStyleGray;
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    cell.backgroundColor = [UIColor clearColor];
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 30;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    _showList = NO;
+    coverView.hidden = YES;
+    popView.hidden = YES;
+    _seatNumber.text = [seatType objectAtIndex:[indexPath row]];
+}
+
+-(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    UITouch *touch = [touches anyObject];
+    CGPoint point = [touch  locationInView:coverView];
+    if (!(point.x >= 100 && point.x<=200 && point.y >= 45 && point.y <=165)) {
+        _showList = NO;
+        coverView.hidden = YES;
+        popView.hidden = YES;
     }
 }
 @end

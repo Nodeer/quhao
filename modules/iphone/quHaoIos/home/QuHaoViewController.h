@@ -13,26 +13,24 @@
 #import "SBJson.h"
 #import "Reservation.h"
 #import "QuHaoUtil.h"
-@interface QuHaoViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource>
+@interface QuHaoViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 {
-    UITableView *_quHaoView;
-    UIPickerView *selectView;//下拉列表
-    NSArray *pickerData;
-    BOOL showList;//是否弹出下拉列表
-
+    BOOL _showList;//是否弹出下拉列表
+    UILabel *_currlabel;
+    UILabel *_seatNumber;
 }
 
 @property (strong,nonatomic) NSString * merchartID;
 @property (strong,nonatomic) NSString * accountID;
 @property (strong,nonatomic) Reservation * reservation;
 @property (strong,nonatomic) NSArray *seatType;
+@property (nonatomic,retain) UITableView *popView;
+@property (nonatomic, retain) UIView * coverView;//黑色半透明遮盖层
 
 //加载用户的座位信息
 -(void)reloadReversion;
 //拿号的请求方法
 -(void)reloadView;
-//下拉列表的初始化
--(void)dropdown;
 //加载用户的座位的信息
 -(void)reloadCurrent;
 @end

@@ -100,12 +100,17 @@
         [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
     }
     
-    if (![accountID isEqualToString:@""]){
-        [self reloadReversion];
-    }
     [self loadNavigationItem];
     [_detailView reloadData];
     [self initMapView];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    if (![accountID isEqualToString:@""] && reservation == nil){
+        [self reloadReversion];
+        [_detailView reloadData];
+    }
 }
 
 //取号的点击事件
@@ -194,13 +199,13 @@
 -(void)reloadReversion
 {
     if([Helper isConnectionAvailable]){
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        hud.labelText = NSLocalizedString(@"正在加载", nil);
-        hud.square = YES;
+//        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//        hud.labelText = NSLocalizedString(@"正在加载", nil);
+//        hud.square = YES;
        
         NSString *url = [NSString stringWithFormat:@"%@%@?accountId=%@&mid=%@",[Helper getIp],getReservation_url, accountID,merchartID];
         NSString *response =[QuHaoUtil requestDb:url];
-        [hud hide:YES];
+//        [hud hide:YES];
         if([response isEqualToString:@""]){
             //异常处理
             [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
@@ -221,7 +226,7 @@
                 }
             }
         }
-        [hud hide:YES];
+        //[hud hide:YES];
     }else{
         //[Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
     }
