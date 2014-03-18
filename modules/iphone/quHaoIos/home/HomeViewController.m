@@ -26,11 +26,11 @@
 -(void)loadNavigationItem
 {
     self.view.backgroundColor=[UIColor whiteColor];
-    CGSize size=CGSizeMake(500,44);
+    CGSize size=CGSizeMake(kDeviceWidth,44);
     [self.navigationController.navigationBar setBackgroundImage:[Helper reSizeImage:@"title.jpg" toSize:size] forBarMetrics:UIBarMetricsDefault];
     
     //添加搜索的按钮
-    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 搜 索" rect:CGRectMake( 0, 7, 50, 35 )];
+    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 搜 索" rect:CGRectMake( 0, 0, 40, 25 )];
     [btnButton addTarget:self action:@selector(clickSearch:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:btnButton];
     self.navigationItem.rightBarButtonItem = buttonItem;
@@ -259,7 +259,8 @@
     UICustomImageView *imageView=[[UICustomImageView alloc] initWithFrame:imgFrame];
     //NSData *imageData = [[NSData alloc]initWithContentsOfURL:[NSURL URLWithString:cate.imgUrl]];
     //UIImage *image=[[UIImage alloc] initWithData:imageData];
-    UIImage *image=[UIImage imageNamed:@"no_logo.png"];
+    NSString *str=[NSString stringWithFormat:@"%@.%@",cate.cateType,@"jpg"];
+    UIImage *image=[UIImage imageNamed:str];
     [imageView setImage:image];
     imageView.cateType=cate.cateType;
     imageView.backgroundColor=[UIColor whiteColor];
@@ -310,6 +311,10 @@
     CGRect imgFrame = CGRectMake(margin, 0, parentFrame.size.width, 70);
     UICustomImageView *imageView=[[UICustomImageView alloc] initWithFrame:imgFrame];
     UIImage *image=[UIImage imageNamed:@"no_logo.png"];
+    if ([[Helper returnUserString:@"showImage"] boolValue]&&![model.imgUrl isEqualToString:@""])
+    {
+        image=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:model.imgUrl]]];
+    }
     [imageView setImage:image];
     imageView.id=model.id;
     imageView.backgroundColor=[UIColor whiteColor];
