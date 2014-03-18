@@ -14,7 +14,7 @@ public class ReservationController extends BaseController{
 		String mid = params.get("mid");
 		Haoma haoma = Haoma.findByMerchantId(mid);
 
-		haoma.updateSelf();
+		//haoma.updateSelf();
 
 		HaomaVO haomaVO = HaomaVO.build(haoma);
 		renderJSON(haomaVO);
