@@ -1,5 +1,7 @@
 package com.withiter.quhao.activity;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -44,21 +46,8 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 	 */
 	private String merchantId;
 
-	/**
-	 * 传递过来的merchant name
-	 */
-	private String merchantName;
-
-	/**
-	 * 根据传递的merchant ID 从服务器查询的数据
-	 */
-	private Merchant merchant;
-
-	/**
-	 * merchant 名字组件
-	 */
-	private TextView merchantNameView;
 	private TextView seatNoView;
+	private TextView selectSeatNoImgView;
 	private TextView currentNumberView;
 	private Button btnGetNo;
 	private TextView beforeYouView;
@@ -85,14 +74,12 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 
 		progress = new ProgressDialogUtil(this, R.string.empty, R.string.querying, false);
 		merchantId = getIntent().getStringExtra("merchantId");
-		merchantName = getIntent().getStringExtra("merchantName");
 
 		// 设置回退
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
 
-		// 获取merchant名称组件
-		merchantNameView = (TextView) findViewById(R.id.merchantName);
 		seatNoView = (TextView) findViewById(R.id.seatNo);
+		selectSeatNoImgView = (TextView) findViewById(R.id.select_seatNo_img);
 		currentNumberView = (TextView) findViewById(R.id.currentNumber);
 		beforeYouView = (TextView) findViewById(R.id.beforeYou);
 
@@ -102,34 +89,8 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 		btnGetNumberLayout = (LinearLayout) findViewById(R.id.btn_GetNumberLayout);
 		btnGetNo = (Button) findViewById(R.id.btn_GetNumber);
 
-		
-		QuhaoLog.d(TAG, "merchantName:" + merchantName);
-		merchantNameView.setText(merchantName);
-		GetNumberActivity.this.findViewById(R.id.loadingbar).setVisibility(View.GONE);
-		GetNumberActivity.this.findViewById(R.id.getNumberLayout).setVisibility(View.VISIBLE);
-
-		getMerchantInfo();
 		getSeatNos();
 	}
-
-	/**
-	 * 根据merchant显示在界面上的handler
-	 */
-	private Handler merchantUpdateHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			if (msg.what == 200) {
-				super.handleMessage(msg);
-
-				if (null != GetNumberActivity.this.merchant) {
-					merchantNameView.setText(GetNumberActivity.this.merchant.name);
-				}
-				GetNumberActivity.this.findViewById(R.id.loadingbar).setVisibility(View.GONE);
-				GetNumberActivity.this.findViewById(R.id.merchantNameLayout).setVisibility(View.VISIBLE);
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			}
-		}
-	};
 
 	/**
 	 * 根据merchant显示在界面上的handler
@@ -165,21 +126,20 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 				myNumberLayout.setVisibility(View.VISIBLE);
 				myNumberView.setText(reservation.myNumber);
 				beforeYouLayout.setVisibility(View.VISIBLE);
-				LinearLayout nahaoSuccessTipLayout = (LinearLayout)findViewById(R.id.nahaoSuccessTipLayout);
-				nahaoSuccessTipLayout.setVisibility(View.VISIBLE);
-				TextView nahaosuccessTipView = (TextView) findViewById(R.id.nahao_success_tip);
+				beforeYouView.setText(reservation.beforeYou);
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				
+				Builder dialog = new AlertDialog.Builder(GetNumberActivity.this);
+				
 				if(Integer.parseInt(reservation.beforeYou)<5)
 				{
-					nahaosuccessTipView.setText(R.string.nahao_success_tip_5_less);
+					dialog.setTitle("温馨提示").setMessage(R.string.nahao_success_tip_5_less).setPositiveButton("确定", null);
 				}
 				else
 				{
-					nahaosuccessTipView.setText(R.string.nahao_success_tip_5_more);
+					dialog.setTitle("温馨提示").setMessage(R.string.nahao_success_tip_5_more).setPositiveButton("确定", null);
 				}
-				
-				
-				beforeYouView.setText(reservation.beforeYou);
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				dialog.show();
 
 			}
 		}
@@ -221,7 +181,7 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 
 					seatNoView.setText(currentPaidui.seatNo);
 					currentNumberView.setText(String.valueOf(currentPaidui.currentNumber));
-					seatNoView.setOnClickListener(GetNumberActivity.this);
+					selectSeatNoImgView.setOnClickListener(GetNumberActivity.this);
 
 					seatNoView.addTextChangedListener(new TextWatcher() {
 						@Override
@@ -377,43 +337,6 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 		}
 	};
 
-	/***
-	 * 获取merchant信息
-	 */
-	private void getMerchantInfo() {
-		Thread merchantThread = new Thread(merchantDetailRunnable);
-		merchantThread.start();
-	}
-
-	/***
-	 * 获取merchant信息的线程
-	 */
-	private Runnable merchantDetailRunnable = new Runnable() {
-
-		@Override
-		public void run() {
-			try {
-				Looper.prepare();
-				QuhaoLog.v(TAG, "get merchant data form server begin");
-				String buf = CommonHTTPRequest.get("merchant?id=" + GetNumberActivity.this.merchantId);
-				if (StringUtils.isNull(buf)) {
-					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				} else {
-					merchant = ParseJson.getMerchant(buf);
-
-					merchantUpdateHandler.obtainMessage(200, merchant).sendToTarget();
-				}
-
-			} catch (Exception e) {
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				e.printStackTrace();
-			}
-			finally
-			{
-				Looper.loop();
-			}
-		}
-	};
 
 	@Override
 	public void onClick(View v) {
@@ -425,7 +348,7 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 		// 设置已点击标志，避免快速重复点击
 		isClick = true;
 		switch (v.getId()) {
-		case R.id.seatNo:
+		case R.id.select_seatNo_img:
 			String str = String.valueOf(seatNoView.getText());
 			for (int i = 0; i < seatNos.length; i++) {
 				if (str == seatNos[i]) {
