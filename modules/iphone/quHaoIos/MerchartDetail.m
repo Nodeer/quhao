@@ -58,6 +58,7 @@
     if (helper.isCookie == YES){
         accountID=helper.getUID;
     }
+    
     if([Helper isConnectionAvailable]){
         
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -116,6 +117,12 @@
 //取号的点击事件
 - (void)clickQuhao:(id)sender
 {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"HH:mm"];
+    NSArray *currentDateArray = [[dateFormatter  stringFromDate:[NSDate date]] componentsSeparatedByString:@":"];
+    NSArray *openArray = [single.openTime componentsSeparatedByString:@":"];
+    NSArray *closeArray = [single.closeTime componentsSeparatedByString:@":"];
+    if(([currentDateArray[0] intValue] > [openArray[0] intValue]|| ([currentDateArray[0] intValue] == [openArray[0] intValue] && [currentDateArray[1] intValue] >= [openArray[1] intValue])) && ([currentDateArray[0] intValue] < [closeArray[0] intValue]|| ([currentDateArray[0] intValue] == [closeArray[0] intValue] && [currentDateArray[1] intValue] <= [closeArray[1] intValue]))){
         Helper *helper=[Helper new];
         if (helper.isCookie == NO) {
             LoginView *loginView = [[LoginView alloc] init];
@@ -133,6 +140,11 @@
             quhao.seatType=single.seatType;
             [self.navigationController pushViewController:quhao animated:YES];
         }
+    }else{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"亲,商家还没营业" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+        [alert show];
+    }
+
 }
 
 - (void)clickToHome:(id)sender
@@ -384,7 +396,7 @@
         _imgView.image= [UIImage imageNamed:@"clock.png"];
         [cell.contentView addSubview:_imgView];
         
-        NSString *value = [NSString stringWithFormat:@"%@%@ 至 %@",@" 营业时间:",single.openTime,single.openTime];
+        NSString *value = [NSString stringWithFormat:@"%@%@ 至 %@",@" 营业时间:",single.openTime,single.closeTime];
         UILabel *sjLabel = [Helper getCustomLabel:value font:14 rect:CGRectMake(35, 5, 260, 30)];
         [cell.contentView addSubview:sjLabel];
         cell.textLabel.font = [UIFont boldSystemFontOfSize:16];
