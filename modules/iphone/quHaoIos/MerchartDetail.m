@@ -357,28 +357,36 @@
         
         UIImageView *_imgView=[[UIImageView alloc] initWithFrame:CGRectZero];
         _imgView.backgroundColor=[UIColor clearColor];
-        _imgView.frame=CGRectMake(8, 7, 21, 26);
+        _imgView.frame=CGRectMake(5, 7, 30, 26);
         _imgView.image= [UIImage imageNamed:@"map.png"];
         [cell.contentView addSubview:_imgView];
         
-        UILabel *mapLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%@",@" 地址:",single.address] font:14 rect:CGRectMake(30, 5, 260, 30)];
+        UILabel *mapLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%@",@" 地址:",single.address] font:14 rect:CGRectMake(35, 5, kDeviceWidth-60, 30)];
         [cell.contentView addSubview:mapLabel];
         [Helper arrowStyle:cell];
     }else if ([indexPath row] == 3) {//电话
         cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"phone.jpg" toSize:CGSizeMake(kDeviceWidth-10,35)]];
         UIImageView *_imgView=[[UIImageView alloc] initWithFrame:CGRectZero];
         _imgView.backgroundColor=[UIColor clearColor];
-        _imgView.frame=CGRectMake(8, 7, 21, 26);
+        _imgView.frame=CGRectMake(5, 7, 30, 26);
         _imgView.image= [UIImage imageNamed:@"dh.png"];
         [cell.contentView addSubview:_imgView];
         
         NSString *value = [NSString stringWithFormat:@"%@%@",@" 电话:",[single.telephone objectAtIndex:0]];
-        UILabel *phLabel = [Helper getCustomLabel:value font:14 rect:CGRectMake(30, 5, 260, 30)];
+        UILabel *phLabel = [Helper getCustomLabel:value font:14 rect:CGRectMake(35, 5, 260, 30)];
         [cell.contentView addSubview:phLabel];
         [Helper arrowStyle:cell];        
     }else if ([indexPath row] == 4){
         cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"time.jpg"]];
-        cell.textLabel.text =[NSString stringWithFormat:@"%@%@ 至 %@",@"营业时间:",single.openTime,single.openTime];
+        UIImageView *_imgView=[[UIImageView alloc] initWithFrame:CGRectZero];
+        _imgView.backgroundColor=[UIColor clearColor];
+        _imgView.frame=CGRectMake(5, 7, 30, 26);
+        _imgView.image= [UIImage imageNamed:@"clock.png"];
+        [cell.contentView addSubview:_imgView];
+        
+        NSString *value = [NSString stringWithFormat:@"%@%@ 至 %@",@" 营业时间:",single.openTime,single.openTime];
+        UILabel *sjLabel = [Helper getCustomLabel:value font:14 rect:CGRectMake(35, 5, 260, 30)];
+        [cell.contentView addSubview:sjLabel];
         cell.textLabel.font = [UIFont boldSystemFontOfSize:16];
     }else if ([indexPath row] == 5){
         cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tj.jpg"]];
