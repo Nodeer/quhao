@@ -16,10 +16,10 @@
     @private
     NSMutableArray *_merchartsArray;
     BOOL _reloading;
-    int prevItemCount;
+    int _prevItemCount;
     //上拉刷新用的页码
-    int pageIndex;
-    
+    int _pageIndex;
+    BOOL _isOpinion;
     //上拉刷新的view
     MJRefreshFooterView *_footer;
 }

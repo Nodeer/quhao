@@ -7,34 +7,54 @@
 //
 
 #import "NearViewController.h"
+#define SearchKey @"7e5d17f015e4c22936fc3fd7341a903d"
 
 @interface NearViewController ()
 
 @property (nonatomic, strong) MAPointAnnotation *centerPointAnnotation;
-@property (nonatomic, strong) MAPoiSearchOption *poiSearchOption;
+//@property (nonatomic, strong) MAPoiSearchOption *poiSearchOption;
+@property (nonatomic) AMapSearchType searchType;
+
 @end
 
 @implementation NearViewController
 @synthesize centerPointAnnotation = _centerPointAnnotation;
-@synthesize poiSearchOption = _poiSearchOption;
+//@synthesize poiSearchOption = _poiSearchOption;
+@synthesize searchType = _searchType;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)init
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
+    self = [super init];
+    if (self)
+    {
+        [MAMapServices sharedServices].apiKey = SearchKey;
+        self.searchType = AMapSearchType_PlaceAround;
         self.title=@"周边美食";
         self.tabBarItem.image = [UIImage imageNamed:@"near"];
-        
+        _isOpinion = NO;
         [self initMapView];
-
     }
+    
     return self;
 }
+
+//- (void)initMapView
+//{
+//    self.ownMapView = [[MAMapView alloc] initWithFrame:self.view.bounds];
+//    self.ownMapView.showsUserLocation = YES;
+//    //self.search = [[MASearch alloc] initWithSearchKey:SearchKey Delegate:self];
+//}
+
 - (void)initMapView
 {
     self.ownMapView = [[MAMapView alloc] initWithFrame:self.view.bounds];
     self.ownMapView.showsUserLocation = YES;
-    self.search = [[MASearch alloc] initWithSearchKey:SearchKey Delegate:self];
+    
+    
+    self.ownMapView.visibleMapRect = MAMapRectMake(220880104, 101476980, 272496, 466656);
+    
+    self.search = [[AMapSearchAPI alloc] initWithSearchKey:[MAMapServices sharedServices].apiKey Delegate:self];
+    self.search.delegate = self;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -44,9 +64,9 @@
     
     _merchartsArray = [[NSMutableArray alloc] initWithCapacity:20];
     _reloading = NO;
-    pageIndex=1;
+    _pageIndex=1;
     //注册
-    [self.tableView registerClass:[NearCell class] forCellReuseIdentifier:@"cell"];
+    [self.tableView registerClass:[NearCell class] forCellReuseIdentifier:@"NearCell"];
     if([Helper isConnectionAvailable]){
         if([_merchartsArray count]==0){
             
@@ -73,8 +93,8 @@
     MJRefreshFooterView *footer = [MJRefreshFooterView footer];
     footer.scrollView = self.tableView;
     footer.beginRefreshingBlock = ^(MJRefreshBaseView *refreshView) {
-        prevItemCount = [_merchartsArray count];
-        ++pageIndex;
+        _prevItemCount = [_merchartsArray count];
+        ++_pageIndex;
         [self refreshAction];
         [self performSelector:@selector(doneWithView:) withObject:refreshView afterDelay:1.0];
         
@@ -116,7 +136,7 @@
 {
     //if ([_merchartsArray count] > 0) {
     self.tableView.separatorStyle =UITableViewCellSeparatorStyleSingleLine;
-    static NSString *cellIdentify=@"cell";
+    static NSString *cellIdentify=@"NearCell";
     NearCell *cell=[tableView dequeueReusableCellWithIdentifier:cellIdentify];
     //检查视图中有没闲置的单元格
     if(cell==nil){
@@ -141,6 +161,19 @@
         if (n&&n.id!=nil)
         {
             [self pushMerchartDetail:n andNavController:self.navigationController];
+        }else{
+            //当前只提交数据库一次
+            if (!_isOpinion) {
+                NSString *url = [NSString stringWithFormat:@"%@%@%@",[Helper getIp],updateGaodeToMerchant,n.pguid];
+                NSString *response =[QuHaoUtil requestDb:url];
+                if(![response isEqualToString:@""]){
+                    [Helper showHUD2:@"暂时未开放！" andView:self.view andSize:100];
+                }
+                _isOpinion=YES;
+            }else{
+                
+                [Helper showHUD2:@"暂时未开放！" andView:self.view andSize:100];
+            }
         }
     }
 }
@@ -152,68 +185,125 @@
     mDetail.tabBarItem.image = [UIImage imageNamed:@"detail"];
     mDetail.hidesBottomBarWhenPushed=YES;
     [navController pushViewController:mDetail animated:YES];
-    
 }
 
 
 - (void)poiRequestCoordinate:(CLLocationCoordinate2D)coordinate
 {
-    self.poiSearchOption = [[MAPoiSearchOption alloc] init];
+    AMapPlaceSearchRequest *request = [[AMapPlaceSearchRequest alloc] init];
     
-    self.poiSearchOption.config = @"BELSBXY";
-    self.poiSearchOption.encode = @"UTF-8";
-    self.poiSearchOption.range=@"5000";
-    self.poiSearchOption.naviflag=@"1";
-    self.poiSearchOption.batch=[NSString stringWithFormat:@"%d",pageIndex];
-    self.poiSearchOption.number=@"10";
+    request.searchType = AMapSearchType_PlaceAround;
     
-    self.poiSearchOption.cenX   = [NSString stringWithFormat:@"%f", coordinate.longitude];
-    self.poiSearchOption.cenY   = [NSString stringWithFormat:@"%f", coordinate.latitude];
+    request.location = [AMapGeoPoint locationWithLatitude:coordinate.latitude longitude:coordinate.longitude];
+    request.keywords = @"餐饮";
+    request.radius = @"3000";
+    request.page = _pageIndex;
+    request.sortrule = 1;
+    request.offset=20;
+    //返回扩展信息
+    //request.requireExtension = YES;
     
-    [self.search poiSearchWithOption:self.poiSearchOption];
+    [self.search AMapPlaceSearch:request];
+//前一版本
+//    self.poiSearchOption = [[MAPoiSearchOption alloc] init];
+//    
+//    self.poiSearchOption.config = @"BELSBXY";
+//    self.poiSearchOption.encode = @"UTF-8";
+//    self.poiSearchOption.range=@"3000";
+//    self.poiSearchOption.sr=@"1";
+//    self.poiSearchOption.batch=[NSString stringWithFormat:@"%d",pageIndex];
+//    self.poiSearchOption.number=@"10";
+//    
+//    self.poiSearchOption.cenX   = [NSString stringWithFormat:@"%f", coordinate.longitude];
+//    self.poiSearchOption.cenY   = [NSString stringWithFormat:@"%f", coordinate.latitude];
+//    
+//    [self.search poiSearchWithOption:self.poiSearchOption];
 }
 
-#pragma mark - POI delegate
+#pragma mark - AMapSearchDelegate
 
--(void)poiSearch:(MAPoiSearchOption *)poiSearchOption Result:(MAPoiSearchResult *)result
+/* POI 搜索回调. */
+- (void)onPlaceSearchDone:(AMapPlaceSearchRequest *)request response:(AMapPlaceSearchResponse *)respons
 {
-    if (self.poiSearchOption != poiSearchOption)
+    if (request.searchType != self.searchType)
     {
         return;
     }
-    [result.pois enumerateObjectsUsingBlock:^(MAPOI *poi, NSUInteger idx, BOOL *stop) {
+    if (respons.pois.count == 0)
+    {
+        return;
+    }
+    
+    //NSMutableArray *poiAnnotations = [NSMutableArray arrayWithCapacity:respons.pois.count];
+    
+    [respons.pois enumerateObjectsUsingBlock:^(AMapPOI *obj, NSUInteger idx, BOOL *stop) {
 
+        //[poiAnnotations addObject:[[POIAnnotation alloc] initWithPOI:obj]];
         MerchartModel *model=[[MerchartModel alloc]init];
-        model.name=poi.name;
-        float dis=[poi.distance floatValue]/1000;
-        model.distance=[NSString stringWithFormat:@"%.2fkm",dis];
-        model.pguid=poi.pguid;
-        model.imgUrl=poi.url;
-        NSString * result=[self getMerchart:poi.pguid ];
+        model.name=obj.name;
+        if (obj.distance<=1000) {
+            model.distance=[NSString stringWithFormat:@"%dm",obj.distance];
+        } else {
+            float dis=obj.distance/1000;
+            model.distance=[NSString stringWithFormat:@"%.1fkm",dis];
+        }
+        model.pguid=obj.uid;
+        model.imgUrl=@"";
+        NSString * result=[self getMerchart:obj.uid ];
         if(![result isEqualToString:@""]){
             //异常处理
             [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
             model.id=result;
         }
-
-//        NSLog(@"poi name : %@",poi.name);
-//        //NSLog(@"poi address : %@",poi.address);
-//        NSLog(@"poi type : %@",poi.type);
-//        NSLog(@"poi url : %@",poi.url);
-//        NSLog(@"poi citycode : %@",poi.code);
-//       // NSLog(@"poi pguid: %@",poi.pguid);
-//        //NSLog(@"poi tel: %@",poi.tel);
-//        //NSLog(@"poi x: %@",poi.x);
-//        //NSLog(@"poi y: %@",poi.y);
-//        NSLog(@"poi distance: %@",poi.distance);
-//        NSLog(@"poi match: %@",poi.match);
-//        NSLog(@"poi code: %@",poi.code);
         [_merchartsArray addObject:model];
+        
     }];
-    prevItemCount = [_merchartsArray count];
-
+    _prevItemCount = [_merchartsArray count];
+    
     [self.tableView reloadData];
 }
+
+//#pragma mark - POI delegate
+//
+//-(void)poiSearch:(MAPoiSearchOption *)poiSearchOption Result:(MAPoiSearchResult *)result
+//{
+//    if (self.poiSearchOption != poiSearchOption)
+//    {
+//        return;
+//    }
+//    [result.pois enumerateObjectsUsingBlock:^(MAPOI *poi, NSUInteger idx, BOOL *stop) {
+//
+//        MerchartModel *model=[[MerchartModel alloc]init];
+//        model.name=poi.name;
+//        float dis=[poi.distance floatValue]/1000;
+//        model.distance=[NSString stringWithFormat:@"%.2fkm",dis];
+//        model.pguid=poi.pguid;
+//        model.imgUrl=poi.url;
+//        NSString * result=[self getMerchart:poi.pguid ];
+//        if(![result isEqualToString:@""]){
+//            //异常处理
+//            [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+//            model.id=result;
+//        }
+//
+////        NSLog(@"poi name : %@",poi.name);
+////        //NSLog(@"poi address : %@",poi.address);
+////        NSLog(@"poi type : %@",poi.type);
+////        NSLog(@"poi url : %@",poi.url);
+////        NSLog(@"poi citycode : %@",poi.code);
+////       // NSLog(@"poi pguid: %@",poi.pguid);
+////        //NSLog(@"poi tel: %@",poi.tel);
+////        //NSLog(@"poi x: %@",poi.x);
+////        //NSLog(@"poi y: %@",poi.y);
+////        NSLog(@"poi distance: %@",poi.distance);
+////        NSLog(@"poi match: %@",poi.match);
+////        NSLog(@"poi code: %@",poi.code);
+//        [_merchartsArray addObject:model];
+//    }];
+//    prevItemCount = [_merchartsArray count];
+//
+//    [self.tableView reloadData];
+//}
 
 #pragma mark - Action Handle
 
@@ -226,8 +316,8 @@
     self.centerPointAnnotation.coordinate = self.ownMapView.userLocation.coordinate;
     self.centerPointAnnotation.title = @"我的位置";
     [self.ownMapView addAnnotation:self.centerPointAnnotation];
-    NSLog(@"%f",self.centerPointAnnotation.coordinate.latitude);
-    NSLog(@"%f",self.centerPointAnnotation.coordinate.longitude);
+    //NSLog(@"%f",self.centerPointAnnotation.coordinate.latitude);
+    //NSLog(@"%f",self.centerPointAnnotation.coordinate.longitude);
 
     [self poiRequestCoordinate:self.centerPointAnnotation.coordinate];
 }
