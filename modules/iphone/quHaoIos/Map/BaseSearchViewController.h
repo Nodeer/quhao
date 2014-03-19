@@ -7,12 +7,10 @@
 //
 
 #import "BaseMapViewController.h"
-#import "MASearchKit.h"
+#import <AMapSearchKit/AMapSearchAPI.h>
 
-#define SearchKey @"7e5d17f015e4c22936fc3fd7341a903d"
-
-@interface BaseSearchViewController : UITableViewController<MAMapViewDelegate,MASearchDelegate>
-@property (nonatomic, strong) MASearch *search;
+@interface BaseSearchViewController : UITableViewController<MAMapViewDelegate,AMapSearchDelegate>
+@property (nonatomic, strong) AMapSearchAPI *search;
 @property (nonatomic, strong) MAMapView *ownMapView;
 
 @end

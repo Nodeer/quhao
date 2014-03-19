@@ -7,7 +7,7 @@
 //
 
 #import "BaseMapViewController.h"
-#import "MASearchKit.h"
+#import <AMapSearchKit/AMapSearchAPI.h>
 #import "Helper.h"
 @interface MerchartLocationController : BaseMapViewController
 - (void)refreshAction;

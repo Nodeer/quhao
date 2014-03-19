@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MAMapKit.h"
+#import <MAMapKit/MAMapKit.h>
 #define kBMLineWidthDefault 5.f
 
 @interface BaseMapViewController : UIViewController<MAMapViewDelegate>
