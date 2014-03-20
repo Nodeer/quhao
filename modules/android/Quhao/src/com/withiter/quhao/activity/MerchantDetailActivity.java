@@ -161,6 +161,31 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		currentNumberView = (TextView) info.findViewById(R.id.currentNumber);
 		initView();
 	}
+	
+	private Handler paiduiConditionLayoutHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.what == 200) {
+				super.handleMessage(msg);
+				
+				paiduiConditionLayout.setVisibility(View.VISIBLE);
+			}
+
+		}
+
+	};
+	
+	private Handler currentQuHaoLayoutHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.what == 200) {
+				super.handleMessage(msg);
+				currentQuHaoLayout.setVisibility(View.GONE);
+			}
+
+		}
+
+	};
 
 	/**
 	 * 根据帐号ID，和merchant ID 获取当前的号码， 如果用户已经取号， 则显示当前号码， 如果没有取号，则不显示
@@ -179,7 +204,9 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				String accountId = QHClientApplication.getInstance().accountInfo.accountId;
 				String buf = CommonHTTPRequest.get("getReservations?accountId=" + accountId + "&mid=" + merchantId);
 				if (StringUtils.isNull(buf) || "[]".equals(buf)) {
-					paiduiConditionLayout.setVisibility(View.VISIBLE);
+					
+					paiduiConditionLayoutHandler.sendEmptyMessage(200);
+					currentQuHaoLayoutHandler.sendEmptyMessage(200);
 					Thread getSeatNosThread = new Thread(getSeatNosRunnable);
 					getSeatNosThread.start();
 				} else {
@@ -251,6 +278,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				QuhaoLog.v(LOGTAG, "get seat numbers data form server begin, buf is :" + buf);
 				// + GetNumberActivity.this.merchantId);
 				if (StringUtils.isNull(buf)) {
+					paiduiConditionLayoutHandler.sendEmptyMessage(200);
 					progressSeatNos.closeProgress();
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
@@ -277,6 +305,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
+				paiduiConditionLayout.setVisibility(View.VISIBLE);
 				if (null != haoma && null != haoma.paiduiList && haoma.paiduiList.size() > 0) {
 
 					seatNos = new String[haoma.paiduiList.size()];
@@ -406,6 +435,9 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				QuhaoLog.v(LOGTAG, "MerchantDetailActivity.this.merchantId : " + merchantId + ",account ID : " + accountId);
 				String buf = CommonHTTPRequest.get("merchantNew?id=" + merchantId + "&accountId=" + accountId);
 				if (StringUtils.isNull(buf)) {
+					progressDialogUtil.closeProgress();
+					paiduiConditionLayoutHandler.sendEmptyMessage(200);
+					currentQuHaoLayoutHandler.sendEmptyMessage(200);
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
 					merchant = ParseJson.getMerchant(buf);
@@ -495,11 +527,11 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					TextView commentContent = (TextView) critiqueLayout.findViewById(R.id.comment_content);
 					TextView commentDate = (TextView) info.findViewById(R.id.comment_date);
 
-					commentRenjun.setText(getString(R.string.renjun) + m.commentAverageCost);
-					commentFuwu.setText(getString(R.string.fuwu) + String.valueOf(m.commentFuwu));
-					commentHuanjing.setText(getString(R.string.huanjing) + String.valueOf(m.commentHuanjing));
-					commentKouwei.setText(getString(R.string.kouwei) + String.valueOf(m.commentKouwei));
-					commentXingjiabi.setText(getString(R.string.xingjiabi) + String.valueOf(m.commentXingjiabi));
+					commentRenjun.setText(getString(R.string.renjun) + "  " +m.commentAverageCost);
+					commentFuwu.setText(getString(R.string.fuwu_4_space) + "  " + String.valueOf(m.commentFuwu));
+					commentHuanjing.setText(getString(R.string.huanjing_4_space) + "  " + String.valueOf(m.commentHuanjing));
+					commentKouwei.setText(getString(R.string.kouwei_4_space) + "  " + String.valueOf(m.commentKouwei));
+					commentXingjiabi.setText(getString(R.string.xingjiabi) + "  " + String.valueOf(m.commentXingjiabi));
 					commentContent.setText(m.commentContent);
 					commentDate.setText(m.commentDate);
 
@@ -595,7 +627,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
-
+				
 				currentQuHaoLayout.setVisibility(View.VISIBLE);
 				LinearLayout.LayoutParams reservationsParams = (LayoutParams) reservationListView.getLayoutParams();
 
@@ -812,8 +844,17 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		return false;
 	}
 
+	
 	@Override
 	public void finish() {
+		if(null != progressDialogUtil)
+		{
+			progressDialogUtil.closeProgress();
+		}
+		if(null != progressSeatNos)
+		{
+			progressSeatNos.closeProgress();
+		}
 		super.finish();
 		QuhaoLog.i(LOGTAG, LOGTAG + " finished");
 	}
@@ -827,11 +868,30 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 
 	@Override
 	public void onPause() {
+		if(null != progressDialogUtil)
+		{
+			progressDialogUtil.closeProgress();
+		}
+		if(null != progressSeatNos)
+		{
+			progressSeatNos.closeProgress();
+		}
 		super.onPause();
 		QuhaoLog.i(LOGTAG, LOGTAG + " on pause");
 		if (backClicked) {
 			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 		}
 	}
+	
+	@Override
+	protected void onStop() {
+		
+		super.onStop();
+	}
 
+	@Override
+	protected void onDestroy() {
+		
+		super.onDestroy();
+	}
 }

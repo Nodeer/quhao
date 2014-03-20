@@ -81,10 +81,6 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 		btnPerson.setOnClickListener(goPersonCenter(this));
 		btnMore.setOnClickListener(goMore(this));
 
-//		mAMapLocationManager = LocationManagerProxy.getInstance(this);
-//		mAMapLocationManager.requestLocationUpdates(
-//				LocationProviderProxy.AMapNetwork, 1000, 10, this);
-
 		merchantsListView = (ListView) this
 				.findViewById(R.id.merchantsListView);
 
@@ -94,6 +90,20 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 		bt.setOnClickListener(this);
 		merchantsListView.addFooterView(moreView);
 		merchantsListView.setNextFocusDownId(R.id.merchantsListView);
+		
+		// TODO add default view here
+		if (!networkOK) {
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			Builder dialog = new AlertDialog.Builder(NearbyActivity.this);
+			dialog.setTitle("温馨提示").setMessage("Wifi/蜂窝网络未打开，或者网络情况不是很好哟").setPositiveButton("确定", null);
+			dialog.show();
+			
+			return;
+		}
+//		mAMapLocationManager = LocationManagerProxy.getInstance(this);
+//		mAMapLocationManager.requestLocationUpdates(
+//				LocationProviderProxy.AMapNetwork, 1000, 10, this);
+
 		 Thread queryMerchantsThread = new Thread(new Runnable() {
 		
 		 @Override

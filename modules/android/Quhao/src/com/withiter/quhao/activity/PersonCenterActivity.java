@@ -97,6 +97,16 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 		loginBtn.setOnClickListener(this);
 		regBtn.setOnClickListener(this);
 
+		// TODO add default view here
+		if (!networkOK) {
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			Builder dialog = new AlertDialog.Builder(PersonCenterActivity.this);
+			dialog.setTitle("温馨提示").setMessage("Wifi/蜂窝网络未打开，或者网络情况不是很好哟").setPositiveButton("确定", null);
+			dialog.show();
+			
+			return;
+		}
+		
 		// other activity will invoke this method
 		refreshUI();
 	}

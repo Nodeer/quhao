@@ -58,21 +58,12 @@ public class MainActivity extends QuhaoBaseActivity {
 		setContentView(R.layout.main_layout);
 		super.onCreate(savedInstanceState);
 
-		// TODO add default view here
-		if (!networkOK) {
-			Builder dialog = new AlertDialog.Builder(MainActivity.this);
-			dialog.setTitle("温馨提示").setMessage("Wifi/蜂窝网络未打开，或者网络情况不是很好哟").setPositiveButton("确定", null);
-			dialog.show();
-			return;
-		}
-
-		topMerchantsGird = (GridView) findViewById(R.id.topMerchants);
-
-		// top merchant function
-		topMerchants = new ArrayList<TopMerchant>();
-		getTopMerchantsFromServerAndDisplay();
-		topMerchantsGird.setOnItemClickListener(topMerchantClickListener);
-
+		// bind menu button function
+		btnCategory.setOnClickListener(goCategory(this));
+		btnNearby.setOnClickListener(goNearby(this));
+		btnPerson.setOnClickListener(goPersonCenter(this));
+		btnMore.setOnClickListener(goMore(this));
+		
 		// search function
 		searchTextView = (EditText) findViewById(R.id.edit_search);
 		searchTextView.clearFocus(); 
@@ -80,17 +71,30 @@ public class MainActivity extends QuhaoBaseActivity {
 		InputMethodManager inputMethodManager = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
 		inputMethodManager.hideSoftInputFromWindow(searchTextView.getWindowToken(), 0);
 
+		// top merchant function
+		topMerchants = new ArrayList<TopMerchant>();
+		topMerchantsGird = (GridView) findViewById(R.id.topMerchants);
+		topMerchantsGird.setOnItemClickListener(topMerchantClickListener);
+		
 		// all categories
 		categorys = new ArrayList<Category>();
 		categorysGird = (GridView) findViewById(R.id.categorys);
-		getCategoriesFromServerAndDisplay();
+		
 		categorysGird.setOnItemClickListener(categorysClickListener);
+		// TODO add default view here
+		if (!networkOK) {
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			Builder dialog = new AlertDialog.Builder(MainActivity.this);
+			dialog.setTitle("温馨提示").setMessage("Wifi/蜂窝网络未打开，或者网络情况不是很好哟").setPositiveButton("确定", null);
+			dialog.show();
+			
+			return;
+		}
 
-		// bind menu button function
-		btnCategory.setOnClickListener(goCategory(this));
-		btnNearby.setOnClickListener(goNearby(this));
-		btnPerson.setOnClickListener(goPersonCenter(this));
-		btnMore.setOnClickListener(goMore(this));
+		getTopMerchantsFromServerAndDisplay();
+		getCategoriesFromServerAndDisplay();
+		
+
 	}
 
 	/**

@@ -29,8 +29,11 @@
 	<string name="zero">0</string>
 	<string name="xingjiabi">性价比:</string>
 	<string name="kouwei">口味:</string>
+	<string name="kouwei_4_space">口&#160;&#160;&#160;&#160;味:</string>
 	<string name="huanjing">环境:</string>
+	<string name="huanjing_4_space">环&#160;&#160;&#160;&#160;境:</string>
 	<string name="fuwu">服务:</string>
+	<string name="fuwu_4_space">服&#160;&#160;&#160;&#160;务:</string>
 	<string name="quhaoqingkuang">取号情况:</string>
 	<string name="search_merchant">搜索 - 美食</string>
 	<string name="loading">载入中&#8230;&#8230;&#8230;</string>
@@ -43,6 +46,7 @@
 	<string name="attention">关&#160;&#160;&#160;注</string>
 	<string name="cancel_attention">取消关注</string>
 	<string name="paidui_condition">排队情况</string>
+	<string name="no_description">暂无描述</string>
 	<!-- 详细页面 -->
 	
     <!-- 提示信息 -->
@@ -95,7 +99,7 @@
 	
 	<!-- menu bar -->
 	<string name="menu_category_list">商家列表</string>
-	<string name="menu_nearby_merchant">附近商家</string>
+	<string name="menu_nearby_merchant">周边美食</string>
 	<string name="menu_person_center">个人中心</string>
 	<string name="menu_more">更多</string>
 	<!-- menu bar -->
