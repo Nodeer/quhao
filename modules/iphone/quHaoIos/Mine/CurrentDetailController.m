@@ -24,7 +24,6 @@
 
 -(void)loadView
 {
-    self.reservation = [[Reservation alloc] init];
     
     UIView  *view=[[UIView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
     self.view=view;
@@ -143,6 +142,7 @@
                 [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
             }else{
                 if(jsonObjects.count!=0){
+                    self.reservation = [[Reservation alloc] init];
                     reservation.id=[[jsonObjects objectAtIndex:0] objectForKey:@"id"];
                     reservation.accountId=[[jsonObjects objectAtIndex:0] objectForKey:@"accountId"];
                     reservation.seatNumber=[[jsonObjects objectAtIndex:0]  objectForKey:@"seatNumber"];
@@ -225,7 +225,7 @@
             UILabel *nameLabel = [Helper getCustomLabel:@"  取号情况:" font:16 rect:CGRectMake(0, 5, 80, 15)];
             [cell.contentView addSubview:nameLabel];
             
-            if(reservation.myNumber==nil||[reservation.myNumber isEqualToString:@""]){
+            if(reservation == nil){
                 UILabel *seatLabel = [Helper getCustomLabel:@"   暂无信息" font:15 rect:CGRectMake(0, 32, 100, 35)];
                 seatLabel.textAlignment = NSTextAlignmentCenter;
                 [cell.contentView addSubview:seatLabel];
@@ -272,7 +272,7 @@
             [Helper arrowStyle:cell];
         }else if ([indexPath row] == 4){
             cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"time.jpg"]];
-            cell.textLabel.text =[NSString stringWithFormat:@"%@%@至%@",@"营业时间:",single.openTime,single.openTime];
+            cell.textLabel.text =[NSString stringWithFormat:@"%@%@至%@",@"营业时间:",single.openTime,single.closeTime];
             cell.textLabel.font = [UIFont boldSystemFontOfSize:16];
         }else if ([indexPath row] == 5){
             cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tj.jpg"]];
