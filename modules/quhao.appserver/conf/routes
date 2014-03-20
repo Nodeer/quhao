@@ -39,6 +39,7 @@ GET     /getCurrentNo						MerchantController.getCurrentNo
 GET     /getReservations					MerchantController.getReservations
 GET     /cancel								MerchantController.cancel
 GET		/merchantNew					    MerchantController.merchantNew
+GET		/querytMerchantDetail				MerchantController.querytMerchantDetail
 
 # Accounts
 GET		/accounts							rsecure.Secure.accounts

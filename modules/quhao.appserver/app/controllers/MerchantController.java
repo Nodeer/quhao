@@ -4,8 +4,10 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -51,7 +53,7 @@ public class MerchantController extends BaseController {
 
 	/**
 	 * Interception any caller on this controller, will first invoke this method
-	 */
+	 
 	@Before
 	static void checkAuthentification() {
 		boolean mobileAgent = false;
@@ -82,7 +84,7 @@ public class MerchantController extends BaseController {
 			renderJapidWith("japidviews.backend.merchant.MerchantManagementController.index");
 		}
 	}
-
+*/
 	/**
 	 * 返回所有分类
 	 */
@@ -171,6 +173,78 @@ public class MerchantController extends BaseController {
 			}
 		}
 		renderJSON(MerchantVO.build(m, c,isAttention));
+	}
+	
+	/**
+	 * 返回商家详细信息（增加了用户是否关注商家）
+	 * 
+	 * @param id 商家id
+	 * @param accountId 用户id
+	 */
+	public static void querytMerchantDetail(String merchantId,String accountId,String isLogined) {
+		
+		Map<String, Object> merchantDetails = new HashMap<String, Object>();
+		Merchant m = Merchant.findByMid(merchantId);
+		Comment c = Comment.latestOne(merchantId);
+		if (c == null) {
+			c = new Comment();
+			c.mid = merchantId;
+		}
+		
+		boolean isAttention=false;
+		if(!accountId.equals("")){
+			Attention attention =Attention.getAttentionById(merchantId, accountId);
+			if(attention==null){
+				isAttention=false;
+			}else{
+				isAttention=attention.flag;
+			}
+		}
+		
+		if(null != m)
+		{
+			merchantDetails.put("merchant", MerchantVO.build(m, c,isAttention));
+		}
+		
+		if(null != m && m.enable && "false".equals(isLogined))
+		{
+			Haoma haoma = Haoma.findByMerchantId(m.id());
+
+			//haoma.updateSelf();
+
+			HaomaVO haomaVO = HaomaVO.build(haoma);
+			merchantDetails.put("haomaVO", haomaVO);
+		}
+		
+		if(null != m && m.enable && "true".equals(isLogined))
+		{
+			List<ReservationVO> rvos = new ArrayList<ReservationVO>();
+			Haoma haoma = Haoma.findByMerchantId(merchantId);
+			HaomaVO haomaVO = HaomaVO.build(haoma);
+			merchantDetails.put("haomaVO", haomaVO);
+			
+			ReservationVO rvo = null;
+			List<Reservation> reservations = Reservation.getReservationsByMerchantIdAndAccountId(accountId, merchantId);
+			if (null != reservations && reservations.size() > 0) {
+				for (Reservation r : reservations) {
+					Paidui paidui = haoma.haomaMap.get(r.seatNumber);
+
+					rvo = new ReservationVO();
+
+					int canclCount = (int) Reservation.findCountBetweenCurrentNoAndMyNumber(merchantId, paidui.currentNumber, r.myNumber, r.seatNumber);
+					rvo.beforeYou = r.myNumber - (paidui.currentNumber + canclCount);
+					rvo.currentNumber = paidui.currentNumber;
+					
+					rvo.build(r);
+					rvos.add(rvo);
+				}
+				
+				merchantDetails.put("rvos", rvos);
+			}
+
+		}
+		
+		renderJSON(merchantDetails);
 	}
 	
 	/**
