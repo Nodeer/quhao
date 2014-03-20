@@ -50,6 +50,7 @@
 #define openService @"/openService"
 #define cancelQuhao @"/cancel"
 #define finishQuhao @"/finish"
+#define updateGaodeToMerchant @"/updateGaodeToMerchant?poiId="
 
 #define AppID @"1.0.0"
 

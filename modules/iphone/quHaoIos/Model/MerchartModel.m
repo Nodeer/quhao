@@ -33,5 +33,6 @@
 @synthesize commentContent;
 @synthesize isAttention;
 @synthesize enable;
+@synthesize reservationId;
 
 @end

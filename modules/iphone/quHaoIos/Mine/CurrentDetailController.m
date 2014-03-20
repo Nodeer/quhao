@@ -225,7 +225,7 @@
             UILabel *nameLabel = [Helper getCustomLabel:@"  取号情况:" font:16 rect:CGRectMake(0, 5, 80, 15)];
             [cell.contentView addSubview:nameLabel];
             
-            if(reservation.myNumber==nil||reservation.myNumber==@""){
+            if(reservation.myNumber==nil||[reservation.myNumber isEqualToString:@""]){
                 UILabel *seatLabel = [Helper getCustomLabel:@"   暂无信息" font:15 rect:CGRectMake(0, 32, 100, 35)];
                 seatLabel.textAlignment = NSTextAlignmentCenter;
                 [cell.contentView addSubview:seatLabel];

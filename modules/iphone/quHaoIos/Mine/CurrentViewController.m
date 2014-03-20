@@ -49,13 +49,13 @@
     [HUD showAnimated:YES whileExecutingBlock:^{
         [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],currentMerchant_url,self.accouId] withPage:_pageIndex];
         [self.tableView reloadData];
-        sleep(3);
     } completionBlock:^{
         //操作执行完后取消对话框
         [HUD removeFromSuperview];
+        [self addFooter];
     }];
-    [self addFooter];
 }
+
 //上拉加载更多
 - (void)addFooter
 {
