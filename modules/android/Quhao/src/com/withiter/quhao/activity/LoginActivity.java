@@ -310,27 +310,28 @@ public class LoginActivity extends QuhaoBaseActivity {
 									if (StringUtils.isNull(buf) || "[]".equals(buf)) {
 										unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 										intent.setClass(LoginActivity.this, GetNumberActivity.class);
+										startActivity(intent);
 									} else {
 										List<ReservationVO> rvos = ParseJson.getReservations(buf);
 										if(null != rvos && !rvos.isEmpty())
 										{
 											Toast.makeText(LoginActivity.this, "已有该商家的排队号吗！", Toast.LENGTH_LONG).show();
-											intent.setClass(LoginActivity.this, MerchantDetailActivity.class);
+											LoginActivity.this.onBackPressed();
 										}
 										else
 										{
 											intent.setClass(LoginActivity.this, GetNumberActivity.class);
+											startActivity(intent);
 										}
 									}
-									startActivity(intent);
+									
 									progressLogin.closeProgress();
 									LoginActivity.this.finish();
 								} catch (Exception e) {
-									Intent intent = new Intent();
-									intent.setClass(LoginActivity.this, MerchantDetailActivity.class);
-									startActivity(intent);
+									
 									progressLogin.closeProgress();
 									Toast.makeText(LoginActivity.this, "网络异常，请稍候取号", Toast.LENGTH_LONG).show();
+									LoginActivity.this.onBackPressed();
 									LoginActivity.this.finish();
 								}
 								finally

@@ -46,10 +46,7 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 	protected Handler unlockHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what == UNLOCK_CLICK) {
-				if(null != progressDialogUtil)
-				{
-					progressDialogUtil.closeProgress();
-				}
+				
 				isClick = false;
 			}
 		}

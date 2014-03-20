@@ -23,6 +23,7 @@ import com.withiter.quhao.vo.Credit;
 import com.withiter.quhao.vo.Haoma;
 import com.withiter.quhao.vo.LoginInfo;
 import com.withiter.quhao.vo.Merchant;
+import com.withiter.quhao.vo.MerchantDetailVO;
 import com.withiter.quhao.vo.MerchantLocation;
 import com.withiter.quhao.vo.Paidui;
 import com.withiter.quhao.vo.ReservationVO;
@@ -560,4 +561,54 @@ public class ParseJson {
 			return null;
 		}
 	}
+
+	public static MerchantDetailVO getMerchantDetail(String buf) {
+		MerchantDetailVO merchantDetail = null;
+		if (null == buf || "".equals(buf)) {
+			return merchantDetail;
+		}
+		
+		try {
+			JSONObject jsonMaps = new JSONObject(buf);
+			
+			boolean isMerchantExsit = jsonMaps.has("merchant");
+			Merchant merchant = null;
+			if(isMerchantExsit)
+			{
+				JSONObject merchantJson = jsonMaps.getJSONObject("merchant");
+				merchant = coventMerchant(merchantJson);
+			}
+			
+			boolean isHaomaExsit = jsonMaps.has("haomaVO");
+			Haoma haoma = null;
+			if(isHaomaExsit)
+			{
+				String haomaStr = jsonMaps.getString("haomaVO");
+				haoma = getHaoma(haomaStr);
+			}
+			
+			boolean isRvosExsit = jsonMaps.has("rvos");
+			List<ReservationVO> rvos = null;
+			if(isRvosExsit)
+			{
+				String reservationsStr = jsonMaps.getString("rvos");
+				
+				rvos = getReservations(reservationsStr);
+			}
+			
+			
+			merchantDetail = new MerchantDetailVO();
+			merchantDetail.merchant = merchant;
+			merchantDetail.haoma = haoma;
+			merchantDetail.rvos = rvos;
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+			QuhaoLog.e(TAG, ExceptionUtil.getTrace(e));
+			return null;
+		}
+		
+		return merchantDetail;
+	}
+
 }
