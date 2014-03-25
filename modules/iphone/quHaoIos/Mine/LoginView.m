@@ -30,13 +30,14 @@
             self.txt_Pwd.text = pwd;
         }
     }
-        
-    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 7, 50, 35 )];
+    
+    
+    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 5, 50, 30 )];
     [backButton addTarget:self action:@selector(clickToHome:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
-    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 忘记密码" rect:CGRectMake( 0, 0, 80, 35 )];
+    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@"忘记密码" rect:CGRectMake( 0, 0, 60, 25 )];
     [btnButton addTarget:self action:@selector(forgetMd:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:btnButton];
     self.navigationItem.rightBarButtonItem = buttonItem;

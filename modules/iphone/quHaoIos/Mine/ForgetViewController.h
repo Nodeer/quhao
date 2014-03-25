@@ -20,4 +20,5 @@
 //获取验证码
 - (IBAction)hqCode:(id)sender;
 
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @end

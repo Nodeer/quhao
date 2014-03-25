@@ -19,5 +19,6 @@
 @property (strong, nonatomic) IBOutlet UITextField *passField;
 @property (strong, nonatomic) IBOutlet UITextField *confirmPass;
 - (IBAction)hqCode:(id)sender;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @end

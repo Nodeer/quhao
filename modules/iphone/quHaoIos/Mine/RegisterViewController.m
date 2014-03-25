@@ -23,12 +23,14 @@
     [super viewDidLoad];
     self.view.backgroundColor=[UIColor whiteColor ];
 
-    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 7, 50, 35 )];
+    [self.scrollView setContentSize:CGSizeMake(kDeviceWidth, 480)];
+
+    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 5, 50, 30 )];
     [backButton addTarget:self action:@selector(clickToMine:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
-    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 注 册" rect:CGRectMake( 0, 7, 50, 35 )];
+    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 注 册" rect:CGRectMake( 0, 0, 40, 25 )];
     [btnButton addTarget:self action:@selector(addAccount:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:btnButton];
     self.navigationItem.rightBarButtonItem = buttonItem;
@@ -48,11 +50,11 @@
     [self.view endEditing:YES];
 }
 
-//输入框编辑完成以后，将视图恢复到原始状态
--(void)textFieldDidEndEditing:(UITextField *)textField
-{
-    self.view.frame =CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-}
+////输入框编辑完成以后，将视图恢复到原始状态
+//-(void)textFieldDidEndEditing:(UITextField *)textField
+//{
+//    self.view.frame =CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+//}
 
 -(void)addAccount:(id)sender
 {
