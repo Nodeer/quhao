@@ -4,7 +4,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,9 +18,8 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.activity.CreateCommentActivity;
 import com.withiter.quhao.activity.MerchantDetailActivity;
 import com.withiter.quhao.activity.QuhaoHistoryStatesActivity;
-import com.withiter.quhao.util.AsyncImageLoader;
-import com.withiter.quhao.util.AsyncImageLoader.ImageCallback;
 import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.util.tool.AsynImageLoader;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.vo.ReservationVO;
 
@@ -31,14 +29,12 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 	public List<ReservationVO> rvos;
 	private QuhaoHistoryStatesActivity activity;
 	private ProgressDialogUtil progress;
-	private AsyncImageLoader asyncImageLoader;
 
 	public ReservationForHistoryPaiduiAdapter(QuhaoHistoryStatesActivity activity, ListView listView, List<ReservationVO> rvos) {
 		super();
 		this.activity = activity;
 		this.listView = listView;
 		this.rvos = rvos;
-		asyncImageLoader = new AsyncImageLoader();
 	}
 
 	@Override
@@ -86,7 +82,9 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 			}
 			
 			String merchantImg = rvo.merchantImage;
+			AsynImageLoader.getInstance().showImageAsyn(holder.merchantImg, merchantImg, R.drawable.no_logo);
 			// get image from memory/SDCard/URL stream
+			/*
 			holder.merchantImg.setTag(merchantImg + position);
 			Drawable cachedImage = null;
 			if (null != merchantImg && !"".equals(merchantImg)) {
@@ -115,7 +113,7 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 			} else {
 				holder.merchantImg.setImageResource(R.drawable.no_logo);
 			}
-			
+			*/
 			holder.merchantImg.setOnClickListener(new OnClickListener() {
 				
 				@Override

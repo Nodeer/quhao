@@ -12,14 +12,11 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.withiter.quhao.R;
-import com.withiter.quhao.util.AsyncImageLoader;
-import com.withiter.quhao.util.AsyncImageLoader.ImageCallback;
 import com.withiter.quhao.vo.Category;
 
 public class CategoryGridAdapter extends BaseAdapter {
 
 	private List<? extends Object> list;
-	private AsyncImageLoader asyncImageLoader;
 	private GridView grid;
 	private Context context;
 
@@ -28,7 +25,6 @@ public class CategoryGridAdapter extends BaseAdapter {
 		this.list = list;
 		this.grid = grid;
 		this.context = context;
-		asyncImageLoader = new AsyncImageLoader();
 	}
 
 	@Override
@@ -69,59 +65,6 @@ public class CategoryGridAdapter extends BaseAdapter {
 
 			if (holder == null) {
 				holder = (ViewHolder) convertView.getTag();
-			}
-
-			String imageUrl = "";
-			imageUrl = category.url;
-			// holder.img.setTag(imageUrl);
-			if (null != imageUrl && !"".equals(imageUrl)) {
-				cachedImage = asyncImageLoader.loadDrawable(imageUrl,position,
-						new ImageCallback() {
-
-							@Override
-							public void imageLoaded(Drawable imageDrawable,
-									String imageUrl,int position) {
-								TextView imageViewByTag = (TextView) grid
-										.findViewWithTag(imageUrl);
-								if (null != imageViewByTag
-										&& null != imageDrawable) {
-									imageDrawable.setBounds(0, 0,
-											imageDrawable.getIntrinsicWidth(),
-											imageDrawable.getIntrinsicHeight());
-									imageViewByTag.setCompoundDrawables(null,
-											imageDrawable, null, null);
-									imageDrawable.setCallback(null);
-									imageDrawable = null;
-								}
-
-							}
-						});
-			}
-
-			/* 重新设置图片的宽高 */
-			// holder.img.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-			/*
-			 * 重新设置Layout 的宽高 holder.img.setLayoutParams(new
-			 * LinearLayout.LayoutParams( LayoutParams.WRAP_CONTENT,
-			 * LayoutParams.WRAP_CONTENT));
-			 */
-			// 设置图片给imageView 对象
-			if (null != cachedImage) {
-				cachedImage.setBounds(0, 0, cachedImage.getIntrinsicWidth(),
-						cachedImage.getIntrinsicHeight());
-				// holder.itemView.setCompoundDrawables(null, cachedImage, null,
-				// null);
-				// holder.img.setImageDrawable(cachedImage);
-				cachedImage.setCallback(null);
-				cachedImage = null;
-			} else {
-				cachedImage = context.getResources().getDrawable(
-						R.drawable.no_logo);
-				cachedImage.setBounds(0, 0, cachedImage.getIntrinsicWidth(),
-						cachedImage.getIntrinsicHeight());
-				// holder.itemView.setCompoundDrawables(null, cachedImage, null,
-				// null);
-				// holder.img.setImageDrawable(cachedImage);
 			}
 
 			holder.itemView.setText(category.cateName);

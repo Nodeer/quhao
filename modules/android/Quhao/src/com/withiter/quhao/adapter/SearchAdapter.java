@@ -14,21 +14,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.withiter.quhao.R;
-import com.withiter.quhao.util.AsyncImageLoader;
-import com.withiter.quhao.util.AsyncImageLoader.ImageCallback;
+import com.withiter.quhao.util.tool.AsynImageLoader;
 import com.withiter.quhao.vo.Merchant;
 
 public class SearchAdapter extends BaseAdapter {
 	private ListView listView;
 	public List<Merchant> merchants;
-	private AsyncImageLoader asyncImageLoader;
 
 	public SearchAdapter(ListView listView,
 			List<Merchant> merchants) {
 		super();
 		this.listView = listView;
 		this.merchants = merchants;
-		asyncImageLoader = new AsyncImageLoader();
 
 	}
 
@@ -83,7 +80,8 @@ public class SearchAdapter extends BaseAdapter {
 			}
 
 			String imageUrl = merchant.merchantImage;
-
+			AsynImageLoader.getInstance().showImageAsyn(holder.img, imageUrl, R.drawable.no_logo);
+			/*
 			holder.img.setTag(imageUrl);
 			if (null != imageUrl && !"".equals(imageUrl)) {
 				cachedImage = asyncImageLoader.loadDrawable(imageUrl,position,
@@ -116,7 +114,7 @@ public class SearchAdapter extends BaseAdapter {
 			} else {
 				holder.img.setImageResource(R.drawable.no_logo);
 			}
-
+			*/
 			holder.content.setTag("content_" + position);
 
 			holder.btnEnter.setTag("btnEnter_" + position);

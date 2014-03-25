@@ -51,6 +51,7 @@ public class QuhaoConstant {
 	 */
 	public static String NEXT_CMD = "";
 	public static String IS_2G3G_READ = "com.withiter.settings.2g3g.read.img";
+	public static String DOWNLOAD_PATH = "/mnt/sdcard/download/weibopic/";
 
 	/**
 	 * 更新時間

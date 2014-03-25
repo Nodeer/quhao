@@ -12,17 +12,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.withiter.quhao.R;
-import com.withiter.quhao.task.ImageTask;
-import com.withiter.quhao.util.AsyncImageLoader;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.util.tool.AsynImageLoader;
 import com.withiter.quhao.util.tool.PhoneTool;
 import com.withiter.quhao.vo.TopMerchant;
 
 public class TopMerchantGridAdapter extends BaseAdapter {
 
 	private List<? extends Object> list;
-	private AsyncImageLoader asyncImageLoader;
 	private Context context;
 	Drawable cachedImage = null;
 
@@ -33,7 +31,6 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 	public TopMerchantGridAdapter(List<? extends Object> list, Context context) {
 		this.list = list;
 		this.context = context;
-		asyncImageLoader = new AsyncImageLoader();
 	}
 
 	@Override
@@ -82,8 +79,9 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 		QuhaoLog.d(TAG, "asyncImageLoader, the imageUrl is : " + imageUrl);
 		if (StringUtils.isNotNull(imageUrl)) {
 			
-			final ImageTask task = new ImageTask(imageView, imageUrl, true, context);
-			task.execute();
+//			final ImageTask task = new ImageTask(imageView, imageUrl, true, context);
+//			task.execute();
+			AsynImageLoader.getInstance().showImageAsyn(imageView, imageUrl, R.drawable.no_logo);
 //			// Android 4.0 之后不能在主线程中请求HTTP请求
 //			new Thread(new Runnable(){
 //			    @Override

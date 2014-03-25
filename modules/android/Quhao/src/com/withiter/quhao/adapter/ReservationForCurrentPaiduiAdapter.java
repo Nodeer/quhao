@@ -7,7 +7,6 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,10 +22,9 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.activity.MerchantDetailActivity;
 import com.withiter.quhao.activity.QuhaoCurrentStatesActivity;
 import com.withiter.quhao.exception.NoResultFromHTTPRequestException;
-import com.withiter.quhao.util.AsyncImageLoader;
-import com.withiter.quhao.util.AsyncImageLoader.ImageCallback;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
+import com.withiter.quhao.util.tool.AsynImageLoader;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.vo.ReservationVO;
 
@@ -36,14 +34,12 @@ public class ReservationForCurrentPaiduiAdapter extends BaseAdapter {
 	public List<ReservationVO> rvos;
 	private QuhaoCurrentStatesActivity activity;
 	private ProgressDialogUtil progress;
-	private AsyncImageLoader asyncImageLoader;
 
 	public ReservationForCurrentPaiduiAdapter(QuhaoCurrentStatesActivity activity, ListView listView, List<ReservationVO> rvos) {
 		super();
 		this.activity = activity;
 		this.listView = listView;
 		this.rvos = rvos;
-		asyncImageLoader = new AsyncImageLoader();
 	}
 
 	@Override
@@ -92,6 +88,8 @@ public class ReservationForCurrentPaiduiAdapter extends BaseAdapter {
 			
 			String merchantImg = rvo.merchantImage;
 			// get image from memory/SDCard/URL stream
+			AsynImageLoader.getInstance().showImageAsyn(holder.merchantImg, merchantImg, R.drawable.no_logo);
+			/*
 			holder.merchantImg.setTag(merchantImg + position);
 			Drawable cachedImage = null;
 			if (null != merchantImg && !"".equals(merchantImg)) {
@@ -120,7 +118,7 @@ public class ReservationForCurrentPaiduiAdapter extends BaseAdapter {
 			} else {
 				holder.merchantImg.setImageResource(R.drawable.no_logo);
 			}
-			
+			*/
 			holder.merchantImg.setOnClickListener(new OnClickListener() {
 				
 				@Override

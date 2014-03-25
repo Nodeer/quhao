@@ -316,7 +316,7 @@ public class LoginActivity extends QuhaoBaseActivity {
 										if(null != rvos && !rvos.isEmpty())
 										{
 											Toast.makeText(LoginActivity.this, "已有该商家的排队号吗！", Toast.LENGTH_LONG).show();
-											LoginActivity.this.onBackPressed();
+//											LoginActivity.this.onBackPressed();
 										}
 										else
 										{

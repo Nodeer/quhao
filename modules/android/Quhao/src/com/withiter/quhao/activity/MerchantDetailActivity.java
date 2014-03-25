@@ -33,6 +33,7 @@ import com.withiter.quhao.util.AsyncImageLoader;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
+import com.withiter.quhao.util.tool.AsynImageLoader;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
@@ -482,9 +483,13 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						}
 						
 						// get image from memory/SDCard/URL stream
+						AsynImageLoader.getInstance().showImageAsyn(merchantImg, merchant.merchantImage, R.drawable.no_logo);
+						/*
 						new Thread(new Runnable() {
 							@Override
 							public void run() {
+								AsynImageLoader.getInstance().showImageAsyn(merchantImg, merchant.merchantImage, R.drawable.no_logo);
+								
 								AsyncImageLoader asynImageLoader = new AsyncImageLoader();
 								Drawable drawable = asynImageLoader.loadDrawable(merchant.merchantImage);
 								if (drawable != null) {
@@ -498,7 +503,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 								}
 							}
 						}).start();
-	
+						*/
 						mName = m.name;
 						merchantName.setText(m.name);
 						merchantAddress.setText(m.address);

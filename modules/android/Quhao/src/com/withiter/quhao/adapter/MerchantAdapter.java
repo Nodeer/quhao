@@ -15,24 +15,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.withiter.quhao.R;
-import com.withiter.quhao.util.AsyncImageLoader;
-import com.withiter.quhao.util.AsyncImageLoader.ImageCallback;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.util.tool.AsynImageLoader;
 import com.withiter.quhao.vo.Merchant;
 
 public class MerchantAdapter extends BaseAdapter {
 
 	private ListView listView;
 	public List<Merchant> merchants;
-	private AsyncImageLoader asyncImageLoader;
 	private static String TAG = MerchantAdapter.class.getName();
 
 	public MerchantAdapter(Activity activity, ListView listView, List<Merchant> merchants) {
 		super();
 		this.listView = listView;
 		this.merchants = merchants;
-		asyncImageLoader = new AsyncImageLoader();
 
 	}
 
@@ -77,7 +74,10 @@ public class MerchantAdapter extends BaseAdapter {
 
 			QuhaoLog.i(TAG, "merchant adapter's imageUrl : " + imageUrl);
 
-			holder.img.setTag(imageUrl + position);
+//			holder.img.setTag(imageUrl + position);
+			
+			AsynImageLoader.getInstance().showImageAsyn(holder.img, imageUrl, R.drawable.no_logo);
+			/*
 			if (null != imageUrl && !"".equals(imageUrl)) {
 				cachedImage = asyncImageLoader.loadDrawable(imageUrl, position, new ImageCallback() {
 
@@ -104,7 +104,7 @@ public class MerchantAdapter extends BaseAdapter {
 			} else {
 				holder.img.setImageResource(R.drawable.no_logo);
 			}
-
+			*/
 			holder.content.setTag("content_" + position);
 
 			holder.merchantAddress.setTag("merchantAddress_" + position);

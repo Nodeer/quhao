@@ -12,21 +12,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.withiter.quhao.R;
-import com.withiter.quhao.util.AsyncImageLoader;
 import com.withiter.quhao.vo.Credit;
 
 public class CreditAdapter extends BaseAdapter {
 
 	private ListView listView;
 	public List<Credit> credits;
-	private AsyncImageLoader asyncImageLoader;
 	private static String TAG = CreditAdapter.class.getName();
 
 	public CreditAdapter(Activity activity, ListView listView, List<Credit> credits) {
 		super();
 		this.listView = listView;
 		this.credits = credits;
-		asyncImageLoader = new AsyncImageLoader();
 
 	}
 

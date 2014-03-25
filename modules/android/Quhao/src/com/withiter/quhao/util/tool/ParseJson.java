@@ -63,6 +63,17 @@ public class ParseJson {
 					cateName = obj.optString("cateName");
 				}
 				url = obj.optString("url");
+				if (QuhaoConstant.test) {
+					if(null != url &&!"".equals(url))
+					{
+						url = obj.getString("url").replace("http://localhost:9081/", QuhaoConstant.HTTP_URL);
+					}
+					
+//					imgUrl = obj.getString("merchantImage").replace("http://localhost:9081/", "http://192.168.2.100:9081/");
+					System.out.println(url);
+				} else {
+					url = obj.getString("merchantImage");
+				}
 				Category category = new Category(count, categoryType, cateName, url);
 				categroys.add(category);
 			}
@@ -89,8 +100,13 @@ public class ParseJson {
 				String imgUrl = "";
 				if (obj.has("merchantImage")) {
 					// TODO test here
+					imgUrl = obj.getString("merchantImage");
 					if (QuhaoConstant.test) {
-						imgUrl = obj.getString("merchantImage").replace("http://localhost:9081/", QuhaoConstant.HTTP_URL);
+						if(null != imgUrl && !"".equals(imgUrl))
+						{
+							imgUrl = obj.getString("merchantImage").replace("http://localhost:9081/", QuhaoConstant.HTTP_URL);
+						}
+						
 //						imgUrl = obj.getString("merchantImage").replace("http://localhost:9081/", "http://192.168.2.100:9081/");
 						System.out.println(imgUrl);
 					} else {
@@ -166,7 +182,11 @@ public class ParseJson {
 		String imgUrl = obj.optString("merchantImage");
 		// TODO: 
 		if (QuhaoConstant.test) {
-			imgUrl = obj.optString("merchantImage").replace("http://localhost:9081/", QuhaoConstant.HTTP_URL);
+			if(null != imgUrl && !"".equals(imgUrl))
+			{
+				imgUrl = obj.optString("merchantImage").replace("http://localhost:9081/", QuhaoConstant.HTTP_URL);
+			}
+			
 //			imgUrl = obj.optString("merchantImage").replace("http://localhost:9081/", "http://192.168.2.100:9081/");
 			System.out.println(imgUrl);
 		} else {
@@ -261,6 +281,17 @@ public class ParseJson {
 			String nickName = obj.optString("nickname");
 			String birthday = obj.optString("birthDay");
 			String userImage = obj.optString("userImage");
+			if (QuhaoConstant.test) {
+				if(null != userImage && !"".equals(userImage))
+				{
+					userImage = obj.getString("userImage").replace("http://localhost:9081/", QuhaoConstant.HTTP_URL);
+				}
+				
+//				imgUrl = obj.getString("merchantImage").replace("http://localhost:9081/", "http://192.168.2.100:9081/");
+				System.out.println(userImage);
+			} else {
+				userImage = obj.getString("merchantImage");
+			}
 			String enable = obj.optString("enable");
 			String mobileOS = obj.optString("mobileOS");
 			String lastLogin = obj.optString("lastLogin");
@@ -392,6 +423,17 @@ public class ParseJson {
 		String merchantName = obj.optString("merchantName");
 		String merchantAddress = obj.optString("merchantAddress");
 		String merchantImage = obj.optString("merchantImage");
+		if (QuhaoConstant.test) {
+			if(null !=merchantImage && !"".equals(merchantImage))
+			{
+				merchantImage = obj.getString("merchantImage").replace("http://localhost:9081/", QuhaoConstant.HTTP_URL);
+			}
+			
+//			imgUrl = obj.getString("merchantImage").replace("http://localhost:9081/", "http://192.168.2.100:9081/");
+			System.out.println(merchantImage);
+		} else {
+			merchantImage = obj.getString("merchantImage");
+		}
 
 		rvo = new ReservationVO(rId,accountId, merchantId, seatNumber, myNumber, beforeYou, currentNumber, valid, tipKey, tipValue, merchantName, merchantAddress,isCommented,merchantImage);
 		return rvo;
