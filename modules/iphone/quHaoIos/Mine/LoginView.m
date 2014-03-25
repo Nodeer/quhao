@@ -59,6 +59,8 @@
         [alert show];
         return;
     }
+    [self.view endEditing:YES];
+
     NSString *name =self.txt_Name.text;
     NSString *pwd = self.txt_Pwd.text;
     NSString *urlStr=[NSString stringWithFormat:@"%@%@",[Helper getIp],@"/login"];

@@ -72,9 +72,10 @@
 		227CB4BC17FC4464007A94E8 /* About.m in Sources */ = {isa = PBXBuildFile; fileRef = 227CB4B917FC4463007A94E8 /* About.m */; settings = {COMPILER_FLAGS = ""; }; };
 		227CB4BD17FC4464007A94E8 /* About.xib in Resources */ = {isa = PBXBuildFile; fileRef = 227CB4BA17FC4463007A94E8 /* About.xib */; };
 		227CB4BE17FC4464007A94E8 /* aboutbg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 227CB4BB17FC4464007A94E8 /* aboutbg.jpg */; };
+		2282908018E1BBEE0085A8CD /* min_btn.png in Resources */ = {isa = PBXBuildFile; fileRef = 2282907F18E1BBEE0085A8CD /* min_btn.png */; };
+		2286885A18DB3DA5006B9CAB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2286885918DB3DA5006B9CAB /* Images.xcassets */; };
 		228F756C18C70C6300E36934 /* RegisterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 228F756B18C70C6300E36934 /* RegisterView.xib */; };
 		2290D7541812DE850001F103 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2290D7531812DE850001F103 /* libz.1.2.5.dylib */; };
-		2294677918B4F853008CBDA0 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2294677818B4F853008CBDA0 /* Default@2x.png */; };
 		2295ADDF18D2C2F700B61C34 /* AMapSearchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2295ADDD18D2C2F700B61C34 /* AMapSearchKit.framework */; };
 		2295ADE018D2C2F700B61C34 /* MAMapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2295ADDE18D2C2F700B61C34 /* MAMapKit.framework */; };
 		2295ADE218D2C46700B61C34 /* AMap.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2295ADE118D2C46700B61C34 /* AMap.bundle */; };
@@ -132,7 +133,6 @@
 		22F10B3017DE12FA000168FA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22F10B2F17DE12FA000168FA /* CoreGraphics.framework */; };
 		22F10B3617DE12FA000168FA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 22F10B3417DE12FA000168FA /* InfoPlist.strings */; };
 		22F10B3817DE12FB000168FA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F10B3717DE12FB000168FA /* main.m */; settings = {COMPILER_FLAGS = ""; }; };
-		22F10B4217DE12FB000168FA /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 22F10B4117DE12FB000168FA /* Default-568h@2x.png */; };
 		22F10B9817DE1311000168FA /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 22F10B4817DE1311000168FA /* AppDelegate.mm */; settings = {COMPILER_FLAGS = ""; }; };
 		22F10BA117DE1311000168FA /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 22F10B5F17DE1311000168FA /* 1.png */; };
 		22F10BA217DE1311000168FA /* 10.png in Resources */ = {isa = PBXBuildFile; fileRef = 22F10B6017DE1311000168FA /* 10.png */; };
@@ -310,9 +310,10 @@
 		227CB4B917FC4463007A94E8 /* About.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = About.m; sourceTree = "<group>"; };
 		227CB4BA17FC4463007A94E8 /* About.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = About.xib; sourceTree = "<group>"; };
 		227CB4BB17FC4464007A94E8 /* aboutbg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = aboutbg.jpg; sourceTree = "<group>"; };
+		2282907F18E1BBEE0085A8CD /* min_btn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = min_btn.png; sourceTree = "<group>"; };
+		2286885918DB3DA5006B9CAB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		228F756B18C70C6300E36934 /* RegisterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisterView.xib; sourceTree = "<group>"; };
 		2290D7531812DE850001F103 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
-		2294677818B4F853008CBDA0 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		2295ADDD18D2C2F700B61C34 /* AMapSearchKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AMapSearchKit.framework; path = quHaoIos/Extern/AMapSearchKit.framework; sourceTree = "<group>"; };
 		2295ADDE18D2C2F700B61C34 /* MAMapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MAMapKit.framework; path = quHaoIos/Extern/MAMapKit.framework; sourceTree = "<group>"; };
 		2295ADE118D2C46700B61C34 /* AMap.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AMap.bundle; sourceTree = "<group>"; };
@@ -423,7 +424,6 @@
 		22F10B3717DE12FB000168FA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		22F10B3917DE12FB000168FA /* quHaoIos-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "quHaoIos-Prefix.pch"; sourceTree = "<group>"; };
 		22F10B3A17DE12FB000168FA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		22F10B4117DE12FB000168FA /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		22F10B4817DE1311000168FA /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		22F10B5F17DE1311000168FA /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
 		22F10B6017DE1311000168FA /* 10.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 10.png; sourceTree = "<group>"; };
@@ -636,6 +636,7 @@
 		2226E1AC18D9713B00C3F941 /* img */ = {
 			isa = PBXGroup;
 			children = (
+				2282907F18E1BBEE0085A8CD /* min_btn.png */,
 				2226E1FB18D9716100C3F941 /* address.jpg */,
 				2226E1FC18D9716100C3F941 /* arrow_right.png */,
 				2226E1FD18D9716100C3F941 /* dp.jpg */,
@@ -783,6 +784,7 @@
 				22F10C5717DE1353000168FA /* Util */,
 				22F10B4917DE1311000168FA /* ASIHTTPRequest */,
 				22F10B5E17DE1311000168FA /* assets */,
+				2286885918DB3DA5006B9CAB /* Images.xcassets */,
 				22F10B3217DE12FA000168FA /* Supporting Files */,
 			);
 			path = quHaoIos;
@@ -795,8 +797,6 @@
 				22F10B3417DE12FA000168FA /* InfoPlist.strings */,
 				22F10B3717DE12FB000168FA /* main.m */,
 				22F10B3917DE12FB000168FA /* quHaoIos-Prefix.pch */,
-				2294677818B4F853008CBDA0 /* Default@2x.png */,
-				22F10B4117DE12FB000168FA /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1164,7 +1164,6 @@
 			files = (
 				22F10B3617DE12FA000168FA /* InfoPlist.strings in Resources */,
 				2226E1E118D9713B00C3F941 /* grayArrow@2x.png in Resources */,
-				22F10B4217DE12FB000168FA /* Default-568h@2x.png in Resources */,
 				2226E1F418D9713B00C3F941 /* search@2x.png in Resources */,
 				2226E20618D9716100C3F941 /* qhqk.jpg in Resources */,
 				22F10BA117DE1311000168FA /* 1.png in Resources */,
@@ -1206,6 +1205,7 @@
 				2226E1F518D9713B00C3F941 /* share.png in Resources */,
 				22F10BB917DE1311000168FA /* 31.png in Resources */,
 				22F10BBA17DE1311000168FA /* 32.png in Resources */,
+				2282908018E1BBEE0085A8CD /* min_btn.png in Resources */,
 				22F10BBB17DE1311000168FA /* 33.png in Resources */,
 				22F10BBC17DE1311000168FA /* 34.png in Resources */,
 				2226E1DA18D9713B00C3F941 /* blueArrow@2x.png in Resources */,
@@ -1241,6 +1241,7 @@
 				22F10BCD17DE1311000168FA /* 5.png in Resources */,
 				2226E1EE18D9713B00C3F941 /* more@2x.png in Resources */,
 				22F10BCE17DE1311000168FA /* 50.png in Resources */,
+				2286885A18DB3DA5006B9CAB /* Images.xcassets in Resources */,
 				22F10BCF17DE1311000168FA /* 51.png in Resources */,
 				22F10BD017DE1311000168FA /* 52.png in Resources */,
 				22F10BD117DE1311000168FA /* 6.png in Resources */,
@@ -1275,7 +1276,6 @@
 				2226E20818D9716100C3F941 /* title.jpg in Resources */,
 				2226E1D418D9713B00C3F941 /* about_us.png in Resources */,
 				22AF39A6189CFD4300348417 /* WeiboSDK.bundle in Resources */,
-				2294677918B4F853008CBDA0 /* Default@2x.png in Resources */,
 				229DCC9D18C584AF00022A9A /* ForgetView.xib in Resources */,
 				2226E1D918D9713B00C3F941 /* blueArrow.png in Resources */,
 				228F756C18C70C6300E36934 /* RegisterView.xib in Resources */,
@@ -1447,7 +1447,12 @@
 		22F10B4617DE12FB000168FA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ARCHS = (
+					Standard,
+					"architectures(armv7,armv7s)",
+				);
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -1460,14 +1465,14 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "quHaoIos/quHaoIos-Prefix.pch";
 				INFOPLIST_FILE = "quHaoIos/quHaoIos-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/quHaoIos";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = YES;
-				SDKROOT = iphoneos7.1;
-				VALID_ARCHS = "arm64 armv7 armv7s";
+				SDKROOT = iphoneos6.1;
+				VALID_ARCHS = "armv7 armv7s";
 				WARNING_CFLAGS = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1476,7 +1481,12 @@
 		22F10B4717DE12FB000168FA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
+				ARCHS = (
+					Standard,
+					"architectures(armv7,armv7s)",
+				);
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -1489,14 +1499,14 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "quHaoIos/quHaoIos-Prefix.pch";
 				INFOPLIST_FILE = "quHaoIos/quHaoIos-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/quHaoIos";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = YES;
-				SDKROOT = iphoneos7.1;
-				VALID_ARCHS = "arm64 armv7 armv7s";
+				SDKROOT = iphoneos6.1;
+				VALID_ARCHS = "armv7 armv7s";
 				WARNING_CFLAGS = "";
 				WRAPPER_EXTENSION = app;
 			};

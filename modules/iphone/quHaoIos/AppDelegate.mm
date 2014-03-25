@@ -22,10 +22,6 @@
     
     //系统托盘
     //[application setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-    
-    //检查网络是否存在 如果不存在 则弹出提示
-    //[Helper Instance].isNetworkRunning = [CheckNetwork isExistenceNetwork];
-    
     //主页
     self.homeVc=[[HomeViewController alloc] init];
     BaseNavigationController *homeNavigation=[[BaseNavigationController alloc]initWithRootViewController:homeVc];
@@ -56,17 +52,18 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
-//    //启动轮询  如果已经登录的话
-//    if ([Config Instance].isCookie) {
-//        [[MyThread Instance] startNotice];
-//        
-//    }
-//    
-//    [MyThread Instance].mainView = self.tabBarController.view;
-//    //准备未处理的异常
-//    [NdUncaughtExceptionHandler setDefaultHandler];
+    
+    //如果已经登录
+    if([[Helper returnUserString:@"autoLogin"] boolValue]){
+        
+    }
+    if ([Helper returnUserString:@"showImage"]==nil)
+    {
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setObject:@"1" forKey:@"showImage"];
+        [defaults synchronize];
+    }
     return YES;
-
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
