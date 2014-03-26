@@ -18,6 +18,8 @@
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
 #endif
+#define Notification_TabClick @"Notification_TabClick"
+
 #define kDeviceHeight     [UIScreen mainScreen].bounds.size.height
 #define kDeviceWidth     [UIScreen mainScreen].bounds.size.width
 #define homeView_list_url @"/nextPage?cateType="

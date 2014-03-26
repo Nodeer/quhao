@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "Helper.h"
 @interface BaseNavigationController : UINavigationController
 
 @end

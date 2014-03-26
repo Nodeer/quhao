@@ -15,7 +15,6 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        
         self.title = NSLocalizedString(@"主页", @"主页");
         self.tabBarItem.title = @"主页";
         self.tabBarItem.image = [UIImage imageNamed:@"home"];
@@ -26,11 +25,8 @@
 -(void)loadNavigationItem
 {
     self.view.backgroundColor=[UIColor whiteColor];
-    CGSize size=CGSizeMake(kDeviceWidth,44);
-    [self.navigationController.navigationBar setBackgroundImage:[Helper reSizeImage:@"title.jpg" toSize:size] forBarMetrics:UIBarMetricsDefault];
-    
     //添加搜索的按钮
-    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 搜 索" rect:CGRectMake( 0, 0, 40, 25 )];
+    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 搜 索" rect:CGRectMake(  0, 0, 40, 25 )];
     [btnButton addTarget:self action:@selector(clickSearch:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:btnButton];
     self.navigationItem.rightBarButtonItem = buttonItem;
@@ -39,6 +35,19 @@
 - (void)viewDidLoad
 {
     [self loadNavigationItem];
+    _menuView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, kDeviceHeight)];
+    _menuView.backgroundColor = [UIColor whiteColor];
+    self.view = _menuView;
+    if (_menuView) {
+        _menuView.scrollEnabled = YES;
+        _menuView.userInteractionEnabled = YES;
+        _menuView.contentSize = _menuView.frame.size;
+        _menuView.showsVerticalScrollIndicator = NO;
+    }
+
+    _topArray= [[NSMutableArray alloc] init];
+    _categoryArray = [[NSMutableArray alloc] init];
+    
     if([Helper isConnectionAvailable]){
         MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
         [self.view addSubview:HUD];
@@ -48,14 +57,15 @@
         HUD.labelText = @"正在加载...";
         //显示对话框
         [HUD showAnimated:YES whileExecutingBlock:^{
-            [self createView];
+            [self requestData];
         } completionBlock:^{
             //操作执行完后取消对话框
             [HUD removeFromSuperview];
             [self topSetOrReset];
             
             [self menuSetOrReset];
-
+            
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshed:) name:Notification_TabClick object:nil];
         }];
     }else
     {
@@ -63,12 +73,47 @@
     }
 }
 
--(void)createView
+- (void)refreshed:(NSNotification *)notification
+{
+    if (notification.object) {
+        if ([(NSString *)notification.object isEqualToString:@"0"]) {
+            if([Helper isConnectionAvailable]){
+                [_categoryArray removeAllObjects];
+                [_topArray removeAllObjects];
+                
+                MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+                [self.view addSubview:HUD];
+                //如果设置此属性则当前的view置于后台
+                HUD.dimBackground = YES;
+                //设置对话框文字
+                HUD.labelText = @"正在刷新...";
+                //显示对话框
+                [HUD showAnimated:YES whileExecutingBlock:^{
+                    [self requestData];
+                } completionBlock:^{
+                    //操作执行完后取消对话框
+                    [HUD removeFromSuperview];
+                    
+                    for(UIView *view1 in [self.view subviews])
+                    {
+                        [view1 removeFromSuperview];
+                    }
+                    [self topSetOrReset];
+                    [self menuSetOrReset];
+                }];
+            }else
+            {
+                [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
+            }
+        }
+    }
+}
+
+-(void)requestData
 {
     //处理topMerchant
-    _topArray= [[NSMutableArray alloc] init];
-    NSString *topUrl=[NSString stringWithFormat:@"%@%@%d",[Helper getIp],getTopMerchants,4];
-    NSString *response1 =[QuHaoUtil requestDb:topUrl];
+    NSString *url = [NSString stringWithFormat:@"%@%@%d",[Helper getIp],getTopMerchants,4];
+    NSString *response1 =[QuHaoUtil requestDb:url];
     if([response1 isEqualToString:@""]){
         //异常处理
         [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
@@ -78,31 +123,32 @@
             //解析错误
             [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
         }else{
+            MerchartModel *model = nil;
             for(int i=0; i < [jsonObjects count];i++ ){
-                MerchartModel *model=[[MerchartModel alloc]init];
-                model.name=[[jsonObjects objectAtIndex:i] objectForKey:@"name"];
-                model.id=[[jsonObjects objectAtIndex:i] objectForKey:@"mid"];
-                model.imgUrl=[[jsonObjects objectAtIndex:i] objectForKey:@"merchantImage"];
+                model = [[MerchartModel alloc]init];
+                model.name = [[jsonObjects objectAtIndex:i] objectForKey:@"name"];
+                model.id = [[jsonObjects objectAtIndex:i] objectForKey:@"mid"];
+                model.imgUrl = [[jsonObjects objectAtIndex:i] objectForKey:@"merchantImage"];
                 [_topArray addObject:model];
             }
         }
     }
     
     //加载category
-    NSString *urlStr=[NSString stringWithFormat:@"%@%@",[Helper getIp],allCategories_url];
-    NSString *response =[QuHaoUtil requestDb:urlStr];
-    if([response isEqualToString:@""]){
+    url = [NSString stringWithFormat:@"%@%@",[Helper getIp],allCategories_url];
+    response1 = [QuHaoUtil requestDb:url];
+    if([response1 isEqualToString:@""]){
         //异常处理
         [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
     }else{
-        NSArray *jsonObjects=[QuHaoUtil analyseData:response];
+        NSArray *jsonObjects=[QuHaoUtil analyseData:response1];
         if(jsonObjects==nil){
             //解析错误
             [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
         }else{
-            _categoryArray = [[NSMutableArray alloc] init];
+            Category *c = nil;
             for(int i=0; i < [jsonObjects count]; ){
-                Category *c = [[Category alloc] init];
+                c = [[Category alloc] init];
                 NSString *value1 = [[jsonObjects objectAtIndex:i] objectForKey:@"cateType"];
                 NSString *value2 = [[jsonObjects objectAtIndex:i] objectForKey:@"count"];
                 c.cateType=value1;
@@ -162,16 +208,14 @@
 }
 
 -(void)topSetOrReset {
-    _menuView = nil;
     _menuView = [self setInitWithColumns:2 marginSize:10 gutterSize:20 rowHeight:85];
-    _menuView.backgroundColor = [UIColor whiteColor];
-    self.view = _menuView;
     [self populateTop];
 }
 
 -(void)populateTop {
+    UIControl *topItem = nil;
     for (MerchartModel *m in _topArray) {
-        UIControl *topItem = [self createTopItem:m];
+        topItem = [self createTopItem:m];
         [self.view addSubview:topItem];
     }
 }
@@ -185,9 +229,9 @@
 }
 
 -(void)populateMenu {
-    
+    UIControl *menuItem = nil;
     for (Category *cate in _categoryArray) {
-        UIControl *menuItem = [self createMenuItem:cate];
+        menuItem = [self createMenuItem:cate];
         [self.view addSubview:menuItem];
     }
 }
@@ -202,16 +246,6 @@
 
 -(UIScrollView *)setInitWithColumns:(int)col marginSize:(CGFloat)margin gutterSize:(CGFloat)gutter rowHeight:(CGFloat)height
 {
-    _menuView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, kDeviceHeight)];
-    
-    if (_menuView) {
-        _menuView.scrollEnabled = YES;
-        _menuView.userInteractionEnabled = YES;
-        _menuView.contentSize = _menuView.frame.size;
-        
-        _menuView.showsVerticalScrollIndicator = NO;
-    }
-
     if (_menuView) {
         _columns = col;
         _marginSize = margin;
@@ -219,6 +253,7 @@
         _rowHeight = height;
         _xOffset = gutter;
         _yOffset = gutter;
+        _columnInc = 0;
     }
     return _menuView;
 }
@@ -231,6 +266,7 @@
         _rowHeight = height;
         _xOffset = gutter;
         _yOffset = gutter+200;
+        _columnInc = 0;
     }
 }
 
@@ -257,10 +293,7 @@
     
     CGRect imgFrame = CGRectMake(margin, 0, parentFrame.size.width, 70);
     UICustomImageView *imageView=[[UICustomImageView alloc] initWithFrame:imgFrame];
-    //NSData *imageData = [[NSData alloc]initWithContentsOfURL:[NSURL URLWithString:cate.imgUrl]];
-    //UIImage *image=[[UIImage alloc] initWithData:imageData];
-    NSString *str=[NSString stringWithFormat:@"%@.%@",cate.cateType,@"jpg"];
-    UIImage *image=[UIImage imageNamed:str];
+    UIImage *image=[UIImage imageNamed:[NSString stringWithFormat:@"%@.%@",cate.cateType,@"jpg"]];
     [imageView setImage:image];
     imageView.cateType=cate.cateType;
     imageView.backgroundColor=[UIColor whiteColor];

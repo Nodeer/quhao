@@ -27,9 +27,9 @@
 {
     [super viewDidLoad];
     if([self.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:) ]){
-        [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_all_bg"] forBarMetrics:UIBarMetricsDefault];
+        CGSize size=CGSizeMake(kDeviceWidth,44);
+        [self.navigationBar setBackgroundImage:[Helper reSizeImage:@"title.jpg" toSize:size] forBarMetrics:UIBarMetricsDefault];
     }
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -43,7 +43,7 @@
 @implementation UINavigationBar (custom)
 
 -(void)drawRect:(CGRect)rect{
-   UIImage *image= [UIImage imageNamed:@"nav_all_bg"];
+   UIImage *image= [UIImage imageNamed:@"title.jpg"];
     [image drawInRect:rect ];
 }
 

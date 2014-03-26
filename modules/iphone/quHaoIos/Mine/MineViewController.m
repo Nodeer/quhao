@@ -60,6 +60,8 @@
     [self.navigationController.navigationBar setBackgroundImage:[Helper reSizeImage:@"title.jpg" toSize:size] forBarMetrics:UIBarMetricsDefault];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(noticeUpdateHandler:) name:@"Notification_NoticeUpdate" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshed:) name:Notification_TabClick object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -68,6 +70,11 @@
     if (_userInfo==nil) {
         _userInfo= [UserInfo alloc];
     }
+    [self loadByLoginType];
+}
+
+- (void)loadByLoginType
+{
     if (_helper.isCookie == NO) {
         UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"请登录后查看信息" delegate:self cancelButtonTitle:@"返回" destructiveButtonTitle:nil otherButtonTitles:@"登录", nil];
         [sheet showInView:[UIApplication sharedApplication].keyWindow];
@@ -89,6 +96,14 @@
         [self reload];
         
         [_mineView reloadData];
+    }
+}
+- (void)refreshed:(NSNotification *)notification
+{
+    if (notification.object) {
+        if ([(NSString *)notification.object isEqualToString:@"2"]) {
+            [self loadByLoginType];
+        }
     }
 }
 

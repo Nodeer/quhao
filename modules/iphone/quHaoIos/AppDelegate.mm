@@ -100,12 +100,11 @@
     int newTabIndex = self.tabBarController.selectedIndex;
     if (newTabIndex == m_lastTabIndex) {
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"Notification_TabClick" object:[NSString stringWithFormat:@"%d", newTabIndex]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:Notification_TabClick object:[NSString stringWithFormat:@"%d", newTabIndex]];
     }
     else
     {
         m_lastTabIndex = newTabIndex;
     }
 }
-
 @end
