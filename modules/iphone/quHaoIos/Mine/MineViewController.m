@@ -15,22 +15,40 @@
 @implementation MineViewController
 @synthesize egoImgView;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (instancetype)init
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self = [super init];
     if (self) {
         self.title=@"我的";
         self.tabBarItem.image = [UIImage imageNamed:@"mine"];
+        _helper=[Helper new];
+        NSString * autoLogin = [Helper returnUserString:@"autoLogin"];
+        //如果已经登录
+        if((autoLogin==nil||[autoLogin boolValue])&&_helper.isCookie==YES)
+        {
+            NSString *name = [Helper getUserName];
+            NSString *pwd = [Helper getPwd];
+            NSString *urlStr=[NSString stringWithFormat:@"%@%@",[Helper getIp],@"/login"];
+            ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:urlStr]];
+            [request setUseCookiePersistence:YES];
+            [request setPostValue:name forKey:@"phone"];
+            [request setPostValue:pwd  forKey:@"password"];
+            [request setPostValue:autoLogin forKey:@"keep_login"];
+            [request setDelegate:self];
+            [request setDidFailSelector:@selector(requestFailed:)];
+            [request setDidFinishSelector:@selector(requestLogin:)];
+            [request startAsynchronous];
+        }
+
     }
     return self;
 }
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    UIView  *view=[[UIView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
-    view.backgroundColor=[UIColor whiteColor];
-    self.view=view;
+    //UIView  *view=[[UIView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
+    //view.backgroundColor=[UIColor whiteColor];
+    //self.view=view;
     _mineView=[[UITableView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, kDeviceHeight) style:UITableViewStylePlain];
     _mineView.dataSource=self;
     _mineView.delegate=self;
@@ -38,7 +56,7 @@
     _mineView.indicatorStyle=UIScrollViewIndicatorStyleWhite;
     [self.view addSubview:_mineView];
     
-    CGSize size=CGSizeMake(500,44);
+    CGSize size=CGSizeMake(kDeviceWidth,44);
     [self.navigationController.navigationBar setBackgroundImage:[Helper reSizeImage:@"title.jpg" toSize:size] forBarMetrics:UIBarMetricsDefault];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(noticeUpdateHandler:) name:@"Notification_NoticeUpdate" object:nil];
@@ -46,7 +64,6 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    _helper=[Helper new];
     //登录判断
     if (_userInfo==nil) {
         _userInfo= [UserInfo alloc];
@@ -72,6 +89,34 @@
         [self reload];
         
         [_mineView reloadData];
+    }
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)requestNew
+{
+    [_helper saveCookie:NO];
+}
+
+- (void)requestLogin:(ASIHTTPRequest *)requestNew
+{
+    [Helper getUserNotice:requestNew];
+    [requestNew setUseCookiePersistence:YES];
+    ApiError *error = [Helper getApiError:requestNew];
+    
+    if (error == nil) {
+        return;
+    }
+    switch (error.errorCode) {
+        case 0:
+        {
+            [_helper saveCookie:YES];
+        }
+            break;
+        default:
+        {
+            [_helper saveCookie:NO];
+        }
+            break;
     }
 }
 
@@ -334,9 +379,8 @@
          _userInfo.isSignIn=temp.isSignIn;
 }
 #pragma mark - View lifecycle
-- (void)viewDidUnload
+- (void)dealloc
 {
-    [super viewDidUnload];
-    _mineView = nil;
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 @end

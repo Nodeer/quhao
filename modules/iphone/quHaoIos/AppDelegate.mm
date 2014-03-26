@@ -53,10 +53,6 @@
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
     
-    //如果已经登录
-    if([[Helper returnUserString:@"autoLogin"] boolValue]){
-        
-    }
     if ([Helper returnUserString:@"showImage"]==nil)
     {
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
