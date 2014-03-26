@@ -23,4 +23,8 @@
     //上拉刷新的view
     MJRefreshFooterView *_footer;
 }
+
+-(NSString *)getMerchart:(NSString *)poiId;
+//弹出商家详细页面
+- (void)pushMerchartDetail:(MerchartModel *)model andNavController:(UINavigationController *)navController;
 @end

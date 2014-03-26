@@ -15,7 +15,7 @@
 @implementation MineViewController
 @synthesize egoImgView;
 
-- (instancetype)init
+- (id)init
 {
     self = [super init];
     if (self) {
@@ -55,9 +55,6 @@
     _mineView.backgroundColor=[UIColor whiteColor];
     _mineView.indicatorStyle=UIScrollViewIndicatorStyleWhite;
     [self.view addSubview:_mineView];
-    
-    CGSize size=CGSizeMake(kDeviceWidth,44);
-    [self.navigationController.navigationBar setBackgroundImage:[Helper reSizeImage:@"title.jpg" toSize:size] forBarMetrics:UIBarMetricsDefault];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(noticeUpdateHandler:) name:@"Notification_NoticeUpdate" object:nil];
     
