@@ -189,7 +189,7 @@ public class QHClientApplication extends Application {
 			account.build(loginInfo);
 			QuhaoLog.d(TAG, account.msg);
 
-			if (account.msg.equals("fail")) {
+			if ("fail".equals(account.msg)) {
 				this.isLogined = false;
 //				SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
 				Handler handler = new Handler();
@@ -205,7 +205,7 @@ public class QHClientApplication extends Application {
 				return;
 			}
 
-			if (account.msg.equals("success")) {
+			if ("success".equals(account.msg)) {
 				SharedprefUtil.put(this, QuhaoConstant.ACCOUNT_ID, loginInfo.accountId);
 				SharedprefUtil.put(this, QuhaoConstant.PHONE, phone);
 				String encryptPassword = new DesUtils().encrypt(password);
