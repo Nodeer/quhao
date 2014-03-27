@@ -100,19 +100,19 @@ public class SelfManagementController extends BaseController {
 
 		String[] seatType = params.getAll("seatType");
 
-		if (StringUtils.isEmpty(mid)) {
+		if (StringUtils.isEmpty(mid)) {		// new merchant
 			m = new Merchant();
 			m.save();
 			MerchantAccountRel rel = new MerchantAccountRel();
 			rel.mid = m.id();
 			rel.uid = uid;
 			rel.save();
-		} else {
+		} else {			// update merchant
 			m = Merchant.findById(mid);
-			MerchantAccountRel rel = new MerchantAccountRel();
-			rel.mid = m.id();
-			rel.uid = uid;
-			rel.save();
+//			MerchantAccountRel rel = new MerchantAccountRel();
+//			rel.mid = m.id();
+//			rel.uid = uid;
+//			rel.save();
 		}
 		if (!StringUtils.isEmpty(merchantName)) {
 			m.name = merchantName;
@@ -128,16 +128,17 @@ public class SelfManagementController extends BaseController {
 		m.seatType = seatType;
 		m.save();
 
+		// 设置桌位类型
 		Set<String> seatTypeSet = new HashSet<String>();
 		for (String seatNoNeedToEnable : seatType) {
 			System.out.println(seatNoNeedToEnable);
 			seatTypeSet.add(seatNoNeedToEnable);
-			// haoma.haomaMap.get(Integer.parseInt(seatNoNeedToEnable)).enable =
-			// true;
 		}
 
 		Haoma haoma = Haoma.findByMerchantId(m.id());
 		Iterator it = haoma.haomaMap.keySet().iterator();
+		
+		// 循环老的排队信息，设置最新的桌位以及清除非开启的桌位类型对应信息
 		while (it.hasNext()) {
 			Integer key = (Integer) it.next();
 			if (seatTypeSet.contains(key.toString())) {
@@ -155,6 +156,7 @@ public class SelfManagementController extends BaseController {
 			}
 		}
 
+		// 老的桌位类型之外，都初始化。
 		if (seatTypeSet.size() != 0) {
 			Iterator ite = seatTypeSet.iterator();
 			Paidui p = null;
@@ -164,7 +166,6 @@ public class SelfManagementController extends BaseController {
 				haoma.haomaMap.put(Integer.parseInt(ite.next().toString()), p);
 			}
 		}
-
 		haoma.save();
 
 		// update the category counts
