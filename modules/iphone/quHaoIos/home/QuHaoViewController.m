@@ -51,7 +51,7 @@
                                                 blue: 0.907
                                                alpha: 1.0
                                ];
-    popView.indicatorStyle=UIScrollViewIndicatorStyleBlack;
+    popView.indicatorStyle = UIScrollViewIndicatorStyleBlack;
     popView.hidden = YES;
     [self.view addSubview:popView];
 }
@@ -61,7 +61,7 @@
 {
     //背景
     UIImageView *bgImgView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"qhmk.png" toSize:CGSizeMake(kDeviceWidth,75)]];
-    bgImgView.frame=CGRectMake(5, 10, kDeviceWidth-10, 75);
+    bgImgView.frame = CGRectMake(5, 10, kDeviceWidth-10, 75);
     [self.view addSubview:bgImgView];
     
     NSString *seat = nil;
@@ -72,10 +72,10 @@
     }
     [self.view addSubview:[Helper getCustomLabel:@" 座位人数:    " font:18 rect:CGRectMake(10, 18, 110, 30)]];
     
-    _seatNumber=[Helper getCustomLabel:seat font:18 rect:CGRectMake(113, 18, 45, 30)];
+    _seatNumber = [Helper getCustomLabel:seat font:18 rect:CGRectMake(113, 18, 45, 30)];
     [self.view addSubview:_seatNumber];
 
-    UIImage *image= [UIImage   imageNamed:@"arrow_down.png"];
+    UIImage *image = [UIImage   imageNamed:@"arrow_down.png"];
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = CGRectMake(140, 27, image.size.width, image.size.height);
     [button setBackgroundImage:image forState:UIControlStateNormal];
@@ -83,10 +83,10 @@
     [self.view addSubview:button];
     
     NSString *num=nil;
-    if(reservation==nil){
-        num=@"0";
+    if(reservation == nil){
+        num = @"0";
     }else{
-        num=[reservation.currentNumber description];
+        num = [reservation.currentNumber description];
     }
     _currlabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%@",@" 当前号码:    ",num] font:18 rect:CGRectMake(_seatNumber.frame.origin.x+60 ,18 ,140 ,30)];
     [self.view addSubview:_currlabel];
@@ -99,14 +99,15 @@
         [self.view addSubview:belabel];
     }
     
-    
-    UIImage *btnImage = [UIImage   imageNamed:@"max_btn.png"];
-    UIButton *nahaoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    nahaoBtn.frame = CGRectMake(10, 100, 300, 30);
-    [nahaoBtn setBackgroundImage:btnImage forState:UIControlStateNormal];
-    [nahaoBtn setTitle: @"拿 号" forState: UIControlStateNormal];
-    [nahaoBtn addTarget:self action:@selector(clickNahao:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:nahaoBtn];
+    if(reservation == nil){
+        UIImage *btnImage = [UIImage   imageNamed:@"max_btn.png"];
+        _nahaoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        _nahaoBtn.frame = CGRectMake(10, 100, 300, 30);
+        [_nahaoBtn setBackgroundImage:btnImage forState:UIControlStateNormal];
+        [_nahaoBtn setTitle: @"拿 号" forState: UIControlStateNormal];
+        [_nahaoBtn addTarget:self action:@selector(clickNahao:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:_nahaoBtn];
+    }
 }
 
 - (void)clickToHome:(id)sender
@@ -117,6 +118,7 @@
 //拿号的点击事件
 - (void)clickNahao:(id)sender
 {
+    _nahaoBtn.hidden = YES;
     [self reloadView];
 }
 
@@ -156,7 +158,7 @@
     {
         [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
     }
-    [self.view setNeedsDisplay];
+    //[self.view setNeedsDisplay];
 }
 
 //拿号的请求方法
@@ -175,6 +177,7 @@
             [hud hide:YES];
             if([tip isEqualToString:@"NO_MORE_JIFEN"]){
                 [Helper showHUD2:@"亲,没有积分可用了" andView:self.view andSize:100];
+                _nahaoBtn.hidden = NO;
             }else{
                 self.reservation = [[Reservation alloc] init];
                 reservation.accountId = [jsonObjects  objectForKey:@"accountId"];
@@ -203,6 +206,7 @@
             }
         }else{
             [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
+            _nahaoBtn.hidden = NO;
         }
     }else{
         [Helper showHUD2:@"亲,您已经拿过号了" andView:self.view andSize:100];
@@ -232,7 +236,7 @@
         }else{
             [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
         }
-        [self.view setNeedsDisplay];
+        //[self.view setNeedsDisplay];
     }
 }
 
@@ -279,10 +283,7 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    cell.backgroundColor = [UIColor clearColor];
-}
+
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

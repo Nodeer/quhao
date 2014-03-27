@@ -18,6 +18,7 @@
     BOOL _showList;//是否弹出下拉列表
     UILabel *_currlabel;
     UILabel *_seatNumber;
+    UIButton *_nahaoBtn;
 }
 
 @property (strong,nonatomic) NSString * merchartID;

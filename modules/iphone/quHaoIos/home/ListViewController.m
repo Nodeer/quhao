@@ -30,6 +30,12 @@
     _whichView=1;
     //注册
     [self.tableView registerClass:[HomeCell class] forCellReuseIdentifier:@"ListCell"];
+    
+    #if IOS7_SDK_AVAILABLE
+        if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+            [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+        }
+    #endif
     if ([Helper isConnectionAvailable]){
         MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
         [self.view addSubview:HUD];

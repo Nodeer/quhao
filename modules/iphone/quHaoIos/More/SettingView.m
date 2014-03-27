@@ -54,9 +54,11 @@
     [self.settingsInSection setObject:second forKey:@"关于"];
     self.settings = [[NSArray alloc] initWithObjects:@"设置",@"关于",nil];
     
-    CGSize size=CGSizeMake(kDeviceWidth,44);
-    [self.navigationController.navigationBar setBackgroundImage:[Helper reSizeImage:@"title.jpg" toSize:size] forBarMetrics:UIBarMetricsDefault];
-    
+#if IOS7_SDK_AVAILABLE
+    if ([self.tableSettings respondsToSelector:@selector(setSeparatorInset:)]) {
+        [self.tableSettings setSeparatorInset:UIEdgeInsetsZero];
+    }
+#endif
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"showImage"]==nil){
         _showImage = 1;
     }else{

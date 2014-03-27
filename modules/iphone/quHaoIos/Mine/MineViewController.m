@@ -55,7 +55,11 @@
     _mineView.backgroundColor=[UIColor whiteColor];
     _mineView.indicatorStyle=UIScrollViewIndicatorStyleWhite;
     [self.view addSubview:_mineView];
-    
+#if IOS7_SDK_AVAILABLE
+    if ([_mineView respondsToSelector:@selector(setSeparatorInset:)]) {
+        [_mineView setSeparatorInset:UIEdgeInsetsZero];
+    }
+#endif
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(noticeUpdateHandler:) name:@"Notification_NoticeUpdate" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshed:) name:Notification_TabClick object:nil];

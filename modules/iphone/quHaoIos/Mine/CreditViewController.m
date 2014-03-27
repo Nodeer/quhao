@@ -32,6 +32,13 @@
     [super viewDidLoad];
     //添加上面的导航
     [self loadNavigationItem];
+    
+#if IOS7_SDK_AVAILABLE
+    if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+        [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+    }
+#endif
+    
     _creditArray = [[NSMutableArray alloc] initWithCapacity:0];
     _reloading = NO;
     _pageIndex=1;

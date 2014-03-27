@@ -34,12 +34,12 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
 
-    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 7, 50, 35 )];
+    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 5, 40, 30 )];
     [backButton addTarget:self action:@selector(clickToHome:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
-    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 提 交" rect:CGRectMake( 0, 7, 50, 35 )];
+    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 提 交" rect:CGRectMake( 0, 0, 40, 25 )];
     [btnButton addTarget:self action:@selector(updateXx:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:btnButton];
     self.navigationItem.rightBarButtonItem = buttonItem;
@@ -83,8 +83,9 @@
     accountField.delegate = self;
     accountField.leftViewMode = UITextFieldViewModeAlways;
     accountField.backgroundColor=[UIColor whiteColor];
-    //[accountField setBorderStyle:UITextBorderStyleRoundedRect]; //外框类型
-
+    //设置textField输入起始位置
+    accountField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 0)];
+    accountField.leftViewMode = UITextFieldViewModeAlways;
     [self.view addSubview:accountField];
 }
 

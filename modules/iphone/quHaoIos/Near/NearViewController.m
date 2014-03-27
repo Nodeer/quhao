@@ -50,6 +50,12 @@
     _merchartsArray = [[NSMutableArray alloc] initWithCapacity:20];
     [self.tableView registerClass:[NearCell class] forCellReuseIdentifier:@"NearCell"];
     
+#if IOS7_SDK_AVAILABLE
+    if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+        [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+    }
+#endif
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshed:) name:Notification_TabClick object:nil];
 }
 
@@ -79,7 +85,11 @@
 {
     if (notification.object) {
         if ([(NSString *)notification.object isEqualToString:@"1"]) {
-            [self.tableView setContentOffset:CGPointZero animated:YES];
+            if (self.tableView.contentOffset.y == 0) {
+                [self performSelector:@selector(refreshData:) withObject:nil afterDelay:0.5];
+            }else{
+                [self.tableView setContentOffset:CGPointZero animated:YES];
+            }
         }
     }
 }

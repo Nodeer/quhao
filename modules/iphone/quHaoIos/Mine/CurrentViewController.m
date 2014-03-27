@@ -29,22 +29,30 @@
     [super viewDidLoad];
     //添加上面的导航
     [self loadNavigationItem];
+    
+#if IOS7_SDK_AVAILABLE
+    if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+        [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+    }
+#endif
+    
     _merchartsArray = [[NSMutableArray alloc] initWithCapacity:20];
     _reloading = NO;
     _pageIndex=1;
+    [self addFooter];
+
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
     [_merchartsArray removeAllObjects];
-    _merchartsArray = [[NSMutableArray alloc] initWithCapacity:20];
-
     MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:HUD];
     //如果设置此属性则当前的view置于后台
     HUD.dimBackground = YES;
     //设置对话框文字
     HUD.labelText = @"正在加载...";
+
     //显示对话框
     [HUD showAnimated:YES whileExecutingBlock:^{
         [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],currentMerchant_url,self.accouId] withPage:_pageIndex];
@@ -52,7 +60,6 @@
     } completionBlock:^{
         //操作执行完后取消对话框
         [HUD removeFromSuperview];
-        [self addFooter];
     }];
 }
 
