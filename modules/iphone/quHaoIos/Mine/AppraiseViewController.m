@@ -7,7 +7,7 @@
 //
 
 #import "AppraiseViewController.h"
-
+#define labelFont 16
 @interface AppraiseViewController ()
 
 @end
@@ -23,24 +23,24 @@
 @synthesize rid;
 @synthesize textView;
 @synthesize isCommented;
-@synthesize accountField;
+@synthesize rjxfField;
 
 -(void)loadView
 {
-    UIScrollView  *view=[[UIScrollView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
-    self.view=view;
-    
+    UIView  *scrollView =[[UIView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
+    scrollView.backgroundColor = [UIColor whiteColor];
+    self.view=scrollView;
     [self loadNavigationItem];
 }
 
 -(void)loadNavigationItem
 {
-    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 7, 50, 35 )];
+    UIButton *backButton = [Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 5, 50, 30 )];
     [backButton addTarget:self action:@selector(clickToHome:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
-    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 提 交" rect:CGRectMake( 0, 7, 50, 35 )];
+    UIButton *btnButton = [Helper getBackBtn:@"button.png" title:@" 提 交" rect:CGRectMake( 0, 0, 40, 25 )];
     [btnButton addTarget:self action:@selector(clickXx:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:btnButton];
     self.navigationItem.rightBarButtonItem = buttonItem;
@@ -48,48 +48,52 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor=[UIColor whiteColor];
-    UILabel *pl = [Helper getLabel:@"人均消费" font:18 rect:CGRectMake(0, 8, 85, 20)];
+    self.view.backgroundColor = [UIColor whiteColor];
+    UILabel *pl = [Helper getLabel:@"人均消费" font:labelFont rect:CGRectMake(10, 8, 85, 20)];
     [self.view addSubview:pl];
     
-    self.accountField = [[UITextField alloc] initWithFrame:CGRectMake(80, 5, 100.0f, 27.0f)];
-    [accountField setBorderStyle:UITextBorderStyleRoundedRect]; //外框类型
-    accountField.placeholder = @""; //默认显示的字
-    accountField.secureTextEntry = NO; //是否以密码形式显示
-    accountField.autocorrectionType = UITextAutocorrectionTypeNo;//设置是否启动自动提醒更正功能
-    accountField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    accountField.returnKeyType = UIReturnKeyDone;  //键盘返回类型
-    accountField.clearButtonMode = UITextFieldViewModeWhileEditing; //编辑时会出现个修改X
-    accountField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;//键盘显示类型
-    accountField.delegate = self;
-    [self.view addSubview:accountField];
+    self.rjxfField = [[UITextField alloc] initWithFrame:CGRectMake(90, 5, 100.0f, 27.0f)];
+    [rjxfField setBorderStyle:UITextBorderStyleRoundedRect]; //外框类型
+    rjxfField.placeholder = @""; //默认显示的字
+    rjxfField.layer.borderColor = UIColor.grayColor.CGColor;
+    rjxfField.layer.borderWidth = 1;
+    rjxfField.layer.cornerRadius = 6.0;
+    rjxfField.layer.masksToBounds = YES;
+    rjxfField.secureTextEntry = NO; //是否以密码形式显示
+    rjxfField.autocorrectionType = UITextAutocorrectionTypeNo;//设置是否启动自动提醒更正功能
+    rjxfField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    rjxfField.returnKeyType = UIReturnKeyDone;  //键盘返回类型
+    rjxfField.clearButtonMode = UITextFieldViewModeWhileEditing; //编辑时会出现个修改X
+    rjxfField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;//键盘显示类型
+    rjxfField.delegate = self;
+    [self.view addSubview:rjxfField];
 
-    UILabel *name = [Helper getLabel:@"口味" font:18 rect:CGRectMake(0, 30, 70, 70)];
-    [self.view addSubview:name];
-	customNumberOfStars = [[RatingControl alloc] initWithFrame:CGRectMake(40, 40, 300, 70) andStars:5 isFractional:YES];
+    UILabel *xfLabel = [Helper getLabel:@"口味" font:labelFont rect:CGRectMake(42, 25, 40, 70)];
+    [self.view addSubview:xfLabel];
+	customNumberOfStars = [[RatingControl alloc] initWithFrame:CGRectMake(85, 35, 120, 70) andStars:5 isFractional:NO];
     [self setRating:customNumberOfStars];
     
-    UILabel *hj = [Helper getLabel:@"环境" font:18 rect:CGRectMake(0, 85, 70, 70)];
+    UILabel *hj = [Helper getLabel:@"环境" font:labelFont rect:CGRectMake(xfLabel.frame.origin.x, 80, 40, 70)];
     [self.view addSubview:hj];
-	hjNumberOfStars = [[RatingControl alloc] initWithFrame:CGRectMake(40, 100, 300, 70) andStars:5 isFractional:YES];
+	hjNumberOfStars = [[RatingControl alloc] initWithFrame:CGRectMake(customNumberOfStars.frame.origin.x, 95, 120, 70) andStars:5 isFractional:NO];
     [self setRating:hjNumberOfStars];
 
-    UILabel *fw = [Helper getLabel:@"服务" font:18 rect:CGRectMake(0, 140, 70, 70)];
+    UILabel *fw = [Helper getLabel:@"服务" font:labelFont rect:CGRectMake(xfLabel.frame.origin.x, 135, 40, 70)];
     [self.view addSubview:fw];
-    fwNumberOfStars = [[RatingControl alloc] initWithFrame:CGRectMake(40, 160, 300, 70) andStars:5 isFractional:YES];
+    fwNumberOfStars = [[RatingControl alloc] initWithFrame:CGRectMake(customNumberOfStars.frame.origin.x, 155, 120, 70) andStars:5 isFractional:NO];
     [self setRating:fwNumberOfStars];
 
-    UILabel *xjb = [Helper getLabel:@"性价比" font:18 rect:CGRectMake(0, 195, 65, 70)];
+    UILabel *xjb = [Helper getLabel:@"性价比" font:labelFont rect:CGRectMake(xfLabel.frame.origin.x-15, 190, 60, 70)];
     [self.view addSubview:xjb];
-	xjbNumberOfStars = [[RatingControl alloc] initWithFrame:CGRectMake(40, 220, 300, 70) andStars:5 isFractional:YES];
+	xjbNumberOfStars = [[RatingControl alloc] initWithFrame:CGRectMake(customNumberOfStars.frame.origin.x, 215, 120, 70) andStars:5 isFractional:NO];
     [self setRating:xjbNumberOfStars];
 
-    UILabel *zt = [Helper getLabel:@"总体评价" font:18 rect:CGRectMake(0, 250, 90, 70)];
+    UILabel *zt = [Helper getLabel:@"总体评价" font:labelFont rect:CGRectMake(xfLabel.frame.origin.x-30, 245, 80, 70)];
     [self.view addSubview:zt];
-    ztNumberOfStars = [[RatingControl alloc] initWithFrame:CGRectMake(40, 280, 300, 70) andStars:5 isFractional:YES];
+    ztNumberOfStars = [[RatingControl alloc] initWithFrame:CGRectMake(customNumberOfStars.frame.origin.x, 275, 120, 70) andStars:5 isFractional:NO];
     [self setRating:ztNumberOfStars];
     
-    self.textView = [[UITextView alloc] initWithFrame:CGRectMake(8, 315, 290, 110)];
+    self.textView = [[UITextView alloc] initWithFrame:CGRectMake(8, 310, 260, 110)];
     self.textView.textColor = [UIColor grayColor];//设置textview里面的字体颜色
     self.textView.layer.borderColor = UIColor.grayColor.CGColor;
     self.textView.layer.borderWidth = 1;
@@ -119,7 +123,7 @@
 -(void)setRating:(RatingControl*)control
 {
     control.delegate = self;
-	control.backgroundColor = [UIColor groupTableViewBackgroundColor];
+	control.backgroundColor = [UIColor clearColor];
 	control.autoresizingMask =  UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
 	control.rating = 0;
 	[self.view addSubview:control];
@@ -135,7 +139,7 @@
             [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
         }else{
             NSDictionary *jsonObjects=[QuHaoUtil analyseDataToDic:response];
-            if(jsonObjects==nil){
+            if(jsonObjects == nil){
                 //解析错误
                 [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
             }else{
@@ -146,7 +150,7 @@
                     self.xjbNumberOfStars.rating=[[jsonObjects  objectForKey:@"xingjiabi"] floatValue];
                     self.ztNumberOfStars.rating=[[jsonObjects  objectForKey:@"grade"] floatValue];
                     self.textView.text=[jsonObjects objectForKey:@"content"];
-                    self.accountField.text=[jsonObjects  objectForKey:@"averageCost"];
+                    self.rjxfField.text=[jsonObjects  objectForKey:@"averageCost"];
                 }
             }
         }
@@ -159,11 +163,11 @@
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
     if ([self.textView.text isEqualToString:@"我要评论"]) {
-        self.textView.text=@"";
+        self.textView.text = @"";
     }
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.3];
-    self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y-220, self.view.frame.size.width, self.view.frame.size.height);
+    self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y-210, self.view.frame.size.width, self.view.frame.size.height);
     [UIView commitAnimations];
     return YES;
 }
@@ -172,7 +176,7 @@
 {
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.3];
-    self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y+220, self.view.frame.size.width, self.view.frame.size.height);
+    self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y+210, self.view.frame.size.width, self.view.frame.size.height);
     [UIView commitAnimations];
     return YES;
 }
@@ -197,7 +201,7 @@
 //按下Done按钮的调用方法，我们让键盘消失
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
     
-    [self.accountField resignFirstResponder];
+    [self.rjxfField resignFirstResponder];
     
     return YES;
 }
@@ -205,14 +209,14 @@
 //点击屏幕空白处去掉键盘
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [self.accountField resignFirstResponder];
+    [self.rjxfField resignFirstResponder];
 }
 
 - (void)clickXx:(id)sender
 {
     [self.textView resignFirstResponder];
-    [self.accountField resignFirstResponder];
-    NSString * acc=self.accountField.text;
+    [self.rjxfField resignFirstResponder];
+    NSString * acc = self.rjxfField.text;
     if (![acc isEqualToString:@""]){
         if ([acc stringByTrimmingCharactersInSet: [NSCharacterSet decimalDigitCharacterSet]].length >0) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"请输入合法数字" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
@@ -224,8 +228,8 @@
     }
     
     if([Helper isConnectionAvailable]){
-        NSString *urlStr=[NSString stringWithFormat:@"%@%@?rid=%@&kouwei=%f&huanjing=%f&fuwu=%f&xingjiabi=%f&content=%@&grade=%f&cost=%@",[Helper getIp],updateComment_url,rid,customNumberOfStars.rating,fwNumberOfStars.rating,hjNumberOfStars.rating,xjbNumberOfStars.rating,[self.textView.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],ztNumberOfStars.rating,acc];
-        NSString *response =[QuHaoUtil requestDb:urlStr];
+        NSString *urlStr = [NSString stringWithFormat:@"%@%@?rid=%@&kouwei=%f&huanjing=%f&fuwu=%f&xingjiabi=%f&content=%@&grade=%f&cost=%@",[Helper getIp],updateComment_url,rid,customNumberOfStars.rating,hjNumberOfStars.rating,fwNumberOfStars.rating,xjbNumberOfStars.rating,[self.textView.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],ztNumberOfStars.rating,acc];
+        NSString *response = [QuHaoUtil requestDb:urlStr];
         if([response isEqualToString:@""]){
             //异常处理
             [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
@@ -253,12 +257,12 @@
 -(void)newRating:(RatingControl *)control :(float)rating {
     control.rating=rating;
     [self.textView resignFirstResponder];
-    [self.accountField resignFirstResponder];
+    [self.rjxfField resignFirstResponder];
 }
 
 - (BOOL) textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    if (textField == accountField) {
+    if (textField == rjxfField) {
         NSScanner      *scanner    = [NSScanner scannerWithString:string];
         NSCharacterSet *numbers;
         NSRange    pointRange = [textField.text rangeOfString:@"."];

@@ -16,7 +16,7 @@
 
 - (id)initWithDefault:(UIImage*)star highlighted:(UIImage*)highlightedStar position:(int)index allowFractions:(BOOL)fractions {
 	self = [super initWithFrame:CGRectZero];
-    
+    self.backgroundColor = [UIColor whiteColor];
 	if (self) {
         [self setTag:index];
         if (fractions) {

@@ -23,7 +23,7 @@
 @property (strong,nonatomic) NSString *accouId;
 @property (strong,nonatomic) NSString *rid;
 @property (nonatomic, strong) UITextView *textView;
-@property (nonatomic, strong) UITextField *accountField;
+@property (nonatomic, strong) UITextField *rjxfField;
 @property BOOL isCommented;
 
 //提交评价

@@ -16,7 +16,7 @@
 	int currentIdx;
 	UIImage *star;
 	UIImage *highlightedStar;
-	IBOutlet id<RatingDelegate> delegate;
+    id<RatingDelegate> delegate;
     BOOL isFractionalRatingEnabled;
 }
 - (id)initWithFrame:(CGRect)frame;

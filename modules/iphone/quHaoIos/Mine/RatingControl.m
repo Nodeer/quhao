@@ -22,7 +22,7 @@
 	currentIdx = -1;
 	star = [UIImage imageNamed:@"star.png"];
 	highlightedStar = [UIImage imageNamed:@"star_highlighted.png"];
-    
+    self.backgroundColor = [UIColor clearColor];
 	for (int i=0; i<numberOfStars; i++) {
 		StarView *v = [[StarView alloc] initWithDefault:self.star highlighted:self.highlightedStar position:i allowFractions:isFractionalRatingEnabled];
 		[self addSubview:v];
