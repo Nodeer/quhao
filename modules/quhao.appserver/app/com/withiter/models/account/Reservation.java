@@ -374,7 +374,7 @@ public class Reservation extends ReservationEntityDef {
 		q.filter("created >", (new DateTime(c.getTimeInMillis()).toDate()));
 		q.filter("merchantId", merchantId).filter("seatNumber", seatNumber);
 		
-		q.filter("myNumber >", currentNumber);
+		q.filter("myNumber =", currentNumber);
 //		q.filter("valid", true);
 		q.order("myNumber").limit(1);
 
