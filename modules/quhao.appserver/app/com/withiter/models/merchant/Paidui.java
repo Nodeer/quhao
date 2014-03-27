@@ -20,10 +20,20 @@ public class Paidui{
 	public Paidui() {
 	}
 	
+	public void reset() {
+		this.currentNumber = 0;
+		this.maxNumber = 0;
+		this.canceled = 0;
+		this.expired = 0;
+		this.finished = 0;
+		this.enable = false;
+	}
+	
 	public int currentNumber = 0;
 	public int maxNumber = 0;
 	public int canceled = 0;
 	public int expired = 0;
 	public int finished = 0;
 	public boolean enable = false;
+	
 }

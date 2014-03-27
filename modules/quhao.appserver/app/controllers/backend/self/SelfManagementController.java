@@ -60,8 +60,8 @@ public class SelfManagementController extends BaseController {
 	}
 
 	/*
-	 * 1) account information(included information:email or phone...) 2)
-	 * Merchant information(included information:name, address...)
+	 * 1) account information(included information:email or phone...) 
+	 * 2) Merchant information(included information:name, address...)
 	 */
 
 	/**
@@ -144,7 +144,14 @@ public class SelfManagementController extends BaseController {
 				haoma.haomaMap.get(key).enable = true;
 				seatTypeSet.remove(key.toString());
 			} else {
-				haoma.haomaMap.get(key).enable = false;
+				// reset Paidui object to original status
+				// currentNumber = 0; maxNumber = 0; enable = false; ...
+				Paidui p = haoma.haomaMap.get(key);
+				p.reset();
+				
+				// set the reservations status with this seatNumber to invalid(valid = false) 
+				// and the change Constants.ReservationStatus status to invalidByMerchantUpdate
+				Reservation.invalidByMerchantUpdate(key,m.id());
 			}
 		}
 

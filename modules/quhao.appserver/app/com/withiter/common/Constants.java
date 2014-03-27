@@ -47,7 +47,8 @@ public class Constants {
 	}
 	
 	public enum ReservationStatus{
-		finished, canceled, expired, active
+		finished, canceled, expired, active,
+		invalidByMerchantUpdate // when Merchant's seatType updated, the reservations will be this status
 	}
 	
 	/**

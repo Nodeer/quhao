@@ -1,9 +1,8 @@
 package com.withiter.models.account;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -383,9 +382,23 @@ public class Reservation extends ReservationEntityDef {
 		q.filter("created >", (new DateTime(c.getTimeInMillis()).toDate()));
 		q.filter("merchantId", merchantId).filter("seatNumber", seatNumber);
 		q.filter("myNumber >", currentNumber);
-		q.filter("valid", "true");
+		q.filter("valid", true);
 		q.order("myNumber").limit(1);
 
 		return q.first();
+	}
+	
+	public static void invalidByMerchantUpdate(int seatNumber, String merchantId){
+		MorphiaQuery q = Reservation.q();
+		q.filter("merchantId", merchantId).filter("seatNumber", seatNumber);
+		q.filter("valid", true);
+		Iterator it = q.iterator();
+		Reservation r = null;
+		while(it.hasNext()){
+			r = (Reservation)it.next();
+			r.valid = false;
+			r.status = ReservationStatus.invalidByMerchantUpdate;
+			r.save();
+		}
 	}
 }
