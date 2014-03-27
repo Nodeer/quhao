@@ -17,6 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import play.Play;
 import play.modules.morphia.Model.MorphiaQuery;
 import play.mvc.Before;
 import play.mvc.Http.Header;
@@ -355,8 +356,9 @@ public class MerchantController extends BaseController {
 		}
 
 		Account account = Account.findById(accountId);
+		int getNumberJifen = Integer.parseInt(Play.configuration.getProperty("credit.getnumber.jifen"));
 		int left = account.jifen;
-		if (left < 1) {
+		if (left < getNumberJifen) {
 			Paidui paidui = haoma.haomaMap.get(seatNumber);
 			rvo.currentNumber = paidui.currentNumber;
 			rvo.tipValue = "NO_MORE_JIFEN";
@@ -366,7 +368,7 @@ public class MerchantController extends BaseController {
 			rvo.seatNumber = seatNumber;
 			renderJSON(rvo);
 		}
-		if (left >= 1) {
+		if (left >= getNumberJifen) {
 			Reservation reservation = Haoma.nahao(accountId, mid, seatNumber, null);
 			Haoma haomaNew = Haoma.findByMerchantId(mid);
 			rvo.currentNumber = haomaNew.haomaMap.get(seatNumber).currentNumber;
@@ -375,7 +377,7 @@ public class MerchantController extends BaseController {
 			rvo.tipKey = true;
 			rvo.tipValue = "NAHAO_SUCCESS";
 			rvo.build(reservation);
-			account.jifen -= 1;
+			account.jifen -= getNumberJifen;
 			account.save();
 
 			// 增加积分消费情况
@@ -384,7 +386,7 @@ public class MerchantController extends BaseController {
 			credit.merchantId = reservation.merchantId;
 			credit.reservationId = reservation.id();
 			credit.cost = false;
-			credit.jifen=-1;
+			credit.jifen=-getNumberJifen;
 			credit.status = CreditStatus.getNumber;
 			credit.created = new Date();
 			credit.modified = new Date();
