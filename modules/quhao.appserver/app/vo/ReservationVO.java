@@ -1,6 +1,7 @@
 package vo;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.withiter.common.Constants;
@@ -23,7 +24,7 @@ public class ReservationVO {
 	
 	public String merchantAddress;
 	public String merchantImage;
-
+	public Date created = new Date();
 
 	public void build(Reservation r){
 		this.id = r.id();
@@ -33,6 +34,7 @@ public class ReservationVO {
 		this.seatNumber = r.seatNumber;
 		this.status = r.status;
 		this.isCommented=r.isCommented;
+		this.created = r.created;
 	}
 	
 	public static List<ReservationVO> build(List<Reservation> rList){
