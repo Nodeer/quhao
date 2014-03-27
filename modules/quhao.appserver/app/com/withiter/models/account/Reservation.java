@@ -8,6 +8,7 @@ import java.util.List;
 import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 
+import play.Play;
 import play.modules.morphia.Model.NoAutoTimestamp;
 import cn.bran.japid.util.StringUtils;
 
@@ -232,8 +233,9 @@ public class Reservation extends ReservationEntityDef {
 				return true;
 			}
 			
+			int finishedJifen = Integer.parseInt(Play.configuration.getProperty("credit.finished.jifen"));
 			Account account = Account.findById(accountId);
-			account.jifen = account.jifen + 1;
+			account.jifen = account.jifen + finishedJifen;
 			account.modified = new Date();
 			account.save();
 
@@ -243,6 +245,7 @@ public class Reservation extends ReservationEntityDef {
 			credit.merchantId = r.merchantId;
 			credit.reservationId = r.id();
 			credit.cost = true;
+			credit.jifen = finishedJifen;
 			credit.status = CreditStatus.finished;
 			credit.created = new Date();
 			credit.modified = new Date();
@@ -266,17 +269,6 @@ public class Reservation extends ReservationEntityDef {
 			r.valid = false;
 			r.modified = new Date();
 			r.save();
-
-			// cost one credit
-			Credit credit = new Credit();
-			credit.accountId = r.accountId;
-			credit.merchantId = r.merchantId;
-			credit.reservationId = r.id();
-			credit.cost = true;
-			credit.status = CreditStatus.expired;
-			credit.created = new Date();
-			credit.modified = new Date();
-			credit.create();
 
 			return true;
 		}
@@ -381,8 +373,9 @@ public class Reservation extends ReservationEntityDef {
 
 		q.filter("created >", (new DateTime(c.getTimeInMillis()).toDate()));
 		q.filter("merchantId", merchantId).filter("seatNumber", seatNumber);
+		
 		q.filter("myNumber >", currentNumber);
-		q.filter("valid", true);
+//		q.filter("valid", true);
 		q.order("myNumber").limit(1);
 
 		return q.first();

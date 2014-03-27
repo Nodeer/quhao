@@ -35,10 +35,11 @@ public class CommentController  extends BaseController{
 		}else{
 			if(!reservation.isCommented){
 				Account account = Account.findById(reservation.accountId);
-				account.jifen=account.jifen+1;
+//				account.jifen=account.jifen+1; 评论增加积分先去掉
 				account.dianping=account.dianping+1;
 				account.save();
 				
+				/*
 				// 增加积分消费
 				Credit credit = new Credit();
 				credit.accountId = reservation.accountId;
@@ -50,6 +51,7 @@ public class CommentController  extends BaseController{
 				credit.created = new Date();
 				credit.modified = new Date();
 				credit.save();
+				*/
 			}
 			Comment cm=Comment.getComment(rid);
 			if(cm==null){
