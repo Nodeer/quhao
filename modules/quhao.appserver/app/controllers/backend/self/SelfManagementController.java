@@ -260,6 +260,9 @@ public class SelfManagementController extends BaseController {
 		Reservation r = Reservation.findReservationForHandle(seatNumber, currentNumber, mid);
 		if (r != null) {
 			boolean flag = Reservation.finish(r.id());
+			Haoma haoma = Haoma.findByMerchantId(mid);
+			haoma.updateSelf();
+
 			smsRemind(mid, seatNumber);
 			renderJSON(flag);
 		} else {
@@ -284,6 +287,9 @@ public class SelfManagementController extends BaseController {
 		Reservation r = Reservation.findReservationForHandle(seatNumber, currentNumber, mid);
 		if (r != null) {
 			boolean flag = Reservation.expire(r.id());
+			Haoma haoma = Haoma.findByMerchantId(mid);
+			haoma.updateSelf();
+
 			smsRemind(mid, seatNumber);
 			renderJSON(flag);
 		} else {
