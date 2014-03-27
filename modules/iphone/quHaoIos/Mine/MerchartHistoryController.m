@@ -17,7 +17,7 @@
 -(void)loadNavigationItem
 {   
     self.tabBarItem.title=@"历史取号情况";
-    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 7, 50, 35 )];
+    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 5, 50, 30 )];
     [backButton addTarget:self action:@selector(clickToHome:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;    
@@ -41,29 +41,23 @@
     
     _reservationArray = [[NSMutableArray alloc] initWithCapacity:20];
     _reloading = NO;
-    _pageIndex=1;
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
+    _pageIndex=1;
     [_reservationArray removeAllObjects];
-    _reservationArray = [[NSMutableArray alloc] initWithCapacity:20];
+    if(_footer != nil){
+        [_footer removeFromSuperview];
+    }
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = NSLocalizedString(@"正在加载", nil);
+    hud.square = YES;
+    [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],history_list_url,self.accouId] withPage:_pageIndex];
+    [self.tableView reloadData];
+    [hud hide:YES];
     
-    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:HUD];
-    //如果设置此属性则当前的view置于后台
-    HUD.dimBackground = YES;
-    //设置对话框文字
-    HUD.labelText = @"正在加载...";
-    //显示对话框
-    [HUD showAnimated:YES whileExecutingBlock:^{
-        [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],history_list_url,self.accouId] withPage:_pageIndex];
-        [self.tableView reloadData];
-    } completionBlock:^{
-        //操作执行完后取消对话框
-        [HUD removeFromSuperview];
-        [self addFooter];
-    }];
+    [self addFooter];
 }
 
 //上拉加载更多
@@ -172,7 +166,8 @@
                     model.id=[[jsonObjects objectAtIndex:i] objectForKey:@"id"];
                     model.isCommented=[[[jsonObjects objectAtIndex:i] objectForKey:@"isCommented"] boolValue];
                     model.imgUrl=[[jsonObjects objectAtIndex:i] objectForKey:@"merchantImage"];
-                    
+                    model.created=[[jsonObjects objectAtIndex:i] objectForKey:@"created"];
+
                     [_reservationArray addObject:model];
                 }
             }

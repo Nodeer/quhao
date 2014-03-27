@@ -18,7 +18,7 @@
 {
     self.tabBarItem.title=@"当前取号情况";
     
-    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 7, 50, 35 )];
+    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 5, 50, 30 )];
     [backButton addTarget:self action:@selector(clickToHome:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
@@ -38,29 +38,25 @@
     
     _merchartsArray = [[NSMutableArray alloc] initWithCapacity:20];
     _reloading = NO;
-    _pageIndex=1;
-    [self addFooter];
-
+    _pageIndex = 1;
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
+    _pageIndex=1;
     [_merchartsArray removeAllObjects];
-    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:HUD];
-    //如果设置此属性则当前的view置于后台
-    HUD.dimBackground = YES;
-    //设置对话框文字
-    HUD.labelText = @"正在加载...";
+    if(_footer != nil){
+        [_footer removeFromSuperview];
+    }
 
-    //显示对话框
-    [HUD showAnimated:YES whileExecutingBlock:^{
-        [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],currentMerchant_url,self.accouId] withPage:_pageIndex];
-        [self.tableView reloadData];
-    } completionBlock:^{
-        //操作执行完后取消对话框
-        [HUD removeFromSuperview];
-    }];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = NSLocalizedString(@"正在加载", nil);
+    hud.square = YES;
+    [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],currentMerchant_url,self.accouId] withPage:_pageIndex];
+    [self.tableView reloadData];
+    [hud hide:YES];
+    
+    [self addFooter];
 }
 
 //上拉加载更多
@@ -99,7 +95,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ([_merchartsArray count]==0) {
+    if ([_merchartsArray count] == 0) {
         self.tableView.separatorStyle = NO;
     }else{
         self.tableView.separatorStyle = YES;
@@ -114,13 +110,13 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentify=@"currentView";
-    HomeCell *cell=[tableView dequeueReusableCellWithIdentifier:cellIdentify];
+    static NSString *cellIdentify = @"currentView";
+    HomeCell *cell= [tableView dequeueReusableCellWithIdentifier:cellIdentify];
     //检查视图中有没闲置的单元格
-    if(cell==nil){
-        cell=[[HomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentify];
+    if(cell == nil){
+        cell = [[HomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentify];
     }
-    cell.merchartModel=_merchartsArray[indexPath.row];
+    cell.merchartModel =_merchartsArray[indexPath.row];
     [Helper arrowStyle:cell];
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return cell;
@@ -149,16 +145,16 @@
 
 -(void)requestData:(NSString *)urlStr withPage:(int)page
 {
-    _loadFlag=YES;
+    _loadFlag = YES;
     if ([Helper isConnectionAvailable]){
-        NSString *str1= [NSString stringWithFormat:@"%@&page=%d", urlStr, page];
-        NSString *response =[QuHaoUtil requestDb:str1];
+        NSString *str1 = [NSString stringWithFormat:@"%@&page=%d", urlStr, page];
+        NSString *response = [QuHaoUtil requestDb:str1];
         if([response isEqualToString:@""]){
             //异常处理
             [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
         }else{
-            NSArray *jsonObjects=[QuHaoUtil analyseData:response];
-            if(jsonObjects==nil){
+            NSArray *jsonObjects = [QuHaoUtil analyseData:response];
+            if(jsonObjects == nil){
                 //解析错误
                 [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
             }else{
@@ -176,19 +172,16 @@
 //上拉刷新增加数据
 -(void)addAfterInfo:(NSArray *) objects
 {
+    MerchartModel *model = nil;
     for(int i=0; i < [objects count];i++ ){
-        MerchartModel *model=[[MerchartModel alloc]init];
-        model.name=[[objects objectAtIndex:i] objectForKey:@"merchantName"];
-        model.id=[[objects objectAtIndex:i] objectForKey:@"merchantId"];
-        model.reservationId=[[objects objectAtIndex:i] objectForKey:@"id"];
-        model.averageCost=[[[objects objectAtIndex:i] objectForKey:@"averageCost"] boolValue];
-        model.imgUrl=[[objects objectAtIndex:i] objectForKey:@"merchantImage"];
+        model = [[MerchartModel alloc]init];
+        model.name = [[objects objectAtIndex:i] objectForKey:@"merchantName"];
+        model.id = [[objects objectAtIndex:i] objectForKey:@"merchantId"];
+        model.reservationId = [[objects objectAtIndex:i] objectForKey:@"id"];
+        model.averageCost = [[[objects objectAtIndex:i] objectForKey:@"averageCost"] boolValue];
+        model.imgUrl = [[objects objectAtIndex:i] objectForKey:@"merchantImage"];
         [_merchartsArray addObject:model];
     }
 }
 
--(void)dealloc
-{
-    _footer=nil;
-}
 @end

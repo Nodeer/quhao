@@ -13,7 +13,9 @@
 @interface HistoryCell : UITableViewCell
 {
     UILabel *_titleLabel;
-    UILabel *pjLabel;
+    UILabel *_pjLabel;
+    UILabel *_timeLabel;
+
     Reservation *_reservationModel;
     
 }

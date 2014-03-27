@@ -33,11 +33,18 @@
     _titleLabel.font=[UIFont boldSystemFontOfSize:18];
     [self.contentView addSubview:_titleLabel];
     
-    pjLabel=[[UILabel alloc]initWithFrame:CGRectZero];
-    pjLabel.backgroundColor=[UIColor clearColor];
-    pjLabel.textColor=[UIColor grayColor];
-    [self.contentView addSubview:pjLabel];
-    pjLabel.frame=CGRectMake(self.egoImgView.frame.origin.x+self.egoImgView.frame.size.width+10,45, 200, 30);
+    _pjLabel=[[UILabel alloc]initWithFrame:CGRectZero];
+    _pjLabel.backgroundColor=[UIColor clearColor];
+    _pjLabel.textColor=[UIColor grayColor];
+    [self.contentView addSubview:_pjLabel];
+    _pjLabel.frame=CGRectMake(self.egoImgView.frame.origin.x+self.egoImgView.frame.size.width+10,45, 200, 30);
+    
+    _timeLabel=[[UILabel alloc] initWithFrame:CGRectZero];
+    _timeLabel.font=[UIFont fontWithName:@"CourierNewPSMT" size:13.0];
+    _timeLabel.frame=CGRectMake(kDeviceWidth-170, 70, 160, 30);
+    _timeLabel.backgroundColor=[UIColor whiteColor];
+    _timeLabel.textAlignment=NSTextAlignmentRight;
+    [self.contentView addSubview:_timeLabel];
 }
 
 -(void) setSelected:(BOOL)selected animated:(BOOL)animated
@@ -60,15 +67,19 @@
     _titleLabel.text=self.reservationModel.name;
     
     if (!self.reservationModel.isCommented) {
-        pjLabel.text=@"待评价";
+        _pjLabel.text = @"待评价";
+        _pjLabel.textColor = [UIColor blackColor];
     }else{
-        pjLabel.text=@"";
+        _pjLabel.text = @"已评价";
+        _pjLabel.textColor = [UIColor grayColor];
     }
+    
+    _timeLabel.text=[Helper formatDate:self.reservationModel.created];
 }
 -(void)dealloc
 {
     self.egoImgView=nil;
     _titleLabel=nil;
-    pjLabel=nil;
+    _pjLabel=nil;
 }
 @end
