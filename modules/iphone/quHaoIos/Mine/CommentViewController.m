@@ -7,8 +7,6 @@
 //
 
 #import "CommentViewController.h"
-#define CELL_CONTENT_WIDTH 320.0f
-#define CELL_CONTENT_MARGIN 10.0f
 
 @interface CommentViewController ()
 
@@ -27,7 +25,6 @@
     _reloading = NO;
     _pageIndex=1;
     //注册
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
     if(self.whichComment==1){
         _url=commentOfMerchart_url;
     }else{
@@ -107,7 +104,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CommentModel *cm = [_commentsArray objectAtIndex:[indexPath row]];
-    CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
+    CGSize constraint = CGSizeMake(kDeviceWidth - (CELL_CONTENT_MARGIN * 2), 20000.0f);
     
     NSDictionary * attributes = [NSDictionary dictionaryWithObject:[UIFont systemFontOfSize:14.0] forKey:NSFontAttributeName];
     NSAttributedString *attributedText =
@@ -126,46 +123,17 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {    
-    UITableViewCell *cell;
-    UILabel *label = nil;
     static NSString *cellIdentify=@"commentCell";
-    cell = [tableView dequeueReusableCellWithIdentifier:cellIdentify];
+    CommentCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentify];
     if (cell == nil)
     {
-        CommentModel *cm = [_commentsArray objectAtIndex:[indexPath row]];
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentify];
-
-        UILabel *_titleLabel = [Helper getCustomLabel:cm.merchantName font:15 rect:CGRectMake(5, 5, 300, 20)];
-        [[cell contentView] addSubview:_titleLabel];
-        
-        UILabel *timeLabel = [Helper getCustomLabel:[Helper formatDate:cm.created] font:12 rect:CGRectMake(180, _titleLabel.frame.origin.y+_titleLabel.frame.size.height, 150, 10)];
-        timeLabel.font=[UIFont systemFontOfSize:12];
-        [[cell contentView] addSubview:timeLabel];
-        
-        label = [[UILabel alloc] initWithFrame:CGRectZero];
-        [label setLineBreakMode:NSLineBreakByWordWrapping];
-        [label setMinimumScaleFactor:14];
-        [label setNumberOfLines:0];
-        label.backgroundColor=[UIColor clearColor];
-        [label setFont:[UIFont systemFontOfSize:14]];
-        [label setTag:1];
-        [[cell contentView] addSubview:label];
-        CGSize constraint = CGSizeMake(CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), 20000.0f);
-        NSAttributedString *attributedText = [[NSAttributedString alloc]initWithString:cm.content attributes:@{
-                                                                   NSFontAttributeName:[UIFont systemFontOfSize:14]
-                                              }];
-        CGRect rect = [attributedText boundingRectWithSize:constraint
-                                                   options:NSStringDrawingUsesLineFragmentOrigin
-                                                   context:nil];
-        CGSize size = rect.size;
-        if (!label)
-            label = (UILabel*)[cell viewWithTag:1];
-        [label setText:cm.content];
-        [label setFrame:CGRectMake(CELL_CONTENT_MARGIN, CELL_CONTENT_MARGIN+28, CELL_CONTENT_WIDTH - (CELL_CONTENT_MARGIN * 2), MAX(size.height, 44.0f))];
-        
+       
+        cell=[[CommentCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentify];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
-    
+    cell.commentModel=[_commentsArray objectAtIndex:[indexPath row]];
+
     return cell;
 }
 
@@ -192,30 +160,21 @@
                 [self addAfterInfo:jsonObjects];
             }
         }
-               //如果是第一页 则缓存下来
-        if (_commentsArray.count <= 20) {
-            [Helper saveCache:5 andID:1 andString:response];
-        }
     }//如果没有网络连接
     else
     {
-        NSString *value = [Helper getCache:5 andID:1];
-        if (value&&[_commentsArray count]==0) {
-            NSArray *jsonObjects=[QuHaoUtil analyseData:value];
-            [self addAfterInfo:jsonObjects];
-            [self.tableView reloadData];
-        }else{
-            loadFlag = NO;
-            [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
-        }
+        loadFlag = NO;
+        [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
+        
     }
 }
 
 //上拉刷新增加数据
 -(void)addAfterInfo:(NSArray *) objects
 {
+    CommentModel *model = nil;
     for(int i=0; i < [objects count];i++ ){
-        CommentModel *model=[[CommentModel alloc]init];
+        model=[[CommentModel alloc]init];
         model.merchantName=[[objects objectAtIndex:i] objectForKey:@"merchantName"];
         model.averageCost=[[objects objectAtIndex:i] objectForKey:@"averageCost"];
         model.content=[[objects objectAtIndex:i] objectForKey:@"content"];

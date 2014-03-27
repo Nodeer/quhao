@@ -17,7 +17,7 @@
 -(void)loadNavigationItem
 {   
     self.tabBarItem.title=@"积分消费情况";
-    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 7, 50, 35 )];
+    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 5, 50, 30 )];
     [backButton addTarget:self action:@selector(clickToHome:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
@@ -110,11 +110,10 @@
     //检查视图中有没闲置的单元格
     if(cell==nil){
         cell=[[CreditCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentify];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
     cell.creditModel=_creditArray[indexPath.row];
-    
-    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    cell.accessoryType = UITableViewCellAccessoryNone;
     
     return cell;
 }

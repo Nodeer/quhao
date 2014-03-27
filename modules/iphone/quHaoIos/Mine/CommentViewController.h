@@ -12,6 +12,7 @@
 #import "CommentModel.h"
 #import "MJRefreshFooterView.h"
 #import "QuHaoUtil.h"
+#import "CommentCell.h"
 @interface CommentViewController : UITableViewController
 {
 @private

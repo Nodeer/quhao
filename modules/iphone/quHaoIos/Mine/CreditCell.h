@@ -12,9 +12,7 @@
 {
     UILabel *_titleLabel;
     UILabel *_pjLabel;
-    UILabel *_timeLabel;
-    Credit *_creditModel;
-    
+    UILabel *_timeLabel;    
 }
 @property(nonatomic,strong) Credit *creditModel;
 
