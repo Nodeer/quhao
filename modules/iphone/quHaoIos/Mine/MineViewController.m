@@ -60,6 +60,12 @@
         [_mineView setSeparatorInset:UIEdgeInsetsZero];
     }
 #endif
+    //设置tableView不能滚动
+    [_mineView setScrollEnabled:NO];
+    if(kDeviceHeight >480 ){
+        [self setExtraCellLineHidden:_mineView];
+    }
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(noticeUpdateHandler:) name:@"Notification_NoticeUpdate" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshed:) name:Notification_TabClick object:nil];
@@ -190,9 +196,10 @@
             [cell.contentView addSubview:_jfLabel];
             
         }else if ([indexPath row] ==1 ) { //签到和点评           
-            UILabel *_qdLabel = [Helper getCustomLabel:@"签到" font:18 rect:CGRectMake(90, 12, 60, 30)];
+            UILabel *_qdLabel = [Helper getCustomLabel:@"签到" font:18 rect:CGRectMake(kDeviceWidth/3-10, 12, 60, 30)];
             if(_userInfo.isSignIn){
                 _qdLabel.textColor=[UIColor blackColor];
+                _qdLabel.font = [UIFont systemFontOfSize:18];
             }else{
                 _qdLabel.textColor=[UIColor redColor];
                 UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickUILable:)];
@@ -213,7 +220,7 @@
             [_dpLabel addGestureRecognizer:tapGesture];
             [cell.contentView addSubview:_dpLabel];
             
-            UILabel *_dpValueLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%d",_userInfo.dianping] font:18 rect:CGRectMake(_dpLabel.frame.origin.x+18, _dpLabel.frame.size.height+8, 60, 30)];
+            UILabel *_dpValueLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%d",_userInfo.dianping] font:18 rect:CGRectMake(_dpLabel.frame.origin.x+10, _dpLabel.frame.size.height+8, 60, 30)];
             UITapGestureRecognizer *tapGesture2=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickDp:)];
             _dpValueLabel.userInteractionEnabled=YES;
             [_dpValueLabel addGestureRecognizer:tapGesture2];
@@ -248,9 +255,22 @@
     
 }
 
+- (void)setExtraCellLineHidden: (UITableView *)tableView
+{
+    UIView *view =[ [UIView alloc]init];
+    view.backgroundColor = [UIColor whiteColor];
+    [tableView setTableFooterView:view];
+}
+
 //设置cell的事件
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (_helper.isCookie == NO) {
+        UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"请登录后查看信息" delegate:self cancelButtonTitle:@"返回" destructiveButtonTitle:nil otherButtonTitles:@"登录", nil];
+        [sheet showInView:[UIApplication sharedApplication].keyWindow];
+        
+        return;
+    }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     int row = [indexPath row];
     if (row ==3) {
@@ -264,7 +284,13 @@
 
 //点击签到的
 -(void)onClickUILable:(UITapGestureRecognizer *)sender
-{        
+{
+    if (_helper.isCookie == NO) {
+        UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"请登录后查看信息" delegate:self cancelButtonTitle:@"返回" destructiveButtonTitle:nil otherButtonTitles:@"登录", nil];
+        [sheet showInView:[UIApplication sharedApplication].keyWindow];
+        
+        return;
+    }
     if([Helper isConnectionAvailable]){
         NSString *urlStr=[NSString stringWithFormat:@"%@%@?accountId=%@",[Helper getIp],signIn_url,_userInfo.accountId];
         NSString *response =[QuHaoUtil requestDb:urlStr];
@@ -297,6 +323,13 @@
 
 //点击点评
 -(void)onClickDp:(UITapGestureRecognizer *)sender{
+    if (_helper.isCookie == NO) {
+        UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"请登录后查看信息" delegate:self cancelButtonTitle:@"返回" destructiveButtonTitle:nil otherButtonTitles:@"登录", nil];
+        [sheet showInView:[UIApplication sharedApplication].keyWindow];
+        
+        return;
+    }
+    
     CommentViewController *history = [[CommentViewController alloc] init];
     history.accountOrMerchantId=_userInfo.accountId;
     history.title = @"我的评论";
