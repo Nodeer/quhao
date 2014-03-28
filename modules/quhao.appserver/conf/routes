@@ -18,6 +18,13 @@ GET		/app/{action}						AppController.{action}
 
 # Routes for Android & IOS clients
 
+# Home page
+GET		/home								LandingController.index
+GET		/about								LandingController.about
+GET		/business							LandingController.business
+
+
+
 # Category
 GET		/allCategories						MerchantController.allCategories
 
