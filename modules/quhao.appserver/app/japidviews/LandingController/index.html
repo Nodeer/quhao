@@ -2,114 +2,70 @@
 `extends base_layout
 `set cssAndJs
 `
+
 <!DOCTYPE html>
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-<link href="/public/images/applyful_favicon.gif" type="image/png" rel="shortcut icon">
-<script src="/public/javascripts/libs/jquery-1.7.js" type="text/javascript" language="javascript" charset="utf-8"></script>
-<script src="/public/javascripts/libs/jquery-ui-1.10.3.custom.min.js" type="text/javascript" language="javascript" charset="utf-8"></script>
-<script src="/public/javascripts/slogan/jquery-jrumble.js" type="text/javascript" language="javascript" charset="utf-8"></script>
-
-<title>取号</title>
-
-<script type="text/javascript">
-jQuery.fn.shake = function(intShakes /*Amount of shakes*/, intDistance /*Shake distance*/, intDuration /*Time duration*/) {
-	this.each(function() {
-		var jqNode = $(this);
-		jqNode.css({position: 'relative'});
-		for (var x=1; x<=intShakes; x++) {
-			jqNode.animate({ left: (intDistance * -1) },(((intDuration / intShakes) / 4)))
-			.animate({ left: intDistance },((intDuration/intShakes)/2))
-			.animate({ left: 0 },(((intDuration/intShakes)/4)));
-		}
-	});
-	return this;
-}
-
-$(function() {
-	    //$("#diannao").shake(1,10,10000);
-	    $('#diannao1').jrumble({
-	    	rumbleSpeed: 50,
-	    	rumbleEvent: ('constant')
-	    });
-	    $('#zixingche1').jrumble({
-	    	rumbleSpeed: 50,
-	    	rumbleEvent: ('constant')
-	    });
-	    $('#nahao1').jrumble({
-	    	rumbleSpeed: 50,
-	    	rumbleEvent: ('constant')
-	    });
-	    $('#zuozhe1').jrumble({
-	    	rumbleSpeed: 50,
-	    	rumbleEvent: ('constant')
-	    });
-	    
-	    //$("#diannao").shake(1,10,10000);
-	    $('#diannao2').jrumble({
-	    	rumbleSpeed: 50,
-	    	rumbleEvent: ('constant')
-	    });
-	    $('#zoulu2').jrumble({
-	    	rumbleSpeed: 50,
-	    	rumbleEvent: ('constant')
-	    });
-	    $('#nahao2').jrumble({
-	    	rumbleSpeed: 50,
-	    	rumbleEvent: ('constant')
-	    });
-	    $('#zuozhe2').jrumble({
-	    	rumbleSpeed: 50,
-	    	rumbleEvent: ('constant')
-	    });
-});
-</script>
-
-<style type="text/css">
-	.grid{
-		width: 25%; 
-		float: left; 
-		text-align: center;
-	}
-	
-	.outter{
-		height: 47%; 
-		width:100%; 
-		padding-top: 20px;
-	}
-</style>
-
+<html data-wf-site="5301e462212e0b50560006c6" xmlns:wb="http://open.weibo.com/wb">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>取号啦 - 改变你的排队生活</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/home/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/home/webflow.css">
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/home/quhaola.webflow.css">
+  <script type="text/javascript" src="/public/javascripts/home/webfont.js"></script>
+  <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+  
+  <script>
+    WebFont.load({
+      google: {
+        families: ["Montserrat:400,700","Bitter:400,700"]
+      }
+    });
+  </script>
+  <script>
+    if (/mobile/i.test(navigator.userAgent)) document.documentElement.className += ' w-mobile';
+  </script>
+  <!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  <link rel="apple-touch-icon" href="https://y7v4p6k4.ssl.hwcdn.net/51d1bb05fc804b2621000001/51e06f0756878bb26a000008_webclip-slate.png">
 </head>
-
-<body id="fatherContainer" style="background-color:#fff; height: 100%">
-	<div class="outter">
-		<div class="grid">
-			<img id="diannao1" alt="工作中..." src="/public/images/slogan/diannao.png">
-		</div>
-		<div class="grid">
-			<img id="zixingche1" alt="工作中..." src="/public/images/slogan/zixingche.png">
-		</div>
-		<div class="grid">
-			<img id="nahao1" alt="工作中..." src="/public/images/slogan/nahao.png">
-		</div>
-		<div class="grid">
-			<img id="zuozhe1" alt="工作中..." src="/public/images/slogan/zuozhe.png">
-		</div>
-	</div>
-	<div class="outter">
-		<div class="grid">
-			<img id="diannao2" alt="工作中..." src="/public/images/slogan/diannao.png">
-		</div>
-		<div class="grid">
-			<img id="zoulu2" alt="工作中..." src="/public/images/slogan/zoulu.png">
-		</div>
-		<div class="grid">
-			<img id="nahao2" alt="工作中..." src="/public/images/slogan/nahao.png">
-		</div>
-		<div class="grid">
-			<img id="zuozhe2" alt="工作中..." src="/public/images/slogan/zuozhe.png">
-		</div>
-	</div>
-	
-</body>
+<body>
+  <header class="section">
+    <div class="w-container">
+      <div class="w-row">
+        <div class="w-col w-col-4 w-clearfix subfooter-left">
+          <img class="logo-in-header" src="/public/images/home/application_icon.png" width="25px" alt="5302cd728b0b46b15800005a_application_icon.png">
+          <div class="app-name">取号啦</div>
+        </div>
+        <div class="w-col w-col-8 w-clearfix nav-column">
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="section hero">
+    <div class="w-container">
+      <div class="w-row">
+        <div class="w-col w-col-6">
+          <img class="hero-iphone" src="/public/images/home/site_iphone.png" width="330px" alt="52ddf177b6d2171f780000a2_iphone.png">
+        </div>
+        <div class="w-col w-col-6 w-clearfix call-to-action">
+          <h1 class="hero-header">排队不用等，<br>从取号啦开始。</h1>
+          <p class="hero-subtitle">一个聪明的APP，让它帮你节省排队时间。</p>
+          <wb:share-button appkey="2nuoX4" addition="number" type="button" ralateUid="3938840780" default_text="一个聪明的APP，让它帮你节省排队时间。" pic="http%3A%2F%2Fww3.sinaimg.cn%2Fbmiddle%2Feac5f0ccgw1edni3074udj209p0ci74x.jpg"></wb:share-button>
+          <br/>
+		   <br/>
+          <a class="button" href="#">iPhone App</a>
+          <a class="button" href="#">Android App</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section grey footertext" style="margin-top: 50px;">
+    <div class="w-container">
+      <p class="footer-text">Copyright ©2014 quhao.la, All Rights Reserved.</p>
+    </div>
+  </div>
+  <script src="/public/javascripts/libs/jquery-1.7.js" type="text/javascript" language="javascript" charset="utf-8"></script>
+  <script src="/public/javascripts/home/webflow.js" type="text/javascript" language="javascript" charset="utf-8"></script>
+  </body>
 </html>
