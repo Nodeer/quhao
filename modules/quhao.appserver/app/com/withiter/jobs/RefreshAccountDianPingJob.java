@@ -31,10 +31,11 @@ public class RefreshAccountDianPingJob extends Job {
 				long start = System.currentTimeMillis();
 				logger.info(RefreshAccountDianPingJob.class.getName() + " started.");
 				
-				List<Account> accounts = Account.findAll();
-				
+				List<Account> accounts =Account.findMobileAccounts();
+
 				for (Account account : accounts) {
-					int commentCount = Comment.findbyAccountId(account.getId());
+					int commentCount = Comment.findbyAccountId(account.getId().toString());
+
 					account.dianping = commentCount;
 					account.save();
 				}
