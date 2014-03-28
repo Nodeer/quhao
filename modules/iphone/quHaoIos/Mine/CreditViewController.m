@@ -21,10 +21,22 @@
     [backButton addTarget:self action:@selector(clickToHome:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
+    
+    UIButton *btnButton = [Helper getBackBtn:@"button.png" title:@" 删 除" rect:CGRectMake( 0, 0, 40, 25 )];
+    [btnButton addTarget:self action:@selector(remove:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:btnButton];
+    self.navigationItem.rightBarButtonItem = buttonItem;
 }
 - (void)clickToHome:(id)sender
 {
     [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+- (void)remove:(id)sender
+{
+    BOOL result = !self.tableView.editing;
+    
+    [self.tableView setEditing:result animated:YES];
 }
 
 - (void)viewDidLoad
@@ -81,6 +93,21 @@
     [self.tableView reloadData];
     // 调用endRefreshing结束刷新状态
     [refreshView endRefreshing];
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [_creditArray removeObjectAtIndex:indexPath.row];
+    
+    [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationTop];
+    
+    Credit *credit=_creditArray[indexPath.row];
+    NSString *str1= [NSString stringWithFormat:@"%@%@%@",[Helper getIp],delCredit,credit.id];
+    NSString *response =[QuHaoUtil requestDb:str1];
+    if([response isEqualToString:@""]){
+        //异常处理
+        [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+    }
 }
 
 //设置行高

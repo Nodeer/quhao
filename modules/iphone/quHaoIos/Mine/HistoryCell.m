@@ -27,7 +27,7 @@
     [self.contentView addSubview:self.egoImgView];
     
     _titleLabel=[[UILabel alloc]initWithFrame:CGRectZero];
-    _titleLabel.frame=CGRectMake(self.egoImgView.frame.origin.x+self.egoImgView.frame.size.width+5, 10, 200, 30);
+    _titleLabel.frame=CGRectMake(self.egoImgView.frame.origin.x+self.egoImgView.frame.size.width+5, 10, kDeviceWidth-150, 30);
     _titleLabel.backgroundColor=[UIColor clearColor];
     _titleLabel.textColor=[UIColor blackColor];
     _titleLabel.font=[UIFont boldSystemFontOfSize:18];
@@ -41,9 +41,9 @@
     
     _timeLabel=[[UILabel alloc] initWithFrame:CGRectZero];
     _timeLabel.font=[UIFont fontWithName:@"CourierNewPSMT" size:13.0];
-    _timeLabel.frame=CGRectMake(kDeviceWidth-170, 70, 160, 30);
+    _timeLabel.frame=CGRectMake(self.egoImgView.frame.origin.x+self.egoImgView.frame.size.width+5, 70, 160, 30);
     _timeLabel.backgroundColor=[UIColor whiteColor];
-    _timeLabel.textAlignment=NSTextAlignmentRight;
+    _timeLabel.textAlignment=NSTextAlignmentLeft;
     [self.contentView addSubview:_timeLabel];
 }
 

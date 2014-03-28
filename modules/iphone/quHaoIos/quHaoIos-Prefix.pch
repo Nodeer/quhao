@@ -22,6 +22,8 @@
 
 #define kDeviceHeight     [UIScreen mainScreen].bounds.size.height
 #define kDeviceWidth     [UIScreen mainScreen].bounds.size.width
+#define CELL_CONTENT_MARGIN 10.0f
+
 #define homeView_list_url @"/nextPage?cateType="
 #define homeView_last_url @"/lastest?cateType="
 #define login_url @"/login"
@@ -53,6 +55,8 @@
 #define cancelQuhao @"/cancel"
 #define finishQuhao @"/finish"
 #define updateGaodeToMerchant @"/updateGaodeToMerchant?poiId="
+#define delHistory @"/delHistoryReservation?id="
+#define delCredit @"/delCredit?id="
 
 #define AppID @"1.0.0"
 

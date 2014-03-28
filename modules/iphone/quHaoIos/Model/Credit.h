@@ -20,5 +20,6 @@
 @property (nonatomic,strong) NSString *status;
 @property int jifen;
 @property (nonatomic,strong) NSString *created;
+@property(nonatomic,strong) NSString * id ;
 
 @end

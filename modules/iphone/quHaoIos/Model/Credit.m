@@ -10,6 +10,7 @@
 
 @implementation Credit
 
+@synthesize id;
 @synthesize merchantId;
 @synthesize merchantName;
 @synthesize merchantAddress;

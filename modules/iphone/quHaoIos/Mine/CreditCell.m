@@ -25,7 +25,7 @@
 {
       
     _titleLabel=[[UILabel alloc]initWithFrame:CGRectZero];
-    _titleLabel.frame=CGRectMake(5, 5, 300, 30);
+    _titleLabel.frame=CGRectMake(5, 5, 290, 30);
     _titleLabel.backgroundColor=[UIColor clearColor];
     _titleLabel.textColor=[UIColor blackColor];
     _titleLabel.font=[UIFont fontWithName:@"AppleGothic" size:17.0];
@@ -39,9 +39,10 @@
     
     _timeLabel=[[UILabel alloc] initWithFrame:CGRectZero];
     _timeLabel.font=[UIFont fontWithName:@"CourierNewPSMT" size:13.0];
-    _timeLabel.frame=CGRectMake(150, _pjLabel.frame.origin.y, 160, 30);
+    _timeLabel.frame=CGRectMake(kDeviceWidth-180, _pjLabel.frame.origin.y, 160, 30);
     _timeLabel.backgroundColor=[UIColor whiteColor];
     _timeLabel.textAlignment=NSTextAlignmentRight;
+    _timeLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     [self.contentView addSubview:_timeLabel];
 }
 
