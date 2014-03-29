@@ -1,0 +1,74 @@
+`import static press.Plugin.*;
+`def baseCss
+$addCSS("bootstrap.min.css", true)
+$addCSS("jquery-ui-1.10.3.custom.min.css", true)
+$addCSS("base.css", true)
+`
+`get prepare`
+<!DOCTYPE html>
+<html data-wf-site="5301e462212e0b50560006c6" xmlns:wb="http://open.weibo.com/wb">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/home/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/home/webflow.css">
+  <link rel="stylesheet" type="text/css" href="/public/stylesheets/home/quhaola.webflow.css">
+  <script type="text/javascript" src="/public/javascripts/home/webfont.js"></script>
+  <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+  
+  <script>
+    WebFont.load({
+      google: {
+        families: ["Montserrat:400,700","Bitter:400,700"]
+      }
+    });
+  </script>
+  <script>
+    if (/mobile/i.test(navigator.userAgent)) document.documentElement.className += ' w-mobile';
+  </script>
+  <!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  <link rel="apple-touch-icon" href="https://y7v4p6k4.ssl.hwcdn.net/51d1bb05fc804b2621000001/51e06f0756878bb26a000008_webclip-slate.png">
+  <link href="/public/images/common/quhao_favicon.jpg" type="image/png" rel="shortcut icon" />
+$addJS("libs/jquery-1.7.js", true)
+$addJS("libs/jquery-ui-1.10.3.custom.min.js", true)
+$addJS("libs/bootstrap.min.js", true)
+$addJS("common.js", true)
+$addJS("quhao.js", true)
+$baseCss()
+`get cssAndJs`
+$compressedCSSTag()
+`get inlinejs`
+<title>`get title`</title>
+</head>
+<body>
+
+  $compressedJSTag()
+  `doLayout`
+
+  <header class="section">
+    <div class="w-container">
+      <div class="w-row">
+        <div class="w-col w-col-4 w-clearfix subfooter-left">
+          <img class="logo-in-header" src="/public/images/home/application_icon.png" width="25px" alt="5302cd728b0b46b15800005a_application_icon.png">
+          <div class="app-name">取号啦</div>
+        </div>
+        <div class="w-col w-col-8 w-clearfix nav-column">
+        	<a class="nav-link app-name" style="letter-spacing: 2px;text-decoration: none;font-weight: bolder;" href="/home" target="_self">首页</a>
+        	<a class="nav-link" style="text-decoration: none;font-weight: bolder;" href="/about" target="_self">关于取号啦</a>
+        	<a class="nav-link" style="text-decoration: none;font-weight: bolder;" href="/business" target="_self">商家专区</a>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+`get mainContent`
+  
+  <div class="section grey footertext" style="margin-top: 50px;">
+    <div class="w-container">
+      <p class="footer-text">Copyright ©2014 quhao.la, All Rights Reserved.</p>
+    </div>
+  </div>
+  <script src="/public/javascripts/libs/jquery-1.7.js" type="text/javascript" language="javascript" charset="utf-8"></script>
+  </body>
+</html>

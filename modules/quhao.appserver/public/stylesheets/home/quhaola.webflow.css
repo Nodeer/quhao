@@ -109,8 +109,8 @@ p {
 }
 .section {
   position: static;
-  padding-top: 36px;
-  padding-bottom: 36px;
+  padding-top: 26px;
+  padding-bottom: 30px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.09);
 }
 .section.hero {

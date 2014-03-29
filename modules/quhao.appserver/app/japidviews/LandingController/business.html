@@ -1,73 +1,48 @@
 `import static press.Plugin.*; 
-`extends base_layout
+`extends landing_layout
 `set cssAndJs
 `
-
-<!DOCTYPE html>
-<html data-wf-site="5301e462212e0b50560006c6" xmlns:wb="http://open.weibo.com/wb">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>取号啦 - 改变你的排队生活</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" type="text/css" href="/public/stylesheets/home/normalize.css">
-  <link rel="stylesheet" type="text/css" href="/public/stylesheets/home/webflow.css">
-  <link rel="stylesheet" type="text/css" href="/public/stylesheets/home/quhaola.webflow.css">
-  <script type="text/javascript" src="/public/javascripts/home/webfont.js"></script>
-  <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
-  
-  <script>
-    WebFont.load({
-      google: {
-        families: ["Montserrat:400,700","Bitter:400,700"]
-      }
-    });
-  </script>
-  <script>
-    if (/mobile/i.test(navigator.userAgent)) document.documentElement.className += ' w-mobile';
-  </script>
-  <!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
-  <link rel="apple-touch-icon" href="https://y7v4p6k4.ssl.hwcdn.net/51d1bb05fc804b2621000001/51e06f0756878bb26a000008_webclip-slate.png">
-</head>
-<body>
-  <header class="section">
-    <div class="w-container">
-      <div class="w-row">
-        <div class="w-col w-col-4 w-clearfix subfooter-left">
-          <img class="logo-in-header" src="/public/images/home/application_icon.png" width="25px" alt="5302cd728b0b46b15800005a_application_icon.png">
-          <div class="app-name">取号啦</div>
-        </div>
-        <div class="w-col w-col-8 w-clearfix nav-column">
-        	<a class="nav-link app-name" style="letter-spacing: 2px;text-decoration: none;font-weight: bolder;" href="/home" target="_self">首页</a>
-        	<a class="nav-link" style="text-decoration: none;font-weight: bolder;" href="/about" target="_self">关于取号啦</a>
-        	<a class="nav-link" style="text-decoration: none;font-weight: bolder;" href="/business" target="_self">商家专区</a>
-        </div>
-      </div>
-    </div>
-  </header>
-  <div class="section hero">
-    <div class="w-container">
-      <div class="w-row">
-        <div class="w-col w-col-6">
-          <img class="hero-iphone" src="/public/images/home/site_iphone.png" width="330px" alt="52ddf177b6d2171f780000a2_iphone.png">
-        </div>
-        <div class="w-col w-col-6 w-clearfix call-to-action">
-          <h1 class="hero-header">商家登陆</h1>
-          <p class="hero-subtitle">一个聪明的APP，让它帮你节省排队时间。</p>
-          <wb:share-button appkey="2nuoX4" addition="number" type="button" ralateUid="3938840780" default_text="一个聪明的APP，让它帮你节省排队时间。" pic="http%3A%2F%2Fww3.sinaimg.cn%2Fbmiddle%2Feac5f0ccgw1edni3074udj209p0ci74x.jpg"></wb:share-button>
-          <br/>
-		   <br/>
-          <a class="button" style="text-decoration: none;" href="#">iPhone 版下载</a>
-          <a class="button" style="margin-left: 50px; text-decoration: none;" href="#">Android 版下载</a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="section grey footertext" style="margin-top: 50px;">
-    <div class="w-container">
-      <p class="footer-text">Copyright ©2014 quhao.la, All Rights Reserved.</p>
-    </div>
-  </div>
-  <script src="/public/javascripts/libs/jquery-1.7.js" type="text/javascript" language="javascript" charset="utf-8"></script>
-  </body>
-</html>
+`set title
+取号啦 - 改变你的排队生活
+`
+`set mainContent
+<div class="section hero">
+	<div class="w-container">
+		<div class="w-row">
+			<div class="w-col w-col-7" style="min-height: 450px;">
+				<img class="hero-iphone" src="/public/images/home/benefit.png" />
+			</div>
+			<div class="w-col w-col-5 w-clearfix call-to-action" style="margin-top: 5%;">
+				<form role="form" class="form-horizontal" id="" 
+					action="" method="post">
+					<div class="form-group">
+						<div class="col-xs-10">
+							<input class="form-control" name="" id="" value="" placeHolder="你所在公司/餐厅名称" />
+					    </div>
+					</div>
+					<div class="form-group">
+						<div class="col-xs-10">
+							<input class="form-control" name="" id="" value="" placeHolder="你的姓名" />
+					    </div>
+					</div>
+					<div class="form-group">
+						<div class="col-xs-10">
+							<input class="form-control" name="" id="" value="" placeHolder="你的联系方式（手机/座机）" />
+					    </div>
+					</div>
+					<div class="form-group">
+						<div class="col-xs-10">
+							<input class="form-control" name="" id="" value="" placeHolder="邮箱地址" />
+					    </div>
+					</div>
+					<div id="btnupdate" class="form-group">
+				 		<div class="col-xs-10">
+				   			<button type="button" id="" class="btn btn-primary" style="width: 100%" onclick="">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
+				 		</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+`
