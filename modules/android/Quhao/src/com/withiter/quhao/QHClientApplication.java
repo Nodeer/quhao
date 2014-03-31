@@ -132,6 +132,7 @@ public class QHClientApplication extends Application {
 					QuhaoLog.i(TAG, "server url is : " + QuhaoConstant.HTTP_URL);
 				}
 			}
+			input.close();
 		} catch (NotFoundException e) {
 			e.printStackTrace();
 			QuhaoLog.e(TAG, e.getMessage());

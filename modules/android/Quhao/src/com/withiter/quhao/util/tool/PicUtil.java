@@ -198,19 +198,26 @@ public class PicUtil {
 			is = conn.getInputStream();
 			//TODO:wjzwjz file name problem --- cacheFile
 			File cacheFile = FileUtil.getCacheFile(imageUri);
-			
-			os = new FileOutputStream(cacheFile);
-			Log.i(TAG, "write file to " + cacheFile.getCanonicalPath());
+			if(null != cacheFile)
+			{
+				os = new FileOutputStream(cacheFile);
+				Log.i(TAG, "write file to " + cacheFile.getCanonicalPath());
 
-			byte[] buf = new byte[1024];
-			int len = 0;
-			// 将网络上的图片存储到本地
-			while ((len = is.read(buf)) > 0) {
-				os.write(buf, 0, len);
+				byte[] buf = new byte[1024];
+				int len = 0;
+				// 将网络上的图片存储到本地
+				while ((len = is.read(buf)) > 0) {
+					os.write(buf, 0, len);
+				}
+
+				// 从本地加载图片
+				bitmap = BitmapFactory.decodeFile(cacheFile.getCanonicalPath());
 			}
-
-			// 从本地加载图片
-			bitmap = BitmapFactory.decodeFile(cacheFile.getCanonicalPath());
+			else
+			{
+				bitmap = BitmapFactory.decodeStream(is);
+			}
+			
 			// String name = MD5Util.MD5(imageUri);
 
 		} catch (IOException e) {

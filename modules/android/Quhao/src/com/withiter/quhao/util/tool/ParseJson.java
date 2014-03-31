@@ -118,7 +118,6 @@ public class ParseJson {
 							imgUrl = URLDecoder.decode(obj.getString("merchantImage"), "UTF-8");
 						}
 					} catch (UnsupportedEncodingException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -290,7 +289,7 @@ public class ParseJson {
 //				imgUrl = obj.getString("merchantImage").replace("http://localhost:9081/", "http://192.168.2.100:9081/");
 				System.out.println(userImage);
 			} else {
-				userImage = obj.getString("merchantImage");
+				userImage = obj.getString("userImage");
 			}
 			String enable = obj.optString("enable");
 			String mobileOS = obj.optString("mobileOS");

@@ -3,22 +3,6 @@ package com.withiter.quhao.activity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.sina.weibo.sdk.WeiboSDK;
-import com.sina.weibo.sdk.api.BaseMediaObject;
-import com.sina.weibo.sdk.api.IWeiboAPI;
-import com.sina.weibo.sdk.api.SendMessageToWeiboRequest;
-import com.sina.weibo.sdk.api.TextObject;
-import com.sina.weibo.sdk.api.WeiboMessage;
-import com.weibo.sdk.android.Oauth2AccessToken;
-import com.weibo.sdk.android.Weibo;
-import com.weibo.sdk.android.WeiboAuthListener;
-import com.weibo.sdk.android.WeiboDialogError;
-import com.weibo.sdk.android.WeiboException;
-import com.weibo.sdk.android.util.AccessTokenKeeper;
-import com.withiter.quhao.R;
-import com.withiter.quhao.util.tool.ProgressDialogUtil;
-import com.withiter.quhao.util.tool.QuhaoConstant;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,8 +13,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.withiter.quhao.R;
+import com.withiter.quhao.util.tool.ProgressDialogUtil;
+import com.withiter.quhao.util.tool.QuhaoConstant;
+
 public class SinaInfoActivity extends QuhaoBaseActivity {
 
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	/*
 	private Button btnSinaShare;
 	
 	private EditText sinaEditText;
@@ -155,5 +155,5 @@ public class SinaInfoActivity extends QuhaoBaseActivity {
 	public boolean onTouch(View v, MotionEvent event) {
 		return false;
 	}
-
+*/
 }

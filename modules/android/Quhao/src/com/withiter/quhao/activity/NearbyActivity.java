@@ -100,31 +100,31 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 			
 			return;
 		}
-//		mAMapLocationManager = LocationManagerProxy.getInstance(this);
-//		mAMapLocationManager.requestLocationUpdates(
-//				LocationProviderProxy.AMapNetwork, 1000, 10, this);
+		mAMapLocationManager = LocationManagerProxy.getInstance(this);
+		mAMapLocationManager.requestLocationUpdates(
+				LocationProviderProxy.AMapNetwork, 1000, 10, this);
 
-		 Thread queryMerchantsThread = new Thread(new Runnable() {
-		
-		 @Override
-		 public void run() {
-		 try
-		 {
-		 Looper.prepare();
-		 queryMerchants();
-		
-		 }catch (Exception e) {
-		
-		 }
-		 finally
-		 {
-		 Looper.loop();
-		 }
-		
-		
-		 }
-		 });
-		 queryMerchantsThread.start();
+//		 Thread queryMerchantsThread = new Thread(new Runnable() {
+//		
+//		 @Override
+//		 public void run() {
+//		 try
+//		 {
+//		 Looper.prepare();
+//		 queryMerchants();
+//		
+//		 }catch (Exception e) {
+//		
+//		 }
+//		 finally
+//		 {
+//		 Looper.loop();
+//		 }
+//		
+//		
+//		 }
+//		 });
+//		 queryMerchantsThread.start();
 	}
 
 	protected Handler updatePoiItemsHandler = new Handler() {
@@ -199,22 +199,33 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 	 * 点击下一页poi搜索
 	 */
 	public void nextSearch() {
-		if (query != null && poiSearch != null && poiResult != null) {
-			if (poiResult.getPageCount() - 1 > page) {
-				page++;
-				query.setPageNum(page);// 设置查后一页
-				try {
-					poiResult = poiSearch.searchPOI();
-					if (null != poiResult && null != poiResult.getQuery()) {
-						List<PoiItem> poiItemTemps = poiResult.getPois();// 取得第一页的poiitem数据，页数从数字0开始
-						if (null != poiItemTemps && poiItemTemps.size() > 0) {
-							if (poiItemTemps.size() < 10) {
+		try {
+			if (query != null && poiSearch != null && poiResult != null) {
+				if (poiResult.getPageCount() - 1 > page) {
+					page++;
+					query.setPageNum(page);// 设置查后一页
+
+					PoiResult result = poiSearch.searchPOI();
+					if (null != result && null != result.getQuery()) {
+						if (result.getQuery().equals(query)) {
+							poiResult = result;
+							List<PoiItem> poiItemTemps = result.getPois();// 取得第一页的poiitem数据，页数从数字0开始
+							if (null != poiItemTemps && poiItemTemps.size() > 0) {
+								if (poiItemTemps.size() < 10) {
+									needToLoad = false;
+								}
+								if (null == poiItems) {
+									poiItems = new ArrayList<PoiItem>();
+								}
+								poiItems.addAll(poiItemTemps);
+								Log.e("TAG111",
+										String.valueOf(poiItemTemps.size()));
+								updatePoiItemsHandler.obtainMessage(200, null)
+										.sendToTarget();
+								
+							} else {
 								needToLoad = false;
 							}
-							poiItems.addAll(poiItemTemps);
-							updatePoiItemsHandler.obtainMessage(200, null)
-									.sendToTarget();
-							Log.e("TAG111", poiItemTemps.toString());
 						} else {
 							needToLoad = false;
 						}
@@ -222,17 +233,35 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 					} else {
 						needToLoad = false;
 					}
-				} catch (AMapException e) {
+					/*
+					 * try { poiResult = poiSearch.searchPOI(); if (null !=
+					 * poiResult && null != poiResult.getQuery()) {
+					 * List<PoiItem> poiItemTemps = poiResult.getPois();//
+					 * 取得第一页的poiitem数据，页数从数字0开始 if (null != poiItemTemps &&
+					 * poiItemTemps.size() > 0) { if (poiItemTemps.size() < 10)
+					 * { needToLoad = false; } poiItems.addAll(poiItemTemps);
+					 * updatePoiItemsHandler.obtainMessage(200, null)
+					 * .sendToTarget(); Log.e("TAG111",
+					 * poiItemTemps.toString()); } else { needToLoad = false; }
+					 * 
+					 * } else { needToLoad = false; } } catch (AMapException e)
+					 * { needToLoad = false; e.printStackTrace(); }
+					 */
+				} else {
 					needToLoad = false;
-					e.printStackTrace();
+					Toast.makeText(this, "No result", Toast.LENGTH_LONG).show();
 				}
 			} else {
 				needToLoad = false;
 				Toast.makeText(this, "No result", Toast.LENGTH_LONG).show();
 			}
+		} catch (AMapException e) {
+			needToLoad = false;
+			e.printStackTrace();
 		}
-	}
 
+	}
+	
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -279,10 +308,11 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 	@Override
 	public void onLocationChanged(AMapLocation location) {
 
-		/*
 		if (null != location) {
 			if(!isFirstLocation)
 			{
+				progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
+				progressDialogUtil.showProgress();
 				isFirstLocation = true;
 				firstLocation = location;
 				query = new PoiSearch.Query("", "餐厅", location.getCityCode());
@@ -294,12 +324,21 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 				double lon = location.getLongitude();
 				LatLonPoint lp = new LatLonPoint(lat, lon);
 				poiSearch.setBound(new SearchBound(lp, 1000));// 设置搜索区域为以lp点为圆心，其周围1000米范围
+//				poiSearch.searchPOIAsyn();
+				new Thread(queryRunnable).start();
 			}
 			else
 			{
 				float distance = firstLocation.distanceTo(location);
 				if(distance>100)
 				{
+					progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
+					progressDialogUtil.showProgress();
+					if(null == poiItems)
+					{
+						poiItems = new ArrayList<PoiItem>();
+					}
+					poiItems.clear();
 					query = new PoiSearch.Query("", "餐厅", location.getCityCode());
 					query.setLimitDiscount(false);
 					query.setLimitGroupbuy(false);
@@ -309,14 +348,17 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 					double lon = location.getLongitude();
 					LatLonPoint lp = new LatLonPoint(lat, lon);
 					poiSearch.setBound(new SearchBound(lp, 1000));// 设置搜索区域为以lp点为圆心，其周围1000米范围
+//					poiSearch.searchPOIAsyn();
+					new Thread(queryRunnable).start();
 				}
 				else
 				{
 					return;
 				}
 				
-			}*/
+			}
 			
+			/*
 			query = new PoiSearch.Query("", "餐厅", location.getCityCode());
 			query.setLimitDiscount(false);
 			query.setLimitGroupbuy(false);
@@ -326,51 +368,99 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 			double lon = location.getLongitude();
 			LatLonPoint lp = new LatLonPoint(lat, lon);
 			poiSearch.setBound(new SearchBound(lp, 1000));// 设置搜索区域为以lp点为圆心，其周围1000米范围
+			*/
 			
-			// 使用线程访问网络，否则APP会挂掉
-			Runnable runnable = new Runnable(){
-				@Override
-				public void run() {
-					try {
-						Looper.prepare();
-						PoiResult result = poiSearch.searchPOI();
-						if (null != result && null != result.getQuery()) {
-							List<PoiItem> poiItemTemps = result.getPois();// 取得第一页的poiitem数据，页数从数字0开始
-							if (null != poiItemTemps && poiItemTemps.size() > 0) {
-								if (poiItemTemps.size() < 10) {
-									needToLoad = false;
-								}
-								poiItems.addAll(poiItemTemps);
-								updatePoiItemsHandler.obtainMessage(200, null)
-										.sendToTarget();
-								Log.e("TAG111", String.valueOf(poiItemTemps.size()));
-							} else {
+		}
+	}
+
+	
+		
+	// 使用线程访问网络，否则APP会挂掉
+	private Runnable queryRunnable = new Runnable(){
+		@Override
+		public void run() {
+			try {
+				Looper.prepare();
+				PoiResult result = poiSearch.searchPOI();
+				progressDialogUtil.closeProgress();
+				if (null != result && null != result.getQuery()) {
+					if(result.getQuery().equals(query))
+					{
+						poiResult = result;
+						List<PoiItem> poiItemTemps = result.getPois();// 取得第一页的poiitem数据，页数从数字0开始
+						if (null != poiItemTemps && poiItemTemps.size() > 0) {
+							if (poiItemTemps.size() < 10) {
 								needToLoad = false;
 							}
+							if(null == poiItems)
+							{
+								poiItems = new ArrayList<PoiItem>();
+							}
+							poiItems.clear();
+							poiItems.addAll(poiItemTemps);
+							Log.e("TAG111", String.valueOf(poiItemTemps.size()));
+							updatePoiItemsHandler.obtainMessage(200, null)
+									.sendToTarget();
 							
 						} else {
 							needToLoad = false;
 						}
-					} catch (AMapException e) {
-						e.printStackTrace();
-					}// 异步搜索
-					finally
-					{
-						Looper.loop();
 					}
+					else
+					{
+						needToLoad = false;
+					}
+					
+					
+				} else {
+					needToLoad = false;
 				}
-			};
-			new Thread(runnable).start();
+			} catch (AMapException e) {
+				e.printStackTrace();
+			}// 异步搜索
+			finally
+			{
+				Looper.loop();
+			}
 		}
-
+	};
+	
 	@Override
 	public void onPoiItemDetailSearched(PoiItemDetail arg0, int arg1) {
 
 	}
 
 	@Override
-	public void onPoiSearched(PoiResult arg0, int arg1) {
-
+	public void onPoiSearched(PoiResult result, int rCode) {
+		progressDialogUtil.closeProgress();
+		if(rCode == 0)
+		{
+			if (null != result && null != result.getQuery()) {
+				if(result.getQuery().equals(query))
+				{
+					poiResult = result;
+					if(null == poiItems)
+					{
+						poiItems = new ArrayList<PoiItem>();
+					}
+					List<PoiItem> poiItemTemps = result.getPois();// 取得第一页的poiitem数据，页数从数字0开始
+					if (poiItemTemps.size() < 10) {
+						needToLoad = false;
+					}
+					poiItems.addAll(poiItemTemps);
+					poiItems = poiResult.getPois();
+					Log.e("TAG111", String.valueOf(poiItemTemps.size()));
+					updatePoiItemsHandler.obtainMessage(200, null).sendToTarget();
+					
+				} else {
+					needToLoad = false;
+				}
+				
+			} else {
+				needToLoad = false;
+			}
+			
+		}
 	}
 
 	@Override

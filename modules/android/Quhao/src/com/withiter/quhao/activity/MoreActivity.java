@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -29,6 +31,12 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.framework.utils.UIHandler;
+import cn.sharesdk.onekeyshare.OnekeyShare;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
@@ -91,7 +99,9 @@ public class MoreActivity extends QuhaoBaseActivity {
 			
 			return;
 		}
+		
 		refreshLoginStatus();
+		ShareSDK.initSDK(this);
 	}
 
 	private void refreshLoginStatus() {
@@ -242,10 +252,8 @@ public class MoreActivity extends QuhaoBaseActivity {
 				}
 
 			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -254,16 +262,100 @@ public class MoreActivity extends QuhaoBaseActivity {
 			// 显示分享界面
 			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			Intent intent4 = new Intent(this, ShareDialogActivity.class);
-			startActivity(intent4);
-			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+			/*
+			OnekeyShare oks = new OnekeyShare();
+			oks.setNotification(R.drawable.ic_launcher, "quhao");
+			oks.setTitle("nihao, share sdk quhao application");
+			oks.setTitleUrl("http://www.withiter.com");
+			oks.setText("welcome to share quhao application");
+			oks.setImageUrl("http://f1.sharesdk.cn/imgs/2014/02/26/owWpLZo_638x960.jpg");
+			oks.setUrl("http://www.withiter.com");
+			oks.setSilent(false);
+			oks.setCallback(new PlatformActionListener(){
+
+				@Override
+				public void onCancel(Platform arg0, int arg1) {
+					// TODO Auto-generated method stub
+					
+				}
+
+				@Override
+				public void onComplete(Platform arg0, int arg1,
+						HashMap<String, Object> arg2) {
+					
+				}
+
+				@Override
+				public void onError(Platform arg0, int arg1, Throwable arg2) {
+					
+				}
+				
+			});
+			oks.show(this);*/
+			final OnekeyShare oks = new OnekeyShare();
+			oks.setNotification(R.drawable.ic_launcher, getResources().getString(R.string.app_name));
+//			oks.setAddress("12345678901");
+			oks.setTitle("取号啦");
+			oks.setTitleUrl("http://service.quhao.la/");
+			oks.setText("取号啦--让你排队不用等！");
+//			oks.setImagePath(MainActivity.TEST_IMAGE);
+			oks.setImageUrl("http://b.hiphotos.baidu.com/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=e2d3e87841a98226accc2375ebebd264/a044ad345982b2b7d9b553c933adcbef77094b36acafa3a8.jpg");
+			oks.setUrl("http://service.quhao.la/");
+//			oks.setFilePath(MainActivity.TEST_IMAGE);
+//			oks.setComment(getResources().getString(R.string.share));
+//			oks.setSite(getResources().getString(R.string.app_name));
+//			oks.setSiteUrl("http://sharesdk.cn");
+//			oks.setVenueName("ShareSDK");
+//			oks.setVenueDescription("This is a beautiful place!");
+//			oks.setLatitude(23.056081f);
+//			oks.setLongitude(113.385708f);
+			oks.setSilent(false);
+			oks.setCallback(new PlatformActionListener(){
+
+				@Override
+				public void onCancel(Platform arg0, int arg1) {
+					Map<String, Object> toastParams = new HashMap<String, Object>();
+					toastParams.put("activity", MoreActivity.this);
+					toastParams.put("text", R.string.share_cancel);
+					toastParams.put("toastLength", Toast.LENGTH_LONG);
+					toastHandler.obtainMessage(1000, toastParams).sendToTarget();
+					
+				}
+
+				@Override
+				public void onComplete(Platform arg0, int arg1,
+						HashMap<String, Object> arg2) {
+					Map<String, Object> toastParams = new HashMap<String, Object>();
+					toastParams.put("activity", MoreActivity.this);
+					toastParams.put("text", R.string.share_success);
+					toastParams.put("toastLength", Toast.LENGTH_LONG);
+					toastHandler.obtainMessage(1000, toastParams).sendToTarget();
+				}
+
+				@Override
+				public void onError(Platform arg0, int arg1, Throwable arg2) {
+					Map<String, Object> toastParams = new HashMap<String, Object>();
+					toastParams.put("activity", MoreActivity.this);
+					toastParams.put("text", R.string.share_error);
+					toastParams.put("toastLength", Toast.LENGTH_LONG);
+					toastHandler.obtainMessage(1000, toastParams).sendToTarget();
+				}
+
+				
+				
+			});
+			oks.show(this);
+//			oks.setapp
+//			Intent intent4 = new Intent(this, ShareDialogActivity.class);
+//			startActivity(intent4);
+//			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 
 		case R.id.more_login_status:// 分享给好友
 			// 显示分享界面
 			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-
+			
 			// String loginStatus = SharedprefUtil.get(MoreActivity.this,
 			// QuhaoConstant.IS_LOGIN, "false");
 			if (QHClientApplication.getInstance().isLogined) {
@@ -306,8 +398,13 @@ public class MoreActivity extends QuhaoBaseActivity {
 	}
 	
 	@Override
+	protected void onDestroy() {
+		ShareSDK.stopSDK(this);
+		super.onDestroy();
+	}
+	
+	@Override
 	public boolean onTouch(View arg0, MotionEvent arg1) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
