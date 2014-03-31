@@ -19,5 +19,5 @@ press-1.0.25/
 
 *.log
 
-public/upload/
+public/upload/*
 /logs
