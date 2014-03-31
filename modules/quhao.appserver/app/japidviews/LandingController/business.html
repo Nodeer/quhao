@@ -1,6 +1,8 @@
 `import static press.Plugin.*; 
 `extends landing_layout
 `set cssAndJs
+$addJS("login.js", true)
+$addJS("signup.js", true)
 `
 `set title
 取号啦 - 改变你的排队生活
@@ -59,7 +61,7 @@
 				 		<div class="">
 				 			<p class="hero-subtitle" style="color: lemonchiffon;margin-bottom: 5px;"></p>
 				 			
-				   			<button type="button" id="" class="btn btn-primary" style="width: 100%" onclick="">已经是合作商家，直接登录</button>
+				   			<button type="button" id="" class="btn btn-primary" style="width: 100%" data-toggle="modal" data-target="#loginModal" onclick="">已经是合作商家，直接登录</button>
 				 		</div>
 					</div>
 				</form>
@@ -90,6 +92,46 @@
 				
 			</div>
 	 -->
+	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">商家登陆</h4>
+	      </div>
+	      <div class="modal-body">
+	      	<p id="error_tip" class="errorText" style="visibility:hidden;">请输入手机号或者邮箱</p>
+		      <form class="form-horizontal" role="form" id="login_form" action="@{backend.self.AccountController.login()}" method="post">
+		      	<div class="form-group">
+				    <div class="col-sm-10">
+				      <input type="email" class="form-control" name="userName" id="userName" placeHolder="手机号/邮箱">
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <div class="col-sm-10">
+				      <input type="password" class="form-control" name="userPwd" id="userPwd" placeHolder="密码" onkeydown="Login.entered(event);"placeholder="Password">
+				    </div>
+				  </div>
+				  <div class="form-group">
+				    <div class="col-sm-10">
+				      <div class="checkbox">
+				        <label>
+				          <input type="checkbox"> 记住我
+				          <a style="margin-left: 20px;" href="javascript: void(0);">忘记密码了?</a>
+				        </label>
+				      </div>
+				    </div>
+				  </div>
+		      </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	        <button type="button" class="btn btn-primary" name="" onclick="Login.login();">登陆</button>
+	      </div>
+	    </div>
+	  </div>
 	</div>
 </div>
 `
