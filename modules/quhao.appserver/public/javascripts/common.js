@@ -52,7 +52,7 @@ Common.email = function(email) {
 
 /**
  * Validate the number format
- * if num matches mobile format return true, otherwise return false
+ * if num matches number format return true, otherwise return false
  */
 Common.number = function(num) {
 	if (Common.REGEX_ONLY_NUMBER.test(num)) {

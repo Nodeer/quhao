@@ -521,7 +521,6 @@ Merchant.quhaoOnsite = function(seatNumber, mid, tel){
 	});
 }
 
-
 Merchant.logout = function(aid){
 	$.ajax({
 		type:"POST",
@@ -530,7 +529,7 @@ Merchant.logout = function(aid){
 		data:{"aid":aid},
 		success:function(data){
 			if(data.error == ""){
-				window.location.href="/b/m";
+				window.location.href="/business";
 			}
 		},
 		error:function(){

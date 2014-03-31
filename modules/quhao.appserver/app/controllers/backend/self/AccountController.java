@@ -166,4 +166,19 @@ public class AccountController extends BaseController {
 		cvo.success = true;
 		renderJSON(cvo);
 	}
+	
+	// 商家提交合作信息
+	public static void submitinfo(){
+		String companyName = params.get("companyName");
+		String peopleName = params.get("peopleName");
+		String peopleContact = params.get("peopleContact");
+		String peopleEmail = params.get("peopleEmail");
+		
+		if(StringUtils.isEmpty(companyName) || StringUtils.isEmpty(peopleName) || StringUtils.isEmpty(peopleContact) || StringUtils.isEmpty(peopleEmail)){
+			renderJSON(false);
+		}
+		
+		
+		
+	}
 }

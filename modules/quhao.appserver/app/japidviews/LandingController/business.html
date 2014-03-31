@@ -4,6 +4,7 @@
 $addJS("login.js", true)
 $addJS("signup.js", true)
 `
+
 `set title
 取号啦 - 改变你的排队生活
 `
@@ -26,42 +27,47 @@ $addJS("signup.js", true)
 	        </div>
         
 	        <div style="float: right;" class="w-col w-col-3 w-clearfix nav-column">
-	        	<form role="form" class="form-horizontal" id="" action="" method="post">
+	        	<form role="form" class="form-horizontal" id="" action="@{backend.self.AccountController.submitinfo()}" method="post">
 	        		<div class="form-group">
 						<div class="">
-							<span class="form-control label-danger" style="text-align: center;color: white;">有意向合作，请填写信息</span>
+							<span id="submitinfotips" class="form-control label-danger" style="text-align: center;color: white; font-weight:bolder; display: none; "></span>
+					    </div>
+					</div>
+	        		<div class="form-group">
+						<div class="">
+							<span class="form-control" style="text-align: center;color: white; font-weight:bolder; background-color: inherit;">有意向合作，请填写信息</span>
 					    </div>
 					</div>
 					<div class="form-group">
 						<div class="">
-							<input class="form-control" name="" id="" value="" placeHolder="你所在公司/餐厅名称" />
+							<input class="form-control" name="companyName" id="companyName" value="" placeHolder="你所在公司/餐厅名称" />
 					    </div>
 					</div>
 					<div class="form-group">
 						<div class="">
-							<input class="form-control" name="" id="" value="" placeHolder="你的姓名" />
+							<input class="form-control" name="peopleName" id="peopleName" value="" placeHolder="你的姓名" />
 					    </div>
 					</div>
 					<div class="form-group">
 						<div class="">
-							<input class="form-control" name="" id="" value="" placeHolder="你的联系方式（手机/座机）" />
+							<input class="form-control" name="peopleContact" id="peopleContact" value="" placeHolder="你的联系方式（手机/座机）" />
 					    </div>
 					</div>
 					<div class="form-group">
 						<div class="">
-							<input class="form-control" name="" id="" value="" placeHolder="邮箱地址" />
+							<input class="form-control" name="peopleEmail" id="peopleEmail" value="" placeHolder="邮箱地址" />
 					    </div>
 					</div>
 					<div id="btnupdate" class="form-group">
 				 		<div class="">
-				   			<button type="button" id="" class="btn btn-primary" style="width: 100%" onclick="">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
+				   			<button type="button" id="" class="btn btn-primary" style="width: 100%" onclick="Signup.submitinfo();">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
 				 		</div>
 					</div>
 					<div id="btnupdate" class="form-group">
 				 		<div class="">
 				 			<p class="hero-subtitle" style="color: lemonchiffon;margin-bottom: 5px;"></p>
 				 			
-				   			<button type="button" id="" class="btn btn-primary" style="width: 100%" data-toggle="modal" data-target="#loginModal" onclick="">已经是合作商家，直接登录</button>
+				   			<button type="button" id="" class="btn btn-primary" style="width: 100%" data-toggle="modal" data-target="#loginModal">已经是合作商家，直接登录</button>
 				 		</div>
 					</div>
 				</form>

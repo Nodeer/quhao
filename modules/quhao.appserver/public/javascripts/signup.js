@@ -87,3 +87,53 @@ Signup.changeType = function(){
 		$("#mobile_form").hide();
 	}
 }
+
+/**
+ * 验证商家提交信息的表单
+ * @return {Boolean}
+ */
+Signup.validateSubmitInfo = function(){
+	var companyName = $("#companyName").val();
+	var peopleName = $("#peopleName").val();
+	var peopleContact = $("#peopleContact").val();
+	var peopleEmail = $("#peopleEmail").val();
+	
+	var warningIcon = "<span style='margin-right:10px;' class='glyphicon glyphicon-exclamation-sign'></span>"
+	
+	if(Common.isEmpty(companyName)){
+		$("#submitinfotips").html(warningIcon+"请输入公司/餐厅名称").show();
+		return false;
+	}
+	if(Common.isEmpty(peopleName)){
+		$("#submitinfotips").html(warningIcon+"请输入你的姓名").show();
+		return false;
+	}
+	if(Common.isEmpty(peopleContact)){
+		$("#submitinfotips").html(warningIcon+"请输入你的联系方式").show();
+		return false;
+	}
+	if(!Common.number(peopleContact)){
+		$("#submitinfotips").html(warningIcon+"请输入正确的联系方式").show();
+		return false;
+	}
+	
+	if(Common.isEmpty(peopleEmail)){
+		$("#submitinfotips").html(warningIcon+"请输入你的邮件地址").show();
+		return false;
+	}
+	
+	if(!Common.email(peopleEmail)){
+		$("#submitinfotips").html(warningIcon+"请输入正确的邮件地址").show();
+		return false;
+	}
+	
+	return true;
+}
+
+/**
+ * 提交商家的信息
+ */
+Signup.submitinfo = function(){
+	var flag = Signup.validateSubmitInfo();
+	console.log(flag);
+}
