@@ -42,10 +42,8 @@ public abstract class QuhaoActivity extends Activity {
 			}
 
 		} catch (NotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

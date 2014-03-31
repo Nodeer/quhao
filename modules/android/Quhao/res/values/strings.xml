@@ -111,7 +111,7 @@
 	<string name="my_number">我的号码：</string>
 	<string name="before_you">在你前面：</string>
 	<string name="nahao">拿&#160;&#160;&#160;号</string>
-	<string name="nahao_success_tip_5_less">恭喜，拿号成功!当你前面排队人数少于5时，我们会发短信提醒您。如果你前面排队人数已经小于5人，直接去享受美味吧。</string>
+	<string name="nahao_success_tip_5_less">恭喜，取号成功，在你前面排队的不多于5桌，为了避免排队号码过期，请抓紧时间前去～！</string>
 	<string name="nahao_success_tip_5_more">恭喜：取号成功，当你的排号前还剩5位时，我们会用短信通知到你，继续享受你的免排队时间吧。</string>
 	<!-- get number end -->
 
@@ -132,6 +132,9 @@
 	<string name="more_aboutus">关于我们</string>
 	<string name="more_help">使用帮助</string>
 	<string name="share">分&#160;&#160;&#160;享</string>
+	<string name="share_success">分享成功</string>
+	<string name="share_error">分享失败</string>
+	<string name="share_cancel">分享取消</string>
 	<string name="more_setting_cleanpicture">清除本地缓存图片</string>
     <string name="more_setting_cleancache">清除本地缓存数据</string>
     <string name="more_setting_showimage">2G/3G网络无图浏览(节省流量)</string>

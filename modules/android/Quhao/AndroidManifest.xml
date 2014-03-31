@@ -37,7 +37,13 @@
 	<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 	<!-- 添加拨出电话的权限 -->
 	<uses-permission android:name="android.permission.CALL_PHONE" />
-
+	
+	<!-- Share SDK 使用 begin-->
+	<uses-permission android:name="android.permission.GET_TASKS" />
+	<uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
+	<uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+	<!-- Share SDK 使用 end-->
+	
 	<supports-screens android:largeScreens="true" android:normalScreens="true" android:smallScreens="true" android:resizeable="true" android:anyDensity="true" />
 	<application android:allowBackup="true" android:icon="@drawable/application_icon" android:label="@style/AppTheme" android:theme="@style/AppTheme" android:name="com.withiter.quhao.QHClientApplication">
 		<!-- android:name=".QHClientApplication" -->
@@ -212,6 +218,18 @@
 		<activity android:name="com.withiter.quhao.activity.CreateCommentActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
 			android:screenOrientation="portrait"  />
 		<!-- create comment page -->
+		
+		<!-- Share SDK activity  -->
+		<activity android:name="cn.sharesdk.framework.ShareSDKUIShell" 
+		    android:theme="@android:style/Theme.Translucent.NoTitleBar" 
+		    android:configChanges="keyboardHidden|orientation|screenSize" 
+		    android:screenOrientation="portrait" 
+		    android:windowSoftInputMode="stateHidden|adjustResize" />
+		
+		<activity android:name=".wxapi.WXEntryActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar" android:configChanges="keyboardHidden|orientation|screenSize" android:exported="true" android:screenOrientation="portrait" />
+		
+		<activity android:name=".yxapi.YXEntryActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar" android:configChanges="keyboardHidden|orientation|screenSize" android:exported="true" android:screenOrientation="portrait" />
+		<!-- Share SDK activity  -->
 	</application>
 
 </manifest>
