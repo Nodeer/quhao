@@ -5,6 +5,7 @@ tmp/
 eclipse/
 modules/**/modules/
 test-result/
+precompiled/
 
 */gen/
 
