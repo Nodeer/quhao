@@ -15,8 +15,9 @@
 #import "UICustomLabel.h"
 #import "SearchView.h"
 #import "UICustomImageView.h"
+#import "CityViewController.h"
 
-@interface HomeViewController : UIViewController{
+@interface HomeViewController : UIViewController<CityViewDelegate>{
     NSMutableArray *_categoryArray;
     NSMutableArray *_topArray;
     int _columns;
@@ -27,13 +28,15 @@
     CGFloat _xOffset;
     CGFloat _yOffset;
     UIInterfaceOrientation _rotation;
+    UIButton *_cityButton;
 }
 
 @property (nonatomic, strong) UIScrollView *menuView;
 @property (nonatomic, assign) BOOL wrap;
 @property (nonatomic, strong) NSMutableArray *items;
+
 //@property (nonatomic, strong) iCarousel *carousel;
--(void)createView;
+-(void)requestData;
 -(UIScrollView *) setInitWithColumns:(int)col marginSize:(CGFloat)margin gutterSize:(CGFloat)gutter rowHeight:(CGFloat)height;
 //创建catogory
 -(UIControl *) createMenuItem:(Category *)cate;

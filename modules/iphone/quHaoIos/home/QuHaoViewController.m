@@ -51,6 +51,12 @@
                                                 blue: 0.907
                                                alpha: 1.0
                                ];
+    popView.separatorColor = [UIColor colorWithWhite:1 alpha:.2];
+#if IOS7_SDK_AVAILABLE
+    if([popView respondsToSelector:@selector(setSeparatorInset:)]){
+        [popView setSeparatorInset:UIEdgeInsetsZero];
+    }
+#endif
     popView.indicatorStyle = UIScrollViewIndicatorStyleBlack;
     popView.hidden = YES;
     [self.view addSubview:popView];
@@ -70,7 +76,7 @@
     }else{
         seat = [reservation.seatNumber description];
     }
-    [self.view addSubview:[Helper getCustomLabel:@" 座位人数:    " font:18 rect:CGRectMake(10, 18, 110, 30)]];
+    [self.view addSubview:[Helper getCustomLabel:@" 座位人数:   " font:18 rect:CGRectMake(10, 18, 110, 30)]];
     
     _seatNumber = [Helper getCustomLabel:seat font:18 rect:CGRectMake(113, 18, 45, 30)];
     [self.view addSubview:_seatNumber];
@@ -88,14 +94,14 @@
     }else{
         num = [reservation.currentNumber description];
     }
-    _currlabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%@",@" 当前号码:    ",num] font:18 rect:CGRectMake(_seatNumber.frame.origin.x+60 ,18 ,140 ,30)];
+    _currlabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%@",@" 当前号码:   ",num] font:18 rect:CGRectMake(kDeviceWidth-140 ,18 ,140 ,30)];
     [self.view addSubview:_currlabel];
     
     if(reservation.accountId!=nil){
         UILabel *mylabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%@",@" 我的号码:    ",[reservation.myNumber description]] font:18 rect:CGRectMake(10, _currlabel.frame.origin.y+30, 160, 30)];
         [self.view addSubview:mylabel];
         
-        UILabel *belabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%d",@" 在你前面:    ",reservation.beforeYou ]font:18 rect:CGRectMake(_seatNumber.frame.origin.x+60, _currlabel.frame.origin.y+30, 140, 30)];
+        UILabel *belabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%d",@" 在你前面:   ",reservation.beforeYou ]font:18 rect:CGRectMake(_currlabel.frame.origin.x, _currlabel.frame.origin.y+30, 140, 30)];
         [self.view addSubview:belabel];
     }
     
@@ -191,7 +197,7 @@
                     UILabel *mylabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%@",@" 我的号码:    ",[reservation.myNumber description]] font:18 rect:CGRectMake(10, _currlabel.frame.origin.y+30, 160, 30)];
                     [self.view addSubview:mylabel];
                     
-                    UILabel *belabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%d",@" 在你前面:    ",reservation.beforeYou ]font:18 rect:CGRectMake(_seatNumber.frame.origin.x+60, _currlabel.frame.origin.y+30, 140, 30)];
+                    UILabel *belabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%d",@" 在你前面:   ",reservation.beforeYou ]font:18 rect:CGRectMake(_currlabel.frame.origin.x, _currlabel.frame.origin.y+30, 140, 30)];
                     [self.view addSubview:belabel];
                 }
                 
@@ -279,7 +285,8 @@
     cell.textLabel.text = [seatType objectAtIndex:[indexPath row]];
     cell.textLabel.font = [UIFont systemFontOfSize:13.0f];
     cell.accessoryType  = UITableViewCellAccessoryNone;
-    cell.selectionStyle = UITableViewCellSelectionStyleGray;
+    //cell.selectionStyle = UITableViewCellSelectionStyleGray;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 

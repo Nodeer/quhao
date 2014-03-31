@@ -10,7 +10,6 @@
 
 @implementation HomeViewController
 @synthesize menuView = _menuView;
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -25,6 +24,16 @@
 -(void)loadNavigationItem
 {
     self.view.backgroundColor=[UIColor whiteColor];
+    _cityButton=[Helper getBackBtn:@"button.png" title:@"上海" rect:CGRectMake( 0, 0, 70, 25 )];
+    [_cityButton addTarget:self action:@selector(openCitySearchView:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_cityButton];
+    self.navigationItem.leftBarButtonItem = backButtonItem;
+    if ([Helper returnUserString:@"currentCity"]!=nil)
+    {
+        [_cityButton  setTitle:[Helper returnUserString:@"currentCity"] forState:UIControlStateNormal];
+    }
+    
+
     //添加搜索的按钮
     UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 搜 索" rect:CGRectMake(  0, 0, 40, 25 )];
     [btnButton addTarget:self action:@selector(clickSearch:) forControlEvents:UIControlEventTouchUpInside];
@@ -32,8 +41,26 @@
     self.navigationItem.rightBarButtonItem = buttonItem;
 }
 
+-(void)openCitySearchView:(id)sender{
+    CATransition *animation = [CATransition animation];
+    [animation setDuration:0.5];
+    [animation setType: kCATransitionMoveIn];
+    [animation setSubtype: kCATransitionFromTop];
+    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault]];
+    
+    CityViewController *city = [[CityViewController alloc] init];
+    city.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    city.delegate = self;
+    city.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:city animated:NO];
+    
+    [self.navigationController.view.layer addAnimation:animation forKey:nil];
+}
+
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
+    
     [self loadNavigationItem];
     _menuView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, kDeviceHeight)];
     _menuView.backgroundColor = [UIColor whiteColor];
@@ -77,38 +104,42 @@
 {
     if (notification.object) {
         if ([(NSString *)notification.object isEqualToString:@"0"]) {
-            if([Helper isConnectionAvailable]){
-                [_categoryArray removeAllObjects];
-                [_topArray removeAllObjects];
-                
-                MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-                [self.view addSubview:HUD];
-                //如果设置此属性则当前的view置于后台
-                HUD.dimBackground = YES;
-                //设置对话框文字
-                HUD.labelText = @"正在刷新...";
-                //显示对话框
-                [HUD showAnimated:YES whileExecutingBlock:^{
-                    [self requestData];
-                } completionBlock:^{
-                    //操作执行完后取消对话框
-                    [HUD removeFromSuperview];
-                    
-                    for(UIView *view1 in [self.view subviews])
-                    {
-                        [view1 removeFromSuperview];
-                    }
-                    [self topSetOrReset];
-                    [self menuSetOrReset];
-                }];
-            }else
-            {
-                [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
-            }
+            [self realRefresh];
         }
     }
 }
 
+- (void)realRefresh
+{
+    if([Helper isConnectionAvailable]){
+        [_categoryArray removeAllObjects];
+        [_topArray removeAllObjects];
+        
+        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:HUD];
+        //如果设置此属性则当前的view置于后台
+        HUD.dimBackground = YES;
+        //设置对话框文字
+        HUD.labelText = @"正在刷新...";
+        //显示对话框
+        [HUD showAnimated:YES whileExecutingBlock:^{
+            [self requestData];
+        } completionBlock:^{
+            //操作执行完后取消对话框
+            [HUD removeFromSuperview];
+            
+            for(UIView *view1 in [self.view subviews])
+            {
+                [view1 removeFromSuperview];
+            }
+            [self topSetOrReset];
+            [self menuSetOrReset];
+        }];
+    }else
+    {
+        [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
+    }
+}
 -(void)requestData
 {
     //处理topMerchant
@@ -122,6 +153,7 @@
         if(jsonObjects==nil){
             //解析错误
             [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+            return;
         }else{
             MerchartModel *model = nil;
             for(int i=0; i < [jsonObjects count];i++ ){
@@ -135,6 +167,7 @@
     }
     
     //加载category
+    //url = [NSString stringWithFormat:@"%@%@?city=%@",[Helper getIp],allCategories_url,_cityButton.titleLabel.text];
     url = [NSString stringWithFormat:@"%@%@",[Helper getIp],allCategories_url];
     response1 = [QuHaoUtil requestDb:url];
     if([response1 isEqualToString:@""]){
@@ -395,4 +428,20 @@
     
 }
 
+//CityViewController delegate
+- (void) citySelectionUpdate:(NSString*)selectedCity
+{
+    [_cityButton setTitle:selectedCity forState:UIControlStateNormal];
+    [self realRefresh];
+}
+
+- (NSString*) getDefaultCity
+{
+    return _cityButton.titleLabel.text;
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+}
 @end

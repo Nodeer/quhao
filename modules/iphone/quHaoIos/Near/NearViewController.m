@@ -223,7 +223,7 @@
     request.radius = @"3000";
     request.page = _pageIndex;
     request.sortrule = 1;
-    request.offset=20;
+    request.offset=10;
     //返回扩展信息
     //request.requireExtension = YES;
     
