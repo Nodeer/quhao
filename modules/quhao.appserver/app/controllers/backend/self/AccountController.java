@@ -16,6 +16,7 @@ import vo.account.CommonVO;
 
 import com.withiter.common.Constants;
 import com.withiter.models.account.Account;
+import com.withiter.models.account.CooperationRequset;
 import com.withiter.models.backendMerchant.MerchantAccountRel;
 import com.withiter.models.merchant.Merchant;
 
@@ -178,7 +179,8 @@ public class AccountController extends BaseController {
 			renderJSON(false);
 		}
 		
-		
-		
+		CooperationRequset c = new CooperationRequset(companyName,peopleName,peopleContact,peopleContact);
+		c.save();
+		renderJSON(true);
 	}
 }

@@ -135,5 +135,25 @@ Signup.validateSubmitInfo = function(){
  */
 Signup.submitinfo = function(){
 	var flag = Signup.validateSubmitInfo();
-	console.log(flag);
+	if(flag){
+		$.ajax({
+			type : "POST",
+			url : "/b/self/AccountController/submitinfo",
+			data : $("#businessInfoForm").serialize(),
+			dataType : "json",
+			async : false,
+			success : function(data) {
+				if(data){
+					var successIcon = "<span style='margin-right:10px;' class='glyphicon glyphicon-ok'></span>"
+					$("#submitinfotips").html(successIcon+"成功！2个工作日内会联系你。").show();
+				} else {
+					var warningIcon = "<span style='margin-right:10px;' class='glyphicon glyphicon-exclamation-sign'></span>"
+					$("#submitinfotips").html(warningIcon+"提交失败！请联系管理员").show();
+				}
+			},
+			error : function() {
+				alert("请联系管理员service@quhao.la");
+			}
+		});
+	}
 }
