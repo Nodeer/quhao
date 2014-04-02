@@ -12,16 +12,14 @@
 @interface NearViewController ()
 
 @property (nonatomic, strong) MAPointAnnotation *centerPointAnnotation;
-//@property (nonatomic, strong) MAPoiSearchOption *poiSearchOption;
 @property (nonatomic) AMapSearchType searchType;
 
 @end
 
 @implementation NearViewController
 @synthesize centerPointAnnotation = _centerPointAnnotation;
-//@synthesize poiSearchOption = _poiSearchOption;
 @synthesize searchType = _searchType;
-
+@synthesize tableView;
 - (id)init
 {
     self = [super init];
@@ -33,7 +31,17 @@
         self.tabBarItem.image = [UIImage imageNamed:@"near"];
         _isOpinion = NO;
         [self initMapView];
+        _showList = 0;
+        _dis = 3000;
+        self.view.backgroundColor = [UIColor whiteColor];
     }
+    
+    self.tableView=[[UITableView alloc] initWithFrame:CGRectMake(0, 20, kDeviceWidth, kDeviceHeight-128)];
+    self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.delegate=self;
+    self.tableView.dataSource=self;
+    [self.view addSubview:self.tableView];
+
     
     return self;
 }
@@ -41,14 +49,12 @@
 - (void)initMapView
 {
     self.ownMapView = [[MAMapView alloc] initWithFrame:self.view.bounds];
-    self.ownMapView.showsUserLocation = YES;
     self.ownMapView.visibleMapRect = MAMapRectMake(220880104, 101476980, 272496, 466656);
     
     self.search = [[AMapSearchAPI alloc] initWithSearchKey:[MAMapServices sharedServices].apiKey Delegate:self];
     self.search.delegate = self;
     
     _merchartsArray = [[NSMutableArray alloc] initWithCapacity:20];
-    [self.tableView registerClass:[NearCell class] forCellReuseIdentifier:@"NearCell"];
     
 #if IOS7_SDK_AVAILABLE
     if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
@@ -56,11 +62,28 @@
     }
 #endif
     
+    _button = [UIButton buttonWithType:UIButtonTypeSystem];
+    _button.frame = CGRectMake(0, 0, kDeviceWidth, 20);
+    [_button setTitle:@"3千米" forState:UIControlStateNormal];
+    [_button addTarget:self action:@selector(changeDis:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_button];
+
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshed:) name:Notification_TabClick object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    
+    if ([CLLocationManager locationServicesEnabled] &&([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized
+                                                       || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined))
+    {
+        self.ownMapView.showsUserLocation = YES;
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"请在系统设置中开启定位服务" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
     _reloading = NO;
     _pageIndex = 1;
     //注册
@@ -134,7 +157,7 @@
     [refreshView endRefreshing];
 }
 
-//设置行高
+#pragma mark tableviewdelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 100;
@@ -158,13 +181,12 @@
 //dataSource
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //if ([_merchartsArray count] > 0) {
-    self.tableView.separatorStyle =UITableViewCellSeparatorStyleSingleLine;
     static NSString *cellIdentify=@"NearCell";
-    NearCell *cell=[tableView dequeueReusableCellWithIdentifier:cellIdentify];
+    NearCell *cell=[self.tableView dequeueReusableCellWithIdentifier:cellIdentify];
     //检查视图中有没闲置的单元格
     if(cell==nil){
         cell=[[NearCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentify];
+        self.tableView.separatorStyle =UITableViewCellSeparatorStyleSingleLine;
     }
     cell.merchartModel=_merchartsArray[indexPath.row];
     [Helper arrowStyle:cell];
@@ -175,7 +197,7 @@
 //选中一条纪录触发的事件
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
     int row = [indexPath row];
     if (row >= [_merchartsArray count]) {
         [self performSelector:@selector(reload:)];
@@ -201,17 +223,8 @@
         }
     }
 }
-//弹出商家详细页面
-- (void)pushMerchartDetail:(MerchartModel *)model andNavController:(UINavigationController *)navController 
-{
-    MerchartDetail *mDetail = [[MerchartDetail alloc] init];
-    mDetail.merchartID = model.id;
-    mDetail.tabBarItem.image = [UIImage imageNamed:@"detail"];
-    mDetail.hidesBottomBarWhenPushed=YES;
-    [navController pushViewController:mDetail animated:YES];
-}
 
-
+#pragma mark  高德地图的方法
 - (void)poiRequestCoordinate:(CLLocationCoordinate2D)coordinate
 {
     AMapPlaceSearchRequest *request = [[AMapPlaceSearchRequest alloc] init];
@@ -220,7 +233,9 @@
     
     request.location = [AMapGeoPoint locationWithLatitude:coordinate.latitude longitude:coordinate.longitude];
     request.keywords = @"餐饮";
-    request.radius = @"3000";
+    if(_dis != 0){
+        request.radius = _dis;
+    }
     request.page = _pageIndex;
     request.sortrule = 1;
     request.offset=10;
@@ -244,8 +259,6 @@
         return;
     }
     
-    //NSMutableArray *poiAnnotations = [NSMutableArray arrayWithCapacity:respons.pois.count];
-    
     [respons.pois enumerateObjectsUsingBlock:^(AMapPOI *obj, NSUInteger idx, BOOL *stop) {
 
         //[poiAnnotations addObject:[[POIAnnotation alloc] initWithPOI:obj]];
@@ -268,13 +281,14 @@
         [_merchartsArray addObject:model];
         
     }];
+    
+    //NSLog(@"_merchartsArray===%d",[_merchartsArray count]);
     _prevItemCount = [_merchartsArray count];
     
     [self.tableView reloadData];
 }
 
 #pragma mark - Action Handle
-
 - (void)refreshAction
 {
     //测试用
@@ -282,7 +296,7 @@
     self.centerPointAnnotation = [[MAPointAnnotation alloc] init];
     self.centerPointAnnotation.coordinate = self.ownMapView.userLocation.coordinate;
     self.centerPointAnnotation.title = @"我的位置";
-    [self.ownMapView addAnnotation:self.centerPointAnnotation];
+    //[self.ownMapView addAnnotation:self.centerPointAnnotation];
     //NSLog(@"%f",self.centerPointAnnotation.coordinate.latitude);
     //NSLog(@"%f",self.centerPointAnnotation.coordinate.longitude);
 
@@ -297,14 +311,74 @@
     return response;
 }
 
+//弹出商家详细页面
+- (void)pushMerchartDetail:(MerchartModel *)model andNavController:(UINavigationController *)navController
+{
+    MerchartDetail *mDetail = [[MerchartDetail alloc] init];
+    mDetail.merchartID = model.id;
+    mDetail.tabBarItem.image = [UIImage imageNamed:@"detail"];
+    mDetail.hidesBottomBarWhenPushed=YES;
+    [navController pushViewController:mDetail animated:YES];
+}
+
 - (void)viewDidDisappear:(BOOL)animated
 {
     self.ownMapView.showsUserLocation = NO;
     self.ownMapView.userTrackingMode  = MAUserTrackingModeNone;
-       
+    
     [super viewDidDisappear:animated];
 }
 
+#pragma mark 下拉选择代码开始
+-(void)showPopUpwithOption:(NSArray*)option
+{
+    _selectList = [[selectListView alloc] initWithOption:option];
+    _selectList.delegate = self;
+    [_selectList showInView:self.view animated:YES];
+}
 
+- (void)changeDis:(id)sender {
+    if (_showList == 1) {//如果下拉框已显示，什么都不做
+        return;
+    }else {
+        [_selectList fadeOut];
+        _showList = 1;
+        arryList = @[@"1千米",@"3千米",@"5千米",@"10千米",@"全城"];
+        arryValueList = @[@"1000",@"3000",@"5000",@"100000",@"0"];
+        [self showPopUpwithOption:arryList];
+    }
+}
+
+- (void)selectListView:(selectListView *)listView didSelectedIndex:(NSInteger)anIndex{
+    [_button setTitle:[arryList objectAtIndex:anIndex] forState:UIControlStateNormal];
+    _dis = [[arryValueList objectAtIndex:anIndex] intValue];
+    _showList = 0;
+
+    if (self.tableView.contentOffset.y == 0) {
+        [self performSelector:@selector(refreshData:) withObject:nil afterDelay:0.5];
+    }else{
+        [self.tableView setContentOffset:CGPointZero animated:YES];
+    }
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    UITouch *touch = [touches anyObject];
+    CGPoint point = [touch  locationInView:self.view];
+    if (point.y >200) {
+        [_selectList fadeOut];
+        _showList = 0;
+    }
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)delloc
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+}
 @end
 

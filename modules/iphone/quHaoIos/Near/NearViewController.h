@@ -11,7 +11,9 @@
 #import "NearCell.h"
 #import "MerchartModel.h"
 #import "MerchartDetail.h"
-@interface NearViewController :BaseSearchViewController
+#import "selectListView.h"
+
+@interface NearViewController :BaseSearchViewController<UITableViewDelegate,UITableViewDataSource,selectListViewDelegate>
 {
     @private
     NSMutableArray *_merchartsArray;
@@ -22,7 +24,16 @@
     BOOL _isOpinion;
     //上拉刷新的view
     MJRefreshFooterView *_footer;
+    NSArray *arryList;
+    NSArray *arryValueList;
+    selectListView * _selectList;
+    UIButton * _button;
+    //是否弹出下拉列表
+    int _showList;
+    //设置搜索距离
+    NSInteger * _dis;
 }
+@property (strong, nonatomic)  UITableView *tableView;
 
 -(NSString *)getMerchart:(NSString *)poiId;
 //弹出商家详细页面
