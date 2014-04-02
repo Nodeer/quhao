@@ -74,16 +74,6 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    
-    if ([CLLocationManager locationServicesEnabled] &&([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized
-                                                       || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined))
-    {
-        self.ownMapView.showsUserLocation = YES;
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"请在系统设置中开启定位服务" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
-        [alert show];
-        return;
-    }
     _reloading = NO;
     _pageIndex = 1;
     //注册

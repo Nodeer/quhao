@@ -113,7 +113,7 @@
 -(void)onLocationLable:(UITapGestureRecognizer *)sender
 {
     [delegate citySelectionUpdate:loctionCity];
-    [self performSelector:@selector(clickToHome:)];
+    [self performSelector:@selector(removeView)];
 }
 
 - (void)reLoadLoction:(id)sender
@@ -124,6 +124,11 @@
 }
 
 - (void)clickToHome:(id)sender
+{
+    [self removeView];
+}
+
+- (void)removeView
 {
     CATransition *transition = [CATransition animation];
     transition.duration =0.3f;
@@ -136,7 +141,6 @@
     self.navigationController.navigationBarHidden = NO;
     [self.navigationController popViewControllerAnimated:NO];
 }
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -205,7 +209,7 @@
         }
     }
     
-    [self performSelector:@selector(clickToHome:)];
+    [self performSelector:@selector(removeView)];
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
