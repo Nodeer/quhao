@@ -61,9 +61,11 @@
         [self.tableView setSeparatorInset:UIEdgeInsetsZero];
     }
 #endif
-    
-    _button = [UIButton buttonWithType:UIButtonTypeSystem];
+    UIImage *backImage = [UIImage imageNamed:@"max_btn"];
+    _button = [UIButton buttonWithType:UIButtonTypeCustom];
     _button.frame = CGRectMake(0, 0, kDeviceWidth, 20);
+    [_button setBackgroundImage:backImage forState:UIControlStateNormal];
+    _button.titleLabel.font = [UIFont boldSystemFontOfSize:13.0f];
     [_button setTitle:@"3千米" forState:UIControlStateNormal];
     [_button addTarget:self action:@selector(changeDis:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_button];

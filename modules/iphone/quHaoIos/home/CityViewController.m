@@ -45,8 +45,14 @@
     
     [self.view addSubview:_searchBar];
     
-    button = [UIButton buttonWithType:UIButtonTypeSystem];
+    UIImage *backImage = [UIImage imageNamed:@"button"];
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = CGRectMake(kDeviceWidth-44, 44, 40, 30);
+    [button setBackgroundImage:backImage forState:UIControlStateNormal];
+    button.titleLabel.font = [UIFont boldSystemFontOfSize:13.0f];
+    [button setTitle:@"定位" forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(reLoadLoction:) forControlEvents:UIControlEventTouchUpInside];
+    
     lable = [[UILabel alloc] initWithFrame:CGRectMake(5, 44, 180, 30)];
     lable.font = [UIFont systemFontOfSize:13];
     UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onLocationLable:)];
@@ -55,8 +61,7 @@
     
     [self.view addSubview:button];
     [self.view addSubview:lable];
-    [button setTitle:@"定位" forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(reLoadLoction:) forControlEvents:UIControlEventTouchUpInside];
+    
     
     if ([CLLocationManager locationServicesEnabled] &&([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized
                                                        || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined))

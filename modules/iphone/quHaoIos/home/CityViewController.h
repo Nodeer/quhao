@@ -10,6 +10,7 @@
 #import "Helper.h"
 #import <CoreLocation/CoreLocation.h>
 #import <CoreLocation/CLLocationManagerDelegate.h>
+#import <QuartzCore/QuartzCore.h>
 
 @interface CityViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate,CLLocationManagerDelegate>
 {

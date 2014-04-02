@@ -37,7 +37,7 @@
     label.backgroundColor = [UIColor clearColor];
     [self.view addSubview:label];
     
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(10, 150, kDeviceWidth-20, 220) style:UITableViewStyleGrouped];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 140, kDeviceWidth, 240) style:UITableViewStyleGrouped];
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.backgroundView = nil;
@@ -45,6 +45,12 @@
     tableView.scrollEnabled = NO;
     [self.view addSubview:tableView];
     
+#if IOS7_SDK_AVAILABLE
+    if([tableView respondsToSelector:@selector(setSeparatorInset:)])
+    {
+        [tableView setSeparatorInset:UIEdgeInsetsZero];
+    }
+#endif
     if ([Helper isConnectionAvailable]){
         NSString *str1 = [NSString stringWithFormat:@"%@%@",[Helper getIp],getLastestVersion];
         NSString *response = [QuHaoUtil requestDb:str1];

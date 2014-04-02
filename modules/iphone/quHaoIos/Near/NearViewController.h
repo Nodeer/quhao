@@ -5,7 +5,7 @@
 //  Created by sam on 13-7-28.
 //  Copyright (c) 2013年 sam. All rights reserved.
 //
-
+#import <QuartzCore/QuartzCore.h>
 #import "BaseSearchViewController.h"
 #import "Helper.h"
 #import "NearCell.h"
