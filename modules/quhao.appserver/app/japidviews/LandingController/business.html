@@ -1,5 +1,8 @@
 `import static press.Plugin.*; 
 `extends landing_layout
+
+`args String randomID
+
 `set cssAndJs
 $addJS("login.js", true)
 $addJS("signup.js", true)
@@ -8,6 +11,7 @@ $addJS("signup.js", true)
 `set title
 取号啦 - 改变你的排队生活
 `
+
 
 `set mainContent
 <div class="section hero">
@@ -58,6 +62,13 @@ $addJS("signup.js", true)
 						<div class="">
 							<input class="form-control" name="peopleEmail" id="peopleEmail" value="" placeholder="邮箱地址" />
 					    </div>
+					</div>
+					<div id="captcha" class="form-group">
+				 		<div class="">
+				 			<img style="float: left;" src="@{ApplicationController.captcha(randomID)}" />
+				 			<input style="width: 100px;" class="form-control" name="captchaCode" id="captchaCode" value="" placeholder="输入验证码" />
+				 			<input type="hidden" name="randomID" value="${randomID}" />
+				 		</div>
 					</div>
 					<div id="btnupdate" class="form-group">
 				 		<div class="">

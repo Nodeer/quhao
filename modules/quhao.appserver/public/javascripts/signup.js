@@ -97,6 +97,7 @@ Signup.validateSubmitInfo = function(){
 	var peopleName = $("#peopleName").val();
 	var peopleContact = $("#peopleContact").val();
 	var peopleEmail = $("#peopleEmail").val();
+	var captchaCode = $("#captchaCode").val();
 	
 	var warningIcon = "<span style='margin-right:10px;' class='glyphicon glyphicon-exclamation-sign'></span>"
 	
@@ -127,6 +128,11 @@ Signup.validateSubmitInfo = function(){
 		return false;
 	}
 	
+	if(Common.isEmpty(captchaCode)){
+		$("#submitinfotips").html(warningIcon+"请输入验证码").show();
+		return false;
+	}
+	
 	return true;
 }
 
@@ -143,12 +149,13 @@ Signup.submitinfo = function(){
 			dataType : "json",
 			async : false,
 			success : function(data) {
-				if(data){
+				if(data.errorKey == "true"){
 					var successIcon = "<span style='margin-right:10px;' class='glyphicon glyphicon-ok'></span>"
 					$("#submitinfotips").html(successIcon+"成功！2个工作日内会联系你。").show();
 				} else {
 					var warningIcon = "<span style='margin-right:10px;' class='glyphicon glyphicon-exclamation-sign'></span>"
-					$("#submitinfotips").html(warningIcon+"提交失败！请联系管理员").show();
+					$("#submitinfotips").html(warningIcon+data.errorText).show();
+//					$("#submitinfotips").html(warningIcon+"提交失败！请联系管理员").show();
 				}
 			},
 			error : function() {

@@ -1,7 +1,13 @@
 package controllers;
 
+import java.io.File;
+
+import play.Play;
+import play.libs.Codec;
+
 public class LandingController extends BaseController {
 	public static void index() {
+//		String android = Play.configuration.getProperty("android");
 		renderJapid();
 	}
 
@@ -14,7 +20,13 @@ public class LandingController extends BaseController {
 	}
 
 	public static void business() {
-
-		renderJapid();
+		String randomID = Codec.UUID();
+		renderJapid(randomID);
+	}
+	
+	public static void androidDown(){
+		String android = Play.configuration.getProperty("android.download.path");
+		System.out.println(android);
+		renderBinary(new File(android));
 	}
 }

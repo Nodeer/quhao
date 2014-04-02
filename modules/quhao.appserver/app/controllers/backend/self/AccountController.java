@@ -8,11 +8,14 @@ import notifiers.MailsController;
 import org.apache.commons.lang.StringUtils;
 
 import play.Play;
+import play.cache.Cache;
+import play.data.validation.Required;
 import play.libs.Codec;
 import play.mvc.Scope.Session;
 import vo.MerchantVO;
 import vo.account.AccountVO;
 import vo.account.CommonVO;
+import vo.account.SignupVO;
 
 import com.withiter.common.Constants;
 import com.withiter.models.account.Account;
@@ -169,18 +172,29 @@ public class AccountController extends BaseController {
 	}
 	
 	// 商家提交合作信息
-	public static void submitinfo(){
+	public static void submitinfo(@Required(message="请输入验证码") String captchaCode, String randomID){
 		String companyName = params.get("companyName");
 		String peopleName = params.get("peopleName");
 		String peopleContact = params.get("peopleContact");
 		String peopleEmail = params.get("peopleEmail");
 		
+		SignupVO svo = new SignupVO();
+		if(!captchaCode.equalsIgnoreCase(Cache.get(randomID).toString())){
+			svo.errorKey = "false";
+			svo.errorText = "验证码不正确，请重试";
+			renderJSON(svo);
+		}
+		
 		if(StringUtils.isEmpty(companyName) || StringUtils.isEmpty(peopleName) || StringUtils.isEmpty(peopleContact) || StringUtils.isEmpty(peopleEmail)){
+			svo.errorKey = "false";
+	    	svo.errorText = "字段不能为空";
 			renderJSON(false);
 		}
 		
 		CooperationRequset c = new CooperationRequset(companyName,peopleName,peopleContact,peopleContact);
 		c.save();
-		renderJSON(true);
+		svo.errorKey = "true";
+    	svo.errorText = "";
+		renderJSON(svo);
 	}
 }
