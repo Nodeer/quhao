@@ -83,6 +83,7 @@
 	                android:layout_width="fill_parent"
 	                android:layout_height="wrap_content"
 	                android:hint=""
+	                android:inputType="phone"
 	                android:paddingLeft="4dip"
 	                android:paddingRight="4dip"
 	                android:singleLine="true" >

@@ -77,6 +77,8 @@ public class RegisterActivity extends QuhaoBaseActivity{
 				.getSystemService(Context.TELEPHONY_SERVICE);
 		String phone = telephonyManager.getLine1Number();
 		loginNameText.setText(phone);
+		loginNameText.setFocusableInTouchMode(true);
+		loginNameText.requestFocus();
 	}
 
 	private Handler verifyUpdateHandler = new Handler()

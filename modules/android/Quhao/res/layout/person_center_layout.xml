@@ -25,14 +25,14 @@
 			android:textAppearance="?android:textAppearanceMediumInverse"
 			android:textColor="#ff000000"
 			android:textSize="14.0sp" />
-        <TextView
+		<TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/gerenzhongxin"
-            android:textColor="#000000" />
-
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="#ff000000" />
 		<Button
 		    android:id="@+id/login"
 		    android:layout_width="wrap_content"
@@ -177,7 +177,7 @@
             android:orientation="horizontal"
             android:padding="10.0dip"
             android:textAlignment="center" 
-            android:background="@drawable/common_top_bar_bg2">
+            android:background="@drawable/common_top_bar_bg_blue">
 
             <LinearLayout android:id="@+id/signInLayout"
                 android:layout_width="wrap_content"

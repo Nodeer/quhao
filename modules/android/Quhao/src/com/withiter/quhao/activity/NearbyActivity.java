@@ -332,6 +332,7 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 				float distance = firstLocation.distanceTo(location);
 				if(distance>100)
 				{
+					firstLocation = location;
 					progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
 					progressDialogUtil.showProgress();
 					if(null == poiItems)

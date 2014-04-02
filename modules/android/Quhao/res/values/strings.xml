@@ -7,7 +7,8 @@
     <string name="btn_ok">确&#160;&#160;&#160;定</string>
     <string name="btn_back">返&#160;回</string>
 	
-     <string name="commit">提&#160;&#160;&#160;交</string>
+    <string name="commit">提&#160;&#160;&#160;交</string>
+    <string name="delete">删除</string>
      
     <!-- 加载页面 -->
     <string name="startup">排队不用等</string>

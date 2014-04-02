@@ -37,8 +37,7 @@
             android:layout_centerVertical="true"
             android:text="用户注册"
             android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="#ff000000"
-            android:textSize="14sp" />
+            android:textColor="#ff000000" />
     </RelativeLayout>
 
     <ScrollView
@@ -81,6 +80,9 @@
                 android:layout_width="220dp"
                 android:layout_height="40dp"
                 android:hint=""
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:inputType="phone"
                 android:paddingLeft="4dip"
                 android:paddingRight="4dip" >
             </EditText>
@@ -106,9 +108,9 @@
 	            android:orientation="horizontal" >
 	            <EditText
 	                android:id="@+id/verify_code"
-	                android:layout_width="wrap_content"
+	                android:layout_width="220dp"
 	                android:layout_height="40dp"
-	                android:layout_weight="0.42"
+	                android:inputType="phone"
 	                android:hint="" >
 	            </EditText>
 	
