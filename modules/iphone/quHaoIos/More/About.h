@@ -7,11 +7,11 @@
 //
 #import <UIKit/UIKit.h>
 #import "Helper.h"
-@interface About : UIViewController
-
-@property (strong, nonatomic) IBOutlet UILabel *lblVersion;
-@property (unsafe_unretained, nonatomic) IBOutlet UILabel *lblOSC;
-@property (unsafe_unretained, nonatomic) IBOutlet UILabel *lblCopyright;
-@property (strong, nonatomic) IBOutlet UIImageView *img;
+#import "QuHaoUtil.h"
+@interface About : UIViewController<UITableViewDelegate,UITableViewDataSource>
+{
+    NSString * _version;
+    NSArray * _arrayList;
+}
 
 @end
