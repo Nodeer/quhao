@@ -3,7 +3,7 @@
 # ~~~~
 
 # Import Secure routes
-# *       /                                   module:secure
+#*       /                                   module:secure
 
 # Press
 *		/									module:press
@@ -89,7 +89,7 @@ GET		/updateGaodeToMerchant				GaodeToMerchantController.updateGaodeToMerchant
 
 # backend management
 *		/b/m/{action}						backend.merchant.MerchantManagementController.{action}
-*		/b/m								backend.merchant.MerchantManagementController.index
+#*		/b/m								backend.merchant.MerchantManagementController.index
 
 *		/b/w								backend.self.SelfManagementController.index
 *		/b/w/editMerchant					backend.self.SelfManagementController.editMerchant

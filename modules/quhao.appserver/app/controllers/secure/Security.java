@@ -1,11 +1,14 @@
 package controllers.secure;
 
-import vo.account.LoginVO;
-
 import com.withiter.models.account.Account;
 import com.withiter.utils.StringUtils;
 
+
 public class Security {
+	
+//	static boolean authenticate(String username, String password) {
+//	    return true;
+//	}
 	
 	public boolean check(String phone, String email, String password){
 		boolean flag = false;
