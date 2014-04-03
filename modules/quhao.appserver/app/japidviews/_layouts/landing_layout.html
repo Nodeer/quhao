@@ -14,8 +14,6 @@ $addCSS("base.css", true)
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/home/normalize.css">
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/home/webflow.css">
   <link rel="stylesheet" type="text/css" href="/public/stylesheets/home/quhaola.webflow.css">
-  <script type="text/javascript" src="/public/javascripts/home/webfont.js"></script>
-  <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
   
   <script>
     WebFont.load({
@@ -30,15 +28,15 @@ $addCSS("base.css", true)
   <!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
   <link rel="apple-touch-icon" href="https://y7v4p6k4.ssl.hwcdn.net/51d1bb05fc804b2621000001/51e06f0756878bb26a000008_webclip-slate.png">
   <link href="/public/images/common/quhao_favicon.jpg" type="image/png" rel="shortcut icon" />
-$addJS("libs/jquery-1.7.js", true)
-$addJS("libs/jquery-ui-1.10.3.custom.min.js", true)
-$addJS("libs/bootstrap.min.js", true)
-$addJS("common.js", true)
-$addJS("quhao.js", true)
-$baseCss()
-`get cssAndJs`
-$compressedCSSTag()
-`get inlinejs`
+	$addJS("libs/jquery-1.7.js", true)
+	$addJS("libs/jquery-ui-1.10.3.custom.min.js", true)
+	$addJS("libs/bootstrap.min.js", true)
+	$addJS("common.js", true)
+	$addJS("quhao.js", true)
+	$baseCss()
+	`get cssAndJs`
+	$compressedCSSTag()
+	`get inlinejs`
 <title>`get title`</title>
 </head>
 <body>
@@ -50,10 +48,10 @@ $compressedCSSTag()
     <div class="w-container">
       <div class="w-row">
         <div class="w-col w-col-4 w-clearfix subfooter-left">
-          <img class="logo-in-header" src="/public/images/home/application_icon.png" width="25px" alt="5302cd728b0b46b15800005a_application_icon.png">
-          <div class="app-name">取号啦</div>
+          <img class="logo-in-header" style="margin-top: -5px;" src="/public/images/home/application_icon.png" width="25px" alt="5302cd728b0b46b15800005a_application_icon.png">
+          <div class="app-name" style="line-height: 10px; height: 10px;">取号啦</div>
         </div>
-        <div class="w-col w-col-8 w-clearfix nav-column">
+        <div class="w-col w-col-8 w-clearfix nav-column" style="font-size: 19px;">
         	<a class="nav-link app-name" style="letter-spacing: 2px;text-decoration: none;font-weight: bolder;" href="/home" target="_self">首页</a>
         	<a class="nav-link" style="text-decoration: none;font-weight: bolder;" href="/about" target="_self">关于取号啦</a>
         	<a class="nav-link" style="text-decoration: none;font-weight: bolder;" href="/business" target="_self">商家专区</a>
@@ -69,6 +67,8 @@ $compressedCSSTag()
       <p class="footer-text">Copyright ©2014 quhao.la, All Rights Reserved.</p>
     </div>
   </div>
+  <script type="text/javascript" src="/public/javascripts/home/webfont.js"></script>
+  <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
   <script src="/public/javascripts/libs/jquery-1.7.js" type="text/javascript" language="javascript" charset="utf-8"></script>
   </body>
 </html>
