@@ -23,7 +23,8 @@ GET		/home								LandingController.index
 GET		/about								LandingController.about
 GET		/business							LandingController.business
 
-
+# Admin page
+GET		/admin								backend.admin.AdminController.index
 
 # Category
 GET		/allCategories						MerchantController.allCategories
