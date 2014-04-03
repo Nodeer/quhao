@@ -118,3 +118,4 @@ GET     /public/                            staticDir:public
 # Catch all
 *       /{controller}/{action}              {controller}.{action}
 *       /b/{type}/{controller}/{action}     backend.{type}.{controller}.{action}
+
