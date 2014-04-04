@@ -62,6 +62,8 @@ GET		/signupWithMobile                   AccountController.signupWithMobile
 GET		/updatePassCode						AccountController.updatePassCode
 GET		/getAuthCode						AccountController.getAuthCode
 GET		/signIn								AccountController.signIn
+GET		/delHistoryReservation				AccountController.delHistoryReservation
+GET		/delCredit				            AccountController.delHistoryCredit
 
 # Comment
 GET		/updateComment						CommentController.updateComment

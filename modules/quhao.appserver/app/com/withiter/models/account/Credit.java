@@ -23,6 +23,7 @@ public class Credit extends CreditEntityDef {
 	public static List<Credit> findByAccountId(String accountId) {
 		MorphiaQuery q = Credit.q();
 		q.filter("accountId", accountId);
+		q.filter("available", true);
 		return q.asList();
 	}
 
@@ -36,7 +37,8 @@ public class Credit extends CreditEntityDef {
 	public static List<Credit> findByAccountId(String accountId,int page,String sortBy) {
 		MorphiaQuery q = Credit.q();
 		q.filter("accountId", accountId);
-		
+		q.filter("available", true);
+
 		if (!StringUtils.isEmpty(sortBy)) {
 			q = sortBy(q, sortBy);
 		}else{

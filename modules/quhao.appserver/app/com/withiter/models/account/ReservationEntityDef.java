@@ -18,4 +18,5 @@ public abstract class ReservationEntityDef extends BaseModel {
 	public boolean isCommented = false;				// 是否评价
 	public boolean valid;
 	public Constants.ReservationStatus status;
+	public boolean available = true;						//逻辑删除标识
 }

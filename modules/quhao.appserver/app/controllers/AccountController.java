@@ -8,12 +8,14 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.httpclient.HttpException;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import play.Play;
 import play.libs.Codec;
-import play.mvc.Scope.Session;
+import play.modules.morphia.Model.MorphiaQuery;
+import play.modules.morphia.Model.MorphiaUpdateOperations;
 import vo.ReservationVO;
 import vo.account.CreditVO;
 import vo.account.LoginVO;
@@ -536,5 +538,59 @@ public class AccountController extends BaseController {
 		}
 
 		renderJSON(loginVO);
+	}
+	
+	/**
+	 * 逻辑删除历史取号信息
+	 * @param id
+	 */
+	public static void delHistoryReservation(String id) {
+		if(!id.equals("")){
+			String[] array = id.split(",");
+			int i;
+			ArrayList ids = new ArrayList();
+			for(i = 0; i< array.length; i++){
+				if(!array[i].equals("")){
+					ids.add(new ObjectId(array[i]));
+				}
+			}
+			MorphiaQuery q = Reservation.q();
+			q.filter(" _id in", ids);
+			
+			MorphiaUpdateOperations o = Reservation.o();
+			o.set("available", false);
+			o.update(q);
+			
+			renderText("success");
+		}else{
+			renderText("error");
+		}
+	}
+	
+	/**
+	 * 逻辑删除积分消费情况的历史信息
+	 * @param id
+	 */
+	public static void delHistoryCredit(String id) {
+		if(!id.equals("")){
+			String[] array = id.split(",");
+			int i;
+			ArrayList ids = new ArrayList();
+			for(i = 0; i< array.length; i++){
+				if(!array[i].equals("")){
+					ids.add(new ObjectId(array[i]));
+				}
+			}
+			MorphiaQuery q = Credit.q();
+			q.filter(" _id in", ids);
+			
+			MorphiaUpdateOperations o = Credit.o();
+			o.set("available", false);
+			o.update(q);
+			
+			renderText("success");
+		}else{
+			renderText("error");
+		}
 	}
 }

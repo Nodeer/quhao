@@ -35,4 +35,8 @@ public class CreditEntityDef extends BaseModel{
 	 */
 	public CreditStatus status;
 	
+	/**
+	 * 逻辑删除标识
+	 */
+	public boolean available = true;
 }

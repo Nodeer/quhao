@@ -32,7 +32,7 @@ public class Reservation extends ReservationEntityDef {
 	 */
 	public static List<Reservation> findValidReservations(String accountId) {
 		MorphiaQuery q = Reservation.q();
-		q.filter("accountId", accountId).filter("valid", true);
+		q.filter("accountId", accountId).filter("valid", true).filter("available", true);
 		return q.asList();
 	}
 	
@@ -88,7 +88,7 @@ public class Reservation extends ReservationEntityDef {
 	 */
 	public static List<Reservation> findValidReservations(String accountId, int page, String sortBy) {
 		MorphiaQuery q = Reservation.q();
-		q.filter("accountId", accountId).filter("valid", true);
+		q.filter("accountId", accountId).filter("valid", true).filter("available", true);
 
 		if (!StringUtils.isEmpty(sortBy)) {
 			q = sortBy(q, sortBy);
@@ -126,7 +126,7 @@ public class Reservation extends ReservationEntityDef {
 	 */
 	public static List<Reservation> findHistroyReservations(String accountId) {
 		MorphiaQuery q = Reservation.q();
-		q.filter("accountId", accountId).filter("valid", false);
+		q.filter("accountId", accountId).filter("valid", false).filter("available", true);
 		return q.asList();
 	}
 
@@ -143,7 +143,8 @@ public class Reservation extends ReservationEntityDef {
 	 */
 	public static List<Reservation> findHistroyReservations(String accountId, int page, String sortBy) {
 		MorphiaQuery q = Reservation.q();
-		q.filter("accountId", accountId).filter("valid", false);
+		q.filter("accountId", accountId).filter("valid", false).filter("available", true);
+;
 
 		if (!StringUtils.isEmpty(sortBy)) {
 			q = sortBy(q, sortBy);
