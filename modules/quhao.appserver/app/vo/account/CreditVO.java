@@ -6,6 +6,7 @@ import com.withiter.models.account.Credit;
 
 public class CreditVO {
 
+	public String id;
 	/**
 	 * 用户帐号ID
 	 */
@@ -59,7 +60,7 @@ public class CreditVO {
 	public Date created = new Date();
 
 	public void build(Credit credit) {
-		
+		this.id = credit.id();
 		this.accountId = credit.accountId;
 		this.merchantId = credit.merchantId;
 		this.reservationId = credit.reservationId;
