@@ -97,11 +97,11 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    Reservation *reservation=_reservationArray[indexPath.row];
     [_reservationArray removeObjectAtIndex:indexPath.row];
     
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationTop];
     
-    Reservation *reservation=_reservationArray[indexPath.row];
     NSString *str1= [NSString stringWithFormat:@"%@%@%@",[Helper getIp],delHistory,reservation.id];
     NSString *response =[QuHaoUtil requestDb:str1];
     if([response isEqualToString:@""]){

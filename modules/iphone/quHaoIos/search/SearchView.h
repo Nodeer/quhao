@@ -10,14 +10,14 @@
 #import "MerchartDetail.h"
 @interface SearchView : UIViewController<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate>
 {
-    NSMutableArray * results;
-    BOOL isLoading;
-    BOOL isLoadOver;
+    NSMutableArray * _results;
+    BOOL _isLoading;
+    BOOL _isLoadOver;
     
-    int allCount;
+    int _allCount;
 }
 @property (strong, nonatomic) IBOutlet UITableView *tableResult;
-@property (strong, nonatomic) IBOutlet UISearchBar *_searchBar;
+@property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 
 -(void)doSearch;
 -(void)clear;

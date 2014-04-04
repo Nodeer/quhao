@@ -97,16 +97,15 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [_creditArray removeObjectAtIndex:indexPath.row];
-    
-    [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationTop];
-    
     Credit *credit=_creditArray[indexPath.row];
+    
+    [_creditArray removeObjectAtIndex:indexPath.row];
+    [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationTop];
     NSString *str1= [NSString stringWithFormat:@"%@%@%@",[Helper getIp],delCredit,credit.id];
     NSString *response =[QuHaoUtil requestDb:str1];
     if([response isEqualToString:@""]){
         //异常处理
-        [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+        //[Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
     }
 }
 
@@ -160,18 +159,20 @@
                 //解析错误
                 [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
             }else{
-                for(int i=0; i < [jsonObjects count];i++ ){
-                    Credit *model=[[Credit alloc]init];
-                    model.merchantName=[[jsonObjects objectAtIndex:i] objectForKey:@"merchantName"];
-                    model.merchantId=[[jsonObjects objectAtIndex:i] objectForKey:@"merchantId"];
-                    model.status=[[jsonObjects objectAtIndex:i] objectForKey:@"status"];
-                    model.seatNumber=[[jsonObjects objectAtIndex:i] objectForKey:@"seatNumber"];
-                    model.myNumber=[[jsonObjects objectAtIndex:i] objectForKey:@"myNumber"];
-                    model.jifen=fabs([[[jsonObjects objectAtIndex:i] objectForKey:@"jifen"] integerValue]);
-                    model.reservationId=[[jsonObjects objectAtIndex:i] objectForKey:@"reservationId"];
-                    model.cost=[[[jsonObjects objectAtIndex:i] objectForKey:@"cost"] boolValue];
-                    model.created=[[jsonObjects objectAtIndex:i] objectForKey:@"created"];
-                    
+                Credit *model = nil;
+                int i ;
+                for(i=0; i < [jsonObjects count];i++ ){
+                    model=[[Credit alloc]init];
+                    model.merchantName = [[jsonObjects objectAtIndex:i] objectForKey:@"merchantName"];
+                    model.merchantId = [[jsonObjects objectAtIndex:i] objectForKey:@"merchantId"];
+                    model.status = [[jsonObjects objectAtIndex:i] objectForKey:@"status"];
+                    model.seatNumber = [[jsonObjects objectAtIndex:i] objectForKey:@"seatNumber"];
+                    model.myNumber = [[jsonObjects objectAtIndex:i] objectForKey:@"myNumber"];
+                    model.jifen = fabs([[[jsonObjects objectAtIndex:i] objectForKey:@"jifen"] integerValue]);
+                    model.reservationId = [[jsonObjects objectAtIndex:i] objectForKey:@"reservationId"];
+                    model.cost = [[[jsonObjects objectAtIndex:i] objectForKey:@"cost"] boolValue];
+                    model.created = [[jsonObjects objectAtIndex:i] objectForKey:@"created"];
+                    model.id = [[jsonObjects objectAtIndex:i] objectForKey:@"id"];
                     [_creditArray addObject:model];
                 }
             }
@@ -182,6 +183,11 @@
         _loadFlag = NO;
         [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
     }
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
 }
 
 @end

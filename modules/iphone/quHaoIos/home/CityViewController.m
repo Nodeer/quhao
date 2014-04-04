@@ -245,7 +245,6 @@
         value = [cities objectForKey: key];
         if ([key hasPrefix:_searchBar.text])
         {
-            [keys addObject:key];
             [tempArray   addObjectsFromArray:[cities objectForKey:key]];
         }
         
