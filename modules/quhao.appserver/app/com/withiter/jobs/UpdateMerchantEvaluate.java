@@ -14,7 +14,7 @@ import com.withiter.models.merchant.Comment;
 import com.withiter.models.merchant.Merchant;
 
 @OnApplicationStart
-@Every("1min")
+@Every("60min")
 public class UpdateMerchantEvaluate extends Job {
 	private static Logger logger = LoggerFactory.getLogger(UpdateMerchantEvaluate.class);
 
