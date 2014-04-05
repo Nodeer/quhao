@@ -497,11 +497,11 @@ public class AccountController extends BaseController {
 				creditVO.merchantAddress = merchant.address;
 			}
 
-			if (StringUtils.isNotEmpty(credit.reservationId)) {
-				Reservation reservation = Reservation.findById(credit.reservationId);
-				creditVO.seatNumber = reservation.seatNumber;
-				creditVO.myNumber = reservation.myNumber;
-			}
+//			if (StringUtils.isNotEmpty(credit.reservationId)) {
+//				Reservation reservation = Reservation.findById(credit.reservationId);
+//				creditVO.seatNumber = reservation.seatNumber;
+//				creditVO.myNumber = reservation.myNumber;
+//			}
 
 			creditVOs.add(creditVO);
 		}
