@@ -214,7 +214,7 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 		{
 			AlertDialog.Builder builder = new Builder(this);
 			builder.setTitle("温馨提示");
-			builder.setMessage("对不起，这条不能查看。");
+			builder.setMessage("对不起，亲，不是商家不能查看哦。");
 			builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {

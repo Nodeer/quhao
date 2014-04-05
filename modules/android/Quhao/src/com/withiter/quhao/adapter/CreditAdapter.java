@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.withiter.quhao.R;
+import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.vo.Credit;
 
 public class CreditAdapter extends BaseAdapter {
@@ -46,64 +47,64 @@ public class CreditAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Credit credit = (Credit) getItem(position);
 		synchronized (credit) {
-			if ("finished".equals(credit.status) || "getNumber".equals(credit.status) || "credit".equals(credit.status)) {
-				MerchantHolder holder = null;
-				if (convertView == null) {
-					holder = new MerchantHolder();
-					LayoutInflater inflator = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			Holder holder = null;
+			if (convertView == null) {
+				holder = new Holder();
+				LayoutInflater inflator = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-					convertView = inflator.inflate(R.layout.credit_cost_merchant_list_item, null);
-					holder.merchantName = (TextView) convertView.findViewById(R.id.merchantName);
-					holder.merchantAddress = (TextView) convertView.findViewById(R.id.merchantAddress);
-					holder.action = (TextView) convertView.findViewById(R.id.action);
-					holder.desc = (TextView) convertView.findViewById(R.id.description);
+				convertView = inflator.inflate(R.layout.credit_cost_list_item, null);
+				holder.merchantName = (TextView) convertView.findViewById(R.id.merchantName);
+				holder.merchantAddress = (TextView) convertView.findViewById(R.id.merchantAddress);
+				holder.desc = (TextView) convertView.findViewById(R.id.description);
+				holder.date = (TextView) convertView.findViewById(R.id.date);
 
-				}
-				if (holder == null) {
-					holder = (MerchantHolder) convertView.getTag();
-				}
+			}
+			if (holder == null) {
+				holder = (Holder) convertView.getTag();
+			}
 
+			if(StringUtils.isNotNull(credit.merchantName))
+			{
+				convertView.findViewById(R.id.merchantLayout).setVisibility(View.VISIBLE);
 				holder.merchantName.setTag("merchantName_" + position);
 				holder.merchantName.setText(credit.merchantName);
-
 				holder.merchantAddress.setTag("merchantAddress_" + position);
 				holder.merchantAddress.setText(credit.merchantAddress);
-
-				// 取号消费积分
-				if (credit.status.equals("getNumber")) {
-					holder.action.setText("排队取号");
-					holder.desc.setText("消费一个积分");
-				}
-
-				// 完成消费返还积分
-				if (credit.status.equals("finished")) {
-					holder.action.setText("完成消费");
-					holder.desc.setText("系统返还一个积分");
-				}
-
-				convertView.setTag(holder);
+			}
+			else
+			{
+				convertView.findViewById(R.id.merchantLayout).setVisibility(View.GONE);
+			}
+			
+			// 取号消费积分
+			if ("getNumber".equals(credit.status)) {
+				holder.desc.setText("排队取号,消费一个积分");
 			}
 
-			// 兑换积分
+			// 完成消费返还积分
+			if ("finished".equals(credit.status)) {
+				holder.desc.setText("完成消费,系统返还一个积分");
+			}
+			
+			// 评论增加积分
+			if ("comment".equals(credit.status)) {
+				holder.desc.setText("评论,增加一个积分");
+			}
+
 			if ("exchange".equals(credit.status)) {
-				ExchangeHolder holder = null;
-				if (convertView == null) {
-					holder = new ExchangeHolder();
-					LayoutInflater inflator = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-					convertView = inflator.inflate(R.layout.credit_cost_exchange_list_item, null);
-					holder.action = (TextView) convertView.findViewById(R.id.action);
-					holder.desc = (TextView) convertView.findViewById(R.id.description);
-
-				}
-				if (holder == null) {
-					holder = (ExchangeHolder) convertView.getTag();
-				}
-				
-				holder.action.setText("签到兑换");
-				holder.desc.setText("连续5天签到，系统奖励一个积分");
-
-				convertView.setTag(holder);
+				holder.desc.setText("签到数量足够，增加一个积分。");
 			}
+			
+			//其实过期是没有积分消费记录增加的。也就是说数据库中不可能有这样的数据
+			if ("expired".equals(credit.status)) {
+				holder.desc.setText("过期，丢失一个积分。");
+			}
+			
+			holder.desc.setTag("status_" + position);
+			holder.date.setTag("created_" + position);
+			holder.date.setText(credit.created);
+			convertView.setTag(holder);
+
 			return convertView;
 		}
 
@@ -119,5 +120,12 @@ public class CreditAdapter extends BaseAdapter {
 	class ExchangeHolder {
 		TextView action;
 		TextView desc;
+	}
+	
+	class Holder {
+		TextView merchantName;
+		TextView merchantAddress;
+		TextView desc;
+		TextView date;
 	}
 }

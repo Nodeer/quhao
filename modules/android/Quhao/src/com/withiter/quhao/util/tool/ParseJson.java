@@ -556,12 +556,14 @@ public class ParseJson {
 		String merchantAddress = obj.optString("merchantAddress");
 		String reservationId = obj.optString("reservationId");
 
-		int seatNumber = obj.optInt("seatNumber");
-		int myNumber = obj.optInt("myNumber");
+//		int seatNumber = obj.optInt("seatNumber");
+//		int myNumber = obj.optInt("myNumber");
 		boolean cost = obj.optBoolean("cost");
 		String status = obj.optString("status");
+		String created = DateUtils.formatDate(obj.optString("created"), "yyyy-MM-dd HH:mm:ss");
 
-		Credit credit = new Credit(accountId, merchantId, merchantName, merchantAddress, reservationId, seatNumber, myNumber, cost, status);
+//		Credit credit = new Credit(accountId, merchantId, merchantName, merchantAddress, reservationId, seatNumber, myNumber, cost, status,created);
+		Credit credit = new Credit(accountId, merchantId, merchantName, merchantAddress, reservationId, cost, status,created);
 		return credit;
 	}
 

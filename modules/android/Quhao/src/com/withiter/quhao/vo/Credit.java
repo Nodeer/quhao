@@ -31,12 +31,12 @@ public class Credit {
 	/**
 	 * 座位类型
 	 */
-	public int seatNumber;
+//	public int seatNumber;
 	
 	/**
 	 * 我的座位号码
 	 */
-	public int myNumber;
+//	public int myNumber;
 	
 	/**
 	 * true代表增加积分， false代表减少积分
@@ -48,8 +48,14 @@ public class Credit {
 	 */
 	public String status;
 	
+	/**
+	 * 增加日期
+	 */
+	public String created;
+	
+	/*
 	public Credit(String accountId, String merchantId, String merchantName,String merchantAddress,String reservationId,int seatNumber
-			,int myNumber,boolean cost,String status) {
+			,int myNumber,boolean cost,String status,String created) {
 		
 		this.accountId = accountId;
 		this.merchantId = merchantId;
@@ -60,6 +66,20 @@ public class Credit {
 		this.myNumber = myNumber;
 		this.cost = cost;
 		this.status = status;
+		this.created = created;
 	}
-
+	 */
+	public Credit(String accountId, String merchantId, String merchantName,String merchantAddress,String reservationId,boolean cost,String status,String created) {
+		
+		this.accountId = accountId;
+		this.merchantId = merchantId;
+		this.merchantName = merchantName;
+		this.merchantAddress = merchantAddress;
+		this.reservationId = reservationId;
+//		this.seatNumber = seatNumber;
+//		this.myNumber = myNumber;
+		this.cost = cost;
+		this.status = status;
+		this.created = created;
+	}
 }
