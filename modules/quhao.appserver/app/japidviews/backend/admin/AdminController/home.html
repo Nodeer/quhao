@@ -2,13 +2,16 @@
 `extends admin_layout
 `set title "取号啦 - 管理员"
 
+$addJS("admin.js",true);
+
 `set contents
    <div class="container-fluid">
-   	<form class="form-signin" role="form" action="@{backend.admin.AdminController.accountGen()}">
+   	<form id="generateAccountForm" class="form-signin" role="form" action="">
        <h2 class="form-signin-heading">账号生成</h2>
+       <div id="tip" class="alert alert-danger" style="display:none; margin-top: 10px;margin-bottom: 10px;text-align: center;"></div>
        <input name="email" type="email" class="form-control" placeholder="Email address" required autofocus>
        <input name="password" type="password" class="form-control" placeholder="Password" required>
-       <button class="btn btn-lg btn-primary btn-block" type="submit">生成账号</button>
+       <button class="btn btn-lg btn-primary btn-block" type="button" onclick="Admin.generateAccount();">生成账号</button>
      </form>
    </div>
 `

@@ -1,12 +1,13 @@
 package controllers.backend.admin;
 
 import notifiers.MailsController;
-
-import com.withiter.models.account.Account;
-
 import play.Play;
 import play.data.validation.Required;
 import play.libs.Codec;
+import vo.AdminVO;
+
+import com.withiter.models.account.Account;
+
 import controllers.BaseController;
 
 public class AdminController extends BaseController {
@@ -37,18 +38,29 @@ public class AdminController extends BaseController {
 		renderJapid();
 	}
 	
-	public static void accountGen(@Required String email, @Required String password){
+	public static void genAccount(String email, String password){
 		validation.required(email).message("请输入Email");
 		validation.required(password).message("请输入Password");
 		
+		
+		validation.email(email).message("请输入正确格式的Email");
+		validation.minSize(password, 6).message("密码长度为6-20");
+		validation.maxSize(password, 20).message("密码长度为6-20");
+		
+		AdminVO avo = new AdminVO();
+		
 		if(validation.hasErrors()){
-			renderHtml(validation.errors().get(0));
+			avo.error = validation.errors().get(0).toString();
+			avo.result = validation.errors().get(0).toString();
+			renderJSON(avo);
 		}
 		
 		// check email exist or not
 		Account a = Account.findByEmail(email);
 		if(a != null){
-			renderHtml("Email已经存在了，请换个其他的Email");
+			avo.error = "Email已经存在了，请换个其他的Email";
+			avo.result = "Email已经存在了，请换个其他的Email";
+			renderJSON(avo);
 		}
 		
 		a = new Account();
@@ -56,7 +68,6 @@ public class AdminController extends BaseController {
 		a.password = Codec.hexSHA1(password);
 		a.save();
 		
-		// TODO 发送验证邮件
 		String hexedUid = Codec.hexSHA1(a.id());
 		String url = Play.configuration.getProperty("application.domain")
 				+ "/active?hid=" + hexedUid
@@ -64,8 +75,9 @@ public class AdminController extends BaseController {
 		
 		MailsController.sendTo(a.email, url);
 		
-		String result = "生成成功，email:" + a.email + "  password:" + password;
+		avo.error = "";
+		avo.result = "生成成功<br/>email:" + a.email + "<br/>password:" + password;
 		
-		renderHtml(result);
+		renderJSON(avo);
 	}
 }
