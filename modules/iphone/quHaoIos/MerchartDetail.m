@@ -53,10 +53,13 @@
 {
     [super viewDidLoad];
     self.single = [[MerchartModel alloc] init];
+    _paiduArray = [[NSMutableArray alloc] initWithCapacity:20];
     accountID=@"";
     Helper *helper=[Helper new];
+    NSString *isLogined = @"false";
     if (helper.isCookie == YES){
-        accountID=helper.getUID;
+        accountID = helper.getUID;
+        isLogined = @"true";
     }
     
     if([Helper isConnectionAvailable]){
@@ -64,7 +67,7 @@
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.labelText = NSLocalizedString(@"正在加载", nil);
         hud.square = YES;
-        NSString *url = [NSString stringWithFormat:@"%@%@?id=%@&accountId=%@",[Helper getIp],merchant_newurl, merchartID,accountID];
+        NSString *url = [NSString stringWithFormat:@"%@%@?merchantId=%@&accountId=%@&isLogined=%@",[Helper getIp],merchant_newurl, merchartID,accountID,isLogined];
         NSString *response =[QuHaoUtil requestDb:url];
         [hud hide:YES];
         if([response isEqualToString:@""]){
@@ -76,25 +79,9 @@
                 //解析错误
                 [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
             }else{
-
-                single.id=[jsonObjects objectForKey:@"id"];
-                single.name=[jsonObjects  objectForKey:@"name"];
-                single.averageCost=[[jsonObjects objectForKey:@"averageCost"] floatValue];
-                single.xingjiabi=[[jsonObjects objectForKey:@"xingjiabi"] floatValue];
-                single.fuwu=[[jsonObjects objectForKey:@"fuwu"] floatValue];
-                single.kouwei=[[jsonObjects objectForKey:@"kouwei"] floatValue];
-                single.huanjing=[[jsonObjects objectForKey:@"huanjing"] floatValue];
-                single.address=[jsonObjects  objectForKey:@"address"];
-                single.telephone=[jsonObjects  objectForKey:@"telephone"];
-                single.tags=[jsonObjects  objectForKey:@"tags"];
-                single.imgUrl=[jsonObjects  objectForKey:@"merchantImage"];
-                single.openTime=[jsonObjects objectForKey:@"openTime"];
-                single.closeTime=[jsonObjects objectForKey:@"closeTime"];
-                single.commentContent=[jsonObjects objectForKey:@"commentContent"];
-                single.description=[jsonObjects objectForKey:@"description"];
-                single.seatType=[jsonObjects objectForKey:@"seatType"];
-                single.isAttention=[[jsonObjects objectForKey:@"isAttention"] boolValue];
-                single.enable=[[jsonObjects objectForKey:@"enable"] boolValue];
+                [self analyzeMerchant:[jsonObjects objectForKey:@"merchant"]];
+                [self analyzePaidui:[jsonObjects objectForKey:@"haomaVO"]];
+                [self analyzeRvo:[jsonObjects objectForKey:@"rvos"]];
             }
         }
     }else{
@@ -103,7 +90,6 @@
     
     [self loadNavigationItem];
     [_detailView reloadData];
-    [self initMapView];
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -244,6 +230,62 @@
     }
 }
 
+//解析商家信息
+-(void)analyzeMerchant:(NSDictionary *) jsonObjects
+{
+    single.id = [jsonObjects objectForKey:@"id"];
+    single.name = [jsonObjects  objectForKey:@"name"];
+    single.averageCost = [[jsonObjects objectForKey:@"averageCost"] floatValue];
+    single.xingjiabi = [[jsonObjects objectForKey:@"xingjiabi"] floatValue];
+    single.fuwu = [[jsonObjects objectForKey:@"fuwu"] floatValue];
+    single.kouwei = [[jsonObjects objectForKey:@"kouwei"] floatValue];
+    single.huanjing = [[jsonObjects objectForKey:@"huanjing"] floatValue];
+    single.address = [jsonObjects  objectForKey:@"address"];
+    single.telephone = [jsonObjects  objectForKey:@"telephone"];
+    single.tags = [jsonObjects  objectForKey:@"tags"];
+    single.imgUrl = [jsonObjects  objectForKey:@"merchantImage"];
+    single.openTime = [jsonObjects objectForKey:@"openTime"];
+    single.closeTime = [jsonObjects objectForKey:@"closeTime"];
+    single.commentContent = [jsonObjects objectForKey:@"commentContent"];
+    single.description = [jsonObjects objectForKey:@"description"];
+    single.seatType = [jsonObjects objectForKey:@"seatType"];
+    single.isAttention = [[jsonObjects objectForKey:@"isAttention"] boolValue];
+    single.enable = [[jsonObjects objectForKey:@"enable"] boolValue];
+}
+
+//解析我的取号情况
+-(void)analyzeRvo:(NSArray *) jsonObjects
+{
+    if(jsonObjects.count!=0){
+        self.reservation = [[Reservation alloc] init];
+        reservation.accountId = [[jsonObjects objectAtIndex:0] objectForKey:@"accountId"];
+        reservation.seatNumber = [[jsonObjects objectAtIndex:0]  objectForKey:@"seatNumber"];
+        reservation.myNumber = [[jsonObjects objectAtIndex:0]  objectForKey:@"myNumber"];
+        reservation.beforeYou = [[[jsonObjects objectAtIndex:0] objectForKey:@"beforeYou"] intValue];
+        reservation.merchantId = [[jsonObjects objectAtIndex:0] objectForKey:@"merchantId"];
+        reservation.currentNumber = [[jsonObjects objectAtIndex:0] objectForKey:@"currentNumber"];
+    }
+}
+
+//解析排队情况
+-(void)analyzePaidui:(NSDictionary *) jsonObjects
+{
+    NSDictionary *objects=[jsonObjects objectForKey:@"haomaVOMap"];
+    NSDictionary * result = nil;
+    Paidu *model = nil;
+    [_paiduArray removeAllObjects];
+    for(int i=0; i < [single.seatType count];i++ ){
+        result=[objects objectForKey:[single.seatType objectAtIndex:i]];
+        if(result){
+            model = [[Paidu alloc]init];
+            model.currentNumber = [result objectForKey:@"currentNumber"];
+            model.maxNumber = [result objectForKey:@"maxNumber"];
+            model.seatNumber = [result objectForKey:@"numberOfSeat"];
+            [_paiduArray addObject:model];
+        }
+    }
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 9;
@@ -252,14 +294,21 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     int row = [indexPath row];
-    if(row==0||row==5||row==6){
+    if(row==0||row==6||row==7){
         return 100;
-    }else if(row==2||row==3||row==4){
+    }else if(row==3||row==4||row==5){
         return 35;
-    }else if (row==7){
+    }else if (row==8){
         return 120;
+    }else if (row==1){
+        return 72;
+    }else{
+        if ([_paiduArray count] == 0) {
+            return 50;
+        }else{
+            return  33+[_paiduArray count]*18;
+        }
     }
-    return 72;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -273,11 +322,13 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellTableIdentifier"];
     if (cell == nil) {
-          cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellTabeIndentifier"];
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellTabeIndentifier"];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    }
     if ([indexPath row] ==0 ) {//商家信息
         CGSize size=CGSizeMake(kDeviceWidth,100);
         cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"top.jpg" toSize:size]];
-        //cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cell_select_highlight.png"]];        
+        //cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cell_select_highlight.png"]];
         self.egoImgView = [[EGOImageView alloc] initWithFrame:CGRectMake(5, 10, 105, 80)];
         self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
         [cell.contentView addSubview:self.egoImgView];
@@ -289,7 +340,7 @@
         {
             self.egoImgView.imageURL = [NSURL URLWithString:single.imgUrl];
         }
-       
+        
         
         UILabel *_titleLabel = [Helper getCustomLabel:single.name font:18 rect:CGRectMake(egoImgView.frame.origin.x+egoImgView.frame.size.width+5, 5, kDeviceWidth-110, 25)];
         [cell.contentView addSubview:_titleLabel];
@@ -330,7 +381,7 @@
         _costLabel.frame=CGRectMake(_titleLabel.frame.origin.x+10, dlButton.frame.origin.y+dlButton.frame.size.height, _titleLabel.frame.size.width, 18);
         _costLabel.text=[NSString stringWithFormat:@"%@%.2lf%@%.2lf",@" 人均:¥",single.averageCost,@"    性价比:",single.xingjiabi];
         _costLabel.font=[UIFont systemFontOfSize:12];
-
+        
         [cell.contentView addSubview:_costLabel];
         
         UILabel *_pjLabel=[[UILabel alloc]initWithFrame:CGRectZero];
@@ -339,9 +390,9 @@
         _pjLabel.font=[UIFont systemFontOfSize:12];
         [cell.contentView addSubview:_pjLabel];
     }else if ([indexPath row] ==1 ) { //取号情况的
-        CGSize size=CGSizeMake(kDeviceWidth-10,75);
-        cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"qhqk.jpg" toSize:size]];
-        UILabel *nameLabel = [Helper getCustomLabel:@"  取号情况:" font:16 rect:CGRectMake(0, 5, 80, 15)];
+        CGSize size=CGSizeMake(kDeviceWidth-10,72);
+        cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"qhmk.png" toSize:size]];
+        UILabel *nameLabel = [Helper getCustomLabel:@"我的取号情况:" font:16 rect:CGRectMake(5, 5, 120, 15)];
         [cell.contentView addSubview:nameLabel];
         if(reservation==nil){
             UILabel *seatLabel = [Helper getCustomLabel:@"   暂无信息" font:15 rect:CGRectMake(0, 32, 100, 35)];
@@ -349,22 +400,53 @@
             [cell.contentView addSubview:seatLabel];
         }else{
             NSString *value = [NSString stringWithFormat:@"%@%@",@" 座位人数:",[reservation.seatNumber description]];
-            UILabel *seatLabel = [Helper getCustomLabel:value font:15 rect:CGRectMake(40, 30, 130, 15)];
+            UILabel *seatLabel = [Helper getCustomLabel:value font:15 rect:CGRectMake(40, 25, 130, 15)];
             [cell.contentView addSubview:seatLabel];
             
             NSString *current = [NSString stringWithFormat:@"%@%@",@" 当前号码:",[reservation.currentNumber description]];
-            UILabel *currentLabel = [Helper getCustomLabel:current font:15 rect:CGRectMake(175, 30, 130, 15)];
+            UILabel *currentLabel = [Helper getCustomLabel:current font:15 rect:CGRectMake(175, 25, 130, 15)];
             [cell.contentView addSubview:currentLabel];
             
             NSString *my = [NSString stringWithFormat:@"%@%@",@" 我的号码:",[reservation.myNumber description]];
-            UILabel *teamLabel = [Helper getCustomLabel:my font:15 rect:CGRectMake(40, 52, 130, 15)];
+            UILabel *teamLabel = [Helper getCustomLabel:my font:15 rect:CGRectMake(40, 47, 130, 15)];
             [cell.contentView addSubview:teamLabel];
             
             NSString *before = [NSString stringWithFormat:@"%@%d",@" 在你前面:",reservation.beforeYou];
-            UILabel *beforeLabel = [Helper getCustomLabel:before font:15 rect:CGRectMake(175, 52, 130, 15)];
+            UILabel *beforeLabel = [Helper getCustomLabel:before font:15 rect:CGRectMake(175, 47, 130, 15)];
             [cell.contentView addSubview:beforeLabel];
         }
-    }else if ([indexPath row] == 2) {//商家地址
+    }else if ([indexPath row] ==2 ) { //排队情况的
+        CGSize size=CGSizeMake(kDeviceWidth-10,33+[_paiduArray count]*18);
+        cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"qhmk.png" toSize:size]];
+        UILabel *nameLabel = [Helper getCustomLabel:@"排队情况:" font:15 rect:CGRectMake(5, 5, 90, 15)];
+        [cell.contentView addSubview:nameLabel];
+        
+        UIButton *sxButton=[Helper getBackBtn:@"button.png" title:@"刷 新" rect:CGRectMake(kDeviceWidth-60, 5, 40, 25 )];
+        [sxButton addTarget:self action:@selector(refreshPaidui:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.contentView addSubview:sxButton];
+        
+        if([_paiduArray count] == 0){
+            UILabel *seatLabel = [Helper getCustomLabel:@"   暂无信息" font:14 rect:CGRectMake(0, 30, 100, 15)];
+            seatLabel.textAlignment = NSTextAlignmentCenter;
+            [cell.contentView addSubview:seatLabel];
+        }else{
+            Paidu *paidu = nil;
+            for (int j=0; j<[_paiduArray count]; j++) {
+                paidu=(Paidu *)_paiduArray[j];
+                NSString *value = [NSString stringWithFormat:@"%@%@",@"座位人数:",paidu.seatNumber];
+                UILabel *seatLabel = [Helper getCustomLabel:value font:14 rect:CGRectMake(20, 30+j*18, 80, 15)];
+                [cell.contentView addSubview:seatLabel];
+                
+                NSString *current = [NSString stringWithFormat:@"%@%@",@"最大号码:",paidu.maxNumber];
+                UILabel *currentLabel = [Helper getCustomLabel:current font:14 rect:CGRectMake(120, 30+j*18, 110, 15)];
+                [cell.contentView addSubview:currentLabel];
+                
+                NSString *my = [NSString stringWithFormat:@"%@%@",@"已叫号码:",paidu.currentNumber];
+                UILabel *teamLabel = [Helper getCustomLabel:my font:14 rect:CGRectMake(220, 30+j*18, 130, 15)];
+                [cell.contentView addSubview:teamLabel];
+            }
+        }
+    }else if ([indexPath row] == 3) {//商家地址
         cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"address.jpg" toSize:CGSizeMake(kDeviceWidth-10,35)]];
         
         UIImageView *_imgView=[[UIImageView alloc] initWithFrame:CGRectZero];
@@ -376,7 +458,7 @@
         UILabel *mapLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%@",@" 地址:",single.address] font:14 rect:CGRectMake(35, 5, kDeviceWidth-60, 30)];
         [cell.contentView addSubview:mapLabel];
         [Helper arrowStyle:cell];
-    }else if ([indexPath row] == 3) {//电话
+    }else if ([indexPath row] == 4) {//电话
         cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"phone.jpg" toSize:CGSizeMake(kDeviceWidth-10,35)]];
         UIImageView *_imgView=[[UIImageView alloc] initWithFrame:CGRectZero];
         _imgView.backgroundColor=[UIColor clearColor];
@@ -387,8 +469,8 @@
         NSString *value = [NSString stringWithFormat:@"%@%@",@" 电话:",[single.telephone objectAtIndex:0]];
         UILabel *phLabel = [Helper getCustomLabel:value font:14 rect:CGRectMake(35, 5, 260, 30)];
         [cell.contentView addSubview:phLabel];
-        [Helper arrowStyle:cell];        
-    }else if ([indexPath row] == 4){
+        [Helper arrowStyle:cell];
+    }else if ([indexPath row] == 5){
         cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"time.jpg"]];
         UIImageView *_imgView=[[UIImageView alloc] initWithFrame:CGRectZero];
         _imgView.backgroundColor=[UIColor clearColor];
@@ -400,7 +482,7 @@
         UILabel *sjLabel = [Helper getCustomLabel:value font:14 rect:CGRectMake(35, 5, 260, 30)];
         [cell.contentView addSubview:sjLabel];
         cell.textLabel.font = [UIFont boldSystemFontOfSize:16];
-    }else if ([indexPath row] == 5){
+    }else if ([indexPath row] == 6){
         cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tj.jpg"]];
         UILabel *nameLabel = [Helper getCustomLabel:@"  网友推荐:" font:16 rect:CGRectMake(0, 15, 80, 15)];
         [cell.contentView addSubview:nameLabel];
@@ -416,7 +498,7 @@
         UILabel *tjLabel = [Helper getCustomLabel:result font:14 rect:CGRectMake(10, 25, kDeviceWidth-10,65)];
         [tjLabel setNumberOfLines:0];
         [cell.contentView addSubview:tjLabel];
-    }else if ([indexPath row] == 6){//点评
+    }else if ([indexPath row] == 7){//点评
         cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dp.jpg"]];
         UILabel *nameLabel = [Helper getCustomLabel:@"  点评:" font:16 rect:CGRectMake(0, 7, 70, 15)];
         [cell.contentView addSubview:nameLabel];
@@ -426,10 +508,10 @@
         [dpLabel setMinimumScaleFactor:14];
         [dpLabel setNumberOfLines:0];
         [[cell contentView] addSubview:dpLabel];
-
+        
         [Helper arrowStyle:cell];
-    }else if ([indexPath row] == 7){
-        cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ms.jpg"]];        
+    }else if ([indexPath row] == 8){
+        cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ms.jpg"]];
         UILabel *nameLabel = [Helper getCustomLabel:@"  商家描述:" font:16 rect:CGRectMake(0, 25, 100, 15)];
         [cell.contentView addSubview:nameLabel];
         
@@ -437,9 +519,8 @@
         [msLabel setNumberOfLines:0];
         [cell.contentView addSubview:msLabel];
     }
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    }
-        return cell;
+    
+    return cell;
 }
 
 //设置cell的事件
@@ -447,12 +528,40 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     int row = [indexPath row];
-    if (row ==3) {
+    if (row ==4) {
         [self CallPhone];
-    }else if(row==2){
+    }else if(row==3){
          [self pushMap:@"d" andNavController:self.navigationController andIsNextPage:NO];
-    }else if(row==6){
+    }else if(row==7){
         [self pushComment:@"d" andNavController:self.navigationController];
+    }
+}
+
+-(void)refreshPaidui:(id)sender
+{
+    if([Helper isConnectionAvailable]){
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.labelText = NSLocalizedString(@"正在刷新", nil);
+        hud.square = YES;
+        NSString *url = [NSString stringWithFormat:@"%@%@%@",[Helper getIp],pStatus,merchartID];
+        NSString *response =[QuHaoUtil requestDb:url];
+        [hud hide:YES];
+        if([response isEqualToString:@""]){
+            //异常处理
+            [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+        }else{
+            NSDictionary *jsonObjects=[QuHaoUtil analyseDataToDic:response];
+            if(jsonObjects==nil){
+                //解析错误
+                [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+            }else{
+                [self analyzePaidui:jsonObjects];
+                [_detailView reloadData];
+            }
+        }
+        [hud hide:YES];
+    }else{
+        [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
     }
 }
 
@@ -479,6 +588,9 @@
 //弹出显示商家位置的地图
 - (void)pushMap:(NSString *)address andNavController:(UINavigationController *)navController andIsNextPage:(BOOL)isNextPage
 {
+    if(NULL == self.mapView){
+        [self initMapView];
+    }
     BaseMapViewController *subViewController = [[MerchartLocationController alloc] init];
     subViewController.title = single.name;
     subViewController.mapView = self.mapView;
@@ -501,4 +613,8 @@
     [super viewDidUnload];
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+}
 @end

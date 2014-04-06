@@ -20,9 +20,11 @@
 #import "ShareViewController.h"
 #import "CommentViewController.h"
 #import "CustomToolbar.h"
+#import "Paidu.h"
 @interface MerchartDetail : UIViewController<UITableViewDataSource,UITableViewDelegate>
 {
     UITableView *_detailView;
+    NSMutableArray *_paiduArray;
 }
 
 @property BOOL isNextPage;

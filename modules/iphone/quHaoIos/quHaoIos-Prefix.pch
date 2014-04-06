@@ -40,7 +40,7 @@
 #define updateComment_url @"/updateComment"
 #define getLatestComment_url @"/getComment"
 #define merchant_url @"/merchant"
-#define merchant_newurl @"/merchantNew"
+#define merchant_newurl @"/querytMerchantDetail"
 #define credit_url @"/getCreditCost"
 #define signIn_url @"/signIn"
 #define opinion_url @"/createOpinion"
@@ -57,6 +57,7 @@
 #define updateGaodeToMerchant @"/updateGaodeToMerchant?poiId="
 #define delHistory @"/delHistoryReservation?id="
 #define delCredit @"/delCredit?id="
+#define pStatus @"/pStatus?mid="
 
 #define AppID @"1.0.0"
 

@@ -24,12 +24,13 @@
 + (void)showHUD2:(NSString *)text andView:(UIView *)view andSize:(float)width
 {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
-    hud.removeFromSuperViewOnHide =YES;
+    //hud.removeFromSuperViewOnHide =YES;
     //hud.mode = MBProgressHUDModeText;
     hud.labelText = NSLocalizedString(text, nil);
-    hud.minSize = CGSizeMake(width, 90.0f);
+    //hud.minSize = CGSizeMake(width, 60.0f);
     hud.square = YES;
     [hud hide:YES afterDelay:2];
+    
 }
 
 + (void)showHUD3:(NSString *)text andView:(UIView *)view
@@ -108,7 +109,7 @@
 {
     UIImage *backImage = [UIImage imageNamed:imgName];
     UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    backButton.bounds = size;
+    backButton.frame = size;
     [backButton setBackgroundImage:backImage forState:UIControlStateNormal];
     [backButton setTitle: name forState: UIControlStateNormal];
     backButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0f];         //设置button显示字体的大小
@@ -162,7 +163,7 @@
 {
     NSString *ip=nil;
     if([NSUserName() compare:@"sam"]==0){
-        ip=@"http://192.168.2.101:9081";
+        ip=@"http://192.168.2.102:9081";
     }else{
         ip=@"http://localhost:9081";
 
@@ -390,6 +391,7 @@ NSString * applicationDocumentsDirectory()
 {
     return [NSString stringWithFormat:@"QuhaoiPhone/%@/%@/%@/%@",AppVersion,[UIDevice currentDevice].systemName,[UIDevice currentDevice].systemVersion, [UIDevice currentDevice].model];
 }
+ 
 static Helper * instance = nil;
 +(Helper *) Instance
 {
