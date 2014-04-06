@@ -1,7 +1,10 @@
 package controllers.backend.admin;
 
+import notifiers.MailsController;
+
 import com.withiter.models.account.Account;
 
+import play.Play;
 import play.data.validation.Required;
 import play.libs.Codec;
 import controllers.BaseController;
@@ -54,6 +57,12 @@ public class AdminController extends BaseController {
 		a.save();
 		
 		// TODO 发送验证邮件
+		String hexedUid = Codec.hexSHA1(a.id());
+		String url = Play.configuration.getProperty("application.domain")
+				+ "/active?hid=" + hexedUid
+				+ "&oid=" + a.id();
+		
+		MailsController.sendTo(a.email, url);
 		
 		String result = "生成成功，email:" + a.email + "  password:" + password;
 		

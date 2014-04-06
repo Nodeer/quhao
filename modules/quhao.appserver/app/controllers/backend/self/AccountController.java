@@ -24,6 +24,7 @@ import com.withiter.models.backendMerchant.MerchantAccountRel;
 import com.withiter.models.merchant.Merchant;
 
 import controllers.BaseController;
+import controllers.LandingController;
 
 /**
  * Account Controller for backend merchant
@@ -125,7 +126,8 @@ public class AccountController extends BaseController {
 			Account account = Account.findById(oid);
 			account.enable = true;
 			account.save();
-			SelfManagementController.index(account.id());
+//			SelfManagementController.index(account.id());
+			LandingController.business();
 		} else {
 			renderJapidWith("japidviews.backend.self.AccountController.activeFailed");
 		}

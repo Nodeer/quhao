@@ -38,7 +38,7 @@ public class MailsController extends JapidMailer {
 		setCharset("UTF-8");
 		setSubject(SUBJECT_SIGNUP);
 		addRecipient(mailsTo);
-		String content= "感谢您注册取号APP，您只需要点击下面链接，激活您的帐户，您便可以享受取号APP各项服务<br/><br/>"
+		String content= "感谢您注册取号啦，点击下面链接激活您的帐户，便可以享受取号啦各项服务<br/><br/>"
 		+ "<a href='"+url+"'>"+url+"</a><br/>"+"如无法点击，请将链接拷贝到浏览器地址栏中直接访问.";
 		send(content);
 	}

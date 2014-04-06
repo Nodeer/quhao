@@ -1,19 +1,11 @@
 `import static press.Plugin.*;
-`extends base_layout
-`set cssAndJs
-$addCSS("landing.css", true)
-$addCSS("pop_signUp_logIn.css", true)
-$addCSS("backend.css", true)
-`
-`set title:i18n("取号啦 - 账号激活")
+`extends tips_layout
 
-<!DOCTYPE html>
-<html lang="cn">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link href="/public/images/common/quhao_favicon.jpg" type="image/png" rel="shortcut icon">
-</head>
-<body class="backendBG" id="fatherDIV">
-<div style="margin: 50px;">激活失败，请稍后尝试</div>
-</body>
-</html>
+`set title:i18n("取号啦 - 账号激活")
+`set tips
+<h2 class="form-signin-heading" style="vertical-align: top;">
+<img style="margin-bottom: 10px;" alt="" width="200" height="200" src="/public/images/common/crying.png"><br/>
+<span class="glyphicon glyphicon-remove-circle" style="margin-right: 10px;"></span>账号激活失败，请联系管理员！
+</h2>
+`
+
