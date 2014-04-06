@@ -1,10 +1,5 @@
 `import static press.Plugin.*;
-`def baseCss
-$addCSS("bootstrap.min.css", true)
-$addCSS("jquery-ui-1.10.3.custom.min.css", true)
-$addCSS("base.css", true)
-`
-`get prepare`
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="zh-CN">
 <head>
@@ -15,15 +10,15 @@ $addCSS("base.css", true)
 <meta name="description" content="">
 <meta name="author" content="">
 <link href="/public/images/common/quhao_favicon.jpg" type="image/png" rel="shortcut icon" />
+$addCSS("bootstrap.min.css", true)
+$addCSS("jquery-ui-1.10.3.custom.min.css", true)
+$addCSS("base.css", true)
 $addJS("libs/jquery-1.7.js", true)
 $addJS("libs/jquery-ui-1.10.3.custom.min.js", true)
 $addJS("libs/bootstrap.min.js", true)
 $addJS("common.js", true)
 $addJS("quhao.js", true)
-$baseCss()
 `get cssAndJs`
-$compressedCSSTag()
-`get inlinejs`
 <title>`get title`</title>
 </head>
 
@@ -32,10 +27,6 @@ $compressedCSSTag()
   `get bodyContent`
   <!-- bodyContent end -->
 
-  $compressedJSTag()
-  
-
   `doLayout`
 </body>
 </html>
-`get js`

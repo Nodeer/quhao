@@ -4,7 +4,6 @@ $addCSS("bootstrap.min.css", true)
 $addCSS("jquery-ui-1.10.3.custom.min.css", true)
 $addCSS("base.css", true)
 `
-`get prepare`
 <!DOCTYPE html>
 <html data-wf-site="5301e462212e0b50560006c6" xmlns:wb="http://open.weibo.com/wb">
 <head>
@@ -36,12 +35,10 @@ $addCSS("base.css", true)
 	$baseCss()
 	`get cssAndJs`
 	$compressedCSSTag()
-	`get inlinejs`
 <title>`get title`</title>
 </head>
 <body>
 
-  $compressedJSTag()
   `doLayout`
 
   <header class="section">
