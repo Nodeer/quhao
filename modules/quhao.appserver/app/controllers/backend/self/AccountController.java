@@ -126,10 +126,9 @@ public class AccountController extends BaseController {
 			Account account = Account.findById(oid);
 			account.enable = true;
 			account.save();
-//			SelfManagementController.index(account.id());
-			LandingController.business();
+			renderJapidWith("japidviews.backend.self.AccountController.result", true);
 		} else {
-			renderJapidWith("japidviews.backend.self.AccountController.activeFailed");
+			renderJapidWith("japidviews.backend.self.AccountController.result", false);
 		}
 	}
 

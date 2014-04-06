@@ -1,11 +1,19 @@
 `import static press.Plugin.*;
 `extends tips_layout
 
-`set title:i18n("取号啦 - 账号激活")
+`set title "取号啦 - 账号激活"
+
+`args boolean flag
+
 `set tips
 <h2 class="form-signin-heading" style="vertical-align: top;">
+`if(flag){
+<img style="margin-bottom: 10px;" alt="" width="200" height="200" src="/public/images/common/smile.png"><br/>
+<span class="glyphicon glyphicon-ok-sign" style="margin-right: 10px;"></span>账号激活成功，<a href="/business" style="text-decoration: none;">点击去登录</a>
+`} else {
 <img style="margin-bottom: 10px;" alt="" width="200" height="200" src="/public/images/common/crying.png"><br/>
 <span class="glyphicon glyphicon-remove-circle" style="margin-right: 10px;"></span>账号激活失败，请联系管理员！
+`}
 </h2>
 `
 
