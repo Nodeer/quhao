@@ -23,7 +23,7 @@
 #define kDeviceHeight     [UIScreen mainScreen].bounds.size.height
 #define kDeviceWidth     [UIScreen mainScreen].bounds.size.width
 #define CELL_CONTENT_MARGIN 10.0f
-
+#define TIME_OUT_SECONDS 60
 #define homeView_list_url @"/nextPage?cateType="
 #define homeView_last_url @"/lastest?cateType="
 #define login_url @"/login"
@@ -58,7 +58,7 @@
 #define delHistory @"/delHistoryReservation?id="
 #define delCredit @"/delCredit?id="
 #define pStatus @"/pStatus?mid="
-
+#define upload_pic @"/updateUserImage"
 #define AppID @"1.0.0"
 
 #define AppVersion @"1.0.0"

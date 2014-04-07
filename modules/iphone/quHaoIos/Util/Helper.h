@@ -34,6 +34,9 @@
 //等比率缩放
 +(UIImage *)scaleImage:(UIImage *)image toScale:(float)scaleSize;
 +(UIImage *)scaleName:(NSString *)name toScale:(float)scaleSize;
++ (UIImage*)imageWithImageSimple:(UIImage*)image scaledToSize:(CGSize)newSize;
+//文件是否存在
++ (BOOL) isFileExist:(NSString *)fileName;
 //是否有缓存
 -(BOOL)isCookie;
 //设置返回按钮

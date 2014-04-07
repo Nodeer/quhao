@@ -5,7 +5,7 @@
 //  Created by sam on 13-7-28.
 //  Copyright (c) 2013年 sam. All rights reserved.
 //
-
+#define UserImage userOrigin.jpg
 #import "MineViewController.h"
 
 @interface MineViewController ()
@@ -170,23 +170,36 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellTabeIndentifier"];
         if ([indexPath row] ==0 ) {//用户行
             self.egoImgView = [[EGOImageView alloc] initWithFrame:CGRectMake(10, 10, 110, 110)];
-            self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
+            //self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
             [cell.contentView addSubview:self.egoImgView];
-            if (![[Helper returnUserString:@"showImage"] boolValue]||nil==_userInfo.imgUrl||[_userInfo.imgUrl isEqualToString:@""])
+            if (![[Helper returnUserString:@"showImage"] boolValue])
             {
                 self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
-            }
-            else
+            }else
             {
-                self.egoImgView.imageURL = [NSURL URLWithString:_userInfo.imgUrl];
+                if ([Helper isFileExist:@"userOrigin.jpg"]) {
+                    self.egoImgView.image = [Helper imageWithImageSimple:[UIImage imageWithContentsOfFile:[self userImagePath]] scaledToSize:CGSizeMake(100, 100)];
+                }else{
+                    if(nil==_userInfo.imgUrl||[_userInfo.imgUrl isEqualToString:@""])
+                    {
+                        self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
+                    }else{
+                        self.egoImgView.imageURL = [NSURL URLWithString:_userInfo.imgUrl];
+                    }
+                }
             }
+            
+            self.egoImgView.userInteractionEnabled = YES;
+            UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(uploadPortrait:)];
+            [self.egoImgView addGestureRecognizer:singleTap];
+        
             
             UILabel *_numberLabel = [Helper getCustomLabel:@"" font:18 rect:CGRectMake(egoImgView.frame.origin.x+egoImgView.frame.size.width+15,20, 220, 35)];
             Helper *helper=[Helper new];
             if (helper.isCookie == NO){
                 _numberLabel.text=@"您还没有登录哦";
             }else{
-                _numberLabel.text=[NSString stringWithFormat:@"%@%@",@"qh",_userInfo.phone];
+                _numberLabel.text = _userInfo.username;
             }
             _numberLabel.font = [UIFont systemFontOfSize:18];
             [cell.contentView addSubview:_numberLabel];
@@ -194,8 +207,8 @@
             UILabel *_jfLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@ %d",@"剩余积分 ",_userInfo.jifen] font:18 rect:CGRectMake(_numberLabel.frame.origin.x, _numberLabel.frame.origin.y+_numberLabel.frame.size.height+3, 190, 35)];
             _jfLabel.font = [UIFont systemFontOfSize:18];
             [cell.contentView addSubview:_jfLabel];
-            
-        }else if ([indexPath row] ==1 ) { //签到和点评           
+            [Helper arrowStyle:cell];
+        }else if ([indexPath row] ==1 ) { //签到和点评
             UILabel *_qdLabel = [Helper getCustomLabel:@"签到" font:18 rect:CGRectMake(kDeviceWidth/3-10, 12, 60, 30)];
             if(_userInfo.isSignIn){
                 _qdLabel.textColor=[UIColor blackColor];
@@ -412,6 +425,10 @@
         loginView.hidesBottomBarWhenPushed=YES;
         [self.navigationController pushViewController:loginView animated:YES];
         return;
+    }else if([buttonTitle isEqualToString:@"拍照"]){
+        [self snapImage];
+    }else if([buttonTitle isEqualToString:@"从相册上传"]){
+        [self pickImageFromAlbum];
     }
 }
 
@@ -427,9 +444,123 @@
          _userInfo.userImage=temp.userImage;
          _userInfo.isSignIn=temp.isSignIn;
 }
+
+#pragma mark - upload image
+//上传图片操作开始，选择图片的来源
+-(void)uploadPortrait:(id)sender{
+    UIActionSheet *menu = [[UIActionSheet alloc]
+                           initWithTitle: @"更改图片"
+                           delegate:self
+                           cancelButtonTitle:@"取消"
+                           destructiveButtonTitle:nil
+                           otherButtonTitles:@"拍照",@"从相册上传",nil];
+    menu.actionSheetStyle =UIActionSheetStyleBlackTranslucent;
+    [menu showInView:self.navigationController.view];
+}
+
+- (void)pickImageFromAlbum
+{
+    UIImagePickerController* imagePicker = [[UIImagePickerController alloc] init];
+    imagePicker.delegate = self;
+    imagePicker.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    imagePicker.allowsEditing = YES;
+    [self presentViewController:imagePicker animated:YES completion:nil];
+    
+}
+
+- (void)snapImage
+{
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        UIImagePickerController* imagePicker = [[UIImagePickerController alloc] init];
+        imagePicker.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        imagePicker.delegate = self;
+        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        imagePicker.allowsEditing = YES;
+        [self presentViewController:imagePicker animated:YES completion:nil];
+    }else{
+        NSLog(@"模拟器无法打开相机");
+    }
+}
+
+- (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    UIImage *image= [info objectForKey:@"UIImagePickerControllerEditedImage"];
+    if (picker.sourceType == UIImagePickerControllerSourceTypeCamera)
+    {
+        UIImageWriteToSavedPhotosAlbum(image, self,
+                               @selector(image:didFinishSavingWithError:contextInfo:),
+                                nil);
+    }else{
+        [self saveImageData:image];
+    }
+}
+-(void)saveImageData:(UIImage *)image
+{
+    //原生图片
+    NSData *imageData = UIImageJPEGRepresentation(image,1);
+    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString* documentsDirectory = [paths objectAtIndex:0];
+    NSString* fullPathToFile = [documentsDirectory stringByAppendingPathComponent:@"userOrigin.jpg"];
+    [imageData writeToFile:fullPathToFile atomically:NO];
+    
+    [self upLoadSalesBigImage:imageData];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo;
+{
+    if (error)
+    {
+        [Helper showHUD2:@"服务器错误，请稍后再试" andView:self.view andSize:130];
+    }else{
+        [self saveImageData:image];
+    }
+}
+
+- (void)upLoadSalesBigImage:(NSData *)bigImage
+{
+    NSString *url=[NSString stringWithFormat:@"%@%@",[Helper getIp],upload_pic];
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
+    [request setRequestMethod:@"POST"];
+    [request setPostValue:_userInfo.accountId forKey:@"accountId"];
+    [request setData:bigImage forKey:@"userImage"];
+    [request setDelegate:self];
+    //[request setTimeOutSeconds:TIME_OUT_SECONDS];
+    [request setDidFailSelector:@selector(uploadFailed:)];
+    [request setDidFinishSelector:@selector(uploadSuccess:)];
+    [request startSynchronous];
+}
+
+- (void)uploadSuccess:(ASIHTTPRequest *)requestNew
+{
+    NSString *responseString = [requestNew responseString];
+    if([responseString isEqualToString:@"success"]){
+        NSIndexPath *te=[NSIndexPath indexPathForRow:0 inSection:0];
+        [_mineView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:te,nil] withRowAnimation:UITableViewRowAnimationMiddle];
+    }else{
+        [Helper showHUD2:@"服务器错误，请稍后再试" andView:self.view andSize:130];
+    }
+}
+
+- (void)uploadFailed:(ASIHTTPRequest *)requestNew
+{
+    [Helper showHUD2:@"服务器错误，请稍后再试" andView:self.view andSize:130];
+}
+
+- (NSString *)userImagePath
+{
+    return [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/userOrigin.jpg"];
+}
 #pragma mark - View lifecycle
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    
 }
 @end
