@@ -26,11 +26,13 @@ public class Account extends AccountEntityDef {
 
 	/**
 	 * validate user name and password for login function
+	 * 
 	 * @param userName
 	 * @param userPwd
-	 * @return if return null, means pass validation. otherwise, the returned value is the error content.
+	 * @return if return null, means pass validation. otherwise, the returned
+	 *         value is the error content.
 	 */
-	public static String validate(String userName, String userPwd){
+	public static String validate(String userName, String userPwd) {
 		Validation.required(Messages.get(I18nKeys.F_USERNAME), userName);
 		Validation.range(Messages.get(I18nKeys.F_USERNAME), userName.length(),
 				6, 30);
@@ -39,33 +41,35 @@ public class Account extends AccountEntityDef {
 		Validation.range(Messages.get(I18nKeys.F_PASSWORD), userPwd.length(),
 				6, 12);
 
-		if (Validation.hasErrors()){
+		if (Validation.hasErrors()) {
 			return Validation.errors().get(0).toString();
 		}
-		
+
 		String password = Codec.hexSHA1(userPwd);
 		MorphiaQuery q = Account.q();
-		if(userName.contains("@")){
+		if (userName.contains("@")) {
 			q.filter("email", userName);
-		}else{
+		} else {
 			q.filter("phone", userName);
 		}
 		q.filter("password", password);
-		if(q.first() != null){
+		if (q.first() != null) {
 			Account a = q.first();
-			if(a.enable){
+			if (a.enable) {
 				return null;
-			}else{
+			} else {
 				return "账号还未激活，请进入邮箱进行激活";
 			}
-		}else{
+		} else {
 			return "账号密码错误！";
 		}
 	}
-	
+
 	/**
 	 * validate and create self Account object.
-	 * @return if return null, means pass validation. otherwise, the returned value is the error content.
+	 * 
+	 * @return if return null, means pass validation. otherwise, the returned
+	 *         value is the error content.
 	 */
 	public String validateThenCreate() {
 		phone = this.phone.trim().toLowerCase();
@@ -94,14 +98,12 @@ public class Account extends AccountEntityDef {
 		synchronized (Account.class) {
 			if (!StringUtils.isEmpty(phone)) {
 				if (Account.filter("phone", phone).count() > 0) {
-					Validation.addError("该手机号码已注册",
-							I18nKeys.V_ALREADY_EXISTS);
+					Validation.addError("该手机号码已注册", I18nKeys.V_ALREADY_EXISTS);
 				}
 			}
 			if (!StringUtils.isEmpty(email)) {
 				if (Account.filter("email", email).count() > 0) {
-					Validation.addError("该邮箱已注册",
-							I18nKeys.V_ALREADY_EXISTS);
+					Validation.addError("该邮箱已注册", I18nKeys.V_ALREADY_EXISTS);
 				}
 			}
 
@@ -117,6 +119,7 @@ public class Account extends AccountEntityDef {
 
 	/**
 	 * Find Account object by email.
+	 * 
 	 * @param email
 	 * @return
 	 */
@@ -130,7 +133,9 @@ public class Account extends AccountEntityDef {
 
 	/**
 	 * Find Account object by mobile number
-	 * @param phone the mobile number
+	 * 
+	 * @param phone
+	 *            the mobile number
 	 * @return
 	 */
 	public static Account findByPhone(String phone) {
@@ -140,37 +145,47 @@ public class Account extends AccountEntityDef {
 		}
 		return account;
 	}
+
 	/**
 	 * Find Exists Account object by mobile number
-	 * @param phone the mobile number
+	 * 
+	 * @param phone
+	 *            the mobile number
 	 * @return
 	 */
 	public static Account findExistsAccount(String phone) {
-		Account account = Account.q().filter("phone", phone).filter("enable", true).first();
+		Account account = Account.q().filter("phone", phone)
+				.filter("enable", true).first();
 		if (account == null) {
 			return null;
 		}
 		return account;
 	}
+
 	/**
-	 * Find Account object 
-	 * @param phone the mobile number
+	 * Find Account object
+	 * 
+	 * @param phone
+	 *            the mobile number
 	 * @param authCode
 	 * @return
 	 */
-	public static Account findAccount(String phone,String authCode) {
-	    Calendar calendar = new GregorianCalendar();
-	    Date date2 = new Date();
-	    calendar.setTime(date2);
-	    calendar.add(calendar.DATE, -1);
-	    date2 = calendar.getTime();
-		
-		Account account = Account.q().filter("phone", phone).filter("authcode", authCode).filter("authDate >",date2).first();
+	public static Account findAccount(String phone, String authCode) {
+		Calendar calendar = new GregorianCalendar();
+		Date date2 = new Date();
+		calendar.setTime(date2);
+		calendar.add(calendar.DATE, -1);
+		date2 = calendar.getTime();
+
+		Account account = Account.q().filter("phone", phone)
+				.filter("authcode", authCode).filter("authDate >", date2)
+				.first();
 		if (account == null) {
 			return null;
 		}
 		return account;
 	}
+
 	/**
 	 * @author Cross
 	 * @param collectionName
@@ -244,6 +259,7 @@ public class Account extends AccountEntityDef {
 
 	/**
 	 * Validate the password
+	 * 
 	 * @param password
 	 * @return true if the password is right
 	 */
@@ -280,14 +296,18 @@ public class Account extends AccountEntityDef {
 
 	/**
 	 * Validate for sign up function.
-	 * @param userName user name, email/mobile number
-	 * @param userPwd1 password
-	 * @param userPwd2 repeat password
+	 * 
+	 * @param userName
+	 *            user name, email/mobile number
+	 * @param userPwd1
+	 *            password
+	 * @param userPwd2
+	 *            repeat password
 	 * @return
 	 */
 	public String signupValidate(String userName, String userPwd1,
 			String userPwd2) {
-		
+
 		Validation.required(Messages.get(I18nKeys.F_USERNAME), userName);
 		Validation.range(Messages.get(I18nKeys.F_USERNAME), userName.length(),
 				6, 20);
@@ -304,18 +324,18 @@ public class Account extends AccountEntityDef {
 
 		String password = Codec.hexSHA1(userPwd1);
 
-		if (Validation.hasErrors()){
+		if (Validation.hasErrors()) {
 			return Validation.errors().get(0).toString();
 		}
-		
+
 		synchronized (Account.class) {
-			if(userName.contains("@")){
+			if (userName.contains("@")) {
 				if (Account.filter("email", userName).count() > 0) {
 					Validation.addError(Messages.get(I18nKeys.F_EMAIL),
 							I18nKeys.V_ALREADY_EXISTS);
 				}
 				this.email = userName;
-			}else{
+			} else {
 				if (Account.filter("phone", userName).count() > 0) {
 					Validation.addError(Messages.get(I18nKeys.F_PHONE),
 							I18nKeys.V_ALREADY_EXISTS);
@@ -336,30 +356,32 @@ public class Account extends AccountEntityDef {
 	 * clean the mark action number of today
 	 */
 	public static void cleanSignIn() {
-//		DB db =  Account.db();
-//		db.command("db.Account.update({\"className\":\"com.withiter.models.account.Account\"},{$set:{\"isSignIn\":\"true\"}},false,true)");
+		// DB db = Account.db();
+		// db.command("db.Account.update({\"className\":\"com.withiter.models.account.Account\"},{$set:{\"isSignIn\":\"true\"}},false,true)");
 		MorphiaQuery q = Account.q();
 		q.filter("enable", true);
 		q.filter("phone !=", "");
+
+		// TODO add paginate
 		List<Account> accounts = q.asList();
-		if(null != accounts && !accounts.isEmpty())
-		{
+		if (null != accounts && !accounts.isEmpty()) {
 			for (Account account : accounts) {
 				account.isSignIn = false;
 				account.save();
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * @return 返回客户端用户账号
 	 */
 	public static List<Account> findMobileAccounts() {
 		MorphiaQuery q = Account.q();
-		q.filter("enable",true);
+		q.filter("enable", true);
 		q.filter("phone !=", "");
 		
+		// TODO add paginate
 		return q.asList();
 	}
 }

@@ -27,6 +27,7 @@ public class UpdateMerchantEvaluate extends Job {
 				logger.info("job started.");
 				
 				// TODO optimize business handler
+				// TODO add paginate
 				MorphiaQuery q = Merchant.q();
 				q.filter("enable", true);
 				List<Merchant> mList = q.asList();
