@@ -9,6 +9,11 @@ import com.google.code.morphia.annotations.Indexed;
 import com.google.code.morphia.annotations.Reference;
 import com.withiter.models.BaseModel;
 
+/**
+ * 关注Model
+ * @author user
+ *
+ */
 public class AttentionEntityDef extends BaseModel {
 	@Indexed
 	public String mid;

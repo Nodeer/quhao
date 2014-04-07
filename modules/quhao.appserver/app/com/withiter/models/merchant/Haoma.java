@@ -1,17 +1,16 @@
 package com.withiter.models.merchant;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
-import org.apache.commons.httpclient.HttpException;
-
-import play.Play;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cn.bran.japid.util.StringUtils;
 
 import com.withiter.common.Constants.ReservationStatus;
-import com.withiter.common.sms.business.SMSBusiness;
 import com.withiter.models.account.Reservation;
 
 /**
@@ -21,6 +20,8 @@ import com.withiter.models.account.Reservation;
  * 
  */
 public class Haoma extends HaomaEntityDef {
+	
+	private static Logger logger = LoggerFactory.getLogger(Haoma.class);
 
 	/**
 	 * Find Haoma by merchant id
@@ -43,7 +44,7 @@ public class Haoma extends HaomaEntityDef {
 		}
 	}
 
-	private void initPaidui() {
+	public void initPaidui() {
 		Merchant m = Merchant.findByMid(this.merchantId);
 		String[] seatType = m.seatType;
 		Paidui p = null;
@@ -169,6 +170,42 @@ public class Haoma extends HaomaEntityDef {
 				this.save();
 				r = Reservation.queryForCancel(merchantId, key, p.currentNumber);
 			}
+		}
+	}
+	
+	/**
+	 * 清楚排队信息（初始化）
+	 */
+	public static void clearPaidui(){
+		MorphiaQuery q = Haoma.q();
+		long count = q.count();
+		List<Haoma> hList = new ArrayList<Haoma>();
+		
+		long time = 0;
+		
+		if(count > 0){
+			time = count / 10;
+		}
+		int i=0;
+		int countPerPage = 10;
+
+		logger.debug("count : " + count);
+		logger.debug("time : " + time);
+		
+		// 整数页每十条做初始化操作
+		for(;i< time; i++){
+			hList = q.offset(i*countPerPage).limit(countPerPage).asList();
+			for(Haoma h : hList){
+				h.initPaidui();
+				h.save();
+			}
+		}
+
+		// 最后几条做初始化操作
+		hList = q.offset(i*countPerPage).asList();
+		for(Haoma h : hList){
+			h.initPaidui();
+			h.save();
 		}
 	}
 }

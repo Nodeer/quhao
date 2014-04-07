@@ -364,16 +364,4 @@ public class Account extends AccountEntityDef {
 		o.set("isSignIn", false);
 		o.update(q);
 	}
-
-	/**
-	 * @return 返回客户端用户账号
-	 */
-	public static List<Account> findMobileAccounts() {
-		MorphiaQuery q = Account.q();
-		q.filter("enable", true);
-		q.filter("phone !=", "");
-		
-		// TODO add paginate
-		return q.asList();
-	}
 }
