@@ -15,6 +15,7 @@ import com.withiter.common.ContentType;
 
 public class UploadController extends BaseController {
 	private static String MERCHANT_IMAGE = "MerchantImage";
+	private static String USER_IMAGE = "UserImage";
 
 	@SuppressWarnings("unused")
 	private static GridFSInputFile uploadFirst(String param) {
@@ -54,6 +55,25 @@ public class UploadController extends BaseController {
 		return gfsFile;
 	}
 
+	/**
+	 * Save file
+	 * @param file
+	 * @return
+	 * @throws IOException
+	 */
+	public static GridFSInputFile saveBinaryForUser(File file, String aid) throws IOException {
+		GridFS gfs = new GridFS(MorphiaQuery.ds().getDB(),USER_IMAGE);
+		GridFSInputFile gfsFile = gfs.createFile(file);
+		String fName = file.getName();
+		String suffix = fName.replaceFirst("^.*\\.", ".");
+		gfsFile.setContentType(ContentType.get(suffix));
+		gfsFile.put("ext", suffix);
+		gfsFile.put("accountId", aid);
+		gfsFile.setFilename(aid+"_"+fName);
+		gfsFile.save();
+		return gfsFile;
+	}
+	
 	/**
 	 * find file by file name
 	 * @param fileName

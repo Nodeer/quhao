@@ -66,6 +66,7 @@ GET		/getAuthCode						AccountController.getAuthCode
 GET		/signIn								AccountController.signIn
 GET		/delHistoryReservation				AccountController.delHistoryReservation
 GET		/delCredit				            AccountController.delHistoryCredit
+POST    /updateUserImage					AccountController.updateUserImage
 
 # Comment
 GET		/updateComment						CommentController.updateComment

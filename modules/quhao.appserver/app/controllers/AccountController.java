@@ -1,8 +1,10 @@
 package controllers;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import play.Play;
 import play.libs.Codec;
+import play.libs.Images;
 import play.modules.morphia.Model.MorphiaQuery;
 import play.modules.morphia.Model.MorphiaUpdateOperations;
 import vo.ReservationVO;
@@ -21,7 +24,10 @@ import vo.account.CreditVO;
 import vo.account.LoginVO;
 import vo.account.SignupVO;
 
+import com.mongodb.gridfs.GridFS;
+import com.mongodb.gridfs.GridFSInputFile;
 import com.withiter.common.Constants;
+import com.withiter.common.ContentType;
 import com.withiter.common.Constants.CreditStatus;
 import com.withiter.common.sms.business.SMSBusiness;
 import com.withiter.models.account.Account;
@@ -34,6 +40,7 @@ import com.withiter.utils.StringUtils;
 public class AccountController extends BaseController {
 
 	private static Logger logger = LoggerFactory.getLogger(controllers.AccountController.class);
+	private static String USER_IMAGE = "UserImage";
 
 	/**
 	 * 手机号注册生成随即6位数字验证码
@@ -592,6 +599,54 @@ public class AccountController extends BaseController {
 			renderText("success");
 		}else{
 			renderText("error");
+		}
+	}
+	
+	/**
+	 *  用户更改头像
+	 */
+	public static void updateUserImage()
+	{
+		String accountId = params.get("accountId");
+		if(!StringUtils.isEmpty(accountId)){
+			String userImage = params.get("userImage");
+			if (!StringUtils.isEmpty(userImage)) {
+				GridFSInputFile file = uploadFirst(userImage, accountId);
+				if (file != null) {
+					if (!StringUtils.isEmpty(accountId)) {
+						String server = Play.configuration.getProperty("application.domain");
+						String imageStorePath = Play.configuration.getProperty("image.store.path");
+						try {							
+							MorphiaUpdateOperations o = Account.o();
+							o.set(userImage, URLEncoder.encode(server + imageStorePath + file.getFilename(), "UTF-8"));
+							o.update("_id", new ObjectId(accountId));
+						} catch (UnsupportedEncodingException e) {
+							e.printStackTrace();
+						}
+						renderText("success");
+					}
+				}
+			}
+		}
+	    renderText("error");
+	}
+	
+	private static GridFSInputFile uploadFirst(String param, String aid) {
+		GridFSInputFile gfsFile = null;
+		File[] files = params.get(param, File[].class);
+
+		for (File file : files) {
+			try {
+				gfsFile = UploadController.saveBinaryForUser(file, aid);
+				break;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		if (gfsFile == null) {
+			return null;
+		} else {
+			return gfsFile;
 		}
 	}
 }
