@@ -1,6 +1,7 @@
 package com.withiter.quhao.activity;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -15,42 +16,59 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.CreditAdapter;
+import com.withiter.quhao.adapter.CreditCostHolder;
 import com.withiter.quhao.exception.NoResultFromHTTPRequestException;
+import com.withiter.quhao.task.DeleteCreditTask;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
-import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.vo.Credit;
 
-public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemClickListener,OnScrollListener{
+public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemClickListener{
 
 	protected static boolean backClicked = false;
 	private static String TAG = CreditCostListActivity.class.getName();
 	private List<Credit> credits;
 	private ListView creditsListView;
 	private CreditAdapter creditAdapter;
-	private int page;
-	private boolean needToLoad = true;
 	private boolean isFirstLoad = true;
 	
-	private View moreView;
+
+	/**
+	 * 删除面板的layout
+	 */
+	private LinearLayout deleteLayout;
 	
-	private Button bt;
+	/**
+	 * 删除按钮
+	 */
+	private Button deleteBtn;
 	
-	private ProgressBar pg;
+	/**
+	 * 选择所有按钮
+	 */
+	private Button selectAllBtn;
 	
-	private int lastVisibleIndex;
+	/**
+	 * 反向选择
+	 */
+	private Button deselectAllBtn;
+	
+	/**
+	 * 取消
+	 */
+	private Button cancelBtn;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -60,21 +78,23 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 		creditsListView = (ListView) this.findViewById(R.id.creditsListView);
 		creditsListView.setOnItemClickListener(CreditCostListActivity.this);
 		
-		moreView = getLayoutInflater().inflate(R.layout.moredata, null);
-		bt = (Button) moreView.findViewById(R.id.bt_load);
-		pg = (ProgressBar) moreView.findViewById(R.id.pg);
-		bt.setOnClickListener(this);
-		
-		creditsListView.addFooterView(moreView);
-		
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
-		this.page = getIntent().getIntExtra("page", 1);
-		initListView();
+		
+		deleteBtn = (Button) this.findViewById(R.id.btn_delete);
+		deleteBtn.setOnClickListener(this);
+		deleteBtn.setVisibility(View.GONE);
+		selectAllBtn = (Button) this.findViewById(R.id.bt_selectall);
+		selectAllBtn.setOnClickListener(this);
+		deselectAllBtn = (Button) this.findViewById(R.id.bt_deselectall);
+		deselectAllBtn.setOnClickListener(this);
+		cancelBtn = (Button) this.findViewById(R.id.bt_cancel);
+		cancelBtn.setOnClickListener(this);
+		
+		deleteLayout = (LinearLayout) this.findViewById(R.id.deleteMenuLayout);
+		deleteLayout.setVisibility(View.GONE);
 	}
 
 	private void initListView() {
-		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
-		progressDialogUtil.showProgress();
 		Thread thread = new Thread(getCreditsRunnable);
 		thread.start();
 	}
@@ -85,6 +105,11 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 			if (msg.what == 200) {
 				super.handleMessage(msg);
 
+				if(null == credits || credits.isEmpty())
+				{
+					deleteBtn.setVisibility(View.GONE);
+				}
+				
 				if (isFirstLoad) {
 
 					creditAdapter = new CreditAdapter(CreditCostListActivity.this, creditsListView, credits);
@@ -95,10 +120,32 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 				}
 				
 				creditAdapter.notifyDataSetChanged();
-				
-				creditsListView.setOnScrollListener(CreditCostListActivity.this);
-				bt.setVisibility(View.VISIBLE);
-				pg.setVisibility(View.GONE);
+				creditsListView.setOnItemClickListener(new OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						Log.e(TAG, "onclick : " + position);
+						// 取得ViewHolder对象，这样就省去了通过层层的findViewById去实例化我们需要的cb实例的步骤
+						CreditCostHolder holder = (CreditCostHolder) view.getTag();
+						
+						// 改变CheckBox的状态
+						holder.cb.toggle();
+						// 将CheckBox的选中状况记录下来
+						// 调整选定条目
+						if (holder.cb.isChecked() == true) {
+							credits.get(position).isChecked = "true";
+//								checkNum++;
+						} else {
+							credits.get(position).isChecked = "true";
+//								checkNum--;
+						}
+					}
+					
+				});
+				CreditCostListActivity.this.findViewById(R.id.loadingbar).setVisibility(View.GONE);
+				CreditCostListActivity.this.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
+				deleteBtn.setVisibility(View.VISIBLE);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 
@@ -112,9 +159,8 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 			try {
 				Looper.prepare();
 				String accountId = QHClientApplication.getInstance().accountInfo.accountId;
-				String buf = CommonHTTPRequest.get("getCreditCost?accountId=" + accountId + "&page=" + page);
+				String buf = CommonHTTPRequest.get("getCreditCost?accountId=" + accountId);
 				if (StringUtils.isNull(buf) || "[]".equals(buf)) {
-					needToLoad = false;
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					throw new NoResultFromHTTPRequestException();
 				} else {
@@ -123,10 +169,6 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 					}
 					
 					List<Credit> credits1 = ParseJson.getCredits(buf);
-					if(credits1.size()<10)
-					{
-						needToLoad = false;
-					}
 					credits.addAll(credits1);
 					creditsUpdateHandler.obtainMessage(200, credits).sendToTarget();
 				}
@@ -134,7 +176,6 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				e.printStackTrace();
 			} finally {
-				progressDialogUtil.closeProgress();
 				Looper.loop();
 			}
 		}
@@ -150,19 +191,163 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 
 		// 设置已点击标志，避免快速重复点击
 		isClick = true;
+		
+		
 		// 解锁
 		unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 
 		switch (v.getId()) {
-		case R.id.bt_load:
-			pg.setVisibility(View.VISIBLE);
-			bt.setVisibility(View.GONE);
-			CreditCostListActivity.this.page += 1;
-			Thread thread = new Thread(getCreditsRunnable);
-			thread.start();
-			break;
-		default:
-			break;
+			case R.id.btn_delete:
+				
+				if(null!=creditAdapter && "true".equals(creditAdapter.isShowDelete))
+				{
+					deleteBtn.setText(R.string.delete);
+					deleteLayout.setVisibility(View.GONE);
+					creditAdapter.isShowDelete = "false";
+					
+					final List<Credit> creditsTemp = new ArrayList<Credit>(credits.size());
+	//				Collections.copy(rvosTemp, reservations);
+	//				System.arraycopy(reservations, 0, rvosTemp, 0, reservations.size());
+					for (int i = 0; i < credits.size(); i++) {
+						creditsTemp.add(credits.get(i));
+					}
+					List<String> rIds = new ArrayList<String>();
+					
+					Iterator<Credit> iterator = creditsTemp.iterator();
+					String ridStr = "";
+					while (iterator.hasNext()) {
+						Credit temp = iterator.next();
+						if ("true".equals(temp.isChecked)) {
+							rIds.add(temp.creditId);
+							ridStr = ridStr + temp.creditId + ",";
+							iterator.remove();
+						}
+					}
+					Log.e(TAG, ridStr);
+					String url = "delCredit?id=" + ridStr;
+					final DeleteCreditTask task = new DeleteCreditTask(R.string.waitting,this,url);
+					task.execute(new Runnable(){
+	
+						@Override
+						public void run() {
+							
+							credits = creditsTemp;
+							if(!credits.isEmpty())
+							{
+								for (int i = 0; i < credits.size(); i++) {
+									credits.get(i).isChecked = "false";
+								}
+							}
+							creditAdapter.credits = credits;
+							creditAdapter.notifyDataSetChanged();
+							Toast.makeText(CreditCostListActivity.this, R.string.delete_success, Toast.LENGTH_LONG).show();
+						}
+						
+					},new Runnable() {
+						
+						@Override
+						public void run() {
+							if(!credits.isEmpty())
+							{
+								for (int i = 0; i < credits.size(); i++) {
+									credits.get(i).isChecked = "false";
+								}
+							}
+							creditAdapter.credits = credits;
+							creditAdapter.notifyDataSetChanged();
+							Toast.makeText(CreditCostListActivity.this, R.string.delete_failed, Toast.LENGTH_LONG).show();
+							
+						}
+					});
+					
+					
+	//				reservationForPaiduiAdapter.notifyDataSetChanged();
+				}
+				else if(null!=creditAdapter && "false".equals(creditAdapter.isShowDelete))
+				{
+					deleteBtn.setText(R.string.confirm_delete);
+					deleteLayout.setVisibility(View.VISIBLE);
+					creditAdapter.isShowDelete = "true";
+					creditAdapter.notifyDataSetChanged();
+				}
+				
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				break;
+			case R.id.bt_selectall:
+				if(null!=creditAdapter && "true".equals(creditAdapter.isShowDelete))
+				{
+					deleteLayout.setVisibility(View.VISIBLE);
+					if(null == credits)
+					{
+						credits = new ArrayList<Credit>();
+					}
+					
+					if(!credits.isEmpty())
+					{
+						for (int i = 0; i < credits.size(); i++) {
+							credits.get(i).isChecked = "true";
+						}
+						creditAdapter.credits = credits;
+						creditAdapter.notifyDataSetChanged();
+					}
+					
+				}
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				break;
+			case R.id.bt_deselectall:
+				if(null!=creditAdapter && "true".equals(creditAdapter.isShowDelete))
+				{
+					deleteLayout.setVisibility(View.VISIBLE);
+					if(null == credits)
+					{
+						credits = new ArrayList<Credit>();
+					}
+					
+					if(!credits.isEmpty())
+					{
+						for (int i = 0; i < credits.size(); i++) {
+							if("true".equals(credits.get(i).isChecked))
+							{
+								credits.get(i).isChecked = "false";
+							}
+							else
+							{
+								credits.get(i).isChecked = "true";
+							}
+						}
+						creditAdapter.credits = credits;
+						creditAdapter.notifyDataSetChanged();
+					}
+					
+				}
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				break;
+			case R.id.bt_cancel:
+				if(null!=creditAdapter && "true".equals(creditAdapter.isShowDelete))
+				{
+					deleteBtn.setText(R.string.delete);
+					deleteLayout.setVisibility(View.GONE);
+					if(null == credits)
+					{
+						credits = new ArrayList<Credit>();
+					}
+					
+					creditAdapter.isShowDelete = "false";
+					if(!credits.isEmpty())
+					{
+						for (int i = 0; i < credits.size(); i++) {
+							credits.get(i).isChecked = "false";
+						}
+						creditAdapter.credits = credits;
+						creditAdapter.notifyDataSetChanged();
+					}
+					
+				}
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				break;
+			default:
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				break;
 		}
 
 	}
@@ -176,6 +361,9 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 	protected void onResume() {
 		backClicked = false;
 		super.onResume();
+		CreditCostListActivity.this.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
+		CreditCostListActivity.this.findViewById(R.id.serverdata).setVisibility(View.GONE);
+		initListView();
 	}
 
 	@Override
@@ -226,30 +414,4 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 		
 	}
 
-	@Override
-	public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-		if (scrollState == OnScrollListener.SCROLL_STATE_IDLE
-				&& lastVisibleIndex == creditAdapter.getCount()) {
-			bt.setVisibility(View.GONE);
-			pg.setVisibility(View.VISIBLE);
-			CreditCostListActivity.this.page +=1;
-			Thread thread = new Thread(getCreditsRunnable);
-			thread.start();
-		}
-	}
-
-	@Override
-	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-		// check hit the bottom of current loaded data
-		lastVisibleIndex = firstVisibleItem + visibleItemCount -1;
-		if(!needToLoad)
-		{
-			creditsListView.removeFooterView(moreView);
-		}
-//		if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount > 0 && needToLoad) {
-//			CreditCostListActivity.this.page += 1;
-//			initListView();
-//		}
-	}
 }

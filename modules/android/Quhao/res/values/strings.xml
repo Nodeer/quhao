@@ -4,11 +4,16 @@
     <string name="app_name">取号啦</string>
     <string name="action_settings">Settings</string>
     
+    <string name="text_no_network">网络未连接，请连接网络</string>
+    <string name="text_timeout_error">链接超时，请稍后重试\u2026</string>
+    <string name="text_error_net">网络链接错误，请稍后重试\u2026</string>
+    
     <string name="btn_ok">确&#160;&#160;&#160;定</string>
     <string name="btn_back">返&#160;回</string>
 	
     <string name="commit">提&#160;&#160;&#160;交</string>
     <string name="delete">删除</string>
+    <string name="confirm_delete">确认删除</string>
      
     <!-- 加载页面 -->
     <string name="startup">排队不用等</string>
@@ -167,4 +172,9 @@
     </string-array>
 	<!-- more end -->
 	
+	
+	<!-- 历史取号情况 QuhaoHistoryStatesActivity begin -->
+	<string name="delete_success">删除成功</string>
+	<string name="delete_failed">网络问题，删除失败</string>
+	<!-- 历史取号情况 QuhaoHistoryStatesActivity end -->
 </resources>

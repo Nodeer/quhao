@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 	private ListView listView;
 	public List<ReservationVO> rvos;
 	private QuhaoHistoryStatesActivity activity;
+	public String isShowDelete;
 	private ProgressDialogUtil progress;
 
 	public ReservationForHistoryPaiduiAdapter(QuhaoHistoryStatesActivity activity, ListView listView, List<ReservationVO> rvos) {
@@ -35,6 +37,7 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 		this.activity = activity;
 		this.listView = listView;
 		this.rvos = rvos;
+		this.isShowDelete = "false";
 	}
 
 	@Override
@@ -70,9 +73,21 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 				holder.currentNumber = (TextView) convertView.findViewById(R.id.currentNumber);
 				holder.commentBtn = (Button) convertView.findViewById(R.id.btn_comment);
 				holder.isComment = (TextView) convertView.findViewById(R.id.is_comment);
+				holder.cb = (CheckBox) convertView.findViewById(R.id.item_cb);
 			}
 			if (holder == null) {
 				holder = (ViewHolderHistoryPaidui) convertView.getTag();
+			}
+			
+			if("true".equals(isShowDelete))
+			{
+				holder.cb.setVisibility(View.VISIBLE);
+				holder.cb.setChecked("true".equals(rvo.isChecked));
+				
+			}
+			else
+			{
+				holder.cb.setVisibility(View.GONE);
 			}
 			
 			final String merchantId = rvo.merchantId;

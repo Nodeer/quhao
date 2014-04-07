@@ -3,6 +3,7 @@ package com.withiter.quhao.vo;
 
 public class Credit {
 
+	public String creditId;
 	/**
 	 * 用户帐号ID
 	 */
@@ -53,6 +54,8 @@ public class Credit {
 	 */
 	public String created;
 	
+	public String isChecked;
+	
 	/*
 	public Credit(String accountId, String merchantId, String merchantName,String merchantAddress,String reservationId,int seatNumber
 			,int myNumber,boolean cost,String status,String created) {
@@ -69,8 +72,9 @@ public class Credit {
 		this.created = created;
 	}
 	 */
-	public Credit(String accountId, String merchantId, String merchantName,String merchantAddress,String reservationId,boolean cost,String status,String created) {
+	public Credit(String creditId,String accountId, String merchantId, String merchantName,String merchantAddress,String reservationId,boolean cost,String status,String created) {
 		
+		this.creditId = creditId;
 		this.accountId = accountId;
 		this.merchantId = merchantId;
 		this.merchantName = merchantName;
@@ -82,4 +86,5 @@ public class Credit {
 		this.status = status;
 		this.created = created;
 	}
+	
 }

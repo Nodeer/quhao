@@ -29,7 +29,6 @@ import android.widget.Toast;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.ReservationAdapter;
-import com.withiter.quhao.util.AsyncImageLoader;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
@@ -433,8 +432,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		public void run() {
 			try {
 				Looper.prepare();
-				progressDialogUtil = new ProgressDialogUtil(MerchantDetailActivity.this, R.string.empty, R.string.querying, false);
-				progressDialogUtil.showProgress();
 				QuhaoLog.v(LOGTAG, "get merchant details form server begin");
 				String accountId = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.ACCOUNT_ID, "");
 				QuhaoLog.v(LOGTAG, "MerchantDetailActivity.this.merchantId : " + merchantId + ",account ID : " + accountId);
@@ -450,7 +447,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				}
 
 			} catch (Exception e) {
-				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				e.printStackTrace();
 			} finally {
@@ -641,7 +637,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	
 					}
 				}
-				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 		}

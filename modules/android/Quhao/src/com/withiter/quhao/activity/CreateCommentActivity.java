@@ -54,7 +54,7 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.comment_create_layout);
 		super.onCreate(savedInstanceState);
-		btnBack.setOnClickListener(goBack(this, null));
+		btnBack.setOnClickListener(goBack(this));
 		rId = getIntent().getStringExtra("rId");
 		submit = (Button) this.findViewById(R.id.submit);
 		kouweiRatingBar = (RatingBar) this.findViewById(R.id.kouwei_ratingbar);

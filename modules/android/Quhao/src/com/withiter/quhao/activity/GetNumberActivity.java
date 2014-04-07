@@ -28,7 +28,6 @@ import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SharedprefUtil;
 import com.withiter.quhao.view.SelectSeatNo;
 import com.withiter.quhao.vo.Haoma;
-import com.withiter.quhao.vo.Merchant;
 import com.withiter.quhao.vo.Paidui;
 import com.withiter.quhao.vo.ReservationVO;
 

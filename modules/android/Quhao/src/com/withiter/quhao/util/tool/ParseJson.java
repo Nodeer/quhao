@@ -550,6 +550,7 @@ public class ParseJson {
 	}
 
 	private static Credit coventCredit(JSONObject obj) {
+		String creditId = obj.optString("id");
 		String accountId = obj.optString("accountId");
 		String merchantId = obj.optString("merchantId");
 		String merchantName = obj.optString("merchantName");
@@ -563,7 +564,7 @@ public class ParseJson {
 		String created = DateUtils.formatDate(obj.optString("created"), "yyyy-MM-dd HH:mm:ss");
 
 //		Credit credit = new Credit(accountId, merchantId, merchantName, merchantAddress, reservationId, seatNumber, myNumber, cost, status,created);
-		Credit credit = new Credit(accountId, merchantId, merchantName, merchantAddress, reservationId, cost, status,created);
+		Credit credit = new Credit(creditId,accountId, merchantId, merchantName, merchantAddress, reservationId, cost, status,created);
 		return credit;
 	}
 

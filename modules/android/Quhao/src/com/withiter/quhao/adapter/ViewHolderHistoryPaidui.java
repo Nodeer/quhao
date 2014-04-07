@@ -1,6 +1,7 @@
 package com.withiter.quhao.adapter;
 
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,4 +15,5 @@ public class ViewHolderHistoryPaidui {
 		public TextView currentNumber;
 		public Button commentBtn;
 		public TextView isComment;
+		public CheckBox cb;
 }

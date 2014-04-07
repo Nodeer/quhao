@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:background="@drawable/list_item"
     android:gravity="center_vertical"
-    android:orientation="horizontal" >
+    android:orientation="horizontal" 
+    android:descendantFocusability="blocksDescendants">
 
     <LinearLayout
         android:layout_width="100dip"
@@ -80,7 +81,7 @@
             <LinearLayout
                 android:id="@+id/tex2_lay2"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="30dip"
                 android:layout_marginTop="0.0dip"
                 android:orientation="horizontal" >
 				<LinearLayout
@@ -116,17 +117,14 @@
 	                android:layout_height="fill_parent"
 	                android:layout_marginTop="0.0dip"
 	                android:layout_weight="1.0" >
-					<Button
-			            android:id="@+id/btn_delete"
-			            android:layout_width="50dip"
-			            android:layout_height="30dip"
-			            android:background="@drawable/btn_weight"
-			            android:text="@string/delete"
-			            android:textAppearance="?android:textAppearanceMediumInverse"
-			            android:textColor="#ff000000"
-			            android:textSize="11.0sp" 
-			            android:layout_gravity="right|center_vertical"
-			            />
+					<CheckBox
+				        android:id="@+id/item_cb"
+				        android:layout_width="wrap_content"
+				        android:layout_height="30dip"
+				        android:focusable="false"
+				        android:clickable="false"
+				        android:focusableInTouchMode="false"
+				        android:gravity="right|center_vertical" />
 				</LinearLayout>
             </LinearLayout>
             <LinearLayout

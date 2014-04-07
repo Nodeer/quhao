@@ -22,6 +22,8 @@ public class ReservationVO {
 	
 	public String merchantImage;
 	
+	public String isChecked;
+	
 	public ReservationVO()
 	{
 		

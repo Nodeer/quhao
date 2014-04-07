@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,12 +21,13 @@ public class CreditAdapter extends BaseAdapter {
 	private ListView listView;
 	public List<Credit> credits;
 	private static String TAG = CreditAdapter.class.getName();
+	public String isShowDelete;
 
 	public CreditAdapter(Activity activity, ListView listView, List<Credit> credits) {
 		super();
 		this.listView = listView;
 		this.credits = credits;
-
+		this.isShowDelete = "false";
 	}
 
 	@Override
@@ -47,9 +49,9 @@ public class CreditAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Credit credit = (Credit) getItem(position);
 		synchronized (credit) {
-			Holder holder = null;
+			CreditCostHolder holder = null;
 			if (convertView == null) {
-				holder = new Holder();
+				holder = new CreditCostHolder();
 				LayoutInflater inflator = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 				convertView = inflator.inflate(R.layout.credit_cost_list_item, null);
@@ -57,12 +59,23 @@ public class CreditAdapter extends BaseAdapter {
 				holder.merchantAddress = (TextView) convertView.findViewById(R.id.merchantAddress);
 				holder.desc = (TextView) convertView.findViewById(R.id.description);
 				holder.date = (TextView) convertView.findViewById(R.id.date);
-
+				holder.cb = (CheckBox) convertView.findViewById(R.id.item_cb);
 			}
 			if (holder == null) {
-				holder = (Holder) convertView.getTag();
+				holder = (CreditCostHolder) convertView.getTag();
 			}
 
+			if("true".equals(isShowDelete))
+			{
+				holder.cb.setVisibility(View.VISIBLE);
+				holder.cb.setChecked("true".equals(credit.isChecked));
+				
+			}
+			else
+			{
+				holder.cb.setVisibility(View.GONE);
+			}
+			
 			if(StringUtils.isNotNull(credit.merchantName))
 			{
 				convertView.findViewById(R.id.merchantLayout).setVisibility(View.VISIBLE);
@@ -109,23 +122,6 @@ public class CreditAdapter extends BaseAdapter {
 		}
 
 	}
-
-	class MerchantHolder {
-		TextView merchantName;
-		TextView merchantAddress;
-		TextView action;
-		TextView desc;
-	}
-
-	class ExchangeHolder {
-		TextView action;
-		TextView desc;
-	}
 	
-	class Holder {
-		TextView merchantName;
-		TextView merchantAddress;
-		TextView desc;
-		TextView date;
-	}
+	
 }

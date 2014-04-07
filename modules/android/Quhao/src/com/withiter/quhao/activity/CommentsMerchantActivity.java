@@ -29,12 +29,8 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnScr
 
 	private static final String TAG = CommentsMerchantActivity.class.getName();
 
-	private String merchantName;
-
 	private String merchantId;
 	
-	private String rId;
-
 	/**
 	 * the critiques queried from merchant
 	 */
@@ -115,10 +111,7 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnScr
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.comments_merchant);
 
-		this.merchantName = getIntent().getStringExtra("merchantName");
-
 		this.merchantId = getIntent().getStringExtra("merchantId");
-		this.rId = getIntent().getStringExtra("rId");
 		this.page = getIntent().getIntExtra("page", 1);
 
 		moreView = getLayoutInflater().inflate(R.layout.moredata, null);
