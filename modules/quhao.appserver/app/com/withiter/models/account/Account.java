@@ -338,12 +338,18 @@ public class Account extends AccountEntityDef {
 	public static void cleanSignIn() {
 //		DB db =  Account.db();
 //		db.command("db.Account.update({\"className\":\"com.withiter.models.account.Account\"},{$set:{\"isSignIn\":\"true\"}},false,true)");
-		
-		List<Account> allAccounts = findAll();
-		for (Account account : allAccounts) {
-			account.isSignIn = false;
-			account.save();
+		MorphiaQuery q = Account.q();
+		q.filter("enable", true);
+		q.filter("phone !=", "");
+		List<Account> accounts = q.asList();
+		if(null != accounts && !accounts.isEmpty())
+		{
+			for (Account account : accounts) {
+				account.isSignIn = false;
+				account.save();
+			}
 		}
+		
 	}
 	
 	/**

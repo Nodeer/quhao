@@ -24,23 +24,18 @@ public class CleanAccountSignInJob extends Job {
 	@Override
 	public void doJob() throws Exception {
 
-		Thread t = new Thread(new Runnable() {
-			public void run() {
-				long start = System.currentTimeMillis();
-				logger.info(CleanAccountSignInJob.class.getName() + " started.");
-				Calendar calendar = Calendar.getInstance();
-				int hour = calendar.get(Calendar.HOUR_OF_DAY);
-				int minute = calendar.get(Calendar.MINUTE);
+		long start = System.currentTimeMillis();
+		logger.info(CleanAccountSignInJob.class.getName() + " started.");
+		Calendar calendar = Calendar.getInstance();
+		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+		int minute = calendar.get(Calendar.MINUTE);
 
-				if (hour == 23) {
-					if (51 < minute && minute < 60) {
-						Account.cleanSignIn();
-					}
-				}
-				logger.info(CleanAccountSignInJob.class.getName() + " finished, elapsed time " + (System.currentTimeMillis() - start) + "ms.");
-
+		if (hour == 23) {
+			if (51 < minute && minute < 60) {
+				Account.cleanSignIn();
 			}
-		});
-		t.start();
+		}
+		logger.info(CleanAccountSignInJob.class.getName() + " finished, elapsed time " + (System.currentTimeMillis() - start) + "ms.");
+
 	}
 }
