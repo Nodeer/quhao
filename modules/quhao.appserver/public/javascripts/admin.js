@@ -12,10 +12,10 @@ Admin.generateAccount = function(){
 				console.log(data.result);
 				if (data != null) {
 					if(data.error != ""){
-						$("#tip").addClass("alert alert-danger").html(data.result).show();
+						$("#tip").attr("class","alert alert-danger").html(data.result).show();
 						return;
 					} else {
-						$("#tip").addClass("alert alert-success").html(data.result).show();
+						$("#tip").attr("class","alert alert-success").html(data.result).show();
 					}
 				}
 			},
