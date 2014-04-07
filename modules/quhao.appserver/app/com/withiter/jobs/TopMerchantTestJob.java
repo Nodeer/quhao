@@ -10,8 +10,8 @@ import play.jobs.Every;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 
-@OnApplicationStart
-@Every("1min")
+@OnApplicationStart(async=true)
+@Every("5min")
 public class TopMerchantTestJob extends Job {
 
 	private static Logger logger = LoggerFactory.getLogger(TopMerchantTestJob.class);

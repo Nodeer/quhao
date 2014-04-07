@@ -13,7 +13,7 @@ import play.modules.morphia.Model.MorphiaQuery;
 import com.withiter.common.Constants;
 import com.withiter.models.account.Account;
 
-@OnApplicationStart
+@OnApplicationStart(async=true)
 public class TestJob extends Job {
 
 	private static Logger logger = LoggerFactory.getLogger(TestJob.class);

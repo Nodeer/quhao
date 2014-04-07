@@ -13,8 +13,8 @@ import play.modules.morphia.Model.MorphiaQuery;
 import com.withiter.models.merchant.Comment;
 import com.withiter.models.merchant.Merchant;
 
-@OnApplicationStart
-@Every("60min")
+@OnApplicationStart(async=true)
+@Every("1h")
 public class UpdateMerchantEvaluate extends Job {
 	private static Logger logger = LoggerFactory.getLogger(UpdateMerchantEvaluate.class);
 
