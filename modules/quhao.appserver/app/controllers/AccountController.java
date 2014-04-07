@@ -221,6 +221,7 @@ public class AccountController extends BaseController {
 		account.authcode = "";
 		account.authDate = null;
 		account.enable = true;
+		account.nickname = "qh"+mobile;
 		account.save();
 		suVO.errorKey = "1";
 		suVO.errorText = "注册成功";

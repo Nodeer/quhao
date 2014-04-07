@@ -356,21 +356,13 @@ public class Account extends AccountEntityDef {
 	 * clean the mark action number of today
 	 */
 	public static void cleanSignIn() {
-		// DB db = Account.db();
-		// db.command("db.Account.update({\"className\":\"com.withiter.models.account.Account\"},{$set:{\"isSignIn\":\"true\"}},false,true)");
 		MorphiaQuery q = Account.q();
 		q.filter("enable", true);
 		q.filter("phone !=", "");
-
-		// TODO add paginate
-		List<Account> accounts = q.asList();
-		if (null != accounts && !accounts.isEmpty()) {
-			for (Account account : accounts) {
-				account.isSignIn = false;
-				account.save();
-			}
-		}
-
+       
+		MorphiaUpdateOperations o= Account.o();
+		o.set("isSignIn", false);
+		o.update(q);
 	}
 
 	/**
