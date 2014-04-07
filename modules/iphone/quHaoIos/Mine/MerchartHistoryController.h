@@ -16,13 +16,12 @@
 {
 @private
     NSMutableArray *_reservationArray;
-    BOOL _reloading;
-    BOOL _loadFlag;
-    int _prevItemCount;
-    //上拉刷新用的页码
-    int _pageIndex;
-    //上拉刷新的view
-    MJRefreshFooterView *_footer;
+    UIBarButtonItem *_backButtonItem;
+    UIBarButtonItem *_editItem ;
+    UIBarButtonItem *_multiDeleteBarButton;
+    UIBarButtonItem *_cancelBarButtonItem;
+    UIButton * _mutiButton;
+    NSMutableArray *_delArray;
 }
 
 @property (strong,nonatomic) NSString * accouId;
@@ -31,8 +30,15 @@
 //弹出历史信息页面
 - (void)pushHistoryDetail:(Reservation *)model andNavController:(UINavigationController *)navController;
 //请求服务端获取数据
--(void)requestData:(NSString *)urlStr withPage:(int)page;
-
+-(void)requestData:(NSString *)urlStr;
+// 更新导航栏按钮
+-(void) updateBarButtons;
+// 更新删除按钮的标题
+-(void)updateDeleteButtonTitle;
+//删除按钮
+- (void)multiDeleteClicked:(id)sender;
+// 取消按钮
+- (void)cancelButtonClicked:(id)sender;
 @end
 
 

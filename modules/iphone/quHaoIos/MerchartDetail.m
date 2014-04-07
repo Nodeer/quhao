@@ -23,13 +23,13 @@
 
 -(void)loadView
 {
-    UIView  *view=[[UIView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
-    self.view=view;
-    _detailView=[[UITableView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, kDeviceHeight) style:UITableViewStylePlain];
-    _detailView.dataSource=self;
-    _detailView.delegate=self;
-    _detailView.backgroundColor=[UIColor whiteColor];
-    _detailView.indicatorStyle=UIScrollViewIndicatorStyleWhite;
+    UIView  *view = [[UIView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
+    self.view = view;
+    _detailView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, kDeviceHeight-64) style:UITableViewStylePlain];
+    _detailView.dataSource = self;
+    _detailView.delegate = self;
+    _detailView.backgroundColor = [UIColor whiteColor];
+    _detailView.indicatorStyle = UIScrollViewIndicatorStyleWhite;
     [self.view addSubview:_detailView];
 }
 
@@ -295,7 +295,7 @@
 {
     int row = [indexPath row];
     if(row==0||row==6||row==7){
-        return 100;
+        return 90;
     }else if(row==3||row==4||row==5){
         return 35;
     }else if (row==8){
@@ -319,12 +319,11 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellTableIdentifier"];
+    NSString *CellIdentifier = [NSString stringWithFormat:@"MerchantCell%d",indexPath.row];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellTabeIndentifier"];
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    }
     if ([indexPath row] ==0 ) {//商家信息
         CGSize size=CGSizeMake(kDeviceWidth,100);
         cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"top.jpg" toSize:size]];
@@ -519,7 +518,7 @@
         [msLabel setNumberOfLines:0];
         [cell.contentView addSubview:msLabel];
     }
-    
+    }
     return cell;
 }
 

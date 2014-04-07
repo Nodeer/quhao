@@ -12,19 +12,17 @@
 #import "SBJson.h"
 #import "CreditCell.h"
 #import "Helper.h"
-#import "MJRefreshFooterView.h"
 #import "QuHaoUtil.h"
 @interface CreditViewController : UITableViewController
 {
 @private
     NSMutableArray *_creditArray;
-    BOOL _reloading;
-    BOOL _loadFlag;
-    int _prevItemCount;
-    //上拉刷新用的页码
-    int _pageIndex;
-    //上拉刷新的view
-    MJRefreshFooterView *_footer;
+    UIBarButtonItem *_backButtonItem;
+    UIBarButtonItem *_editItem ;
+    UIBarButtonItem *_multiDeleteBarButton;
+    UIBarButtonItem *_cancelBarButtonItem;
+    UIButton * _mutiButton;
+    NSMutableArray *_delArray;
 }
 
 @property (retain,nonatomic) NSString * accouId;
@@ -32,6 +30,13 @@
 //加载页面上的导航
 -(void)loadNavigationItem;
 //请求服务端获取数据
--(void)requestData:(NSString *)urlStr withPage:(int)page;
-
+-(void)requestData:(NSString *)urlStr;
+// 更新导航栏按钮
+-(void) updateBarButtons;
+// 更新删除按钮的标题
+-(void)updateDeleteButtonTitle;
+//删除按钮
+- (void)multiDeleteClicked:(id)sender;
+// 取消按钮
+- (void)cancelButtonClicked:(id)sender;
 @end
