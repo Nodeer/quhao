@@ -30,6 +30,7 @@
     CGFloat _yOffset;
     UIInterfaceOrientation _rotation;
     UIButton *_cityButton;
+    NSString *_cityCode;
 }
 
 @property (nonatomic, strong) UIScrollView *menuView;

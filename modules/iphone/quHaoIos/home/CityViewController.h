@@ -24,16 +24,18 @@
 @property (nonatomic, retain) NSMutableDictionary *cities;
 @property (nonatomic, retain) NSMutableArray *keys;
 @property (nonatomic, retain) NSMutableArray * tempArray;
+@property (nonatomic, retain) NSMutableArray * codeArray;
 @property (nonatomic, assign) id delegate;
 @property (strong, nonatomic) UISearchBar *searchBar;
 @property(nonatomic, assign) BOOL isSearch;//是否是search状态
 @property(nonatomic, strong) NSString * loctionCity;//定位城市
+@property(nonatomic, strong) NSString * loctionCityCode;//定位城市code
 @property(nonatomic, strong) CLLocationManager *locationManager;
 
 @end
 
 @protocol CityViewDelegate
-- (void) citySelectionUpdate:(NSString*)selectedCity;
+- (void) citySelectionUpdate:(NSString*)selectedCity withCode:(NSString*) code;
 - (NSString*) getDefaultCity;
 @end
 

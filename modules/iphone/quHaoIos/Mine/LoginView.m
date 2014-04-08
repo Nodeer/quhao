@@ -89,6 +89,7 @@
     if (requestNew.hud) {
         [requestNew.hud hide:YES];
     }
+    [Helper ToastNotification:[NSString stringWithFormat:@"%@",@"登录失败,请稍候再试"] andView:self.view andLoading:NO andIsBottom:NO];
 }
 
 - (void)requestLogin:(ASIHTTPRequest *)requestNew
@@ -151,12 +152,12 @@
             break;
         case -1:
         {
-            [Helper ToastNotification:[NSString stringWithFormat:@"%@",@"帐号不存在,请重新输入。"] andView:self.view andLoading:NO andIsBottom:NO];
+            [Helper ToastNotification:[NSString stringWithFormat:@"%@",@"帐号不存在,请重新输入"] andView:self.view andLoading:NO andIsBottom:NO];
         }
             break;
         case -2:
         {
-            [Helper ToastNotification:[NSString stringWithFormat:@"%@",@"密码错误,请重新输入。"] andView:self.view andLoading:NO andIsBottom:NO];
+            [Helper ToastNotification:[NSString stringWithFormat:@"%@",@"密码错误,请重新输入"] andView:self.view andLoading:NO andIsBottom:NO];
         }
             break;
     }

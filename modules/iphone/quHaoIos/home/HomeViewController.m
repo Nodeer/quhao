@@ -24,16 +24,31 @@
 -(void)loadNavigationItem
 {
     self.view.backgroundColor=[UIColor whiteColor];
-    _cityButton=[Helper getBackBtn:@"button.png" title:@"上海" rect:CGRectMake( 0, 0, 70, 25 )];
-    [_cityButton addTarget:self action:@selector(openCitySearchView:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_cityButton];
-    self.navigationItem.leftBarButtonItem = backButtonItem;
+    
+    _cityButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    _cityButton.frame = CGRectMake( 0, 0, 40, 25 );
+    [_cityButton setTitle: @"上海" forState: UIControlStateNormal];
+    _cityButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0f];
+    [_cityButton.titleLabel setTextAlignment:NSTextAlignmentRight];
+    [_cityButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
+    UIBarButtonItem *cityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_cityButton];
+    _cityCode = @"021";
     if ([Helper returnUserString:@"currentCity"]!=nil)
     {
         [_cityButton  setTitle:[Helper returnUserString:@"currentCity"] forState:UIControlStateNormal];
+        _cityCode = [Helper returnUserString:@"currentCityCode"];
     }
     
-
+    UIButton *chooseButton=[Helper getBackBtn:@"chooseArrow" title:@"" rect:CGRectMake( 0, 0, 11, 9 )];
+    [chooseButton addTarget:self action:@selector(openCitySearchView:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *chooseButtonItem = [[UIBarButtonItem alloc] initWithCustomView:chooseButton];
+    
+    UIBarButtonItem *spaceButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    spaceButton.width = -15;
+    NSArray *leftBarButtons = [NSArray arrayWithObjects:spaceButton,cityButtonItem,chooseButtonItem, nil];
+    self.navigationItem.leftBarButtonItem = nil;
+    self.navigationItem.leftBarButtonItems = leftBarButtons;
+    
     //添加搜索的按钮
     UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 搜 索" rect:CGRectMake(  0, 0, 40, 25 )];
     [btnButton addTarget:self action:@selector(clickSearch:) forControlEvents:UIControlEventTouchUpInside];
@@ -143,7 +158,7 @@
 -(void)requestData
 {
     //处理topMerchant
-    NSString *url = [NSString stringWithFormat:@"%@%@%d",[Helper getIp],getTopMerchants,4];
+    NSString *url = [NSString stringWithFormat:@"%@%@%d&cityCode=%@",[Helper getIp],getTopMerchants,1,_cityCode];
     NSString *response1 =[QuHaoUtil requestDb:url];
     if([response1 isEqualToString:@""]){
         //异常处理
@@ -163,12 +178,17 @@
                 model.imgUrl = [[jsonObjects objectAtIndex:i] objectForKey:@"merchantImage"];
                 [_topArray addObject:model];
             }
+            for(int j=0; j<4-[jsonObjects count]; j++){
+                model = [[MerchartModel alloc]init];
+                model.imgUrl = @"";
+                [_topArray addObject:model];
+            }
         }
     }
     
     //加载category
-    //url = [NSString stringWithFormat:@"%@%@?city=%@",[Helper getIp],allCategories_url,_cityButton.titleLabel.text];
     url = [NSString stringWithFormat:@"%@%@",[Helper getIp],allCategories_url];
+    //url = [NSString stringWithFormat:@"%@%@",[Helper getIp],allCategories_url];
     response1 = [QuHaoUtil requestDb:url];
     if([response1 isEqualToString:@""]){
         //异常处理
@@ -403,6 +423,11 @@
 {
     UITapGestureRecognizer *tap = (UITapGestureRecognizer*)sender;
     UICustomImageView *image=(UICustomImageView*)tap.view;
+    if(NULL == image.id){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"推荐商家虚席以待" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
     
     MerchartDetail *mDetail = [[MerchartDetail alloc] init];
     mDetail.merchartID = image.id;
@@ -429,9 +454,16 @@
 }
 
 //CityViewController delegate
-- (void) citySelectionUpdate:(NSString*)selectedCity
+- (void) citySelectionUpdate:(NSString*)selectedCity withCode:(NSString *)code
 {
     [_cityButton setTitle:selectedCity forState:UIControlStateNormal];
+    _cityCode = code;
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:selectedCity forKey:@"currentCity"];
+    [defaults setObject:_cityCode forKey:@"currentCityCode"];
+    [defaults synchronize];
+    
     [self realRefresh];
 }
 

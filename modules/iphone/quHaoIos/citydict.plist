@@ -4,37 +4,107 @@
 <dict>
 	<key>b</key>
 	<array>
-		<string>北京</string>
+		<dict>
+			<key>cityCode</key>
+			<string>0222</string>
+			<key>isOpen</key>
+			<true/>
+			<key>name</key>
+			<string>test</string>
+		</dict>
+		<dict>
+			<key>cityCode</key>
+			<string>010</string>
+			<key>isOpen</key>
+			<true/>
+			<key>name</key>
+			<string>北京</string>
+		</dict>
 	</array>
 	<key>c</key>
 	<array>
-		<string>成都</string>
+		<dict>
+			<key>cityCode</key>
+			<string>028</string>
+			<key>isOpen</key>
+			<true/>
+			<key>name</key>
+			<string>成都</string>
+		</dict>
 	</array>
 	<key>n</key>
 	<array>
-		<string>南京</string>
+		<dict>
+			<key>cityCode</key>
+			<string>025</string>
+			<key>isOpen</key>
+			<string>YES</string>
+			<key>name</key>
+			<string>南京</string>
+		</dict>
 	</array>
 	<key>g</key>
 	<array>
-		<string>广州</string>
+		<dict>
+			<key>cityCode</key>
+			<string>020</string>
+			<key>isOpen</key>
+			<true/>
+			<key>name</key>
+			<string>广州</string>
+		</dict>
 	</array>
 	<key>h</key>
 	<array>
-		<string>杭州</string>
+		<dict>
+			<key>cityCode</key>
+			<string>0571</string>
+			<key>isOpen</key>
+			<true/>
+			<key>name</key>
+			<string>杭州</string>
+		</dict>
 	</array>
 	<key>q</key>
 	<array>
-		<string>启东</string>
+		<dict>
+			<key>cityCode</key>
+			<string>0573</string>
+			<key>isOpen</key>
+			<true/>
+			<key>name</key>
+			<string>启东</string>
+		</dict>
 	</array>
 	<key>s</key>
 	<array>
-		<string>三亚</string>
-		<string>上海</string>
-		<string>深圳</string>
+		<dict>
+			<key>cityCode</key>
+			<string>021</string>
+			<key>isOpen</key>
+			<true/>
+			<key>name</key>
+			<string>上海</string>
+		</dict>
+		<dict>
+			<key>cityCode</key>
+			<string>0755</string>
+			<key>isOpen</key>
+			<true/>
+			<key>name</key>
+			<string>深圳</string>
+		</dict>
 	</array>
 	<key>w</key>
 	<array>
-		<string>武汉</string>
+		<dict>
+			<key>cityCode</key>
+			<string>027</string>
+			<key>isOpen</key>
+			<true/>
+			<key>name</key>
+			<string>武汉</string>
+		</dict>
 	</array>
 </dict>
 </plist>

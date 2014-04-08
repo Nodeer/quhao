@@ -53,8 +53,7 @@
             NSDate * dates=[dateFormatter dateFromString:currentDateStr] ;
             //NSDate * dates=[dateFormatter dateFromString:@"2012-08-01 12:22:33"] ;
             self.currentDateStr = [QuHaoUtil returnFormatString:[dateFormatter  stringFromDate:dates]];
-            NSLog(@"==%@",self.currentDateStr);
-            [self requestData:[NSString stringWithFormat:@"%@%@%@&sortBy=joinedDate",[Helper getIp],homeView_list_url,self.cateType] withPage:_pageIndex];
+            [self requestData:[NSString stringWithFormat:@"%@%@%@&sortBy=joinedDate&cityCode=%@",[Helper getIp],homeView_list_url,self.cateType,_cityCode] withPage:_pageIndex];
             [self.tableView reloadData];
         } completionBlock:^{
             //操作执行完后取消对话框
@@ -103,7 +102,7 @@
         _prevItemCount = [_merchartsArray count];
         _whichView=2;
         //page为0无效 暂时未做分页处理
-        [self requestData:[NSString stringWithFormat:@"%@%@%@&date=%@",[Helper getIp],homeView_last_url,self.cateType,self.currentDateStr]
+        [self requestData:[NSString stringWithFormat:@"%@%@%@&date=%@&cityCode=%@",[Helper getIp],homeView_last_url,self.cateType,self.currentDateStr,_cityCode]
                  withPage:0];
         // 这里的refreshView其实就是header
         [self performSelector:@selector(doneWithView:) withObject:refreshView afterDelay:1.0];
@@ -121,7 +120,7 @@
         _prevItemCount = [_merchartsArray count];
         ++_pageIndex;
         _whichView=1;
-        [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],homeView_list_url,self.cateType]  withPage:_pageIndex];
+        [self requestData:[NSString stringWithFormat:@"%@%@%@&cityCode=%@",[Helper getIp],homeView_list_url,self.cateType,_cityCode]  withPage:_pageIndex];
         [self performSelector:@selector(doneWithView:) withObject:refreshView afterDelay:1.0];
         
     };
@@ -175,18 +174,14 @@
 //选中一条纪录触发的事件
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        int row = [indexPath row];
-        if (row >= [_merchartsArray count]) {
-                [self performSelector:@selector(reload:)];
-        }
-        else {
-            MerchartModel *n = [_merchartsArray objectAtIndex:row];
-            if (n)
-            {                   
-                [self pushMerchartDetail:n andNavController:self.navigationController andIsNextPage:NO];
-            }
-        }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    int row = [indexPath row];
+    MerchartModel *n = [_merchartsArray objectAtIndex:row];
+    if (n)
+    {
+        [self pushMerchartDetail:n andNavController:self.navigationController andIsNextPage:NO];
+    }
+    
 }
 
 //弹出商家详细页面

@@ -12,15 +12,12 @@
 
 @property NSUInteger curSection;
 @property NSUInteger curRow;
-@property NSUInteger defaultSelectionRow;
-@property NSUInteger defaultSelectionSection;
 @end
 
 @implementation CityViewController
 @synthesize tbView,loctionCity;
 @synthesize locationManager;
-@synthesize cities, tempArray ,keys , curSection, curRow, delegate;
-@synthesize defaultSelectionRow, defaultSelectionSection;
+@synthesize cities, tempArray,codeArray,keys ,loctionCityCode, curSection, curRow, delegate;
 
 -(void)loadNavigationItem
 {
@@ -37,7 +34,9 @@
     [super viewDidLoad];
     [self loadNavigationItem];
     self.isSearch = NO;
-    self.tempArray = [[NSMutableArray alloc] init];//search出来的数据存放
+    self.tempArray = [[NSMutableArray alloc] init];//search出来的数据存放 name
+    self.codeArray = [[NSMutableArray alloc] init];//search出来的数据存放 code
+
     _searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 0, kDeviceWidth, 40)];
     _searchBar.delegate = self;   //设置控件
     _searchBar.placeholder = @"请输入城市或者首字母查询";
@@ -88,36 +87,36 @@
     self.cities = [[NSMutableDictionary alloc] initWithContentsOfFile:path];
 
     self.keys = [NSMutableArray arrayWithArray:[[cities allKeys] sortedArrayUsingSelector:@selector(compare:)]];
-    //get default selection from delegate
-    NSString* defaultCity = [delegate getDefaultCity];
-    if (defaultCity) {
-        NSArray *citySection;
-        self.defaultSelectionRow = NSNotFound;
-        //set table index to this city if it existed
-        for (NSString* key in keys) {
-            citySection = [cities objectForKey:key];
-            self.defaultSelectionRow = [citySection indexOfObject:defaultCity];
-            if (NSNotFound == defaultSelectionRow)
-                continue;
-            //found match recoard position
-            self.defaultSelectionSection = [keys indexOfObject:key];
-            break;
-        }
-        
-        if (NSNotFound != defaultSelectionRow) {
-            
-            self.curSection = defaultSelectionSection;
-            self.curRow = defaultSelectionRow;
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:defaultSelectionRow inSection:defaultSelectionSection];
-            [self.tbView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-            
-        }
-    }
+//    //get default selection from delegate
+//    NSString* defaultCity = [delegate getDefaultCity];
+//    if (defaultCity) {
+//        NSArray *citySection;
+//        self.defaultSelectionRow = NSNotFound;
+//        //set table index to this city if it existed
+//        for (NSString* key in keys) {
+//            citySection = [cities objectForKey:key];
+//            self.defaultSelectionRow = [citySection indexOfObject:defaultCity];
+//            if (NSNotFound == defaultSelectionRow)
+//                continue;
+//            //found match recoard position
+//            self.defaultSelectionSection = [keys indexOfObject:key];
+//            break;
+//        }
+//        
+//        if (NSNotFound != defaultSelectionRow) {
+//            
+//            self.curSection = defaultSelectionSection;
+//            self.curRow = defaultSelectionRow;
+//            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:defaultSelectionRow inSection:defaultSelectionSection];
+//            [self.tbView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+//            
+//        }
+//    }
 }
 
 -(void)onLocationLable:(UITapGestureRecognizer *)sender
 {
-    [delegate citySelectionUpdate:loctionCity];
+    [delegate citySelectionUpdate:loctionCity withCode:loctionCityCode];
     [self performSelector:@selector(removeView)];
 }
 
@@ -180,7 +179,7 @@
     if (self.isSearch) {
         cell.textLabel.text = [self.tempArray objectAtIndex:indexPath.row];
     }else{
-        cell.textLabel.text = [[cities objectForKey:key] objectAtIndex:indexPath.row];
+        cell.textLabel.text = [[[cities objectForKey:key] objectAtIndex:indexPath.row] objectForKey:@"name"];
     }
     cell.accessoryType = UITableViewCellAccessoryNone;
     
@@ -206,11 +205,11 @@
     curRow = indexPath.row;
     curSection = indexPath.section;
     if (self.isSearch){
-        [delegate citySelectionUpdate:tempArray[curRow]];
+        [delegate citySelectionUpdate:tempArray[curRow] withCode:codeArray[curRow]];
     }else{
         if (curRow != NSNotFound) {
             NSString* key = [keys objectAtIndex:curSection];
-            [delegate citySelectionUpdate:[[cities objectForKey:key] objectAtIndex:curRow]];
+            [delegate citySelectionUpdate:[[[cities objectForKey:key] objectAtIndex:curRow]  objectForKey:@"name"] withCode:[[[cities objectForKey:key] objectAtIndex:curRow]  objectForKey:@"cityCode"]];
         }
     }
     
@@ -235,6 +234,7 @@
 -(void)findContext
 {
     [tempArray removeAllObjects];
+    [codeArray removeAllObjects];
     int i,j;
     NSString *key;
     NSArray *value;
@@ -245,12 +245,17 @@
         value = [cities objectForKey: key];
         if ([key hasPrefix:_searchBar.text])
         {
-            [tempArray   addObjectsFromArray:[cities objectForKey:key]];
-        }
-        
-        for (j=0; j<[value count]; j++) {
-            if ([[value objectAtIndex:j] hasPrefix:_searchBar.text]) {
-                [tempArray addObject:value];
+            for (j=0; j<[value count]; j++) {
+                [tempArray addObject:[[value objectAtIndex:j] objectForKey:@"name"]];
+                [codeArray addObject:[[value objectAtIndex:j] objectForKey:@"cityCode"]];
+            }
+            break;
+        }else{
+            for (j=0; j<[value count]; j++) {
+                if ([[[value objectAtIndex:j] objectForKey:@"name"] hasPrefix:_searchBar.text]) {
+                    [tempArray addObject:[[value objectAtIndex:j] objectForKey:@"name"]];
+                    [codeArray addObject:[[value objectAtIndex:j] objectForKey:@"cityCode"]];
+                }
             }
         }
     }
@@ -284,6 +289,21 @@
                  lable.text = [NSString stringWithFormat:@"%@%@",@"定位城市:",city];
                  lable.userInteractionEnabled=YES;
                  loctionCity = city;
+                 NSArray * value;
+                 int i ;
+                 int j ;
+                 int count = [keys count];
+                 for (i = 0; i < count; i++)
+                 {
+                     value = [cities objectForKey: [keys objectAtIndex: i]];
+                     for (j=0; j<[value count]; j++) {
+                         if ([[[value objectAtIndex:j] objectForKey:@"name"] isEqualToString:city]) {
+                             loctionCityCode = [[value objectAtIndex:j] objectForKey:@"cityCode"];
+                             break;
+                         }
+                    }
+                 }
+                 
                  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                  [defaults setObject:@"1" forKey:@"isLocation"];
                  [defaults setObject:city forKey:@"currentCity"];

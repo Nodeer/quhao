@@ -26,6 +26,7 @@
     MJRefreshFooterView *_footer;
     //判断是上拉还是下拉 1 上拉 2下拉
     int _whichView;
+    NSString *_cityCode;
 }
 
 @property (strong,nonatomic) NSString * currentDateStr;
