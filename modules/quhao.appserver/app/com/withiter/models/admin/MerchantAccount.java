@@ -107,4 +107,9 @@ public class MerchantAccount extends MerchantAccountEntityDef {
 		account.password = Codec.hexSHA1(newpassword);
 		account.save();
 	}
+
+	public static int totalSize() {
+		MorphiaQuery q = MerchantAccount.q();
+		return (int)q.count();
+	}
 }

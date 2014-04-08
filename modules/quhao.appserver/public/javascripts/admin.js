@@ -24,3 +24,4 @@ Admin.generateAccount = function(){
 			}
 	});
 }
+

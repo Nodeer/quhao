@@ -1,5 +1,6 @@
 package controllers.backend.admin;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import notifiers.MailsController;
@@ -116,13 +117,21 @@ public class AdminController extends BaseController {
 	 * 显示生成账号情况
 	 */
 	public static void accounts(int page){
-		
+		if(page == 0){
+			page = 1;
+		}
+		int totalSize = MerchantAccount.totalSize();
 		int countPerPage = 10;
+		int totalPage = totalSize / countPerPage;
+		if(totalSize % countPerPage != 0){
+			totalPage++;
+		}
 		List<MerchantAccount> list = MerchantAccount.findNext(page, countPerPage);
 		if(list == null || list.isEmpty()){
-			renderJSON("");
+			list = new ArrayList<MerchantAccount>();
+			renderJapid(list, page, totalPage);
 		}else{
-			renderJSON(list);
+			renderJapid(list, page, totalPage);
 		}
 	}
 }

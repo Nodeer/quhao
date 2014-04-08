@@ -1,0 +1,88 @@
+`import static press.Plugin.*;
+`import com.withiter.models.admin.MerchantAccount;
+`extends admin_layout
+`set title "取号啦 - 账号状态"
+
+$addJS("admin.js",true);
+
+`args List<MerchantAccount> list, int page, int totalPage
+
+
+`set contents
+   <div class="container-fluid">
+   	<table class="table table-striped" style="text-align:center;">
+   		<thead>
+   			<tr>
+   				<th>Email</th>
+   				<th>Password</th>
+   				<th>Last Login</th>
+   				<th>Enable</th>
+   				<th>操作</th>
+   			</tr>
+   		</thead>
+   		<tbody>
+   			`for(MerchantAccount ma : list){
+		   		<tr>
+		   			<td>${ma.email}</td>
+		   			<td>${ma.password}</td>
+		   			<td>${ma.lastLogin}</td>
+		   			<td>${ma.enable}</td>
+		   			<td>
+		   				`if(ma.enable){
+		   					启用
+		   				`}else{
+		   					禁用
+		   				`}	
+		   			</td>
+		   		</tr>
+   			`}
+   		</tbody>
+	</table>
+   	</div>
+   	<div style="margin-left:auto;margin-right:auto;text-align:center;">
+		<ul class="pagination">
+				<li><a href="/admin/accounts?page=1">首页</a></li>
+			`if(page == 1){
+				<li class="disabled"><a href="#">上一页</a></li>
+			`} else {
+				<li><a href="/admin/accounts?page=${page-1}">上一页</a></li>
+			`}
+			`if(page - 4 >= 1){	
+				<li><a href="/admin/accounts?page=${page-4}">${page-4}</a></li>
+			`}
+			`if(page - 3 >= 1){	
+				<li><a href="/admin/accounts?page=${page-3}">${page-3}</a></li>
+			`}
+			`if(page - 2 >= 1){	
+				<li><a href="/admin/accounts?page=${page-2}">${page-2}</a></li>
+			`}
+			`if(page - 1 >= 1){
+				<li><a href="/admin/accounts?page=${page-1}">${page-1}</a></li>
+			`}
+				<li class="active"><a href="/admin/accounts?page=${page}">${page}<span class="sr-only">(current)</span></a></li>
+			`if(page + 1 <= totalPage){
+				<li><a href="/admin/accounts?page=${page+1}">${page+1}</a></li>
+			`}
+			`if(page + 2 <= totalPage){
+				<li><a href="/admin/accounts?page=${page+2}">${page+2}</a></li>
+			`}
+			`if(page + 3 <= totalPage){
+				<li><a href="/admin/accounts?page=${page+3}">${page+3}</a></li>
+			`}
+			`if(page + 4 <= totalPage){
+				<li><a href="/admin/accounts?page=${page+4}">${page+4}</a></li>
+			`}
+			`if(page + 5 <= totalPage){
+				<li><a href="/admin/accounts?page=${page+5}">${page+5}</a></li>
+			`}
+			`if(page == totalPage){
+				<li class="disabled"><a href="#">下一页</a></li>
+			`} else {
+				<li><a href="/admin/accounts?page=${page+1}">下一页</a></li>
+			`}
+				<li><a href="/admin/accounts?page=${totalPage}">尾页</a></li>
+		</ul>
+	</div>
+`
+
+
