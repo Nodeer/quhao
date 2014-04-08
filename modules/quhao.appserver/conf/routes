@@ -26,6 +26,7 @@ GET		/active								backend.self.AccountController.active
 
 # Admin page
 GET		/admin								backend.admin.AdminController.index
+GET		/admin/home							backend.admin.AdminController.home
 POST	/admin/genaccount					backend.admin.AdminController.genAccount
 
 # Category

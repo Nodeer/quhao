@@ -70,8 +70,10 @@ public class Constants {
 	}
 	
 	public static String COOKIE_USERNAME = "quhao_username";
-
 	public static String SESSION_USERNAME = "quhao_username";
+
+	public static String ADMIN_COOKIE_USERNAME = "admin_quhao_username";
+	public static String ADMIN_SESSION_USERNAME = "admin_quhao_username";
 	
 	public static String SESSION_ANDROID = "quhaoandroidsession";
 	public static String SESSION_IOS = "quhaoiossession";

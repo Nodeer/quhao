@@ -1,17 +1,36 @@
 package controllers.backend.admin;
 
 import notifiers.MailsController;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import play.Play;
 import play.data.validation.Required;
 import play.libs.Codec;
+import play.mvc.Before;
 import vo.AdminVO;
 
+import com.withiter.common.Constants;
 import com.withiter.models.account.Account;
 
 import controllers.BaseController;
 
 public class AdminController extends BaseController {
+	
+	private static Logger logger = LoggerFactory.getLogger(AdminController.class);
 
+	/**
+	 * Interception any caller on this controller, will first invoke this method
+	 */
+	@Before(unless={"index","login"})
+	static void checkAuthentification() {
+		if (!session.contains(Constants.ADMIN_SESSION_USERNAME)) {
+			logger.debug("no session is found in Constants.ADMIN_SESSION_USERNAME");
+			renderJapidWith("japidviews.backend.admin.AdminController.index");
+		}
+	}
+	
 	public static void index(){
 		renderJapid();
 	}
@@ -31,8 +50,11 @@ public class AdminController extends BaseController {
 			renderHtml(validation.errors().get(0));
 		}
 		
+		session.put(Constants.ADMIN_SESSION_USERNAME, email);
+		
 		home();
 	}
+	
 	
 	public static void home(){
 		renderJapid();
