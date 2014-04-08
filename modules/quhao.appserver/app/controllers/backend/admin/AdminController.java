@@ -1,5 +1,7 @@
 package controllers.backend.admin;
 
+import java.util.List;
+
 import notifiers.MailsController;
 
 import org.slf4j.Logger;
@@ -13,6 +15,7 @@ import vo.AdminVO;
 
 import com.withiter.common.Constants;
 import com.withiter.models.account.Account;
+import com.withiter.models.admin.MerchantAccount;
 
 import controllers.BaseController;
 
@@ -60,6 +63,12 @@ public class AdminController extends BaseController {
 		renderJapid();
 	}
 	
+	
+	/**
+	 * 生成商家账号
+	 * @param email
+	 * @param password
+	 */
 	public static void genAccount(String email, String password){
 		validation.required(email).message("请输入Email");
 		validation.required(password).message("请输入Password");
@@ -78,14 +87,14 @@ public class AdminController extends BaseController {
 		}
 		
 		// check email exist or not
-		Account a = Account.findByEmail(email);
+		MerchantAccount a = MerchantAccount.findByEmail(email);
 		if(a != null){
 			avo.error = "Email已经存在了，请换个其他的Email";
 			avo.result = "Email已经存在了，请换个其他的Email";
 			renderJSON(avo);
 		}
 		
-		a = new Account();
+		a = new MerchantAccount();
 		a.email = email;
 		a.password = Codec.hexSHA1(password);
 		a.save();
@@ -101,5 +110,19 @@ public class AdminController extends BaseController {
 		avo.result = "生成成功<br/>email:" + a.email + "<br/>password:" + password;
 		
 		renderJSON(avo);
+	}
+	
+	/**
+	 * 显示生成账号情况
+	 */
+	public static void accounts(int page){
+		
+		int countPerPage = 10;
+		List<MerchantAccount> list = MerchantAccount.findNext(page, countPerPage);
+		if(list == null || list.isEmpty()){
+			renderJSON("");
+		}else{
+			renderJSON(list);
+		}
 	}
 }

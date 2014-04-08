@@ -3,28 +3,25 @@ package controllers.backend.self;
 import java.util.Date;
 import java.util.List;
 
-import notifiers.MailsController;
-
 import org.apache.commons.lang.StringUtils;
 
-import play.Play;
 import play.cache.Cache;
 import play.data.validation.Required;
 import play.libs.Codec;
 import play.mvc.Scope.Session;
 import vo.MerchantVO;
-import vo.account.AccountVO;
 import vo.account.CommonVO;
+import vo.account.MerchantAccountVO;
 import vo.account.SignupVO;
 
 import com.withiter.common.Constants;
 import com.withiter.models.account.Account;
 import com.withiter.models.account.CooperationRequset;
+import com.withiter.models.admin.MerchantAccount;
 import com.withiter.models.backendMerchant.MerchantAccountRel;
 import com.withiter.models.merchant.Merchant;
 
 import controllers.BaseController;
-import controllers.LandingController;
 
 /**
  * Account Controller for backend merchant
@@ -39,26 +36,21 @@ public class AccountController extends BaseController {
 	 * merchant login function
 	 */
 	public static void login() {
-		String userName = params.get("userName");
-		String userPwd = params.get("userPwd");
-		String result = Account.validate(userName, userPwd);
-		AccountVO avo = new AccountVO();
+		String email = params.get("userName");
+		String password = params.get("userPwd");
+		String result = MerchantAccount.validate(email, password);
+		MerchantAccountVO avo = new MerchantAccountVO();
 		if (result != null) {
 			avo.error = result;
 			renderJSON(avo);
 		} else {
-			Account account = null;
-			if (userName.contains("@")) {
-				account = Account.findByEmail(userName);
-			} else {
-				account = Account.findByPhone(userName);
-			}
+			MerchantAccount account = MerchantAccount.findByEmail(email);
 			
 			// update account last login datews
 			account.lastLogin = new Date();
 			account.save();
 			
-			avo = AccountVO.build(account);
+			avo = MerchantAccountVO.build(account);
 			avo.error = "";
 
 			// add merchant list into account view object
@@ -82,7 +74,7 @@ public class AccountController extends BaseController {
 	 */
 	public static void logout() {
 		String aid = params.get("aid");
-		AccountVO avo = new AccountVO();
+		MerchantAccountVO avo = new MerchantAccountVO();
 
 		Session.current().remove(aid);
 		session.clear();
@@ -93,37 +85,13 @@ public class AccountController extends BaseController {
 	 * merchant sign up function
 	 */
 	public static void signup() {
-		String userName = params.get("userName_su");
-		String userPwd1 = params.get("userPwd1_su");
-		String userPwd2 = params.get("userPwd2_su");
-
-		Account account = new Account();
-		String result = account.signupValidate(userName, userPwd1, userPwd2);
-		if (result == null) {
-			AccountVO avo = AccountVO.build(account);
-			avo.error = "";
-			String hexedUid = Codec.hexSHA1(account.id());
-			String url = Play.configuration.getProperty("application.domain")
-					+ "/b/self/AccountController/active?hid=" + hexedUid
-					+ "&oid=" + account.id();
-			try {
-				MailsController.sendTo(account.email, url);
-			} catch (Exception e) {
-				avo.error = "内部错误，请联系管理员";
-				e.printStackTrace();
-			}
-			renderJSON(avo);
-		} else {
-			AccountVO avo = new AccountVO();
-			avo.error = result;
-			renderJSON(avo);
-		}
+		
 	}
 
 	public static void active(String oid, String hid) {
 		String hexedUid = Codec.hexSHA1(oid);
 		if (hexedUid.equals(hid)) {
-			Account account = Account.findById(oid);
+			MerchantAccount account = MerchantAccount.findById(oid);
 			account.enable = true;
 			account.save();
 			renderJapidWith("japidviews.backend.self.AccountController.result", true);
@@ -145,7 +113,7 @@ public class AccountController extends BaseController {
 		System.out.println(nPwd);
 		System.out.println(nPwdR);
 
-		Account account = Account.findById(uid);
+		MerchantAccount account = MerchantAccount.findById(uid);
 		CommonVO cvo = new CommonVO();
 		if (account == null) {
 			cvo.success = false;

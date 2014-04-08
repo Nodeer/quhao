@@ -1,7 +1,6 @@
 package vo;
 
 import java.io.UnsupportedEncodingException;
-
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import play.Play;
 
-import com.withiter.models.account.Account;
+import com.withiter.models.admin.MerchantAccount;
 import com.withiter.models.merchant.Merchant;
 /*make up with two parts:1) account information
  * 						 2) merchant information 
@@ -67,7 +66,7 @@ public class BackendMerchantInfoVO {
 	
 	public List<String> imgSrc = new ArrayList<String>();
 	
-	public static BackendMerchantInfoVO build(Merchant m, Account a) {
+	public static BackendMerchantInfoVO build(Merchant m, MerchantAccount a) {
 		BackendMerchantInfoVO vo = new BackendMerchantInfoVO();
 		//merchant info
 		if(m != null){
@@ -120,11 +119,8 @@ public class BackendMerchantInfoVO {
 		
 		//account info
 		vo.aid = a.id();
-		vo.phone = a.phone;
 		vo.email = a.email;
 		vo.password = a.password;
-		vo.birthDay = a.birthDay;
-		vo.userImage = a.userImage;
 		vo.lastLogin = a.lastLogin;
 		
 		return vo;

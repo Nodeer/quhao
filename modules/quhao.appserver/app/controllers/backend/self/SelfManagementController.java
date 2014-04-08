@@ -4,11 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.httpclient.HttpException;
@@ -18,22 +16,19 @@ import org.slf4j.LoggerFactory;
 import play.Play;
 import play.libs.Images;
 import play.mvc.Before;
-import play.mvc.Http.Header;
 import play.mvc.Scope.Session;
 import vo.BackendMerchantInfoVO;
 import vo.HaomaVO;
-import vo.PaiduiVO;
 import vo.ReservationVO;
-import vo.account.AccountVO;
+import vo.account.MerchantAccountVO;
 import cn.bran.japid.util.StringUtils;
 
 import com.mongodb.gridfs.GridFSInputFile;
 import com.withiter.common.Constants;
-import com.withiter.common.Constants.CreditStatus;
 import com.withiter.common.sms.business.SMSBusiness;
 import com.withiter.models.account.Account;
-import com.withiter.models.account.Credit;
 import com.withiter.models.account.Reservation;
+import com.withiter.models.admin.MerchantAccount;
 import com.withiter.models.backendMerchant.MerchantAccountRel;
 import com.withiter.models.merchant.Category;
 import com.withiter.models.merchant.Haoma;
@@ -70,7 +65,7 @@ public class SelfManagementController extends BaseController {
 	 * @param uid
 	 */
 	public static void index(String uid) {
-		Account account = Account.findById(uid);
+		MerchantAccount account = MerchantAccount.findById(uid);
 		List<MerchantAccountRel> relList = MerchantAccountRel.getMerchantAccountRelList(uid);
 		Merchant merchant = null;
 		if (relList == null || relList.isEmpty()) {
@@ -109,11 +104,8 @@ public class SelfManagementController extends BaseController {
 			rel.save();
 		} else {			// update merchant
 			m = Merchant.findById(mid);
-//			MerchantAccountRel rel = new MerchantAccountRel();
-//			rel.mid = m.id();
-//			rel.uid = uid;
-//			rel.save();
 		}
+		
 		if (!StringUtils.isEmpty(merchantName)) {
 			m.name = merchantName;
 		}
@@ -200,21 +192,27 @@ public class SelfManagementController extends BaseController {
 		HaomaVO haomaVO = HaomaVO.build(haoma);
 
 		String uid = Session.current().get(Constants.SESSION_USERNAME);
-		Account account = Account.findById(uid);
+		MerchantAccount account = MerchantAccount.findById(uid);
 		Merchant merchant = Merchant.findById(mid);
 		BackendMerchantInfoVO bmivo = BackendMerchantInfoVO.build(merchant, account);
 
 		renderJapid(haomaVO, bmivo);
 	}
 
-	// TODO add personal page
+
+	/**
+	 * 进入个人信息管理
+	 */
 	public static void goPersonalPage() {
 		String aid = params.get("aid");
-		Account account = Account.findById(aid);
-		AccountVO avo = AccountVO.build(account);
+		MerchantAccount account = MerchantAccount.findById(aid);
+		MerchantAccountVO avo = MerchantAccountVO.build(account);
 
 		String mid = params.get("mid");
-		Merchant merchant = Merchant.findById(mid);
+		Merchant merchant = null;
+		if(!StringUtils.isEmpty(mid)){
+			merchant = Merchant.findById(mid);
+		}
 		BackendMerchantInfoVO bmivo = BackendMerchantInfoVO.build(merchant, account);
 
 		renderJapid(avo, bmivo);

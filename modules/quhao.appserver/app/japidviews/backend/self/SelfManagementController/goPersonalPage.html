@@ -1,16 +1,17 @@
 `import static press.Plugin.*;
-`import vo.account.AccountVO;
+`import vo.account.MerchantAccountVO;
 `import vo.BackendMerchantInfoVO
 `extends base_layout
 `set cssAndJs
 $addJS("account.js", true)
+$addJS("merchant.js", true)
 $addCSS("landing.css", true)
 $addCSS("pop_signUp_logIn.css", true)
 $addCSS("backend.css", true)
 `
 `set title:i18n("取号啦 - 个人信息管理")
 
-`args AccountVO avo, BackendMerchantInfoVO bmivo
+`args MerchantAccountVO avo, BackendMerchantInfoVO bmivo
 
 <!DOCTYPE html>
 <html lang="cn">
