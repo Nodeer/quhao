@@ -1,0 +1,56 @@
+`import static press.Plugin.*;
+`import com.withiter.models.merchant.TopMerchant;
+`extends admin_layout
+`set title "取号啦 - 账号状态"
+
+$addJS("admin.js",true);
+
+`args List<TopMerchant> list
+
+
+`set contents
+   <div class="container-fluid">
+   	<table class="table table-striped" style="text-align:center;">
+   		<thead>
+   			<tr>
+   				<th>商家ID</th>
+   				<th>商家名称</th>
+   				<th>商家地址</th>
+   				<th>商家电话</th>
+   				<th>是否激活</th>
+   				<th>置顶开始时间</th>
+   				<th>置顶结束时间</th>
+   				<th>置顶操作</th>
+   			</tr>
+   		</thead>
+   		<tbody>
+   			`for(TopMerchant topmerchant : list){
+		   		<tr>
+		   			<td style="vertical-align: middle;">${topmerchant.id()}</td>
+		   			<td style="vertical-align: middle;">${topmerchant.name}</td>
+		   			<td style="vertical-align: middle;">${topmerchant.address}</td>
+		   			<td style="vertical-align: middle;">
+		   				`if(topmerchant.telephone != null && topmerchant.telephone.length > 0){
+		   					${topmerchant.telephone[0]}
+		   				`}
+		   			</td>
+		   			<td style="vertical-align: middle;">
+		   				`if(topmerchant.enable){
+		   					是
+		   				`} else {
+		   					否
+		   				`}
+		   			</td>
+		   			<td style="vertical-align: middle;">${topmerchant.start}</td>
+		   			<td style="vertical-align: middle;">${topmerchant.end}</td>
+		   			<td style="vertical-align: middle;">
+		   				<button type="button" class="btn btn-default">取消置顶</button>
+		   			</td>
+		   		</tr>
+   			`}
+   		</tbody>
+	</table>
+   	</div>
+`
+
+

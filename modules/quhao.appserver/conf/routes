@@ -29,6 +29,7 @@ GET		/admin								backend.admin.AdminController.index
 GET		/admin/home							backend.admin.AdminController.home
 POST	/admin/genaccount					backend.admin.AdminController.genAccount
 GET		/admin/accounts						backend.admin.AdminController.accounts
+GET		/admin/topmerchant					backend.admin.AdminController.topmerchant
 
 # Category
 GET		/allCategories						MerchantController.allCategories

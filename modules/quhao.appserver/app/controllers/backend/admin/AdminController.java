@@ -17,6 +17,7 @@ import vo.AdminVO;
 import com.withiter.common.Constants;
 import com.withiter.models.account.Account;
 import com.withiter.models.admin.MerchantAccount;
+import com.withiter.models.merchant.TopMerchant;
 
 import controllers.BaseController;
 
@@ -39,6 +40,11 @@ public class AdminController extends BaseController {
 		renderJapid();
 	}
 	
+	/**
+	 * 管理员登陆
+	 * @param email 登陆的email
+	 * @param password 登陆的密码
+	 */
 	public static void login(@Required String email, @Required String password){
 		validation.required(email).message("请输入Email");
 		validation.required(password).message("请输入Password");
@@ -59,7 +65,9 @@ public class AdminController extends BaseController {
 		home();
 	}
 	
-	
+	/**
+	 * 管理员首页
+	 */
 	public static void home(){
 		renderJapid();
 	}
@@ -133,5 +141,12 @@ public class AdminController extends BaseController {
 		}else{
 			renderJapid(list, page, totalPage);
 		}
+	}
+	
+	public static void topmerchant(){
+		List<TopMerchant> tops = TopMerchant.all().asList();
+		logger.debug("the size of top merchant is %s", tops.size());
+		renderJapid(tops);
+		
 	}
 }

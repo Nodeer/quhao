@@ -46,4 +46,7 @@ public abstract class TopMerchantEntityDef extends BaseModel {
 	public boolean enable = false;
 	public Date joinedDate = new Date();
 	
+	public Date start = new Date();		// 置顶开始日期
+	public Date end = new Date(System.currentTimeMillis() + 60l*60*24);	// 置顶结束日期，默认1天
+	
 }
