@@ -7,9 +7,11 @@
 
 # Press
 *		/									module:press
+GET     /press/js/         					staticDir:public/javascripts
+GET     /press/css/         				staticDir:public/stylesheets
 
 # Ignore favicon request
-GET     /favicon.ico                        staticFile:public/images/applyful_favicon.gif
+GET     /favicon.ico                        staticFile:public/images/common/quhao_favicon.png
 
 GET     /                     		  		LandingController.index
 
