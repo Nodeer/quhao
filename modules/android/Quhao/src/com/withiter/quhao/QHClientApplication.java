@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.withiter.quhao.domain.AccountInfo;
+import com.withiter.quhao.domain.CityInfo;
 import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
@@ -60,6 +61,12 @@ public class QHClientApplication extends Application {
 	 * 是否可以加载图片
 	 */
 	public boolean canLoadImg = false;
+	
+	/**
+	 * 默认城市
+	 */
+	public CityInfo defaultCity;
+	
 	
 	public static Context mContext;
 	private static QHClientApplication instance;
@@ -118,6 +125,12 @@ public class QHClientApplication extends Application {
 			{
 				this.canLoadImg = false;
 			}
+			
+			//初始化城市
+			String cityCode = SharedprefUtil.get(this, QuhaoConstant.CITY_CODE, "021");
+			String cityName = SharedprefUtil.get(this, QuhaoConstant.CITY_NAME, "上海");
+			String cityPinyin = SharedprefUtil.get(this, QuhaoConstant.CITY_PINYIN, "shanghai");
+			this.defaultCity = new CityInfo(cityCode, cityName, cityPinyin);
 			
 			QuhaoLog.i(TAG, "start to init configurations from application.properties");
 			InputStream input = getResources().openRawResource(R.raw.application);

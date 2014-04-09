@@ -10,6 +10,7 @@
     
     <string name="btn_ok">确&#160;&#160;&#160;定</string>
     <string name="btn_back">返&#160;回</string>
+    <string name="btn_calcel_1_space">取&#160;消</string>
 	
     <string name="commit">提&#160;&#160;&#160;交</string>
     <string name="delete">删除</string>
@@ -177,4 +178,11 @@
 	<string name="delete_success">删除成功</string>
 	<string name="delete_failed">网络问题，删除失败</string>
 	<!-- 历史取号情况 QuhaoHistoryStatesActivity end -->
+	
+	<!-- 城市选择 CitySelectActivity begin -->
+	<string name="city_list">城市列表</string>
+	<string name="city_search_hint">请输入城市名或首字母查询</string>
+	<string name="city_cannot_locate">无法定位当前城市,请稍候再试</string>
+	<!-- 城市选择 CitySelectActivity end -->
+	
 </resources>

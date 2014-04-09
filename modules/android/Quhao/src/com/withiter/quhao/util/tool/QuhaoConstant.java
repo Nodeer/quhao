@@ -53,9 +53,15 @@ public class QuhaoConstant {
 	public static String IS_2G3G_READ = "com.withiter.settings.2g3g.read.img";
 	public static String DOWNLOAD_PATH = "/mnt/sdcard/download/weibopic/";
 
+	public static String CITY_CODE = "cityCode";
+	
+	public static String CITY_NAME = "cityName";
+	
+	public static String CITY_PINYIN = "cityPinyin";
 	/**
 	 * 更新時間
 	 */
 //	public static long TIME_STAMP = 0;
 //	public static long TIME_STAMP_OLD = 0;
+	
 }

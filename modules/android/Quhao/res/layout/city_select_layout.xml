@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffffff"
+    android:orientation="vertical" >
+
+    <!-- Merchant List page's title, eg, 本帮菜【共1000家】 -->
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/common_top_bar_bg_blue"
+        android:gravity="center_vertical"
+        android:paddingBottom="5dip"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
+        android:paddingTop="5dip" >
+
+        <Button
+            android:id="@+id/cancel_btn"
+            android:layout_width="60dip"
+            android:layout_height="35dip"
+            android:text="@string/btn_calcel_1_space"
+            android:background="@drawable/btn_back_background"
+            android:gravity="center|center_vertical"
+            android:textColor="#ff000000"
+            android:textSize="14.0sp"  />
+
+        <TextView
+            android:id="@+id/categoryTypeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/city_list"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="#ff000000" />
+
+    </RelativeLayout>
+
+    <LinearLayout android:layout_width="fill_parent"
+        android:layout_height="80dip"
+        android:gravity="center"
+        android:orientation="vertical">
+        
+        <View android:layout_width="0dip" android:layout_height="0dip" android:focusable="true" android:focusableInTouchMode="true" />
+        <RelativeLayout android:layout_width="fill_parent"
+	        android:layout_height="40dip"
+	        android:gravity="center"
+	        android:orientation="horizontal">
+	        <EditText android:id="@+id/search_edit"
+	            android:layout_width="match_parent"
+	            android:layout_height="35dip"
+	            android:padding="5dip"
+	            android:focusable="false"
+	            android:hint="@string/city_search_hint"
+	            android:textSize="10.0sp"
+	            android:gravity="center"
+	            />
+	        
+        </RelativeLayout>
+        <LinearLayout android:layout_width="fill_parent"
+	        android:layout_height="match_parent"
+	        android:gravity="center"
+	        android:orientation="vertical">
+	        <TextView  android:id="@+id/locate_message"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:padding="5dip"
+	            android:text="@string/city_cannot_locate"
+	            android:textSize="12.0sp"
+	            android:gravity="left"
+	            />
+        </LinearLayout>
+    </LinearLayout>
+    
+	<FrameLayout
+	    android:id="@+id/citysLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="#ffffff" >
+
+	    <ListView
+            android:id="@+id/cityListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
+
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:background="#f0606060"
+            android:gravity="center"
+            android:text="A"
+            android:textColor="#ffffff"
+            android:textSize="30sp" />
+
+        <LinearLayout
+            android:id="@+id/layout"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_gravity="right"
+            android:background="#d7d7d7"
+            android:gravity="center"
+            android:orientation="vertical" >
+        </LinearLayout>
+    </FrameLayout>
+    
+</LinearLayout>

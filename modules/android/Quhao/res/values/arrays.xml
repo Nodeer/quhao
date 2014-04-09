@@ -3,4 +3,33 @@
     <string-array name="seat">
     	<item>人</item>
  	</string-array>
+ 	<string-array name="remen">
+    	<item>021-热门-上海</item>
+    	<item>010-热门-北京</item>
+    	<item>020-热门-广州</item>
+    	<item>0755-热门-深圳</item>
+    	<item>028-热门-成都</item>
+    	<item>023-热门-重庆</item>
+    	<item>025-热门-南京</item>
+ 	</string-array>
+ 	
+ 	<string-array name="city">
+    	<item>021-Shanghai-上海</item>
+    	<item>010-Beijing-北京</item>
+    	<item>020-Guangzhou-广州</item>
+    	<item>0755-Shenzhen-深圳</item>
+    	<item>028-Chengdu-成都</item>
+    	<item>023-Chongqi-重庆</item>
+    	<item>025-Nanjing-南京</item>
+    	<item>0551-Hefei-合肥</item>
+    	<item>0553-Wuhu-芜湖</item>
+    	<item>0556-Anqing-安庆</item>
+    	<item>0552-Bengbu-蚌埠</item>
+    	<item>0558-Haozhou-毫州</item>
+    	<item>0565-Chaohu-巢湖</item>
+    	<item>0566-Chizhou-池州</item>
+    	<item>0550-Chuzhou-滁州</item>
+    	<item>1558-Fuyang-阜阳</item>
+    	
+ 	</string-array>
 </resources>

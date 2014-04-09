@@ -21,12 +21,14 @@ import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.CategoryGridAdapter;
 import com.withiter.quhao.adapter.TopMerchantGridAdapter;
@@ -51,7 +53,8 @@ public class MainActivity extends QuhaoBaseActivity {
 	protected ProgressDialogUtil progressTopMerchant;
 	private static final int UNLOCK_CLICK = 1000;
 	private List<Category> categorys = null;
-
+	private TextView cityBtn;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -81,6 +84,10 @@ public class MainActivity extends QuhaoBaseActivity {
 		categorysGird = (GridView) findViewById(R.id.categorys);
 		
 		categorysGird.setOnItemClickListener(categorysClickListener);
+		
+		cityBtn = (TextView) this.findViewById(R.id.city);
+		
+		cityBtn.setOnClickListener(this);
 		// TODO add default view here
 		if (!networkOK) {
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -90,10 +97,6 @@ public class MainActivity extends QuhaoBaseActivity {
 			
 			return;
 		}
-
-		getTopMerchantsFromServerAndDisplay();
-		getCategoriesFromServerAndDisplay();
-		
 
 	}
 
@@ -255,8 +258,34 @@ public class MainActivity extends QuhaoBaseActivity {
 	}
 
 	@Override
+	protected void onResume() {
+		
+		super.onResume();
+		cityBtn.setText(QHClientApplication.getInstance().defaultCity.cityName);
+		getTopMerchantsFromServerAndDisplay();
+		getCategoriesFromServerAndDisplay();
+	}
+	
+	@Override
 	public void onClick(View v) {
 
+		if(isClick)
+		{
+			return;
+		}
+		
+		isClick = true;
+		
+		switch(v.getId())
+		{
+			case R.id.city:
+				Intent intent = new Intent();
+				intent.setClass(this, CitySelectActivity.class);
+				startActivity(intent);
+ 			default:
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			break;
+		}
 	}
 
 	@Override
