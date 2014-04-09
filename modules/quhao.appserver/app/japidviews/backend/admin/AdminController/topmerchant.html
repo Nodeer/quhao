@@ -1,7 +1,7 @@
 `import static press.Plugin.*;
 `import com.withiter.models.merchant.TopMerchant;
 `extends admin_layout
-`set title "取号啦 - 账号状态"
+`set title "取号啦 - 置顶管理"
 
 $addJS("admin.js",true);
 
@@ -17,7 +17,6 @@ $addJS("admin.js",true);
    				<th>商家名称</th>
    				<th>商家地址</th>
    				<th>商家电话</th>
-   				<th>是否激活</th>
    				<th>置顶开始时间</th>
    				<th>置顶结束时间</th>
    				<th>置顶操作</th>
@@ -34,17 +33,10 @@ $addJS("admin.js",true);
 		   					${topmerchant.telephone[0]}
 		   				`}
 		   			</td>
+		   			<td style="vertical-align: middle;">${topmerchant.formatStartDate()}</td>
+		   			<td style="vertical-align: middle;">${topmerchant.formatEndDate()}</td>
 		   			<td style="vertical-align: middle;">
-		   				`if(topmerchant.enable){
-		   					是
-		   				`} else {
-		   					否
-		   				`}
-		   			</td>
-		   			<td style="vertical-align: middle;">${topmerchant.start}</td>
-		   			<td style="vertical-align: middle;">${topmerchant.end}</td>
-		   			<td style="vertical-align: middle;">
-		   				<button type="button" class="btn btn-default">取消置顶</button>
+		   				<button type="button" class="btn btn-default"><a href="/admin/disabletop?mid=${topmerchant.id()}">取消置顶</a></button>
 		   			</td>
 		   		</tr>
    			`}

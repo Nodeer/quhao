@@ -5,12 +5,14 @@ import java.util.List;
 
 import notifiers.MailsController;
 
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import play.Play;
 import play.data.validation.Required;
 import play.libs.Codec;
+import play.modules.morphia.Model.MorphiaQuery;
 import play.mvc.Before;
 import vo.AdminVO;
 
@@ -144,9 +146,18 @@ public class AdminController extends BaseController {
 	}
 	
 	public static void topmerchant(){
-		List<TopMerchant> tops = TopMerchant.all().asList();
+		MorphiaQuery q = TopMerchant.q();
+		q.filter("enable", true);
+		List<TopMerchant> tops = q.asList();
 		logger.debug("the size of top merchant is %s", tops.size());
 		renderJapid(tops);
 		
+	}
+	
+	public static void disableTop(String mid){
+		TopMerchant t = TopMerchant.findById(new ObjectId(mid));
+		t.enable = false;
+		t.save();
+		topmerchant();
 	}
 }

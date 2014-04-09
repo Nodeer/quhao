@@ -1,5 +1,6 @@
 package com.withiter.models.merchant;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import cn.bran.japid.util.StringUtils;
@@ -131,4 +132,17 @@ public class TopMerchant extends TopMerchantEntityDef {
 		
 		return tm;
 	}
+	
+	public String formatStartDate(){
+		SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
+		String formattedStart = sdf.format(this.start);
+		return formattedStart;
+	}
+	
+	public String formatEndDate(){
+		SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
+		String formattedEnd = sdf.format(this.end);
+		return formattedEnd;
+	}
 }
+
