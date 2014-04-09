@@ -6,14 +6,6 @@
 	<array>
 		<dict>
 			<key>cityCode</key>
-			<string>0222</string>
-			<key>isOpen</key>
-			<true/>
-			<key>name</key>
-			<string>test</string>
-		</dict>
-		<dict>
-			<key>cityCode</key>
 			<string>010</string>
 			<key>isOpen</key>
 			<true/>

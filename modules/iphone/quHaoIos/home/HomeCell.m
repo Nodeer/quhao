@@ -24,7 +24,6 @@
 {
     
     self.egoImgView = [[EGOImageView alloc] initWithFrame:CGRectMake(5, 10, 105, 80)];
-    self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
     [self.contentView addSubview:self.egoImgView];
     
     

@@ -38,7 +38,8 @@
 @property (nonatomic, strong) NSMutableArray *items;
 
 //@property (nonatomic, strong) iCarousel *carousel;
--(void)requestData;
+-(void)requestTopData;
+-(void)requestMenuData;
 -(UIScrollView *) setInitWithColumns:(int)col marginSize:(CGFloat)margin gutterSize:(CGFloat)gutter rowHeight:(CGFloat)height;
 //创建catogory
 -(UIControl *) createMenuItem:(Category *)cate;
