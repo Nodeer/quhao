@@ -1,5 +1,6 @@
 package com.withiter.models.account;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import play.modules.morphia.Model.MorphiaQuery;
@@ -68,6 +69,24 @@ public class Credit extends CreditEntityDef {
 		q.offset((page - 1) * DEFAULT_PAGE_ITEMS_NUMBER).limit(
 				DEFAULT_PAGE_ITEMS_NUMBER);
 		return q.asList();
+	}
+
+	public static List<Credit> findByAccountId(String accountId, String sortBy) {
+		MorphiaQuery q = Credit.q();
+		q.filter("accountId", accountId);
+		q.filter("available", true);
+
+		if (!StringUtils.isEmpty(sortBy)) {
+			q = sortBy(q, sortBy);
+		}else{
+			q = sortBy(q,"-created");
+		}
+		
+		if(null != q.asKeyList() && !q.asKeyList().isEmpty())
+		{
+			return q.asList();
+		}
+		return new ArrayList<Credit>();
 	}
 
 }

@@ -485,7 +485,7 @@ public class AccountController extends BaseController {
 	 * @param accountId
 	 *            帐号ID
 	 */
-	public static void getCreditCost(String accountId,int page,String sortBy) {
+	public static void getCreditCost(String accountId,String sortBy) {
 
 		
 		List<CreditVO> creditVOs = new ArrayList<CreditVO>();
@@ -494,7 +494,7 @@ public class AccountController extends BaseController {
 			return;
 		}
 
-		List<Credit> credits = Credit.findByAccountId(accountId,page,sortBy);
+		List<Credit> credits = Credit.findByAccountId(accountId,sortBy);
 		CreditVO creditVO = null;
 		for (Credit credit : credits) {
 			creditVO = new CreditVO();
