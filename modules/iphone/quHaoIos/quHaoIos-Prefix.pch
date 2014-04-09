@@ -8,6 +8,7 @@
 #warning "This project uses features only available in iOS SDK 3.0 and later."
 #endif
 
+#define IP http://192.168.2.102:9081
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
 #define IOS7_SDK_AVAILABLE 1
 #else
@@ -19,6 +20,7 @@
     #import <Foundation/Foundation.h>
 #endif
 #define Notification_TabClick @"Notification_TabClick"
+#define UIColorFromRGB [UIColor colorWithRed:145.0/255.0 green:211.0/255.0 blue:245.0/255.0 alpha:1.0]
 
 #define kDeviceHeight     [UIScreen mainScreen].bounds.size.height
 #define kDeviceWidth     [UIScreen mainScreen].bounds.size.width

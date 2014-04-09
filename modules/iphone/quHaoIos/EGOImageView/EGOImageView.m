@@ -29,7 +29,8 @@
 
 @implementation EGOImageView
 @synthesize imageURL, placeholderImage, delegate;
-
+@synthesize cateType;
+@synthesize id;
 - (id)initWithPlaceholderImage:(UIImage*)anImage {
 	return [self initWithPlaceholderImage:anImage delegate:nil];	
 }

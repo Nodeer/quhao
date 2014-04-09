@@ -14,11 +14,19 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.title = NSLocalizedString(@"主页", @"主页");
         self.tabBarItem.title = @"主页";
         self.tabBarItem.image = [UIImage imageNamed:@"home"];
+        [self myInit];
     }
     return self;
+}
+
+-(void)myInit
+{
+    [self loadNavigationItem];
+    
+    _topArray= [[NSMutableArray alloc] init];
+    _categoryArray = [[NSMutableArray alloc] init];
 }
 
 -(void)loadNavigationItem
@@ -28,7 +36,8 @@
     _cityButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _cityButton.frame = CGRectMake( 0, 0, 40, 25 );
     [_cityButton setTitle: @"上海" forState: UIControlStateNormal];
-    _cityButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0f];
+    _cityButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0f];
+    //[_cityButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     [_cityButton.titleLabel setTextAlignment:NSTextAlignmentRight];
     [_cityButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
     UIBarButtonItem *cityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_cityButton];
@@ -42,7 +51,6 @@
     UIButton *chooseButton=[Helper getBackBtn:@"chooseArrow" title:@"" rect:CGRectMake( 0, 0, 11, 9 )];
     [chooseButton addTarget:self action:@selector(openCitySearchView:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *chooseButtonItem = [[UIBarButtonItem alloc] initWithCustomView:chooseButton];
-    
     UIBarButtonItem *spaceButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     spaceButton.width = -15;
     NSArray *leftBarButtons = [NSArray arrayWithObjects:spaceButton,cityButtonItem,chooseButtonItem, nil];
@@ -68,15 +76,12 @@
     city.delegate = self;
     city.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:city animated:NO];
-    
     [self.navigationController.view.layer addAnimation:animation forKey:nil];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [self loadNavigationItem];
     _menuView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, kDeviceHeight)];
     _menuView.backgroundColor = [UIColor whiteColor];
     self.view = _menuView;
@@ -86,33 +91,24 @@
         _menuView.contentSize = _menuView.frame.size;
         _menuView.showsVerticalScrollIndicator = NO;
     }
-
-    _topArray= [[NSMutableArray alloc] init];
-    _categoryArray = [[NSMutableArray alloc] init];
-    
-    if([Helper isConnectionAvailable]){
-        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:HUD];
-        //如果设置此属性则当前的view置于后台
-        HUD.dimBackground = YES;
-        //设置对话框文字
-        HUD.labelText = @"正在加载...";
-        //显示对话框
-        [HUD showAnimated:YES whileExecutingBlock:^{
-            [self requestData];
-        } completionBlock:^{
-            //操作执行完后取消对话框
-            [HUD removeFromSuperview];
-            [self topSetOrReset];
-            
-            [self menuSetOrReset];
-            
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshed:) name:Notification_TabClick object:nil];
-        }];
-    }else
-    {
-        [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
-    }
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = NSLocalizedString(@"正在加载", nil);
+    hud.square = YES;
+    [hud hide:YES afterDelay:2];
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_group_t group = dispatch_group_create();
+    dispatch_group_async(group, queue, ^{
+        [self requestTopData];
+    });
+    dispatch_group_async(group, queue, ^{
+        [self requestMenuData];
+    });
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        [self topSetOrReset];
+        [self menuSetOrReset];
+        [hud hide:YES];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshed:) name:Notification_TabClick object:nil];
+    });
 }
 
 - (void)refreshed:(NSNotification *)notification
@@ -130,32 +126,32 @@
         [_categoryArray removeAllObjects];
         [_topArray removeAllObjects];
         
-        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:HUD];
-        //如果设置此属性则当前的view置于后台
-        HUD.dimBackground = YES;
-        //设置对话框文字
-        HUD.labelText = @"正在刷新...";
-        //显示对话框
-        [HUD showAnimated:YES whileExecutingBlock:^{
-            [self requestData];
-        } completionBlock:^{
-            //操作执行完后取消对话框
-            [HUD removeFromSuperview];
-            
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.labelText = NSLocalizedString(@"正在刷新", nil);
+        hud.square = YES;
+        [hud hide:YES afterDelay:2];
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        dispatch_group_t group = dispatch_group_create();
+        dispatch_group_async(group, queue, ^{
+            [self requestTopData];
+        });
+        dispatch_group_async(group, queue, ^{
+            [self requestMenuData];
+        });
+        dispatch_group_notify(group, dispatch_get_main_queue(), ^{
             for(UIView *view1 in [self.view subviews])
             {
                 [view1 removeFromSuperview];
             }
             [self topSetOrReset];
             [self menuSetOrReset];
-        }];
-    }else
-    {
+            [hud hide:YES];
+        });
+    }else{
         [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
     }
 }
--(void)requestData
+-(void)requestTopData
 {
     //处理topMerchant
     NSString *url = [NSString stringWithFormat:@"%@%@%d&cityCode=%@",[Helper getIp],getTopMerchants,1,_cityCode];
@@ -185,11 +181,31 @@
             }
         }
     }
-    
+}
+
+-(void)topSetOrReset {
+    NSLog(@"top-- begin----");
+
+    _menuView = [self setInitWithColumns:2 marginSize:10 gutterSize:20 rowHeight:85];
+    [self populateTop];
+    NSLog(@"top-- end----");
+
+}
+
+-(void)populateTop {
+    UIControl *topItem = nil;
+    for (MerchartModel *m in _topArray) {
+        topItem = [self createTopItem:m];
+        [self.view addSubview:topItem];
+    }
+}
+
+-(void)requestMenuData
+{
     //加载category
-    url = [NSString stringWithFormat:@"%@%@",[Helper getIp],allCategories_url];
+    NSString *url = [NSString stringWithFormat:@"%@%@",[Helper getIp],allCategories_url];
     //url = [NSString stringWithFormat:@"%@%@",[Helper getIp],allCategories_url];
-    response1 = [QuHaoUtil requestDb:url];
+    NSString *response1 = [QuHaoUtil requestDb:url];
     if([response1 isEqualToString:@""]){
         //异常处理
         [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
@@ -260,25 +276,13 @@
     }
 }
 
--(void)topSetOrReset {
-    _menuView = [self setInitWithColumns:2 marginSize:10 gutterSize:20 rowHeight:85];
-    [self populateTop];
-}
-
--(void)populateTop {
-    UIControl *topItem = nil;
-    for (MerchartModel *m in _topArray) {
-        topItem = [self createTopItem:m];
-        [self.view addSubview:topItem];
-    }
-}
-
 -(void)menuSetOrReset {
-    //_menuView = nil;
+    NSLog(@"menu-- begin----");
+
     [self resetWithColumns:3 marginSize:10 gutterSize:20 rowHeight:85];
-    //_menuView.backgroundColor = [UIColor whiteColor];
-    //self.view = _menuView;
     [self populateMenu];
+    NSLog(@"menu-- end----");
+
 }
 
 -(void)populateMenu {
@@ -393,21 +397,27 @@
     CGRect parentFrame = item.frame;
     CGFloat margin = 0.0;
     
-    
-    CGRect imgFrame = CGRectMake(margin, 0, parentFrame.size.width, 70);
-    UICustomImageView *imageView=[[UICustomImageView alloc] initWithFrame:imgFrame];
-    UIImage *image=[UIImage imageNamed:@"no_logo.png"];
-    if ([[Helper returnUserString:@"showImage"] boolValue]&&![model.imgUrl isEqualToString:@""])
+    EGOImageView *egoImgView = [[EGOImageView alloc] initWithPlaceholderImage:[UIImage imageNamed:@"placeholder.png"]];
+    egoImgView.frame = CGRectMake(margin, 0, parentFrame.size.width, 70);
+    if (![[Helper returnUserString:@"showImage"] boolValue]||[model.imgUrl isEqualToString:@""])
     {
-        image=[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:model.imgUrl]]];
+        egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
     }
-    [imageView setImage:image];
-    imageView.id=model.id;
-    imageView.backgroundColor=[UIColor whiteColor];
-    imageView.userInteractionEnabled=YES;
+    else
+    {
+        egoImgView.imageURL = [NSURL URLWithString:model.imgUrl];
+    }
+    egoImgView.id=model.id;
+    egoImgView.userInteractionEnabled=YES;
+    UITapGestureRecognizer *tapGesture1=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickTopImage:)];
+    tapGesture1.numberOfTapsRequired = 1;
+    [egoImgView addGestureRecognizer:tapGesture1];
+    
     UITapGestureRecognizer *tapGesture2=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickTopImage:)];
-    [imageView addGestureRecognizer:tapGesture2];
-    [item addSubview:imageView];
+    tapGesture2.numberOfTapsRequired = 2;
+    [egoImgView addGestureRecognizer:tapGesture2];
+    
+    [item addSubview:egoImgView];
     
     return item;
 }
