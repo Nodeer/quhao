@@ -205,7 +205,10 @@ $baseCss()
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     $addJS("libs/jquery-1.7.js", true)
-	$addJS("libs/jquery-ui-1.10.3.custom.min.js", true)
-	$addJS("libs/bootstrap.min.js", true)
+	$addJS("libs/jquery-ui-1.10.3.custom.min.js", false)
+	$addJS("libs/bootstrap.min.js", false)
+	`get cssAndJs`
+	$compressedCSSTag()
+	$compressedJSTag()
   </body>
 </html>
