@@ -86,14 +86,19 @@ public class MerchantController extends BaseController {
 			renderJapidWith("japidviews.backend.merchant.MerchantManagementController.index");
 		}
 	}
-*/
-	/**
-	 * 返回所有分类
 	 */
-	public static void allCategories() {
+	
+	/**
+	 * 根据城市代码，返回所有分类
+	 * @param cityCode
+	 */
+	public static void allCategories(String cityCode) {
 		List<Category> categories = Category.getAll();
 		List<CategoryVO> categoriesVO = new ArrayList<CategoryVO>();
 		for (Category c : categories) {
+			MorphiaQuery q = Merchant.q();
+			q.filter("cityCode", cityCode).filter("cateType", c.cateType);
+			c.count = q.count();
 			categoriesVO.add(CategoryVO.build(c));
 		}
 		renderJSON(categoriesVO);
