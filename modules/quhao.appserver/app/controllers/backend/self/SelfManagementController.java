@@ -102,8 +102,18 @@ public class SelfManagementController extends BaseController {
 			rel.mid = m.id();
 			rel.uid = uid;
 			rel.save();
-		} else {			// update merchant
+		} else {			
 			m = Merchant.findById(mid);
+			
+			// check rel exist, if yes -> operation is update. if no -> new MerchantAccountRel
+			MerchantAccountRel r = MerchantAccountRel.findByMid(mid);
+			if(r == null){
+				// new MerchantAccountRel
+				MerchantAccountRel rel = new MerchantAccountRel();
+				rel.mid = m.id();
+				rel.uid = uid;
+				rel.save();
+			}
 		}
 		
 		if (!StringUtils.isEmpty(merchantName)) {

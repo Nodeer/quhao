@@ -34,4 +34,10 @@ public class MerchantAccountRel extends MerchantAccountRelEntityDef{
 		}
 		return mList;
 	}
+	
+	public static MerchantAccountRel findByMid(String mid){
+		MorphiaQuery q = MerchantAccountRel.q();
+		q.filter("mid", mid);
+		return q.first();
+	}
 }
