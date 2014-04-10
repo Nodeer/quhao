@@ -446,8 +446,8 @@ public class AccountController extends BaseController {
 	 * @param accountId
 	 *            account id
 	 */
-	public static void getHistoryMerchants(String accountId,int page,String sortBy) {
-		List<Reservation> histroyReservations = Reservation.findHistroyReservations(accountId,page,sortBy);
+	public static void getHistoryMerchants(String accountId,String sortBy) {
+		List<Reservation> histroyReservations = Reservation.findHistroyReservationsNew(accountId,sortBy);
 
 		List<ReservationVO> histroytReservationVOs = new ArrayList<ReservationVO>();
 		ReservationVO reservationVO = null;

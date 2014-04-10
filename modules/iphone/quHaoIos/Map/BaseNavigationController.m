@@ -26,10 +26,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    if([self.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:) ]){
-        CGSize size=CGSizeMake(kDeviceWidth,44);
-        [self.navigationBar setBackgroundImage:[Helper reSizeImage:@"title.jpg" toSize:size] forBarMetrics:UIBarMetricsDefault];
-    }
+#if IOS7_SDK_AVAILABLE
+    [self.navigationBar setBarTintColor:UIColorFromRGB];
+#else
+    [self.navigationBar setTintColor:UIColorFromRGB];
+#endif
+//    if([self.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:) ]){
+//        CGSize size=CGSizeMake(kDeviceWidth,44);
+//        [self.navigationBar setBackgroundImage:[Helper reSizeImage:@"title.jpg" toSize:size] forBarMetrics:UIBarMetricsDefault];
+//    }
 }
 
 - (void)didReceiveMemoryWarning

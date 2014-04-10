@@ -155,6 +155,30 @@ public class Reservation extends ReservationEntityDef {
 	}
 
 	/**
+	 * get next page reservations by account ID
+	 * 
+	 * @param accountId
+	 *            account ID
+	 * @param page
+	 *            the page number
+	 * @param sortBy
+	 *            排序方式
+	 * @return reservations list
+	 */
+	public static List<Reservation> findHistroyReservationsNew(String accountId, String sortBy) {
+		MorphiaQuery q = Reservation.q();
+		q.filter("accountId", accountId).filter("valid", false).filter("available", true);
+;
+
+		if (!StringUtils.isEmpty(sortBy)) {
+			q = sortBy(q, sortBy);
+		} else {
+			q = sortBy(q, "-created");
+		}
+		return  q.asList();
+	}
+	
+	/**
 	 * 通用排序
 	 * 
 	 * @param q
