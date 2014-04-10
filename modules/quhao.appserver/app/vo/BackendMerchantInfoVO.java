@@ -46,6 +46,8 @@ public class BackendMerchantInfoVO {
 	 */
 	public String[] seatType;
 	
+	public String cityCode = "";	//	城市代码
+	
 	public String aid;
 	public String phone = "";
 	public String email = "";
@@ -73,8 +75,6 @@ public class BackendMerchantInfoVO {
 			vo.merchantExist = true;
 			vo.mid = m.id();
 			vo.address = m.address;
-//			vo.merchantImage = m.merchantImage;
-			
 			try {
 				vo.merchantImage = URLDecoder.decode(m.merchantImage, "UTF-8");
 				logger.debug(vo.merchantImage);
@@ -103,6 +103,8 @@ public class BackendMerchantInfoVO {
 			vo.xingjiabi = m.xingjiabi;
 			
 			vo.seatType = m.seatType;
+			
+			vo.cityCode = m.cityCode;
 			
 			
 			String server = Play.configuration.getProperty("application.domain");

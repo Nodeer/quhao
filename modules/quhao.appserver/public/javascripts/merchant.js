@@ -41,6 +41,7 @@ Merchant.ajaxSearch = function(keyword,type){
 								// add merchant image here
 								$("#address").val(data.address);
 								$("#tel").val(data.telephone);
+								$("#cityCode").val(data.cityCode);
 								Merchant.enableEdit();
 							},
 							error:function(){
@@ -93,6 +94,7 @@ Merchant.reset = function(){
 
 Merchant.enableEdit = function(){
 	$("#description").removeAttr("disabled");
+	$("#cityCode").removeAttr("disabled");
 	$("#address").removeAttr("disabled");
 	$("#merchantImage").removeAttr("disabled");
 	$("#tel").removeAttr("disabled");
@@ -137,6 +139,7 @@ Merchant.validate = function(){
 	var cateType = $("#cateType").val();
 	var openTime = $("#openTime").val();
 	var closeTime = $("#closeTime").val();
+	var cityCode = $("#cityCode").val();
 	
 	// check if at least one checkbox is selected
 	var i = 1;
@@ -149,6 +152,11 @@ Merchant.validate = function(){
 	
 	if(Common.isEmpty(description)){
 		$("#tips").html("请输入商家描述").show();
+		$("html,body").animate({scrollTop: $("#body").offset().top}, 200);   
+		return false;
+	}
+	if(Common.isEmpty(cityCode)){
+		$("#tips").html("请选择商家所在城市").show();
 		$("html,body").animate({scrollTop: $("#body").offset().top}, 200);   
 		return false;
 	}

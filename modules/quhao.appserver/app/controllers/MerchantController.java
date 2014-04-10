@@ -443,7 +443,9 @@ public class MerchantController extends BaseController {
 		if (null != merchantList && !merchantList.isEmpty()) {
 			merchantVOList = new ArrayList<MerchantVO>();
 			for (Merchant m : merchantList) {
-				merchantVOList.add(MerchantVO.build(m));
+				if(!m.enable){
+					merchantVOList.add(MerchantVO.build(m));
+				}
 			}
 		}
 		renderJSON(merchantVOList);

@@ -85,6 +85,7 @@ public class SelfManagementController extends BaseController {
 
 		String merchantName = params.get("merchantName");
 		String description = params.get("description");
+		String cityCode = params.get("cityCode");
 		String address = params.get("address");
 		String tel = params.get("tel");
 		String cateType = params.get("cateType");
@@ -120,6 +121,7 @@ public class SelfManagementController extends BaseController {
 			m.name = merchantName;
 		}
 		m.description = description;
+		m.cityCode = cityCode;
 		m.address = address;
 		m.telephone = tel.split(",");
 		m.cateType = cateType;

@@ -58,6 +58,7 @@ public class MerchantVO {
 	
 	public String merchantImage;
 	
+	public String cityCode;
 	
 	public String commentAverageCost;
 	public float commentXingjiabi;
@@ -98,6 +99,7 @@ public class MerchantVO {
 		vo.x = m.x;
 		vo.y = m.y;
 		vo.seatType = m.seatType;
+		vo.cityCode = m.cityCode;
 		
 		try {
 			vo.merchantImage = URLDecoder.decode(m.merchantImage, "UTF-8");
@@ -134,6 +136,8 @@ public class MerchantVO {
 		vo.x = m.x;
 		vo.y = m.y;
 		vo.seatType = m.seatType;
+		
+		vo.cityCode = m.cityCode;
 		
 		try {
 			vo.merchantImage = URLDecoder.decode(m.merchantImage, "UTF-8");
