@@ -113,7 +113,7 @@ public class BackendMerchantInfoVO {
 			if(!m.merchantImageSet.isEmpty()){
 				Iterator it = m.merchantImageSet.iterator();
 				while(it.hasNext()){
-					vo.imgSrc.add(server+imageStorePath+it.next().toString());
+					vo.imgSrc.add(imageStorePath+it.next().toString());
 				}
 			}
 		}
