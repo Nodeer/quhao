@@ -3,12 +3,26 @@
 `extends admin_layout
 `set title "取号啦 - 置顶管理"
 
-$addJS("admin.js",true);
+$addJS("admin.js",true)
 
 `args List<TopMerchant> list
 
 
 `set contents
+
+	<form class="form-inline" role="form" style="margin:10px; " action="/admin/enabletop" method="get">
+	  <div class="form-group">
+	    <input type="text" class="form-control" name="mid" id="midsearch" placeholder="输入商家ID">
+	  </div>
+	  <div class="form-group">
+	    <input type="text" class="form-control" name="starttime" id="starttime" placeholder="开始时间">
+	  </div>
+	  <div class="form-group">
+	    <input type="text" class="form-control" name="endtime" id="endtime" placeholder="结束时间">
+	  </div>
+	  <button type="submit" class="btn btn-default">置顶</button>
+	</form>
+
    <div class="container-fluid">
    	<table class="table table-striped" style="text-align:center;">
    		<thead>

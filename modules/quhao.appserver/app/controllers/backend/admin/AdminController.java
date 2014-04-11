@@ -1,6 +1,9 @@
 package controllers.backend.admin;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import notifiers.MailsController;
@@ -17,8 +20,8 @@ import play.mvc.Before;
 import vo.AdminVO;
 
 import com.withiter.common.Constants;
-import com.withiter.models.account.Account;
 import com.withiter.models.admin.MerchantAccount;
+import com.withiter.models.merchant.Merchant;
 import com.withiter.models.merchant.TopMerchant;
 
 import controllers.BaseController;
@@ -159,5 +162,24 @@ public class AdminController extends BaseController {
 		t.enable = false;
 		t.save();
 		topmerchant();
+	}
+	public static void enableTop(String mid, String starttime, String endtime){
+		Merchant m = Merchant.findByMid(mid);
+		if(!m.enable){
+			renderJSON(false);
+		}
+		TopMerchant t = TopMerchant.build(m);
+		t.enable = true;
+		try {
+			t.start = DateFormat.getDateInstance().parse(starttime);
+			t.end = DateFormat.getDateInstance().parse(endtime);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		t.save();
+		renderJSON(true);
+		
+//		topmerchant();
 	}
 }
