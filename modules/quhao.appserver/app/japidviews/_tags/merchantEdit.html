@@ -54,12 +54,23 @@
 		    <p class="help-block" style="color: red;">注意：提交之后商家名称是不能修改的</p>
 	    </div>
 	</div>
+	
+	`if(bmivo.merchantExist){
+	<div class="form-group">
+		<label for="address" class="col-sm-3 control-label">商家ID：</label>
+		<div class="col-xs-7">
+			<input class="form-control" disabled="disabled" value="${bmivo.mid}" placeHolder="联系方式" />
+	    </div>
+	</div>
+	`}
+	
 	<div class="form-group">
 		<label for="description" class="col-sm-3 control-label">商家描述：</label>
 		<div class="col-xs-7">
 			<textarea class="form-control" rows="3" id="description" name="description" placeHolder="商家描述" disabled="disabled"></textarea>
 	    </div>
 	</div>
+	
 	<div class="form-group">
 		<label for="merchantImage" class="col-sm-3 control-label">上传图片：</label>
 	    <div class="col-xs-7">
