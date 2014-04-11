@@ -50,7 +50,7 @@ public class SelfManagementController extends BaseController {
 	static void checkAuthentification() {
 		if (!session.contains(Constants.SESSION_USERNAME)) {
 			logger.debug("no session is found in Constants.SESSION_USERNAME");
-			renderJapidWith("japidviews.backend.merchant.MerchantManagementController.index");
+			renderJapidWith("japidviews.LandingController.business");
 		}
 	}
 

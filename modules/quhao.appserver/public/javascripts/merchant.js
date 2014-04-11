@@ -108,6 +108,7 @@ Merchant.enableEdit = function(){
 
 Merchant.create = function(){
 	$("#description").removeAttr("disabled");
+	$("#cityCode").removeAttr("disabled");
 	$("#address").removeAttr("disabled");
 	$("#merchantImage").removeAttr("disabled");
 	$("#tel").removeAttr("disabled");
