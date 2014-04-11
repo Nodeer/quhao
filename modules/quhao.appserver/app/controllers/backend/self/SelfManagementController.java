@@ -183,7 +183,7 @@ public class SelfManagementController extends BaseController {
 					String server = Play.configuration.getProperty("application.domain");
 					String imageStorePath = Play.configuration.getProperty("image.store.path");
 					try {
-						m.merchantImage = URLEncoder.encode(server + imageStorePath + file.getFilename(), "UTF-8");
+						m.merchantImage = URLEncoder.encode(imageStorePath + file.getFilename(), "UTF-8");
 						logger.debug(m.merchantImage);
 					} catch (UnsupportedEncodingException e) {
 						e.printStackTrace();
