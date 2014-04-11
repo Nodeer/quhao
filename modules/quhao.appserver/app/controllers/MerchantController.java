@@ -123,7 +123,7 @@ public class MerchantController extends BaseController {
 	 * @param sortBy
 	 *            排序
 	 */
-	public static void nextPage(int page, String cateType, String sortBy) {
+	public static void nextPage(int page, String cateType, String sortBy, String cityCode) {
 
 		page = (page == 0) ? 1 : page;
 
@@ -131,7 +131,7 @@ public class MerchantController extends BaseController {
 
 		sortBy = "-modified";
 
-		List<Merchant> merchantList = Merchant.nextPage(cateType, page, sortBy);
+		List<Merchant> merchantList = Merchant.nextPage(cateType, page, sortBy, cityCode);
 		List<MerchantVO> merchantVOList = new ArrayList<MerchantVO>();
 		for (Merchant m : merchantList) {
 			merchantVOList.add(MerchantVO.build(m));
@@ -456,10 +456,10 @@ public class MerchantController extends BaseController {
 	 * @param date
 	 *            日期
 	 */
-	public static void getLastMerchants(int page, String cateType , String date, String sortBy) {
+	public static void getLastMerchants(int page, String cateType , String date, String sortBy, String cityCode) {
 		page = (page == 0) ? 1 : page;
 
-		List<Merchant> merchantList = Merchant.findByDate(cateType, date, sortBy);
+		List<Merchant> merchantList = Merchant.findByDate(cateType, date, sortBy, cityCode);
 		List<MerchantVO> merchantVOList = new ArrayList<MerchantVO>();
 		for (Merchant m : merchantList) {
 			merchantVOList.add(MerchantVO.build(m));

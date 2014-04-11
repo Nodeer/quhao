@@ -64,6 +64,30 @@ public class Merchant extends MerchantEntityDef {
 		}
 		return paginate(q, page);
 	}
+	
+	/**
+	 * get next page merchants
+	 * 
+	 * @param cateType the type of category
+	 * @param page the page number
+	 * @param sortBy 排序方式
+	 * @return
+	 */
+	public static List<Merchant> nextPage(String cateType, int page, String sortBy, String cityCode) {
+		MorphiaQuery q = Merchant.q();
+		if (!StringUtils.isEmpty(cateType)) {
+			q.filter("cateType", cateType);
+		} else {
+			q.filter("cateType", CateType.benbangcai.toString());
+		}
+		if (!StringUtils.isEmpty(sortBy)) {
+			q = sortBy(q, sortBy);
+		}
+		
+		q.filter("cityCode", cityCode);
+		
+		return paginate(q, page);
+	}
 
 	/**
 	 * Search merchants by key word name
@@ -103,6 +127,35 @@ public class Merchant extends MerchantEntityDef {
 		if (!StringUtils.isEmpty(sortBy)) {
 			q = sortBy(q, sortBy);
 		}
+		return q.asList();
+	}
+	
+	/**
+	 * 
+	 * @param date joinedDate Of Merchant
+	 * @return the newest merchants
+	 */
+	public static List<Merchant> findByDate(String cateType,String date,String sortBy, String cityCode) {
+		MorphiaQuery q = Merchant.q();
+		q.filter("cateType", cateType);
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date dateTemp = new Date();
+		try {
+			dateTemp = sdf.parse(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}	
+		if(null != date){
+			q.filter("joinedDate >",dateTemp);
+		}else{
+			q.filter("joinedDate >",dateTemp);
+		}
+		if (!StringUtils.isEmpty(sortBy)) {
+			q = sortBy(q, sortBy);
+		}
+		
+		q.filter("cityCode", cityCode);
 		return q.asList();
 	}
 	
