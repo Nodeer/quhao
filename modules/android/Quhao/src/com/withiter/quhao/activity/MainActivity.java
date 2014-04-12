@@ -22,7 +22,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -46,7 +45,7 @@ public class MainActivity extends QuhaoBaseActivity {
 	private String TAG = MainActivity.class.getName();
 	protected ListView topMerchantListView;
 	private GridView topMerchantsGird;
-	private TextView searchTextView;
+	private Button searchTextView;
 	private List<TopMerchant> topMerchants;
 	private GridView categorysGird;
 	protected ProgressDialogUtil progressCategory;
@@ -68,8 +67,7 @@ public class MainActivity extends QuhaoBaseActivity {
 		btnMore.setOnClickListener(goMore(this));
 		
 		// search function
-		searchTextView = (EditText) findViewById(R.id.edit_search);
-		searchTextView.clearFocus(); 
+		searchTextView = (Button) findViewById(R.id.edit_search);
 		searchTextView.setOnClickListener(goMerchantsSearch(MainActivity.this));
 		InputMethodManager inputMethodManager = (InputMethodManager)this.getSystemService(Context.INPUT_METHOD_SERVICE);
 		inputMethodManager.hideSoftInputFromWindow(searchTextView.getWindowToken(), 0);

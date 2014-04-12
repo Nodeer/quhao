@@ -16,6 +16,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -377,4 +378,12 @@ public class ActivityUtil {
 		activity.startActivityForResult(intent, requestCode);
 	}
 
+	public static boolean isGPSOn(Context context)
+	{
+		LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+		
+		boolean flag = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+		
+		return flag;
+	}
 }

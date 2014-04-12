@@ -24,4 +24,7 @@
 	<color name="deep_gray">#ff555555</color>
 	<color name="light_gray">#ff757575</color>
 	<color name="main_grid_text_color">#555555</color> <!-- 深灰 -->
+	<color name="popup_main_background">#b0000000</color>
+    <color name="choose_eara_item_press_color">#f4f4f4</color>
+    <color name="no_color">#00000000</color>
 </resources>

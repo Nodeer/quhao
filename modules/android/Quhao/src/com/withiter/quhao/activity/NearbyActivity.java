@@ -28,8 +28,6 @@ import android.widget.Toast;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
-import com.amap.api.location.LocationProviderProxy;
-import com.amap.api.maps.LocationSource;
 import com.amap.api.services.core.AMapException;
 import com.amap.api.services.core.LatLonPoint;
 import com.amap.api.services.core.PoiItem;
@@ -40,13 +38,15 @@ import com.amap.api.services.poisearch.PoiSearch.OnPoiSearchListener;
 import com.amap.api.services.poisearch.PoiSearch.SearchBound;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantNearByAdapter;
+import com.withiter.quhao.task.NearbyMerchantsTask;
+import com.withiter.quhao.task.NearbySearchMerchantTask;
 import com.withiter.quhao.util.StringUtils;
-import com.withiter.quhao.util.http.CommonHTTPRequest;
-import com.withiter.quhao.util.tool.ProgressDialogUtil;
+import com.withiter.quhao.view.expandtab.ExpandTabView;
+import com.withiter.quhao.view.expandtab.ViewLeft;
 
 public class NearbyActivity extends QuhaoBaseActivity implements
 		AMapLocationListener, OnPoiSearchListener, OnScrollListener,
-		OnItemClickListener, LocationSource {
+		OnItemClickListener {
 
 	private LocationManagerProxy mAMapLocationManager = null;
 	private PoiSearch.Query query;
@@ -67,7 +67,15 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 	
 	private AMapLocation firstLocation = null;
 	
-	private OnLocationChangedListener mListener;  
+	private ExpandTabView expandTabView;
+	private ArrayList<View> mViewArray = new ArrayList<View>();
+	private ViewLeft viewLeft;
+	
+	private int searchDistence;
+	
+	private String[] distanceItems;
+	
+	private String[] distanceItemsValue;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -83,13 +91,14 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 
 		merchantsListView = (ListView) this
 				.findViewById(R.id.merchantsListView);
-
 		moreView = getLayoutInflater().inflate(R.layout.moredata, null);
 		bt = (Button) moreView.findViewById(R.id.bt_load);
 		pg = (ProgressBar) moreView.findViewById(R.id.pg);
 		bt.setOnClickListener(this);
 		merchantsListView.addFooterView(moreView);
 		merchantsListView.setNextFocusDownId(R.id.merchantsListView);
+		
+		initExpandView();
 		
 		// TODO add default view here
 		if (!networkOK) {
@@ -100,10 +109,9 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 			
 			return;
 		}
-		mAMapLocationManager = LocationManagerProxy.getInstance(this);
-		mAMapLocationManager.requestLocationUpdates(
-				LocationProviderProxy.AMapNetwork, 1000, 10, this);
-
+		
+//		setPoiSearch();
+//		buildTask();
 //		 Thread queryMerchantsThread = new Thread(new Runnable() {
 //		
 //		 @Override
@@ -125,6 +133,138 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 //		 }
 //		 });
 //		 queryMerchantsThread.start();
+	}
+
+	private void buildTask() {
+		
+		final NearbyMerchantsTask task = new NearbyMerchantsTask(R.string.waitting, this, poiSearch);
+		task.execute(new Runnable() {
+			
+			@Override
+			public void run() {
+				poiResult = task.poiResult;
+				poiItems = new ArrayList<PoiItem>();
+				if (null != poiResult && null != poiResult.getQuery()) {
+					if(poiResult.getQuery().equals(query))
+					{
+						List<PoiItem> poiItemTemps = poiResult.getPois();// 取得第一页的poiitem数据，页数从数字0开始
+						if (null != poiItemTemps && poiItemTemps.size() > 0) {
+							if (poiItemTemps.size() < 10) {
+								needToLoad = false;
+							}
+							if(null == poiItems)
+							{
+								poiItems = new ArrayList<PoiItem>();
+							}
+							poiItems.clear();
+							poiItems.addAll(poiItemTemps);
+							Log.e("TAG111",
+									"poi items size : " + poiItemTemps.size() + " , page : " + page);
+							updatePoiItemsHandler.obtainMessage(200, null)
+									.sendToTarget();
+							
+						} else {
+							needToLoad = false;
+						}
+					}
+					else
+					{
+						needToLoad = false;
+					}
+					
+					
+				} else {
+					needToLoad = false;
+				}
+				
+			}
+		},new Runnable() {
+			
+			@Override
+			public void run() {
+				Builder dialog = new AlertDialog.Builder(NearbyActivity.this);
+				dialog.setTitle("温馨提示").setMessage("Wifi/蜂窝网络未打开，或者网络情况不是很好哟").setPositiveButton("确定", null);
+				dialog.show();
+				
+			}
+		});
+	}
+
+	private void setPoiSearch() {
+		page = 0;
+		query = new PoiSearch.Query("", "餐厅", "021");
+		query.setPageSize(10);// 设置每页最多返回多少条poiitem
+		query.setPageNum(page);// 设置查第一页
+		query.setLimitDiscount(false);
+		query.setLimitGroupbuy(false);
+		poiSearch = new PoiSearch(this, query);
+		poiSearch.setOnPoiSearchListener(this);
+//		 double lat = location.getLatitude();
+//		 double lon = location.getLongitude();
+//		LatLonPoint lp = new LatLonPoint(firstLocation.getLatitude(), firstLocation.getLongitude());
+		LatLonPoint lp = new LatLonPoint(31.235048, 121.474794);
+		poiSearch.setBound(new SearchBound(lp, searchDistence));// 设置搜索区域为以lp点为圆心，其周围1000米范围
+	}
+
+	private void initExpandView() {
+		
+		if(searchDistence == 0)
+		{
+			searchDistence = 1000;
+			distanceItems = new String[] { "100米", "200米", "3000米", "4000米", "50000米" };//显示字段
+			distanceItemsValue = new String[] { "100", "200", "3000", "4000", "50000" };//显示字段
+		}
+		
+		expandTabView = (ExpandTabView) this.findViewById(R.id.expandtab_view);
+		viewLeft = new ViewLeft(this,distanceItems,distanceItemsValue,String.valueOf(searchDistence));
+		mViewArray.add(viewLeft);
+		ArrayList<String> mTextArray = new ArrayList<String>();
+		mTextArray.add("距离");
+		expandTabView.setValue(mTextArray, mViewArray);
+		expandTabView.setTitle(viewLeft.getShowText(), 0);
+		
+		viewLeft.setOnSelectListener(new ViewLeft.OnSelectListener() {
+
+			@Override
+			public void getValue(String distance, String showText) {
+				onRefresh(viewLeft, showText);
+			}
+		});
+	}
+	
+	private void onRefresh(View view, String showText) {
+		
+		expandTabView.onPressBack();
+		int position = getPositon(view);
+		if (position >= 0 && !expandTabView.getTitle(position).equals(showText)) {
+			expandTabView.setTitle(showText, position);
+		}
+		
+		for (int i = 0; i < distanceItems.length; i++) {
+			if(showText.equals(distanceItems[i]))
+			{
+				searchDistence = Integer.valueOf(distanceItemsValue[i]); 
+				break;
+			}
+		}
+//		setPoiSearch();
+//		buildTask();
+		merchantsListView.setSelectionFromTop(0, 0);// 滑动到第一项
+		setPoiSearch();
+		Thread queryMerchantsThread = new Thread(queryRunnable);
+		queryMerchantsThread.start();
+		
+		Toast.makeText(NearbyActivity.this, showText, Toast.LENGTH_SHORT).show();
+
+	}
+	
+	private int getPositon(View tView) {
+		for (int i = 0; i < mViewArray.size(); i++) {
+			if (mViewArray.get(i) == tView) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	protected Handler updatePoiItemsHandler = new Handler() {
@@ -150,38 +290,38 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 				pg.setVisibility(View.GONE);
 				merchantsListView.setOnScrollListener(NearbyActivity.this);
 				merchantsListView.setOnItemClickListener(NearbyActivity.this);
+				findViewById(R.id.loadingbar).setVisibility(View.GONE);
+				findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 		}
 
 	};
 
+	/*
 	private void queryMerchants() {
 
-		query = new PoiSearch.Query("", "餐厅", "021");
-		query.setPageSize(10);// 设置每页最多返回多少条poiitem
-		query.setPageNum(page);// 设置查第一页
-		query.setLimitDiscount(false);
-		query.setLimitGroupbuy(false);
-		poiSearch = new PoiSearch(this, query);
-		poiSearch.setOnPoiSearchListener(this);
-//		 double lat = location.getLatitude();
-//		 double lon = location.getLongitude();
-		LatLonPoint lp = new LatLonPoint(31.235048, 121.474794);
-		poiSearch.setBound(new SearchBound(lp, 1000));// 设置搜索区域为以lp点为圆心，其周围1000米范围
+		setPoiSearch();
 		try {
 			poiItems = new ArrayList<PoiItem>();
+			long start = System.currentTimeMillis();
+
 			poiResult = poiSearch.searchPOI();
+			long end = System.currentTimeMillis();
+			
+			Log.e("wjzwjz : ", "the date : " + (end-start));
 			if (null != poiResult && null != poiResult.getQuery()) {
 				List<PoiItem> poiItemTemps = poiResult.getPois();// 取得第一页的poiitem数据，页数从数字0开始
 				if (null != poiItemTemps && poiItemTemps.size() > 0) {
 					if (poiItemTemps.size() < 10) {
 						needToLoad = false;
 					}
+					poiItems = new ArrayList<PoiItem>();
 					poiItems.addAll(poiItemTemps);
 					updatePoiItemsHandler.obtainMessage(200, null)
 							.sendToTarget();
 					Log.e("TAG111", poiItemTemps.toString());
+					Log.e("TAG222", "first query page count : " + poiResult.getPageCount() + " , searchDistence : " + searchDistence);
 				} else {
 					needToLoad = false;
 				}
@@ -193,19 +333,70 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 			needToLoad = false;
 			e.printStackTrace();
 		}// 异步搜索
-	}
+	}*/
 
 	/**
 	 * 点击下一页poi搜索
 	 */
 	public void nextSearch() {
-		try {
-			if (query != null && poiSearch != null && poiResult != null) {
-				if (poiResult.getPageCount() - 1 > page) {
-					page++;
-					query.setPageNum(page);// 设置查后一页
-
-					PoiResult result = poiSearch.searchPOI();
+		if (query != null && poiSearch != null && poiResult != null) {
+			if (poiResult.getPageCount() - 1 > page) {
+				page++;
+				query.setPageNum(page);// 设置查后一页
+				/*
+				final NearbyMerchantsTask task = new NearbyMerchantsTask(R.string.waitting, this, poiSearch);
+				task.execute(new Runnable() {
+					
+					@Override
+					public void run() {
+						poiResult = task.poiResult;
+						if (null != poiResult && null != poiResult.getQuery()) {
+							if(poiResult.getQuery().equals(query))
+							{
+								List<PoiItem> poiItemTemps = poiResult.getPois();// 取得第一页的poiitem数据，页数从数字0开始
+								if (null != poiItemTemps && poiItemTemps.size() > 0) {
+									if (poiItemTemps.size() < 10) {
+										needToLoad = false;
+									}
+									if(null == poiItems)
+									{
+										poiItems = new ArrayList<PoiItem>();
+									}
+									poiItems.addAll(poiItemTemps);
+									Log.e("TAG111", String.valueOf(poiItemTemps.size()));
+									updatePoiItemsHandler.obtainMessage(200, null)
+											.sendToTarget();
+									
+								} else {
+									needToLoad = false;
+								}
+							}
+							else
+							{
+								needToLoad = false;
+							}
+							
+							
+						} else {
+							needToLoad = false;
+						}
+						
+					}
+				},new Runnable() {
+					
+					@Override
+					public void run() {
+						Builder dialog = new AlertDialog.Builder(NearbyActivity.this);
+						dialog.setTitle("温馨提示").setMessage("Wifi/蜂窝网络未打开，或者网络情况不是很好哟").setPositiveButton("确定", null);
+						dialog.show();
+						
+					}
+				});
+				*/
+				
+				PoiResult result;
+				try {
+					result = poiSearch.searchPOI();
 					if (null != result && null != result.getQuery()) {
 						if (result.getQuery().equals(query)) {
 							poiResult = result;
@@ -219,7 +410,8 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 								}
 								poiItems.addAll(poiItemTemps);
 								Log.e("TAG111",
-										String.valueOf(poiItemTemps.size()));
+										"poi items size : " + poiItemTemps.size() + " , page : " + page);
+								Log.e("TAG222", "next search query page count : " + poiResult.getPageCount() + " , searchDistence : " + searchDistence);
 								updatePoiItemsHandler.obtainMessage(200, null)
 										.sendToTarget();
 								
@@ -233,31 +425,32 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 					} else {
 						needToLoad = false;
 					}
-					/*
-					 * try { poiResult = poiSearch.searchPOI(); if (null !=
-					 * poiResult && null != poiResult.getQuery()) {
-					 * List<PoiItem> poiItemTemps = poiResult.getPois();//
-					 * 取得第一页的poiitem数据，页数从数字0开始 if (null != poiItemTemps &&
-					 * poiItemTemps.size() > 0) { if (poiItemTemps.size() < 10)
-					 * { needToLoad = false; } poiItems.addAll(poiItemTemps);
-					 * updatePoiItemsHandler.obtainMessage(200, null)
-					 * .sendToTarget(); Log.e("TAG111",
-					 * poiItemTemps.toString()); } else { needToLoad = false; }
-					 * 
-					 * } else { needToLoad = false; } } catch (AMapException e)
-					 * { needToLoad = false; e.printStackTrace(); }
-					 */
-				} else {
-					needToLoad = false;
-					Toast.makeText(this, "No result", Toast.LENGTH_LONG).show();
+				} catch (AMapException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
+				/**/
+				/*
+				 * try { poiResult = poiSearch.searchPOI(); if (null !=
+				 * poiResult && null != poiResult.getQuery()) {
+				 * List<PoiItem> poiItemTemps = poiResult.getPois();//
+				 * 取得第一页的poiitem数据，页数从数字0开始 if (null != poiItemTemps &&
+				 * poiItemTemps.size() > 0) { if (poiItemTemps.size() < 10)
+				 * { needToLoad = false; } poiItems.addAll(poiItemTemps);
+				 * updatePoiItemsHandler.obtainMessage(200, null)
+				 * .sendToTarget(); Log.e("TAG111",
+				 * poiItemTemps.toString()); } else { needToLoad = false; }
+				 * 
+				 * } else { needToLoad = false; } } catch (AMapException e)
+				 * { needToLoad = false; e.printStackTrace(); }
+				 */
 			} else {
 				needToLoad = false;
 				Toast.makeText(this, "No result", Toast.LENGTH_LONG).show();
 			}
-		} catch (AMapException e) {
+		} else {
 			needToLoad = false;
-			e.printStackTrace();
+			Toast.makeText(this, "No result", Toast.LENGTH_LONG).show();
 		}
 
 	}
@@ -311,21 +504,46 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 		if (null != location) {
 			if(!isFirstLocation)
 			{
-				progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
-				progressDialogUtil.showProgress();
 				isFirstLocation = true;
 				firstLocation = location;
-				query = new PoiSearch.Query("", "餐厅", location.getCityCode());
-				query.setLimitDiscount(false);
-				query.setLimitGroupbuy(false);
-				poiSearch = new PoiSearch(this, query);
-				poiSearch.setOnPoiSearchListener(this);
-				double lat = location.getLatitude();
-				double lon = location.getLongitude();
-				LatLonPoint lp = new LatLonPoint(lat, lon);
-				poiSearch.setBound(new SearchBound(lp, 1000));// 设置搜索区域为以lp点为圆心，其周围1000米范围
-//				poiSearch.searchPOIAsyn();
-				new Thread(queryRunnable).start();
+//				setPoiSearch();
+//				buildTask();
+//				query = new PoiSearch.Query("", "餐厅", location.getCityCode());
+//				query.setLimitDiscount(false);
+//				query.setLimitGroupbuy(false);
+//				poiSearch = new PoiSearch(this, query);
+//				poiSearch.setOnPoiSearchListener(this);
+//				double lat = location.getLatitude();
+//				double lon = location.getLongitude();
+//				LatLonPoint lp = new LatLonPoint(lat, lon);
+//				poiSearch.setBound(new SearchBound(lp, searchDistence));// 设置搜索区域为以lp点为圆心，其周围1000米范围
+////				poiSearch.searchPOIAsyn();
+//				new Thread(queryRunnable).start();
+				setPoiSearch();
+				Thread queryMerchantsThread = new Thread(queryRunnable);
+				queryMerchantsThread.start();
+				/*
+				Thread queryMerchantsThread = new Thread(new Runnable() {
+					
+					 @Override
+					 public void run() {
+					 try
+					 {
+					 Looper.prepare();
+					 queryMerchants();
+					
+					 }catch (Exception e) {
+					
+					 }
+					 finally
+					 {
+					 Looper.loop();
+					 }
+					
+					
+					 }
+					 });
+					 queryMerchantsThread.start();*/
 			}
 			else
 			{
@@ -333,24 +551,29 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 				if(distance>100)
 				{
 					firstLocation = location;
-					progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
-					progressDialogUtil.showProgress();
-					if(null == poiItems)
-					{
-						poiItems = new ArrayList<PoiItem>();
-					}
-					poiItems.clear();
-					query = new PoiSearch.Query("", "餐厅", location.getCityCode());
-					query.setLimitDiscount(false);
-					query.setLimitGroupbuy(false);
-					poiSearch = new PoiSearch(this, query);
-					poiSearch.setOnPoiSearchListener(this);
-					double lat = location.getLatitude();
-					double lon = location.getLongitude();
-					LatLonPoint lp = new LatLonPoint(lat, lon);
-					poiSearch.setBound(new SearchBound(lp, 1000));// 设置搜索区域为以lp点为圆心，其周围1000米范围
-//					poiSearch.searchPOIAsyn();
-					new Thread(queryRunnable).start();
+//					setPoiSearch();
+//					buildTask();
+//					progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
+//					progressDialogUtil.showProgress();
+//					if(null == poiItems)
+//					{
+//						poiItems = new ArrayList<PoiItem>();
+//					}
+//					poiItems.clear();
+//					query = new PoiSearch.Query("", "餐厅", location.getCityCode());
+//					query.setLimitDiscount(false);
+//					query.setLimitGroupbuy(false);
+//					poiSearch = new PoiSearch(this, query);
+//					poiSearch.setOnPoiSearchListener(this);
+//					double lat = location.getLatitude();
+//					double lon = location.getLongitude();
+//					LatLonPoint lp = new LatLonPoint(lat, lon);
+//					poiSearch.setBound(new SearchBound(lp, searchDistence));// 设置搜索区域为以lp点为圆心，其周围1000米范围
+////					poiSearch.searchPOIAsyn();
+//					new Thread(queryRunnable).start();
+					setPoiSearch();
+					Thread queryMerchantsThread = new Thread(queryRunnable);
+					queryMerchantsThread.start();
 				}
 				else
 				{
@@ -374,7 +597,27 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 		}
 	}
 
-	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
+		findViewById(R.id.serverdata).setVisibility(View.GONE);
+		
+		page = 0;
+		isFirstLoad = true;
+		needToLoad = true;
+		isFirstLocation = false;
+		firstLocation = null;
+		
+//		mAMapLocationManager = LocationManagerProxy.getInstance(this);
+//		mAMapLocationManager.requestLocationUpdates(
+//				LocationProviderProxy.AMapNetwork, 5000, 10, this);
+		
+		setPoiSearch();
+//		buildTask();
+		Thread queryMerchantsThread = new Thread(queryRunnable);
+		queryMerchantsThread.start();
+	};
 		
 	// 使用线程访问网络，否则APP会挂掉
 	private Runnable queryRunnable = new Runnable(){
@@ -382,8 +625,10 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 		public void run() {
 			try {
 				Looper.prepare();
+				//TODO : 需要改为定位后的location
+				LatLonPoint lp = new LatLonPoint(31.235048, 121.474794);
+				poiSearch.setBound(new SearchBound(lp, searchDistence));// 设置搜索区域为以lp点为圆心，其周围1000米范围
 				PoiResult result = poiSearch.searchPOI();
-				progressDialogUtil.closeProgress();
 				if (null != result && null != result.getQuery()) {
 					if(result.getQuery().equals(query))
 					{
@@ -399,7 +644,10 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 							}
 							poiItems.clear();
 							poiItems.addAll(poiItemTemps);
-							Log.e("TAG111", String.valueOf(poiItemTemps.size()));
+							Log.e("TAG111", poiItemTemps.toString());
+							Log.e("TAG222", "first query page count : " + poiResult.getPageCount() + " , searchDistence : " + searchDistence);
+							Log.e("TAG111",
+									"poi items size : " + poiItemTemps.size() + " , page : " + page);
 							updatePoiItemsHandler.obtainMessage(200, null)
 									.sendToTarget();
 							
@@ -433,7 +681,6 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 
 	@Override
 	public void onPoiSearched(PoiResult result, int rCode) {
-		progressDialogUtil.closeProgress();
 		if(rCode == 0)
 		{
 			if (null != result && null != result.getQuery()) {
@@ -450,7 +697,8 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 					}
 					poiItems.addAll(poiItemTemps);
 					poiItems = poiResult.getPois();
-					Log.e("TAG111", String.valueOf(poiItemTemps.size()));
+					Log.e("TAG111",
+							"poi items size : " + poiItemTemps.size() + " , page : " + page);
 					updatePoiItemsHandler.obtainMessage(200, null).sendToTarget();
 					
 				} else {
@@ -470,7 +718,8 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 				&& lastVisibleIndex == nearByAdapter.getCount()) {
 			pg.setVisibility(View.VISIBLE);
 			bt.setVisibility(View.GONE);
-
+//			nextSearch();
+			
 			Thread queryMerchantsThread = new Thread(new Runnable() {
 
 				@Override
@@ -488,6 +737,7 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 				}
 			});
 			queryMerchantsThread.start();
+			
 		}
 	}
 
@@ -522,6 +772,8 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 		case R.id.bt_load:
 			pg.setVisibility(View.VISIBLE);
 			bt.setVisibility(View.GONE);
+//			nextSearch();
+			
 			Thread queryMerchantsThread = new Thread(new Runnable() {
 
 				@Override
@@ -539,7 +791,7 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 				}
 			});
 			queryMerchantsThread.start();
-
+			
 			break;
 		default:
 			break;
@@ -558,41 +810,47 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 		// 设置已点击标志，避免快速重复点击
 		isClick = true;
 		// 解锁
-		unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty,
-				R.string.waitting, false);
-		progressDialogUtil.showProgress();
-
 		try {
 			String poiId = poiItems.get(position).getPoiId();
 			if (StringUtils.isNotNull(poiId)) {
-				String buf = CommonHTTPRequest
-						.get("queryMerchantByPoiId?poiId=" + poiId);
-				if (StringUtils.isNull(buf) || "[]".equals(buf)) {
-					progressDialogUtil.closeProgress();
-					AlertDialog.Builder builder = new Builder(this);
-					builder.setTitle("温馨提示");
-					builder.setMessage("对不起，该商家未在取号系统注册。");
-					builder.setPositiveButton("确认",
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int which) {
-									dialog.dismiss();
-								}
-							});
-					builder.create().show();
-				} else {
-					progressDialogUtil.closeProgress();
-					Intent intent = new Intent();
-					intent.setClass(this, MerchantDetailActivity.class);
-					intent.putExtra("merchantId", buf);
-					this.startActivity(intent);
-					overridePendingTransition(R.anim.in_from_right,
-							R.anim.out_to_left);
-				}
+				final NearbySearchMerchantTask task = new NearbySearchMerchantTask(R.string.waitting, NearbyActivity.this, "queryMerchantByPoiId?poiId=" + poiId);
+				task.execute(new Runnable() {
+					String buf = task.result;
+					@Override
+					public void run() {
+						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+						Intent intent = new Intent();
+						intent.setClass(NearbyActivity.this, MerchantDetailActivity.class);
+						intent.putExtra("merchantId", buf);
+						NearbyActivity.this.startActivity(intent);
+						overridePendingTransition(R.anim.in_from_right,
+								R.anim.out_to_left);
+						
+					}
+				},new Runnable() {
+					
+					@Override
+					public void run() {
+						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+						AlertDialog.Builder builder = new Builder(NearbyActivity.this);
+						builder.setTitle("温馨提示");
+						builder.setMessage("对不起，该商家未在取号系统注册。");
+						builder.setPositiveButton("确认",
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialog,
+											int which) {
+										dialog.dismiss();
+									}
+								});
+						builder.create().show();
+					}
+				});
+//				String buf = CommonHTTPRequest
+//						.get("queryMerchantByPoiId?poiId=" + poiId);
+				
 			} else {
-				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				AlertDialog.Builder builder = new Builder(this);
 				builder.setTitle("温馨提示");
 				builder.setMessage("对不起，该商家未在取号系统注册。");
@@ -606,9 +864,8 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 						});
 				builder.create().show();
 			}
-
+			
 		} catch (Exception e) {
-			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			AlertDialog.Builder builder = new Builder(this);
 			builder.setTitle("温馨提示");
@@ -622,44 +879,8 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 					});
 			builder.create().show();
 			e.printStackTrace();
-		} finally {
-
 		}
 
 	}
 
-	@Override
-	public void activate(OnLocationChangedListener listener) {
-		
-		mListener = listener;
-		if (mAMapLocationManager == null) {
-			try
-			{
-				mAMapLocationManager = LocationManagerProxy.getInstance(this);  
-	            /* 
-	             * mAMapLocManager.setGpsEnable(false);// 
-	             * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true 
-	             */  
-	            // Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效  
-	            mAMapLocationManager.requestLocationUpdates(  
-	                    LocationProviderProxy.AMapNetwork, 5000, 10, this);  
-			}catch(Exception e)
-			{
-				Log.e("gaode", e.getMessage());
-				e.printStackTrace();
-			}
-            
-        }  
-	}
-
-	@Override
-	public void deactivate() {
-		mListener = null;  
-        if (mAMapLocationManager != null) {  
-            mAMapLocationManager.removeUpdates(this);  
-            mAMapLocationManager.destory();  
-        }  
-        mAMapLocationManager = null;  
-
-	}
 }

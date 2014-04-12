@@ -29,4 +29,8 @@
 		<item name="android:minHeight">32dip</item>
 		<item name="android:maxHeight">32dip</item>
 	</style>
+	<style name="PopupWindowAnimation">  
+        <item name="android:windowEnterAnimation">@anim/popshow_anim</item>  
+        <item name="android:windowExitAnimation">@anim/pophidden_anim</item>  
+    </style>
 </resources>
