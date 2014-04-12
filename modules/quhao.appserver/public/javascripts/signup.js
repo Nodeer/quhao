@@ -160,6 +160,7 @@ Signup.submitinfo = function(){
 			},
 			error : function() {
 				alert("请联系管理员service@quhao.la");
+				window.location.href = "/business";
 			}
 		});
 	}

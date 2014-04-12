@@ -3,8 +3,11 @@ package controllers.backend.self;
 import java.util.Date;
 import java.util.List;
 
+import notifiers.MailsController;
+
 import org.apache.commons.lang.StringUtils;
 
+import play.Play;
 import play.cache.Cache;
 import play.data.validation.Required;
 import play.libs.Codec;
@@ -162,6 +165,11 @@ public class AccountController extends BaseController {
 		
 		CooperationRequset c = new CooperationRequset(companyName,peopleName,peopleContact,peopleContact);
 		c.save();
+		String subject = "商家合作申请提醒";
+		String href = Play.configuration.getProperty("application.domain")+"/admin";
+		String content = "登陆后台管理查看详细信息<a href='"+href+"'>" + href + "</a>";
+		
+		MailsController.sendTo(subject, content, "cross@quhao.la", "service@quhao.la", "admin@quhao.la", "mag_lee@126.com");
 		svo.errorKey = "true";
     	svo.errorText = "";
 		renderJSON(svo);

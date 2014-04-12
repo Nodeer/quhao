@@ -43,6 +43,20 @@ public class MailsController extends JapidMailer {
 		send(content);
 	}
 
+	/**
+	 * 发送合作申请提醒到我们邮箱
+	 * @param subject
+	 * @param content
+	 * @param mailsTo
+	 */
+	public static void sendTo(String subject, String content, Object... mailsTo) {
+		setFrom(FROM);
+		setCharset("UTF-8");
+		setSubject(subject);
+		addRecipient(mailsTo);
+		send(content);
+	}
+
 	public static void sendBySignUp(String mailsTo) {
 		setFrom(FROM);
 		setCharset("UTF-8");
