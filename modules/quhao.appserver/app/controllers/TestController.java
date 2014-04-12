@@ -16,6 +16,20 @@ public class TestController extends BaseController {
 	public static void mailtest(){
 		MailsController.sendTo("mag_lee@126.com");
 	}
+	
+	public static void list(){
+		renderJapid();
+	}
+	
+	public static void poi021(){
+		renderJapid();
+	}
+	public static void m020(){
+		renderJapid();
+	}
+	public static void m021(){
+		renderJapid();
+	}
 
 	public static void main(String[] args) {
 

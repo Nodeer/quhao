@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>中心点坐标周边查询</title>
+<script language="javascript" src="http://webapi.amap.com/maps?v=1.2&key=60d9c5881dbe8dddd3de33aaacac0cbe"></script>
+<script language="javascript" src="/public/javascripts/libs/jquery-1.7.js"></script>
+<script language="javascript">
+var mapObj;
+var marker = new Array();
+var windowsArr = new Array();
+var page = 1;
+
+//中心点坐标
+var cpoint = new AMap.LngLat(121.472644, 31.231706);
+function mapInit() {
+    //加载地图
+    mapObj = new AMap.Map("iCenter");
+    
+}
+//地点查询函数
+function placeSearch(page) {
+    var MSearch;
+    //加载服务插件，实例化地点查询类  
+    mapObj.plugin(["AMap.PlaceSearch"], function() {
+        MSearch = new AMap.PlaceSearch({ 
+            city: "上海",
+            pageSize: 50,
+            pageIndex: page
+        }); 
+        //查询成功时的回调函数
+        AMap.event.addListener(MSearch, "complete", placeSearch_CallBack); 
+        //周边搜索
+        MSearch.searchNearBy("餐饮", cpoint, 50000); 
+    });
+}
+//回调函数 
+function placeSearch_CallBack(data) {
+	var resultStr = "";
+    var poiArr = data.poiList.pois;
+    var resultCount = data.poiList.pois.length;
+    if(data.poiList.pois.length > 0){
+    	console.log("current page : " + page);
+	    for (var i = 0; i < data.poiList.pois.length; i++) {
+	        resultStr = "citycode:021|"+"poiid:"+poiArr[i].id+"|name:"+poiArr[i].name+"|address:"+poiArr[i].address+"|location"+poiArr[i].location+"|tel:"+poiArr[i].tel+"type:"+poiArr[i].type+"</br>"
+	        $("#result").append(resultStr);
+	    }
+	    page++;
+	    placeSearch();
+    } else {
+    	$("#tip").html("爬取结束");
+    }
+}
+function TipContents(type, address, tel) {  //信息窗体内容
+    if (type == "" || type == "undefined" || type == null || type == " undefined" || typeof type == "undefined") {
+        type = "暂无";
+    }
+    if (address == "" || address == "undefined" || address == null || address == " undefined" || typeof address == "undefined") {
+        address = "暂无";
+    }
+    if (tel == "" || tel == "undefined" || tel == null || tel == " undefined" || typeof address == "tel") {
+        tel = "暂无";
+    }
+    var str = "&nbsp;&nbsp;地址：" + address + "<br />&nbsp;&nbsp;电话: " + tel + " <br />&nbsp;&nbsp;类型：" + type;
+    return str;
+}
+</script>
+</head>
+<body onload="mapInit();">  
+    <div id="iCenter" style="display: none;"></div>
+    <div class="">
+        <input type="button" value="查询" onclick="placeSearch()"/><br />
+        <div id="tip"></div>
+        <div id="result"> </div>
+    </div>        
+</body>
+</html>

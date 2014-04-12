@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>地理编码</title>
+<link rel="stylesheet" type="text/css" href="http://api.amap.com/Public/css/demo.Default.css" /> 
+<script language="javascript" src="http://webapi.amap.com/maps?v=1.2&key=60d9c5881dbe8dddd3de33aaacac0cbe"></script>
+<script language="javascript">
+var mapObj;
+var marker = new Array();
+var windowsArr = new Array(); 
+function mapInit() { 
+    mapObj = new AMap.Map("iCenter");  
+}  
+function geocoder() {
+    var MGeocoder;
+    //加载地理编码插件
+    mapObj.plugin(["AMap.Geocoder"], function() {        
+        MGeocoder = new AMap.Geocoder({ 
+        });
+        //返回地理编码结果 
+        AMap.event.addListener(MGeocoder, "complete", geocoder_CallBack); 
+        //地理编码
+        MGeocoder.getLocation("上海市"); 
+    });
+}  
+function addmarker(i, d) {
+    var lngX = d.location.getLng();
+    var latY = d.location.getLat();
+    var markerOption = {
+        map:mapObj,                 
+        icon:"http://webapi.amap.com/images/"+(i+1)+".png",  
+        position:new AMap.LngLat(lngX, latY)
+    };            
+    var mar = new AMap.Marker(markerOption);  
+    marker.push(new AMap.LngLat(lngX, latY));
+
+    var infoWindow = new AMap.InfoWindow({  
+        content:d.formattedAddress, 
+        autoMove:true, 
+        size:new AMap.Size(150,0),  
+        offset:{x:0,y:-30}
+    });  
+    windowsArr.push(infoWindow);  
+    
+    var aa = function(e){infoWindow.open(mapObj,mar.getPosition());};  
+    AMap.event.addListener(mar,"click",aa);  
+}
+//地理编码返回结果展示   
+function geocoder_CallBack(data){
+    var resultStr="";
+    //地理编码结果数组
+    var geocode = new Array();
+    geocode = data.geocodes;  
+    for (var i = 0; i < geocode.length; i++) {
+        //拼接输出html
+        resultStr += "<span style=\"font-size: 12px;padding:0px 0 4px 2px; border-bottom:1px solid #C1FFC1;\">"+"<b>地址</b>："+geocode[i].formattedAddress+""+ "<b>&nbsp;&nbsp;&nbsp;&nbsp;坐标</b>：" + geocode[i].location.getLng() +", "+ geocode[i].location.getLat() +""+ "<b>&nbsp;&nbsp;&nbsp;&nbsp;匹配级别</b>：" + geocode[i].level +"</span>";   
+        addmarker(i, geocode[i]);
+    }  
+    mapObj.setFitView();   
+    document.getElementById("result").innerHTML = resultStr;  
+}  
+</script>  
+</head>  
+<body onload="mapInit();">
+    <div id="iCenter" ></div>
+    <div class="demo_box"> 
+            <input type="button" value="地理编码" onclick="geocoder()"/>
+        <div id="r_title"><b>地理编码结果:</b></div>
+        <div id="result"> </div>
+    </div>
+</body>  
+</html>

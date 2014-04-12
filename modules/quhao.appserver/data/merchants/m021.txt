@@ -1,0 +1,51 @@
+
+citycode:021|poiid:B00155KXEC|name:MoCA on the Park|address:黄浦区南京西路231号人民公园内上海当代艺术馆3楼|location121.4729,31.2316|tel:021-63270856type:餐饮服务;外国餐厅;西餐厅(综合风味)
+citycode:021|poiid:B00156P9D9|name:墨客餐厅|address:上海黄浦区南京西路231号|location121.47275,31.231384|tel:type:餐饮服务;外国餐厅;西餐厅(综合风味)
+citycode:021|poiid:B00156XP5J|name:MoCa on the Park|address:南京西路231号人民公园内上海当代艺术馆3楼(近黄陂北路)|location121.473099,31.232136|tel:021-63270856type:餐饮服务;外国餐厅;西餐厅(综合风味)
+citycode:021|poiid:B00155HH7Z|name:香酥月饼|address:静安区南京西路|location121.47215,31.2309|tel:18551506799type:餐饮服务;中餐厅;中餐厅
+citycode:021|poiid:B00157288A|name:无限度广场美食|address:寿宁路47号|location121.47293,31.23077|tel:13818047576type:餐饮服务;快餐厅;快餐厅
+citycode:021|poiid:B0FFF1EGKV|name:朵巴创意(西域餐厅店)|address:华盛街10号人民广场(近淮海东路)|location121.47297,31.23075|tel:type:餐饮服务;中餐厅;清真菜馆
+citycode:021|poiid:B0FFF2D45V|name:蜀府(世博店)|address:华盛街10号人民广场|location121.47296,31.23074|tel:type:餐饮服务;中餐厅;四川菜(川菜)
+citycode:021|poiid:B0FFF0F2QA|name:南京大排档|address:华盛街10号人民广场|location121.47296,31.23074|tel:type:餐饮服务;快餐厅;快餐厅
+citycode:021|poiid:B0FFF3F8EP|name:塔顶|address:华盛街10号人民广场|location121.47294,31.23073|tel:type:餐饮服务;外国餐厅;其它亚洲菜
+citycode:021|poiid:B00155QNBT|name:迪美广场店|address:人民大道212号|location121.472936,31.230728|tel:021-52988966;021-63580000type:餐饮服务;外国餐厅;日本料理
+citycode:021|poiid:B00157H69T|name:Stayreal Coffee|address:黄浦区华盛街10号人民广场|location121.47293,31.230724|tel:type:餐饮服务;咖啡厅;咖啡厅
+citycode:021|poiid:B00157AC5N|name:Kk饭堂|address:黄浦区宁海东路131号|location121.47293,31.230724|tel:021-63355231type:餐饮服务;快餐厅;快餐厅
+citycode:021|poiid:B001573KXE|name:长生源粥店|address:黄浦区人民广场人民大道|location121.47291,31.23071|tel:021-51061505type:餐饮服务;快餐厅;快餐厅
+citycode:021|poiid:B0FFF0FLVX|name:上海小吃人家湖滨美食楼|address:华盛街10号人民广场|location121.47291,31.23071|tel:type:餐饮服务;中餐厅;中餐厅
+citycode:021|poiid:B00157HFG5|name:021上海餐厅|address:华盛街10号人民广场(近真南路)|location121.472918,31.23071|tel:type:餐饮服务;中餐厅;上海菜
+citycode:021|poiid:B00157HFGN|name:赵小姐不等位|address:华盛街10号人民广场|location121.472918,31.23071|tel:type:餐饮服务;中餐厅;上海菜
+citycode:021|poiid:B00157GAYW|name:海底捞|address:华盛街10号人民广场|location121.472918,31.23071|tel:type:餐饮服务;中餐厅;海鲜酒楼
+citycode:021|poiid:B00157GLDO|name:米皮|address:华盛街10号人民广场|location121.472918,31.23071|tel:type:餐饮服务;中餐厅;特色/地方风味餐厅
+citycode:021|poiid:B00157GGV8|name:Azul Tapas|address:华盛街10号人民广场|location121.472918,31.23071|tel:type:餐饮服务;外国餐厅;西餐厅(综合风味)
+citycode:021|poiid:B00157I7UD|name:Samfaina|address:华盛街10号人民广场(近bhb)|location121.472918,31.23071|tel:type:餐饮服务;外国餐厅;西餐厅(综合风味)
+citycode:021|poiid:B00157GL4L|name:M CAPITAL|address:华盛街10号人民广场|location121.472918,31.23071|tel:type:餐饮服务;外国餐厅;西餐厅(综合风味)
+citycode:021|poiid:B00157GJDZ|name:巴厘岛|address:华盛街10号人民广场|location121.472918,31.23071|tel:type:餐饮服务;外国餐厅;其它亚洲菜
+citycode:021|poiid:B00157GGW1|name:了解了|address:华盛街10号人民广场|location121.472918,31.23071|tel:021-11111111type:餐饮服务;咖啡厅;咖啡厅
+citycode:021|poiid:B00157I5YG|name:锦鸿元港式餐厅|address:黄浦区人民广场人民大道|location121.472918,31.23071|tel:type:餐饮服务;咖啡厅;咖啡厅
+citycode:021|poiid:B0FFF0EVRK|name:茉莉|address:华盛街10号人民广场|location121.47292,31.23071|tel:type:餐饮服务;咖啡厅;咖啡厅
+citycode:021|poiid:B0FFF2I4Y0|name:H啊哈哈说|address:黄浦区人民广场人民大道|location121.47292,31.23071|tel:type:餐饮服务;咖啡厅;咖啡厅
+citycode:021|poiid:B0FFF0FLTU|name:黑咖骑士咖啡|address:黄浦区人民广场人民大道|location121.47292,31.23071|tel:021-66585588type:餐饮服务;咖啡厅;咖啡厅
+citycode:021|poiid:B0FFF0EVMO|name:可口可乐了啦|address:华盛街10号人民广场|location121.47292,31.23071|tel:type:餐饮服务;咖啡厅;咖啡厅
+citycode:021|poiid:B0FFF0EW15|name:韩尚轩韩国料理(杨浦店)|address:黄浦区人民广场人民大道(黄兴公园)|location121.47292,31.23071|tel:type:餐饮服务;咖啡厅;咖啡厅
+citycode:021|poiid:B0FFF0F1OR|name:外婆家|address:黄浦区人民广场人民大道|location121.47292,31.23071|tel:type:餐饮服务;中餐厅;上海菜
+citycode:021|poiid:B0FFF0EGKO|name:啦啦啦|address:华盛街10号人民广场(近啦啦啦)|location121.47292,31.23071|tel:021-22222222type:餐饮服务;中餐厅;四川菜(川菜)
+citycode:021|poiid:B0FFF0FKO0|name:凤川夫人|address:华盛街10号人民广场日月光购物广场B2楼(肯德基对面)|location121.47292,31.23071|tel:type:餐饮服务;中餐厅;四川菜(川菜)
+citycode:021|poiid:B0FFF2I5BR|name:小阿毛代金券|address:黄浦区人民广场人民大道|location121.47292,31.23071|tel:type:餐饮服务;中餐厅;特色/地方风味餐厅
+citycode:021|poiid:B0FFF0F2X2|name:麦当劳 优惠券|address:黄浦区人民广场人民大道|location121.47292,31.23071|tel:type:餐饮服务;中餐厅;特色/地方风味餐厅
+citycode:021|poiid:B0FFF0EXMX|name:赶时冒成都冒菜招商加盟|address:黄浦区人民广场人民大道|location121.47292,31.23071|tel:15871700093type:餐饮服务;中餐厅;特色/地方风味餐厅
+citycode:021|poiid:B00156F28V|name:肯德基|address:华盛街10号人民广场|location121.47292,31.23071|tel:021-33040639type:餐饮服务;快餐厅;快餐厅
+citycode:021|poiid:B0FFF36WQ2|name:发发餐厅|address:华盛街10号人民广场(近陆嘉浜路)|location121.47292,31.23071|tel:021-63778677type:餐饮服务;快餐厅;快餐厅
+citycode:021|poiid:B0FFF0DPZ3|name:沈东宝|address:华盛街10号人民广场|location121.47292,31.23071|tel:type:餐饮服务;外国餐厅;西餐厅(综合风味)
+citycode:021|poiid:B0FFF0F3LZ|name:凡仔汉堡|address:成都北路(近中山南一路)|location121.47291,31.2307|tel:18121015015type:餐饮服务;快餐厅;快餐厅
+citycode:021|poiid:B00156PI9T|name:阿二冰茶(人民公园店)|address:黄浦区南京西路75号人民公园门口|location121.47176,31.232628|tel:type:餐饮服务;冷饮店;冷饮店
+citycode:021|poiid:B00156E563|name:地铁咖啡|address:南京西路19-169号华盛街G2|location121.471561,31.232505|tel:021-63273091type:餐饮服务;咖啡厅;咖啡厅
+citycode:021|poiid:B0FFF2JV9U|name:芋乐园|address:南京西路85号华盛街人民广场站10号口内地下1层|location121.4715,31.232485|tel:18917399099type:餐饮服务;冷饮店;冷饮店
+citycode:021|poiid:B0FFF31774|name:欢欢|address:南京西路95号华盛街a128座人民广场站11号口内地下1层|location121.47118,31.232093|tel:13162832908type:餐饮服务;冷饮店;冷饮店
+citycode:021|poiid:B00155QE5L|name:阿2时尚茶饮|address:南京西路71号|location121.471939,31.232932|tel:18001750361type:餐饮服务;冷饮店;冷饮店
+citycode:021|poiid:B00155H8SM|name:星巴克咖啡(人民公园店)|address:南京西路189|location121.471029,31.231651|tel:021-63271930type:餐饮服务;咖啡厅;星巴克咖啡
+citycode:021|poiid:B00155QG0E|name:流年咖啡酒吧|address:南京西路205号|location121.471043,31.231488|tel:021-33665846;15921338433;18930209657type:餐饮服务;咖啡厅;咖啡厅
+citycode:021|poiid:B00155M66W|name:乐乐柠檬人民公园店|address:南京西路231号人民公园外(近黄陂北路)|location121.47107,31.231344|tel:type:餐饮服务;冷饮店;冷饮店
+citycode:021|poiid:B00155LM2U|name:冰冰蒟蒻|address:瑞金南路1号海兴广场1楼A(近徐家汇路)|location121.471067,31.231334|tel:type:餐饮服务;冷饮店;冷饮店
+citycode:021|poiid:B0015726WV|name:人广地铁站员工食堂|address:黄浦区南京西路人广地铁站11号出口|location121.47088,31.23185|tel:type:餐饮服务;快餐厅;快餐厅
+citycode:021|poiid:B00155HB69|name:Kathleen's 5|address:南京西路325号上海美术馆5层|location121.470936,31.231104|tel:021-63272221type:餐饮服务;外国餐厅;西餐厅(综合风味)

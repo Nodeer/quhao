@@ -123,6 +123,10 @@ GET		/updateGaodeToMerchant				GaodeToMerchantController.updateGaodeToMerchant
 *		/image/f							UploadController.find
 # image display
 
+# test
+GET		/test/list							TestController.list
+GET		/test/amapmerchant/{action}			TestController.{action}
+
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                            staticDir:public
 
