@@ -25,7 +25,7 @@ function placeSearch(page) {
     mapObj.plugin(["AMap.PlaceSearch"], function() {
         MSearch = new AMap.PlaceSearch({ 
             city: "上海",
-            pageSize: 50,
+            pageSize: 40,
             pageIndex: page
         }); 
         //查询成功时的回调函数
@@ -41,12 +41,14 @@ function placeSearch_CallBack(data) {
     var resultCount = data.poiList.pois.length;
     if(data.poiList.pois.length > 0){
     	console.log("current page : " + page);
+    	console.log("current page's poi : " + data.poiList.pois.length);
 	    for (var i = 0; i < data.poiList.pois.length; i++) {
 	        resultStr = "citycode:021|"+"poiid:"+poiArr[i].id+"|name:"+poiArr[i].name+"|address:"+poiArr[i].address+"|location"+poiArr[i].location+"|tel:"+poiArr[i].tel+"type:"+poiArr[i].type+"</br>"
 	        $("#result").append(resultStr);
 	    }
 	    page++;
-	    placeSearch();
+	    placeSearch(page);
+	    //setTimeout('placeSearch()',10000);
     } else {
     	$("#tip").html("爬取结束");
     }
