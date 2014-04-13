@@ -24,15 +24,15 @@ function placeSearch(page) {
     //加载服务插件，实例化地点查询类  
     mapObj.plugin(["AMap.PlaceSearch"], function() {
         MSearch = new AMap.PlaceSearch({ 
-            city: "广州",
+            city: "北京",
             pageSize: 50,
             pageIndex: page
         }); 
         //查询成功时的回调函数
         AMap.event.addListener(MSearch, "complete", placeSearch_CallBack); 
         //周边搜索
-        // MSearch.searchNearBy("餐饮", cpoint, 50000);
-        MSearch.search("餐饮", cpoint);
+        MSearch.searchNearBy("餐饮", cpoint, 50000);
+        //MSearch.search("餐饮", cpoint);
     });
 }
 //回调函数 

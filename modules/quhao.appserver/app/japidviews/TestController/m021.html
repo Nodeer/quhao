@@ -10,7 +10,7 @@ var mapObj;
 var marker = new Array();
 var windowsArr = new Array();
 var page = 1;
-
+var MSearch;
 //中心点坐标
 var cpoint = new AMap.LngLat(121.472644, 31.231706);
 function mapInit() {
@@ -20,22 +20,24 @@ function mapInit() {
 }
 //地点查询函数
 function placeSearch(page) {
-    var MSearch;
+   
     //加载服务插件，实例化地点查询类  
     mapObj.plugin(["AMap.PlaceSearch"], function() {
         MSearch = new AMap.PlaceSearch({ 
-            city: "上海",
+            city: "021",
             pageSize: 50,
-            pageIndex: page
+            pageIndex: page,
+            type: '餐饮'
         }); 
         //查询成功时的回调函数
         AMap.event.addListener(MSearch, "complete", placeSearch_CallBack); 
-        //周边搜索
-        MSearch.searchNearBy("餐饮", cpoint, 50000); 
+       MSearch.searchNearBy("餐饮", cpoint, 50000); 
+       //MSearch.search('餐饮'); 
     });
 }
 //回调函数 
 function placeSearch_CallBack(data) {
+	console.log(data.poiList.count);
 	var resultStr = "";
     var poiArr = data.poiList.pois;
     var resultCount = data.poiList.pois.length;
@@ -47,6 +49,7 @@ function placeSearch_CallBack(data) {
 	        $("#result").append(resultStr);
 	    }
 	    page++;
+	    //MSearch.setPageIndex(page);
 	    placeSearch(page);
 	    //setTimeout('placeSearch()',10000);
     } else {
