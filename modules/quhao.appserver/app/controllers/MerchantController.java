@@ -411,7 +411,9 @@ public class MerchantController extends BaseController {
 	 */
 	public static void cancel(String reservationId) {
 		boolean flag = Reservation.cancel(reservationId);
-		Haoma haoma = Haoma.findByMerchantId(reservationId);
+		
+		Reservation r = Reservation.findByRid(reservationId);
+		Haoma haoma = Haoma.findByMerchantId(r.merchantId);
 		haoma.updateSelf();
 		renderJSON(flag);
 	}

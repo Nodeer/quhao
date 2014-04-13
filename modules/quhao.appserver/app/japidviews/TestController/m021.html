@@ -24,17 +24,22 @@ function placeSearch(page) {
     //加载服务插件，实例化地点查询类  
     mapObj.plugin(["AMap.PlaceSearch"], function() {
         MSearch = new AMap.PlaceSearch({ 
-            city: "021",
+            city: "上海",
             pageSize: 50,
-            pageIndex: page,
-            type: '餐饮'
+            pageIndex: page
         }); 
         //查询成功时的回调函数
         AMap.event.addListener(MSearch, "complete", placeSearch_CallBack); 
+        AMap.event.addListener(MSearch, "error", placeSearch_CallBack_Error); 
        MSearch.searchNearBy("餐饮", cpoint, 50000); 
        //MSearch.search('餐饮'); 
     });
 }
+
+function placeSearch_CallBack_Error(data){
+	alert(data);
+}
+
 //回调函数 
 function placeSearch_CallBack(data) {
 	console.log(data.poiList.count);
@@ -46,35 +51,22 @@ function placeSearch_CallBack(data) {
     	console.log("current page's poi : " + data.poiList.pois.length);
 	    for (var i = 0; i < data.poiList.pois.length; i++) {
 	        resultStr = "citycode:021|"+"poiid:"+poiArr[i].id+"|name:"+poiArr[i].name+"|address:"+poiArr[i].address+"|location"+poiArr[i].location+"|tel:"+poiArr[i].tel+"type:"+poiArr[i].type+"</br>"
+	        console.log(resultStr);
 	        $("#result").append(resultStr);
 	    }
 	    page++;
-	    //MSearch.setPageIndex(page);
 	    placeSearch(page);
-	    //setTimeout('placeSearch()',10000);
     } else {
     	$("#tip").html("爬取结束");
     }
 }
-function TipContents(type, address, tel) {  //信息窗体内容
-    if (type == "" || type == "undefined" || type == null || type == " undefined" || typeof type == "undefined") {
-        type = "暂无";
-    }
-    if (address == "" || address == "undefined" || address == null || address == " undefined" || typeof address == "undefined") {
-        address = "暂无";
-    }
-    if (tel == "" || tel == "undefined" || tel == null || tel == " undefined" || typeof address == "tel") {
-        tel = "暂无";
-    }
-    var str = "&nbsp;&nbsp;地址：" + address + "<br />&nbsp;&nbsp;电话: " + tel + " <br />&nbsp;&nbsp;类型：" + type;
-    return str;
-}
+
 </script>
 </head>
 <body onload="mapInit();">  
     <div id="iCenter" style="display: none;"></div>
     <div class="">
-        上海所有商家<input type="button" value="查询" onclick="placeSearch()"/><br />
+        上海所有商家<input type="button" value="查询" onclick="placeSearch(1)"/><br />
         <div id="tip"></div>
         <div id="result"> </div>
     </div>        
