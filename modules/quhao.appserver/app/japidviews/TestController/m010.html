@@ -12,7 +12,7 @@ var windowsArr = new Array();
 var page = 1;
 
 //中心点坐标
-var cpoint = new AMap.LngLat(113.280637, 23.125178);
+var cpoint = new AMap.LngLat(116.405285, 39.904989);
 function mapInit() {
     //加载地图
     mapObj = new AMap.Map("iCenter");
@@ -37,6 +37,7 @@ function placeSearch(page) {
 }
 //回调函数 
 function placeSearch_CallBack(data) {
+	console.log("all count: "+data.poiList.count);
 	var resultStr = "";
     var poiArr = data.poiList.pois;
     var resultCount = data.poiList.pois.length;
@@ -61,7 +62,7 @@ function placeSearch_CallBack(data) {
 <body onload="mapInit();">  
     <div id="iCenter" style="display: none;"></div>
     <div class="">
-        广州所有商家<input type="button" value="查询" onclick="placeSearch()"/><br />
+        北京所有商家<input type="button" value="查询" onclick="placeSearch()"/><br />
         <div id="tip"></div>
         <div id="result"> </div>
     </div>        

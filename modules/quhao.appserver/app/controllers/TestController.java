@@ -24,10 +24,25 @@ public class TestController extends BaseController {
 	public static void poi021(){
 		renderJapid();
 	}
+	public static void poi020(){
+		renderJapid();
+	}
+	public static void poi010(){
+		renderJapid();
+	}
+	public static void poi0755(){
+		renderJapid();
+	}
 	public static void m020(){
 		renderJapid();
 	}
 	public static void m021(){
+		renderJapid();
+	}
+	public static void m010(){
+		renderJapid();
+	}
+	public static void m0755(){
 		renderJapid();
 	}
 

@@ -25,7 +25,7 @@ function placeSearch(page) {
     mapObj.plugin(["AMap.PlaceSearch"], function() {
         MSearch = new AMap.PlaceSearch({ 
             city: "上海",
-            pageSize: 40,
+            pageSize: 50,
             pageIndex: page
         }); 
         //查询成功时的回调函数
@@ -71,7 +71,7 @@ function TipContents(type, address, tel) {  //信息窗体内容
 <body onload="mapInit();">  
     <div id="iCenter" style="display: none;"></div>
     <div class="">
-        <input type="button" value="查询" onclick="placeSearch()"/><br />
+        上海所有商家<input type="button" value="查询" onclick="placeSearch()"/><br />
         <div id="tip"></div>
         <div id="result"> </div>
     </div>        
