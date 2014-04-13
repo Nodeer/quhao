@@ -320,6 +320,7 @@ public class MerchantController extends BaseController {
 	public static void getReservations(String accountId, String mid) {
 		List<ReservationVO> rvos = new ArrayList<ReservationVO>();
 		Haoma haoma = Haoma.findByMerchantId(mid);
+		haoma.refresh();
 
 		ReservationVO rvo = null;
 		List<Reservation> reservations = Reservation.getReservationsByMerchantIdAndAccountId(accountId, mid);
