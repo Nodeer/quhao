@@ -320,7 +320,7 @@ public class MerchantController extends BaseController {
 	public static void getReservations(String accountId, String mid) {
 		List<ReservationVO> rvos = new ArrayList<ReservationVO>();
 		Haoma haoma = Haoma.findByMerchantId(mid);
-		haoma.refresh();
+		haoma.updateSelf();
 
 		ReservationVO rvo = null;
 		List<Reservation> reservations = Reservation.getReservationsByMerchantIdAndAccountId(accountId, mid);
@@ -411,6 +411,8 @@ public class MerchantController extends BaseController {
 	 */
 	public static void cancel(String reservationId) {
 		boolean flag = Reservation.cancel(reservationId);
+		Haoma haoma = Haoma.findByMerchantId(reservationId);
+		haoma.updateSelf();
 		renderJSON(flag);
 	}
 
