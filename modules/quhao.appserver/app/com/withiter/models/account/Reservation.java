@@ -168,7 +168,6 @@ public class Reservation extends ReservationEntityDef {
 	public static List<Reservation> findHistroyReservationsNew(String accountId, String sortBy) {
 		MorphiaQuery q = Reservation.q();
 		q.filter("accountId", accountId).filter("valid", false).filter("available", true);
-;
 
 		if (!StringUtils.isEmpty(sortBy)) {
 			q = sortBy(q, sortBy);
@@ -233,6 +232,14 @@ public class Reservation extends ReservationEntityDef {
 			r.valid = false;
 			r.modified = new Date();
 			r.save();
+			
+			// 返还积分
+			String aid = r.accountId;
+			Account account = Account.findById(new ObjectId(aid));
+			int jifen = Integer.parseInt(Play.configuration.getProperty("credit.cancel.jifen"));
+			account.jifen += jifen;
+			account.save();
+			
 			return true;
 		}
 
