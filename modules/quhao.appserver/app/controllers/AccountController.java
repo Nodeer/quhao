@@ -64,7 +64,7 @@ public class AccountController extends BaseController {
 			suVO.errorText = "此号码已注册";
 			renderJSON(suVO);
 		}
-		// account =Account.findByPhone(mobile);
+		account =Account.findByPhone(mobile);
 		if (account == null) {
 			account = new Account();
 			account.phone = mobile;
