@@ -436,7 +436,7 @@ public class MerchantController extends BaseController {
 	}
 
 	/**
-	 * 模糊查询
+	 * 模糊查询 route:search
 	 * 
 	 * @return 返回匹配的商家列表
 	 * @param name

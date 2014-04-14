@@ -19,7 +19,7 @@ import vo.account.SignupVO;
 
 import com.withiter.common.Constants;
 import com.withiter.models.account.Account;
-import com.withiter.models.account.CooperationRequset;
+import com.withiter.models.account.CooperationRequest;
 import com.withiter.models.admin.MerchantAccount;
 import com.withiter.models.backendMerchant.MerchantAccountRel;
 import com.withiter.models.merchant.Merchant;
@@ -163,7 +163,7 @@ public class AccountController extends BaseController {
 			renderJSON(false);
 		}
 		
-		CooperationRequset c = new CooperationRequset(companyName,peopleName,peopleContact,peopleContact);
+		CooperationRequest c = new CooperationRequest(companyName,peopleName,peopleContact,peopleContact);
 		c.save();
 		String subject = "商家合作申请提醒";
 		String href = Play.configuration.getProperty("application.domain")+"/admin";

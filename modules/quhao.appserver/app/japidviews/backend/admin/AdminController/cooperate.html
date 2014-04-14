@@ -1,0 +1,47 @@
+`import static press.Plugin.*;
+`import com.withiter.models.account.CooperationRequest;
+`extends admin_layout
+`set title "取号啦 - 置顶管理"
+
+$addJS("admin.js",true)
+
+`args List<CooperationRequest> list
+
+
+`set contents
+
+   <div class="container-fluid">
+   	<table class="table table-striped" style="text-align:center;">
+   		<thead>
+   			<tr>
+   				<th>ID</th>
+   				<th>公司/商家名称</th>
+   				<th>姓名</th>
+   				<th>联系电话</th>
+   				<th>EMAIL</th>
+   				<th>申请时间</th>
+   				<th>是否已经处理</th>
+   				<th>操作</th>
+   			</tr>
+   		</thead>
+   		<tbody>
+   			`for(CooperationRequest request : list){
+		   		<tr>
+		   			<td style="vertical-align: middle;">${request.id()}</td>
+		   			<td style="vertical-align: middle;">${request.companyName}</td>
+		   			<td style="vertical-align: middle;">${request.peopleName}</td>
+		   			<td style="vertical-align: middle;">${request.peopleContact}</td>
+		   			<td style="vertical-align: middle;">${request.peopleEmail}</td>
+		   			<td style="vertical-align: middle;">${request.dateFormat()}</td>
+		   			<td style="vertical-align: middle;">${request.handle}</td>
+		   			<td style="vertical-align: middle;">
+		   				<button type="button" class="btn btn-default"><a href="/admin/requesthandle?rid=${request.id()}">标记成已处理</a></button>
+		   			</td>
+		   		</tr>
+   			`}
+   		</tbody>
+	</table>
+   	</div>
+`
+
+

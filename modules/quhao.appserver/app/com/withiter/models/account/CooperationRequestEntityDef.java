@@ -9,7 +9,7 @@ import com.withiter.models.BaseModel;
 
 @Entity
 @NoAutoTimestamp
-public class CooperationRequsetEntityDef extends BaseModel{
+public class CooperationRequestEntityDef extends BaseModel{
 
 	public String companyName;
 	public String peopleName;

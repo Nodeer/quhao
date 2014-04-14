@@ -35,6 +35,8 @@ GET		/admin/accounts						backend.admin.AdminController.accounts
 GET		/admin/topmerchant					backend.admin.AdminController.topmerchant
 GET		/admin/disabletop					backend.admin.AdminController.disableTop
 GET		/admin/enabletop					backend.admin.AdminController.enableTop
+GET		/admin/cooperate					backend.admin.AdminController.cooperate
+
 
 # Category
 GET		/allCategories						MerchantController.allCategories

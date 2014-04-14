@@ -20,9 +20,11 @@ import play.mvc.Before;
 import vo.AdminVO;
 
 import com.withiter.common.Constants;
+import com.withiter.models.account.CooperationRequest;
 import com.withiter.models.admin.MerchantAccount;
 import com.withiter.models.merchant.Merchant;
 import com.withiter.models.merchant.TopMerchant;
+import com.withiter.utils.ExceptionUtil;
 
 import controllers.BaseController;
 
@@ -148,6 +150,9 @@ public class AdminController extends BaseController {
 		}
 	}
 	
+	/**
+	 * 跳转到置顶商家页面
+	 */
 	public static void topmerchant(){
 		MorphiaQuery q = TopMerchant.q();
 		q.filter("enable", true);
@@ -157,12 +162,23 @@ public class AdminController extends BaseController {
 		
 	}
 	
+	/**
+	 * 取消置顶
+	 * @param mid 商家id
+	 */
 	public static void disableTop(String mid){
 		TopMerchant t = TopMerchant.findById(new ObjectId(mid));
 		t.enable = false;
 		t.save();
 		topmerchant();
 	}
+	
+	/**
+	 * 生成置顶商家
+	 * @param mid 商家id
+	 * @param starttime 置顶开始时间
+	 * @param endtime 置顶结束时间
+	 */
 	public static void enableTop(String mid, String starttime, String endtime){
 		Merchant m = Merchant.findByMid(mid);
 		if(!m.enable){
@@ -176,10 +192,20 @@ public class AdminController extends BaseController {
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.error(ExceptionUtil.getTrace(e));
 		}
 		t.save();
 		renderJSON(true);
 		
 //		topmerchant();
+	}
+	
+	public static void cooperate(int page){
+		if(page <= 0){
+			page = 1;
+		}
+		List<CooperationRequest> list = CooperationRequest.nextNoHandle(page);
+		logger.debug("CooperationRequest's size is: " + list.size());
+		renderJapid(list);
 	}
 }
