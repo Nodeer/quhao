@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.types.ObjectId;
+
 import play.Logger;
 
 public class CooperationRequest extends CooperationRequestEntityDef{
@@ -63,7 +65,23 @@ public class CooperationRequest extends CooperationRequestEntityDef{
 		return q;
 	}
 	
+	/**
+	 * 格式化日期
+	 * @return
+	 */
 	public String dateFormat(){
 		return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(this.createTime);
+	}
+
+	/**
+	 * 标记id为rid的CooperationRequest为成功处理状态
+	 * @param rid
+	 * @return
+	 */
+	public static boolean markHandled(String rid) {
+		CooperationRequest c = CooperationRequest.findById(new ObjectId(rid));
+		c.handle = true;
+		c.save();
+		return true;
 	}
 }

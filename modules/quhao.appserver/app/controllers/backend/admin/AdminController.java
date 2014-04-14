@@ -200,6 +200,10 @@ public class AdminController extends BaseController {
 //		topmerchant();
 	}
 	
+	/**
+	 * 跳转到合作申请页面
+	 * @param page 第page页
+	 */
 	public static void cooperate(int page){
 		if(page <= 0){
 			page = 1;
@@ -207,5 +211,17 @@ public class AdminController extends BaseController {
 		List<CooperationRequest> list = CooperationRequest.nextNoHandle(page);
 		logger.debug("CooperationRequest's size is: " + list.size());
 		renderJapid(list);
+	}
+	
+	public static void requesthandle(){
+		String rid = params.get("rid");
+		logger.debug(rid);
+		
+		boolean flag = CooperationRequest.markHandled(rid);
+		if(flag){
+			renderJSON(true);
+		}else{
+			renderJSON(false);
+		}
 	}
 }
