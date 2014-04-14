@@ -99,6 +99,9 @@ public class MerchantController extends BaseController {
 			MorphiaQuery q = Merchant.q();
 			q.filter("cityCode", cityCode).filter("cateType", c.cateType);
 			c.count = q.count();
+			if(c.count == 0){
+				continue;
+			}
 			categoriesVO.add(CategoryVO.build(c));
 		}
 		renderJSON(categoriesVO);
