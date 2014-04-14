@@ -15,4 +15,6 @@ public abstract class OpinionEntityDef extends BaseModel {
 	public String contact = "";
 
 	public String opinion = "";
+	
+	public boolean handle = false;
 }

@@ -24,6 +24,7 @@ import com.withiter.models.account.CooperationRequest;
 import com.withiter.models.admin.MerchantAccount;
 import com.withiter.models.merchant.Merchant;
 import com.withiter.models.merchant.TopMerchant;
+import com.withiter.models.opinion.Opinion;
 import com.withiter.utils.ExceptionUtil;
 
 import controllers.BaseController;
@@ -213,6 +214,9 @@ public class AdminController extends BaseController {
 		renderJapid(list);
 	}
 	
+	/**
+	 * 标记合作申请为“已处理”
+	 */
 	public static void requesthandle(){
 		String rid = params.get("rid");
 		logger.debug(rid);
@@ -223,5 +227,13 @@ public class AdminController extends BaseController {
 		}else{
 			renderJSON(false);
 		}
+	}
+	
+	public static void feedback(int page){
+		if(page <=0){
+			page = 1;
+		}
+		List<Opinion> list = Opinion.nextNoHandle(page);
+		renderJapid(list);
 	}
 }

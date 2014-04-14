@@ -19,8 +19,6 @@ public class OpinionController extends BaseController{
 		Opinion opinionTO = new Opinion();
 		opinionTO.contact = contact;
 		opinionTO.opinion = opinion;
-		opinionTO.created = new Date();
-		opinionTO.modified = new Date();
 		opinionTO.create();
 		
 		renderJSON("success");

@@ -37,6 +37,7 @@ GET		/admin/disabletop					backend.admin.AdminController.disableTop
 GET		/admin/enabletop					backend.admin.AdminController.enableTop
 GET		/admin/cooperate					backend.admin.AdminController.cooperate
 GET		/admin/requesthandle				backend.admin.AdminController.requesthandle
+GET		/admin/feedback						backend.admin.AdminController.feedback
 
 
 # Category

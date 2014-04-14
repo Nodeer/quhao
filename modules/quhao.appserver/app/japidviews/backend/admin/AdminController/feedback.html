@@ -1,0 +1,45 @@
+`import static press.Plugin.*;
+`import com.withiter.models.opinion.Opinion;
+`extends admin_layout
+`set title "取号啦 - 置顶管理"
+
+$addJS("admin.js",true)
+
+`args List<Opinion> list
+
+
+`set contents
+
+   <div class="container-fluid">
+   	<table class="table table-striped" style="text-align:center;">
+   		<thead>
+   			<tr>
+   				<th>ID</th>
+   				<th>联系方式</th>
+   				<th>反馈内容</th>
+   				<th>是否已经处理</th>
+   				<th>操作</th>
+   			</tr>
+   		</thead>
+   		<tbody>
+   			`for(Opinion o : list){
+		   		<tr>
+		   			<td style="vertical-align: middle;">${o.id()}</td>
+		   			<td style="vertical-align: middle;">${o.contact}</td>
+		   			<td style="vertical-align: middle;">${o.opinion}</td>
+		   			<td style="vertical-align: middle;">${o.handle}</td>
+		   			<td style="vertical-align: middle;">
+		   				<button type="button" class="btn btn-default"><a href="/admin/ohandle?rid=${o.id()}">标记成已处理</a></button>
+		   			</td>
+		   		</tr>
+   			`}
+   		</tbody>
+	</table>
+   	</div>
+   <script type="text/javascript">
+   		$("#feedback").css("color","#fff");
+   </script>
+   	
+`
+
+

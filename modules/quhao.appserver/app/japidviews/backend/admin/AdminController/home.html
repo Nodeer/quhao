@@ -2,7 +2,7 @@
 `extends admin_layout
 `set title "取号啦 - 管理员"
 
-$addJS("admin.js",true);
+$addJS("admin.js",true)
 
 `set contents
    <div class="container-fluid">
@@ -14,4 +14,8 @@ $addJS("admin.js",true);
        <button class="btn btn-lg btn-primary btn-block" type="button" onclick="Admin.generateAccount();">生成账号</button>
      </form>
    </div>
+   
+   <script type="text/javascript">
+   		$("#genaccount").css("color","#fff");
+   </script>
 `
