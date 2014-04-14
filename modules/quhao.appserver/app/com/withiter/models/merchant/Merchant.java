@@ -102,6 +102,20 @@ public class Merchant extends MerchantEntityDef {
 		q.filter("name", pattern).limit(DEFAULT_PAGE_ITEMS_NUMBER);
 		return q.asList();
 	}
+
+	/**
+	 * Search merchants by key word name and cityCode
+	 * @param name the key word
+	 * @return the top 10 merchants
+	 */
+	public static List<Merchant> findByName(String name, String cityCode) {
+		MorphiaQuery q = Merchant.q();
+		//首字查询
+		//Pattern pattern = Pattern.compile("^" + name + ".*$", Pattern.CASE_INSENSITIVE);
+		Pattern pattern = Pattern.compile("^.*" + name + ".*$", Pattern.CASE_INSENSITIVE);
+		q.filter("cityCode", cityCode).filter("name", pattern).limit(DEFAULT_PAGE_ITEMS_NUMBER);
+		return q.asList();
+	}
 	
 	/**
 	 * 

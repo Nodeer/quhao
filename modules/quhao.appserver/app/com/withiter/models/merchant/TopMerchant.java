@@ -24,6 +24,12 @@ public class TopMerchant extends TopMerchantEntityDef {
 		q.filter("enable", true).limit(x);
 		return q.asList();
 	}
+	
+	public static List<TopMerchant> topX(int x, String cityCode){
+		MorphiaQuery q = TopMerchant.q();
+		q.filter("cityCode", cityCode).filter("enable", true).limit(x);
+		return q.asList();
+	}
 
 	/**
 	 * get next page merchants
@@ -129,6 +135,8 @@ public class TopMerchant extends TopMerchantEntityDef {
 		
 		tm.merchantImage = m.merchantImage;
 		tm.merchantImageSet = m.merchantImageSet;
+		
+		tm.cityCode = m.cityCode;
 		
 		return tm;
 	}

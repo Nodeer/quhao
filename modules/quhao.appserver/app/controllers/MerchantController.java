@@ -423,12 +423,13 @@ public class MerchantController extends BaseController {
 
 	/**
 	 * Top merchant 列表
+	 * WebService for APP
 	 * 
 	 * @param x
 	 *            top merchant 数量
 	 */
-	public static void getTopMerchants(int x) {
-		List<TopMerchant> topMerchants = TopMerchant.topX(x);
+	public static void getTopMerchants(int x, String cityCode) {
+		List<TopMerchant> topMerchants = TopMerchant.topX(x, cityCode);
 		List<TopMerchantVO> topMerchantVos = new ArrayList<TopMerchantVO>();
 		if (null != topMerchants && !topMerchants.isEmpty()) {
 			for (TopMerchant topMerchant : topMerchants) {
@@ -445,8 +446,13 @@ public class MerchantController extends BaseController {
 	 * @param name
 	 *            商家名称
 	 */
-	public static void getMerchantsByName(String name) {
-		List<Merchant> merchantList = Merchant.findByName(name);
+	public static void getMerchantsByName(String name, String cityCode) {
+		List<Merchant> merchantList = null;
+		if(!StringUtils.isEmpty(cityCode)){
+			merchantList = Merchant.findByName(name, cityCode);
+		}else{
+			merchantList = Merchant.findByName(name);
+		}
 		List<MerchantVO> merchantVOList = null;
 		if (null != merchantList && !merchantList.isEmpty()) {
 			merchantVOList = new ArrayList<MerchantVO>();
