@@ -36,12 +36,13 @@
         self.view.backgroundColor = [UIColor whiteColor];
     }
     
-    self.tableView=[[UITableView alloc] initWithFrame:CGRectMake(0, 20, kDeviceWidth, kDeviceHeight-128)];
+    self.tableView=[[UITableView alloc] initWithFrame:CGRectMake(0, 25, kDeviceWidth, kDeviceHeight-133)];
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.delegate=self;
     self.tableView.dataSource=self;
-    [self.view addSubview:self.tableView];
+    self.tableView.indicatorStyle=UIScrollViewIndicatorStyleWhite;
 
+    [self.view addSubview:self.tableView];
     
     return self;
 }
@@ -49,8 +50,9 @@
 - (void)initMapView
 {
     self.ownMapView = [[MAMapView alloc] initWithFrame:self.view.bounds];
+    self.ownMapView.userTrackingMode = MAUserTrackingModeNone;
     self.ownMapView.visibleMapRect = MAMapRectMake(220880104, 101476980, 272496, 466656);
-    
+    self.ownMapView.delegate = self;
     self.search = [[AMapSearchAPI alloc] initWithSearchKey:[MAMapServices sharedServices].apiKey Delegate:self];
     self.search.delegate = self;
     
@@ -60,50 +62,113 @@
     if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
         [self.tableView setSeparatorInset:UIEdgeInsetsZero];
     }
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.navigationController.navigationBar.translucent = NO;
+    self.tabBarController.tabBar.translucent = NO;
+    self.extendedLayoutIncludesOpaqueBars = NO;
 #endif
     UIImage *backImage = [UIImage imageNamed:@"max_btn"];
     _button = [UIButton buttonWithType:UIButtonTypeCustom];
-    _button.frame = CGRectMake(0, 0, kDeviceWidth, 20);
+    _button.frame = CGRectMake(0, 0, kDeviceWidth, 25);
     [_button setBackgroundImage:backImage forState:UIControlStateNormal];
     _button.titleLabel.font = [UIFont boldSystemFontOfSize:13.0f];
+    _button.contentEdgeInsets = UIEdgeInsetsMake(0,10, 0, 0);
     [_button setTitle:@"3千米" forState:UIControlStateNormal];
     [_button addTarget:self action:@selector(changeDis:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_button];
 
-    
+    _isLoading = YES;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshed:) name:Notification_TabClick object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    [self checkDw];
     _reloading = NO;
+    _isLoading = NO;
     _pageIndex = 1;
-    //注册
-    if([Helper isConnectionAvailable]){
-        if([_merchartsArray count]==0){
-            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            hud.labelText = NSLocalizedString(@"正在加载", nil);
-            hud.square = YES;
-            [self refreshAction];
+}
 
-            [hud hide:YES];
+- (void)checkDw
+{
+    if ([CLLocationManager locationServicesEnabled] &&([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized
+                                                       || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined))
+    {
+        self.ownMapView.showsUserLocation = YES;
+        _isMapLoading = 0;
+    }else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"请在系统设置中开启定位服务" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
+    if(![Helper isConnectionAvailable]){
+        [self createHud];
+        _HUD.labelText = @"当前网络不可用";
+        [_HUD hide:YES];
+        return;
+    }
+}
+
+-(void)mapView:(MAMapView*)mapView didUpdateUserLocation:(MAUserLocation*)userLocation
+updatingLocation:(BOOL)updatingLocation
+{
+    self.ownMapView.showsUserLocation = NO;
+    _isMapLoading++;
+    if(_isMapLoading == 1){
+        _latitude = userLocation.coordinate.latitude;
+        _longitude = userLocation.coordinate.longitude;
+        if([_merchartsArray count]==0){
+            [self createHud];
+            [self refreshAction];
             [self addFooter];
         }
-    }//如果没有网络连接
-    else
-    {
-        [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
     }
+}
+
+-(void)mapView:(MAMapView*)mapView didFailToLocateUserWithError:(NSError*)error
+{
+    if(_HUD!=nil){
+        [_HUD hide:YES];
+    }
+    _isMapLoading++;
+    self.ownMapView.showsUserLocation = NO;
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"定位失败" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+    [alert show];
+    return;
+}
+
+#pragma mark HUD
+- (void)hudWasHidden:(MBProgressHUD *)hud {
+    [_HUD removeFromSuperview];
+	_HUD = nil;
+}
+
+-(void)createHud
+{
+    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:_HUD];
+    _HUD.mode = MBProgressHUDModeIndeterminate;
+    _HUD.labelText = @"正在加载";
+    [_HUD show:YES];
+    _HUD.delegate = self;
 }
 
 - (void)refreshed:(NSNotification *)notification
 {
     if (notification.object) {
         if ([(NSString *)notification.object isEqualToString:@"1"]) {
-            if (self.tableView.contentOffset.y == 0) {
-                [self performSelector:@selector(refreshData:) withObject:nil afterDelay:0.5];
-            }else{
-                [self.tableView setContentOffset:CGPointZero animated:YES];
+            if(_isLoading){
+                _isLoading = NO;
+                [self checkDw];
+                [self createHud];
+                _HUD.labelText = @"正在刷新";
+                
+                if (self.tableView.contentOffset.y == 0) {
+                    [self performSelector:@selector(refreshData:) withObject:nil afterDelay:0.5];
+                }else{
+                    [self.tableView setContentOffset:CGPointZero animated:YES];
+                }
             }
         }
     }
@@ -117,13 +182,9 @@
 
 - (void)refreshData:(id)sender
 {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = NSLocalizedString(@"正在刷新", nil);
-    hud.square = YES;
     [_merchartsArray removeAllObjects];
     _pageIndex = 1;
     [self refreshAction];
-    [hud hide:YES];
 }
 
 //上拉加载更多
@@ -196,13 +257,13 @@
     }
     else {
         MerchartModel *n = [_merchartsArray objectAtIndex:row];
-        if (n&&n.id!=nil)
+        if (n&&n.id!=nil&&![n.id isEqualToString:@""])
         {
             [self pushMerchartDetail:n andNavController:self.navigationController];
         }else{
             //当前只提交数据库一次
             if (!_isOpinion) {
-                NSString *url = [NSString stringWithFormat:@"%@%@%@",[Helper getIp],updateGaodeToMerchant,n.pguid];
+                NSString *url = [NSString stringWithFormat:@"%@%@%@",IP,updateGaodeToMerchant,n.pguid];
                 NSString *response =[QuHaoUtil requestDb:url];
                 if(![response isEqualToString:@""]){
                     [Helper showHUD2:@"暂时未开放！" andView:self.view andSize:100];
@@ -250,7 +311,6 @@
     {
         return;
     }
-    
     [respons.pois enumerateObjectsUsingBlock:^(AMapPOI *obj, NSUInteger idx, BOOL *stop) {
 
         //[poiAnnotations addObject:[[POIAnnotation alloc] initWithPOI:obj]];
@@ -265,39 +325,31 @@
         model.pguid=obj.uid;
         model.imgUrl=@"";
         NSString * result=[self getMerchart:obj.uid ];
-        if(![result isEqualToString:@""]){
-            //异常处理
-            [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
-            model.id=result;
-        }
+        model.id=result;
         [_merchartsArray addObject:model];
         
     }];
     
-    //NSLog(@"_merchartsArray===%d",[_merchartsArray count]);
     _prevItemCount = [_merchartsArray count];
     
     [self.tableView reloadData];
+    [_HUD hide:YES];
+    _isLoading = YES;
 }
 
 #pragma mark - Action Handle
 - (void)refreshAction
 {
-    //测试用
-    self.ownMapView.userLocation.coordinate= CLLocationCoordinate2DMake(31.138869,121.40948);
     self.centerPointAnnotation = [[MAPointAnnotation alloc] init];
-    self.centerPointAnnotation.coordinate = self.ownMapView.userLocation.coordinate;
+    self.centerPointAnnotation.coordinate = CLLocationCoordinate2DMake(_latitude, _longitude);
     self.centerPointAnnotation.title = @"我的位置";
-    //[self.ownMapView addAnnotation:self.centerPointAnnotation];
-    //NSLog(@"%f",self.centerPointAnnotation.coordinate.latitude);
-    //NSLog(@"%f",self.centerPointAnnotation.coordinate.longitude);
 
     [self poiRequestCoordinate:self.centerPointAnnotation.coordinate];
 }
 
 -(NSString *)getMerchart:(NSString *)poiId
 {
-    NSString *url = [NSString stringWithFormat:@"%@%@%@",[Helper getIp],queryMerchantByPoiId,poiId];
+    NSString *url = [NSString stringWithFormat:@"%@%@%@",IP,queryMerchantByPoiId,poiId];
     NSString *response =[QuHaoUtil requestDb:url];
     
     return response;
@@ -345,7 +397,10 @@
     [_button setTitle:[arryList objectAtIndex:anIndex] forState:UIControlStateNormal];
     _dis = [[arryValueList objectAtIndex:anIndex] intValue];
     _showList = 0;
-
+    _isLoading = NO;
+    [self checkDw];
+    [self createHud];
+    _HUD.labelText = @"正在刷新";
     if (self.tableView.contentOffset.y == 0) {
         [self performSelector:@selector(refreshData:) withObject:nil afterDelay:0.5];
     }else{
@@ -356,7 +411,7 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     UITouch *touch = [touches anyObject];
     CGPoint point = [touch  locationInView:self.view];
-    if (point.y >200) {
+    if (point.y >284) {
         [_selectList fadeOut];
         _showList = 0;
     }
@@ -365,11 +420,19 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:YES];
+    if(_HUD!=nil){
+        [_HUD hide:YES];
+    }
 }
 
 - (void)delloc
 {
+    [_footer free];
     [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 @end

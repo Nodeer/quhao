@@ -15,10 +15,9 @@
 #import "Category.h"
 #import "UICustomLabel.h"
 #import "SearchView.h"
-#import "UICustomImageView.h"
 #import "CityViewController.h"
-
-@interface HomeViewController : UIViewController<CityViewDelegate>{
+@interface HomeViewController : UIViewController<CityViewDelegate>
+{
     NSMutableArray *_categoryArray;
     NSMutableArray *_topArray;
     int _columns;
@@ -31,6 +30,7 @@
     UIInterfaceOrientation _rotation;
     UIButton *_cityButton;
     NSString *_cityCode;
+    BOOL _isLoading;
 }
 
 @property (nonatomic, strong) UIScrollView *menuView;
@@ -50,7 +50,7 @@
 -(void)loadNavigationItem;
 -(void)clickSearch:(id)sender;
 -(void)onClickUIImage:(UITapGestureRecognizer *)sender;
--(void)onClickUILable:(UITapGestureRecognizer *)sender;
+-(void)onClickCateLable:(UITapGestureRecognizer *)sender;
 //点击top商家进入详细页面
 -(void)onClickTopImage:(UITapGestureRecognizer *)sender;
 -(void)pushMerchartDetail:(NSString *)cateType andNavController:(UINavigationController *)navController;

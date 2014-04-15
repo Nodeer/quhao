@@ -16,23 +16,13 @@
     if (self) {
         self.tabBarItem.title = @"主页";
         self.tabBarItem.image = [UIImage imageNamed:@"home"];
-        [self myInit];
+        [self loadNavigationItem];
     }
     return self;
 }
 
--(void)myInit
-{
-    [self loadNavigationItem];
-    
-    _topArray= [[NSMutableArray alloc] init];
-    _categoryArray = [[NSMutableArray alloc] init];
-}
-
 -(void)loadNavigationItem
 {
-    self.view.backgroundColor=[UIColor whiteColor];
-    
     _cityButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _cityButton.frame = CGRectMake( 0, 0, 40, 25 );
     [_cityButton setTitle: @"上海" forState: UIControlStateNormal];
@@ -45,7 +35,9 @@
     if ([Helper returnUserString:@"currentCity"]!=nil)
     {
         [_cityButton  setTitle:[Helper returnUserString:@"currentCity"] forState:UIControlStateNormal];
-        _cityCode = [Helper returnUserString:@"currentCityCode"];
+        _cityCode = [Helper returnUserString:@"cityCode"];
+    }else{
+        [Helper saveDafaultData:_cityCode withName:@"cityCode"];
     }
     
     UIButton *chooseButton=[Helper getBackBtn:@"chooseArrow" title:@"" rect:CGRectMake( 0, 0, 11, 9 )];
@@ -64,6 +56,59 @@
     self.navigationItem.rightBarButtonItem = buttonItem;
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    _isLoading = YES;
+    _menuView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, kDeviceHeight-108)];
+    _menuView.backgroundColor = [UIColor whiteColor];
+    _menuView.contentSize = CGSizeMake(kDeviceWidth, kDeviceHeight);
+    self.view = _menuView;
+    if (_menuView) {
+        _menuView.scrollEnabled = YES;
+        _menuView.userInteractionEnabled = YES;
+        //_menuView.contentSize = _menuView.frame.size;
+        _menuView.showsVerticalScrollIndicator = NO;
+    }
+    _menuView.frame = CGRectMake(0, 0, 320, 480);
+    
+    [_menuView setContentSize:CGSizeMake(320, 1000)];
+    self.view.backgroundColor=[UIColor whiteColor];
+    //适配iOS7uinavigationbar遮挡tableView的问题
+#if IOS7_SDK_AVAILABLE
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+        self.automaticallyAdjustsScrollViewInsets = NO;
+        self.navigationController.navigationBar.translucent = NO;
+        self.tabBarController.tabBar.translucent = NO;
+        self.extendedLayoutIncludesOpaqueBars = NO;
+#endif
+    _topArray= [[NSMutableArray alloc] init];
+    _categoryArray = [[NSMutableArray alloc] init];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshed:) name:Notification_TabClick object:nil];
+
+    if(![Helper isConnectionAvailable]){
+        [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
+        return;
+    }
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = NSLocalizedString(@"正在加载", nil);
+    hud.square = YES;
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_group_t group = dispatch_group_create();
+    dispatch_group_async(group, queue, ^{
+        [self requestTopData];
+    });
+    dispatch_group_async(group, queue, ^{
+        [self requestMenuData];
+    });
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        [self topSetOrReset];
+        [self menuSetOrReset];
+        [self.view bringSubviewToFront:hud];
+        [hud hide:YES];
+    });
+}
+
 -(void)openCitySearchView:(id)sender{
     CATransition *animation = [CATransition animation];
     [animation setDuration:0.5];
@@ -79,43 +124,14 @@
     [self.navigationController.view.layer addAnimation:animation forKey:nil];
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    _menuView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, kDeviceHeight)];
-    _menuView.backgroundColor = [UIColor whiteColor];
-    self.view = _menuView;
-    if (_menuView) {
-        _menuView.scrollEnabled = YES;
-        _menuView.userInteractionEnabled = YES;
-        _menuView.contentSize = _menuView.frame.size;
-        _menuView.showsVerticalScrollIndicator = NO;
-    }
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = NSLocalizedString(@"正在加载", nil);
-    hud.square = YES;
-    [hud hide:YES afterDelay:2];
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_group_t group = dispatch_group_create();
-    dispatch_group_async(group, queue, ^{
-        [self requestTopData];
-    });
-    dispatch_group_async(group, queue, ^{
-        [self requestMenuData];
-    });
-    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
-        [self topSetOrReset];
-        [self menuSetOrReset];
-        [hud hide:YES];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshed:) name:Notification_TabClick object:nil];
-    });
-}
-
 - (void)refreshed:(NSNotification *)notification
 {
     if (notification.object) {
         if ([(NSString *)notification.object isEqualToString:@"0"]) {
-            [self realRefresh];
+            if(_isLoading){
+                _isLoading = NO;
+                [self realRefresh];
+            }
         }
     }
 }
@@ -128,8 +144,6 @@
         
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.labelText = NSLocalizedString(@"正在刷新", nil);
-        hud.square = YES;
-        [hud hide:YES afterDelay:2];
         dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         dispatch_group_t group = dispatch_group_create();
         dispatch_group_async(group, queue, ^{
@@ -145,7 +159,10 @@
             }
             [self topSetOrReset];
             [self menuSetOrReset];
+            [self.view bringSubviewToFront:hud];
             [hud hide:YES];
+            [hud removeFromSuperview];
+            _isLoading = YES;
         });
     }else{
         [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
@@ -154,7 +171,7 @@
 -(void)requestTopData
 {
     //处理topMerchant
-    NSString *url = [NSString stringWithFormat:@"%@%@%d&cityCode=%@",[Helper getIp],getTopMerchants,1,_cityCode];
+    NSString *url = [NSString stringWithFormat:@"%@%@%d&cityCode=%@",IP,getTopMerchants,4,_cityCode];
     NSString *response1 =[QuHaoUtil requestDb:url];
     if([response1 isEqualToString:@""]){
         //异常处理
@@ -184,12 +201,8 @@
 }
 
 -(void)topSetOrReset {
-    NSLog(@"top-- begin----");
-
     _menuView = [self setInitWithColumns:2 marginSize:10 gutterSize:20 rowHeight:85];
     [self populateTop];
-    NSLog(@"top-- end----");
-
 }
 
 -(void)populateTop {
@@ -203,91 +216,50 @@
 -(void)requestMenuData
 {
     //加载category
-    NSString *url = [NSString stringWithFormat:@"%@%@",[Helper getIp],allCategories_url];
-    //url = [NSString stringWithFormat:@"%@%@",[Helper getIp],allCategories_url];
+    NSString *url = [NSString stringWithFormat:@"%@%@?cityCode=%@",IP,allCategories_url,_cityCode];
     NSString *response1 = [QuHaoUtil requestDb:url];
     if([response1 isEqualToString:@""]){
         //异常处理
-        [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+        //[Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+        return;
     }else{
         NSArray *jsonObjects=[QuHaoUtil analyseData:response1];
         if(jsonObjects==nil){
             //解析错误
-            [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+            //[Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+            return;
         }else{
             Category *c = nil;
             for(int i=0; i < [jsonObjects count]; ){
                 c = [[Category alloc] init];
-                NSString *value1 = [[jsonObjects objectAtIndex:i] objectForKey:@"cateType"];
-                NSString *value2 = [[jsonObjects objectAtIndex:i] objectForKey:@"count"];
-                c.cateType=value1;
-                if([value1 isEqualToString:@"benbangcai"]){
-                    value1 = @"本帮菜";
-                }
-                if([value1 isEqualToString:@"hanguoliaoli"]){
-                    value1 = @"韩国料理";
-                }
-                if([value1 isEqualToString:@"huoguo"]){
-                    value1 = @"火锅";
-                }
-                if([value1 isEqualToString:@"ribenliaoli"]){
-                    value1 = @"日本料理";
-                }
-                if([value1 isEqualToString:@"xiangcai"]){
-                    value1 = @"湘菜";
-                }
-                if([value1 isEqualToString:@"chuancai"]){
-                    value1 = @"川菜";
-                }
-                if([value1 isEqualToString:@"dongnanyacai"]){
-                    value1 = @"东南亚菜";
-                }
-                if([value1 isEqualToString:@"haixian"]){
-                    value1 = @"海鲜";
-                }
-                if([value1 isEqualToString:@"shaokao"]){
-                    value1 = @"烧烤";
-                }
-                if([value1 isEqualToString:@"xican"]){
-                    value1 = @"西餐";
-                }
-                if([value1 isEqualToString:@"xinjiangqingzhen"]){
-                    value1 = @"新疆清真";
-                }
-                if([value1 isEqualToString:@"yuecaiguan"]){
-                    value1 = @"粤菜馆";
-                }
-                if([value1 isEqualToString:@"zhongcancaixi"]){
-                    value1 = @"中餐菜系";
-                }
-                if([value1 isEqualToString:@"zizhucan"]){
-                    value1 = @"自助餐";
-                }
-                
-                NSString *lableText = [[[value1 stringByAppendingString:@"("] stringByAppendingString:[value2 description]] stringByAppendingString:@")"];
+                c.cateType = [[jsonObjects objectAtIndex:i] objectForKey:@"cateType"];
+                c.cateName = [[jsonObjects objectAtIndex:i] objectForKey:@"cateName"];
+                c.count = [[jsonObjects objectAtIndex:i] objectForKey:@"count"];
+                NSString *lableText = [[[c.cateName stringByAppendingString:@"("] stringByAppendingString:[c.count description]] stringByAppendingString:@")"];
                 c.text = lableText;
-                c.count = value2;
                 [_categoryArray insertObject:c atIndex:i];
                 
                 i++;
-                
             }
         }
     }
 }
 
 -(void)menuSetOrReset {
-    NSLog(@"menu-- begin----");
-
-    [self resetWithColumns:3 marginSize:10 gutterSize:20 rowHeight:85];
+    [self resetWithColumns:3 marginSize:10 gutterSize:40 rowHeight:17];
     [self populateMenu];
-    NSLog(@"menu-- end----");
-
 }
 
 -(void)populateMenu {
     UIControl *menuItem = nil;
     for (Category *cate in _categoryArray) {
+        if(menuItem == nil){
+            UILabel *cateLabel = [[UICustomLabel alloc] initWithFrame:CGRectMake(5,220, 80, 20)];
+            cateLabel.text = @"分类";
+            cateLabel.font = [UIFont systemFontOfSize:14];
+            cateLabel.textColor = [UIColor redColor];
+            [self.view addSubview:cateLabel];
+        }
         menuItem = [self createMenuItem:cate];
         [self.view addSubview:menuItem];
     }
@@ -342,34 +314,21 @@
         _xOffset = _xOffset + _marginSize + itemWidth;
         _menuView.contentSize = CGSizeMake(_menuView.contentSize.width, _yOffset + _marginSize + _rowHeight);
     }
-    
     //item.backgroundColor = [UIColor redColor];
     CGRect parentFrame = item.frame;
     CGFloat margin = 0.0;
     
-    
-    CGRect imgFrame = CGRectMake(margin, 0, parentFrame.size.width, 70);
-    UICustomImageView *imageView=[[UICustomImageView alloc] initWithFrame:imgFrame];
-    UIImage *image=[UIImage imageNamed:[NSString stringWithFormat:@"%@.%@",cate.cateType,@"jpg"]];
-    [imageView setImage:image];
-    imageView.cateType=cate.cateType;
-    imageView.backgroundColor=[UIColor whiteColor];
-    imageView.userInteractionEnabled=YES;
-    UITapGestureRecognizer *tapGesture2=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickUIImage:)];
-    [imageView addGestureRecognizer:tapGesture2];
-    [item addSubview:imageView];
-    
-    CGRect titleFrame = CGRectMake(margin, 70, parentFrame.size.width, 15);
+    CGRect titleFrame = CGRectMake(margin,0, parentFrame.size.width, 17);
     UICustomLabel *titleLabel = [[UICustomLabel alloc] initWithFrame:titleFrame];
-    titleLabel.text =cate.text;
-    titleLabel.cateType=cate.cateType;
-    titleLabel.textAlignment=NSTextAlignmentCenter;
-    titleLabel.backgroundColor = [UIColor clearColor];
-    titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:11];
+    titleLabel.text = cate.text;
+    titleLabel.cateType = cate.cateType;
+    titleLabel.textAlignment = NSTextAlignmentLeft;
+    titleLabel.backgroundColor = [UIColor whiteColor];
+    titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:13];
     titleLabel.adjustsFontSizeToFitWidth = YES;
     titleLabel.contentMode = UIViewContentModeScaleAspectFit;
     titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
-    UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickUILable:)];
+    UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickCateLable:)];
     titleLabel.userInteractionEnabled=YES;
     
     [titleLabel addGestureRecognizer:tapGesture];
@@ -397,7 +356,7 @@
     CGRect parentFrame = item.frame;
     CGFloat margin = 0.0;
     
-    EGOImageView *egoImgView = [[EGOImageView alloc] initWithPlaceholderImage:[UIImage imageNamed:@"placeholder.png"]];
+    EGOImageView *egoImgView = [[EGOImageView alloc] initWithPlaceholderImage:[UIImage imageNamed:@"no_logo.png"]];
     egoImgView.frame = CGRectMake(margin, 0, parentFrame.size.width, 70);
     if (![[Helper returnUserString:@"showImage"] boolValue]||[model.imgUrl isEqualToString:@""])
     {
@@ -405,7 +364,7 @@
     }
     else
     {
-        egoImgView.imageURL = [NSURL URLWithString:model.imgUrl];
+        egoImgView.imageURL =[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,model.imgUrl]];
     }
     egoImgView.id=model.id;
     egoImgView.userInteractionEnabled=YES;
@@ -425,14 +384,14 @@
 -(void)onClickUIImage:(UITapGestureRecognizer *)sender
 {
     UITapGestureRecognizer *tap = (UITapGestureRecognizer*)sender;
-    UICustomImageView *image=(UICustomImageView*)tap.view;
+    EGOImageView *image=(EGOImageView*)tap.view;
     [self pushMerchartDetail:image.cateType andNavController:self.navigationController];
 }
 
 -(void)onClickTopImage:(UITapGestureRecognizer *)sender
 {
     UITapGestureRecognizer *tap = (UITapGestureRecognizer*)sender;
-    UICustomImageView *image=(UICustomImageView*)tap.view;
+    EGOImageView *image=(EGOImageView*)tap.view;
     if(NULL == image.id){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"推荐商家虚席以待" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
         [alert show];
@@ -446,7 +405,7 @@
     [self.navigationController pushViewController:mDetail animated:YES];
 }
 
--(void)onClickUILable:(UITapGestureRecognizer *)sender
+-(void)onClickCateLable:(UITapGestureRecognizer *)sender
 {
     UITapGestureRecognizer *tap = (UITapGestureRecognizer*)sender;
     UICustomLabel *la=(UICustomLabel*)tap.view;
@@ -471,7 +430,7 @@
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:selectedCity forKey:@"currentCity"];
-    [defaults setObject:_cityCode forKey:@"currentCityCode"];
+    [defaults setObject:_cityCode forKey:@"cityCode"];
     [defaults synchronize];
     
     [self realRefresh];
@@ -482,8 +441,21 @@
     return _cityButton.titleLabel.text;
 }
 
+- (void)viewDidUnload
+{
+    _menuView = nil;
+    [_categoryArray removeAllObjects];
+    [_topArray removeAllObjects];
+    [super viewDidUnload];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+- (void)dealloc
+{
+    [_menuView setDelegate:nil];
 }
 @end

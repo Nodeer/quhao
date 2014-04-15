@@ -13,7 +13,7 @@
 #import "MerchartDetail.h"
 #import "selectListView.h"
 
-@interface NearViewController :BaseSearchViewController<UITableViewDelegate,UITableViewDataSource,selectListViewDelegate>
+@interface NearViewController :BaseSearchViewController<UITableViewDelegate,UITableViewDataSource,selectListViewDelegate,MBProgressHUDDelegate>
 {
     @private
     NSMutableArray *_merchartsArray;
@@ -32,6 +32,11 @@
     int _showList;
     //设置搜索距离
     NSInteger * _dis;
+    MBProgressHUD *_HUD;
+    CLLocationDegrees _latitude;
+	CLLocationDegrees _longitude;
+    int _isMapLoading;
+    BOOL _isLoading;
 }
 @property (strong, nonatomic)  UITableView *tableView;
 

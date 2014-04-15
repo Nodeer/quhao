@@ -16,26 +16,30 @@
 
 @implementation ListViewController
 
-- (void)viewDidLoad
+
+-(void)viewDidLoad
 {
     [super viewDidLoad];
+    _cityCode = [Helper returnUserString:@"cityCode"];
+    
     //添加的代码
     //添加上面的导航
     [self loadNavigationItem];
-
+    
     _merchartsArray = [[NSMutableArray alloc] initWithCapacity:20];
-
+    
     _reloading = NO;
     _pageIndex=1;
     _whichView=1;
     //注册
+    self.tableView.frame = CGRectMake(0, 0, kDeviceWidth, kDeviceHeight);
     [self.tableView registerClass:[HomeCell class] forCellReuseIdentifier:@"ListCell"];
     
-    #if IOS7_SDK_AVAILABLE
-        if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
-            [self.tableView setSeparatorInset:UIEdgeInsetsZero];
-        }
-    #endif
+#if IOS7_SDK_AVAILABLE
+    if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+        [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+    }
+#endif
     if ([Helper isConnectionAvailable]){
         MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
         [self.view addSubview:HUD];
@@ -53,7 +57,7 @@
             NSDate * dates=[dateFormatter dateFromString:currentDateStr] ;
             //NSDate * dates=[dateFormatter dateFromString:@"2012-08-01 12:22:33"] ;
             self.currentDateStr = [QuHaoUtil returnFormatString:[dateFormatter  stringFromDate:dates]];
-            [self requestData:[NSString stringWithFormat:@"%@%@%@&sortBy=joinedDate&cityCode=%@",[Helper getIp],homeView_list_url,self.cateType,_cityCode] withPage:_pageIndex];
+            [self requestData:[NSString stringWithFormat:@"%@%@%@&sortBy=joinedDate&cityCode=%@",IP,homeView_list_url,self.cateType,_cityCode] withPage:_pageIndex];
             [self.tableView reloadData];
         } completionBlock:^{
             //操作执行完后取消对话框
@@ -65,6 +69,7 @@
         [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
     }
 }
+
 
 -(void)loadNavigationItem
 {
@@ -102,7 +107,7 @@
         _prevItemCount = [_merchartsArray count];
         _whichView=2;
         //page为0无效 暂时未做分页处理
-        [self requestData:[NSString stringWithFormat:@"%@%@%@&date=%@&cityCode=%@",[Helper getIp],homeView_last_url,self.cateType,self.currentDateStr,_cityCode]
+        [self requestData:[NSString stringWithFormat:@"%@%@%@&date=%@&cityCode=%@",IP,homeView_last_url,self.cateType,self.currentDateStr,_cityCode]
                  withPage:0];
         // 这里的refreshView其实就是header
         [self performSelector:@selector(doneWithView:) withObject:refreshView afterDelay:1.0];
@@ -120,7 +125,7 @@
         _prevItemCount = [_merchartsArray count];
         ++_pageIndex;
         _whichView=1;
-        [self requestData:[NSString stringWithFormat:@"%@%@%@&cityCode=%@",[Helper getIp],homeView_list_url,self.cateType,_cityCode]  withPage:_pageIndex];
+        [self requestData:[NSString stringWithFormat:@"%@%@%@&cityCode=%@",IP,homeView_list_url,self.cateType,_cityCode]  withPage:_pageIndex];
         [self performSelector:@selector(doneWithView:) withObject:refreshView afterDelay:1.0];
         
     };
@@ -264,10 +269,14 @@
     }
 }
 
-- (void)dealloc
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+}
+
+- (void)delloc
 {
     [_header free];
     [_footer free];
 }
-
 @end

@@ -19,10 +19,9 @@
 @synthesize seatType;
 @synthesize popView;
 @synthesize coverView;
--(void)loadView
+- (void)viewDidLoad
 {
-    UIView  *view = [[UIView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
-    self.view = view;
+    [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     //button
     UIButton *backButton = [Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 5, 50, 30 )];
@@ -43,7 +42,7 @@
     [self.view addSubview:coverView];
     
     //创建下拉列表的view
-    popView = [[UITableView alloc] initWithFrame:CGRectMake(100, 45, 100 ,120)];
+    popView = [[UITableView alloc] initWithFrame:CGRectMake(100, 119, 100 ,120)];
     popView.delegate = self;
     popView.dataSource = self;
     popView.backgroundColor = [ UIColor colorWithRed: 0.907
@@ -67,7 +66,7 @@
 {
     //背景
     UIImageView *bgImgView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"qhmk.png" toSize:CGSizeMake(kDeviceWidth,75)]];
-    bgImgView.frame = CGRectMake(5, 10, kDeviceWidth-10, 75);
+    bgImgView.frame = CGRectMake(5, 74, kDeviceWidth-10, 75);
     [self.view addSubview:bgImgView];
     
     NSString *seat = nil;
@@ -76,14 +75,14 @@
     }else{
         seat = [reservation.seatNumber description];
     }
-    [self.view addSubview:[Helper getCustomLabel:@" 座位人数:   " font:18 rect:CGRectMake(10, 18, 110, 30)]];
+    [self.view addSubview:[Helper getCustomLabel:@" 座位人数:   " font:18 rect:CGRectMake(10, 82, 110, 30)]];
     
-    _seatNumber = [Helper getCustomLabel:seat font:18 rect:CGRectMake(113, 18, 45, 30)];
+    _seatNumber = [Helper getCustomLabel:seat font:18 rect:CGRectMake(113, 82, 45, 30)];
     [self.view addSubview:_seatNumber];
 
     UIImage *image = [UIImage   imageNamed:@"arrow_down.png"];
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame = CGRectMake(140, 27, image.size.width, image.size.height);
+    button.frame = CGRectMake(140, 91, image.size.width, image.size.height);
     [button setBackgroundImage:image forState:UIControlStateNormal];
     [button addTarget:self action:@selector(dropdown:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
@@ -94,7 +93,7 @@
     }else{
         num = [reservation.currentNumber description];
     }
-    _currlabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%@",@" 当前号码:   ",num] font:18 rect:CGRectMake(kDeviceWidth-140 ,18 ,140 ,30)];
+    _currlabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%@",@" 当前号码:   ",num] font:18 rect:CGRectMake(kDeviceWidth-140 ,82 ,140 ,30)];
     [self.view addSubview:_currlabel];
     
     if(reservation.accountId!=nil){
@@ -108,7 +107,7 @@
     if(reservation == nil){
         UIImage *btnImage = [UIImage   imageNamed:@"max_btn.png"];
         _nahaoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        _nahaoBtn.frame = CGRectMake(10, 100, 300, 30);
+        _nahaoBtn.frame = CGRectMake(10, 164, 300, 30);
         [_nahaoBtn setBackgroundImage:btnImage forState:UIControlStateNormal];
         [_nahaoBtn setTitle: @"拿 号" forState: UIControlStateNormal];
         [_nahaoBtn addTarget:self action:@selector(clickNahao:) forControlEvents:UIControlEventTouchUpInside];
@@ -136,7 +135,7 @@
         hud.labelText = NSLocalizedString(@"正在加载", nil);
         hud.square = YES;
         
-        NSString *url = [NSString stringWithFormat:@"%@%@?accountId=%@&mid=%@",[Helper getIp],getReservation_url, accountID,merchartID];
+        NSString *url = [NSString stringWithFormat:@"%@%@?accountId=%@&mid=%@",IP,getReservation_url, accountID,merchartID];
         NSString *response = [QuHaoUtil requestDb:url];
         if([response isEqualToString:@""]){
             //异常处理
@@ -176,7 +175,7 @@
             hud.labelText = NSLocalizedString(@"正在加载", nil);
             hud.square = YES;
            
-            NSString *url = [NSString stringWithFormat:@"%@%@?accountId=%@&mid=%@&seatNumber=%@",[Helper getIp],nahao_url, accountID,merchartID,_seatNumber.text];
+            NSString *url = [NSString stringWithFormat:@"%@%@?accountId=%@&mid=%@&seatNumber=%@",IP,nahao_url, accountID,merchartID,_seatNumber.text];
             NSString *response = [QuHaoUtil requestDb:url];
             NSDictionary *jsonObjects = [QuHaoUtil analyseDataToDic:response];
             NSString *tip = [jsonObjects objectForKey:@"tipValue"];
@@ -229,7 +228,7 @@
             //hud.mode = MBProgressHUDModeText;
             hud.labelText = NSLocalizedString(@"正在加载", nil);
             hud.square = YES;
-            NSString *url = [NSString stringWithFormat:@"%@%@?id=%@&seatNo=%@",[Helper getIp],getCurrentNo_url,merchartID,_seatNumber.text];
+            NSString *url = [NSString stringWithFormat:@"%@%@?id=%@&seatNo=%@",IP,getCurrentNo_url,merchartID,_seatNumber.text];
             NSString *response = [QuHaoUtil requestDb:url];
             if([response isEqualToString:@""]){
                 //异常处理
@@ -314,5 +313,10 @@
         coverView.hidden = YES;
         popView.hidden = YES;
     }
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
 }
 @end

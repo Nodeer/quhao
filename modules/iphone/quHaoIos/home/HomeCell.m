@@ -7,7 +7,6 @@
 //
 
 #import "HomeCell.h"
-#import "MerchartModel.h"
 @implementation HomeCell
 
 -(id) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -23,7 +22,8 @@
 -(void)initSubviews
 {
     
-    self.egoImgView = [[EGOImageView alloc] initWithFrame:CGRectMake(5, 10, 105, 80)];
+    self.egoImgView = [[EGOImageView alloc] initWithPlaceholderImage:[UIImage imageNamed:@"no_logo.png"]];
+    self.egoImgView.frame = CGRectMake(5, 10, 105, 80);
     [self.contentView addSubview:self.egoImgView];
     
     
@@ -52,13 +52,9 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    if (![[Helper returnUserString:@"showImage"] boolValue]||[self.merchartModel.imgUrl isEqualToString:@""])
+    if ([[Helper returnUserString:@"showImage"] boolValue]&&![self.merchartModel.imgUrl isEqualToString:@""])
     {
-        self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
-    }
-    else
-    {
-        self.egoImgView.imageURL = [NSURL URLWithString:self.merchartModel.imgUrl];
+        self.egoImgView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,self.merchartModel.imgUrl]];
     }
     
     _titleLabel.frame=CGRectMake(self.egoImgView.frame.origin.x+self.egoImgView.frame.size.width+5, 10, 200, 30);

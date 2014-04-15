@@ -33,6 +33,10 @@
 {
     [super viewDidLoad];
     [self loadNavigationItem];
+    UIView *view1 = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, kDeviceHeight)];
+    view1.backgroundColor = [UIColor whiteColor];
+    self.view = view1;
+    
     self.isSearch = NO;
     self.tempArray = [[NSMutableArray alloc] init];//search出来的数据存放 name
     self.codeArray = [[NSMutableArray alloc] init];//search出来的数据存放 code
@@ -50,10 +54,12 @@
     [button setBackgroundImage:backImage forState:UIControlStateNormal];
     button.titleLabel.font = [UIFont boldSystemFontOfSize:13.0f];
     [button setTitle:@"定位" forState:UIControlStateNormal];
+    
     [button addTarget:self action:@selector(reLoadLoction:) forControlEvents:UIControlEventTouchUpInside];
     
-    lable = [[UILabel alloc] initWithFrame:CGRectMake(5, 44, 180, 30)];
-    lable.font = [UIFont systemFontOfSize:13];
+    lable = [[UILabel alloc] initWithFrame:CGRectMake(5, 44, 220, 30)];
+    lable.font = [UIFont systemFontOfSize:15];
+    lable.text = @"正在定位...";
     UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onLocationLable:)];
     lable.userInteractionEnabled=YES;
     [lable addGestureRecognizer:tapGesture];
@@ -73,6 +79,7 @@
         [locationManager startUpdatingLocation];
     }else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied){
         lable.text = @"请在系统设置中开启定位服务";
+        lable.userInteractionEnabled = NO;
     }
     
     tbView=[[UITableView alloc] initWithFrame:CGRectMake(0, 74, kDeviceWidth, kDeviceHeight-134)];
@@ -80,6 +87,14 @@
     tbView.delegate=self;
     tbView.dataSource=self;
     [self.view addSubview:tbView];
+    tbView.separatorStyle = NO;
+#if IOS7_SDK_AVAILABLE
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.modalPresentationCapturesStatusBarAppearance = NO;
+    self.navigationController.navigationBar.translucent = NO;
+    self.tabBarController.tabBar.translucent = NO;
+#endif
     
     curRow = NSNotFound;
    
@@ -87,31 +102,6 @@
     self.cities = [[NSMutableDictionary alloc] initWithContentsOfFile:path];
 
     self.keys = [NSMutableArray arrayWithArray:[[cities allKeys] sortedArrayUsingSelector:@selector(compare:)]];
-//    //get default selection from delegate
-//    NSString* defaultCity = [delegate getDefaultCity];
-//    if (defaultCity) {
-//        NSArray *citySection;
-//        self.defaultSelectionRow = NSNotFound;
-//        //set table index to this city if it existed
-//        for (NSString* key in keys) {
-//            citySection = [cities objectForKey:key];
-//            self.defaultSelectionRow = [citySection indexOfObject:defaultCity];
-//            if (NSNotFound == defaultSelectionRow)
-//                continue;
-//            //found match recoard position
-//            self.defaultSelectionSection = [keys indexOfObject:key];
-//            break;
-//        }
-//        
-//        if (NSNotFound != defaultSelectionRow) {
-//            
-//            self.curSection = defaultSelectionSection;
-//            self.curRow = defaultSelectionRow;
-//            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:defaultSelectionRow inSection:defaultSelectionSection];
-//            [self.tbView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-//            
-//        }
-//    }
 }
 
 -(void)onLocationLable:(UITapGestureRecognizer *)sender
@@ -281,6 +271,7 @@
          }
          if(placemarks.count > 0)
          {
+             
              NSString *city = @"";
              CLPlacemark *placemark = placemarks[0];
              if([placemark.addressDictionary objectForKey:@"City"] != NULL)
@@ -307,6 +298,36 @@
                  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                  [defaults setObject:@"1" forKey:@"isLocation"];
                  [defaults setObject:city forKey:@"currentCity"];
+                 //[defaults setObject:[NSString stringWithFormat:@"%lf",myCoOrdinate.latitude] forKey:@"latitude"];
+                 //[defaults setObject:[NSString stringWithFormat:@"%lf",myCoOrdinate.longitude] forKey:@"longitude"];
+                 [defaults setObject:loctionCityCode forKey:@"cityCode"];
+                 [defaults synchronize];
+             }else if(placemark.administrativeArea){
+                 city = [placemark.administrativeArea substringToIndex:2];
+                 lable.text = [NSString stringWithFormat:@"%@%@",@"定位城市:",city];
+                 lable.userInteractionEnabled=YES;
+                 loctionCity = city;
+                 NSArray * value;
+                 int i ;
+                 int j ;
+                 int count = [keys count];
+                 for (i = 0; i < count; i++)
+                 {
+                     value = [cities objectForKey: [keys objectAtIndex: i]];
+                     for (j=0; j<[value count]; j++) {
+                         if ([[[value objectAtIndex:j] objectForKey:@"name"] isEqualToString:city]) {
+                             loctionCityCode = [[value objectAtIndex:j] objectForKey:@"cityCode"];
+                             break;
+                         }
+                     }
+                 }
+                 
+                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                 [defaults setObject:@"1" forKey:@"isLocation"];
+                 [defaults setObject:city forKey:@"currentCity"];
+                 [defaults setObject:loctionCityCode forKey:@"cityCode"];
+                 //[defaults setObject:[NSString stringWithFormat:@"%lf",myCoOrdinate.latitude] forKey:@"latitude"];
+                 //[defaults setObject:[NSString stringWithFormat:@"%lf",myCoOrdinate.longitude] forKey:@"longitude"];
                  [defaults synchronize];
              }else{
                  lable.text = @"无法成功定位";

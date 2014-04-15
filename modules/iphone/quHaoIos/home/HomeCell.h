@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "EGOImageView.h"
 #import "Helper.h"
-@class MerchartModel;
+#import "MerchartModel.h"
 @interface HomeCell : UITableViewCell
 {
     @private
