@@ -16,10 +16,12 @@
 
 - (void)loadMapView
 {
+    self.view.backgroundColor = [UIColor whiteColor];
+    
     self.mapView.frame = self.view.bounds;
     
     self.mapView.delegate = self;
-
+    [self.mapView setZoomLevel:16];
     [self.view addSubview:self.mapView];
 }
 

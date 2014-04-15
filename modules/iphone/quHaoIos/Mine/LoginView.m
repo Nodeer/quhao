@@ -18,6 +18,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.scrollView setContentSize:CGSizeMake(kDeviceWidth, 480)];
     self.navigationItem.title = @"登录";
     //决定是否显示用户名以及密码
     if([[Helper returnUserString:@"autoLogin"] boolValue]){
@@ -49,6 +50,9 @@
 }
 
 - (IBAction)click_Login:(id)sender {
+    UITapGestureRecognizer *tap = (UITapGestureRecognizer*)sender;
+    UIButton *la=(UIButton *)tap;
+    la.enabled = NO;
     if(self.txt_Name.text.length==0){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"请输入手机号码" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
         [alert show];
@@ -63,7 +67,7 @@
 
     NSString *name =self.txt_Name.text;
     NSString *pwd = self.txt_Pwd.text;
-    NSString *urlStr=[NSString stringWithFormat:@"%@%@",[Helper getIp],@"/login"];
+    NSString *urlStr=[NSString stringWithFormat:@"%@%@",IP,@"/login"];
     _request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:urlStr]];
     [_request setUseCookiePersistence:YES];
     [_request setPostValue:name forKey:@"phone"];
@@ -73,7 +77,8 @@
     [_request setDidFailSelector:@selector(requestFailed:)];
     [_request setDidFinishSelector:@selector(requestLogin:)];
     [_request startAsynchronous];
-    
+    la.enabled = YES;
+
     _request.hud = [[MBProgressHUD alloc] initWithView:self.view];
     [Helper showHUD:@"正在登录" andView:self.view andHUD:_request.hud];
 }
@@ -108,7 +113,7 @@
             
         case 0:
         {
-            [helper saveCookie:YES];
+            [Helper saveCookie:YES];
             
             NSNumber *convertSwitchStatus=[[NSNumber alloc] initWithBool:self.switch_Remember.isOn];
             [[NSUserDefaults standardUserDefaults] setObject:convertSwitchStatus forKey:@"autoLogin"];
@@ -163,12 +168,12 @@
     }
 }
 
-- (IBAction)textEnd:(id)sender
-{
-    [sender resignFirstResponder];
-}
+//- (IBAction)textEnd:(id)sender
+//{
+//    [sender resignFirstResponder];
+//}
 
-- (IBAction)backgrondTouch:(id)sender
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [self.view endEditing:YES];
 }

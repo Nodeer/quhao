@@ -68,7 +68,7 @@
     HUD.labelText = @"正在加载...";
     //显示对话框
     [HUD showAnimated:YES whileExecutingBlock:^{
-        [self requestData:[NSString stringWithFormat:@"%@%@?accountId=%@",[Helper getIp],credit_url,self.accouId]];
+        [self requestData:[NSString stringWithFormat:@"%@%@?accountId=%@",IP,credit_url,self.accouId]];
         [self.tableView reloadData];
     } completionBlock:^{
         //操作执行完后取消对话框
@@ -232,15 +232,20 @@
         }
         if([_delArray count] !=0 ){
             //逻辑删除
-            NSString *str1= [NSString stringWithFormat:@"%@%@%@",[Helper getIp],delCredit,[_delArray componentsJoinedByString:@","]];
-            NSString *response =[QuHaoUtil requestDb:str1];
-            if([response isEqualToString:@""]){
-                //异常处理
-                [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
-            }else{
-                [_creditArray removeObjectsAtIndexes:indicesOfItemsToDelete];
-                [self.tableView deleteRowsAtIndexPaths:selectedRows withRowAnimation:UITableViewRowAnimationTop];
-            }
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSString *str1= [NSString stringWithFormat:@"%@%@%@",IP,delCredit,[_delArray componentsJoinedByString:@","]];
+                NSString *response =[QuHaoUtil requestDb:str1];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if([response isEqualToString:@""]){
+                        //异常处理
+                        [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+                    }else{
+                        [_creditArray removeObjectsAtIndexes:indicesOfItemsToDelete];
+                        [self.tableView deleteRowsAtIndexPaths:selectedRows withRowAnimation:UITableViewRowAnimationFade];
+                    }
+                });
+            });
         }
     }
     else
@@ -252,16 +257,20 @@
         }
         if([_delArray count] !=0 ){
             //逻辑删除
-            NSString *str1= [NSString stringWithFormat:@"%@%@%@",[Helper getIp],delCredit,[_delArray componentsJoinedByString:@","]];
-            NSString *response =[QuHaoUtil requestDb:str1];
-            if([response isEqualToString:@""]){
-                //异常处理
-                [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
-            }else{
-                // 删除全部
-                [_creditArray removeAllObjects];
-                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
-            }
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSString *str1= [NSString stringWithFormat:@"%@%@%@",IP,delCredit,[_delArray componentsJoinedByString:@","]];
+                NSString *response =[QuHaoUtil requestDb:str1];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if([response isEqualToString:@""]){
+                        //异常处理
+                        [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+                    }else{
+                        [_creditArray removeAllObjects];
+                        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
+                    }
+                });
+            });
         }
     }
     

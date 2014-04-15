@@ -52,7 +52,7 @@
     UILabel *pl = [Helper getLabel:@"人均消费" font:labelFont rect:CGRectMake(10, 8, 85, 20)];
     [self.view addSubview:pl];
     
-    self.rjxfField = [[UITextField alloc] initWithFrame:CGRectMake(90, 5, 100.0f, 27.0f)];
+    self.rjxfField = [[UITextField alloc] initWithFrame:CGRectMake(90, 5, 105.0f, 27.0f)];
     [rjxfField setBorderStyle:UITextBorderStyleRoundedRect]; //外框类型
     rjxfField.placeholder = @""; //默认显示的字
     rjxfField.layer.borderColor = UIColor.grayColor.CGColor;
@@ -68,38 +68,39 @@
     rjxfField.delegate = self;
     [self.view addSubview:rjxfField];
 
-    UILabel *xfLabel = [Helper getLabel:@"口味" font:labelFont rect:CGRectMake(42, 25, 40, 70)];
+    UILabel *xfLabel = [Helper getLabel:@"口味" font:labelFont rect:CGRectMake(42, 25, 40, 60)];
     [self.view addSubview:xfLabel];
-	customNumberOfStars = [[RatingControl alloc] initWithFrame:CGRectMake(85, 35, 120, 70) andStars:5 isFractional:NO];
+	customNumberOfStars = [[RatingControl alloc] initWithFrame:CGRectMake(85, 35, 120, 60) andStars:5 isFractional:NO];
     [self setRating:customNumberOfStars];
     
-    UILabel *hj = [Helper getLabel:@"环境" font:labelFont rect:CGRectMake(xfLabel.frame.origin.x, 80, 40, 70)];
+    UILabel *hj = [Helper getLabel:@"环境" font:labelFont rect:CGRectMake(xfLabel.frame.origin.x, 68, 40, 60)];
     [self.view addSubview:hj];
-	hjNumberOfStars = [[RatingControl alloc] initWithFrame:CGRectMake(customNumberOfStars.frame.origin.x, 95, 120, 70) andStars:5 isFractional:NO];
+	hjNumberOfStars = [[RatingControl alloc] initWithFrame:CGRectMake(customNumberOfStars.frame.origin.x, 80, 120, 60) andStars:5 isFractional:NO];
     [self setRating:hjNumberOfStars];
 
-    UILabel *fw = [Helper getLabel:@"服务" font:labelFont rect:CGRectMake(xfLabel.frame.origin.x, 135, 40, 70)];
+    UILabel *fw = [Helper getLabel:@"服务" font:labelFont rect:CGRectMake(xfLabel.frame.origin.x, 108, 40, 60)];
     [self.view addSubview:fw];
-    fwNumberOfStars = [[RatingControl alloc] initWithFrame:CGRectMake(customNumberOfStars.frame.origin.x, 155, 120, 70) andStars:5 isFractional:NO];
+    fwNumberOfStars = [[RatingControl alloc] initWithFrame:CGRectMake(customNumberOfStars.frame.origin.x, 125, 120, 60) andStars:5 isFractional:NO];
     [self setRating:fwNumberOfStars];
 
-    UILabel *xjb = [Helper getLabel:@"性价比" font:labelFont rect:CGRectMake(xfLabel.frame.origin.x-15, 190, 60, 70)];
+    UILabel *xjb = [Helper getLabel:@"性价比" font:labelFont rect:CGRectMake(xfLabel.frame.origin.x-15, 148, 60, 60)];
     [self.view addSubview:xjb];
-	xjbNumberOfStars = [[RatingControl alloc] initWithFrame:CGRectMake(customNumberOfStars.frame.origin.x, 215, 120, 70) andStars:5 isFractional:NO];
+	xjbNumberOfStars = [[RatingControl alloc] initWithFrame:CGRectMake(customNumberOfStars.frame.origin.x, 170, 120, 60) andStars:5 isFractional:NO];
     [self setRating:xjbNumberOfStars];
 
-    UILabel *zt = [Helper getLabel:@"总体评价" font:labelFont rect:CGRectMake(xfLabel.frame.origin.x-30, 245, 80, 70)];
+    UILabel *zt = [Helper getLabel:@"总体评价" font:labelFont rect:CGRectMake(xfLabel.frame.origin.x-30, 188, 80, 60)];
     [self.view addSubview:zt];
-    ztNumberOfStars = [[RatingControl alloc] initWithFrame:CGRectMake(customNumberOfStars.frame.origin.x, 275, 120, 70) andStars:5 isFractional:NO];
+    ztNumberOfStars = [[RatingControl alloc] initWithFrame:CGRectMake(customNumberOfStars.frame.origin.x, 215, 120, 60) andStars:5 isFractional:NO];
     [self setRating:ztNumberOfStars];
     
-    self.textView = [[UITextView alloc] initWithFrame:CGRectMake(8, 310, 260, 110)];
+    self.textView = [[UITextView alloc] initWithFrame:CGRectMake(8, 260, 260, 150)];
     self.textView.textColor = [UIColor grayColor];//设置textview里面的字体颜色
     self.textView.layer.borderColor = UIColor.grayColor.CGColor;
     self.textView.layer.borderWidth = 1;
     self.textView.layer.cornerRadius = 6.0;
     self.textView.layer.masksToBounds = YES;
     self.textView.clipsToBounds = YES;
+    self.textView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
     self.textView.font = [UIFont fontWithName:@"Arial" size:16.0];//设置字体名字和字体大小
     self.textView.delegate = self;//设置它的委托方法
     self.textView.backgroundColor = [UIColor clearColor];//设置它的背景颜色
@@ -132,7 +133,7 @@
 -(void)getComment
 {
     if([Helper isConnectionAvailable]){
-        NSString *urlStr=[NSString stringWithFormat:@"%@%@?rid=%@",[Helper getIp],getLatestComment_url,rid];
+        NSString *urlStr=[NSString stringWithFormat:@"%@%@?rid=%@",IP,getLatestComment_url,rid];
         NSString *response =[QuHaoUtil requestDb:urlStr];
         if([response isEqualToString:@""]){
             //异常处理
@@ -217,7 +218,7 @@
     [self.textView resignFirstResponder];
     [self.rjxfField resignFirstResponder];
     NSString * acc = self.rjxfField.text;
-    if (![acc isEqualToString:@""]){
+    if (nil != acc && ![acc isEqualToString:@""]){
         if ([acc stringByTrimmingCharactersInSet: [NSCharacterSet decimalDigitCharacterSet]].length >0) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"请输入合法数字" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
             [alert show];
@@ -228,7 +229,7 @@
     }
     
     if([Helper isConnectionAvailable]){
-        NSString *urlStr = [NSString stringWithFormat:@"%@%@?rid=%@&kouwei=%f&huanjing=%f&fuwu=%f&xingjiabi=%f&content=%@&grade=%f&cost=%@",[Helper getIp],updateComment_url,rid,customNumberOfStars.rating,hjNumberOfStars.rating,fwNumberOfStars.rating,xjbNumberOfStars.rating,[self.textView.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],ztNumberOfStars.rating,acc];
+        NSString *urlStr = [NSString stringWithFormat:@"%@%@?rid=%@&kouwei=%f&huanjing=%f&fuwu=%f&xingjiabi=%f&content=%@&grade=%f&cost=%@",IP,updateComment_url,rid,customNumberOfStars.rating,hjNumberOfStars.rating,fwNumberOfStars.rating,xjbNumberOfStars.rating,[self.textView.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],ztNumberOfStars.rating,acc];
         NSString *response = [QuHaoUtil requestDb:urlStr];
         if([response isEqualToString:@""]){
             //异常处理

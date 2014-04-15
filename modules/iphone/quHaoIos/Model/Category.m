@@ -14,5 +14,6 @@
 @synthesize count;
 @synthesize cateType;
 @synthesize imgUrl;
+@synthesize cateName;
 
 @end

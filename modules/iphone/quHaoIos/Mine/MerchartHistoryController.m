@@ -65,14 +65,31 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
+    [self createHud];
     [_reservationArray removeAllObjects];
-    
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = NSLocalizedString(@"正在加载", nil);
-    hud.square = YES;
-    [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],history_list_url,self.accouId]];
-    [self.tableView reloadData];
-    [hud hide:YES];
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [self requestData:[NSString stringWithFormat:@"%@%@%@",IP,history_list_url,self.accouId]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+            [_HUD hide:YES];
+        });
+    });
+}
+
+- (void)hudWasHidden:(MBProgressHUD *)hud {
+    [_HUD removeFromSuperview];
+	_HUD = nil;
+}
+
+-(void)createHud
+{
+    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:_HUD];
+    _HUD.mode = MBProgressHUDModeIndeterminate;
+    _HUD.labelText = @"正在加载";
+    [_HUD show:YES];
+    _HUD.delegate = self;
 }
 
 //设置行高
@@ -248,15 +265,20 @@
         }
         if([_delArray count] !=0 ){
             //逻辑删除
-            NSString *str1= [NSString stringWithFormat:@"%@%@%@",[Helper getIp],delHistory,[_delArray componentsJoinedByString:@","]];
-            NSString *response =[QuHaoUtil requestDb:str1];
-            if([response isEqualToString:@""]){
-                //异常处理
-                [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
-            }else{
-                [_reservationArray removeObjectsAtIndexes:indicesOfItemsToDelete];
-                [self.tableView deleteRowsAtIndexPaths:selectedRows withRowAnimation:UITableViewRowAnimationTop];
-            }
+            
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSString *str1= [NSString stringWithFormat:@"%@%@%@",IP,delHistory,[_delArray componentsJoinedByString:@","]];
+                NSString *response =[QuHaoUtil requestDb:str1];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if([response isEqualToString:@""]){
+                        //异常处理
+                        [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+                    }else{
+                        [_reservationArray removeObjectsAtIndexes:indicesOfItemsToDelete];
+                        [self.tableView deleteRowsAtIndexPaths:selectedRows withRowAnimation:UITableViewRowAnimationTop];
+                    }
+                });
+            });
         }
     }
     else
@@ -268,16 +290,19 @@
         }
         if([_delArray count] !=0 ){
             //逻辑删除
-            NSString *str1= [NSString stringWithFormat:@"%@%@%@",[Helper getIp],delHistory,[_delArray componentsJoinedByString:@","]];
-            NSString *response =[QuHaoUtil requestDb:str1];
-            if([response isEqualToString:@""]){
-                //异常处理
-                [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
-            }else{
-                // 删除全部
-                [_reservationArray removeAllObjects];
-                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
-            }
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSString *str1= [NSString stringWithFormat:@"%@%@%@",IP,delHistory,[_delArray componentsJoinedByString:@","]];
+                NSString *response =[QuHaoUtil requestDb:str1];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if([response isEqualToString:@""]){
+                        //异常处理
+                        [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+                    }else{
+                        [_reservationArray removeAllObjects];
+                        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
+                    }
+                });
+            });
         }
     }
     

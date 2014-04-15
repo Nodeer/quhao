@@ -27,14 +27,17 @@
 {
     [super viewDidLoad];
 #if IOS7_SDK_AVAILABLE
-    [self.navigationBar setBarTintColor:UIColorFromRGB];
+    UINavigationBar *navBar = [UINavigationBar appearance];
+    [navBar setBackgroundColor:UIColorFromRGB(0x91d3f5)];
+    [navBar setBarTintColor:UIColorFromRGB(0x91d3f5)];
+    self.tabBarController.tabBar.translucent = NO;
+    navBar.tintColor = [UIColor whiteColor];
 #else
-    [self.navigationBar setTintColor:UIColorFromRGB];
+    if([self.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:) ]){
+        CGSize size=CGSizeMake(kDeviceWidth,44);
+        [self.navigationBar setBackgroundImage:[Helper reSizeImage:@"title.jpg" toSize:size] forBarMetrics:UIBarMetricsDefault];
+    }
 #endif
-//    if([self.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:) ]){
-//        CGSize size=CGSizeMake(kDeviceWidth,44);
-//        [self.navigationBar setBackgroundImage:[Helper reSizeImage:@"title.jpg" toSize:size] forBarMetrics:UIBarMetricsDefault];
-//    }
 }
 
 - (void)didReceiveMemoryWarning

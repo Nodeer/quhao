@@ -12,7 +12,7 @@
 #import "MerchartDetail.h"
 #import "HistoryCell.h"
 #import "AppraiseViewController.h"
-@interface MerchartHistoryController : UITableViewController
+@interface MerchartHistoryController : UITableViewController<MBProgressHUDDelegate>
 {
 @private
     NSMutableArray *_reservationArray;
@@ -22,6 +22,7 @@
     UIBarButtonItem *_cancelBarButtonItem;
     UIButton * _mutiButton;
     NSMutableArray *_delArray;
+    MBProgressHUD *_HUD;
 }
 
 @property (strong,nonatomic) NSString * accouId;

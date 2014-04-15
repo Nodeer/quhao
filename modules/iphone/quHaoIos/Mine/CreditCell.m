@@ -32,14 +32,14 @@
     [self.contentView addSubview:_titleLabel];
     
     _pjLabel=[[UILabel alloc]initWithFrame:CGRectZero];
-    _pjLabel.frame=CGRectMake(10,40, 140, 30);
+    _pjLabel.frame=CGRectMake(10,40, 150, 30);
     _pjLabel.backgroundColor=[UIColor clearColor];
     _pjLabel.font=[UIFont fontWithName:@"CourierNewPSMT" size:13.0];
     [self.contentView addSubview:_pjLabel];
     
     _timeLabel=[[UILabel alloc] initWithFrame:CGRectZero];
     _timeLabel.font=[UIFont fontWithName:@"CourierNewPSMT" size:13.0];
-    _timeLabel.frame=CGRectMake(kDeviceWidth-180, _pjLabel.frame.origin.y, 160, 30);
+    _timeLabel.frame=CGRectMake(kDeviceWidth-170, _pjLabel.frame.origin.y, 160, 30);
     _timeLabel.backgroundColor=[UIColor whiteColor];
     _timeLabel.textAlignment=NSTextAlignmentRight;
     _timeLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth;
@@ -61,8 +61,10 @@
         }else if ([creditModel.status isEqualToString:@"getNumber"]) {
             _pjLabel.text=[NSString stringWithFormat:@"%@%d%@",@"取号，减少",creditModel.jifen,@"积分"];
         }else if ([creditModel.status isEqualToString:@"exchange"]) {
+            _titleLabel.text = @"亲,恭喜";
             _pjLabel.text=[NSString stringWithFormat:@"%@%d%@",@"签到满5次，获得",creditModel.jifen,@"积分"];
         }else if ([creditModel.status isEqualToString:@"comment"]) {
+            [_titleLabel removeFromSuperview];
             _pjLabel.text=[NSString stringWithFormat:@"%@%d%@",@"评价，获得",creditModel.jifen,@"积分"];
         }
 

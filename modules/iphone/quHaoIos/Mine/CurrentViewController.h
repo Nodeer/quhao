@@ -13,7 +13,7 @@
 #import "MJRefreshFooterView.h"
 #import "MerchartDetail.h"
 #import "MBProgressHUD.h"
-@interface CurrentViewController : UITableViewController
+@interface CurrentViewController : UITableViewController<MBProgressHUDDelegate>
 {
 @private
     NSMutableArray *_merchartsArray;
@@ -24,6 +24,7 @@
     int _pageIndex;
     //上拉刷新的view
     MJRefreshFooterView *_footer;
+    MBProgressHUD *_HUD;
 }
 
 @property (strong,nonatomic) NSString * accouId;

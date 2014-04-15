@@ -14,5 +14,6 @@
 @property(nonatomic,strong)  NSString *count;
 @property(nonatomic,strong)  NSString *cateType;
 @property(nonatomic,strong)  NSString *imgUrl;
+@property(nonatomic,strong) NSString *cateName;
 
 @end

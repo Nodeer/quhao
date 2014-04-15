@@ -41,13 +41,13 @@
 {
     self.title = NSLocalizedString(@"商家信息", @"商家信息");
     
-    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 7, 50, 35 )];
+    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 5, 50, 30 )];
     [backButton addTarget:self action:@selector(clickToHome:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
 
-    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 取消号码" rect:CGRectMake( 0, 0, 80, 35 )];
+    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@"取消号码" rect:CGRectMake( 0, 0, 60, 25 )];
     [btnButton addTarget:self action:@selector(clickCancel:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:btnButton];
     self.navigationItem.rightBarButtonItem = buttonItem;
@@ -62,7 +62,7 @@
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.labelText = NSLocalizedString(@"正在加载", nil);
         hud.square = YES;
-        NSString *url = [NSString stringWithFormat:@"%@%@?id=%@",[Helper getIp],merchant_url, merchartID];
+        NSString *url = [NSString stringWithFormat:@"%@%@?id=%@",IP,merchant_url, merchartID];
         NSString *response =[QuHaoUtil requestDb:url];
         [hud hide:YES];
         if([response isEqualToString:@""]){
@@ -94,10 +94,14 @@
     }else{
         [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
     }
-    
-    [self reloadReversion];
-    [_detailView reloadData];
-    [self initMapView];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self reloadReversion];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSIndexPath *te=[NSIndexPath indexPathForRow:1 inSection:0];
+            [_detailView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:te,nil] withRowAnimation:UITableViewRowAnimationFade];            });
+    });
+    //[_detailView reloadData];
+    //[self initMapView];
 }
 
 - (void)clickToHome:(id)sender
@@ -108,7 +112,7 @@
 - (void)clickCancel:(id)sender
 {
     if([Helper isConnectionAvailable]){
-        NSString *url = [NSString stringWithFormat:@"%@%@?reservationId=%@",[Helper getIp],cancelQuhao, reservation.id];
+        NSString *url = [NSString stringWithFormat:@"%@%@?reservationId=%@",IP,cancelQuhao, reservation.id];
         NSString *response =[QuHaoUtil requestDb:url];
         if(response){
             [Helper showHUD2:@"已取消排队号码" andView:self.view andSize:100];
@@ -129,7 +133,7 @@
         hud.labelText = NSLocalizedString(@"正在加载", nil);
         hud.square = YES;
         
-        NSString *url = [NSString stringWithFormat:@"%@%@?accountId=%@&mid=%@",[Helper getIp],getReservation_url, accountID,merchartID];
+        NSString *url = [NSString stringWithFormat:@"%@%@?accountId=%@&mid=%@",IP,getReservation_url, accountID,merchartID];
         NSString *response =[QuHaoUtil requestDb:url];
         [hud hide:YES];
         if([response isEqualToString:@""]){
@@ -190,22 +194,22 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellTabeIndentifier"];
         if ([indexPath row] ==0 ) {//商家信息
-            CGSize size=CGSizeMake(320,100);
+            CGSize size=CGSizeMake(kDeviceWidth,100);
             cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"top.jpg" toSize:size]];
             //cell.selectedBackgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cell_select_highlight.png"]];
-            self.egoImgView = [[EGOImageView alloc] initWithFrame:CGRectMake(5, 10, 105, 80)];
-            self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
+            self.egoImgView = [[EGOImageView alloc] initWithPlaceholderImage:[UIImage imageNamed:@"no_logo.png"]];
+            self.egoImgView.frame = CGRectMake(5, 10, 105, 80);
             [cell.contentView addSubview:self.egoImgView];
-            if ([single.imgUrl isEqualToString:@""])
+            if (![[Helper returnUserString:@"showImage"] boolValue]||[single.imgUrl isEqualToString:@""])
             {
                 self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
             }
             else
             {
-                self.egoImgView.imageURL = [NSURL URLWithString:single.imgUrl];
+                self.egoImgView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,single.imgUrl]];
             }
             
-            UILabel *_titleLabel = [Helper getCustomLabel:single.name font:18 rect:CGRectMake(egoImgView.frame.origin.x+egoImgView.frame.size.width+5, 10, 190, 30)];
+            UILabel *_titleLabel = [Helper getCustomLabel:single.name font:18 rect:CGRectMake(egoImgView.frame.origin.x+egoImgView.frame.size.width+5, 5, kDeviceWidth-110, 25)];
             [cell.contentView addSubview:_titleLabel];
             
             UILabel *_costLabel=[[UILabel alloc]initWithFrame:CGRectZero];
@@ -247,32 +251,40 @@
                 [cell.contentView addSubview:beforeLabel];
             }
         }else if ([indexPath row] == 2) {//商家地址
-            cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"address.jpg" toSize:CGSizeMake(320,35)]];
+            cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"address.jpg" toSize:CGSizeMake(kDeviceWidth-10,35)]];
             
             UIImageView *_imgView=[[UIImageView alloc] initWithFrame:CGRectZero];
             _imgView.backgroundColor=[UIColor clearColor];
-            _imgView.frame=CGRectMake(8, 7, 21, 26);
+            _imgView.frame=CGRectMake(5, 7, 30, 26);
             _imgView.image= [UIImage imageNamed:@"map.png"];
             [cell.contentView addSubview:_imgView];
             
-            UILabel *mapLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%@",@" 地址:",single.address] font:14 rect:CGRectMake(30, 5, 260, 30)];
+            UILabel *mapLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%@",@" 地址:",single.address] font:14 rect:CGRectMake(35, 5, kDeviceWidth-60, 30)];
             [cell.contentView addSubview:mapLabel];
             [Helper arrowStyle:cell];
         }else if ([indexPath row] == 3) {//电话
-            cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"phone.jpg" toSize:CGSizeMake(320,35)]];
+            cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"phone.jpg" toSize:CGSizeMake(kDeviceWidth-10,35)]];
             UIImageView *_imgView=[[UIImageView alloc] initWithFrame:CGRectZero];
             _imgView.backgroundColor=[UIColor clearColor];
-            _imgView.frame=CGRectMake(8, 7, 21, 26);
+            _imgView.frame=CGRectMake(5, 7, 30, 26);
             _imgView.image= [UIImage imageNamed:@"dh.png"];
             [cell.contentView addSubview:_imgView];
             
             NSString *value = [NSString stringWithFormat:@"%@%@",@" 电话:",[single.telephone objectAtIndex:0]];
-            UILabel *phLabel = [Helper getCustomLabel:value font:14 rect:CGRectMake(30, 5, 260, 30)];
+            UILabel *phLabel = [Helper getCustomLabel:value font:14 rect:CGRectMake(35, 5, 260, 30)];
             [cell.contentView addSubview:phLabel];
             [Helper arrowStyle:cell];
         }else if ([indexPath row] == 4){
             cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"time.jpg"]];
-            cell.textLabel.text =[NSString stringWithFormat:@"%@%@至%@",@"营业时间:",single.openTime,single.closeTime];
+            UIImageView *_imgView=[[UIImageView alloc] initWithFrame:CGRectZero];
+            _imgView.backgroundColor=[UIColor clearColor];
+            _imgView.frame=CGRectMake(5, 7, 30, 26);
+            _imgView.image= [UIImage imageNamed:@"clock.png"];
+            [cell.contentView addSubview:_imgView];
+            
+            NSString *value = [NSString stringWithFormat:@"%@%@ 至 %@",@" 营业时间:",single.openTime,single.closeTime];
+            UILabel *sjLabel = [Helper getCustomLabel:value font:14 rect:CGRectMake(35, 5, 260, 30)];
+            [cell.contentView addSubview:sjLabel];
             cell.textLabel.font = [UIFont boldSystemFontOfSize:16];
         }else if ([indexPath row] == 5){
             cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tj.jpg"]];
@@ -353,6 +365,9 @@
 //弹出显示商家位置的地图
 - (void)pushMap:(NSString *)address andNavController:(UINavigationController *)navController andIsNextPage:(BOOL)isNextPage
 {
+    if(NULL == self.mapView){
+        [self initMapView];
+    }
     BaseMapViewController *subViewController = [[MerchartLocationController alloc] init];
     subViewController.title = single.name;
     subViewController.mapView = self.mapView;

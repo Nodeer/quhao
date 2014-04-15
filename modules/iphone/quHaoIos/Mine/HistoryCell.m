@@ -22,8 +22,8 @@
 
 -(void)initSubviews
 {
-    self.egoImgView = [[EGOImageView alloc] initWithFrame:CGRectMake(5, 10, 105, 80)];
-    self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
+    self.egoImgView = [[EGOImageView alloc] initWithPlaceholderImage:[UIImage imageNamed:@"no_logo.png"]];
+    self.egoImgView.frame = CGRectMake(5, 10, 105, 80);
     [self.contentView addSubview:self.egoImgView];
     
     _titleLabel=[[UILabel alloc]initWithFrame:CGRectZero];
@@ -55,13 +55,9 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
-    if (![[Helper returnUserString:@"showImage"] boolValue]||[self.reservationModel.imgUrl isEqualToString:@""])
+    if ([[Helper returnUserString:@"showImage"] boolValue]&&![self.reservationModel.imgUrl isEqualToString:@""])
     {
-        self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
-    }
-    else
-    {
-        self.egoImgView.imageURL = [NSURL URLWithString:self.reservationModel.imgUrl];
+        self.egoImgView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,self.reservationModel.imgUrl]];
     }
     
     _titleLabel.text=self.reservationModel.name;

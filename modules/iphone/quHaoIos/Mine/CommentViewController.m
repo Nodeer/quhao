@@ -39,7 +39,7 @@
     HUD.labelText = @"正在加载...";
     //显示对话框
     [HUD showAnimated:YES whileExecutingBlock:^{
-        [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],_url,self.accountOrMerchantId] withPage:_pageIndex];
+        [self requestData:[NSString stringWithFormat:@"%@%@%@",IP,_url,self.accountOrMerchantId] withPage:_pageIndex];
         [self.tableView reloadData];
     } completionBlock:^{
         //操作执行完后取消对话框
@@ -51,7 +51,7 @@
 -(void)loadNavigationItem
 {   
     
-    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 7, 50, 35 )];
+    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 5, 50, 30 )];
     [backButton addTarget:self action:@selector(clickToHome:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
@@ -70,7 +70,7 @@
     footer.beginRefreshingBlock = ^(MJRefreshBaseView *refreshView) {
         _prevItemCount = [_commentsArray count];
         ++_pageIndex;
-        [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],_url,self.accountOrMerchantId]  withPage:_pageIndex];
+        [self requestData:[NSString stringWithFormat:@"%@%@%@",IP,_url,self.accountOrMerchantId]  withPage:_pageIndex];
         [self performSelector:@selector(doneWithView:) withObject:refreshView afterDelay:1.0];
         
     };
@@ -181,5 +181,10 @@
         model.created=[[objects objectAtIndex:i] objectForKey:@"created"];
         [_commentsArray addObject:model];
     }
+}
+
+- (void)delloc
+{
+    [_footer free];
 }
 @end

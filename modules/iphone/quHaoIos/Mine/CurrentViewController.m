@@ -43,20 +43,35 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
+    [self createHud];
     _pageIndex=1;
     [_merchartsArray removeAllObjects];
     if(_footer != nil){
         [_footer removeFromSuperview];
     }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self requestData:[NSString stringWithFormat:@"%@%@%@",IP,currentMerchant_url,self.accouId] withPage:_pageIndex];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+            [_HUD hide:YES];
+            [self addFooter];
+        });
+    });
+}
 
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = NSLocalizedString(@"正在加载", nil);
-    hud.square = YES;
-    [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],currentMerchant_url,self.accouId] withPage:_pageIndex];
-    [self.tableView reloadData];
-    [hud hide:YES];
-    
-    [self addFooter];
+- (void)hudWasHidden:(MBProgressHUD *)hud {
+    [_HUD removeFromSuperview];
+	_HUD = nil;
+}
+
+-(void)createHud
+{
+    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:_HUD];
+    _HUD.mode = MBProgressHUDModeIndeterminate;
+    _HUD.labelText = @"正在加载";
+    [_HUD show:YES];
+    _HUD.delegate = self;
 }
 
 //上拉加载更多
@@ -67,7 +82,7 @@
     footer.beginRefreshingBlock = ^(MJRefreshBaseView *refreshView) {
         _prevItemCount = [_merchartsArray count];
         ++_pageIndex;
-        [self requestData:[NSString stringWithFormat:@"%@%@%@",[Helper getIp],currentMerchant_url,self.accouId] withPage:_pageIndex];
+        [self requestData:[NSString stringWithFormat:@"%@%@%@",IP,currentMerchant_url,self.accouId] withPage:_pageIndex];
         [self performSelector:@selector(doneWithView:) withObject:refreshView afterDelay:1.0];
         
     };
@@ -184,4 +199,14 @@
     }
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)delloc
+{
+    [_footer free];
+}
 @end

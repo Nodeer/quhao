@@ -21,23 +21,25 @@
     if (self) {
         self.title=@"我的";
         self.tabBarItem.image = [UIImage imageNamed:@"mine"];
-        _helper=[Helper new];
         NSString * autoLogin = [Helper returnUserString:@"autoLogin"];
         //如果已经登录
-        if((autoLogin==nil||[autoLogin boolValue])&&_helper.isCookie==YES)
+        if((autoLogin==nil||[autoLogin boolValue])&&[Helper isCookie])
         {
-            NSString *name = [Helper getUserName];
-            NSString *pwd = [Helper getPwd];
-            NSString *urlStr=[NSString stringWithFormat:@"%@%@",[Helper getIp],@"/login"];
-            ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:urlStr]];
-            [request setUseCookiePersistence:YES];
-            [request setPostValue:name forKey:@"phone"];
-            [request setPostValue:pwd  forKey:@"password"];
-            [request setPostValue:autoLogin forKey:@"keep_login"];
-            [request setDelegate:self];
-            [request setDidFailSelector:@selector(requestFailed:)];
-            [request setDidFinishSelector:@selector(requestLogin:)];
-            [request startAsynchronous];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                NSString *name = [Helper getUserName];
+                NSString *pwd = [Helper getPwd];
+                NSString *urlStr=[NSString stringWithFormat:@"%@%@",IP,@"/login"];
+                ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:urlStr]];
+                [request setUseCookiePersistence:YES];
+                [request setPostValue:name forKey:@"phone"];
+                [request setPostValue:pwd  forKey:@"password"];
+                [request setPostValue:autoLogin forKey:@"keep_login"];
+                [request setDelegate:self];
+                [request setDidFailSelector:@selector(requestFailed:)];
+                [request setDidFinishSelector:@selector(requestLogin:)];
+                [request startAsynchronous];
+                
+            });
         }
 
     }
@@ -46,9 +48,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //UIView  *view=[[UIView alloc] initWithFrame:[UIScreen mainScreen].applicationFrame];
-    //view.backgroundColor=[UIColor whiteColor];
-    //self.view=view;
     _mineView=[[UITableView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, kDeviceHeight) style:UITableViewStylePlain];
     _mineView.dataSource=self;
     _mineView.delegate=self;
@@ -59,7 +58,13 @@
     if ([_mineView respondsToSelector:@selector(setSeparatorInset:)]) {
         [_mineView setSeparatorInset:UIEdgeInsetsZero];
     }
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.navigationController.navigationBar.translucent = NO;
+    self.tabBarController.tabBar.translucent = NO;
+    self.extendedLayoutIncludesOpaqueBars = NO;
 #endif
+    _helper = [Helper new];
     //设置tableView不能滚动
     [_mineView setScrollEnabled:NO];
     if(kDeviceHeight >480 ){
@@ -77,32 +82,33 @@
     if (_userInfo==nil) {
         _userInfo= [UserInfo alloc];
     }
-    [self loadByLoginType];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self loadByLoginType];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_mineView reloadData];
+
+        });
+    });
+
 }
 
 - (void)loadByLoginType
 {
-    if (_helper.isCookie == NO) {
-        UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"请登录后查看信息" delegate:self cancelButtonTitle:@"返回" destructiveButtonTitle:nil otherButtonTitles:@"登录", nil];
-        [sheet showInView:[UIApplication sharedApplication].keyWindow];
-    }
-    //如果已经登录 则判断是否是刚刚登录  如果是  则刷新要不要？
-    else if(self.isLoginJustNow)
+  if(self.isLoginJustNow)
     {
         self.isLoginJustNow = NO;
         _helper.viewBeforeLogin = nil;
         _helper.viewNameBeforeLogin = nil;
         [self reload];
-        [_mineView reloadData];
     }
     //如果cookie存在且不是刚刚登录的话
-    else if(!self.isLoginJustNow&&_helper.isCookie==YES){
+    else if(!self.isLoginJustNow&&[Helper isCookie]==YES){
         self.isLoginJustNow = NO;
         _helper.viewBeforeLogin = nil;
         _helper.viewNameBeforeLogin = nil;
         [self reload];
         
-        [_mineView reloadData];
     }
 }
 - (void)refreshed:(NSNotification *)notification
@@ -116,7 +122,7 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)requestNew
 {
-    [_helper saveCookie:NO];
+    [Helper saveCookie:NO];
 }
 
 - (void)requestLogin:(ASIHTTPRequest *)requestNew
@@ -131,12 +137,12 @@
     switch (error.errorCode) {
         case 0:
         {
-            [_helper saveCookie:YES];
+            [Helper saveCookie:YES];
         }
             break;
         default:
         {
-            [_helper saveCookie:NO];
+            [Helper saveCookie:NO];
         }
             break;
     }
@@ -169,22 +175,20 @@
     if (cell == nil) {
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellTabeIndentifier"];
         if ([indexPath row] ==0 ) {//用户行
-            self.egoImgView = [[EGOImageView alloc] initWithFrame:CGRectMake(10, 10, 110, 110)];
+            self.egoImgView = [[EGOImageView alloc] initWithPlaceholderImage:[UIImage imageNamed:@"no_logo.png"]];
             //self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
+            self.egoImgView.frame = CGRectMake(10, 10, 110, 110);
             [cell.contentView addSubview:self.egoImgView];
-            if (![[Helper returnUserString:@"showImage"] boolValue])
+            if ([[Helper returnUserString:@"showImage"] boolValue])
             {
-                self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
-            }else
-            {
-                if ([Helper isFileExist:@"userOrigin.jpg"]) {
+                if ([Helper isCookie]&&[Helper isFileExist:@"userOrigin.jpg"]) {
                     self.egoImgView.image = [Helper imageWithImageSimple:[UIImage imageWithContentsOfFile:[self userImagePath]] scaledToSize:CGSizeMake(100, 100)];
                 }else{
                     if(nil==_userInfo.imgUrl||[_userInfo.imgUrl isEqualToString:@""])
                     {
                         self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
                     }else{
-                        self.egoImgView.imageURL = [NSURL URLWithString:_userInfo.imgUrl];
+                        self.egoImgView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,_userInfo.imgUrl]];
                     }
                 }
             }
@@ -194,9 +198,8 @@
             [self.egoImgView addGestureRecognizer:singleTap];
         
             
-            UILabel *_numberLabel = [Helper getCustomLabel:@"" font:18 rect:CGRectMake(egoImgView.frame.origin.x+egoImgView.frame.size.width+15,20, 220, 35)];
-            Helper *helper=[Helper new];
-            if (helper.isCookie == NO){
+            UILabel *_numberLabel = [Helper getCustomLabel:@"您还没有登录哦" font:18 rect:CGRectMake(egoImgView.frame.origin.x+egoImgView.frame.size.width+15,20, 220, 35)];
+            if ([Helper isCookie] == NO){
                 _numberLabel.text=@"您还没有登录哦";
             }else{
                 _numberLabel.text = _userInfo.username;
@@ -278,7 +281,7 @@
 //设置cell的事件
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (_helper.isCookie == NO) {
+    if ([Helper isCookie] == NO) {
         UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"请登录后查看信息" delegate:self cancelButtonTitle:@"返回" destructiveButtonTitle:nil otherButtonTitles:@"登录", nil];
         [sheet showInView:[UIApplication sharedApplication].keyWindow];
         
@@ -298,14 +301,17 @@
 //点击签到的
 -(void)onClickUILable:(UITapGestureRecognizer *)sender
 {
-    if (_helper.isCookie == NO) {
+    UITapGestureRecognizer *tap = (UITapGestureRecognizer*)sender;
+    UILabel *la=(UILabel *)tap.view;
+    la.userInteractionEnabled = NO;
+    if ([Helper isCookie] == NO) {
         UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"请登录后查看信息" delegate:self cancelButtonTitle:@"返回" destructiveButtonTitle:nil otherButtonTitles:@"登录", nil];
         [sheet showInView:[UIApplication sharedApplication].keyWindow];
         
         return;
     }
     if([Helper isConnectionAvailable]){
-        NSString *urlStr=[NSString stringWithFormat:@"%@%@?accountId=%@",[Helper getIp],signIn_url,_userInfo.accountId];
+        NSString *urlStr=[NSString stringWithFormat:@"%@%@?accountId=%@",IP,signIn_url,_userInfo.accountId];
         NSString *response =[QuHaoUtil requestDb:urlStr];
         if([response isEqualToString:@""]){
             //异常处理
@@ -320,9 +326,11 @@
                     int errorCode=[[jsonObjects valueForKey:@"errorCode"] intValue];
                     if (errorCode==1) {
                         [Helper showHUD2:@"签到成功" andView:self.view andSize:100];
-                        [self reload];
-                        [_mineView reloadData];
-                        
+                        _userInfo.isSignIn = YES;
+                        _userInfo.signIn=[[jsonObjects valueForKey:@"signIn"] intValue];
+                        _userInfo.jifen=[[jsonObjects valueForKey:@"jifen"] intValue];
+                        NSIndexPath *te=[NSIndexPath indexPathForRow:1 inSection:0];
+                        [_mineView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:te,nil] withRowAnimation:UITableViewRowAnimationFade];
                     }else{
                         [Helper showHUD2:@"服务器错误，请稍后再试" andView:self.view andSize:130];
                     }
@@ -332,17 +340,20 @@
     }else{
         [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
     }
+    la.userInteractionEnabled = YES;
 }
 
 //点击点评
 -(void)onClickDp:(UITapGestureRecognizer *)sender{
-    if (_helper.isCookie == NO) {
+    if ([Helper isCookie] == NO) {
         UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"请登录后查看信息" delegate:self cancelButtonTitle:@"返回" destructiveButtonTitle:nil otherButtonTitles:@"登录", nil];
         [sheet showInView:[UIApplication sharedApplication].keyWindow];
         
         return;
     }
-    
+    if(_userInfo.dianping ==0 ){
+        return;
+    }
     CommentViewController *history = [[CommentViewController alloc] init];
     history.accountOrMerchantId=_userInfo.accountId;
     history.title = @"我的评论";
@@ -386,7 +397,7 @@
 
 -(void)reload
 {
-    NSString *urlStr=[NSString stringWithFormat:@"%@%@%@",[Helper getIp],person_url,[Helper getUserName]];
+    NSString *urlStr=[NSString stringWithFormat:@"%@%@%@",IP,person_url,[Helper getUserName]];
     NSString *response =[QuHaoUtil requestDb:urlStr];
     
     if([response isEqualToString:@""]){
@@ -448,6 +459,9 @@
 #pragma mark - upload image
 //上传图片操作开始，选择图片的来源
 -(void)uploadPortrait:(id)sender{
+    if ([Helper isCookie] == NO) {
+        return;
+    }
     UIActionSheet *menu = [[UIActionSheet alloc]
                            initWithTitle: @"更改图片"
                            delegate:self
@@ -520,7 +534,7 @@
 
 - (void)upLoadSalesBigImage:(NSData *)bigImage
 {
-    NSString *url=[NSString stringWithFormat:@"%@%@",[Helper getIp],upload_pic];
+    NSString *url=[NSString stringWithFormat:@"%@%@",IP,upload_pic];
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
     [request setRequestMethod:@"POST"];
     [request setPostValue:_userInfo.accountId forKey:@"accountId"];

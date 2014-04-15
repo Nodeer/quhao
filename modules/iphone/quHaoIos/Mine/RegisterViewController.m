@@ -58,7 +58,6 @@
 
 -(void)addAccount:(id)sender
 {
-    [self.view endEditing:YES];
     if(self.accountField.text.length==0){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"请输入手机号码" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
         [alert show];
@@ -84,8 +83,12 @@
         [alert show];
         return;
     }
+    [self.view endEditing:YES];
+    UITapGestureRecognizer *tap = (UITapGestureRecognizer *)sender;
+    UIButton * btn = (UIButton *)tap;
+    btn.enabled = NO;
     if([Helper isConnectionAvailable]){
-        NSString *urlStr=[NSString stringWithFormat:@"%@%@%@&code=%@&password=%@",[Helper getIp],register_url,self.accountField.text,self.mdField.text,self.passField.text];
+        NSString *urlStr=[NSString stringWithFormat:@"%@%@%@&code=%@&password=%@",IP,register_url,self.accountField.text,self.mdField.text,self.passField.text];
         NSString *response =[QuHaoUtil requestDb:urlStr];
         if([response isEqualToString:@""]){
             //异常处理
@@ -112,10 +115,11 @@
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.removeFromSuperViewOnHide =YES;
         //hud.mode = MBProgressHUDModeText;
-        hud.labelText = NSLocalizedString(@"当前网络不可用,请检查网络链接", nil);
+        hud.labelText = NSLocalizedString(@"当前网络不可用", nil);
         hud.minSize = CGSizeMake(132.f, 108.0f);
         [hud hide:YES afterDelay:1];
     }
+    btn.enabled = YES;
 }
 
 - (void)clickToMine:(id)sender
@@ -124,9 +128,12 @@
 }
 
 - (IBAction)hqCode:(id)sender {
+    UITapGestureRecognizer *tap = (UITapGestureRecognizer *)sender;
+    UIButton * btn = (UIButton *)tap;
+    btn.enabled = NO;
     if(self.accountField.text.length!=0){
         if(self.accountField.text.length==11){
-            NSString *urlStr=[NSString stringWithFormat:@"%@%@%@",[Helper getIp],authCode_url,self.accountField.text];
+            NSString *urlStr=[NSString stringWithFormat:@"%@%@%@",IP,authCode_url,self.accountField.text];
             NSString *response =[QuHaoUtil requestDb:urlStr];
             if([response isEqualToString:@""]){
                 //异常处理
@@ -153,6 +160,7 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"请先输入手机号码" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
         [alert show];
     }
+    btn.enabled = YES;
 }
 @end
 
