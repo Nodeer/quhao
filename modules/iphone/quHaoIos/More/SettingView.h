@@ -12,10 +12,11 @@
 #import "Helper.h"
 #import "ASIHTTPRequest.h"
 #import "SBJson.h"
-#import "About.h"
 #import "FeedbackViewController.h"
 #import "EGOCache.h"
 #import "OAuthWebViewController.h"
+#import "About.h"
+#import "HelpDocument.h"
 @interface SettingView : UIViewController<UITableViewDataSource, UITableViewDelegate,UIAlertViewDelegate>
 {
     NSArray * _settings;

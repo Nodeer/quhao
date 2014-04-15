@@ -12,7 +12,9 @@
 #import "MBProgressHUD.h"
 #import "Helper.h"
 @interface OAuthWebViewController : UIViewController<UIWebViewDelegate,WBHttpRequestDelegate>
-
+{
+    MBProgressHUD *_hud;
+}
 @property (nonatomic, strong)  UIWebView *webView;
 
 @end

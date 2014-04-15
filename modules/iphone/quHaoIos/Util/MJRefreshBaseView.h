@@ -93,7 +93,7 @@ typedef void (^RefreshStateChangeBlock)(MJRefreshBaseView *refreshView, MJRefres
 // 结束刷新
 - (void)endRefreshing;
 // 不静止地结束刷新
-- (void)endRefreshingWithoutIdle;
+//- (void)endRefreshingWithoutIdle;
 // 结束使用、释放资源
 - (void)free;
 
@@ -101,4 +101,5 @@ typedef void (^RefreshStateChangeBlock)(MJRefreshBaseView *refreshView, MJRefres
  交给子类去实现 和 调用
  */
 - (void)setState:(MJRefreshState)state;
+- (int)totalDataCountInScrollView;
 @end

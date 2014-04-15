@@ -21,8 +21,7 @@
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
-    UIView *view1 =[[UIView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, kDeviceHeight)];
-    self.view = view1;
+    
     self.view.backgroundColor  = [ UIColor whiteColor];
     _titles = @[@"积分有什么用？",@"如何获得积分？",@"关于签到？"];
     _contexts = @[@"在商家取号是要消耗一定积分的，没有积分是不能取号的。",@"在商家成功消费后，会返回一定积分；另外可以通过签到，完成任务等可以获得一定的积分。",

@@ -38,7 +38,7 @@
 //文件是否存在
 + (BOOL) isFileExist:(NSString *)fileName;
 //是否有缓存
--(BOOL)isCookie;
++(BOOL)isCookie;
 //设置返回按钮
 +(UIButton *)getBackBtn:(NSString *)imgName title:(NSString *)name rect:(CGRect)size;
 //按字号文字设置label
@@ -47,7 +47,7 @@
 //查看网络链接
 +(BOOL) isConnectionAvailable;
 //获取ip
-+(NSString *)getIp;
+//+(NSString *)getIp;
 //本地缓存
 +(void)saveCache:(int)type andID:(int)_id andString:(NSString *)str;
 //读取缓存
@@ -67,11 +67,13 @@
 //保存帐号密码
 -(void)saveUserNameAndPwd:(NSString *)userName andPwd:(NSString *)pwd;
 //保存登陆状态
--(void)saveCookie:(BOOL)_isLogin;
++(void)saveCookie:(BOOL)_isLogin;
 //获取UID
--(NSString *)getUID;
++(NSString *)getUID;
 //保存UID
 +(void)saveUID:(NSString*)uid;
++(void)saveDafaultData:(NSString*)value withName:(NSString *) name;
+
 //格式化时间
 +(NSString *)formatDate:(NSString*)dateStr;
 + (void)ReleaseWebView:(UIWebView *)webView;

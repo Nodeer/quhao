@@ -58,6 +58,11 @@
     if ([self.tableSettings respondsToSelector:@selector(setSeparatorInset:)]) {
         [self.tableSettings setSeparatorInset:UIEdgeInsetsZero];
     }
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.navigationController.navigationBar.translucent = NO;
+    self.tabBarController.tabBar.translucent = NO;
+    self.extendedLayoutIncludesOpaqueBars = NO;
 #endif
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"showImage"]==nil){
         _showImage = 1;
@@ -116,7 +121,7 @@
         //关于我们
         case 5:
         {
-            About *about = [About new];
+            About *about = [[About alloc] init];
             about.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:about animated:YES];
         }
@@ -130,16 +135,16 @@
         //帮助
         case 7:
         {
-            About *about = [About new];
-            about.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:about animated:YES];
+            HelpDocument *help = [HelpDocument new];
+            help.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:help animated:YES];
         }
             break;
         //注销
         case 8:
         {
             Helper *helper = [Helper new];
-            if (helper.isCookie == NO) {
+            if ([Helper isCookie] == NO) {
                 [Helper ToastNotification:@"错误 您还没有登录,注销无效" andView:self.view andLoading:NO andIsBottom:NO];
                 return;
             }
@@ -147,7 +152,7 @@
             [ASIHTTPRequest setSessionCookies:nil];
             [ASIHTTPRequest clearSession];
             helper.isLogin = NO;
-            [helper saveCookie:NO];
+            [Helper saveCookie:NO];
             
             [self refresh];
             
@@ -234,7 +239,7 @@
 - (void)checkVersionNeedUpdate
 {
     if ([Helper isConnectionAvailable]){
-        NSString *str1 = [NSString stringWithFormat:@"%@%@",[Helper getIp],getLastestVersion];
+        NSString *str1 = [NSString stringWithFormat:@"%@%@",IP,getLastestVersion];
         NSString *response = [QuHaoUtil requestDb:str1];
         if([response isEqualToString:@""]){
             //异常处理

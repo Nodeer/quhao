@@ -278,7 +278,11 @@
 #pragma mark 结束刷新
 - (void)endRefreshing
 {
-    [self setState:MJRefreshStateNormal];
+    double delayInSeconds = self.viewType == MJRefreshViewTypeFooter ? 0.3 : 0.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self setState:MJRefreshStateNormal];
+    });
 }
 
 #pragma mark - 随便实现
@@ -297,5 +301,24 @@
 - (void)endRefreshingWithoutIdle
 {
     [self endRefreshing];
+}
+
+- (int)totalDataCountInScrollView
+{
+    int totalCount = 0;
+    if ([self.scrollView isKindOfClass:[UITableView class]]) {
+        UITableView *tableView = (UITableView *)self.scrollView;
+        
+        for (int section = 0; section<tableView.numberOfSections; section++) {
+            totalCount += [tableView numberOfRowsInSection:section];
+        }
+    } else if ([self.scrollView isKindOfClass:[UICollectionView class]]) {
+        UICollectionView *collectionView = (UICollectionView *)self.scrollView;
+        
+        for (int section = 0; section<collectionView.numberOfSections; section++) {
+            totalCount += [collectionView numberOfItemsInSection:section];
+        }
+    }
+    return totalCount;
 }
 @end

@@ -25,18 +25,20 @@
     self.navigationItem.leftBarButtonItem = backButtonItem;
         
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"access_token"] == nil) {
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.webView animated:YES];
-        hud.labelText = NSLocalizedString(@"正在加载授权页面...", nil);
-        hud.square = YES;
-        
+        _hud = [MBProgressHUD showHUDAddedTo:self.webView animated:YES];
+        _hud.labelText = NSLocalizedString(@"正在加载授权页面...", nil);
+        _hud.removeFromSuperViewOnHide = YES;
         NSString *oauthUrlString = [QuHaoUtil returnOAuthUrlString];
         NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:oauthUrlString]];
         [self.webView setDelegate:self];
         [self.webView loadRequest:request];
-        
-        [hud hide:YES];
-    }
         [self.view addSubview:webView];
+    }
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    [_hud hide:YES];
 }
 
 - (void)clickToHome:(id)sender
@@ -66,4 +68,5 @@
     }
     return YES;
 }
+
 @end

@@ -16,20 +16,21 @@
 + (void)showHUD:(NSString *)text andView:(UIView *)view andHUD:(MBProgressHUD *)hud
 {
     [view addSubview:hud];
-    hud.labelText = text;
-    //    hud.dimBackground = YES;
-    hud.square = YES;
+    hud.labelText = text;//显示提示
+    hud.dimBackground = YES;//使背景成黑灰色，让MBProgressHUD成高亮显示
+    hud.square = YES;//设置显示框的高度和宽度一样
     [hud show:YES];
 }
+
 + (void)showHUD2:(NSString *)text andView:(UIView *)view andSize:(float)width
 {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:view animated:YES];
-    //hud.removeFromSuperViewOnHide =YES;
+    hud.removeFromSuperViewOnHide =YES;
     //hud.mode = MBProgressHUDModeText;
     hud.labelText = NSLocalizedString(text, nil);
     //hud.minSize = CGSizeMake(width, 60.0f);
-    hud.square = YES;
-    [hud hide:YES afterDelay:2];
+    //hud.square = YES;
+    [hud hide:YES afterDelay:1];
     
 }
 
@@ -113,7 +114,7 @@
     return result;
 }
 
--(BOOL)isCookie
++ (BOOL)isCookie
 {
     NSUserDefaults * setting = [NSUserDefaults standardUserDefaults];
     NSString * value = [setting objectForKey:@"cookie"];
@@ -180,17 +181,16 @@
     return isExistenceNetwork;
 }
 
-+(NSString *)getIp
-{
-    NSString *ip=nil;
-    if([NSUserName() compare:@"sam"]==0){
-        ip=@"http://192.168.2.102:9081";
-    }else{
-        ip=@"http://localhost:9081";
-
-    }
-    return ip;
-}
+//+(NSString *)getIp
+//{
+//    NSString *ip=nil;
+//    if([NSUserName() compare:@"sam"]==0){
+//        ip=@"http://192.168.2.102:9081";
+//    }else{
+//        ip=@"http://192.168.2.102:9081";
+//    }
+//    return ip;
+//}
 
 //本地缓存
 + (void)saveCache:(int)type andID:(int)_id andString:(NSString *)str
@@ -214,7 +214,7 @@
 {
     GCDiscreetNotificationView *notificationView = [[GCDiscreetNotificationView alloc] initWithText:text showActivity:isLoading inPresentationMode:isBottom?GCDiscreetNotificationViewPresentationModeBottom:GCDiscreetNotificationViewPresentationModeTop inView:view];
     [notificationView show:YES];
-    [notificationView hideAnimatedAfter:2.6];
+    [notificationView hideAnimatedAfter:1.5];
 }
 
 + (NSString *) returnUserString:(NSString *)type{
@@ -250,7 +250,7 @@
     return [AESCrypt decrypt:temp password:@"pwd"];
 }
 
--(void)saveCookie:(BOOL)_isLogin
++ (void)saveCookie:(BOOL)_isLogin
 {
     NSUserDefaults * setting = [NSUserDefaults standardUserDefaults];
     [setting removeObjectForKey:@"cookie"];
@@ -309,7 +309,15 @@
     [setting synchronize];
 }
 
--(NSString *)getUID
++(void)saveDafaultData:(NSString*)value withName:(NSString *) name
+{
+    NSUserDefaults *setting = [NSUserDefaults standardUserDefaults];
+    [setting removeObjectForKey:name];
+    [setting setObject:value forKey:name];
+    [setting synchronize];
+}
+
++(NSString *)getUID
 {
     NSUserDefaults * settings = [NSUserDefaults standardUserDefaults];
     return [settings objectForKey:@"UID"];

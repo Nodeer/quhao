@@ -57,17 +57,6 @@
 			<string>杭州</string>
 		</dict>
 	</array>
-	<key>q</key>
-	<array>
-		<dict>
-			<key>cityCode</key>
-			<string>0573</string>
-			<key>isOpen</key>
-			<true/>
-			<key>name</key>
-			<string>启东</string>
-		</dict>
-	</array>
 	<key>s</key>
 	<array>
 		<dict>
@@ -85,17 +74,6 @@
 			<true/>
 			<key>name</key>
 			<string>深圳</string>
-		</dict>
-	</array>
-	<key>w</key>
-	<array>
-		<dict>
-			<key>cityCode</key>
-			<string>027</string>
-			<key>isOpen</key>
-			<true/>
-			<key>name</key>
-			<string>武汉</string>
 		</dict>
 	</array>
 </dict>

@@ -52,7 +52,7 @@
     }
 #endif
     if ([Helper isConnectionAvailable]){
-        NSString *str1 = [NSString stringWithFormat:@"%@%@",[Helper getIp],getLastestVersion];
+        NSString *str1 = [NSString stringWithFormat:@"%@%@",IP,getLastestVersion];
         NSString *response = [QuHaoUtil requestDb:str1];
         if([response isEqualToString:@""]){
             //异常处理

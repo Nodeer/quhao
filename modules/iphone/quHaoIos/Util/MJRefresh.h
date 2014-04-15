@@ -31,5 +31,4 @@
  
  8.结束刷新
  1> endRefreshing
- 2> endRefreshingWithoutIdle(在endRefreshing不好使的情况下，才调用这个方法)
 */
