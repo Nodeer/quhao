@@ -437,7 +437,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				QuhaoLog.v(LOGTAG, "MerchantDetailActivity.this.merchantId : " + merchantId + ",account ID : " + accountId);
 				String buf = CommonHTTPRequest.get("MerchantController/querytMerchantDetail?merchantId=" + merchantId + "&accountId=" + accountId + "&isLogined=" + String.valueOf(QHClientApplication.getInstance().isLogined));
 				if (StringUtils.isNull(buf)) {
-					progressDialogUtil.closeProgress();
 					paiduiConditionLayoutHandler.sendEmptyMessage(200);
 					currentQuHaoLayoutHandler.sendEmptyMessage(200);
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -479,7 +478,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						}
 						
 						// get image from memory/SDCard/URL stream
-						AsynImageLoader.getInstance().showImageAsyn(merchantImg, merchant.merchantImage, R.drawable.no_logo);
+						AsynImageLoader.getInstance().showImageAsyn(merchantImg, 0,merchant.merchantImage, R.drawable.no_logo);
 						/*
 						new Thread(new Runnable() {
 							@Override

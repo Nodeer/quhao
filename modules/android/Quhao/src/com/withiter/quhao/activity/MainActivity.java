@@ -118,7 +118,7 @@ public class MainActivity extends QuhaoBaseActivity {
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
-				ListAdapter adapter = new CategoryGridAdapter(categorys, categorysGird, MainActivity.this);
+				ListAdapter adapter = new CategoryGridAdapter(categorys, MainActivity.this);
 				categorysGird.setAdapter(adapter);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}

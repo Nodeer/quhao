@@ -15,9 +15,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.app.AlertDialog.Builder;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -25,13 +26,16 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.view.MotionEvent;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
@@ -46,7 +50,7 @@ import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.vo.AppVersionVO;
 
-public class MoreActivity extends QuhaoBaseActivity {
+public class MoreFragment extends Fragment implements OnClickListener{
 
 	private LinearLayout settings;
 	private LinearLayout aboutUs;
@@ -59,25 +63,49 @@ public class MoreActivity extends QuhaoBaseActivity {
 	private ImageView loginStatusImg;
 
 	private TextView loginStatusTxt;
-
+	
+	private View contentView;
+	
+	private final int UNLOCK_CLICK = 1000;
+	
+	private boolean isClick;
+	
+	private ProgressDialogUtil progressDialogUtil;
+	
+	protected Handler unlockHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			if (msg.what == UNLOCK_CLICK) {
+				
+				isClick = false;
+			}
+		}
+	};
+	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.more_layout);
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		btnCategory.setOnClickListener(goCategory(this));
-		btnNearby.setOnClickListener(goNearby(this));
-		btnPerson.setOnClickListener(goPersonCenter(this));
-		btnMore.setOnClickListener(goMore(this));
-
-		settings = (LinearLayout) this.findViewById(R.id.more_settings);
-		version = (LinearLayout) this.findViewById(R.id.more_version);
-		opinion = (LinearLayout) this.findViewById(R.id.more_opinion);
-		moreShare = (LinearLayout) this.findViewById(R.id.more_share);
-		help = (LinearLayout) this.findViewById(R.id.more_help);
-		aboutUs = (LinearLayout) this.findViewById(R.id.more_aboutus);
-		loginStatus = (LinearLayout) this.findViewById(R.id.more_login_status);
+		// TODO add default view here
+		if (!ActivityUtil.isNetWorkAvailable(getActivity())) {
+			Builder dialog = new AlertDialog.Builder(getActivity());
+			dialog.setTitle("温馨提示").setMessage("Wifi/蜂窝网络未打开，或者网络情况不是很好哟").setPositiveButton("确定", null);
+			dialog.show();
+			
+		}
+		
+		ShareSDK.initSDK(getActivity());
+	}
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+		contentView = inflater.inflate(R.layout.more_fragment_layout, container,false);
+		
+		settings = (LinearLayout) contentView.findViewById(R.id.more_settings);
+		version = (LinearLayout) contentView.findViewById(R.id.more_version);
+		opinion = (LinearLayout) contentView.findViewById(R.id.more_opinion);
+		moreShare = (LinearLayout) contentView.findViewById(R.id.more_share);
+		help = (LinearLayout) contentView.findViewById(R.id.more_help);
+		aboutUs = (LinearLayout) contentView.findViewById(R.id.more_aboutus);
+		loginStatus = (LinearLayout) contentView.findViewById(R.id.more_login_status);
 		settings.setOnClickListener(this);
 		version.setOnClickListener(this);
 		opinion.setOnClickListener(this);
@@ -86,23 +114,12 @@ public class MoreActivity extends QuhaoBaseActivity {
 		aboutUs.setOnClickListener(this);
 		loginStatus.setOnClickListener(this);
 
-		loginStatusImg = (ImageView) this.findViewById(R.id.more_login_status_img);
-		loginStatusTxt = (TextView) this.findViewById(R.id.more_login_status_txt);
-
-		// TODO add default view here
-		if (!networkOK) {
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			Builder dialog = new AlertDialog.Builder(MoreActivity.this);
-			dialog.setTitle("温馨提示").setMessage("Wifi/蜂窝网络未打开，或者网络情况不是很好哟").setPositiveButton("确定", null);
-			dialog.show();
-			
-			return;
-		}
-		
+		loginStatusImg = (ImageView) contentView.findViewById(R.id.more_login_status_img);
+		loginStatusTxt = (TextView) contentView.findViewById(R.id.more_login_status_txt);
 		refreshLoginStatus();
-		ShareSDK.initSDK(this);
+		return contentView;		
 	}
-
+	
 	private void refreshLoginStatus() {
 		boolean loginStatus = QHClientApplication.getInstance().isLogined;
 		if (loginStatus) {
@@ -113,52 +130,89 @@ public class MoreActivity extends QuhaoBaseActivity {
 			loginStatusTxt.setText(R.string.more_no_login);
 		}
 	}
+	
+	protected Handler toastHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			if (msg.what == UNLOCK_CLICK) {
+				
+				Map<String, Object> toastParams = (Map<String, Object>) msg.obj;
+//				Toast.makeText((Context)toastParams.get("activity"), toastParams.get("text"), );
+				
+				Toast.makeText((Context)toastParams.get("activity"), Integer.parseInt(String.valueOf(toastParams.get("text"))), Integer.parseInt(String.valueOf(toastParams.get("toastLength")))).show();
+			}
+		}
+	};
 
+	protected Handler loginHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			if (msg.what == 200) {
+				super.handleMessage(msg);
+				// SharedprefUtil.put(MoreActivity.this, QuhaoConstant.IS_LOGIN,
+				// "false");
+				QHClientApplication.getInstance().isLogined = false;
+				loginStatusImg.setImageResource(R.drawable.login_status);
+				loginStatusTxt.setText(R.string.more_no_login);
+			}
+		}
+	};
+	
+	@Override
+	public void onResume() {
+		refreshLoginStatus();
+		super.onResume();
+	}
+	
+	@Override
+	public void onDestroy() {
+		ShareSDK.stopSDK(getActivity());
+		super.onDestroy();
+	}
+	
 	@Override
 	public void onClick(View v) {
 		if (isClick) {
 			return;
 		}
-		progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.querying, false);
+		progressDialogUtil = new ProgressDialogUtil(getActivity(), R.string.empty, R.string.querying, false);
 		progressDialogUtil.showProgress();
 		switch (v.getId()) {
 		case R.id.more_settings:// 系统设置
 			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			Intent intent = new Intent(this, SettingsActivity.class);
+			Intent intent = new Intent(getActivity(), SettingsActivity.class);
 			startActivity(intent);
-			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+			getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 		case R.id.more_aboutus:// 关于我们
 			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			Intent intent1 = new Intent(this, AboutUsActivity.class);
+			Intent intent1 = new Intent(getActivity(), AboutUsActivity.class);
 			startActivity(intent1);
-			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+			getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 		case R.id.more_opinion:// 反馈
 			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			Intent intent2 = new Intent(this, OpinionActivity.class);
+			Intent intent2 = new Intent(getActivity(), OpinionActivity.class);
 			startActivity(intent2);
-			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+			getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 		case R.id.more_help:// 帮助
 			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			Intent intent3 = new Intent(this, HelpActivity.class);
+			Intent intent3 = new Intent(getActivity(), HelpActivity.class);
 			startActivity(intent3);
-			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+			getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 		case R.id.more_version:// 版本检测
 			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			int currentVersion = ActivityUtil.getVersionCode(this);
+			int currentVersion = ActivityUtil.getVersionCode(getActivity());
 			String url = "app/appCode";
 			try {
 				String result = CommonHTTPRequest.get(url);
 				if (StringUtils.isNull(result)) {
-					Builder dialog = new AlertDialog.Builder(MoreActivity.this);
+					Builder dialog = new AlertDialog.Builder(getActivity());
 					dialog.setTitle("温馨提示").setMessage("网络情况不是很好哟").setPositiveButton("确定", null);
 					dialog.show();
 					return;
@@ -166,14 +220,14 @@ public class MoreActivity extends QuhaoBaseActivity {
 
 				final AppVersionVO avo = ParseJson.convertToAppVersionVO(result);
 				if (avo == null) {
-					Builder dialog = new AlertDialog.Builder(MoreActivity.this);
+					Builder dialog = new AlertDialog.Builder(getActivity());
 					dialog.setTitle("温馨提示").setMessage("网络情况不是很好哟").setPositiveButton("确定", null);
 					dialog.show();
 					return;
 				}
 
 				if (avo.android == currentVersion) {
-					Builder dialog = new AlertDialog.Builder(MoreActivity.this);
+					Builder dialog = new AlertDialog.Builder(getActivity());
 					dialog.setTitle("温馨提示").setMessage("APP已经是最新版").setPositiveButton("确定", null);
 					dialog.show();
 					return;
@@ -181,13 +235,13 @@ public class MoreActivity extends QuhaoBaseActivity {
 
 				if (avo.android > currentVersion) {
 					// TODO there is bug here
-					Dialog dialog = new AlertDialog.Builder(MoreActivity.this).setTitle("软件更新").setMessage("软件有更新，建议更新到最新版本")
+					Dialog dialog = new AlertDialog.Builder(getActivity()).setTitle("软件更新").setMessage("软件有更新，建议更新到最新版本")
 					// 设置内容
 							.setPositiveButton("更新",// 设置确定按钮
 									new DialogInterface.OnClickListener() {
 										@Override
 										public void onClick(DialogInterface dialog, int which) {
-											ProgressDialog pBar = new ProgressDialog(MoreActivity.this);
+											ProgressDialog pBar = new ProgressDialog(getActivity());
 											pBar.setTitle("正在下载");
 											pBar.setMessage("请稍候...");
 											pBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -243,7 +297,7 @@ public class MoreActivity extends QuhaoBaseActivity {
 									}).setNegativeButton("暂不更新", new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog, int whichButton) {
 									// 点击"取消"按钮之后退出程序
-									finish();
+									getActivity().finish();
 								}
 							}).create();// 创建
 					// 显示对话框
@@ -314,7 +368,7 @@ public class MoreActivity extends QuhaoBaseActivity {
 				@Override
 				public void onCancel(Platform arg0, int arg1) {
 					Map<String, Object> toastParams = new HashMap<String, Object>();
-					toastParams.put("activity", MoreActivity.this);
+					toastParams.put("activity", getActivity());
 					toastParams.put("text", R.string.share_cancel);
 					toastParams.put("toastLength", Toast.LENGTH_LONG);
 					toastHandler.obtainMessage(1000, toastParams).sendToTarget();
@@ -325,7 +379,7 @@ public class MoreActivity extends QuhaoBaseActivity {
 				public void onComplete(Platform arg0, int arg1,
 						HashMap<String, Object> arg2) {
 					Map<String, Object> toastParams = new HashMap<String, Object>();
-					toastParams.put("activity", MoreActivity.this);
+					toastParams.put("activity", getActivity());
 					toastParams.put("text", R.string.share_success);
 					toastParams.put("toastLength", Toast.LENGTH_LONG);
 					toastHandler.obtainMessage(1000, toastParams).sendToTarget();
@@ -334,7 +388,7 @@ public class MoreActivity extends QuhaoBaseActivity {
 				@Override
 				public void onError(Platform arg0, int arg1, Throwable arg2) {
 					Map<String, Object> toastParams = new HashMap<String, Object>();
-					toastParams.put("activity", MoreActivity.this);
+					toastParams.put("activity", getActivity());
 					toastParams.put("text", R.string.share_error);
 					toastParams.put("toastLength", Toast.LENGTH_LONG);
 					toastHandler.obtainMessage(1000, toastParams).sendToTarget();
@@ -343,7 +397,7 @@ public class MoreActivity extends QuhaoBaseActivity {
 				
 				
 			});
-			oks.show(this);
+			oks.show(getActivity());
 //			oks.setapp
 //			Intent intent4 = new Intent(this, ShareDialogActivity.class);
 //			startActivity(intent4);
@@ -360,11 +414,11 @@ public class MoreActivity extends QuhaoBaseActivity {
 			if (QHClientApplication.getInstance().isLogined) {
 				loginHandler.obtainMessage(200, loginStatus).sendToTarget();
 			} else {
-				Intent intent5 = new Intent(MoreActivity.this, LoginActivity.class);
+				Intent intent5 = new Intent(getActivity(), LoginActivity.class);
 				intent5.putExtra("activityName", this.getClass().getName());
 				intent5.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent5);
-				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			}
 			break;
 
@@ -372,39 +426,5 @@ public class MoreActivity extends QuhaoBaseActivity {
 			break;
 		}
 
-	}
-
-	// TODO : add static to the all Handler class, because such class may be
-	// caused leaks
-	// http://stackoverflow.com/questions/11407943/this-handler-class-should-be-static-or-leaks-might-occur-incominghandler
-	protected Handler loginHandler = new Handler() {
-		public void handleMessage(Message msg) {
-			if (msg.what == 200) {
-				super.handleMessage(msg);
-				// SharedprefUtil.put(MoreActivity.this, QuhaoConstant.IS_LOGIN,
-				// "false");
-				QHClientApplication.getInstance().isLogined = false;
-				loginStatusImg.setImageResource(R.drawable.login_status);
-				loginStatusTxt.setText(R.string.more_no_login);
-			}
-		}
-	};
-
-	@Override
-	protected void onResume() {
-		refreshLoginStatus();
-		super.onResume();
-	}
-	
-	@Override
-	protected void onDestroy() {
-		ShareSDK.stopSDK(this);
-		super.onDestroy();
-	}
-	
-	@Override
-	public boolean onTouch(View arg0, MotionEvent arg1) {
-		return false;
-	}
-
+	}	
 }

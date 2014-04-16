@@ -165,8 +165,43 @@ public class AsynImageLoader {
 	 * @param url
 	 * @param resId
 	 */
-	public void showImageAsyn(ImageView imageView, String url, int resId) {
-		showImageAsyn(imageView, url, "rect", resId, 0);
+	public void showImageAsyn(ImageView imageView, int position,String url, int resId) {
+		showImageAsyn(imageView, url, "rect", resId, 0,position);
+	}
+
+	private void showImageAsyn(ImageView imageView, String url,
+			String roundedType, int resId, int itemWidth, int position) {
+		if(null == imageView)
+		{
+			return;
+		}
+
+		if(null == url || "".equals(url.trim()))
+		{
+			imageView.setImageResource(resId);
+			return;
+		}
+		imageView.setTag(url + "" + position);
+		Bitmap bitmap = loadImageAsyn(url, roundedType, getImageCallback(
+				imageView, resId), itemWidth);
+
+		if (bitmap == null) {
+			imageView.setImageResource(resId);
+		} else {
+			if (itemWidth > 0) {
+				int width = bitmap.getWidth();// 获取真实宽高
+				int height = bitmap.getHeight();
+				LayoutParams lp = imageView.getLayoutParams();
+				lp.height = (height * itemWidth) / width;// 调整高度
+
+				imageView.setLayoutParams(lp);
+
+				imageView.setImageBitmap(bitmap);
+			} else {
+				imageView.setImageBitmap(bitmap);
+			}
+
+		}
 	}
 
 	public Bitmap loadImageAsyn(String path, String roundedType,

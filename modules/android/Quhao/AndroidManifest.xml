@@ -89,8 +89,13 @@
 			
 		</activity>
 		<!-- category page -->
-
-
+		
+		<!-- category page -->
+		<activity android:name="com.withiter.quhao.activity.MainTabActivity" android:label="@string/app_name" android:screenOrientation="portrait">
+			
+		</activity>
+		<!-- category page -->
+		
 		<!-- nearby page -->
 		<activity android:name="com.withiter.quhao.activity.NearbyActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
 			android:screenOrientation="portrait"  />

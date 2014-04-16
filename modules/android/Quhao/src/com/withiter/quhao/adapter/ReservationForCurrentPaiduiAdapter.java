@@ -88,7 +88,7 @@ public class ReservationForCurrentPaiduiAdapter extends BaseAdapter {
 			
 			String merchantImg = rvo.merchantImage;
 			// get image from memory/SDCard/URL stream
-			AsynImageLoader.getInstance().showImageAsyn(holder.merchantImg, merchantImg, R.drawable.no_logo);
+			AsynImageLoader.getInstance().showImageAsyn(holder.merchantImg,position, merchantImg, R.drawable.no_logo);
 			/*
 			holder.merchantImg.setTag(merchantImg + position);
 			Drawable cachedImage = null;

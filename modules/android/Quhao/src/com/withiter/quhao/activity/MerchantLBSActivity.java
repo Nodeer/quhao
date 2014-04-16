@@ -150,7 +150,7 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 					}
 					LatLng latLng = new LatLng(merchant.lat, merchant.lng);
 					MarkerOptions options = new MarkerOptions();
-					options.position(latLng).title(merchant.name).snippet(merchant.address).icon(BitmapDescriptorFactory.fromResource(R.drawable.menu_merchant_nearby)).perspective(true);
+					options.position(latLng).title(merchant.name).snippet(merchant.address).icon(BitmapDescriptorFactory.fromResource(R.drawable.menu_nearby_img)).perspective(true);
 
 					mAMap.addMarker(options);
 					update = CameraUpdateFactory.changeLatLng(latLng);

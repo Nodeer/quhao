@@ -47,7 +47,6 @@ public class CitySearchActivity extends QuhaoBaseActivity {
 	
 	private ListView citySearchListView;
 	
-	private Button searchBtn;
 	private SearchCityAdapter searchCityAdapter;
 	
 	private List<CityInfo> searchCityList = new ArrayList<CityInfo>();
@@ -66,9 +65,6 @@ public class CitySearchActivity extends QuhaoBaseActivity {
 		
 		citySearchLayout = (FrameLayout) this.findViewById(R.id.citySearchLayout);
 		citySearchListView = (ListView) this.findViewById(R.id.citySearchListView);
-		searchBtn = (Button) this.findViewById(R.id.search_btn);
-		searchBtn.setOnClickListener(this);
-		searchBtn.setVisibility(View.GONE);
 		
 		citySearchListView.setOnItemClickListener(citySearchListener);
 		
@@ -89,9 +85,12 @@ public class CitySearchActivity extends QuhaoBaseActivity {
 			{
 				citySearchLayout.setVisibility(View.VISIBLE);
 //				searchCityList = new ArrayList<CityInfo>();
-				searchCityAdapter = new SearchCityAdapter(CitySearchActivity.this);
-				searchBtn.setVisibility(View.VISIBLE);
-				citySearchListView.setAdapter(searchCityAdapter);
+				if(null == searchCityAdapter)
+				{
+					searchCityAdapter = new SearchCityAdapter(CitySearchActivity.this);
+					citySearchListView.setAdapter(searchCityAdapter);
+				}
+				
 				searchCityAdapter.notifyDataSetChanged();
 			}
 			
@@ -160,6 +159,15 @@ public class CitySearchActivity extends QuhaoBaseActivity {
 				
 				searchCityAdapter.notifyDataSetChanged();
 			}
+			else
+			{
+				searchCityList = new ArrayList<CityInfo>();
+				for (int i = 0; i < cityData.size(); i++) {
+					CityInfo cityInfo = cityData.get(i);
+					searchCityList.add(cityInfo);
+				}
+				searchCityAdapter.notifyDataSetChanged();
+			}
 
 		}
 	};
@@ -169,7 +177,7 @@ public class CitySearchActivity extends QuhaoBaseActivity {
 		if(null != citys && citys.length>0)
 		{
 			cityData = new ArrayList<CityInfo>();
-			
+			searchCityList = new ArrayList<CityInfo>();
 			String cityStr = "";
 			CityInfo cityInfo = null;
 			for (int i = 0; i < citys.length; i++) {
@@ -177,7 +185,16 @@ public class CitySearchActivity extends QuhaoBaseActivity {
 				String[] eles = cityStr.split("-");
 				cityInfo = new CityInfo(eles[0], eles[2], eles[1]);
 				cityData.add(cityInfo);
+				searchCityList.add(cityInfo);
 			}
+			
+			if(null == searchCityAdapter)
+			{
+				searchCityAdapter = new SearchCityAdapter(CitySearchActivity.this);
+				citySearchListView.setAdapter(searchCityAdapter);
+			}
+			
+			searchCityAdapter.notifyDataSetChanged();
 		}
 		
 	}
@@ -201,12 +218,6 @@ public class CitySearchActivity extends QuhaoBaseActivity {
 				Intent intent = new Intent();
 				intent.setClass(this, CitySearchActivity.class);
 				startActivity(intent);
-				break;
-			case R.id.search_btn:
-				citySearchLayout.setVisibility(View.GONE);
-				searchBtn.setVisibility(View.GONE);
-				initView();
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				break;
 			default:
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);

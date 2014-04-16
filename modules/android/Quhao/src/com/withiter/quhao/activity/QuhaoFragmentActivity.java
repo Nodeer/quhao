@@ -3,22 +3,22 @@ package com.withiter.quhao.activity;
 import java.io.IOException;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources.NotFoundException;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Display;
 
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.tool.PhoneTool;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 
-public abstract class QuhaoActivity extends Activity {
+public abstract class QuhaoFragmentActivity extends FragmentActivity {
 
-	private final static String TAG = QuhaoActivity.class.getName();
+	private final static String TAG = QuhaoFragmentActivity.class.getName();
 	private static boolean inited = false;
 
 	/*

@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffffff"
+    android:orientation="vertical" >
+    <!-- title -->
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:background="@drawable/common_top_bar_bg_blue"
+        android:gravity="center_vertical"
+        android:paddingBottom="5dip"
+        android:paddingTop="5dip" 
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip">
+		<Button
+			android:id="@+id/register"
+			android:layout_width="wrap_content"
+			android:layout_height="35dip"
+			android:background="@drawable/btn_weight"
+			android:text="@string/register_3space"
+			android:layout_gravity="left|center_vertical"
+			android:textAppearance="?android:textAppearanceMediumInverse"
+			android:textColor="#ff000000"
+			android:textSize="14.0sp" />
+		<TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/gerenzhongxin"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="#ff000000" />
+		<Button
+		    android:id="@+id/login"
+		    android:layout_width="wrap_content"
+		    android:layout_height="35dip"
+		    android:background="@drawable/btn_weight"
+		    android:text="@string/login_3space"
+		    android:layout_gravity="right|center_vertical"
+		    android:textAppearance="?android:textAppearanceMediumInverse"
+		    android:textColor="#ff000000"
+		    android:textSize="14.0sp" />
+
+    </FrameLayout>
+    <!-- title -->
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffffff"
+        android:orientation="vertical" >
+
+        <!-- avatar, nickname and mobile number -->
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffffff"
+            android:orientation="horizontal" >
+
+            <!-- left avatar -->
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8.0dip" >
+
+                <ImageView
+                    android:id="@+id/avatar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/avatar"
+                    android:src="@drawable/person_avatar" />
+            </LinearLayout>
+            <!-- left avatar -->
+
+
+            <!-- right nickname and mobile -->
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="10.0dip"
+                android:paddingTop="8.0dip" >
+
+                <!-- nickname -->
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0.0dip"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/nickName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3.0dip"
+                        android:singleLine="true"
+                        android:text="@string/noname"
+                        android:textColor="#ff000000"
+                        android:textSize="16.0sp" />
+                </LinearLayout>
+                <!-- nickname -->
+
+
+                <!-- mobile number -->
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0.0dip"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/mobile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3.0dip"
+                        android:singleLine="true"
+                        android:text="@string/nomobile"
+                        android:textColor="#ff000000"
+                        android:textSize="16.0sp" />
+                </LinearLayout>
+                <!-- mobile number -->
+
+
+                <!-- jifen -->
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0.0dip"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3.0dip"
+                        android:singleLine="true"
+                        android:text="@string/jifen_label"
+                        android:textColor="#ff000000"
+                        android:textSize="16.0sp" />
+
+                    <TextView
+                        android:id="@+id/jifen"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3.0dip"
+                        android:layout_marginTop="3.0dip"
+                        android:singleLine="true"
+                        android:text="@string/jifen_default"
+                        android:textColor="#ff000000"
+                        android:textSize="16.0sp" />
+                </LinearLayout>
+                <!-- jifen -->
+
+            </LinearLayout>
+            <!-- right nickname and mobile -->
+        </LinearLayout>
+        <!-- avatar, nickname and mobile number -->
+
+
+        <!-- qiandao, dianpin, zhaopian -->
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10.0dip"
+            android:textAlignment="center" 
+            android:background="@drawable/common_top_bar_bg_blue">
+
+            <LinearLayout android:id="@+id/signInLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:padding="10.0dip"
+                android:textAlignment="center" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/label_qiandao"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/value_qiandao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/value_qiandao"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/dianpingLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:padding="10.0dip"
+                android:textAlignment="center" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/label_dianpin"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/value_dianpin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/value_dianpin"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <!-- <LinearLayout android:id="@+id/photoLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:padding="10.0dip"
+                android:textAlignment="center" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/label_zhaopian"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/value_zhaopian"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/value_zhaopian"
+                    android:textAlignment="center" />
+            </LinearLayout> -->
+        </LinearLayout>
+        <!-- qiandao, dianpin, zhaopian -->
+
+
+        <!-- current/history quhao, history jifen -->
+        <LinearLayout android:id="@+id/current_paidui_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/list_item_border"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10.0dip" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/person_current_paidui_icon"
+                android:src="@drawable/person_current_paidui" />
+
+            <TextView
+                android:id="@+id/current_paidui"
+                android:layout_width="0.0px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6.0dip"
+                android:layout_weight="1.0"
+                android:maxLines="2"
+                android:paddingRight="6.0dip"
+                android:text="@string/current_paidui"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="#ff000000"
+                android:textSize="16.0sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@null"
+                android:duplicateParentState="true"
+                android:paddingRight="6.0dip"
+                android:src="@drawable/arrow_right" />
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/history_paidui_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/list_item_border"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10.0dip" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/person_history_paidui_icon"
+                android:src="@drawable/person_history_paidui" />
+
+            <TextView
+                android:id="@+id/history_paidui"
+                android:layout_width="0.0px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6.0dip"
+                android:layout_weight="1.0"
+                android:maxLines="2"
+                android:paddingRight="6.0dip"
+                android:text="@string/history_paidui"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="#ff000000"
+                android:textSize="16.0sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@null"
+                android:duplicateParentState="true"
+                android:paddingRight="6.0dip"
+                android:src="@drawable/arrow_right" />
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/credit_cost_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/list_item_border"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10.0dip" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/person_history_paidui_icon"
+                android:src="@drawable/person_history_jifen" />
+
+            <TextView
+                android:id="@+id/mail"
+                android:layout_width="0.0px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6.0dip"
+                android:layout_weight="1.0"
+                android:maxLines="2"
+                android:paddingRight="6.0dip"
+                android:text="@string/history_jifen"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="#ff000000"
+                android:textSize="16.0sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@null"
+                android:duplicateParentState="true"
+                android:paddingRight="6.0dip"
+                android:src="@drawable/arrow_right" />
+        </LinearLayout>
+        <!-- current/history quhao, history jifen -->
+
+    </LinearLayout>
+
+</LinearLayout>

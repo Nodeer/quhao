@@ -4,12 +4,14 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.QuhaoLog;
@@ -50,7 +52,6 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
-		final ImageView imageView;
 		QuhaoLog.i(TAG, "getView times : " + (getViewTimes++));
 		QuhaoLog.i(TAG, "getView " + position + " " + convertView);
 
@@ -59,46 +60,43 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 		final int defaultWidth = PhoneTool.getScreenWidth() / 3;
 		final int defaultHight = PhoneTool.getScreenHeight() / 7;
 
-		if (null == convertView) {
-			imageView = new ImageView(context);
-			imageView.setLayoutParams(new GridView.LayoutParams(defaultWidth, defaultHight));
-			imageView.setPadding(8, 8, 8, 8);
-		} else {
-			imageView = (ImageView) convertView;
-		}
-
-		imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-		
-        // no content on top merchant grid
-		if (StringUtils.isNull(topMerchant.merchantImage)) {
-			imageView.setImageResource(R.drawable.no_logo);
-			return imageView;
-		}
-		
-		final String imageUrl = topMerchant.merchantImage;
-		QuhaoLog.d(TAG, "asyncImageLoader, the imageUrl is : " + imageUrl);
-		if (StringUtils.isNotNull(imageUrl)) {
+		synchronized(topMerchant)
+		{
+			ViewHolder holder = null;
+			if(convertView == null)
+			{
+				holder = new ViewHolder();
+				LayoutInflater inflator = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				convertView = inflator.inflate(R.layout.topmerchant_item, null);
+				holder.img = (ImageView) convertView.findViewById(R.id.img);
+			}
 			
-//			final ImageTask task = new ImageTask(imageView, imageUrl, true, context);
-//			task.execute();
-			AsynImageLoader.getInstance().showImageAsyn(imageView, imageUrl, R.drawable.no_logo);
-//			// Android 4.0 之后不能在主线程中请求HTTP请求
-//			new Thread(new Runnable(){
-//			    @Override
-//			    public void run() {
-//			    	cachedImage = asyncImageLoader.loadDrawable(imageUrl, position);
-//					imageView.setImageDrawable(cachedImage);
-//			    }
-//			}).start();
+			if (holder == null) {
+				holder = (ViewHolder) convertView.getTag();
+			}
 			
+//			LayoutParams lp = holder.img.getLayoutParams();
+//			lp.height = defaultHight;
+//			lp.width = defaultWidth;
+//			holder.img.setLayoutParams(lp);
+//			holder.img.setPadding(8, 8, 8, 8);
+			
+			QuhaoLog.i(TAG, "top merchant adapter's imageUrl : " + topMerchant.merchantImage);
+			
+			if (StringUtils.isNull(topMerchant.merchantImage)) {
+				holder.img.setTag(topMerchant.merchantImage + "Image" + position);
+				holder.img.setImageResource(R.drawable.no_logo);
+			}else
+			{
+				AsynImageLoader.getInstance().showImageAsyn(holder.img, position,topMerchant.merchantImage, R.drawable.no_logo);
+			}
+			holder.img.setScaleType(ImageView.ScaleType.FIT_XY);
+			convertView.setTag(holder);
+	        return convertView;
 		}
-		
-        return imageView;
 	}
 	
 	class ViewHolder {
 		ImageView img;
-		TextView itemView;
-		TextView countView;
 	}
 }

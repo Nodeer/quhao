@@ -76,7 +76,7 @@ public class MerchantAdapter extends BaseAdapter {
 
 //			holder.img.setTag(imageUrl + position);
 			
-			AsynImageLoader.getInstance().showImageAsyn(holder.img, imageUrl, R.drawable.no_logo);
+			AsynImageLoader.getInstance().showImageAsyn(holder.img, position,imageUrl, R.drawable.no_logo);
 			/*
 			if (null != imageUrl && !"".equals(imageUrl)) {
 				cachedImage = asyncImageLoader.loadDrawable(imageUrl, position, new ImageCallback() {

@@ -8,6 +8,9 @@ import java.io.InputStreamReader;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources.NotFoundException;
 import android.os.Environment;
 import android.os.Handler;
@@ -131,6 +134,15 @@ public class QHClientApplication extends Application {
 			String cityName = SharedprefUtil.get(this, QuhaoConstant.CITY_NAME, "上海");
 			String cityPinyin = SharedprefUtil.get(this, QuhaoConstant.CITY_PINYIN, "shanghai");
 			this.defaultCity = new CityInfo(cityCode, cityName, cityPinyin);
+			
+			try {
+				ApplicationInfo appInfo = this.getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+				boolean msg = appInfo.metaData.getBoolean("test");
+				QuhaoConstant.test = msg;
+				QuhaoLog.i(TAG, "current deployment is test mode : " + msg);
+			} catch (NameNotFoundException e) {
+				e.printStackTrace();
+			}
 			
 			QuhaoLog.i(TAG, "start to init configurations from application.properties");
 			InputStream input = getResources().openRawResource(R.raw.application);

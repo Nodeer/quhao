@@ -62,19 +62,8 @@ public class ParseJson {
 				if (obj.has("cateName")) {
 					cateName = obj.optString("cateName");
 				}
-				url = obj.optString("url");
-				if (QuhaoConstant.test) {
-					if(null != url &&!"".equals(url))
-					{
-						url = obj.getString("url").replace("http://localhost:9081/", QuhaoConstant.HTTP_URL);
-					}
-					
-//					imgUrl = obj.getString("merchantImage").replace("http://localhost:9081/", "http://192.168.2.100:9081/");
-					System.out.println(url);
-				} else {
-					url = obj.getString("merchantImage");
-				}
-				Category category = new Category(count, categoryType, cateName, url);
+				
+				Category category = new Category(count, categoryType, cateName);
 				categroys.add(category);
 			}
 

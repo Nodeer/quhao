@@ -270,6 +270,7 @@ public class LoginActivity extends QuhaoBaseActivity {
 				QuhaoLog.d(TAG, "login call back to " + activityName);
 
 				if (StringUtils.isNotNull(activityName) && !MerchantDetailActivity.class.getName().equals(activityName)) {
+					/*
 					Intent intent = new Intent();//com.withiter.quhao.activity.MerchantDetailActivity  com.withiter.quhao.activity.MerchantDetailActivity
 					if (PersonCenterActivity.class.getName().equals(activityName)) {
 						intent.setClass(LoginActivity.this, PersonCenterActivity.class);
@@ -290,6 +291,7 @@ public class LoginActivity extends QuhaoBaseActivity {
 						intent.setClass(LoginActivity.this, PersonCenterActivity.class);
 					}
 					startActivity(intent);
+					*/
 					progressLogin.closeProgress();
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					finish();

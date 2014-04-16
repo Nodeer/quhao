@@ -80,7 +80,7 @@ public class SearchAdapter extends BaseAdapter {
 			}
 
 			String imageUrl = merchant.merchantImage;
-			AsynImageLoader.getInstance().showImageAsyn(holder.img, imageUrl, R.drawable.no_logo);
+			AsynImageLoader.getInstance().showImageAsyn(holder.img,position, imageUrl, R.drawable.no_logo);
 			/*
 			holder.img.setTag(imageUrl);
 			if (null != imageUrl && !"".equals(imageUrl)) {

@@ -3,12 +3,10 @@ package com.withiter.quhao.adapter;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.TextView;
 
 import com.withiter.quhao.R;
@@ -17,13 +15,11 @@ import com.withiter.quhao.vo.Category;
 public class CategoryGridAdapter extends BaseAdapter {
 
 	private List<? extends Object> list;
-	private GridView grid;
 	private Context context;
 
-	public CategoryGridAdapter(List<? extends Object> list, GridView grid,
+	public CategoryGridAdapter(List<? extends Object> list,
 			Context context) {
 		this.list = list;
-		this.grid = grid;
 		this.context = context;
 	}
 
@@ -44,7 +40,6 @@ public class CategoryGridAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Drawable cachedImage = null;
 		Category category = null;
 		Object item = getItem(position);
 		category = (Category) item;
@@ -53,8 +48,7 @@ public class CategoryGridAdapter extends BaseAdapter {
 			ViewHolder holder = null;
 			if (null == convertView) {
 				holder = new ViewHolder();
-				LayoutInflater inflator = (LayoutInflater) parent.getContext()
-						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				LayoutInflater inflator = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				convertView = inflator.inflate(R.layout.category_item, null);
 				// holder.img = (ImageView) convertView.findViewById(R.id.img);
 				holder.itemView = (TextView) convertView

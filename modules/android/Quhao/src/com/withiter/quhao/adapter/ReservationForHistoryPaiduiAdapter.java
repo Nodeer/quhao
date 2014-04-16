@@ -97,7 +97,7 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 			}
 			
 			String merchantImg = rvo.merchantImage;
-			AsynImageLoader.getInstance().showImageAsyn(holder.merchantImg, merchantImg, R.drawable.no_logo);
+			AsynImageLoader.getInstance().showImageAsyn(holder.merchantImg,position, merchantImg, R.drawable.no_logo);
 			// get image from memory/SDCard/URL stream
 			/*
 			holder.merchantImg.setTag(merchantImg + position);

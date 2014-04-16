@@ -1,40 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8" ?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@drawable/list_item_border"
-    android:paddingBottom="4dip" >
-
-    <!--
-    <TextView 
-    	android:textAppearance="?android:textAppearanceMedium" 
-    	android:gravity="center_horizontal" 
-    	android:layout_gravity="center" 
-    	android:id="@+id/activity_name" 
-    	android:layout_width="wrap_content" 
-    	android:layout_height="wrap_content" 
-    	android:ems="4" 
-    	android:singleLine="true" 
-    	android:textColor="#ff000000"
-    	/>
-    -->
-
-    <ImageView
-        android:id="@+id/img"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
-        android:adjustViewBounds="true"
-        android:padding="4dp"
-        android:scaleType="fitXY" />
-
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/img"
-        android:layout_centerHorizontal="true"
-        android:gravity="center" />
-
-</RelativeLayout>
+    android:layout_height="fill_parent">
+    
+    <ImageView android:id="@+id/img" android:layout_width="fill_parent"
+        android:layout_height="fill_parent" 
+        android:scaleType="fitXY"
+        android:contentDescription="@string/empty"
+        android:src="@drawable/no_logo"/>         
+</LinearLayout>

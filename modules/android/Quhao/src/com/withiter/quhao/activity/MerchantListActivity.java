@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantAdapter;
 import com.withiter.quhao.util.QuhaoLog;
@@ -173,7 +174,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnScrollL
 			try {
 				Looper.prepare();
 				QuhaoLog.v(LOGTAG, "get categorys data form server begin");
-				String url = "MerchantController/nextPage?page=" + page + "&cateType=" + categoryType;
+				String url = "MerchantController/nextPage?page=" + page + "&cateType=" + categoryType + "&cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode;
 				QuhaoLog.i(LOGTAG, "the request url is : " + url);
 				String buf = CommonHTTPRequest.get(url);
 				if (StringUtils.isNull(buf) || "[]".endsWith(buf)) {
