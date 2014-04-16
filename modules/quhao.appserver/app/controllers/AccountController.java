@@ -24,6 +24,7 @@ import vo.account.CreditVO;
 import vo.account.LoginVO;
 import vo.account.SignupVO;
 
+import com.google.code.morphia.query.UpdateResults;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSInputFile;
 import com.withiter.common.Constants;
@@ -145,7 +146,7 @@ public class AccountController extends BaseController {
 	}
 
 	/**
-	 * 更新密码
+	 * 忘记密码
 	 * 
 	 * @param mobile
 	 *            手机号码
@@ -647,6 +648,74 @@ public class AccountController extends BaseController {
 			return null;
 		} else {
 			return gfsFile;
+		}
+	}
+	
+	public static void updateUserName(String accoutId, String name) {
+		SignupVO suVO = new SignupVO();
+		if (StringUtils.isEmpty(accoutId)) {
+			suVO.errorKey = "0";
+			suVO.errorText = "账号不能为空";
+			renderJSON(suVO);
+		}
+		if (StringUtils.isEmpty(name)) {
+			suVO.errorKey = "0";
+			suVO.errorText = "用户名不能为空";
+			renderJSON(suVO);
+		}
+
+		Account account = Account.isExistsName(accoutId,name);
+		if (account != null) {
+			suVO.errorKey = "2";
+			suVO.errorText = "用户名已被占用";
+			renderJSON(suVO);
+		} 
+		
+		MorphiaUpdateOperations o = Account.o();
+		o.set("nickname", name);
+		MorphiaQuery q = Account.createQuery();
+		q.filter("_id", new ObjectId(accoutId));
+	    UpdateResults<Account> result = o.update(q);
+		if(result.getUpdatedCount()!=0){
+			suVO.errorKey = "1";
+			suVO.errorText = "修改成功";
+			renderJSON(suVO);
+		}else{
+			suVO.errorKey = "0";
+			suVO.errorText = "修改失败";
+			renderJSON(suVO);
+		}
+	}
+	
+	/**
+	 * 修改密码
+	 * @param mobile
+	 * @param code
+	 * @param password
+	 */
+	public static void updatePassword(String accoutId, String newPassWord, String oldPass) {
+		SignupVO suVO = new SignupVO();
+		if (StringUtils.isEmpty(accoutId)) {
+			suVO.errorKey = "0";
+			suVO.errorText = "账号不能为空";
+			renderJSON(suVO);
+		}
+		if (StringUtils.isEmpty(newPassWord)) {
+			suVO.errorKey = "0";
+			suVO.errorText = "新密码不能为空";
+			renderJSON(suVO);
+		}
+		Account account = Account.validatePassword(accoutId, oldPass);
+		if(account == null){
+			suVO.errorKey = "0";
+			suVO.errorText = "旧密码不正确";
+			renderJSON(suVO);
+		}else{
+			account.password = Codec.hexSHA1(String.valueOf(newPassWord));
+			account.save();
+			suVO.errorKey = "1";
+			suVO.errorText = "修改成功";
+			renderJSON(suVO);
 		}
 	}
 }

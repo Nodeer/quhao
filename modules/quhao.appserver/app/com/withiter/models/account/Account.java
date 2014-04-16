@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import org.bson.types.ObjectId;
+
 import play.data.validation.Validation;
 import play.i18n.Messages;
 import play.libs.Codec;
@@ -363,5 +365,32 @@ public class Account extends AccountEntityDef {
 		MorphiaUpdateOperations o= Account.o();
 		o.set("isSignIn", false);
 		o.update(q);
+	}
+	
+	/**查询用户名是否被占用
+	 * @param accoutId 
+	 * @param name 
+	 * @return
+	 */
+	public static Account isExistsName(String accoutId,String name) {
+		Account account = Account.q().filter("nickname", name).filter("_id !=", new ObjectId(accoutId)).first();
+		if (account == null) {
+			return null;
+		}
+		return account;
+	}
+	
+	/**
+	 * 验证密码是否正确
+	 * @param accoutId
+	 * @param oldPass
+	 * @return
+	 */
+	public static Account validatePassword(String accoutId,String oldPass) {
+		Account account = Account.q().filter("password", Codec.hexSHA1(String.valueOf(oldPass))).filter("_id", new ObjectId(accoutId)).first();
+		if (account == null) {
+			return null;
+		}
+		return account;
 	}
 }
