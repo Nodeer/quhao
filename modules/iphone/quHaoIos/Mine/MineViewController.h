@@ -15,6 +15,7 @@
 #import "CreditViewController.h"
 #import "CommentViewController.h"
 #import "EGOImageView.h"
+#import "MineInfoViewController.h"
 @interface MineViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
     UITableView *_mineView;

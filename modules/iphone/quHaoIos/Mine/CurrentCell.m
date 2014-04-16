@@ -45,8 +45,6 @@
     _cancelButton.frame=CGRectMake(_titleLabel.frame.origin.x+5, _titleLabel.frame.origin.y+_titleLabel.frame.size.height+6, 80, 35);
     [_cancelButton addTarget:self action:@selector(resetPass:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:_cancelButton];
-
-    
 }
 
 -(void) setSelected:(BOOL)selected animated:(BOOL)animated

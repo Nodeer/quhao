@@ -107,6 +107,7 @@
 - (void)clickToHome:(id)sender
 {
     [self.navigationController  popViewControllerAnimated:YES];
+    
 }
 
 - (void)clickCancel:(id)sender
@@ -116,7 +117,7 @@
         NSString *response =[QuHaoUtil requestDb:url];
         if(response){
             [Helper showHUD2:@"已取消排队号码" andView:self.view andSize:100];
-            [self performSelector:@selector(clickToHome:) withObject:nil afterDelay:1.0f];
+            [self performSelector:@selector(clickToHome:) withObject:nil afterDelay:0.5f];
         }else{
             [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
         }

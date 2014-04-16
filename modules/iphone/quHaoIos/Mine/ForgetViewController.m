@@ -78,8 +78,8 @@
         [alert show];
         return;
     }
-    if(self.passField.text.length<6||self.passField.text.length>14){
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"密码必须在6到14个字符" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+    if(self.passField.text.length<6||self.passField.text.length>16){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"密码必须在6到16个字符" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
         [alert show];
         return;
     }

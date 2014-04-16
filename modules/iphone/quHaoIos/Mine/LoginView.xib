@@ -43,7 +43,7 @@
                     <rect key="frame" x="20" y="85" width="292" height="31"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation" secureTextEntry="YES"/>
+                    <textInputTraits key="textInputTraits" keyboardType="alphabet" secureTextEntry="YES"/>
                 </textField>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="记住我" lineBreakMode="tailTruncation" minimumFontSize="10" id="9">
                     <rect key="frame" x="21" y="124" width="56" height="21"/>

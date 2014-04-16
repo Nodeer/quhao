@@ -215,14 +215,13 @@
             UILabel *_qdLabel = [Helper getCustomLabel:@"签到" font:18 rect:CGRectMake(kDeviceWidth/3-10, 12, 60, 30)];
             if(_userInfo.isSignIn){
                 _qdLabel.textColor=[UIColor blackColor];
-                _qdLabel.font = [UIFont systemFontOfSize:18];
             }else{
                 _qdLabel.textColor=[UIColor redColor];
-                UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickUILable:)];
-                _qdLabel.userInteractionEnabled=YES;
-                _qdLabel.font = [UIFont systemFontOfSize:18];
-                [_qdLabel addGestureRecognizer:tapGesture];
             }
+            UITapGestureRecognizer *qdGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickUILable:)];
+            _qdLabel.userInteractionEnabled=YES;
+            _qdLabel.font = [UIFont systemFontOfSize:18];
+            [_qdLabel addGestureRecognizer:qdGesture];
             [cell.contentView addSubview:_qdLabel];
             
             UILabel *_qdValueLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%d",_userInfo.signIn] font:18 rect:CGRectMake(_qdLabel.frame.origin.x+10, _qdLabel.frame.size.height+8, 60, 30)];
@@ -289,7 +288,9 @@
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     int row = [indexPath row];
-    if (row ==3) {
+    if (row ==0) {
+        [self pushMineInfo];
+    }else if (row ==3) {
         [self pushHistoryMerchart];
     }else if(row==2){
         [self pushCurrentMerchart];
@@ -303,13 +304,17 @@
 {
     UITapGestureRecognizer *tap = (UITapGestureRecognizer*)sender;
     UILabel *la=(UILabel *)tap.view;
-    la.userInteractionEnabled = NO;
     if ([Helper isCookie] == NO) {
         UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"请登录后查看信息" delegate:self cancelButtonTitle:@"返回" destructiveButtonTitle:nil otherButtonTitles:@"登录", nil];
         [sheet showInView:[UIApplication sharedApplication].keyWindow];
-        
         return;
     }
+    if(_userInfo.isSignIn){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"今日已签过，明天再来签到吧" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+        [alert show];
+        return;
+    }
+    la.userInteractionEnabled = NO;
     if([Helper isConnectionAvailable]){
         NSString *urlStr=[NSString stringWithFormat:@"%@%@?accountId=%@",IP,signIn_url,_userInfo.accountId];
         NSString *response =[QuHaoUtil requestDb:urlStr];
@@ -369,7 +374,16 @@
     history.title = @"历史取号情况";
     history.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:history animated:YES];
-    
+}
+
+- (void)pushMineInfo
+{
+    MineInfoViewController *info = [[MineInfoViewController alloc] init];
+    info.name =_userInfo.username;
+    info.jifen = _userInfo.jifen;
+    info.accountId = _userInfo.accountId;
+    info.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:info animated:YES];
 }
 
 //点击当前取号
