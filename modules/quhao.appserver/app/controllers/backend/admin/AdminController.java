@@ -182,6 +182,9 @@ public class AdminController extends BaseController {
 	 */
 	public static void enableTop(String mid, String starttime, String endtime){
 		Merchant m = Merchant.findByMid(mid);
+		if(m == null){
+			renderJSON("没有找到对应的商家ID");
+		}
 		if(!m.enable){
 			renderJSON(false);
 		}

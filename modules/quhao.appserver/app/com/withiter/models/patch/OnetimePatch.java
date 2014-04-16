@@ -14,7 +14,10 @@ public abstract class OnetimePatch extends BaseModel {
 	public static void registerAllOnetimePatch() {
 		for (Class c : Play.classloader.getAllClasses()) {
 			if (OnetimePatch.class.equals(c.getSuperclass())) {
+				Logger.info("the class %s will be registed ", c.getSuperclass());
 				register(c);
+			} else {
+//				Logger.info("the class %s already be patched ", c.getSuperclass());
 			}
 		}
 	}

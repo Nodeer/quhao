@@ -7,20 +7,29 @@
 <script language="javascript" src="/public/javascripts/libs/jquery-1.7.js"></script>
 <script language="javascript">
 var mapObj;
-var marker = new Array();
-var windowsArr = new Array();
 var page = 1;
+
+// 循环distincts的下标
+var index = 0;	
 var MSearch;
 //中心点坐标
 var cpoint = new AMap.LngLat(121.472644, 31.231706);
+var distincts = [[121.223543, 31.03047],[121.113021, 31.151209],[121.567706, 31.245944],[121.526372, 31.287991],[121.567706, 31.245944],[121.489934, 31.398896],[121.397516, 31.626946],[121.390478, 31.205262],[121.458472, 30.912345],[121.378947, 31.138349],[121.448224, 31.229003],[121.43752, 31.179973],[121.490317, 31.222771],[121.330736, 30.724697],[121.250333, 31.383524],[121.490317, 31.222771],[121.392499, 31.241701],[121.491832, 31.26097],[121.465689, 31.25318]];
+
 function mapInit() {
     //加载地图
     mapObj = new AMap.Map("iCenter");
     
 }
 //地点查询函数
-function placeSearch(page) {
-   
+function placeSearch(page,distinct) {
+	if(distinct != null){
+		console.log(distinct[0]);
+	    console.log(distinct[1]);
+	   
+	    cpoint = new AMap.LngLat(distinct[0],distinct[1]);
+		
+	}
     //加载服务插件，实例化地点查询类  
     mapObj.plugin(["AMap.PlaceSearch"], function() {
         MSearch = new AMap.PlaceSearch({ 
@@ -32,7 +41,6 @@ function placeSearch(page) {
         AMap.event.addListener(MSearch, "complete", placeSearch_CallBack); 
         AMap.event.addListener(MSearch, "error", placeSearch_CallBack_Error); 
        MSearch.searchNearBy("餐饮", cpoint, 50000); 
-       //MSearch.search('餐饮'); 
     });
 }
 
@@ -51,14 +59,25 @@ function placeSearch_CallBack(data) {
     	console.log("current page's poi : " + data.poiList.pois.length);
 	    for (var i = 0; i < data.poiList.pois.length; i++) {
 	        resultStr = "citycode:021|"+"poiid:"+poiArr[i].id+"|name:"+poiArr[i].name+"|address:"+poiArr[i].address+"|location"+poiArr[i].location+"|tel:"+poiArr[i].tel+"type:"+poiArr[i].type+"</br>"
-	        console.log(resultStr);
 	        $("#result").append(resultStr);
 	    }
 	    page++;
 	    placeSearch(page);
     } else {
-    	$("#tip").html("爬取结束");
+    	$("#tip").append("爬取结束&nbsp;&nbsp;&nbsp;&nbsp;");
+    	if(index < distincts.length){
+    		page = 1;
+    		placeSearch(page,distincts[index]);
+    		index++;
+    		console.log("第"+index+"区");
+    	}
     }
+}
+
+function startplaceSearch(){
+	placeSearch(1,distincts[0]);
+	index++;
+	console.log("第"+index+"区");
 }
 
 </script>
@@ -66,7 +85,7 @@ function placeSearch_CallBack(data) {
 <body onload="mapInit();">  
     <div id="iCenter" style="display: none;"></div>
     <div class="">
-        上海所有商家<input type="button" value="查询" onclick="placeSearch(1)"/><br />
+        上海所有商家<input type="button" value="查询" onclick="startplaceSearch();"/><br />
         <div id="tip"></div>
         <div id="result"> </div>
     </div>        

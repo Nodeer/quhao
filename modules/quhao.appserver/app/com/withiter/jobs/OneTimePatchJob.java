@@ -3,6 +3,8 @@ package com.withiter.jobs;
 import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 
+import com.withiter.models.patch.OnetimePatch;
+
 @OnApplicationStart
 public class OneTimePatchJob extends Job {
 
@@ -60,8 +62,8 @@ public class OneTimePatchJob extends Job {
 //			Logger.error(e, "Init MongoDB Error");
 //		}
 //
-//		OnetimePatch.registerAllOnetimePatch();
-//		OnetimePatch.executeAll();
+		OnetimePatch.registerAllOnetimePatch();
+		OnetimePatch.executeAll();
 	}
 	
 }
