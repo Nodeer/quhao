@@ -198,15 +198,14 @@
             [self.egoImgView addGestureRecognizer:singleTap];
         
             
-            UILabel *_numberLabel = [Helper getCustomLabel:@"您还没有登录哦" font:18 rect:CGRectMake(egoImgView.frame.origin.x+egoImgView.frame.size.width+15,20, 220, 35)];
-            if ([Helper isCookie] == NO){
-                _numberLabel.text=@"您还没有登录哦";
+            UILabel *_numberLabel = [Helper getCustomLabel:@"您还没登录,马上登录" font:18 rect:CGRectMake(egoImgView.frame.origin.x+egoImgView.frame.size.width+15,20, 220, 35)];
+            _numberLabel.font = [UIFont systemFontOfSize:18];
+            [cell.contentView addSubview:_numberLabel];
+            if ([Helper isCookie] == NO || _userInfo == nil){
+                _numberLabel.text=@"您还没登录,马上登录";
             }else{
                 _numberLabel.text = _userInfo.username;
             }
-            _numberLabel.font = [UIFont systemFontOfSize:18];
-            [cell.contentView addSubview:_numberLabel];
-            
             UILabel *_jfLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@ %d",@"剩余积分 ",_userInfo.jifen] font:18 rect:CGRectMake(_numberLabel.frame.origin.x, _numberLabel.frame.origin.y+_numberLabel.frame.size.height+3, 190, 35)];
             _jfLabel.font = [UIFont systemFontOfSize:18];
             [cell.contentView addSubview:_jfLabel];
