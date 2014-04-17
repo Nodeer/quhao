@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<title>中心点坐标周边查询</title>
+<title>上海所有商家查询</title>
 <script language="javascript" src="http://webapi.amap.com/maps?v=1.2&key=60d9c5881dbe8dddd3de33aaacac0cbe"></script>
 <script language="javascript" src="/public/javascripts/libs/jquery-1.7.js"></script>
 <script language="javascript">
@@ -58,7 +58,7 @@ function placeSearch_CallBack(data) {
     	console.log("current page : " + page);
     	console.log("current page's poi : " + data.poiList.pois.length);
 	    for (var i = 0; i < data.poiList.pois.length; i++) {
-	        resultStr = "citycode:021|"+"poiid:"+poiArr[i].id+"|name:"+poiArr[i].name+"|address:"+poiArr[i].address+"|location"+poiArr[i].location+"|tel:"+poiArr[i].tel+"type:"+poiArr[i].type+"</br>"
+	        resultStr = "citycode:021|"+"poiid:"+poiArr[i].id+"|name:"+poiArr[i].name+"|address:"+poiArr[i].address+"|location:"+poiArr[i].location+"|tel:"+poiArr[i].tel+"|type:"+poiArr[i].type+"</br>"
 	        $("#result").append(resultStr);
 	    }
 	    page++;

@@ -15,14 +15,13 @@ import com.withiter.models.merchant.Merchant;
 import controllers.Patches;
 
 @Entity("OnetimePatch")
-public class ImportShanghaiAmapDatas extends OnetimePatch {
+public class ImportGuangzhouAmapDatas extends OnetimePatch {
 
 	private static final String MERCHANT_TXT_FOLDER = Play.configuration
 			.getProperty("merchants.path");
 
 	@Override
 	public void run() throws Exception {
-		Logger.info("start to import merchants.");
 		long start = System.currentTimeMillis();
 		String dir = MERCHANT_TXT_FOLDER;
 		File f = new File(dir);
@@ -30,7 +29,7 @@ public class ImportShanghaiAmapDatas extends OnetimePatch {
 			File[] files = f.listFiles();
 			for (int i = 0; i < files.length; i++) {
 				
-				if(!files[i].getName().contains("021")){
+				if(!files[i].getName().contains("020")){
 					continue;
 				}
 				
@@ -39,9 +38,9 @@ public class ImportShanghaiAmapDatas extends OnetimePatch {
 				Logger.info("End to import from file %s", files[i].getName());
 			}
 		}
-		Logger.info("Import merchants finished, eslaped time is %s ms.", (System.currentTimeMillis() - start));
+		Logger.info("Import merchants finished, escaped time is %s ms.", (System.currentTimeMillis() - start));
 		MorphiaQuery q = Merchant.q();
-		q.filter("cityCode", "021");
+		q.filter("cityCode", "020");
 		Logger.info("%s merchants imported.", q.count());
 	}
 

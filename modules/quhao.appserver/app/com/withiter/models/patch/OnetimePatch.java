@@ -9,15 +9,14 @@ import play.modules.morphia.Model.MorphiaQuery;
 import com.withiter.models.BaseModel;
 
 public abstract class OnetimePatch extends BaseModel {
+	
+	public String patchName = "";
 	public boolean isExecuted;
 
 	public static void registerAllOnetimePatch() {
 		for (Class c : Play.classloader.getAllClasses()) {
 			if (OnetimePatch.class.equals(c.getSuperclass())) {
-				Logger.info("the class %s will be registed ", c.getSuperclass());
 				register(c);
-			} else {
-//				Logger.info("the class %s already be patched ", c.getSuperclass());
 			}
 		}
 	}
@@ -25,8 +24,10 @@ public abstract class OnetimePatch extends BaseModel {
 	public static void register(Class c) {
 		try {
 			MorphiaQuery q = (MorphiaQuery) c.getMethod("q").invoke(null);
+			q.filter("patchName", c.getName());
 			if (q.first() == null) {
 				OnetimePatch patch = (OnetimePatch) c.newInstance();
+				patch.patchName = c.getName();
 				patch.save();
 				Logger.info("Registed patch job %s", c);
 			}
@@ -41,7 +42,7 @@ public abstract class OnetimePatch extends BaseModel {
 			run();
 			isExecuted = true;
 			save();
-			Logger.info("Finished patch job %", this.getClass());
+			Logger.info("Finished patch job %s", this.getClass());
 		} catch (Exception e) {
 			Logger.error(e, "Failed patch job %s", this.getClass());
 		}
@@ -50,10 +51,10 @@ public abstract class OnetimePatch extends BaseModel {
 	public abstract void run() throws Exception;
 
 	public static void executeAll() {
-		List<OnetimePatch> patches = OnetimePatch.filter("isExecuted", false)
-				.asList();
+		List<OnetimePatch> patches = OnetimePatch.filter("isExecuted", false).asList();
 		for (OnetimePatch patch : patches) {
 			patch.execute();
 		}
 	}
+	
 }
