@@ -23,12 +23,11 @@
 
 -(void)loadNavigationItem
 {
-    _cityButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _cityButton.frame = CGRectMake( 0, 0, 40, 25 );
-    [_cityButton setTitle: @"上海" forState: UIControlStateNormal];
+    _cityButton = [[UIButton alloc] initWithFrame:CGRectMake( 0, 0, 40, 25 )];
     _cityButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0f];
-    //[_cityButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_cityButton.titleLabel setTextAlignment:NSTextAlignmentRight];
+    [_cityButton setTitle: @"上海" forState: UIControlStateNormal];
+    [_cityButton addTarget:self action:@selector(openCitySearchView:) forControlEvents:UIControlEventTouchUpInside];
+    _cityButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     [_cityButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
     UIBarButtonItem *cityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_cityButton];
     _cityCode = @"021";
@@ -234,9 +233,9 @@
                 c = [[Category alloc] init];
                 c.cateType = [[jsonObjects objectAtIndex:i] objectForKey:@"cateType"];
                 c.cateName = [[jsonObjects objectAtIndex:i] objectForKey:@"cateName"];
-                c.count = [[jsonObjects objectAtIndex:i] objectForKey:@"count"];
-                NSString *lableText = [[[c.cateName stringByAppendingString:@"("] stringByAppendingString:[c.count description]] stringByAppendingString:@")"];
-                c.text = lableText;
+                //c.count = [[jsonObjects objectAtIndex:i] objectForKey:@"count"];
+                //NSString *lableText = [[[c.cateName stringByAppendingString:@"("] stringByAppendingString:[c.count description]] stringByAppendingString:@")"];
+                c.text = c.cateName;
                 [_categoryArray insertObject:c atIndex:i];
                 
                 i++;
@@ -246,7 +245,7 @@
 }
 
 -(void)menuSetOrReset {
-    [self resetWithColumns:3 marginSize:10 gutterSize:40 rowHeight:17];
+    [self resetWithColumns:3 marginSize:10 gutterSize:35 rowHeight:15];
     [self populateMenu];
 }
 
@@ -254,7 +253,7 @@
     UIControl *menuItem = nil;
     for (Category *cate in _categoryArray) {
         if(menuItem == nil){
-            UILabel *cateLabel = [[UICustomLabel alloc] initWithFrame:CGRectMake(5,220, 80, 20)];
+            UILabel *cateLabel = [[UICustomLabel alloc] initWithFrame:CGRectMake(5,210, 80, 20)];
             cateLabel.text = @"分类";
             cateLabel.font = [UIFont systemFontOfSize:14];
             cateLabel.textColor = [UIColor redColor];
@@ -318,14 +317,14 @@
     CGRect parentFrame = item.frame;
     CGFloat margin = 0.0;
     
-    CGRect titleFrame = CGRectMake(margin,0, parentFrame.size.width, 17);
+    CGRect titleFrame = CGRectMake(margin,0, parentFrame.size.width, 15);
     UICustomLabel *titleLabel = [[UICustomLabel alloc] initWithFrame:titleFrame];
     titleLabel.text = cate.text;
     titleLabel.cateType = cate.cateType;
     titleLabel.textAlignment = NSTextAlignmentLeft;
     titleLabel.backgroundColor = [UIColor whiteColor];
-    titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:13];
-    titleLabel.adjustsFontSizeToFitWidth = YES;
+    titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:14];
+    //titleLabel.adjustsFontSizeToFitWidth = YES;
     titleLabel.contentMode = UIViewContentModeScaleAspectFit;
     titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
     UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickCateLable:)];

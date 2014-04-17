@@ -6,16 +6,10 @@
 //  Copyright (c) 2013年 sam. All rights reserved.
 //
 
-#import "HomeViewController.h"
-#import "HomeCell.h"
-#import "ASIHTTPRequest.h"
-#import "SBJson.h"
-#import "MerchartDetail.h"
-#import "SearchView.h"
-#import "QuHaoUtil.h"
+
+#import "ListViewController.h"
 
 @implementation ListViewController
-
 
 -(void)viewDidLoad
 {
@@ -46,7 +40,7 @@
         //如果设置此属性则当前的view置于后台
         HUD.dimBackground = YES;
         //设置对话框文字
-        HUD.labelText = @"正在加载...";
+        HUD.labelText = @"正在加载";
         //显示对话框
         [HUD showAnimated:YES whileExecutingBlock:^{
             //得到初始化页面的时间 下拉刷新取的是该时间以后的
@@ -132,6 +126,7 @@
     _footer = footer;
 }
 
+
 - (void)doneWithView:(MJRefreshBaseView *)refreshView
 {
     // 刷新表格
@@ -192,12 +187,13 @@
 //弹出商家详细页面
 - (void)pushMerchartDetail:(MerchartModel *)model andNavController:(UINavigationController *)navController andIsNextPage:(BOOL)isNextPage
 {
-    MerchartDetail *mDetail = [[MerchartDetail alloc] init];
-    mDetail.merchartID = model.id;
-    mDetail.isNextPage = isNextPage;
-    mDetail.tabBarItem.image = [UIImage imageNamed:@"detail"];
+    if(_mDetail == nil){
+        _mDetail = [[MerchartDetail alloc] init];
+    }
+    _mDetail.merchartID = model.id;
+    _mDetail.isNextPage = isNextPage;
     
-    [navController pushViewController:mDetail animated:YES];
+    [navController pushViewController:_mDetail animated:YES];
 }
 
 

@@ -13,9 +13,8 @@
 - (id)initWithFrame:(CGRect)aRect {
     if ((self = [super initWithFrame:aRect])){
         self.opaque = NO;
-        CGSize size=CGSizeMake(120,38);
-        [self setBackgroundImage:[Helper reSizeImage:@"tool.png" toSize:size] forToolbarPosition:0 barMetrics:0];
-
+        CGSize size=CGSizeMake(110,30);
+        [self setBackgroundImage:[Helper reSizeImage:@"dl.png" toSize:size] forToolbarPosition:0 barMetrics:0];
         self.clearsContextBeforeDrawing = YES;
     }
     return self;

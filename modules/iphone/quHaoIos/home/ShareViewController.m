@@ -28,19 +28,19 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
     
-    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 7, 50, 35 )];
+    self.view.backgroundColor = [UIColor whiteColor];
+    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 5, 50, 30 )];
     [backButton addTarget:self action:@selector(clickToHome:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
-    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 分 享" rect:CGRectMake( 0, 7, 50, 30 )];
+    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 分 享" rect:CGRectMake( 0, 0, 40, 25 )];
     [btnButton addTarget:self action:@selector(shareWb:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:btnButton];
     self.navigationItem.rightBarButtonItem = buttonItem;
     
-    self.textView = [[UITextView alloc] initWithFrame:CGRectMake(5, 5, 310, 120)];
+    self.textView = [[UITextView alloc] initWithFrame:CGRectMake(5, 10, kDeviceWidth-10, 150)];
     self.textView.layer.borderColor = UIColor.grayColor.CGColor;
     self.textView.layer.borderWidth = 1;
     self.textView.layer.cornerRadius = 6.0;
@@ -49,7 +49,7 @@
     self.textView.font = [UIFont fontWithName:@"Arial" size:16.0];//设置字体名字和字体大小
     self.textView.delegate = self;//设置它的委托方法
     self.textView.backgroundColor = [UIColor whiteColor];//设置它的背景颜色
-    self.textView.text = @"##取号##上海##发现这个软件不错哦!餐厅直接拿号不用排队,开去看看吧。www.quhaola.com";//设置它显示的内容
+    self.textView.text = @"##取号##上海##发现这个软件不错哦!餐厅直接拿号不用排队,快去看看吧。www.quhao.la";//设置它显示的内容
     self.textView.returnKeyType = UIReturnKeyDefault;//返回键的类型
     self.textView.keyboardType = UIKeyboardTypeDefault;//键盘类型
     self.textView.scrollEnabled = YES;//是否可以拖动

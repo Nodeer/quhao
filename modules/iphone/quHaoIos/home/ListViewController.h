@@ -10,6 +10,9 @@
 #import "MerchartModel.h"
 #import "MJRefreshFooterView.h"
 #import "MJRefreshHeaderView.h"
+#import "MerchartDetail.h"
+#import "QuHaoUtil.h"
+#import "SearchView.h"
 @interface ListViewController : UITableViewController
 {
     @private
@@ -27,6 +30,7 @@
     //判断是上拉还是下拉 1 上拉 2下拉
     int _whichView;
     NSString *_cityCode;
+    MerchartDetail *_mDetail;
 }
 
 @property (strong,nonatomic) NSString * currentDateStr;
