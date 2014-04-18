@@ -1,7 +1,9 @@
 package com.withiter.models.merchant;
 
-import play.modules.morphia.Model.MorphiaQuery;
+import com.google.code.morphia.annotations.Entity;
 
+import play.modules.morphia.Model.MorphiaQuery;
+@Entity
 public class GaodeToMerchant extends GaodeToMerchantEntityDef {
 
 	/**
