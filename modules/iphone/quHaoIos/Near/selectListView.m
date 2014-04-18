@@ -20,7 +20,7 @@
 
 - (id)initWithOption:(NSArray *)aOptions
 {
-    CGRect rect = CGRectMake(0, 89,kDeviceWidth,kDeviceHeight-89);
+    CGRect rect = CGRectMake(0, 25,kDeviceWidth,kDeviceHeight-89);
     if (self = [super initWithFrame:rect])
     {
         //self.hidden = YES;

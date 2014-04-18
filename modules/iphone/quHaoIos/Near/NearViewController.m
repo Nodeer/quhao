@@ -73,20 +73,19 @@
     _button.frame = CGRectMake(0, 0, kDeviceWidth, 25);
     [_button setBackgroundImage:backImage forState:UIControlStateNormal];
     _button.titleLabel.font = [UIFont boldSystemFontOfSize:13.0f];
-    _button.contentEdgeInsets = UIEdgeInsetsMake(0,10, 0, 0);
     [_button setTitle:@"3千米" forState:UIControlStateNormal];
     [_button addTarget:self action:@selector(changeDis:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_button];
 
     _isLoading = YES;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshed:) name:Notification_TabClick object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshedNear:) name:Notification_TabClick object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [self checkDw];
     _reloading = NO;
-    _isLoading = NO;
+    _isLoading = YES;
     _pageIndex = 1;
 }
 
@@ -154,7 +153,7 @@ updatingLocation:(BOOL)updatingLocation
     _HUD.delegate = self;
 }
 
-- (void)refreshed:(NSNotification *)notification
+- (void)refreshedNear:(NSNotification *)notification
 {
     if (notification.object) {
         if ([(NSString *)notification.object isEqualToString:@"1"]) {
@@ -324,8 +323,9 @@ updatingLocation:(BOOL)updatingLocation
         }
         model.pguid=obj.uid;
         model.imgUrl=@"";
-        NSString * result=[self getMerchart:obj.uid ];
-        model.id=result;
+        MerchartModel * temp=[self getMerchart:obj.uid ];
+        model.id=temp.id;
+        model.enable=temp.enable;
         [_merchartsArray addObject:model];
         
     }];
@@ -347,12 +347,19 @@ updatingLocation:(BOOL)updatingLocation
     [self poiRequestCoordinate:self.centerPointAnnotation.coordinate];
 }
 
--(NSString *)getMerchart:(NSString *)poiId
+-(MerchartModel *)getMerchart:(NSString *)poiId
 {
     NSString *url = [NSString stringWithFormat:@"%@%@%@",IP,queryMerchantByPoiId,poiId];
     NSString *response =[QuHaoUtil requestDb:url];
-    
-    return response;
+    MerchartModel *model = [[MerchartModel alloc]init];
+    if(![response isEqualToString:@""]){
+        NSDictionary *jsonObjects=[QuHaoUtil analyseDataToDic:response];
+        if(jsonObjects!=nil){
+            model.enable = [jsonObjects  objectForKey:@"enable"];
+            model.id = [jsonObjects objectForKey:@"id"];
+        }
+    }
+    return model;
 }
 
 //弹出商家详细页面
@@ -411,7 +418,7 @@ updatingLocation:(BOOL)updatingLocation
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     UITouch *touch = [touches anyObject];
     CGPoint point = [touch  locationInView:self.view];
-    if (point.y >284) {
+    if (point.y >264) {
         [_selectList fadeOut];
         _showList = 0;
     }

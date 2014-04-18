@@ -48,10 +48,7 @@
     popView = [[UITableView alloc] initWithFrame:CGRectMake(110, 55, 100 ,120)];
     popView.delegate = self;
     popView.dataSource = self;
-    popView.backgroundColor = [ UIColor colorWithRed: 0.907
-                                               green: 0.907
-                                                blue: 0.907
-                                               alpha: 1.0
+    popView.backgroundColor = [ UIColor whiteColor
                                ];
     popView.separatorColor = [UIColor colorWithWhite:1 alpha:.2];
 #if IOS7_SDK_AVAILABLE
@@ -292,7 +289,10 @@
     return cell;
 }
 
-
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    cell.backgroundColor = [UIColor whiteColor];
+}
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {

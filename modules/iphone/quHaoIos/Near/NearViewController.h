@@ -40,7 +40,7 @@
 }
 @property (strong, nonatomic)  UITableView *tableView;
 
--(NSString *)getMerchart:(NSString *)poiId;
+-(MerchartModel *)getMerchart:(NSString *)poiId;
 //弹出商家详细页面
 - (void)pushMerchartDetail:(MerchartModel *)model andNavController:(UINavigationController *)navController;
 @end
