@@ -106,8 +106,13 @@
 
 -(void)onLocationLable:(UITapGestureRecognizer *)sender
 {
-    [delegate citySelectionUpdate:loctionCity withCode:loctionCityCode];
-    [self performSelector:@selector(removeView)];
+    if(nil != loctionCityCode &&[loctionCityCode isEqualToString:@""]){
+        [delegate citySelectionUpdate:loctionCity withCode:loctionCityCode];
+        [self performSelector:@selector(removeView)];
+    }else{
+        UIAlertView *myalert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"暂不支持该城市,清选择其他城市" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil,nil];
+		[myalert show];
+    }
 }
 
 - (void)reLoadLoction:(id)sender

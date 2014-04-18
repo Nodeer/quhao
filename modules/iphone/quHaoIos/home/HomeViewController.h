@@ -16,10 +16,14 @@
 #import "UICustomLabel.h"
 #import "SearchView.h"
 #import "CityViewController.h"
-@interface HomeViewController : UIViewController<CityViewDelegate>
+#import "EScrollerView.h"
+
+@interface HomeViewController : UIViewController<CityViewDelegate,EScrollerViewDelegate,UICollectionViewDelegate, UICollectionViewDataSource>
 {
     NSMutableArray *_categoryArray;
-    NSMutableArray *_topArray;
+    NSMutableArray *_topUrlArray;
+    NSMutableArray *_topIdArray;
+    NSArray *_middleBtn;
     int _columns;
     int _columnInc;
     CGFloat _marginSize;
@@ -40,19 +44,17 @@
 //@property (nonatomic, strong) iCarousel *carousel;
 -(void)requestTopData;
 -(void)requestMenuData;
--(UIScrollView *) setInitWithColumns:(int)col marginSize:(CGFloat)margin gutterSize:(CGFloat)gutter rowHeight:(CGFloat)height;
 //创建catogory
 -(UIControl *) createMenuItem:(Category *)cate;
-//创建top商家
--(UIControl *) createTopItem :(MerchartModel *)model;
 -(void)menuSetOrReset;
+-(void)topSetOrReset;
 -(void)populateMenu;
 -(void)loadNavigationItem;
 -(void)clickSearch:(id)sender;
 -(void)onClickUIImage:(UITapGestureRecognizer *)sender;
 -(void)onClickCateLable:(UITapGestureRecognizer *)sender;
 //点击top商家进入详细页面
--(void)onClickTopImage:(UITapGestureRecognizer *)sender;
+-(void)onClickTopImage:(NSString *)mid;
 -(void)pushMerchartDetail:(NSString *)cateType andNavController:(UINavigationController *)navController;
 
 @end

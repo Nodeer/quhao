@@ -8,20 +8,21 @@
 #warning "This project uses features only available in iOS SDK 3.0 and later."
 #endif
 
-#define IP http://192.168.2.102:9081
+#define IP @"http://www.quhao.la"
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 70000
 #define IOS7_SDK_AVAILABLE 1
 #else
 #define IOS7_SDK_AVAILABLE 0
 #endif
 
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
 #endif
 #define Notification_TabClick @"Notification_TabClick"
-#define UIColorFromRGB [UIColor colorWithRed:145.0/255.0 green:211.0/255.0 blue:245.0/255.0 alpha:1.0]
 
+#define topSize 6
 #define kDeviceHeight     [UIScreen mainScreen].bounds.size.height
 #define kDeviceWidth     [UIScreen mainScreen].bounds.size.width
 #define CELL_CONTENT_MARGIN 10.0f
@@ -61,6 +62,9 @@
 #define delCredit @"/delCredit?id="
 #define pStatus @"/pStatus?mid="
 #define upload_pic @"/updateUserImage"
+#define updateName_url @"/updateUserName"
+#define updatePassword_url @"/updatePassword"
+
 #define AppID @"1.0.0"
 
 #define AppVersion @"1.0.0"

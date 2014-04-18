@@ -69,9 +69,7 @@
         //_menuView.contentSize = _menuView.frame.size;
         _menuView.showsVerticalScrollIndicator = NO;
     }
-    _menuView.frame = CGRectMake(0, 0, 320, 480);
     
-    [_menuView setContentSize:CGSizeMake(320, 1000)];
     self.view.backgroundColor=[UIColor whiteColor];
     //适配iOS7uinavigationbar遮挡tableView的问题
 #if IOS7_SDK_AVAILABLE
@@ -81,7 +79,8 @@
         self.tabBarController.tabBar.translucent = NO;
         self.extendedLayoutIncludesOpaqueBars = NO;
 #endif
-    _topArray= [[NSMutableArray alloc] init];
+    _topIdArray= [[NSMutableArray alloc] init];
+    _topUrlArray= [[NSMutableArray alloc] init];
     _categoryArray = [[NSMutableArray alloc] init];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshed:) name:Notification_TabClick object:nil];
 
@@ -102,6 +101,7 @@
     });
     dispatch_group_notify(group, dispatch_get_main_queue(), ^{
         [self topSetOrReset];
+        [self createMiddleView];
         [self menuSetOrReset];
         [self.view bringSubviewToFront:hud];
         [hud hide:YES];
@@ -139,8 +139,9 @@
 {
     if([Helper isConnectionAvailable]){
         [_categoryArray removeAllObjects];
-        [_topArray removeAllObjects];
-        
+        [_topIdArray removeAllObjects];
+        [_topUrlArray removeAllObjects];
+
         MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         hud.labelText = NSLocalizedString(@"正在刷新", nil);
         dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -157,6 +158,7 @@
                 [view1 removeFromSuperview];
             }
             [self topSetOrReset];
+            [self createMiddleView];
             [self menuSetOrReset];
             [self.view bringSubviewToFront:hud];
             [hud hide:YES];
@@ -167,10 +169,46 @@
         [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
     }
 }
+
+-(void)createMiddleView
+{
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    layout.itemSize = CGSizeMake(90, 40);
+    layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
+    layout.minimumInteritemSpacing = 5;
+    
+    UICollectionView *myCollectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(10, 125, kDeviceWidth-20, 45) collectionViewLayout:layout];
+    [myCollectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"collection"];
+    myCollectionView.backgroundColor=[UIColor whiteColor];
+    myCollectionView.delegate=self;
+    myCollectionView.dataSource=self;
+    [self.view addSubview:myCollectionView];
+    _middleBtn = @[@"middle1",@"middle1",@"middle1"];
+    
+}
+
+#pragma mark - collection数据源代理
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return _middleBtn.count;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"collection" forIndexPath:indexPath];
+    cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:_middleBtn[indexPath.row]]];
+    return cell;
+}
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+}
+
 -(void)requestTopData
 {
     //处理topMerchant
-    NSString *url = [NSString stringWithFormat:@"%@%@%d&cityCode=%@",IP,getTopMerchants,4,_cityCode];
+    NSString *url = [NSString stringWithFormat:@"%@%@%d&cityCode=%@",IP,getTopMerchants,topSize,_cityCode];
     NSString *response1 =[QuHaoUtil requestDb:url];
     if([response1 isEqualToString:@""]){
         //异常处理
@@ -182,33 +220,15 @@
             [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
             return;
         }else{
-            MerchartModel *model = nil;
             for(int i=0; i < [jsonObjects count];i++ ){
-                model = [[MerchartModel alloc]init];
-                model.name = [[jsonObjects objectAtIndex:i] objectForKey:@"name"];
-                model.id = [[jsonObjects objectAtIndex:i] objectForKey:@"mid"];
-                model.imgUrl = [[jsonObjects objectAtIndex:i] objectForKey:@"merchantImage"];
-                [_topArray addObject:model];
+                [_topUrlArray addObject:[[jsonObjects objectAtIndex:i] objectForKey:@"merchantImage"]];
+                [_topIdArray addObject:[[jsonObjects objectAtIndex:i] objectForKey:@"mid"]];
             }
-            for(int j=0; j<4-[jsonObjects count]; j++){
-                model = [[MerchartModel alloc]init];
-                model.imgUrl = @"";
-                [_topArray addObject:model];
-            }
+//            for(int j=0; j<topSize-[jsonObjects count]; j++){
+//                [_topIdArray addObject:@""];
+//                [_topUrlArray addObject:@""];
+//            }
         }
-    }
-}
-
--(void)topSetOrReset {
-    _menuView = [self setInitWithColumns:2 marginSize:10 gutterSize:20 rowHeight:85];
-    [self populateTop];
-}
-
--(void)populateTop {
-    UIControl *topItem = nil;
-    for (MerchartModel *m in _topArray) {
-        topItem = [self createTopItem:m];
-        [self.view addSubview:topItem];
     }
 }
 
@@ -253,8 +273,8 @@
     UIControl *menuItem = nil;
     for (Category *cate in _categoryArray) {
         if(menuItem == nil){
-            UILabel *cateLabel = [[UICustomLabel alloc] initWithFrame:CGRectMake(5,210, 80, 20)];
-            cateLabel.text = @"分类";
+            UILabel *cateLabel = [[UICustomLabel alloc] initWithFrame:CGRectMake(5,180, 80, 20)];
+            cateLabel.text = @"美食分类";
             cateLabel.font = [UIFont systemFontOfSize:14];
             cateLabel.textColor = [UIColor redColor];
             [self.view addSubview:cateLabel];
@@ -272,20 +292,6 @@
     [self.navigationController pushViewController:sView animated:YES];
 }
 
--(UIScrollView *)setInitWithColumns:(int)col marginSize:(CGFloat)margin gutterSize:(CGFloat)gutter rowHeight:(CGFloat)height
-{
-    if (_menuView) {
-        _columns = col;
-        _marginSize = margin;
-        _gutterSize = gutter;
-        _rowHeight = height;
-        _xOffset = gutter;
-        _yOffset = gutter;
-        _columnInc = 0;
-    }
-    return _menuView;
-}
-
 -(void)resetWithColumns:(int)col marginSize:(CGFloat)margin gutterSize:(CGFloat)gutter rowHeight:(CGFloat)height{  
     if (_menuView) {
         _columns = col;
@@ -293,7 +299,7 @@
         _gutterSize = gutter;
         _rowHeight = height;
         _xOffset = gutter;
-        _yOffset = gutter+200;
+        _yOffset = gutter+175;
         _columnInc = 0;
     }
 }
@@ -335,49 +341,18 @@
     return item;
 }
 
--(UIControl *) createTopItem :(MerchartModel *)model{
-    CGFloat adjustedMargin = (_marginSize * (_columns - 1) / _columns);
-    CGFloat menuWidth = (_menuView.frame.size.width - (_gutterSize * 2));
-    CGFloat itemWidth = (menuWidth / _columns) - adjustedMargin;
-    CGRect itemFrame = CGRectMake(_xOffset, _yOffset, itemWidth, _rowHeight);
-    UIControl *item = [[UIControl alloc] initWithFrame:itemFrame];
-    _columnInc++;
-    if (_columnInc >= _columns) {
-        _columnInc = 0;
-        _yOffset = _yOffset + _rowHeight + _marginSize;
-        _xOffset = _gutterSize;
-    } else {
-        _xOffset = _xOffset + _marginSize + itemWidth;
-        _menuView.contentSize = CGSizeMake(_menuView.contentSize.width, _yOffset + _marginSize + _rowHeight);
-    }
-    
-    //item.backgroundColor = [UIColor redColor];
-    CGRect parentFrame = item.frame;
-    CGFloat margin = 0.0;
-    
-    EGOImageView *egoImgView = [[EGOImageView alloc] initWithPlaceholderImage:[UIImage imageNamed:@"no_logo.png"]];
-    egoImgView.frame = CGRectMake(margin, 0, parentFrame.size.width, 70);
-    if (![[Helper returnUserString:@"showImage"] boolValue]||[model.imgUrl isEqualToString:@""])
-    {
-        egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
-    }
-    else
-    {
-        egoImgView.imageURL =[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,model.imgUrl]];
-    }
-    egoImgView.id=model.id;
-    egoImgView.userInteractionEnabled=YES;
-    UITapGestureRecognizer *tapGesture1=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickTopImage:)];
-    tapGesture1.numberOfTapsRequired = 1;
-    [egoImgView addGestureRecognizer:tapGesture1];
-    
-    UITapGestureRecognizer *tapGesture2=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickTopImage:)];
-    tapGesture2.numberOfTapsRequired = 2;
-    [egoImgView addGestureRecognizer:tapGesture2];
-    
-    [item addSubview:egoImgView];
-    
-    return item;
+-(void)topSetOrReset
+{
+    EScrollerView *scroller=[[EScrollerView alloc] initWithFrameRect:CGRectMake(0, 0, kDeviceWidth, 105)
+                                                          ImageArray:_topUrlArray
+                                                          TitleArray:_topIdArray];
+    scroller.delegate=self;
+    [self.view addSubview:scroller];
+}
+
+-(void)EScrollerViewDidClicked:(NSUInteger)index
+{
+    [self onClickTopImage:_topIdArray[(int)index-1]];
 }
 
 -(void)onClickUIImage:(UITapGestureRecognizer *)sender
@@ -387,18 +362,16 @@
     [self pushMerchartDetail:image.cateType andNavController:self.navigationController];
 }
 
--(void)onClickTopImage:(UITapGestureRecognizer *)sender
+-(void)onClickTopImage:(NSString *)mid
 {
-    UITapGestureRecognizer *tap = (UITapGestureRecognizer*)sender;
-    EGOImageView *image=(EGOImageView*)tap.view;
-    if(NULL == image.id){
+    if(NULL == mid || [mid isEqualToString:@""]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"推荐商家虚席以待" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
         [alert show];
         return;
     }
     
     MerchartDetail *mDetail = [[MerchartDetail alloc] init];
-    mDetail.merchartID = image.id;
+    mDetail.merchartID = mid;
     mDetail.tabBarItem.image = [UIImage imageNamed:@"detail"];
     mDetail.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:mDetail animated:YES];
@@ -444,7 +417,9 @@
 {
     _menuView = nil;
     [_categoryArray removeAllObjects];
-    [_topArray removeAllObjects];
+    [_topIdArray removeAllObjects];
+    [_topUrlArray removeAllObjects];
+
     [super viewDidUnload];
 }
 
