@@ -299,6 +299,9 @@ public class MerchantController extends BaseController {
 	 * @return json 座位号
 	 */
 	public static void getCurrentNo(String id, String seatNo) {
+		if(StringUtils.isEmpty(id) || StringUtils.isEmpty(seatNo)){
+			renderJSON("商家ID为空或者座位号为空");
+		}
 		Haoma haoma = Haoma.findByMerchantId(id);
 		// HaomaVO vo = HaomaVO.build(haoma);
 		Iterator ite = haoma.haomaMap.keySet().iterator();
