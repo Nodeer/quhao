@@ -264,11 +264,11 @@ public class MerchantController extends BaseController {
 	 *            商家id
 	 */
 	public static void queryMerchantByPoiId(String poiId) {
-		System.out.println("merchant:" + poiId);
 		Merchant m = Merchant.queryMerchantByPoiId(poiId);
 		if(m!=null)
 		{
-			renderJSON(m.id());
+			MerchantVO vo = MerchantVO.buildSimpleVo(m);
+			renderJSON(vo);
 		}
 		else
 		{

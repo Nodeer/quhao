@@ -201,4 +201,11 @@ public class MerchantVO {
 		vo.isAttention=isAttention;
 		return vo;
 	}
+	
+	public static MerchantVO buildSimpleVo(Merchant m) {
+		MerchantVO vo = new MerchantVO();
+		vo.id = m.id();
+		vo.enable = m.enable;
+		return vo;
+	}
 }
