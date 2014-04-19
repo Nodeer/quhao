@@ -120,24 +120,23 @@ $addJS("signup.js", true)
 	        <h4 class="modal-title" id="myModalLabel">商家登陆</h4>
 	      </div>
 	      <div class="modal-body">
-	      	<p id="error_tip" class="errorText" style="visibility:hidden;">请输入手机号或者邮箱</p>
+	      	<p id="error_tip" class="errorText" style="visibility:hidden;">请输登陆邮箱</p>
 		      <form class="form-horizontal" role="form" id="login_form" action="@{backend.self.AccountController.login()}" method="post">
 		      	<div class="form-group">
 				    <div class="col-sm-10">
-				      <input type="email" class="form-control" name="userName" id="userName" placeHolder="手机号/邮箱">
+				      <input type="email" class="form-control" name="userName" id="userName" placeHolder="登陆邮箱">
 				    </div>
 				  </div>
 				  <div class="form-group">
 				    <div class="col-sm-10">
-				      <input type="password" class="form-control" name="userPwd" id="userPwd" placeHolder="密码" onkeydown="Login.entered(event);"placeholder="Password">
+				      <input type="password" class="form-control" name="userPwd" id="userPwd" placeHolder="登陆密码" onkeydown="Login.entered(event);"placeholder="Password">
 				    </div>
 				  </div>
 				  <div class="form-group">
 				    <div class="col-sm-10">
 				      <div class="checkbox">
 				        <label>
-				          <input type="checkbox"> 记住我
-				          <a style="margin-left: 20px;" href="javascript: void(0);">忘记密码了?</a>
+				          <a data-toggle="modal" data-target="#resetModal" onclick="$('#loginModal').modal('hide');">忘记密码了?</a>
 				        </label>
 				      </div>
 				    </div>
@@ -147,6 +146,31 @@ $addJS("signup.js", true)
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 	        <button type="button" class="btn btn-primary" name="" onclick="Login.login();">登陆</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- Modal -->
+	<div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">找回密码</h4>
+	      </div>
+	      <div class="modal-body">
+	      	<p id="error_tip1" class="errorText" style="visibility:hidden;">请输入登陆邮箱（用户名）</p>
+		      <form class="form-horizontal" onsubmit="return false;" role="form" id="reset_form" action="@{backend.self.AccountController.forget()}" method="post">
+		      	<div class="form-group">
+				    <div class="col-sm-10">
+				      <input type="email" class="form-control" name="resetEmail" id="resetEmail" placeHolder="登陆邮箱" />
+				    </div>
+				  </div>
+		      </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-primary" name="" onclick="Login.forgetPassword();">获取密码</button>
 	      </div>
 	    </div>
 	  </div>

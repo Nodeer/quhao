@@ -70,3 +70,62 @@ Login.entered = function(e){
 		Login.login();
 	}
 }
+
+Login.forgetPassword = function(){
+	
+	if(!(Common.email($("#resetEmail").val()))){
+		$("#error_tip1").text("请输入正确的邮箱！").css("visibility", "visible");
+		return;
+	}
+	
+	$.ajax({
+			type : "POST",
+			url : "/b/self/AccountController/forget",
+			data : $("#reset_form").serialize(),
+			dataType : "json",
+			async : false,
+			success : function(data) {
+				if (data != null) {
+					$("#error_tip1").text(data.value).css("visibility", "visible");
+				}
+			},
+			error : function() {
+				$("#error_tip1").text("服务器维护，请稍后尝试。或者联系管理员admin@quhao.la").css("visibility", "visible");
+			}
+	});
+}
+
+Login.resetSubmit = function(){
+	var p = $("#password").val();
+	var pR = $("#passwordR").val();
+	if(p == null || p == ""){
+		$("#tips").html("密码不能为空").css("visibility","visible");
+		return false;
+	}
+	
+	if(p.length < 6 || p.length > 20){
+		$("#tips").html("密码长度6-20").css("visibility","visible");
+		return false;
+	}
+	if(p!=pR){
+		$("#tips").html("两次密码输入不一致，请修改").css("visibility","visible");
+		return false;
+	}
+	
+	$.ajax({
+			type : "POST",
+			url : "/b/self/AccountController/resetPassword",
+			data : $("#passwordForm").serialize(),
+			dataType : "json",
+			async : false,
+			success : function(data) {
+				if (data != null) {
+					$("#tips").html(data.value).css("visibility", "visible");
+				}
+			},
+			error : function() {
+				$("#tips").html("服务器维护，请稍后尝试。或者联系管理员admin@quhao.la").css("visibility", "visible");
+			}
+	});
+	
+}

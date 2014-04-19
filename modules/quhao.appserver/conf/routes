@@ -26,6 +26,7 @@ GET		/home								LandingController.index
 GET		/about								LandingController.about
 GET		/business							LandingController.business
 GET		/active								backend.self.AccountController.active
+GET		/reset								backend.self.AccountController.reset
 
 # Admin page
 GET		/admin								backend.admin.AdminController.index

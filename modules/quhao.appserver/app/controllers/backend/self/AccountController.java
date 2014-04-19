@@ -110,11 +110,6 @@ public class AccountController extends BaseController {
 		String uid = params.get("uid");
 		String oPwd = params.get("oPwd");
 		String nPwd = params.get("nPwd");
-		String nPwdR = params.get("nPwdR");
-		System.out.println(uid);
-		System.out.println(oPwd);
-		System.out.println(nPwd);
-		System.out.println(nPwdR);
 
 		MerchantAccount account = MerchantAccount.findById(uid);
 		CommonVO cvo = new CommonVO();
@@ -173,5 +168,94 @@ public class AccountController extends BaseController {
 		svo.errorKey = "true";
     	svo.errorText = "";
 		renderJSON(svo);
+	}
+	
+	public static void forget(){
+		String email = params.get("resetEmail");
+		CommonVO cvo = new CommonVO();
+		if(StringUtils.isEmpty(email)){
+			cvo.success = false;
+			cvo.key = "false";
+			cvo.value = "邮箱不能为空";
+			renderJSON(cvo);
+		}
+		
+		MerchantAccount ma = MerchantAccount.findByEmail(email);
+		if(ma == null){
+			cvo.success = false;
+			cvo.key = "false";
+			cvo.value = "邮箱不存在，请检查";
+			renderJSON(cvo);
+		}
+		
+		String subject = MailsController.SUBJECT_RESET_PASSWORD;
+		String hexedUid = Codec.hexSHA1(ma.id());
+		String url = Play.configuration.getProperty("application.domain")
+				+ "/reset?hid=" + hexedUid
+				+ "&oid=" + ma.id();
+		String content= "点击下面链接重置您的密码：<br/><br/>"
+				+ "<a href='"+url+"'>"+url+"</a><br/>"+"如无法点击，请将链接拷贝到浏览器地址栏中直接访问.";
+				
+		MailsController.sendTo(subject, content, ma.email);
+		
+		cvo.success = true;
+		cvo.key = "true";
+		cvo.value = "已发送邮件到此邮箱，请登陆邮箱重置密码";
+		renderJSON(cvo);
+	}
+	
+	public static void reset(){
+		String oid = params.get("oid");
+		String hid = params.get("hid");
+		String hexedUid = Codec.hexSHA1(oid);
+		if (hexedUid.equals(hid)) {
+			renderJapid(true, oid, hid);
+		} else {
+			renderJapid(false, oid, hid);
+		}
+	}
+	
+	public static void resetPassword(){
+		String oid = params.get("oid");
+		String hid = params.get("hid");
+		String password = params.get("password");
+		String passwordR = params.get("passwordR");
+		CommonVO cvo = new CommonVO();
+		if(StringUtils.isEmpty(password) || StringUtils.isEmpty(passwordR)){
+			cvo.success = false;
+			cvo.key = "false";
+			cvo.value = "密码/重复密码不能为空";
+			renderJSON(cvo);
+		}
+		
+		if(password.length() < 6 || password.length() > 20){
+			cvo.success = false;
+			cvo.key = "false";
+			cvo.value = "密码长度6-20";
+		}
+		
+		if(!password.equals(passwordR)){
+			cvo.success = false;
+			cvo.key = "false";
+			cvo.value = "两次密码不一致";
+			renderJSON(cvo);
+		}
+		
+		String hexedUid = Codec.hexSHA1(oid);
+		if (hexedUid.equals(hid)) {
+			MerchantAccount account = MerchantAccount.findById(oid);
+			account.password = Codec.hexSHA1(password);
+			account.save();
+			cvo.success = true;
+			cvo.key = "true";
+			String loginUrl = Play.configuration.getProperty("application.domain")+"/business";
+			cvo.value = "密码更改成功！<a href='"+loginUrl+"'>点击登陆</a>";
+			renderJSON(cvo);
+		} else {
+			cvo.success = false;
+			cvo.key = "false";
+			cvo.value = "密码更改失败，请联系管理员admin@quhao.la";
+			renderJSON(cvo);
+		}
 	}
 }

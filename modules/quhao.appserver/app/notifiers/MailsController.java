@@ -15,6 +15,9 @@ public class MailsController extends JapidMailer {
 	public static final String FROM = "Quhaola<noreply@quhao.la>";
 	public static final String SUBJECT_SIGNUP = "【取号啦】账号激活通知";
 	public static final String CONTENT_SIGNUP_TMP = "感谢您注册取号啦，您只需要点击下面链接，激活您的帐户，您便可以享受取号啦各项服务。";
+	
+	public static final String SUBJECT_RESET_PASSWORD = "【取号啦】重置密码";
+	public static final String CONTENT_RESET_PASSWORD = "请点击下面的链接进行密码重置，如果不能点击请复制到浏览器中按回车";
 
 	public static void sendTo(String mailFrom, String mailsTo, String subject,
 			String content) {

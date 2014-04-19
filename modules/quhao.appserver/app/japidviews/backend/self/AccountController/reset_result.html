@@ -1,0 +1,23 @@
+`import static press.Plugin.*;
+`extends tips_layout
+
+`set title "取号啦 - 密码重置"
+
+`args boolean flag, String email, String oid, String hid
+
+`set tips
+`if(flag){
+<form class="form-signin" role="form" method="post" action="@{backend.self.AccountController.resetPassword()}">
+  <h2 class="form-signin-heading">请输入新密码</h2>
+  <input name="oid" value="${oid}" type="hidden"/>
+  <input name="hid" value="${hid}" type="hidden"/>
+  <input name="email" value="${email}" type="hidden"/>
+  <input name="password" type="password" class="form-control" placeholder="新密码" required>
+  <input name="passwordR" type="password" class="form-control" placeholder="再次输入新密码" required>
+  <button class="btn btn-lg btn-primary btn-block" type="submit">确定</button>
+</form>
+`} else {
+<img style="margin-bottom: 10px;" alt="" width="200" height="200" src="/public/images/common/crying.png"><br/>
+<h2 class="form-signin-heading">链接无效，请仔细检查链接是否复制正确，或者请联系管理员！</h2>
+`}
+`
