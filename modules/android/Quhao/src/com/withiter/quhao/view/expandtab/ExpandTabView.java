@@ -7,6 +7,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
@@ -81,6 +82,11 @@ public class ExpandTabView extends LinearLayout implements OnDismissListener {
 			rl.leftMargin = 10;
 			rl.rightMargin = 10;
 			r.addView(viewArray.get(i), rl);
+			if(r.getParent()!=null)
+			{
+				ViewGroup vg = (ViewGroup) r.getParent();
+				vg.removeView(r);
+			}
 			mViewArray.add(r);
 			r.setTag(SMALL);
 			ToggleButton tButton = (ToggleButton) inflater.inflate(R.layout.toggle_button, this, false);

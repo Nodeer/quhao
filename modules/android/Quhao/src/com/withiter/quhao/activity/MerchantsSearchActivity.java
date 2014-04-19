@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 
+import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantAdapter;
 import com.withiter.quhao.util.StringUtils;
@@ -184,7 +185,7 @@ public class MerchantsSearchActivity extends QuhaoBaseActivity {
 				String result = CommonHTTPRequest
 						.get("MerchantController/getMerchantsByName?name="
 								+ MerchantsSearchActivity.this.editSearch
-										.getText().toString());
+										.getText().toString() + "&cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode);
 				if (StringUtils.isNull(result)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {

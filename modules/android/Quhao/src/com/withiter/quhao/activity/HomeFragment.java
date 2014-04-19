@@ -1,6 +1,7 @@
 package com.withiter.quhao.activity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
@@ -17,10 +18,13 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.ViewParent;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -43,10 +47,15 @@ import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
+import com.withiter.quhao.view.refresh.PullToRefreshView;
+import com.withiter.quhao.view.refresh.PullToRefreshView.OnFooterRefreshListener;
+import com.withiter.quhao.view.refresh.PullToRefreshView.OnHeaderRefreshListener;
+import com.withiter.quhao.view.viewpager.MyViewPager;
 import com.withiter.quhao.vo.Category;
 import com.withiter.quhao.vo.TopMerchant;
 
-public class HomeFragment extends Fragment{
+public class HomeFragment extends Fragment implements
+OnHeaderRefreshListener, OnFooterRefreshListener{
 	
 	private static String TAG = HomeFragment.class.getName();
 	
@@ -64,7 +73,7 @@ public class HomeFragment extends Fragment{
 	protected ProgressDialogUtil progressTopMerchant;
 	private boolean isClick;
 	private TextView homeAdTitle;// 广告简单介绍
-	private ViewPager mViewPager;
+	private MyViewPager mViewPager;
 	
 	private LinearLayout adBottomLayout;
 	
@@ -73,6 +82,14 @@ public class HomeFragment extends Fragment{
 	private int mPosition;// pager的位置,就是当前图片的索引号
 	
 	private MyPagerAdapter mPagerAdapter;
+	
+	private PullToRefreshView mPullToRefreshView;
+	
+	private float xDistance, yDistance;
+	/** 记录按下的X坐标  **/
+	private float mLastMotionX,mLastMotionY;
+	/** 是否是左右滑动   **/
+	private boolean mIsBeingDragged = true;
 	
 	// /////执行广告自动滚动需要用的///////////////
 //	private ScheduledExecutorService scheduledExecutorService;
@@ -156,6 +173,7 @@ public class HomeFragment extends Fragment{
 
 	}*/
 	
+	
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
@@ -180,6 +198,12 @@ public class HomeFragment extends Fragment{
 		Log.e("wjzwjz", "HomeFragment onCreateView");
 		
 		contentView = inflater.inflate(R.layout.main_fragment_layout, container,false);
+		mPullToRefreshView = (PullToRefreshView) contentView.findViewById(R.id.main_pull_refresh_view);
+		
+		mPullToRefreshView.setOnHeaderRefreshListener(this);
+		mPullToRefreshView.setOnFooterRefreshListener(this);
+//		mPullToRefreshView.setLastUpdated(new Date().toLocaleString());
+		
 		searchTextView = (Button) contentView.findViewById(R.id.edit_search);
 		searchTextView.setOnClickListener(new OnClickListener() {
 			
@@ -191,7 +215,7 @@ public class HomeFragment extends Fragment{
 			}
 		});
 		
-		mViewPager = (ViewPager) contentView.findViewById(R.id.home_view_pager);
+		mViewPager = (MyViewPager) contentView.findViewById(R.id.home_view_pager);
 		
 		homeAdTitle = (TextView) contentView.findViewById(R.id.home_ad_title);
 		adBottomLayout = (LinearLayout) contentView.findViewById(R.id.home_ad_bottom_layout);
@@ -237,16 +261,35 @@ public class HomeFragment extends Fragment{
 			}
 		});
 		
-		getTopMerchantsFromServerAndDisplay();
-		getCategoriesFromServerAndDisplay();
-		
 		return contentView;
+	}
+	
+	@Override
+	public void onHeaderRefresh(PullToRefreshView view) {
+		mPullToRefreshView.postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				getTopMerchantsFromServerAndDisplay();
+				getCategoriesFromServerAndDisplay();
+				mPullToRefreshView.onHeaderRefreshComplete("更新于:"+new Date().toLocaleString());
+//				mPullToRefreshView.onHeaderRefreshComplete();
+			}
+		}, 1000);
+
 	}
 	
 	private void buildPager() {
 		// 广告下方的view
 		adBottomLayout.setGravity(Gravity.CENTER_VERTICAL);
+		if(null != mPoints && !mPoints.isEmpty())
+		{
+			for (int i = 0; i < mPoints.size(); i++) {
+				adBottomLayout.removeView(mPoints.get(i));
+			}
+		}
 		mPoints = new ArrayList<ImageView>();
+		adBottomLayout.getChildAt(0);
 		
 		ArrayList<ImageView> views = new ArrayList<ImageView>();
 		ImageView image;
@@ -297,10 +340,10 @@ public class HomeFragment extends Fragment{
 				point.setLayoutParams(new LayoutParams(10, 10));
 				mPoints.add(point);
 
-				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+//				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+//						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
-				lp.setMargins(10, 0, 10, 0);
+//				lp.setMargins(10, 0, 10, 0);
 
 				image.setOnClickListener(new View.OnClickListener() {
 
@@ -324,12 +367,63 @@ public class HomeFragment extends Fragment{
 						}
 					}
 				});
-
-				adBottomLayout.addView(point, lp);
+				
+				if(point.getParent() != null)
+				{
+					ViewGroup vg = (ViewGroup) point.getParent();
+					vg.removeView(point);
+				}
+				
+				adBottomLayout.addView(point);
 			}
 
 			mPagerAdapter = new MyPagerAdapter(getActivity(), views, topMerchants);
 			mViewPager.setAdapter(mPagerAdapter);
+			
+			mViewPager.setOnTouchListener(new OnTouchListener() {
+				
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					mViewPager.getGestureDetector().onTouchEvent(event);
+					final float x = event.getRawX();
+					final float y = event.getRawY();
+					
+	                switch (event.getAction()) {  
+	                case MotionEvent.ACTION_DOWN:  
+	                    xDistance = yDistance = 0f;
+	                	mLastMotionX = x;
+	                	mLastMotionY = y;
+	                case MotionEvent.ACTION_MOVE:  
+	                    final float xDiff = Math.abs(x - mLastMotionX);
+	                    final float yDiff = Math.abs(y - mLastMotionY);
+	                    xDistance += xDiff;
+	                    yDistance += yDiff;
+	                    
+	                    float dx = xDistance - yDistance;
+	                    // 左右滑动避免和下拉刷新冲突   
+	                    if (xDistance > yDistance || Math.abs(xDistance - yDistance) < 0.00001f) {
+	                        mIsBeingDragged = true;
+	                        mLastMotionX =  x;
+	                        mLastMotionY = y;
+	                        ((ViewParent) v.getParent()).requestDisallowInterceptTouchEvent(true);
+	                    } else {
+	                        mIsBeingDragged = false;
+	                        ((ViewParent) v.getParent()).requestDisallowInterceptTouchEvent(false);
+	                    }
+	                    break;  
+	                case MotionEvent.ACTION_UP:  
+	                 	break;  
+	                case MotionEvent.ACTION_CANCEL:
+	                	if(mIsBeingDragged) {
+	                		((ViewParent) v.getParent()).requestDisallowInterceptTouchEvent(false);
+						}
+	                	break;
+	                default:  
+	                    break;  
+	                }  
+	                return false;  
+				}
+			});
 			if (topMerchants.size() > 1) {
 				adBottomLayout.setVisibility(View.VISIBLE);
 			} else {
@@ -412,7 +506,8 @@ public class HomeFragment extends Fragment{
 		super.onResume();
 		Log.e("wjzwjz", "HomeFragment onResume");
 		cityBtn.setText(QHClientApplication.getInstance().defaultCity.cityName);
-		
+		getTopMerchantsFromServerAndDisplay();
+		getCategoriesFromServerAndDisplay();
 	}
 	
 	protected Handler unlockHandler = new Handler() {
@@ -430,7 +525,7 @@ public class HomeFragment extends Fragment{
 	public void getTopMerchantsFromServerAndDisplay() {
 //		progressTopMerchant = new ProgressDialogUtil(getActivity(), R.string.empty, R.string.querying, false);
 //		progressTopMerchant.showProgress();
-		final TopMerchantsTask task = new TopMerchantsTask(0, getActivity(), "MerchantController/getTopMerchants?x=6");
+		final TopMerchantsTask task = new TopMerchantsTask(0, getActivity(), "MerchantController/getTopMerchants?x=6&cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode);
 		task.execute(new Runnable() {
 			
 			@Override
@@ -674,5 +769,11 @@ public class HomeFragment extends Fragment{
 		};
 		t.start();
 		*/
+	}
+
+	@Override
+	public void onFooterRefresh(PullToRefreshView view) {
+		// 处理下拉刷新最新数据
+		mPullToRefreshView.onFooterRefreshComplete();
 	}
 }

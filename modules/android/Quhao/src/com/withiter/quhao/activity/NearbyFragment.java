@@ -1,6 +1,7 @@
 package com.withiter.quhao.activity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
@@ -19,13 +20,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
@@ -46,9 +43,12 @@ import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.view.expandtab.ExpandTabView;
 import com.withiter.quhao.view.expandtab.ViewLeft;
+import com.withiter.quhao.view.refresh.PullToRefreshView;
+import com.withiter.quhao.view.refresh.PullToRefreshView.OnFooterRefreshListener;
+import com.withiter.quhao.view.refresh.PullToRefreshView.OnHeaderRefreshListener;
 
 public class NearbyFragment extends Fragment implements AMapLocationListener,
-		OnPoiSearchListener, OnScrollListener, OnItemClickListener, OnClickListener {
+		OnPoiSearchListener, OnItemClickListener, OnClickListener,OnHeaderRefreshListener, OnFooterRefreshListener {
 
 	private LocationManagerProxy mAMapLocationManager = null;
 	private PoiSearch.Query query;
@@ -57,10 +57,6 @@ public class NearbyFragment extends Fragment implements AMapLocationListener,
 	private int page = 0;
 	private ListView merchantsListView;
 	private MerchantNearByAdapter nearByAdapter;
-	private View moreView;
-	private Button bt;
-	private ProgressBar pg;
-	private int lastVisibleIndex;
 	private boolean isFirstLoad = true;
 	private boolean needToLoad = true;
 	private List<PoiItem> poiItems;
@@ -87,6 +83,8 @@ public class NearbyFragment extends Fragment implements AMapLocationListener,
 	
 	private ViewGroup group;
 	
+	private PullToRefreshView mPullToRefreshView;
+	
 	protected Handler unlockHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what == UNLOCK_CLICK) {
@@ -99,15 +97,17 @@ public class NearbyFragment extends Fragment implements AMapLocationListener,
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		Log.e("wjzwjz", "NearbyFragment onCreateView");
 		this.group = container;
 		contentView = inflater.inflate(R.layout.nearby_fragment_layout, container,false);
 		merchantsListView = (ListView) contentView
 				.findViewById(R.id.merchantsListView);
-		moreView = inflater.inflate(R.layout.moredata, null);
-		bt = (Button) moreView.findViewById(R.id.bt_load);
-		pg = (ProgressBar) moreView.findViewById(R.id.pg);
-		bt.setOnClickListener(this);
-		merchantsListView.addFooterView(moreView);
+		
+		mPullToRefreshView = (PullToRefreshView) contentView.findViewById(R.id.main_pull_refresh_view);
+		mPullToRefreshView.setEnableFooterView(true);
+		mPullToRefreshView.setOnHeaderRefreshListener(this);
+		mPullToRefreshView.setOnFooterRefreshListener(this);
+		
 		merchantsListView.setNextFocusDownId(R.id.merchantsListView);
 		
 		initExpandView();
@@ -149,6 +149,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener,
 		
 		expandTabView = (ExpandTabView) contentView.findViewById(R.id.expandtab_view);
 		viewLeft = new ViewLeft(contentView.getContext(),distanceItems,distanceItemsValue,String.valueOf(searchDistence));
+		
 		mViewArray = new ArrayList<View>();
 		mViewArray.add(viewLeft);
 		ArrayList<String> mTextArray = new ArrayList<String>();
@@ -219,12 +220,16 @@ public class NearbyFragment extends Fragment implements AMapLocationListener,
 					nearByAdapter.merchants = poiItems;
 				}
 				nearByAdapter.notifyDataSetChanged();
-				bt.setVisibility(View.VISIBLE);
-				pg.setVisibility(View.GONE);
-				merchantsListView.setOnScrollListener(NearbyFragment.this);
+//				merchantsListView.setOnScrollListener(NearbyFragment.this);
 				merchantsListView.setOnItemClickListener(NearbyFragment.this);
 				contentView.findViewById(R.id.loadingbar).setVisibility(View.GONE);
 				contentView.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
+				mPullToRefreshView.onHeaderRefreshComplete();
+				mPullToRefreshView.onFooterRefreshComplete();
+				if(!needToLoad)
+				{
+					mPullToRefreshView.setEnableFooterView(false);
+				}
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 		}
@@ -272,7 +277,6 @@ public class NearbyFragment extends Fragment implements AMapLocationListener,
 						needToLoad = false;
 					}
 				} catch (AMapException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			} else {
@@ -296,55 +300,55 @@ public class NearbyFragment extends Fragment implements AMapLocationListener,
 
 	@Override
 	public void onDestroyView() {
-		Log.e("wjzwjz", "Nearby onDestroyView" + this.getId());
+		Log.e("wjzwjz", "NearbyFragment onDestroyView" + this.getId());
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
 			mAMapLocationManager.destory();
 		}
 		mAMapLocationManager = null;
-		Log.e("wjzwjz", "end onDestroyView" + this.getId());
+		Log.e("wjzwjz", "NearbyFragment end onDestroyView" + this.getId());
 		super.onDestroyView();
 	}
 
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		Log.e("wjzwjz", "fragment onAttach");
+		Log.e("wjzwjz", "NearbyFragment onAttach");
 	}
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		Log.e("wjzwjz", "fragment onActivityCreated");
+		Log.e("wjzwjz", "NearbyFragment onActivityCreated");
 	}
 	
 	@Override
 	public void onViewStateRestored(Bundle savedInstanceState) {
 		super.onViewStateRestored(savedInstanceState);
-		Log.e("wjzwjz", "fragment onViewStateRestored");
+		Log.e("wjzwjz", "NearbyFragment onViewStateRestored");
 	}
 	
 	@Override
 	public void onStart() {
 		super.onStart();
-		Log.e("wjzwjz", "fragment onStart");
+		Log.e("wjzwjz", "NearbyFragment onStart");
 	}
 	
 	@Override
 	public void onStop() {
 		super.onStop();
-		Log.e("wjzwjz", "fragment onStop");
+		Log.e("wjzwjz", "NearbyFragment onStop");
 	}
 	
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		Log.e("wjzwjz", "fragment onDetach");
+		Log.e("wjzwjz", "NearbyFragment onDetach");
 	}
 	
 	@Override
 	public void onDestroy() {
-		Log.e("wjzwjz", "fragment onDestroy");
+		Log.e("wjzwjz", "NearbyFragment onDestroy");
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
 			mAMapLocationManager.destory();
@@ -355,25 +359,25 @@ public class NearbyFragment extends Fragment implements AMapLocationListener,
 	
 	@Override
 	public void onLocationChanged(Location location) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public void onProviderEnabled(String provider) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public void onProviderDisabled(String provider) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
@@ -463,6 +467,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener,
 
 	}
 
+	/*
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		if (scrollState == OnScrollListener.SCROLL_STATE_IDLE
@@ -501,10 +506,9 @@ public class NearbyFragment extends Fragment implements AMapLocationListener,
 			merchantsListView.removeFooterView(moreView);
 		}
 	}
-
+	*/
 	@Override
 	public void onPoiItemDetailSearched(PoiItemDetail arg0, int arg1) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -664,32 +668,75 @@ public class NearbyFragment extends Fragment implements AMapLocationListener,
 		unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 
 		switch (v.getId()) {
-		case R.id.bt_load:
-			pg.setVisibility(View.VISIBLE);
-			bt.setVisibility(View.GONE);
-//			nextSearch();
-			
-			Thread queryMerchantsThread = new Thread(new Runnable() {
-
-				@Override
-				public void run() {
-					try {
-						Looper.prepare();
-						nextSearch();
-
-					} catch (Exception e) {
-
-					} finally {
-						Looper.loop();
-					}
-
-				}
-			});
-			queryMerchantsThread.start();
-			
-			break;
 		default:
 			break;
 		}
 	}
+	
+	@Override
+	public void onHeaderRefresh(PullToRefreshView view) {
+		mPullToRefreshView.postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+
+				contentView.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
+				contentView.findViewById(R.id.serverdata).setVisibility(View.GONE);
+				
+				page = 0;
+				isFirstLoad = true;
+				needToLoad = true;
+				isFirstLocation = false;
+				firstLocation = null;
+				
+				merchantsListView.setSelectionFromTop(0, 0);// 滑动到第一项
+				
+//				mAMapLocationManager = LocationManagerProxy.getInstance(this);
+//				mAMapLocationManager.requestLocationUpdates(
+//						LocationProviderProxy.AMapNetwork, 5000, 10, this);
+				
+				setPoiSearch();
+//				buildTask();
+				Thread queryMerchantsThread = new Thread(queryRunnable);
+				queryMerchantsThread.start();
+				
+//				mPullToRefreshView.onHeaderRefreshComplete("更新于:"+new Date().toLocaleString());
+				
+//				mPullToRefreshView.onHeaderRefreshComplete();
+			}
+		}, 1000);
+
+	}
+	
+	@Override
+	public void onFooterRefresh(PullToRefreshView view) {
+		mPullToRefreshView.postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				// 处理下拉刷新最新数据
+				Thread queryMerchantsThread = new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						try {
+							Looper.prepare();
+							nextSearch();
+
+						} catch (Exception e) {
+
+						} finally {
+							Looper.loop();
+						}
+
+					}
+				});
+				queryMerchantsThread.start();
+				
+				
+			}
+		}, 1000);
+
+	}
+	
 }

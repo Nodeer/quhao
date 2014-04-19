@@ -3,6 +3,7 @@ package com.withiter.quhao.activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -114,7 +115,15 @@ public class MainTabActivity extends FragmentActivity{
 		}
 		
 		mTabHost.setCurrentTab(0);
-		
+		mTabHost.setOnTabChangedListener(new OnTabChangeListener() {
+			
+			@Override
+			public void onTabChanged(String tabId) {
+				
+				Log.e("wjzwjz", "tab id : " + tabId);
+				
+			}
+		});
 //		TabWidget tabWidget = (TabWidget)findViewById(R.id.tabs);
 //        tabWidget.setBackgroundResource(R.drawable.ic_action_search);
 	}

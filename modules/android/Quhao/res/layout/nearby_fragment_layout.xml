@@ -58,13 +58,13 @@
 		<LinearLayout 
 		    android:orientation="vertical"
 		    android:layout_width="fill_parent" 
-		    android:layout_height="wrap_content" 
+		    android:layout_height="50dip" 
 		    android:background="#ffffffff">
 	
 			<com.withiter.quhao.view.expandtab.ExpandTabView 
 			    android:id="@+id/expandtab_view"
 		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"/>
+		        android:layout_height="fill_parent"/>
 			
 		</LinearLayout>
 		<LinearLayout 
@@ -72,20 +72,24 @@
 		    android:layout_width="fill_parent" 
 		    android:layout_height="match_parent" 
 		    android:background="#ffffffff">
-	
-	       	<ListView
-	       	    android:id="@+id/merchantsListView"
-	       	    android:layout_width="fill_parent"
-	       	    android:layout_height="fill_parent"
-	       	    android:layout_gravity="center_horizontal"
-	       	    android:cacheColorHint="@null"
-	       	    android:divider="@null"
-	       	    android:entries="@null"
-	       	    android:headerDividersEnabled="true"
-	       	    android:listSelector="@drawable/list_item_trans"
-	       	    android:scrollbarThumbVertical="@drawable/scrollbar"
-	       	    android:scrollbars="vertical" />
-	
+			<com.withiter.quhao.view.refresh.PullToRefreshView xmlns:android="http://schemas.android.com/apk/res/android" 
+		  	    android:id="@+id/main_pull_refresh_view"
+			    android:layout_width="fill_parent"
+			    android:layout_height="fill_parent"
+			    android:background="@android:color/white">
+		       	<ListView
+		       	    android:id="@+id/merchantsListView"
+		       	    android:layout_width="fill_parent"
+		       	    android:layout_height="fill_parent"
+		       	    android:layout_gravity="center_horizontal"
+		       	    android:cacheColorHint="@null"
+		       	    android:divider="@null"
+		       	    android:entries="@null"
+		       	    android:headerDividersEnabled="true"
+		       	    android:listSelector="@drawable/list_item_trans"
+		       	    android:scrollbarThumbVertical="@drawable/scrollbar"
+		       	    android:scrollbars="vertical" />
+			</com.withiter.quhao.view.refresh.PullToRefreshView>
 		</LinearLayout>
     </LinearLayout>  
     
