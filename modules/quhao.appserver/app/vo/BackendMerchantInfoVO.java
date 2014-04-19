@@ -66,7 +66,72 @@ public class BackendMerchantInfoVO {
 	public float fuwu = 0f;
 	public float xingjiabi = 0f;
 	
+	public long openRequestCount = 0;
+	
 	public List<String> imgSrc = new ArrayList<String>();
+	
+	public static BackendMerchantInfoVO build(Merchant m, MerchantAccount a, long openRequestCount) {
+		BackendMerchantInfoVO vo = new BackendMerchantInfoVO();
+		//merchant info
+		if(m != null){
+			vo.merchantExist = true;
+			vo.mid = m.id();
+			vo.address = m.address;
+			try {
+				vo.merchantImage = URLDecoder.decode(m.merchantImage, "UTF-8");
+				logger.debug(vo.merchantImage);
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			
+			vo.cateType = m.cateType;
+			vo.closeTime = m.closeTime;
+			vo.description = m.description;
+			vo.enable = m.enable;
+			vo.joinedDate = m.joinedDate;
+			vo.markedCount = m.markedCount;
+			vo.name = m.name;
+			vo.nickName = m.nickName;
+			vo.openTime = m.openTime;
+			vo.telephone = m.gTelephone();
+			vo.x = m.x;
+			vo.y = m.y;
+			
+			vo.grade = m.grade;
+			vo.averageCost = m.averageCost;
+			vo.kouwei = m.kouwei;
+			vo.huanjing = m.huanjing;
+			vo.fuwu = m.fuwu;
+			vo.xingjiabi = m.xingjiabi;
+			
+			vo.seatType = m.seatType;
+			
+			vo.cityCode = m.cityCode;
+			
+			vo.openRequestCount = openRequestCount;
+			
+			
+			String server = Play.configuration.getProperty("application.domain");
+			String imageStorePath = Play.configuration.getProperty("image.store.path");
+			// generate merchant image list
+			if(!m.merchantImageSet.isEmpty()){
+				Iterator it = m.merchantImageSet.iterator();
+				while(it.hasNext()){
+					vo.imgSrc.add(imageStorePath+it.next().toString());
+				}
+			}
+		}
+		
+		
+		//account info
+		vo.aid = a.id();
+		vo.email = a.email;
+		vo.password = a.password;
+		vo.lastLogin = a.lastLogin;
+		
+		return vo;
+	}
+	
 	
 	public static BackendMerchantInfoVO build(Merchant m, MerchantAccount a) {
 		BackendMerchantInfoVO vo = new BackendMerchantInfoVO();
@@ -105,7 +170,6 @@ public class BackendMerchantInfoVO {
 			vo.seatType = m.seatType;
 			
 			vo.cityCode = m.cityCode;
-			
 			
 			String server = Play.configuration.getProperty("application.domain");
 			String imageStorePath = Play.configuration.getProperty("image.store.path");

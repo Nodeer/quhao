@@ -20,4 +20,11 @@ public class Open extends OpenEntityDef{
 		
 		return q.count();
 	}
+	
+	public static long getNumberByMid(String mid){
+		MorphiaQuery q = Open.q();
+		q.filter("mid", mid);
+		
+		return q.count();
+	}
 }

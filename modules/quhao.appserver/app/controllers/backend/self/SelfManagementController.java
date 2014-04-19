@@ -33,6 +33,7 @@ import com.withiter.models.backendMerchant.MerchantAccountRel;
 import com.withiter.models.merchant.Category;
 import com.withiter.models.merchant.Haoma;
 import com.withiter.models.merchant.Merchant;
+import com.withiter.models.merchant.Open;
 import com.withiter.models.merchant.Paidui;
 import com.withiter.utils.ExceptionUtil;
 
@@ -68,14 +69,17 @@ public class SelfManagementController extends BaseController {
 		MerchantAccount account = MerchantAccount.findById(uid);
 		List<MerchantAccountRel> relList = MerchantAccountRel.getMerchantAccountRelList(uid);
 		Merchant merchant = null;
+		long openRequestCount = 0;
 		if (relList == null || relList.isEmpty()) {
 
 		} else {
 			MerchantAccountRel rel = relList.get(0);
 			String mid = rel.mid;
 			merchant = Merchant.findById(mid);
+			
+			openRequestCount = Open.getNumberByMid(mid);
 		}
-		BackendMerchantInfoVO bmivo = BackendMerchantInfoVO.build(merchant, account);
+		BackendMerchantInfoVO bmivo = BackendMerchantInfoVO.build(merchant, account, openRequestCount);
 		renderJapid(bmivo);
 	}
 

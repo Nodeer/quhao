@@ -59,7 +59,7 @@ Login.login = function() {
 				}
 			},
 			error : function() {
-				alert("ajax error!");
+				$("#error_tip").text("服务器维护，请稍后尝试。或者联系管理员admin@quhao.la").css("visibility", "visible");
 			}
 		});
 	}
