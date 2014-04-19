@@ -47,6 +47,9 @@ public class Haoma extends HaomaEntityDef {
 	public void initPaidui() {
 		logger.debug("merchant id : " + this.merchantId);
 		Merchant m = Merchant.findByMid(this.merchantId);
+		if(m == null){
+			logger.error("Merchant does not find!");
+		}
 		String[] seatType = m.seatType;
 		Paidui p = null;
 		if (seatType == null) {
