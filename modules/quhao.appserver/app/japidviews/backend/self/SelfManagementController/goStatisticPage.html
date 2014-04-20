@@ -1,15 +1,14 @@
 `import static press.Plugin.*;
-`import vo.ReservationVO;
+`import vo.StatisticsVO;
+`import vo.BackendMerchantInfoVO;
 `extends base_layout
 `set cssAndJs
 $addJS("merchant.js", true)
-$addCSS("landing.css", true)
-$addCSS("pop_signUp_logIn.css", true)
 $addCSS("backend.css", true)
 `
 `set title:i18n("取号啦 - 消费统计管理")
 
-`args List<ReservationVO> voList
+`args StatisticsVO svo, BackendMerchantInfoVO bmivo
 
 <!DOCTYPE html>
 <html lang="cn">
@@ -48,6 +47,59 @@ $addCSS("backend.css", true)
 </style>
 
 </head>
-<body class="backendBG" id="fatherDIV">
+<body>
+
+	<div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+      <div class="container">
+        <div class="collapse navbar-collapse">
+          `t merchantMenu(bmivo,"tongji")
+        </div><!-- /.nav-collapse -->
+      </div><!-- /.container -->
+    </div><!-- /.navbar -->
+
+    <div class="container">
+      <div class="row row-offcanvas row-offcanvas-right">
+        <div class="col-xs-12 col-sm-12">
+          <p class="pull-right visible-xs">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+          </p>
+          
+          <div style="margin-top: 100px;" class="panel panel-default" id="">
+						  <div class="panel-heading">排队统计</div>
+						  <table class="table" >
+						  	<tr align="center">
+						  		<td colspan="2">${svo.lastMonth}
+						  		</td>
+						  	</tr>
+						    <tr align="center">
+							    <td>消费成功数</td>
+							    <td>取消排队数</td>
+						    </tr>
+						    <tr align="center">
+						    	<td>${svo.lastMonthFinish}</td>
+							    <td>${svo.lastMonthCancel}</td>
+						    </tr>
+						  	<tr align="center">
+						  		<td colspan="2">${svo.lastThreeMonth}
+						  		</td>
+						  	</tr>
+						    <tr align="center">
+							    <td>消费成功数</td>
+							    <td>取消排队数</td>
+						    </tr>
+						    <tr align="center">
+						    	<td>${svo.lastThreeMonthFinish}</td>
+							    <td>${svo.lastThreeMonthCancel}</td>
+						    </tr>
+						  </table>
+						</div>
+          				
+        </div><!--/span-->
+      </div><!--/row-->
+
+	  <!-- footer -->
+      `t merchantFoot
+	  <!-- footer -->
+    </div><!--/.container-->
 </body>
 </html>

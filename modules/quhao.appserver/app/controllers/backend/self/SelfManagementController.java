@@ -20,6 +20,7 @@ import play.mvc.Scope.Session;
 import vo.BackendMerchantInfoVO;
 import vo.HaomaVO;
 import vo.ReservationVO;
+import vo.StatisticsVO;
 import vo.account.MerchantAccountVO;
 import cn.bran.japid.util.StringUtils;
 
@@ -237,12 +238,33 @@ public class SelfManagementController extends BaseController {
 	// TODO add statistic report here
 	public static void goStatisticPage() {
 		String mid = params.get("mid");
-		List<Reservation> rList = Reservation.findReservationsByMerchantIdandDate(mid);
-		List<ReservationVO> voList = ReservationVO.build(rList);
+		
+		long lastMonthFinishCount = Reservation.lastMonthFinishCount(mid);
+		long lastMonthCancelCount = Reservation.lastMonthCancelCount(mid);
+		long lastThreeMonthsFinishCount = Reservation.lastThreeMonthsFinishCount(mid);
+		long lastThreeMonthsCancelCount = Reservation.lastThreeMonthsCancelCount(mid);
+		
+		StatisticsVO svo = new StatisticsVO();
+		svo.lastMonthFinish = lastMonthFinishCount;
+		svo.lastMonthCancel = lastMonthCancelCount;
+		svo.lastThreeMonthFinish = lastThreeMonthsFinishCount;
+		svo.lastThreeMonthCancel = lastThreeMonthsCancelCount;
 
-		System.out.println(voList.size());
+		String uid = Session.current().get(Constants.SESSION_USERNAME);
+		MerchantAccount account = MerchantAccount.findById(uid);
+		Merchant merchant = Merchant.findById(mid);
+		BackendMerchantInfoVO bmivo = BackendMerchantInfoVO.build(merchant, account);
 
-		renderJapid(voList);
+		
+//		long lastQuarterFinishCount = Reservation.lastQuarterFinishCount(mid);
+//		long lastQuarterCancelCount = Reservation.lastQuarterCancelCount(mid);
+		
+//		List<Reservation> rList = Reservation.findReservationsByMerchantIdandDate(mid);
+//		List<ReservationVO> voList = ReservationVO.build(rList);
+
+//		System.out.println(voList.size());
+
+		renderJapid(svo, bmivo);
 	}
 
 	/**

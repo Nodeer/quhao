@@ -506,6 +506,12 @@ function hideModal(){
 	window.location.reload();
 }
 
+/**
+ * 现场取号
+ * @param {} seatNumber
+ * @param {} mid
+ * @param {} tel
+ */
 Merchant.quhaoOnsite = function(seatNumber, mid, tel){
 	$.ajax({
 		type:"POST",
@@ -530,6 +536,10 @@ Merchant.quhaoOnsite = function(seatNumber, mid, tel){
 	});
 }
 
+/**
+ * 退出系统
+ * @param {} aid
+ */
 Merchant.logout = function(aid){
 	$.ajax({
 		type:"POST",

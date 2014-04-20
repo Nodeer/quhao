@@ -13,10 +13,12 @@ import play.modules.morphia.Model.NoAutoTimestamp;
 import cn.bran.japid.util.StringUtils;
 
 import com.google.code.morphia.annotations.Entity;
+import com.withiter.common.Constants;
 import com.withiter.common.Constants.CreditStatus;
 import com.withiter.common.Constants.ReservationStatus;
 import com.withiter.models.merchant.Haoma;
 import com.withiter.models.merchant.Merchant;
+import com.withiter.utils.RemindDateUtils;
 
 @Entity
 @NoAutoTimestamp
@@ -425,5 +427,68 @@ public class Reservation extends ReservationEntityDef {
 			r.status = ReservationStatus.invalidByMerchantUpdate;
 			r.save();
 		}
+	}
+
+	/**
+	 * 上一个月所有Reservation
+	 * @param mid
+	 * @return
+	 */
+	private static MorphiaQuery lastMonthCount(String mid){
+		MorphiaQuery q = Reservation.q();
+		RemindDateUtils utils = new RemindDateUtils();
+		Date lastMonthStart = utils.getLastMonthStartTime();
+		Date lastMonthEnd = utils.getLastMonthEndTime();
+		q.filter("created >", lastMonthStart).filter("created <", lastMonthEnd).filter("merchantId", mid);
+		return q;
+	}
+	
+	/**
+	 * 上一个月所有Reservation
+	 * @param mid
+	 * @return
+	 */
+	private static MorphiaQuery lastThreeMonthsCount(String mid){
+		MorphiaQuery q = Reservation.q();
+		RemindDateUtils utils = new RemindDateUtils();
+		Date lastThreeMonthsStart = utils.getLastThreeMonthsStartTime();
+		Date lastThreeMonthsEnd = utils.getLastMonthEndTime();
+		q.filter("created >", lastThreeMonthsStart).filter("created <", lastThreeMonthsEnd).filter("merchantId", mid);
+		return q;
+	}
+	
+	
+	public static long lastMonthFinishCount(String mid) {
+		MorphiaQuery q = lastMonthCount(mid);
+		q.filter("status", Constants.ReservationStatus.finished);
+		return q.count();
+	}
+
+	public static long lastMonthCancelCount(String mid) {
+		MorphiaQuery q = lastMonthCount(mid);
+		q.filter("status", Constants.ReservationStatus.canceled);
+		return q.count();
+	}
+
+	public static long lastQuarterFinishCount(String mid) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public static long lastQuarterCancelCount(String mid) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public static long lastThreeMonthsFinishCount(String mid) {
+		MorphiaQuery q = lastThreeMonthsCount(mid);
+		q.filter("status", Constants.ReservationStatus.finished);
+		return q.count();
+	}
+
+	public static long lastThreeMonthsCancelCount(String mid) {
+		MorphiaQuery q = lastThreeMonthsCount(mid);
+		q.filter("status", Constants.ReservationStatus.canceled);
+		return q.count();
 	}
 }
