@@ -68,7 +68,11 @@
         android:layout_width="fill_parent"
         android:layout_height="0dip"
         android:layout_weight="1.0" >
-
+		<com.withiter.quhao.view.refresh.PullToRefreshView xmlns:android="http://schemas.android.com/apk/res/android" 
+		  	    android:id="@+id/main_pull_refresh_view"
+			    android:layout_width="fill_parent"
+			    android:layout_height="fill_parent"
+			    android:background="@android:color/white">
         <ListView
             android:id="@+id/commentsView"
             android:layout_width="fill_parent"
@@ -81,6 +85,7 @@
             android:listSelector="@drawable/list_item_trans"
             android:scrollbarThumbVertical="@drawable/scrollbar"
             android:scrollbars="vertical" />
+        </com.withiter.quhao.view.refresh.PullToRefreshView>
     </LinearLayout>
 
 </LinearLayout>

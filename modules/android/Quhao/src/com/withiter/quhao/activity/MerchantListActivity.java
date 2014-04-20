@@ -10,16 +10,11 @@ import android.os.Looper;
 import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.withiter.quhao.QHClientApplication;
@@ -30,12 +25,15 @@ import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
+import com.withiter.quhao.view.refresh.PullToRefreshView;
+import com.withiter.quhao.view.refresh.PullToRefreshView.OnFooterRefreshListener;
+import com.withiter.quhao.view.refresh.PullToRefreshView.OnHeaderRefreshListener;
 import com.withiter.quhao.vo.Merchant;
 
 /**
  * 商家列表页面
  */
-public class MerchantListActivity extends QuhaoBaseActivity implements OnScrollListener{
+public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderRefreshListener,OnFooterRefreshListener{
 
 	private String LOGTAG = MerchantListActivity.class.getName();
 	protected ListView merchantsListView;
@@ -52,13 +50,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnScrollL
 	private boolean needToLoad = true;
 	public static boolean backClicked = false;
 	
-	private View moreView;
-	
-	private Button bt;
-	
-	private ProgressBar pg;
-	
-	private int lastVisibleIndex;
+	private PullToRefreshView mPullToRefreshView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +70,11 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnScrollL
 		this.categoryTypeTitle.setText(cateName + "[" + categoryCount + "家]");
 		
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
+		
+		mPullToRefreshView = (PullToRefreshView) this.findViewById(R.id.main_pull_refresh_view);
+		mPullToRefreshView.setOnHeaderRefreshListener(this);
+		mPullToRefreshView.setOnFooterRefreshListener(this);
+		mPullToRefreshView.setEnableFooterView(true);
 		initView();
 	}
 
@@ -104,11 +101,16 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnScrollL
 				}
 
 				merchantAdapter.notifyDataSetChanged();
-				
-				merchantsListView.setOnScrollListener(MerchantListActivity.this);
-				bt.setVisibility(View.VISIBLE);
-				pg.setVisibility(View.GONE);
-
+				mPullToRefreshView.onHeaderRefreshComplete();
+				mPullToRefreshView.onFooterRefreshComplete();
+				if (!needToLoad) 
+				{
+					mPullToRefreshView.setEnableFooterView(false);
+				}
+				else
+				{
+					mPullToRefreshView.setEnableFooterView(true);
+				}
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 
@@ -130,18 +132,14 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnScrollL
 
 	private void initView() {
 		
-		moreView = getLayoutInflater().inflate(R.layout.moredata, null);
-		bt = (Button) moreView.findViewById(R.id.bt_load);
-		pg = (ProgressBar) moreView.findViewById(R.id.pg);
-		
 		merchantsListView = (ListView) findViewById(R.id.merchantsListView);
 		
-		merchantsListView.addFooterView(moreView);
 		merchantsListView.setNextFocusDownId(R.id.merchantsListView);
 		
 		merchantsListView.setVisibility(View.GONE);
 		merchantsListView.setOnItemClickListener(merchantItemClickListener);
 		
+		/*
 		bt.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -152,7 +150,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnScrollL
 				Thread merchantsThread = new Thread(merchantsRunnable);
 				merchantsThread.start();
 			}
-		});
+		});*/
 		getMerchants();
 	}
 
@@ -204,6 +202,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnScrollL
 		}
 	};
 	
+	/*
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		
@@ -237,16 +236,14 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnScrollL
 //			merchantsThread.start();
 //		}
 	}
-
+	 */
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -263,6 +260,37 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnScrollL
 		if (backClicked) {
 			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 		}
+	}
+
+	@Override
+	public void onFooterRefresh(PullToRefreshView view) {
+		mPullToRefreshView.postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				MerchantListActivity.this.page += 1;
+				Thread merchantsThread = new Thread(merchantsRunnable);
+				merchantsThread.start();
+			}
+		}, 1000);
+	}
+
+	@Override
+	public void onHeaderRefresh(PullToRefreshView view) {
+		mPullToRefreshView.postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				MerchantListActivity.this.page = 1;
+				isFirst = true;
+				needToLoad = true;
+				
+//				merchantsListView.setSelectionFromTop(0, 0);// 滑动到第一项
+				MerchantListActivity.this.merchants = new ArrayList<Merchant>();
+				getMerchants();
+			}
+		}, 1000);
+		
 	}
 
 }

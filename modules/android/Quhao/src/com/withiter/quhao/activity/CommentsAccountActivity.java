@@ -11,13 +11,10 @@ import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.withiter.quhao.R;
@@ -26,9 +23,12 @@ import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
+import com.withiter.quhao.view.refresh.PullToRefreshView;
+import com.withiter.quhao.view.refresh.PullToRefreshView.OnFooterRefreshListener;
+import com.withiter.quhao.view.refresh.PullToRefreshView.OnHeaderRefreshListener;
 import com.withiter.quhao.vo.Comment;
 
-public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItemClickListener,OnScrollListener{
+public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItemClickListener,OnHeaderRefreshListener,OnFooterRefreshListener{
 
 	private static final String TAG = CommentsAccountActivity.class.getName();
 
@@ -65,14 +65,8 @@ public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItem
 
 	private int page;
 	
-	private View moreView;
+	private PullToRefreshView mPullToRefreshView;
 	
-	private Button bt;
-	
-	private ProgressBar pg;
-	
-	private int lastVisibleIndex;
-
 	protected Handler updateCommentsHandler = new Handler() {
 
 		@Override
@@ -99,9 +93,17 @@ public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItem
 					commentAdapter.comments = comments;
 				}
 				commentAdapter.notifyDataSetChanged();
-				bt.setVisibility(View.VISIBLE);
-				pg.setVisibility(View.GONE);
-				commentsView.setOnScrollListener(CommentsAccountActivity.this);
+				mPullToRefreshView.onHeaderRefreshComplete();
+				mPullToRefreshView.onFooterRefreshComplete();
+				if(!needToLoad)
+				{
+					mPullToRefreshView.setEnableFooterView(false);
+				}
+				else
+				{
+					mPullToRefreshView.setEnableFooterView(true);
+				}
+				
 				commentsView.setOnItemClickListener(CommentsAccountActivity.this);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
@@ -118,15 +120,12 @@ public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItem
 		this.accountId = getIntent().getStringExtra("accountId");
 		this.page = getIntent().getIntExtra("page", 1);
 
-		moreView = getLayoutInflater().inflate(R.layout.moredata, null);
-		
-		bt = (Button) moreView.findViewById(R.id.bt_load);
-		pg = (ProgressBar) moreView.findViewById(R.id.pg);
-		
-		bt.setOnClickListener(this);
+		mPullToRefreshView = (PullToRefreshView) this.findViewById(R.id.main_pull_refresh_view);
+		mPullToRefreshView.setOnHeaderRefreshListener(this);
+		mPullToRefreshView.setOnFooterRefreshListener(this);
+		mPullToRefreshView.setEnableFooterView(true);
 		
 		commentsView = (ListView) findViewById(R.id.commentsView);
-		commentsView.addFooterView(moreView);
 		commentsView.setNextFocusDownId(R.id.commentsView);
 
 		btnBack = (Button) findViewById(R.id.back_btn);
@@ -135,6 +134,7 @@ public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItem
 
 	}
 
+	/*
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 
@@ -161,7 +161,8 @@ public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItem
 //			getCritiques();
 //		}
 	}
-
+	 */
+	
 	/**
 	 * 
 	 * query critiques from web service via merchant ID
@@ -226,12 +227,6 @@ public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItem
 			onBackPressed();
 			this.finish();
 			break;
-		case R.id.bt_load:
-			pg.setVisibility(View.VISIBLE);
-			bt.setVisibility(View.GONE);
-			CommentsAccountActivity.this.page += 1;
-			getComments();
-			break;
 		default:
 			break;
 		}
@@ -263,6 +258,34 @@ public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItem
 		intent.setClass(CommentsAccountActivity.this, MerchantDetailActivity.class);
 		startActivity(intent);
 		overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+	}
+
+	@Override
+	public void onFooterRefresh(PullToRefreshView view) {
+		mPullToRefreshView.postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				page += 1;
+				getComments();
+			}
+		}, 1000);
+	}
+
+	@Override
+	public void onHeaderRefresh(PullToRefreshView view) {
+		mPullToRefreshView.postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				page = 1;
+				isFirstLoad = true;
+				needToLoad = true;
+				
+				comments = new ArrayList<Comment>();
+				getComments();
+			}
+		}, 1000);
 	}
 
 }

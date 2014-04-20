@@ -1,9 +1,9 @@
 package com.withiter.quhao.activity;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +13,12 @@ import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.location.LocationManagerProxy;
 import com.withiter.quhao.R;
 
-public class MainTabActivity extends FragmentActivity{
+public class MainTabActivity extends FragmentActivity implements AMapLocationListener{
 	
 	/**
 	 * FragmentTabHost对象
@@ -43,6 +46,8 @@ public class MainTabActivity extends FragmentActivity{
 	 * Tab选项卡的文字
 	 */
 	private String menuTextViews[] = {"商家列表", "周边美食", "个人中心", "更多"};
+	
+	private LocationManagerProxy mAMapLocationManager; 
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +92,14 @@ public class MainTabActivity extends FragmentActivity{
 	
 	@Override
 	public void onDestroy() {
+		if (mAMapLocationManager != null) {
+			mAMapLocationManager.removeUpdates(this);
+			mAMapLocationManager.destory();
+		}
+		mAMapLocationManager = null;
+		
 		super.onDestroy();
+		
 		Log.e("wjzwjz", "MainTabActivity onDestroy");
 	}
 	
@@ -95,6 +107,17 @@ public class MainTabActivity extends FragmentActivity{
 	 * 初始化组件
 	 */
 	private void initView() {
+		
+//		if (mAMapLocationManager == null) {  
+//            mAMapLocationManager = LocationManagerProxy.getInstance(this);  
+//            /* 
+//             * mAMapLocManager.setGpsEnable(false);// 
+//             * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true 
+//             */  
+//            // Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效  
+//            mAMapLocationManager.requestLocationUpdates(  
+//                    LocationProviderProxy.AMapNetwork, 5000, 10, this);  
+//        }
 		
 		//实例化布局对象
 		inflater = LayoutInflater.from(this);
@@ -138,6 +161,36 @@ public class MainTabActivity extends FragmentActivity{
 		textView.setText(menuTextViews[i]);
 		
 		return view;
+	}
+
+
+	@Override
+	public void onLocationChanged(Location location) {
+		
+	}
+
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		
+	}
+
+
+	@Override
+	public void onProviderEnabled(String provider) {
+		
+	}
+
+
+	@Override
+	public void onProviderDisabled(String provider) {
+		
+		
+	}
+
+	@Override
+	public void onLocationChanged(AMapLocation location) {
+		
 	}
 	
 }

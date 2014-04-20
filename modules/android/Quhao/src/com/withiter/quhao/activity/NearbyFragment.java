@@ -1,7 +1,6 @@
 package com.withiter.quhao.activity;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
@@ -229,6 +228,10 @@ public class NearbyFragment extends Fragment implements AMapLocationListener,
 				if(!needToLoad)
 				{
 					mPullToRefreshView.setEnableFooterView(false);
+				}
+				else
+				{
+					mPullToRefreshView.setEnableFooterView(true);
 				}
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
@@ -609,6 +612,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener,
 					LatLonPoint lp = new LatLonPoint(31.235048, 121.474794);
 					poiSearch.setBound(new SearchBound(lp, searchDistence));// 设置搜索区域为以lp点为圆心，其周围1000米范围
 					PoiResult result = poiSearch.searchPOI();
+					
 					if (null != result && null != result.getQuery()) {
 						if(result.getQuery().equals(query))
 						{

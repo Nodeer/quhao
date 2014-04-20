@@ -50,7 +50,6 @@ public class MerchantAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Drawable cachedImage = null;
 		Merchant merchant = (Merchant) getItem(position);
 		synchronized (merchant) {
 			ViewHolder holder = null;
