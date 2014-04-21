@@ -17,6 +17,7 @@ GET     /favicon.ico                        staticFile:public/images/common/quha
 GET     /                     		  		LandingController.index
 
 # Routes for Android & IOS clients
+GET		/app/marked							AttentionController.marked
 GET		/app/{action}						AppController.{action}
 
 # Routes for Android & IOS clients

@@ -19,6 +19,6 @@ public class AttentionEntityDef extends BaseModel {
 	public String mid;
 	@Indexed
 	public String accountId;
-	public boolean flag = false;
+	public boolean flag = false;	// true 表示关注， false表示不关注
 	
 }

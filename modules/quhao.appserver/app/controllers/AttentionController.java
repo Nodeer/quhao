@@ -1,6 +1,10 @@
 package controllers;
 
+import java.util.List;
+
 import com.withiter.models.merchant.Attention;
+import com.withiter.models.merchant.Merchant;
+import com.withiter.utils.StringUtils;
 
 public class AttentionController extends BaseController{
 	
@@ -33,5 +37,18 @@ public class AttentionController extends BaseController{
 		}else{
 			renderText("error");
 		}
+	}
+	
+	/**
+	 * 返回我的关注商家
+	 */
+	public static void marked(){
+		String aid = params.get("aid");
+		if(StringUtils.isEmpty(aid)){
+			renderJSON(false);
+		}
+		
+		List<Merchant> ms = Attention.getMerchantsByAid(aid);
+		renderJSON(ms);
 	}
 }

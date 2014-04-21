@@ -1,11 +1,11 @@
 package com.withiter.models.merchant;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import play.modules.morphia.Model.MorphiaQuery;
+import org.bson.types.ObjectId;
 
 import com.google.code.morphia.annotations.Entity;
-import com.withiter.models.account.Account;
 
 @Entity
 public class Attention extends AttentionEntityDef{
@@ -34,5 +34,20 @@ public class Attention extends AttentionEntityDef{
 		q.filter("flag", true);
 		
 		return q.asList();
+	}
+	
+	public static List<Merchant> getMerchantsByAid(String aid){
+		MorphiaQuery q = Attention.q();
+		q.filter("accountId", aid).filter("flag", true).criteria("mid");
+		List<Attention> as = q.asList();
+		
+		List<ObjectId> mids = new ArrayList<ObjectId>();
+		for(Attention s : as){
+			mids.add(new ObjectId(s.mid));
+		}
+		
+		MorphiaQuery mq = Merchant.q();
+		mq.filter("_id in", mids);
+		return mq.asList();
 	}
 }
