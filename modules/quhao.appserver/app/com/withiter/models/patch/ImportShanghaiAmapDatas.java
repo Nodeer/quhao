@@ -59,8 +59,8 @@ public class ImportShanghaiAmapDatas extends OnetimePatch {
 			m.poiId = s[1].split(":")[1];
 			m.name = s[2].split(":")[1];
 			m.address = s[3].split(":")[1];
-			m.x = s[4].split(":")[1].split(",")[0];
-			m.y = s[4].split(":")[1].split(",")[1];
+			m.y = s[4].split(":")[1].split(",")[0];
+			m.x = s[4].split(":")[1].split(",")[1];
 			m.telephone = (s[5].split(":").length > 1) ? s[5].split(":")[1].split(";") : new String[] { "" };
 
 					

@@ -44,6 +44,9 @@ public class Haoma extends HaomaEntityDef {
 		}
 	}
 
+	/**
+	 * 初始化Paidui信息，enable=false;
+	 */
 	public void initPaidui() {
 		logger.debug("merchant id : " + this.merchantId);
 		Merchant m = Merchant.findByMid(this.merchantId);
@@ -57,6 +60,28 @@ public class Haoma extends HaomaEntityDef {
 		}
 		for (String i : seatType) {
 			p = new Paidui();
+			this.haomaMap.put(Integer.parseInt(i), p);
+		}
+	}
+	
+	/**
+	 * 重置Paidui信息，将所有排队号码重置为0
+	 */
+	public void resetPaidui() {
+		logger.debug("merchant id : " + this.merchantId);
+		Merchant m = Merchant.findByMid(this.merchantId);
+		if(m == null){
+			logger.error("Merchant does not find!");
+		}
+		String[] seatType = m.seatType;
+		Paidui p = null;
+		if (seatType == null) {
+			return;
+		}
+		for (String i : seatType) {
+			p = new Paidui();
+			p.reset();
+			p.enable = true;
 			this.haomaMap.put(Integer.parseInt(i), p);
 		}
 	}
@@ -191,26 +216,16 @@ public class Haoma extends HaomaEntityDef {
 		if(count > 0){
 			if(count % 10 ==0){
 				time = count / 10;
-				logger.debug("count : " + count);
-				logger.debug("time : " + time);
-				// 整数页每十条做初始化操作
-				for(int i=0;i< time; i++){
-					hList = q.offset(i*countPerPage).limit(countPerPage).asList();
-					for(Haoma h : hList){
-						h.initPaidui();
-						h.save();
-					}
-				}
 			} else {
 				time = count / 10 +1;
-				logger.debug("count : " + count);
-				logger.debug("time : " + time);
-				for(int i=0;i< time; i++){
-					hList = q.offset(i*countPerPage).limit(countPerPage).asList();
-					for(Haoma h : hList){
-						h.initPaidui();
-						h.save();
-					}
+			}
+			logger.debug("count : " + count);
+			logger.debug("time : " + time);
+			for(int i=0;i< time; i++){
+				hList = q.offset(i*countPerPage).limit(countPerPage).asList();
+				for(Haoma h : hList){
+					h.resetPaidui();
+					h.save();
 				}
 			}
 		}

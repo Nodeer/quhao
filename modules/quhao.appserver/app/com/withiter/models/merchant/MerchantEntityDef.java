@@ -30,8 +30,8 @@ public abstract class MerchantEntityDef extends BaseModel {
 	public Set merchantImageSet = new HashSet<String>();	// 存放商家展示图片
 	
 	// 高德坐标
-	public String x;										// 商家地图X坐标 value from AMAP
-	public String y;										// 商家地图Y坐标 value from AMAP
+	public String x;										// (Lng)商家地图X坐标 value from AMAP
+	public String y;										// (Lat)商家地图Y坐标 value from AMAP
 	public List<String> tags = null;						// 商家关键字
 	public float averageCost = 0f;							// 人均消费
 	public float grade = 0f;								// 综合评价
