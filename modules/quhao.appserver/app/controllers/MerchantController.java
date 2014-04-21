@@ -456,6 +456,9 @@ public class MerchantController extends BaseController {
 		}else{
 			merchantList = Merchant.findByName(name);
 		}
+		
+		logger.debug("search result size: " + merchantList.size());
+		
 		List<MerchantVO> merchantVOList = null;
 		if (null != merchantList && !merchantList.isEmpty()) {
 			merchantVOList = new ArrayList<MerchantVO>();
