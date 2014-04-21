@@ -1,6 +1,9 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import vo.AttentionVO;
 
 import com.withiter.models.merchant.Attention;
 import com.withiter.models.merchant.Merchant;
@@ -49,6 +52,14 @@ public class AttentionController extends BaseController{
 		}
 		
 		List<Merchant> ms = Attention.getMerchantsByAid(aid);
-		renderJSON(ms);
+		List<AttentionVO> avos = new ArrayList<AttentionVO>();
+		AttentionVO avo = null;
+		for(Merchant m : ms){
+			avo = new AttentionVO();
+			avo.mid = m.id();
+			avo.mname = m.name;
+			avos.add(avo);
+		}
+		renderJSON(avos);
 	}
 }
