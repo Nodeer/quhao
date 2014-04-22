@@ -1,5 +1,9 @@
 package controllers.backend.admin;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -15,10 +19,13 @@ import org.slf4j.LoggerFactory;
 import play.Play;
 import play.data.validation.Required;
 import play.libs.Codec;
+import play.libs.Images;
 import play.modules.morphia.Model.MorphiaQuery;
 import play.mvc.Before;
 import vo.AdminVO;
+import cn.bran.japid.util.StringUtils;
 
+import com.mongodb.gridfs.GridFSInputFile;
 import com.withiter.common.Constants;
 import com.withiter.models.account.CooperationRequest;
 import com.withiter.models.admin.MerchantAccount;
@@ -28,6 +35,7 @@ import com.withiter.models.opinion.Opinion;
 import com.withiter.utils.ExceptionUtil;
 
 import controllers.BaseController;
+import controllers.UploadController;
 
 public class AdminController extends BaseController {
 	
@@ -180,16 +188,26 @@ public class AdminController extends BaseController {
 	 * @param starttime 置顶开始时间
 	 * @param endtime 置顶结束时间
 	 */
-	public static void enableTop(String mid, String starttime, String endtime){
+	public static void enableTop(){
+		
+		String mid = params.get("mid");
+		String starttime = params.get("starttime");
+		String endtime = params.get("endtime");
+		
+		if(StringUtils.isEmpty(mid) || StringUtils.isEmpty(starttime) || StringUtils.isEmpty(endtime)){
+			renderJSON("商家ID/开始时间/结束时间 不能为空");
+		}
+		
+		String image = params.get("image");
+		
 		Merchant m = Merchant.findByMid(mid);
 		if(m == null){
 			renderJSON("没有找到对应的商家ID");
 		}
 		if(!m.enable){
-			renderJSON(false);
+			renderJSON("此商家还没有开通取号啦服务不能置顶，m.enable=false");
 		}
 		TopMerchant t = TopMerchant.build(m);
-		t.enable = true;
 		try {
 			t.start = DateFormat.getDateInstance().parse(starttime);
 			t.end = DateFormat.getDateInstance().parse(endtime);
@@ -198,10 +216,56 @@ public class AdminController extends BaseController {
 			e.printStackTrace();
 			logger.error(ExceptionUtil.getTrace(e));
 		}
+		
 		t.save();
+		
+		if(!StringUtils.isEmpty(image)){
+			GridFSInputFile file = uploadFirst(image, t.id());
+			if (file != null) {
+				try {
+					String server = Play.configuration.getProperty("application.domain");
+					String imageStorePath = Play.configuration.getProperty("image.store.path");
+					t.merchantImage = URLEncoder.encode(imageStorePath + file.getFilename(), "UTF-8");
+					t.save();
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+					logger.error(ExceptionUtil.getTrace(e));
+				}
+			}
+		}
 		renderJSON(true);
 		
-//		topmerchant();
+	}
+	
+	/**
+	 * 上传Top merchant图片
+	 * @param param
+	 * @param mid
+	 * @return
+	 */
+	private static GridFSInputFile uploadFirst(String param, String tmid) {
+		GridFSInputFile gfsFile = null;
+		
+		logger.debug(""+params.get(param, File[].class));
+		logger.debug(params.get(param, File[].class).length+"");
+		
+		File[] files = params.get(param, File[].class);
+		for (File file : files) {
+			try {
+				File desFile = Play.getFile("public/upload/" + file.getName());
+				Images.resize(file, desFile, 320, 120);
+				gfsFile = UploadController.saveBinary(desFile, tmid);
+				desFile.delete();
+				break;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		if (gfsFile == null) {
+			return null;
+		} else {
+			return gfsFile;
+		}
 	}
 	
 	/**
@@ -239,4 +303,5 @@ public class AdminController extends BaseController {
 		List<Opinion> list = Opinion.nextNoHandle(page);
 		renderJapid(list);
 	}
+	
 }

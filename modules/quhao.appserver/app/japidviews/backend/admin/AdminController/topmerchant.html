@@ -10,15 +10,18 @@ $addJS("admin.js",true)
 
 `set contents
 
-	<form class="form-inline" role="form" style="margin:10px; " action="/admin/enabletop" method="get">
+	<form enctype="multipart/form-data" class="form-inline" role="form" style="margin:10px;" action="/admin/enabletop" method="post">
 	  <div class="form-group">
-	    <input type="text" class="form-control" name="mid" id="midsearch" placeholder="输入商家ID">
+	    <input type="text" class="form-control" name="mid" id="midsearch" placeholder="输入商家ID" />
 	  </div>
 	  <div class="form-group">
-	    <input type="text" class="form-control" name="starttime" id="starttime" placeholder="开始时间">
+	    <input type="text" class="form-control" name="starttime" id="starttime" placeholder="开始时间" />
 	  </div>
 	  <div class="form-group">
-	    <input type="text" class="form-control" name="endtime" id="endtime" placeholder="结束时间">
+	    <input type="text" class="form-control" name="endtime" id="endtime" placeholder="结束时间" />
+	  </div>
+	  <div class="form-group">
+	    <input type="file" class="form-control" name="image" id="image" />
 	  </div>
 	  <button type="submit" class="btn btn-default">置顶</button>
 	</form>
