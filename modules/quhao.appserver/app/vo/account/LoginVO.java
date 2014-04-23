@@ -1,12 +1,22 @@
 package vo.account;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Date;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import vo.TopMerchantVO;
 
 import com.google.code.morphia.annotations.Indexed;
 import com.withiter.common.Constants;
 import com.withiter.models.account.Account;
+import com.withiter.utils.ExceptionUtil;
 
 public class LoginVO {
+
+	private static Logger logger = LoggerFactory.getLogger(LoginVO.class);
 
 	public int errorCode;
 	
@@ -45,7 +55,12 @@ public class LoginVO {
 		this.password = account.password;
 		this.nickname = account.nickname;
 		this.birthDay = account.birthDay;
-		this.userImage = account.userImage;
+		try {
+			this.userImage = URLDecoder.decode(account.userImage, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			logger.error(ExceptionUtil.getTrace(e));
+		}
 		this.enable = account.enable;
 		this.mobileOS = account.mobileOS;
 		this.lastLogin = account.lastLogin;
