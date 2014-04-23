@@ -29,6 +29,7 @@ public class BackendMerchantInfoVO {
 	public String address = "";
 	public String telephone = "";
 	public String cateType = "";
+	public String cateType1 = "";
 	public String description;
 	public String openTime;
 	public String closeTime;	
@@ -85,6 +86,7 @@ public class BackendMerchantInfoVO {
 			}
 			
 			vo.cateType = m.cateType;
+			vo.cateType1 = m.cateType1;
 			vo.closeTime = m.closeTime;
 			vo.description = m.description;
 			vo.enable = m.enable;
@@ -111,7 +113,6 @@ public class BackendMerchantInfoVO {
 			vo.openRequestCount = openRequestCount;
 			
 			
-			String server = Play.configuration.getProperty("application.domain");
 			String imageStorePath = Play.configuration.getProperty("image.store.path");
 			// generate merchant image list
 			if(!m.merchantImageSet.isEmpty()){
@@ -171,7 +172,6 @@ public class BackendMerchantInfoVO {
 			
 			vo.cityCode = m.cityCode;
 			
-			String server = Play.configuration.getProperty("application.domain");
 			String imageStorePath = Play.configuration.getProperty("image.store.path");
 			// generate merchant image list
 			if(!m.merchantImageSet.isEmpty()){

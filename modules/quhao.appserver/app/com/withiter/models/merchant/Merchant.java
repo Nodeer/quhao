@@ -29,7 +29,7 @@ public class Merchant extends MerchantEntityDef {
 	 */
 	public static List<Merchant> findByType(String cateType) {
 		MorphiaQuery q = Merchant.q();
-		q.filter("cateType", cateType);
+		q.or(q.criteria("cateType").equal(cateType),q.criteria("cateType1").equal(cateType));
 		return q.asList();
 	}
 	

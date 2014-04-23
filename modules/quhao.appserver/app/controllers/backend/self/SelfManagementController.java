@@ -95,6 +95,10 @@ public class SelfManagementController extends BaseController {
 		String tel = params.get("tel");
 		String cateType = params.get("cateType");
 		String cateName = params.get("cateName");
+		
+		String cateType1 = params.get("cateType1");
+		String cateName1 = params.get("cateName1");
+		
 		String openTime = params.get("openTime");
 		String closeTime = params.get("closeTime");
 		String merchantImage = params.get("merchantImage");
@@ -131,6 +135,10 @@ public class SelfManagementController extends BaseController {
 		m.telephone = tel.split(",");
 		m.cateType = cateType;
 		m.cateName = cateName;
+		if(!StringUtils.isEmpty(cateType1) && !StringUtils.isEmpty(cateName1)){
+			m.cateType1 = cateType1;
+			m.cateName1 = cateName1;
+		}
 		m.openTime = openTime;
 		m.closeTime = closeTime;
 		m.enable = true;
@@ -185,7 +193,6 @@ public class SelfManagementController extends BaseController {
 			if (file != null) {
 				m.merchantImageSet.add(file.getFilename());
 				if (StringUtils.isEmpty(m.merchantImage)) {
-					String server = Play.configuration.getProperty("application.domain");
 					String imageStorePath = Play.configuration.getProperty("image.store.path");
 					try {
 						m.merchantImage = URLEncoder.encode(imageStorePath + file.getFilename(), "UTF-8");

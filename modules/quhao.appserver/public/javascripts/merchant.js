@@ -88,6 +88,7 @@ Merchant.reset = function(){
 	$("#address").val("");
 	$("#tel").val("");
 	$("#cateType").val("");
+	$("#cateType1").val("");
 	$("#openTime").val("");
 	$("#closeTime").val("");
 }
@@ -99,6 +100,7 @@ Merchant.enableEdit = function(){
 	$("#merchantImage").removeAttr("disabled");
 	$("#tel").removeAttr("disabled");
 	$("#cateType").removeAttr("disabled");
+	$("#cateType1").removeAttr("disabled");
 	$("#openTime").removeAttr("disabled");
 	$("#closeTime").removeAttr("disabled");
 	$("input[name=seatType]").removeAttr("disabled");
@@ -113,6 +115,7 @@ Merchant.create = function(){
 	$("#merchantImage").removeAttr("disabled");
 	$("#tel").removeAttr("disabled");
 	$("#cateType").removeAttr("disabled");
+	$("#cateType1").removeAttr("disabled");
 	$("#openTime").removeAttr("disabled");
 	$("#closeTime").removeAttr("disabled");
 	$("input[name=seatType]").removeAttr("disabled");
