@@ -36,7 +36,7 @@ public abstract class MerchantEntityDef extends BaseModel {
 	public String y;										// (Lat 纬度)商家地图Y坐标 value from AMAP
 	
 	// 坐标
-	public double[] loc;									// 坐标[x,y],用于mongodb的距离查询
+	public double[] loc = new double[2];					// 坐标[x,y],用于mongodb的距离查询
 	
 	public List<String> tags = null;						// 商家关键字
 	public float averageCost = 0f;							// 人均消费

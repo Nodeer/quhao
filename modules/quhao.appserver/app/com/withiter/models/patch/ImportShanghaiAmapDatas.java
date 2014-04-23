@@ -61,6 +61,11 @@ public class ImportShanghaiAmapDatas extends OnetimePatch {
 			m.address = s[3].split(":")[1];
 			m.y = s[4].split(":")[1].split(",")[0];
 			m.x = s[4].split(":")[1].split(",")[1];
+			
+			// 生成坐标，距离查询使用
+			m.loc[0] = Double.parseDouble(m.x);
+			m.loc[1] = Double.parseDouble(m.y);
+			
 			m.telephone = (s[5].split(":").length > 1) ? s[5].split(":")[1].split(";") : new String[] { "" };
 
 					
