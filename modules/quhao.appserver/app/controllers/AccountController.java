@@ -616,11 +616,10 @@ public class AccountController extends BaseController {
 				GridFSInputFile file = uploadFirst(userImage, accountId);
 				if (file != null) {
 					if (!StringUtils.isEmpty(accountId)) {
-						String server = Play.configuration.getProperty("application.domain");
 						String imageStorePath = Play.configuration.getProperty("image.store.path");
 						try {							
 							MorphiaUpdateOperations o = Account.o();
-							o.set(userImage, URLEncoder.encode(server + imageStorePath + file.getFilename(), "UTF-8"));
+							o.set(userImage, URLEncoder.encode(imageStorePath + file.getFilename(), "UTF-8"));
 							o.update("_id", new ObjectId(accountId));
 						} catch (UnsupportedEncodingException e) {
 							e.printStackTrace();
