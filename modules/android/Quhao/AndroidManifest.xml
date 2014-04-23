@@ -107,10 +107,25 @@
 			android:screenOrientation="portrait" />
 		<!-- personal page -->
 
-		<!-- personal page -->
+		<!-- personal detail page -->
 		<activity android:name="com.withiter.quhao.activity.PersonDetailActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
 			android:screenOrientation="portrait" />
-		<!-- personal page -->
+		<!-- personal detail page -->
+		
+		<!-- update nickname page -->
+		<activity android:name="com.withiter.quhao.activity.UpdateNicknameActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
+			android:screenOrientation="portrait" />
+		<!-- update nickname page -->
+		
+		<!-- Jifen Instruction page -->
+		<activity android:name="com.withiter.quhao.activity.JifenInstructionActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
+			android:screenOrientation="portrait" />
+		<!-- Jifen Instruction page -->
+		
+		<!-- update password page -->
+		<activity android:name="com.withiter.quhao.activity.UpdatePasswordActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
+			android:screenOrientation="portrait" />
+		<!-- update password page -->
 
 		<!-- more page -->
 		<activity android:name="com.withiter.quhao.activity.MoreActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"

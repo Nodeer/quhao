@@ -18,10 +18,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -45,7 +42,6 @@ import com.withiter.quhao.domain.CityInfo;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
-import com.withiter.quhao.util.tool.ImageUtil;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
@@ -60,13 +56,19 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 	private TextView nickNameText;
 	private TextView phoneText;
 	private TextView usualCityText;
+	private TextView currentJifenText;
 
 	private LoginInfo loginInfo;
 
 	private LinearLayout nickNameLayout;
+	private LinearLayout currentJifenLayout;
+	private LinearLayout jifenIntructionLayout;
 	private LinearLayout usualCityLayout;
 	private LinearLayout phoneLayout;
-
+	private LinearLayout updatePasswordLayout;
+	
+	private Button logoutButton;
+	
 	private final int UNLOCK_CLICK = 1000;
 
 	private LinearLayout photoLayout;
@@ -100,12 +102,21 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		phoneLayout = (LinearLayout) this.findViewById(R.id.phone_layout);
 		phoneLayout.setOnClickListener(this);
 		
+		currentJifenLayout = (LinearLayout) this.findViewById(R.id.current_jifen_layout);
+		currentJifenText = (TextView) this.findViewById(R.id.current_jifen);
+		jifenIntructionLayout = (LinearLayout) this.findViewById(R.id.jifen_instruction_layout);
+		jifenIntructionLayout.setOnClickListener(this);
+		updatePasswordLayout = (LinearLayout) this.findViewById(R.id.update_password_layout);
+		updatePasswordLayout.setOnClickListener(this);
 		personAvatar = (ImageView) this.findViewById(R.id.person_avatar);
 		
 		nickNameText = (TextView) this.findViewById(R.id.nick_name);
 		
 		usualCityText = (TextView) this.findViewById(R.id.usual_city);
 		phoneText = (TextView) this.findViewById(R.id.phone_number);
+		
+		logoutButton = (Button) this.findViewById(R.id.logout_btn);
+		logoutButton.setOnClickListener(this);
 		
 		btnBack.setOnClickListener(goBack(this));
 		
@@ -146,17 +157,16 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 			showChooseDialog();
 //			this.finish();
 			break;
-		case R.id.dianpingLayout:
+		case R.id.nick_name_layout:
 			progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
 			progressDialogUtil.showProgress();
 			if (QHClientApplication.getInstance().isLogined) {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				
-				Intent intentComment = new Intent();
-				intentComment.putExtra("accountId", QHClientApplication.getInstance().accountInfo.accountId);
-				intentComment.setClass(this, CommentsAccountActivity.class);
-				startActivity(intentComment);
+				Intent updateNickname = new Intent();
+				updateNickname.setClass(this, UpdateNicknameActivity.class);
+				startActivity(updateNickname);
 				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 				
 			} else {
@@ -174,17 +184,16 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 				builder.create().show();
 			}
 			break;
-		case R.id.current_paidui_layout:
+		case R.id.usual_city_layout:
 			progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
 			progressDialogUtil.showProgress();
 			if (QHClientApplication.getInstance().isLogined) {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 
-				Intent intentCurrent = new Intent();
-				intentCurrent.putExtra("queryCondition", "current");
-				intentCurrent.setClass(this, QuhaoCurrentStatesActivity.class);
-				startActivity(intentCurrent);
+				Intent citySelect = new Intent();
+				citySelect.setClass(this, CitySelectActivity.class);
+				startActivity(citySelect);
 				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			} else {
 				progressDialogUtil.closeProgress();
@@ -201,16 +210,15 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 				builder.create().show();
 			}
 			break;
-		case R.id.history_paidui_layout:
+		case R.id.jifen_instruction_layout:
 			progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
 			progressDialogUtil.showProgress();
 			if (QHClientApplication.getInstance().isLogined) {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				Intent intentHistory = new Intent();
-				intentHistory.putExtra("queryCondition", "history");
-				intentHistory.setClass(this, QuhaoHistoryStatesActivity.class);
-				startActivity(intentHistory);
+				Intent jifenInstruction = new Intent();
+				jifenInstruction.setClass(this, JifenInstructionActivity.class);
+				startActivity(jifenInstruction);
 				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			} else {
 				progressDialogUtil.closeProgress();
@@ -227,16 +235,45 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 				dialog.create().show();
 			}
 			break;
-		case R.id.credit_cost_layout:
+		case R.id.update_password_layout:
+			progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
+			progressDialogUtil.showProgress();
+			if (QHClientApplication.getInstance().isLogined) 
+			{
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+//				Intent intentCredit = new Intent(); TODO : wjzwjz
+//				intentCredit.setClass(this, UpdatePasswordActivity.class);
+//				startActivity(intentCredit);
+//				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+			} 
+			else 
+			{
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				Builder builder = new AlertDialog.Builder(this);
+				builder.setTitle("温馨提示");
+				builder.setMessage("已经登出");
+				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+				builder.create().show();
+				
+//				Builder dialog = new AlertDialog.Builder(this);
+//				dialog.setTitle("温馨提示").setMessage("请先登录").setPositiveButton("确定", null);
+//				dialog.show();
+			}
+			break;
+		case R.id.logout_btn:
 			progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
 			progressDialogUtil.showProgress();
 			if (QHClientApplication.getInstance().isLogined) {
 				progressDialogUtil.closeProgress();
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				Intent intentCredit = new Intent();
-				intentCredit.setClass(this, CreditCostListActivity.class);
-				startActivity(intentCredit);
-				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+				logoutHandler.obtainMessage(200, null).sendToTarget();
+				
 			} else {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -257,12 +294,24 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 			}
 			break;
 		default:
-			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;
 		}
 	}
 
+	protected Handler logoutHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			if (msg.what == 200) {
+				super.handleMessage(msg);
+				
+				QHClientApplication.getInstance().isLogined = false;
+				QHClientApplication.getInstance().accountInfo = null;
+//				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				PersonDetailActivity.this.finish();
+			}
+		}
+	};
+	
 	private void showChooseDialog() {
 
 		new AlertDialog.Builder(this)
@@ -290,7 +339,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 								intentFromCapture.putExtra(
 										MediaStore.EXTRA_OUTPUT,
 										Uri.fromFile(new File(Environment
-												.getExternalStorageDirectory() + "/" + QuhaoConstant.PERSON_IMAGE_FOLDER,
+												.getExternalStorageDirectory() + "/" + QuhaoConstant.IMAGES_SD_URL + "/" + SharedprefUtil.get(PersonDetailActivity.this, QuhaoConstant.ACCOUNT_ID, "") + "_" +
 												QuhaoConstant.PERSON_IMAGE_FILE_NAME)));
 							}
 
@@ -322,7 +371,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 			case CAMERA_REQUEST_CODE:
 				if (SDTool.hasSdcard()) {
 					File tempFile = new File(Environment
-							.getExternalStorageDirectory() + "/" + QuhaoConstant.PERSON_IMAGE_FOLDER,
+							.getExternalStorageDirectory() + "/" + QuhaoConstant.IMAGES_SD_URL + "/" + SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "") + "_" +
 							QuhaoConstant.PERSON_IMAGE_FILE_NAME);
 					startPhotoZoom(Uri.fromFile(tempFile));
 				} else {
@@ -375,8 +424,9 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 			FileOutputStream fos;
 			File image = null;
 			try {
+				String accountId = SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "");
 				image = new File(Environment
-						.getExternalStorageDirectory() + "/" + QuhaoConstant.PERSON_IMAGE_FOLDER+
+						.getExternalStorageDirectory() + "/" + QuhaoConstant.IMAGES_SD_URL+ "/" + accountId + "_" + 
 						QuhaoConstant.PERSON_IMAGE_FILE_NAME);
 				File folder = image.getParentFile();
 				while (!folder.exists()) {
@@ -411,13 +461,12 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 			public void run() {
 				
 				try {
-					String request1;
+					String request;
 					Looper.prepare();
-					request1 = post(QuhaoConstant.HTTP_URL+"updateUserImage", params, files);
-					Log.e("wjzwjz", "request : " + request1);
+					request = post(QuhaoConstant.HTTP_URL+"updateUserImage", params, files);
+					Log.e("wjzwjz", "request : " + request);
 					
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
@@ -483,8 +532,9 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
                 sb1.append(PREFIX);
                 sb1.append(BOUNDARY);
                 sb1.append(LINEND);
-                sb1.append("Content-Disposition: form-data; name=\"" + file.getKey() + "\"; filename=\""
-                        + file.getValue().getName() + "\"" + LINEND);
+//                sb1.append("Content-Disposition: form-data; name=\"" + file.getKey() + "\"; filename=\""
+//                        + file.getValue().getName() + "\"" + LINEND);
+                sb1.append("Content-Disposition: form-data; name=\"" + file.getKey() + "\"; filename=\"person.png\"" + LINEND);
                 sb1.append("Content-Type: application/octet-stream; charset=" + CHARSET + LINEND);
                 sb1.append(LINEND);
                 outStream.write(sb1.toString().getBytes());
@@ -521,53 +571,6 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
         return sb2.toString();
     }
 	
-	private void signIn() {
-		String accountId = SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "");
-		try {
-			String result = CommonHTTPRequest.get("AccountController/signIn?accountId=" + accountId);
-			QuhaoLog.i(TAG, result);
-			if (StringUtils.isNull(result)) {
-			} else {
-				loginInfo = ParseJson.getLoginInfo(result);
-				AccountInfo account = new AccountInfo();
-				account.build(loginInfo);
-//						SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "true");
-				QHClientApplication.getInstance().accountInfo = account;
-				QHClientApplication.getInstance().isLogined = true;
-
-				QuhaoLog.i(TAG, loginInfo.msg);
-				if (loginInfo.msg.equals("fail")) {
-//							SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "false");
-					QHClientApplication.getInstance().isLogined = false;
-					Map<String, Object> toastParams = new HashMap<String, Object>();
-					toastParams.put("activity", PersonDetailActivity.this);
-					toastParams.put("text", "签到失败");
-					toastParams.put("toastLength", Toast.LENGTH_LONG);
-					toastHandler.obtainMessage(1000, toastParams).sendToTarget();
-					return;
-				}
-				if (loginInfo.msg.equals("success")) {
-					
-					QHClientApplication.getInstance().isLogined = true;
-					Map<String, Object> toastParams = new HashMap<String, Object>();
-					toastParams.put("activity", PersonDetailActivity.this);
-					toastParams.put("text", R.string.sign_in_success);
-					toastParams.put("toastLength", Toast.LENGTH_LONG);
-					toastHandler.obtainMessage(1000, toastParams).sendToTarget();
-					accountUpdateHandler.obtainMessage(200, account).sendToTarget();
-				}
-			}
-		} catch (Exception e) {
-			accountUpdateHandler.obtainMessage(200, null).sendToTarget();
-			Toast.makeText(PersonDetailActivity.this, "签到失败", Toast.LENGTH_LONG).show();
-			e.printStackTrace();
-		} finally {
-			
-			progressDialogUtil.closeProgress();
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-		}
-	}
-
 	@Override
 	protected void onResume() {
 		setPersonDetail();
@@ -577,9 +580,16 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 	private void setPersonDetail() {
 		// get cached image from SD card
 		if (SDTool.instance().SD_EXIST) {
-			File f = new File(Environment.getExternalStorageDirectory() + "/" + 
-					QuhaoConstant.PERSON_IMAGE_FILE_NAME + QuhaoConstant.PERSON_IMAGE_FILE_NAME);
+			File f = new File(Environment
+					.getExternalStorageDirectory() + "/" + QuhaoConstant.IMAGES_SD_URL + "/" + SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "") + "_" +
+					QuhaoConstant.PERSON_IMAGE_FILE_NAME);
 			QuhaoLog.d(TAG, "f.exists():" + f.exists());
+			File folder = f.getParentFile();
+			while (!folder.exists()) {
+				folder.mkdir();
+				folder = folder.getParentFile();
+			}
+			
 			if(f.exists()){
 				Bitmap bitmap = BitmapFactory.decodeFile(f.getPath());
 				if (null != bitmap) {
@@ -589,8 +599,6 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		}
 		
 		AccountInfo account = QHClientApplication.getInstance().accountInfo;
-		
-		
 		
 		if(StringUtils.isNull(account.nickName))
 		{
@@ -605,12 +613,18 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		
 		usualCityText.setText(cityInfo.cityName);
 		
-		
 		phoneText.setText(account.phone);
 		if(StringUtils.isNull(account.phone))
 		{
 			phoneText.setText(R.string.nomobile);
 		}
+		
+		currentJifenText.setText(account.jifen);
+		if(StringUtils.isNull(account.jifen))
+		{
+			currentJifenText.setText(0);
+		}
+		
 	}
 
 	private void queryAccountByAccountId() {

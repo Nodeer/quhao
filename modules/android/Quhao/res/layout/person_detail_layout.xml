@@ -123,6 +123,76 @@
                 android:src="@drawable/arrow_right" />
         </LinearLayout>
 
+        <LinearLayout android:id="@+id/current_jifen_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/list_item_border"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10.0dip" >
+
+            <TextView
+                android:layout_width="0.0px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6.0dip"
+                android:layout_weight="1.0"
+                android:maxLines="2"
+                android:paddingRight="6.0dip"
+                android:text="@string/current_jifen"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="#ff000000"
+                android:textSize="16.0sp" />
+
+            <TextView android:id="@+id/current_jifen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:duplicateParentState="true"
+                android:paddingRight="6.0dip"
+                android:text="@string/empty" />
+            
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@null"
+                android:duplicateParentState="true"
+                android:paddingRight="6.0dip"
+                android:src="@drawable/arrow_right" />
+        </LinearLayout>
+        
+        <LinearLayout android:id="@+id/jifen_instruction_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/list_item_border"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10.0dip" >
+
+            <TextView
+                android:layout_width="0.0px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6.0dip"
+                android:layout_weight="1.0"
+                android:maxLines="2"
+                android:paddingRight="6.0dip"
+                android:text="@string/jifen_layout_menul"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="#ff000000"
+                android:textSize="16.0sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@null"
+                android:duplicateParentState="true"
+                android:paddingRight="6.0dip"
+                android:src="@drawable/arrow_right" />
+        </LinearLayout>
+        
         <LinearLayout android:id="@+id/usual_city_layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -200,8 +270,51 @@
                 android:paddingRight="6.0dip"
                 android:src="@drawable/arrow_right" />
         </LinearLayout>
-        <!-- current/history quhao, history jifen -->
 
+        <LinearLayout android:id="@+id/update_password_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/list_item_border"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10.0dip" >
+
+            <TextView
+                android:layout_width="0.0px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6.0dip"
+                android:layout_weight="1.0"
+                android:maxLines="2"
+                android:paddingRight="6.0dip"
+                android:text="@string/update_password"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="#ff000000"
+                android:textSize="16.0sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@null"
+                android:duplicateParentState="true"
+                android:paddingRight="6.0dip"
+                android:src="@drawable/arrow_right" />
+        </LinearLayout>
+        
     </LinearLayout>
 
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:gravity="center_vertical"
+        android:padding="10.0dip" >
+
+        <Button android:id="@+id/logout_btn"
+            android:layout_width="fill_parent" 
+            android:layout_height="fill_parent"
+            android:background="@drawable/button_background_blue"
+            android:text="@string/exit_login"/>
+
+    </LinearLayout>
 </LinearLayout>

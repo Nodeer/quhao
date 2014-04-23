@@ -111,6 +111,14 @@
 	<string name="nick_name">昵称</string>
 	<string name="usual_city">常住地</string>
 	<string name="phone_number">手机号</string>
+	<string name="current_jifen">现有积分</string>
+	<string name="jifen_layout_menul">积分说明</string>
+	<string name="update_password">修改密码</string>
+	<string name="current_password">当前密码：</string>
+	<string name="exit_login">退出当前帐号</string>
+	<string name="input_nickname">请填写昵称</string>
+	<string name="nickname_cannot_null">请填写昵称</string>
+	<string name="nickname_update_failed">亲，网络原因，昵称更新失败！</string>
 	<!-- 个人中心 -->
 	
 	<!-- menu bar -->

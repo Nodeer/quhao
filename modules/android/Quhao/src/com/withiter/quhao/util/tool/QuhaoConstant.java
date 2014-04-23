@@ -64,7 +64,7 @@ public class QuhaoConstant {
 	 */
 //	public static long TIME_STAMP = 0;
 //	public static long TIME_STAMP_OLD = 0;
-	public static String PERSON_IMAGE_FILE_NAME = "person.jpg";
+	public static String PERSON_IMAGE_FILE_NAME = "person.png";
 	
 	public static String PERSON_IMAGE_FOLDER = "quhao/personimages/";
 	

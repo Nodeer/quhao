@@ -1,10 +1,15 @@
 package com.withiter.quhao.activity;
 
+import java.io.File;
+
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -14,6 +19,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,11 +28,13 @@ import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.ActivityUtil;
+import com.withiter.quhao.util.ImageTask;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.QuhaoConstant;
+import com.withiter.quhao.util.tool.SDTool;
 import com.withiter.quhao.util.tool.SharedprefUtil;
 import com.withiter.quhao.vo.LoginInfo;
 
@@ -48,6 +56,8 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 	private LinearLayout historyPaiduiLayout;
 	private LinearLayout creditCostLayout;
 	private LinearLayout personInfoLayout;
+	
+	private ImageView avatar;
 
 	private Button loginBtn;
 	private Button regBtn;
@@ -71,6 +81,8 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 		value_qiandao = (TextView) contentView.findViewById(R.id.value_qiandao);
 		value_dianpin = (TextView) contentView.findViewById(R.id.value_dianpin);
 
+		avatar = (ImageView) contentView.findViewById(R.id.avatar);
+		
 		signInLayout = (LinearLayout) contentView.findViewById(R.id.signInLayout);
 		dianpingLayout = (LinearLayout) contentView.findViewById(R.id.dianpingLayout);
 
@@ -121,9 +133,37 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				regBtn.setVisibility(View.GONE);
 				updateUIData(account);
 			} else {
+
+				mobile.setText(R.string.nomobile);
+				
+				nickName.setText(R.string.noname);
+
+				jifen.setText("0");
+
+				avatar.setImageResource(R.drawable.person_avatar);
+				value_qiandao.setText("0");
+				value_dianpin.setText("0");
+			
 				loginBtn.setVisibility(View.VISIBLE);
 				regBtn.setVisibility(View.VISIBLE);
 			}
+		}
+		else
+		{
+			mobile.setText(R.string.nomobile);
+			
+			nickName.setText(R.string.noname);
+
+			jifen.setText("0");
+
+			avatar.setImageResource(R.drawable.person_avatar);
+			value_qiandao.setText("0");
+			value_dianpin.setText("0");
+		
+			loginBtn.setVisibility(View.VISIBLE);
+			regBtn.setVisibility(View.VISIBLE);
+			loginBtn.setVisibility(View.VISIBLE);
+			regBtn.setVisibility(View.VISIBLE);
 		}
 
 	}
@@ -142,6 +182,46 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 		mobile.setText(account.phone);
 		jifen.setText(account.jifen);
 
+		Bitmap bitmap = null;
+		if(StringUtils.isNotNull(account.userImage))
+		{
+			if (SDTool.instance().SD_EXIST) {
+				
+				String fileName = account.userImage.split("fileName=")[1];
+				
+				File f = new File(Environment.getExternalStorageDirectory() + "/" + 
+						QuhaoConstant.IMAGES_SD_URL + "/" + fileName);
+				QuhaoLog.d(TAG, "f.exists():" + f.exists());
+				File folder = f.getParentFile();
+				while (!folder.exists()) {
+					folder.mkdir();
+					folder = folder.getParentFile();
+				}
+				
+				if(f.exists()){
+					bitmap = BitmapFactory.decodeFile(f.getPath());
+					if (null != bitmap) {
+						avatar.setImageBitmap(bitmap);
+					}
+				}
+			}
+		}
+		
+		ImageTask task = new ImageTask(avatar, account.userImage, true, getActivity());
+		task.execute(new Runnable() {
+			
+			@Override
+			public void run() {
+				
+			}
+		},new Runnable() {
+			
+			@Override
+			public void run() {
+				
+			}
+		});
+		
 		value_qiandao.setText(account.signIn);
 		value_dianpin.setText(account.dianping);
 		if ("true".equals(account.isSignIn)) {
@@ -231,6 +311,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 							QHClientApplication.getInstance().accountInfo = account;
 							QHClientApplication.getInstance().phone = loginInfo.phone;
 							QHClientApplication.getInstance().isLogined = true;
+							refreshUIHandler.sendEmptyMessage(UNLOCK_CLICK);
 						}
 						else
 						{
@@ -249,6 +330,8 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 			}
 			
 		}
+		
+		refreshUIHandler.sendEmptyMessage(UNLOCK_CLICK);
 	}
 	
 	@Override
@@ -261,7 +344,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				{
 					Looper.prepare();
 					queryAccountByAccountId();
-					refreshUIHandler.sendEmptyMessage(UNLOCK_CLICK);
+					
 					
 				}catch(Exception e)
 				{
@@ -346,12 +429,26 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 //			this.finish();
 			break;
 		case R.id.person_info:
-			
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-//			Intent intent1 = new Intent(getActivity(), PersonDetailActivity.class);
-//			intent1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-//			startActivity(intent1);
-//			this.finish();
+			if (QHClientApplication.getInstance().isLogined) {
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				Intent intent1 = new Intent(getActivity(), PersonDetailActivity.class);
+				intent1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				startActivity(intent1);
+				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+				
+			} else {
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				AlertDialog.Builder builder = new Builder(getActivity());
+				builder.setTitle("温馨提示");
+				builder.setMessage("请先登录");
+				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+				builder.create().show();
+			}
 			break;
 		case R.id.register:
 			
