@@ -31,7 +31,7 @@ public abstract class AccountEntityDef extends BaseModel {
 	
 	public boolean isSignIn = false;
 
-	public int jifen = 5;
+	public int jifen = 10;						// 默认10个积分
 	
 	public int dianping = 0;
 	public int zhaopian = 0;
