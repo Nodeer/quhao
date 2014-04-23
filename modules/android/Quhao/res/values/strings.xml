@@ -89,6 +89,7 @@
 	
 	<!-- 个人中心 -->
 	<string name="gerenzhongxin">个人中心</string>
+	<string name="gerenxinxi">个人信息</string>
 	<string name="avatar">您的优雅头像</string>
 	<string name="noname">无名人士</string>
 	<string name="nomobile">无号码</string>
@@ -106,6 +107,10 @@
 	<string name="history_paidui">历史取号情况</string>
 	<string name="history_jifen">积分消费情况</string>
 	<string name="sign_in_success">签到成功</string>
+	<string name="photo">头像</string>
+	<string name="nick_name">昵称</string>
+	<string name="usual_city">常住地</string>
+	<string name="phone_number">手机号</string>
 	<!-- 个人中心 -->
 	
 	<!-- menu bar -->

@@ -37,7 +37,7 @@ public class CommonHTTPRequest {
 		httpUrl = encodeURL(httpUrl);
 		HttpPost request = new HttpPost(httpUrl);
 		request.setHeader("user-agent", "QuhaoAndroid");
-
+		
 		HttpParams httpParameters = new BasicHttpParams();
 		// Set the timeout in milliseconds until a connection is established.
 		int timeoutConnection = 10 * 1000;

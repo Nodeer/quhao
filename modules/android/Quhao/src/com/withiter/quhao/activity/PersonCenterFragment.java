@@ -47,6 +47,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 	private LinearLayout currentPaiduiLayout;
 	private LinearLayout historyPaiduiLayout;
 	private LinearLayout creditCostLayout;
+	private LinearLayout personInfoLayout;
 
 	private Button loginBtn;
 	private Button regBtn;
@@ -76,10 +77,10 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 		currentPaiduiLayout = (LinearLayout) contentView.findViewById(R.id.current_paidui_layout);
 		historyPaiduiLayout = (LinearLayout) contentView.findViewById(R.id.history_paidui_layout);
 		creditCostLayout = (LinearLayout) contentView.findViewById(R.id.credit_cost_layout);
-
+		personInfoLayout = (LinearLayout) contentView.findViewById(R.id.person_info);
 		signInLayout.setOnClickListener(this);
 		dianpingLayout.setOnClickListener(this);
-
+		personInfoLayout.setOnClickListener(this);
 		currentPaiduiLayout.setOnClickListener(this);
 		historyPaiduiLayout.setOnClickListener(this);
 		creditCostLayout.setOnClickListener(this);
@@ -342,6 +343,14 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 			intent.putExtra("activityName", this.getClass().getName());
 			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			startActivity(intent);
+//			this.finish();
+			break;
+		case R.id.person_info:
+			
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+//			Intent intent1 = new Intent(getActivity(), PersonDetailActivity.class);
+//			intent1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//			startActivity(intent1);
 //			this.finish();
 			break;
 		case R.id.register:

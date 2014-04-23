@@ -18,6 +18,7 @@ import android.os.Looper;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.amap.api.services.core.LatLonPoint;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.domain.CityInfo;
 import com.withiter.quhao.util.ActivityUtil;
@@ -69,6 +70,11 @@ public class QHClientApplication extends Application {
 	 * 默认城市
 	 */
 	public CityInfo defaultCity;
+	
+	/**
+	 * 当前位置信息
+	 */
+	public LatLonPoint lp = new LatLonPoint(31.235048, 121.474794);
 	
 	
 	public static Context mContext;

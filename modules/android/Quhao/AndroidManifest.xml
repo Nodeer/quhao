@@ -45,7 +45,7 @@
 	<!-- Share SDK 使用 end-->
 	
 	<supports-screens android:largeScreens="true" android:normalScreens="true" android:smallScreens="true" android:resizeable="true" android:anyDensity="true" />
-	<application android:allowBackup="true" android:icon="@drawable/application_icon" android:label="@style/AppTheme" android:theme="@style/AppTheme" android:name="com.withiter.quhao.QHClientApplication">
+	<application android:allowBackup="true" android:icon="@drawable/quhao" android:label="@style/AppTheme" android:theme="@style/AppTheme" android:name="com.withiter.quhao.QHClientApplication">
 		<!-- android:name=".QHClientApplication" -->
 
 		<!-- TODO: WARNING 部署时请修改test的值为false -->
@@ -107,6 +107,10 @@
 			android:screenOrientation="portrait" />
 		<!-- personal page -->
 
+		<!-- personal page -->
+		<activity android:name="com.withiter.quhao.activity.PersonDetailActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
+			android:screenOrientation="portrait" />
+		<!-- personal page -->
 
 		<!-- more page -->
 		<activity android:name="com.withiter.quhao.activity.MoreActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"

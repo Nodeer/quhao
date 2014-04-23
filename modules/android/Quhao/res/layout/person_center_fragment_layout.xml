@@ -55,7 +55,7 @@
 
         <!-- avatar, nickname and mobile number -->
 
-        <LinearLayout
+        <LinearLayout android:id="@+id/person_info"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="#ffffffff"

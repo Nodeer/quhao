@@ -1,5 +1,7 @@
 package com.withiter.quhao.util.tool;
 
+import java.io.File;
+
 public class QuhaoConstant {
 
 	public static String HTTP_URL = "http://192.168.2.100:9081/";
@@ -51,7 +53,6 @@ public class QuhaoConstant {
 	 */
 	public static String NEXT_CMD = "";
 	public static String IS_2G3G_READ = "com.withiter.settings.2g3g.read.img";
-	public static String DOWNLOAD_PATH = "/mnt/sdcard/download/weibopic/";
 
 	public static String CITY_CODE = "cityCode";
 	
@@ -63,5 +64,8 @@ public class QuhaoConstant {
 	 */
 //	public static long TIME_STAMP = 0;
 //	public static long TIME_STAMP_OLD = 0;
+	public static String PERSON_IMAGE_FILE_NAME = "person.jpg";
+	
+	public static String PERSON_IMAGE_FOLDER = "quhao/personimages/";
 	
 }

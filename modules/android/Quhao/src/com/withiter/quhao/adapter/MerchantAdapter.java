@@ -5,6 +5,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +15,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.amap.api.services.core.LatLonPoint;
+import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.AsynImageLoader;
+import com.withiter.quhao.util.tool.DistanceUtil;
 import com.withiter.quhao.vo.Merchant;
 
 public class MerchantAdapter extends BaseAdapter {
@@ -59,7 +63,7 @@ public class MerchantAdapter extends BaseAdapter {
 				convertView = inflator.inflate(R.layout.merchant_list_item, null);
 				holder.img = (ImageView) convertView.findViewById(R.id.img);
 				holder.img.setAdjustViewBounds(true);
-				holder.btn = (Button) convertView.findViewById(R.id.btnMerchantDetail);
+				holder.distance = (TextView) convertView.findViewById(R.id.distance);
 				holder.content = (TextView) convertView.findViewById(R.id.merchantName);
 				holder.merchantAddress = (TextView) convertView.findViewById(R.id.merchantAddress);
 				holder.pinfenImage = (ImageView) convertView.findViewById(R.id.pingfen);
@@ -105,10 +109,22 @@ public class MerchantAdapter extends BaseAdapter {
 			}
 			*/
 			holder.content.setTag("content_" + position);
-
-			holder.merchantAddress.setTag("merchantAddress_" + position);
 			holder.content.setText(merchant.name);
+			holder.merchantAddress.setTag("merchantAddress_" + position);
+			
 			holder.merchantAddress.setText(merchant.address);
+			
+			holder.distance.setTag("distance_" + position);
+			LatLonPoint lp = QHClientApplication.getInstance().lp;
+			if(null != lp && merchant.lat != 0 && merchant.lng != 0)
+			{
+				holder.distance.setText(String.valueOf(DistanceUtil.computeDistance(lp.getLatitude(), lp.getLongitude(), merchant.lat, merchant.lng)));
+				Log.e("wjzwjz distance : ", String.valueOf(DistanceUtil.computeDistance(lp.getLatitude(), lp.getLongitude(), merchant.lat, merchant.lng)));
+			}
+			else
+			{
+				holder.distance.setText("没有定位信息，暂时无法显示距离");
+			}
 			if (StringUtils.isNull(merchant.grade)) {
 				merchant.grade = "0.0";
 			} else {
@@ -167,6 +183,6 @@ public class MerchantAdapter extends BaseAdapter {
 		TextView merchantAddress;
 		ImageView pinfenImage;
 		TextView merchantRenjun;
-		Button btn;
+		TextView distance;
 	}
 }

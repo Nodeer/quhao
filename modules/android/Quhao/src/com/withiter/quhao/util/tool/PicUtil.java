@@ -255,7 +255,7 @@ public class PicUtil {
 	public static boolean downpic(String picName, Bitmap bitmap) {
 		boolean nowbol = false;
 		try {
-			File saveFile = new File(QuhaoConstant.DOWNLOAD_PATH + picName
+			File saveFile = new File(QuhaoConstant.IMAGES_SD_URL + picName
 					+ ".png");
 			if (!saveFile.exists()) {
 				saveFile.createNewFile();

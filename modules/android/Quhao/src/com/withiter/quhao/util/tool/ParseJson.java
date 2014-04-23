@@ -48,8 +48,6 @@ public class ParseJson {
 				JSONObject obj = jsonArrays.getJSONObject(i);
 				long count = 0L;
 				String categoryType = "";
-				String catTypeToString = "";
-				String url = "";
 				if (obj.has("count")) {
 					count = Long.valueOf(obj.optString("count"));
 				}
@@ -89,17 +87,22 @@ public class ParseJson {
 				String imgUrl = "";
 				if (obj.has("merchantImage")) {
 					// TODO test here
-					imgUrl = obj.getString("merchantImage");
+					imgUrl = obj.optString("merchantImage");
 					if (QuhaoConstant.test) {
 						if(null != imgUrl && !"".equals(imgUrl))
 						{
-							imgUrl = obj.getString("merchantImage").replace("http://localhost:9081/", QuhaoConstant.HTTP_URL);
+//							imgUrl = obj.optString("merchantImage").replace("http://localhost:9081/", QuhaoConstant.HTTP_URL);
+							imgUrl = QuhaoConstant.HTTP_URL + obj.optString("merchantImage").substring(1);
 						}
 						
 //						imgUrl = obj.getString("merchantImage").replace("http://localhost:9081/", "http://192.168.2.100:9081/");
 						System.out.println(imgUrl);
 					} else {
-						imgUrl = obj.getString("merchantImage");
+						if(null != imgUrl && !"".equals(imgUrl))
+						{
+							imgUrl = QuhaoConstant.HTTP_URL + obj.optString("merchantImage").substring(1);
+						}
+						
 					}
 
 					try {
@@ -172,13 +175,24 @@ public class ParseJson {
 		if (QuhaoConstant.test) {
 			if(null != imgUrl && !"".equals(imgUrl))
 			{
-				imgUrl = obj.optString("merchantImage").replace("http://localhost:9081/", QuhaoConstant.HTTP_URL);
+//				imgUrl = obj.optString("merchantImage").replace("http://localhost:9081/", QuhaoConstant.HTTP_URL);
+				imgUrl = QuhaoConstant.HTTP_URL + obj.optString("merchantImage").substring(1);
 			}
 			
 //			imgUrl = obj.optString("merchantImage").replace("http://localhost:9081/", "http://192.168.2.100:9081/");
 			System.out.println(imgUrl);
 		} else {
-			imgUrl = obj.optString("merchantImage");
+			if(null != imgUrl && !"".equals(imgUrl))
+			{
+				imgUrl = QuhaoConstant.HTTP_URL + obj.optString("merchantImage").substring(1);
+			}
+		}
+		if (!imgUrl.contains("=")) {
+			try {
+				imgUrl = URLDecoder.decode(obj.getString("merchantImage"), "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 		}
 		String name = obj.optString("name");
 		String address = obj.optString("address");
@@ -272,13 +286,24 @@ public class ParseJson {
 			if (QuhaoConstant.test) {
 				if(null != userImage && !"".equals(userImage))
 				{
-					userImage = obj.getString("userImage").replace("http://localhost:9081/", QuhaoConstant.HTTP_URL);
+//					userImage = obj.getString("userImage").replace("http://localhost:9081/", QuhaoConstant.HTTP_URL);
+					userImage = QuhaoConstant.HTTP_URL + obj.optString("userImage").substring(1);
 				}
 				
 //				imgUrl = obj.getString("merchantImage").replace("http://localhost:9081/", "http://192.168.2.100:9081/");
 				System.out.println(userImage);
 			} else {
-				userImage = obj.getString("userImage");
+				if(null != userImage && !"".equals(userImage))
+				{
+					userImage = QuhaoConstant.HTTP_URL + obj.optString("userImage").substring(1);
+				}
+			}
+			if (!userImage.contains("=")) {
+				try {
+					userImage = URLDecoder.decode(obj.getString("userImage"), "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
 			}
 			String enable = obj.optString("enable");
 			String mobileOS = obj.optString("mobileOS");
@@ -414,13 +439,24 @@ public class ParseJson {
 		if (QuhaoConstant.test) {
 			if(null !=merchantImage && !"".equals(merchantImage))
 			{
-				merchantImage = obj.getString("merchantImage").replace("http://localhost:9081/", QuhaoConstant.HTTP_URL);
+//				merchantImage = obj.getString("merchantImage").replace("http://localhost:9081/", QuhaoConstant.HTTP_URL);
+				merchantImage = QuhaoConstant.HTTP_URL + obj.optString("merchantImage").substring(1);
 			}
 			
 //			imgUrl = obj.getString("merchantImage").replace("http://localhost:9081/", "http://192.168.2.100:9081/");
 			System.out.println(merchantImage);
 		} else {
-			merchantImage = obj.getString("merchantImage");
+			if(null != merchantImage && !"".equals(merchantImage))
+			{
+				merchantImage = QuhaoConstant.HTTP_URL + obj.optString("merchantImage").substring(1);
+			}
+		}
+		if (!merchantImage.contains("=")) {
+			try {
+				merchantImage = URLDecoder.decode(obj.getString("merchantImage"), "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 		}
 
 		rvo = new ReservationVO(rId,accountId, merchantId, seatNumber, myNumber, beforeYou, currentNumber, valid, tipKey, tipValue, merchantName, merchantAddress,isCommented,merchantImage);
