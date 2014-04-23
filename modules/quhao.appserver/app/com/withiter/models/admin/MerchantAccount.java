@@ -70,6 +70,11 @@ public class MerchantAccount extends MerchantAccountEntityDef {
 		String passwordHexed = Codec.hexSHA1(password);
 		MorphiaQuery q = MerchantAccount.q();
 		q.filter("email", email);
+		
+		if(q.first() == null){
+			return "此账号不存在";
+		}
+		
 		q.filter("password", passwordHexed);
 		if (q.first() != null) {
 			MerchantAccount a = q.first();
