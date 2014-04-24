@@ -122,7 +122,8 @@
                 android:paddingRight="6.0dip"
                 android:src="@drawable/arrow_right" />
         </LinearLayout>
-
+        
+        <!-- current/history quhao, history jifen -->
         <LinearLayout android:id="@+id/current_jifen_layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -161,7 +162,7 @@
                 android:paddingRight="6.0dip"
                 android:src="@drawable/arrow_right" />
         </LinearLayout>
-        
+
         <LinearLayout android:id="@+id/jifen_instruction_layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

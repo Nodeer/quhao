@@ -103,6 +103,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		phoneLayout.setOnClickListener(this);
 		
 		currentJifenLayout = (LinearLayout) this.findViewById(R.id.current_jifen_layout);
+		currentJifenLayout.setOnClickListener(this);
 		currentJifenText = (TextView) this.findViewById(R.id.current_jifen);
 		jifenIntructionLayout = (LinearLayout) this.findViewById(R.id.jifen_instruction_layout);
 		jifenIntructionLayout.setOnClickListener(this);
@@ -121,24 +122,6 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		btnBack.setOnClickListener(goBack(this));
 		
 	}
-
-	private Handler accountUpdateHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			if (msg.what == 200) {
-				super.handleMessage(msg);
-				if (loginInfo.msg.equals("fail")) {
-					QHClientApplication.getInstance().isLogined = false;
-//					SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "false");
-					Toast.makeText(PersonDetailActivity.this, "登陆失败", Toast.LENGTH_LONG).show();
-					return;
-				}
-				if (loginInfo.msg.equals("success")) {
-					
-				}
-			}
-		}
-	};
 
 	@Override
 	public void onClick(View v) {
@@ -208,6 +191,31 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 					}
 				});
 				builder.create().show();
+			}
+			break;
+		case R.id.current_jifen_layout:
+			progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
+			progressDialogUtil.showProgress();
+			if (QHClientApplication.getInstance().isLogined) {
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				Intent creditCost = new Intent();
+				creditCost.setClass(this, CreditCostListActivity.class);
+				startActivity(creditCost);
+				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+			} else {
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				Builder dialog = new AlertDialog.Builder(this);
+				dialog.setTitle("温馨提示");
+				dialog.setMessage("请先登录");
+				dialog.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+				dialog.create().show();
 			}
 			break;
 		case R.id.jifen_instruction_layout:
