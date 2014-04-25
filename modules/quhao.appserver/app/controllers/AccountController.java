@@ -28,7 +28,6 @@ import com.google.code.morphia.query.UpdateResults;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSInputFile;
 import com.withiter.common.Constants;
-import com.withiter.common.ContentType;
 import com.withiter.common.Constants.CreditStatus;
 import com.withiter.common.sms.business.SMSBusiness;
 import com.withiter.models.account.Account;
