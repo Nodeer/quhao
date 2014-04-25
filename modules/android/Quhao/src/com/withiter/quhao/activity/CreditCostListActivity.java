@@ -109,6 +109,10 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 				{
 					deleteBtn.setVisibility(View.GONE);
 				}
+				else
+				{
+					deleteBtn.setVisibility(View.VISIBLE);
+				}
 				
 				if (isFirstLoad) {
 
@@ -145,7 +149,7 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 				});
 				CreditCostListActivity.this.findViewById(R.id.loadingbar).setVisibility(View.GONE);
 				CreditCostListActivity.this.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
-				deleteBtn.setVisibility(View.VISIBLE);
+				
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 
@@ -161,6 +165,11 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 				String accountId = QHClientApplication.getInstance().accountInfo.accountId;
 				String buf = CommonHTTPRequest.get("getCreditCost?accountId=" + accountId);
 				if (StringUtils.isNull(buf) || "[]".equals(buf)) {
+					if (isFirstLoad || null == credits) {
+						credits = new ArrayList<Credit>();
+					}
+					
+					creditsUpdateHandler.obtainMessage(200, credits).sendToTarget();
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					throw new NoResultFromHTTPRequestException();
 				} else {

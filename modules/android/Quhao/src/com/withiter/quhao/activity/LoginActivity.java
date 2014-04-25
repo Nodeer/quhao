@@ -152,9 +152,9 @@ public class LoginActivity extends QuhaoBaseActivity {
 			thread.start();
 			break;
 		case R.id.back_btn:
-			Intent intent = new Intent();
-			intent.setClass(this, PersonCenterActivity.class);
-			startActivity(intent);
+//			Intent intent = new Intent();
+//			intent.setClass(this, PersonCenterActivity.class);
+//			startActivity(intent);
 			this.finish();
 			break;
 		case R.id.forgetPassword:

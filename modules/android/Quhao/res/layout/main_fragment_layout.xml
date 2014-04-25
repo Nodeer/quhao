@@ -132,8 +132,7 @@
 				            android:layout_height="wrap_content"
 				            android:gravity="center_vertical"
 				            android:baselineAligned="false"
-				            android:orientation="horizontal" 
-				            android:background="@drawable/home_bg_1"
+				            android:orientation="horizontal"
 				            android:paddingTop="5dip"
 				            android:paddingBottom="5dip">
 					        <LinearLayout 
@@ -165,7 +164,6 @@
 			            android:layout_height="wrap_content"
 			            android:gravity="center_vertical"
 			            android:baselineAligned="false"
-			            android:background="@drawable/home_bg_1"
 			            android:orientation="vertical"
 			            android:paddingTop="5dip"
 			            android:paddingBottom="5dip">
@@ -173,8 +171,7 @@
 				            android:layout_height="wrap_content"
 				            android:textColor="@color/red"
 				            android:text="美食分类:"
-				            android:gravity="left|center_vertical"
-				            android:background="@drawable/home_text_1"/>
+				            android:gravity="left|center_vertical"/>
 				        <com.withiter.quhao.view.MyGridView
 				        android:id="@+id/categorys"
 				        style="@style/CustomGridView"

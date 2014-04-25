@@ -4,7 +4,6 @@ import java.io.File;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,7 +55,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 	private LinearLayout currentPaiduiLayout;
 	private LinearLayout historyPaiduiLayout;
 	private LinearLayout creditCostLayout;
-	private LinearLayout personInfoLayout;
+	private RelativeLayout personInfoLayout;
 	
 	private ImageView avatar;
 
@@ -89,7 +89,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 		currentPaiduiLayout = (LinearLayout) contentView.findViewById(R.id.current_paidui_layout);
 		historyPaiduiLayout = (LinearLayout) contentView.findViewById(R.id.history_paidui_layout);
 		creditCostLayout = (LinearLayout) contentView.findViewById(R.id.credit_cost_layout);
-		personInfoLayout = (LinearLayout) contentView.findViewById(R.id.person_info);
+		personInfoLayout = (RelativeLayout) contentView.findViewById(R.id.person_info);
 		signInLayout.setOnClickListener(this);
 		dianpingLayout.setOnClickListener(this);
 		personInfoLayout.setOnClickListener(this);
@@ -198,6 +198,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 					folder = folder.getParentFile();
 				}
 				
+				//TODO : 自己的数据库
 				if(f.exists()){
 					bitmap = BitmapFactory.decodeFile(f.getPath());
 					if (null != bitmap) {
@@ -207,20 +208,24 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 			}
 		}
 		
-		ImageTask task = new ImageTask(avatar, account.userImage, true, getActivity());
-		task.execute(new Runnable() {
-			
-			@Override
-			public void run() {
+		if(null == bitmap)
+		{
+			ImageTask task = new ImageTask(avatar, account.userImage, true, getActivity());
+			task.execute(new Runnable() {
 				
-			}
-		},new Runnable() {
-			
-			@Override
-			public void run() {
+				@Override
+				public void run() {
+					
+				}
+			},new Runnable() {
 				
-			}
-		});
+				@Override
+				public void run() {
+					
+				}
+			});
+		}
+		
 		
 		value_qiandao.setText(account.signIn);
 		value_dianpin.setText(account.dianping);
@@ -438,16 +443,10 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				
 			} else {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				AlertDialog.Builder builder = new Builder(getActivity());
-				builder.setTitle("温馨提示");
-				builder.setMessage("请先登录");
-				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
-				builder.create().show();
+				Intent login1 = new Intent(getActivity(), LoginActivity.class);
+				login1.putExtra("activityName", this.getClass().getName());
+				login1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				startActivity(login1);
 			}
 			break;
 		case R.id.register:
@@ -486,16 +485,10 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 			} else {
 				
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				AlertDialog.Builder builder = new Builder(getActivity());
-				builder.setTitle("温馨提示");
-				builder.setMessage("请先登录");
-				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
-				builder.create().show();
+				Intent login2 = new Intent(getActivity(), LoginActivity.class);
+				login2.putExtra("activityName", this.getClass().getName());
+				login2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				startActivity(login2);
 			}
 			break;
 		case R.id.dianpingLayout:
@@ -510,16 +503,10 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				
 			} else {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				AlertDialog.Builder builder = new Builder(getActivity());
-				builder.setTitle("温馨提示");
-				builder.setMessage("请先登录");
-				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
-				builder.create().show();
+				Intent login3 = new Intent(getActivity(), LoginActivity.class);
+				login3.putExtra("activityName", this.getClass().getName());
+				login3.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				startActivity(login3);
 			}
 			break;
 		case R.id.current_paidui_layout:
@@ -533,16 +520,10 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			} else {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				AlertDialog.Builder builder = new Builder(getActivity());
-				builder.setTitle("温馨提示");
-				builder.setMessage("请先登录");
-				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
-				builder.create().show();
+				Intent login4 = new Intent(getActivity(), LoginActivity.class);
+				login4.putExtra("activityName", this.getClass().getName());
+				login4.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				startActivity(login4);
 			}
 			break;
 		case R.id.history_paidui_layout:
@@ -555,16 +536,10 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			} else {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				Builder dialog = new AlertDialog.Builder(getActivity());
-				dialog.setTitle("温馨提示");
-				dialog.setMessage("请先登录");
-				dialog.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
-				dialog.create().show();
+				Intent login4 = new Intent(getActivity(), LoginActivity.class);
+				login4.putExtra("activityName", this.getClass().getName());
+				login4.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				startActivity(login4);
 			}
 			break;
 		case R.id.credit_cost_layout:
@@ -576,16 +551,10 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			} else {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				Builder builder = new AlertDialog.Builder(getActivity());
-				builder.setTitle("温馨提示");
-				builder.setMessage("请先登录");
-				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
-				builder.create().show();
+				Intent login5 = new Intent(getActivity(), LoginActivity.class);
+				login5.putExtra("activityName", this.getClass().getName());
+				login5.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				startActivity(login5);
 				
 //				Builder dialog = new AlertDialog.Builder(this);
 //				dialog.setTitle("温馨提示").setMessage("请先登录").setPositiveButton("确定", null);

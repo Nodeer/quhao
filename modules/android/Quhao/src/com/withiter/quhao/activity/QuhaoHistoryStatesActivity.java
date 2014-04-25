@@ -105,6 +105,8 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 					
 					String buf = CommonHTTPRequest.get(url);
 					if (StringUtils.isNull(buf) || "[]".equals(buf)) {
+						reservations = new ArrayList<ReservationVO>();
+						reservationsUpdateHandler.obtainMessage(200, reservations).sendToTarget();
 						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 						throw new NoResultFromHTTPRequestException();
 					} else {

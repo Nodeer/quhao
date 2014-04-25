@@ -5,8 +5,6 @@
     android:background="#ffffffff"
     android:orientation="vertical" >
 
-    <!-- Merchant List page's title, eg, 本帮菜【共1000家】 -->
-
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

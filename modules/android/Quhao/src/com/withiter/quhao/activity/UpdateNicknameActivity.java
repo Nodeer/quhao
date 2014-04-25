@@ -61,7 +61,7 @@ public class UpdateNicknameActivity extends QuhaoBaseActivity {
 				nickname = nickNameText.getText().toString();
 				if(StringUtils.isNotNull(nickname.trim()))
 				{
-					UpdateNicknameTask task = new UpdateNicknameTask(R.string.waitting_for_commit, this, "updateUserName?accountId=" + QHClientApplication.getInstance().accountInfo.accountId + "&name=" + nickname);
+					UpdateNicknameTask task = new UpdateNicknameTask(R.string.waitting_for_commit, this, "updateUserName?accoutId=" + QHClientApplication.getInstance().accountInfo.accountId + "&name=" + nickname);
 					task.execute(new Runnable() {
 						
 						@Override

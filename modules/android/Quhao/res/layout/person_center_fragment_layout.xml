@@ -55,18 +55,19 @@
 
         <!-- avatar, nickname and mobile number -->
 
-        <LinearLayout android:id="@+id/person_info"
+        <RelativeLayout android:id="@+id/person_info"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dip"
             android:background="#ffffffff"
             android:orientation="horizontal" >
 
             <!-- left avatar -->
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <LinearLayout android:id="@+id/avatar_layout"
+                android:layout_width="100dip"
+                android:layout_height="100dip"
                 android:orientation="vertical"
+                android:layout_alignParentLeft="true"
                 android:padding="8.0dip" >
 
                 <ImageView
@@ -79,11 +80,30 @@
             <!-- left avatar -->
 
 
+			<!-- right nickname and mobile -->
+            
+            <LinearLayout android:id="@+id/right_layout"
+                android:layout_width="30dip"
+                android:layout_height="fill_parent"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="8.0dip" >
+
+                <ImageView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="center_vertical"
+	                android:contentDescription="@null"
+	                android:src="@drawable/arrow_right" />
+            </LinearLayout>
             <!-- right nickname and mobile -->
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+            <LinearLayout android:id="@+id/info_detail_layout"
+                android:layout_toRightOf="@id/avatar_layout"
+                android:layout_toLeftOf="@id/right_layout"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
                 android:orientation="vertical"
                 android:paddingLeft="10.0dip"
                 android:paddingTop="8.0dip" >
@@ -91,15 +111,15 @@
                 <!-- nickname -->
 
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="0.0dip"
                     android:orientation="horizontal" >
 
                     <TextView
                         android:id="@+id/nickName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
                         android:layout_marginTop="3.0dip"
                         android:singleLine="true"
                         android:text="@string/noname"
@@ -161,8 +181,8 @@
                 <!-- jifen -->
 
             </LinearLayout>
-            <!-- right nickname and mobile -->
-        </LinearLayout>
+            
+        </RelativeLayout>
         <!-- avatar, nickname and mobile number -->
 
 
@@ -176,8 +196,7 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="10.0dip"
-            android:textAlignment="center" 
-            android:background="@drawable/common_top_bar_bg_blue">
+            android:textAlignment="center">
 
             <LinearLayout android:id="@+id/signInLayout"
                 android:layout_width="wrap_content"

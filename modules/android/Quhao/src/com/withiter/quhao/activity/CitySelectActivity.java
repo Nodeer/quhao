@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -218,16 +219,20 @@ public class CitySelectActivity extends QuhaoBaseActivity {
 	/** 绘制索引列表 */
 	public void getIndexView() {
 		LinearLayout.LayoutParams params = new LayoutParams(
-				LayoutParams.WRAP_CONTENT, height);
-		// params.setMargins(10, 5, 10, 0);
+				LayoutParams.FILL_PARENT, height);
+//		 params.setMargins(10, 5, 10, 0);
 		for (int i = 0; i < strList.size(); i++) {
 			final TextView tv = new TextView(this);
 			tv.setLayoutParams(params);
 			tv.setText(strList.get(i));
 			// tv.setTextColor(Color.parseColor("#606060"));
 			// tv.setTextSize(16);
+			tv.setGravity(Gravity.CENTER);
 			tv.setPadding(10, 0, 10, 0);
 			layoutIndex.addView(tv);
+			
+			layoutIndex.setBackgroundColor(Color
+					.parseColor("#606060"));
 			
 			tv.setOnTouchListener(new OnTouchListener() {
 
@@ -279,7 +284,9 @@ public class CitySelectActivity extends QuhaoBaseActivity {
 						break;
 					case MotionEvent.ACTION_UP:
 						layoutIndex.setBackgroundColor(Color
-								.parseColor("#00ffffff"));
+								.parseColor("#606060"));
+//						layoutIndex.setBackgroundColor(Color
+//								.parseColor("#00ffffff"));
 						tv_show.setVisibility(View.INVISIBLE);
 						break;
 					}
@@ -328,10 +335,7 @@ public class CitySelectActivity extends QuhaoBaseActivity {
 	/** 适配器 */
 	private class MyAdapter extends BaseAdapter {
 
-		Context context;
-
 		public MyAdapter(Context context) {
-			this.context = context;
 			selector = new HashMap<String, Integer>();
 			for (int j = 0; j < strList.size(); j++) {// 循环字母表，找出nData中对应字母的位置
 				if("热门".equals(strList.get(j)))
