@@ -35,7 +35,6 @@ public class Constants {
 		categorys.put(CateType.yuecaiguan.toString(), "粤菜馆");
 		categorys.put(CateType.zhongcancaixi.toString(), "中餐菜系");
 		categorys.put(CateType.zizhucan.toString(), "自助餐");
-		
 	}
 	
 	public enum SortBy{
@@ -52,14 +51,11 @@ public class Constants {
 	}
 	
 	/**
-	 * 
 	 * finished : 吃饭完成
-	 * 
 	 * getNumber : 获取号码
-	 * 
-	 * exchange : 兑换 
-	 * @author ASUS
-	 *
+	 * exchange : 兑换
+	 * comment : 评价
+	 * expired : 过期 
 	 */
 	public enum CreditStatus{
 		finished, 		// finish one reservation, will get back one credit

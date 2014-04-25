@@ -415,6 +415,11 @@ public class Reservation extends ReservationEntityDef {
 		return q.first();
 	}
 	
+	/**
+	 * 商家更新资料导致当前所有的Reservation都变成invalid状态
+	 * @param seatNumber
+	 * @param merchantId
+	 */
 	public static void invalidByMerchantUpdate(int seatNumber, String merchantId){
 		MorphiaQuery q = Reservation.q();
 		q.filter("merchantId", merchantId).filter("seatNumber", seatNumber);
