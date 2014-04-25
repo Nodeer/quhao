@@ -19,6 +19,7 @@
     UILabel *_currlabel;
     UILabel *_seatNumber;
     UIButton *_nahaoBtn;
+    UIButton *_arrowButton;
 }
 
 @property (strong,nonatomic) NSString * merchartID;

@@ -36,7 +36,7 @@
         NSMutableArray *tempArray=[NSMutableArray arrayWithArray:imgArr];
         [tempArray insertObject:[imgArr objectAtIndex:([imgArr count]-1)] atIndex:0];
         [tempArray addObject:[imgArr objectAtIndex:0]];
-		imageArray=[[NSArray arrayWithArray:tempArray] retain];
+        imageArray=[[NSArray arrayWithArray:tempArray] retain];
 		viewSize=rect;
         NSUInteger pageCount=[imageArray count];
         scrollView=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, viewSize.size.width, viewSize.size.height)];

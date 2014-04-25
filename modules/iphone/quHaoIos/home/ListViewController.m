@@ -8,23 +8,25 @@
 
 
 #import "ListViewController.h"
+@interface ListViewController ()
 
+@end
 @implementation ListViewController
 
 -(void)viewDidLoad
 {
     [super viewDidLoad];
     _cityCode = [Helper returnUserString:@"cityCode"];
-    
+    self.title=@"商家列表";
+
     //添加的代码
     //添加上面的导航
     [self loadNavigationItem];
     
     _merchartsArray = [[NSMutableArray alloc] initWithCapacity:20];
     
-    _reloading = NO;
-    _pageIndex=1;
-    _whichView=1;
+    _allCount = 0;
+    _isLoading = NO;
     //注册
     self.tableView.frame = CGRectMake(0, 0, kDeviceWidth, kDeviceHeight);
     [self.tableView registerClass:[HomeCell class] forCellReuseIdentifier:@"ListCell"];
@@ -34,36 +36,42 @@
         [self.tableView setSeparatorInset:UIEdgeInsetsZero];
     }
 #endif
-    if ([Helper isConnectionAvailable]){
-        MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:HUD];
-        //如果设置此属性则当前的view置于后台
-        HUD.dimBackground = YES;
-        //设置对话框文字
-        HUD.labelText = @"正在加载";
-        //显示对话框
-        [HUD showAnimated:YES whileExecutingBlock:^{
-            //得到初始化页面的时间 下拉刷新取的是该时间以后的
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-            
-            NSString *currentDateStr = [dateFormatter  stringFromDate:[NSDate date]];
-            NSDate * dates=[dateFormatter dateFromString:currentDateStr] ;
-            //NSDate * dates=[dateFormatter dateFromString:@"2012-08-01 12:22:33"] ;
-            self.currentDateStr = [QuHaoUtil returnFormatString:[dateFormatter  stringFromDate:dates]];
-            [self requestData:[NSString stringWithFormat:@"%@%@%@&sortBy=joinedDate&cityCode=%@",IP,homeView_list_url,self.cateType,_cityCode] withPage:_pageIndex];
+    
+    _isLoadOver = NO;
+    [self createHud];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self requestData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (_tableFooterView == nil) {
+                if(_isLoadOver){
+                    self.tableView.tableFooterView = nil;
+                    _isLoading = YES;
+                }else{
+                    [self createFootView];
+                    [self setFootState:PullRefreshNormal];
+                }
+            }
             [self.tableView reloadData];
-        } completionBlock:^{
-            //操作执行完后取消对话框
-            [HUD removeFromSuperview];
-            [self addHeader];
-            [self addFooter];
-        }];
-    }else{
-        [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
-    }
+            [_HUD hide:YES];
+        });
+    });
 }
 
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+    [_HUD removeFromSuperview];
+	_HUD = nil;
+}
+
+-(void)createHud
+{
+    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:_HUD];
+    _HUD.mode = MBProgressHUDModeIndeterminate;
+    _HUD.labelText = @"正在加载";
+    [_HUD show:YES];
+    _HUD.delegate = self;
+}
 
 -(void)loadNavigationItem
 {
@@ -88,51 +96,6 @@
     SearchView * sView = [[SearchView alloc] init];
     sView.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:sView animated:YES];
-}
-
-//下拉刷新
-- (void)addHeader
-{
-    MJRefreshHeaderView *header = [MJRefreshHeaderView header];
-    header.scrollView = self.tableView;
-    header.beginRefreshingBlock = ^(MJRefreshBaseView *refreshView) {
-        // 进入刷新状态就会回调这个Block
-        
-        _prevItemCount = [_merchartsArray count];
-        _whichView=2;
-        //page为0无效 暂时未做分页处理
-        [self requestData:[NSString stringWithFormat:@"%@%@%@&date=%@&cityCode=%@",IP,homeView_last_url,self.cateType,self.currentDateStr,_cityCode]
-                 withPage:0];
-        // 这里的refreshView其实就是header
-        [self performSelector:@selector(doneWithView:) withObject:refreshView afterDelay:1.0];
-    };
-    
-    _header = header;
-}
-
-//上拉加载更多
-- (void)addFooter
-{
-    MJRefreshFooterView *footer = [MJRefreshFooterView footer];
-    footer.scrollView = self.tableView;
-    footer.beginRefreshingBlock = ^(MJRefreshBaseView *refreshView) {
-        _prevItemCount = [_merchartsArray count];
-        ++_pageIndex;
-        _whichView=1;
-        [self requestData:[NSString stringWithFormat:@"%@%@%@&cityCode=%@",IP,homeView_list_url,self.cateType,_cityCode]  withPage:_pageIndex];
-        [self performSelector:@selector(doneWithView:) withObject:refreshView afterDelay:1.0];
-        
-    };
-    _footer = footer;
-}
-
-
-- (void)doneWithView:(MJRefreshBaseView *)refreshView
-{
-    // 刷新表格
-    [self.tableView reloadData];
-    // 调用endRefreshing结束刷新状态
-    [refreshView endRefreshing];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -187,21 +150,22 @@
 //弹出商家详细页面
 - (void)pushMerchartDetail:(MerchartModel *)model andNavController:(UINavigationController *)navController andIsNextPage:(BOOL)isNextPage
 {
-    if(_mDetail == nil){
-        _mDetail = [[MerchartDetail alloc] init];
-    }
-    _mDetail.merchartID = model.id;
-    _mDetail.isNextPage = isNextPage;
+    MerchartDetail *mDetail = [[MerchartDetail alloc] init];
+    mDetail.merchartID = model.id;
+    mDetail.isNextPage = isNextPage;
     
-    [navController pushViewController:_mDetail animated:YES];
+    [navController pushViewController:mDetail animated:YES];
 }
 
 
--(void)requestData:(NSString *)urlStr withPage:(int)page
+-(void)requestData
 {
-  _loadFlag=YES;
   if ([Helper isConnectionAvailable]){
-      NSString *str1= [NSString stringWithFormat:@"%@&page=%d", urlStr, page];
+      if (_isLoadOver) {
+          return;
+      }
+      int pageIndex = _allCount/10+1;
+      NSString *str1= [NSString stringWithFormat:@"%@%@%@&sortBy=joinedDate&cityCode=%@&page=%d", IP,homeView_list_url,self.cateType,_cityCode, pageIndex];
       NSString *response =[QuHaoUtil requestDb:str1];
       if([response isEqualToString:@""]){
           //异常处理
@@ -212,57 +176,141 @@
               //解析错误
               [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
           }else{
-              if(_whichView==1){
-                  [self addAfterInfo:jsonObjects];
-               }else{
-                  [self addBeforeInfo:jsonObjects];
+              NSMutableArray *newMerc = [self addAfterInfo:jsonObjects];
+              int count = [newMerc count];
+              _allCount += count;
+              if (count < 10)
+              {
+                  _isLoadOver = YES;
               }
+              [_merchartsArray addObjectsFromArray:newMerc];
+              
               //如果是第一页 则缓存下来
-              if (_merchartsArray.count <= 20) {
+              if (_merchartsArray.count <= 10) {
                   [Helper saveCache:5 andID:1 andString:response];
               }
           }
-      }    
+          //[self doneLoadingTableViewData];
+      }
+      //[self.tableView reloadData];
   }
   else
   {
+      _isLoadOver = YES;
       NSString *value = [Helper getCache:5 andID:1];
       if (value&&[_merchartsArray count]==0) {
           NSArray *jsonObjects=[QuHaoUtil analyseData:value];
-          [self addAfterInfo:jsonObjects];
+          [_merchartsArray addObjectsFromArray:[self addAfterInfo:jsonObjects]];
           [self.tableView reloadData];
       }else{
-          _loadFlag = NO;
           [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
       }
   }
 }
 
 //上拉刷新增加数据
--(void)addAfterInfo:(NSArray *) objects
+-(NSMutableArray *)addAfterInfo:(NSArray *) objects
 {
+    NSMutableArray *news = [[NSMutableArray alloc] initWithCapacity:10];
     for(int i=0; i < [objects count];i++ ){
         MerchartModel *model=[[MerchartModel alloc]init];
         model.name=[[objects objectAtIndex:i] objectForKey:@"name"];
         model.averageCost=[[[objects objectAtIndex:i] objectForKey:@"averageCost"] floatValue];
         model.id=[[objects objectAtIndex:i] objectForKey:@"id"];
         model.imgUrl=[[objects objectAtIndex:i] objectForKey:@"merchantImage"];
-        [_merchartsArray addObject:model];
+        [news addObject:model];
+    }
+    
+    return news;
+}
+
+#pragma 上提刷新
+-(void)createFootView
+{
+    self.tableView.tableFooterView = nil;
+    _tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, kDeviceWidth, 40.0f)];
+    _loadMoreText = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 116.0f, 40.0f)];
+    [_loadMoreText setCenter:_tableFooterView.center];
+    [_loadMoreText setFont:[UIFont fontWithName:@"Helvetica Neue" size:14]];
+    [_loadMoreText setText:@" 上拉显示更多 "];
+    UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickMoreLable:)];
+    _loadMoreText.userInteractionEnabled=YES;
+    [_loadMoreText addGestureRecognizer:tapGesture];
+    [_tableFooterView addSubview:_loadMoreText];
+    
+    _tableFooterActivityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(75.0f, 10.0f, 20.0f, 20.0f)];
+    [_tableFooterActivityIndicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+    [_tableFooterActivityIndicator stopAnimating];
+    [_tableFooterView addSubview:_tableFooterActivityIndicator];
+    self.tableView.tableFooterView = _tableFooterView;
+}
+
+-(void)onClickMoreLable:(id)sender
+{
+    if(_state == PullRefreshNormal){
+        _isLoading = YES;
+        [self setFootState:PullRefreshLoading];
+        [self loadMore];
     }
 }
 
-//下拉刷新增加数据
--(void)addBeforeInfo:(NSArray *) objects
+-(void)loadMore
 {
-    for(int i=0; i < [objects count];i++ ){
-        MerchartModel *model=[[MerchartModel alloc]init];
-        model.name=[[objects objectAtIndex:i] objectForKey:@"name"];
-        model.averageCost=[[[objects objectAtIndex:i] objectForKey:@"averageCost"] floatValue];
-        model.id=[[objects objectAtIndex:i] objectForKey:@"id"];
-        model.imgUrl=[[objects objectAtIndex:i] objectForKey:@"merchantImage"];
-        
-        [_merchartsArray insertObject:model atIndex:0];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self requestData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(_isLoadOver){
+                self.tableView.tableFooterView = nil;
+                _isLoading = YES;
+            }
+            [self doneLoadingTableViewData];
+            [self.tableView reloadData];
+        });
+    });
+}
+
+- (void)doneLoadingTableViewData
+{
+    [self refreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+    _isLoading = NO;
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if(scrollView.contentOffset.y + (scrollView.frame.size.height) > scrollView.contentSize.height && !_isLoading &&(_state == PullRefreshNormal))
+    {
+        _isLoading = YES;
+		[self setFootState:PullRefreshLoading];
+        [self loadMore];
     }
+}
+
+//增加footView状态
+- (void)setFootState:(RefreshState)aState{
+	
+	switch (aState) {
+		case PullRefreshNormal:
+            _loadMoreText.text = @" 上拉显示更多 ";
+			[_tableFooterActivityIndicator stopAnimating];
+			break;
+		case PullRefreshLoading:
+            _loadMoreText.text = @" 正在加载,请稍后";
+			[_tableFooterActivityIndicator startAnimating];
+			break;
+		default:
+			break;
+	}
+	_state = aState;
+}
+
+- (void)refreshScrollViewDataSourceDidFinishedLoading:(UIScrollView *)scrollView {
+	
+//	[UIView beginAnimations:nil context:NULL];
+//	[UIView setAnimationDuration:.3];
+//	[scrollView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f)];
+//	[UIView commitAnimations];
+	
+	[self setFootState:PullRefreshNormal];
 }
 
 - (void)didReceiveMemoryWarning
@@ -270,9 +318,4 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void)delloc
-{
-    [_header free];
-    [_footer free];
-}
 @end

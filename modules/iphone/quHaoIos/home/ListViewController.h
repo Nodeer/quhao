@@ -8,29 +8,24 @@
 
 #import <UIKit/UIKit.h>
 #import "MerchartModel.h"
-#import "MJRefreshFooterView.h"
-#import "MJRefreshHeaderView.h"
 #import "MerchartDetail.h"
 #import "QuHaoUtil.h"
 #import "SearchView.h"
-@interface ListViewController : UITableViewController
+#import "MBProgressHUD.h"
+
+@interface ListViewController : UITableViewController<MBProgressHUDDelegate>
 {
     @private
     NSMutableArray *_merchartsArray;
-    BOOL _reloading;
-    BOOL _loadFlag;
-    int _prevItemCount;
-    //上拉刷新用的页码
-    int _pageIndex;
-    
-    //下拉刷新的view
-    MJRefreshHeaderView *_header;
-    //上拉刷新的view
-    MJRefreshFooterView *_footer;
-    //判断是上拉还是下拉 1 上拉 2下拉
-    int _whichView;
+    MBProgressHUD *_HUD;
+    BOOL _isLoading;
+    int _allCount;
+    BOOL _isLoadOver;
+    UIView *_tableFooterView;
+    UILabel * _loadMoreText;
+    UIActivityIndicatorView *_tableFooterActivityIndicator;
+    PullRefreshState _state;
     NSString *_cityCode;
-    MerchartDetail *_mDetail;
 }
 
 @property (strong,nonatomic) NSString * currentDateStr;
@@ -45,6 +40,6 @@
 //弹出商家详细页面
 - (void)pushMerchartDetail:(MerchartModel *)model andNavController:(UINavigationController *)navController andIsNextPage:(BOOL)isNextPage;
 //请求服务端获取数据
--(void)requestData:(NSString *)urlStr withPage:(int)page;
+-(void)requestData;
 
 @end

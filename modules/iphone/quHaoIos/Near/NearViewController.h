@@ -17,13 +17,7 @@
 {
     @private
     NSMutableArray *_merchartsArray;
-    BOOL _reloading;
-    int _prevItemCount;
-    //上拉刷新用的页码
-    int _pageIndex;
     BOOL _isOpinion;
-    //上拉刷新的view
-    MJRefreshFooterView *_footer;
     NSArray *arryList;
     NSArray *arryValueList;
     selectListView * _selectList;
@@ -36,7 +30,15 @@
     CLLocationDegrees _latitude;
 	CLLocationDegrees _longitude;
     int _isMapLoading;
+    BOOL _isRefreshLoading;
+    int _pageIndex;
     BOOL _isLoading;
+    BOOL _isLoadOver;
+    UIView *_tableFooterView;
+    UILabel * _loadMoreText;
+    UIActivityIndicatorView *_tableFooterActivityIndicator;
+    PullRefreshState _state;
+    BOOL _isFirst;
 }
 @property (strong, nonatomic)  UITableView *tableView;
 

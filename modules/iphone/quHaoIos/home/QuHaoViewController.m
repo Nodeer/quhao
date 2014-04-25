@@ -30,9 +30,7 @@
     self.navigationItem.leftBarButtonItem = backButtonItem;
     //加载取号信息
     [self reloadReversion];
-    if(reservation == nil){
-        [self reloadCurrent];
-    }
+   
     //默认不显示下拉框
     _showList = NO;
     //创建view上的座位信息
@@ -59,6 +57,10 @@
     popView.indicatorStyle = UIScrollViewIndicatorStyleBlack;
     popView.hidden = YES;
     [self.view addSubview:popView];
+    
+    if(reservation == nil){
+        [self reloadCurrent];
+    }
 }
 
 //创建view上的座位信息
@@ -79,13 +81,6 @@
     
     _seatNumber = [Helper getCustomLabel:seat font:18 rect:CGRectMake(113, 18, 45, 30)];
     [self.view addSubview:_seatNumber];
-
-    UIImage *image = [UIImage   imageNamed:@"arrow_down.png"];
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame = CGRectMake(140, 27, image.size.width, image.size.height);
-    [button setBackgroundImage:image forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(dropdown:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:button];
     
     NSString *num=nil;
     if(reservation == nil){
@@ -105,6 +100,14 @@
     }
     
     if(reservation == nil){
+        
+        UIImage *image = [UIImage   imageNamed:@"arrow_down.png"];
+        _arrowButton= [UIButton buttonWithType:UIButtonTypeCustom];
+        _arrowButton.frame = CGRectMake(140, 27, image.size.width, image.size.height);
+        [_arrowButton setBackgroundImage:image forState:UIControlStateNormal];
+        [_arrowButton addTarget:self action:@selector(dropdown:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:_arrowButton];
+        
         UIImage *btnImage = [UIImage   imageNamed:@"max_btn.png"];
         _nahaoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         _nahaoBtn.frame = CGRectMake(10, 100, 300, 30);
@@ -124,6 +127,7 @@
 - (void)clickNahao:(id)sender
 {
     _nahaoBtn.hidden = YES;
+    _arrowButton.hidden = YES;
     [self reloadView];
 }
 
@@ -234,8 +238,8 @@
                 //异常处理
                 [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
             }else{
-                reservation.currentNumber = response;
-                _currlabel.text = [NSString stringWithFormat:@"%@%@",@" 下一号码:   ",reservation.currentNumber];
+                _currlabel.text = [NSString stringWithFormat:@"%@%@",@" 下一号码:   ",response];
+
             }
             [hud hide:YES];
         }else{
@@ -305,6 +309,8 @@
     coverView.hidden = YES;
     popView.hidden = YES;
     _seatNumber.text = [seatType objectAtIndex:[indexPath row]];
+    
+    [self reloadCurrent];
 }
 
 -(void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event

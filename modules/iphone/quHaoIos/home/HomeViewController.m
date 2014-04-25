@@ -53,6 +53,7 @@
     [btnButton addTarget:self action:@selector(clickSearch:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:btnButton];
     self.navigationItem.rightBarButtonItem = buttonItem;
+
 }
 
 - (void)viewDidLoad
@@ -100,7 +101,9 @@
         [self requestMenuData];
     });
     dispatch_group_notify(group, dispatch_get_main_queue(), ^{
-        [self topSetOrReset];
+         if([_topIdArray count]!=0){
+             [self topSetOrReset];
+        }
         [self createMiddleView];
         [self menuSetOrReset];
         [self.view bringSubviewToFront:hud];
@@ -170,39 +173,97 @@
     }
 }
 
+//-(void)createMiddleView
+//{
+//    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+//    layout.itemSize = CGSizeMake(120, 50);
+//    layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
+//    layout.minimumInteritemSpacing = 10;
+//    
+//    UICollectionView *myCollectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(10, 125, kDeviceWidth-20, 45) collectionViewLayout:layout];
+//    [myCollectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"collection"];
+//    myCollectionView.backgroundColor=[UIColor whiteColor];
+//    myCollectionView.delegate=self;
+//    myCollectionView.dataSource=self;
+//    [self.view addSubview:myCollectionView];
+//    _middleBtn = @[@"middle1.jpg",@"middle2.jpg"];
+//    
+//}
+//
+//#pragma mark - collection数据源代理
+//- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+//{
+//    return _middleBtn.count;
+//}
+//
+//- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"collection" forIndexPath:indexPath];
+//    cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:_middleBtn[indexPath.row]]];
+//    
+//    return cell;
+//}
+//
+//- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+//{
+//   // if(indexPath.row)
+//}
+
 -(void)createMiddleView
 {
-    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    layout.itemSize = CGSizeMake(90, 40);
-    layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
-    layout.minimumInteritemSpacing = 5;
+    UILabel *cateLabel = [[UICustomLabel alloc] initWithFrame:CGRectMake(5,120, 80, 20)];
+    cateLabel.text = @"快速通道";
+    cateLabel.font = [UIFont systemFontOfSize:14];
+    cateLabel.textColor = [UIColor redColor];
+    [self.view addSubview:cateLabel];
+
     
-    UICollectionView *myCollectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(10, 125, kDeviceWidth-20, 45) collectionViewLayout:layout];
-    [myCollectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"collection"];
-    myCollectionView.backgroundColor=[UIColor whiteColor];
-    myCollectionView.delegate=self;
-    myCollectionView.dataSource=self;
-    [self.view addSubview:myCollectionView];
-    _middleBtn = @[@"middle1",@"middle1",@"middle1"];
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    btn.frame = CGRectMake(30 , 145, 115  , 40);
+    btn.backgroundColor =  UIColorFromRGB(0x91d3f5);
+    [btn setTitleColor:[UIColor whiteColor ]forState:UIControlStateNormal];
+    [btn setTitle:@"我的关注" forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(wdgz:) forControlEvents:UIControlEventTouchDown];
+    [self.view addSubview:btn];
     
+    UIButton *zbbpdbtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    zbbpdbtn.frame = CGRectMake(185 , 145, 115  , 40);
+    zbbpdbtn.backgroundColor =  UIColorFromRGB(0x91d3f5);
+    [zbbpdbtn setTitleColor:[UIColor whiteColor ]forState:UIControlStateNormal];
+    [zbbpdbtn setTitle:@"周边不排队" forState:UIControlStateNormal];
+    [zbbpdbtn addTarget:self action:@selector(zbpd:) forControlEvents:UIControlEventTouchDown];
+    [self.view addSubview:zbbpdbtn];
 }
 
-#pragma mark - collection数据源代理
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+-(void)wdgz:(id)sender
 {
-    return _middleBtn.count;
+    if([Helper isConnectionAvailable]){
+        Helper *helper=[Helper new];
+        if (![Helper isCookie]) {
+            LoginView *loginView = [[LoginView alloc] init];
+            loginView._isPopupByNotice = YES;
+            helper.viewBeforeLogin = self;
+            helper.viewNameBeforeLogin = @"HomeViewController";
+            loginView.helper=helper;
+            loginView.hidesBottomBarWhenPushed=YES;
+            [self.navigationController pushViewController:loginView animated:YES];
+            return;
+        }else{
+            AttentionViewController *att = [[AttentionViewController alloc] init];
+            att.accountId = [Helper getUID];
+            att.hidesBottomBarWhenPushed=YES;
+            [self.navigationController pushViewController:att animated:YES];
+        }
+    }else{
+        [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
+    }
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+-(void)zbpd:(id)sender
 {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"collection" forIndexPath:indexPath];
-    cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:_middleBtn[indexPath.row]]];
-    return cell;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"即将开放,敬请期待" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+    [alert show];
+    return;
 }
 
 -(void)requestTopData
@@ -224,10 +285,10 @@
                 [_topUrlArray addObject:[[jsonObjects objectAtIndex:i] objectForKey:@"merchantImage"]];
                 [_topIdArray addObject:[[jsonObjects objectAtIndex:i] objectForKey:@"mid"]];
             }
-//            for(int j=0; j<topSize-[jsonObjects count]; j++){
-//                [_topIdArray addObject:@""];
-//                [_topUrlArray addObject:@""];
-//            }
+            if([jsonObjects count] == 0){
+                [_topIdArray addObject:@""];
+                [_topUrlArray addObject:@""];
+            }
         }
     }
 }
@@ -273,7 +334,7 @@
     UIControl *menuItem = nil;
     for (Category *cate in _categoryArray) {
         if(menuItem == nil){
-            UILabel *cateLabel = [[UICustomLabel alloc] initWithFrame:CGRectMake(5,180, 80, 20)];
+            UILabel *cateLabel = [[UICustomLabel alloc] initWithFrame:CGRectMake(5,190, 80, 20)];
             cateLabel.text = @"美食分类";
             cateLabel.font = [UIFont systemFontOfSize:14];
             cateLabel.textColor = [UIColor redColor];
@@ -299,7 +360,7 @@
         _gutterSize = gutter;
         _rowHeight = height;
         _xOffset = gutter;
-        _yOffset = gutter+175;
+        _yOffset = gutter+185;
         _columnInc = 0;
     }
 }
@@ -391,7 +452,6 @@
     home.cateType = cateType;
     home.hidesBottomBarWhenPushed=YES;
     [navController pushViewController:home animated:YES];
-    
 }
 
 //CityViewController delegate

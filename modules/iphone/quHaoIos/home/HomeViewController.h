@@ -17,8 +17,8 @@
 #import "SearchView.h"
 #import "CityViewController.h"
 #import "EScrollerView.h"
-
-@interface HomeViewController : UIViewController<CityViewDelegate,EScrollerViewDelegate,UICollectionViewDelegate, UICollectionViewDataSource>
+#import "AttentionViewController.h"
+@interface HomeViewController : UIViewController<CityViewDelegate,EScrollerViewDelegate>
 {
     NSMutableArray *_categoryArray;
     NSMutableArray *_topUrlArray;
