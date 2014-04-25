@@ -21,5 +21,6 @@
 @synthesize currentNumber;
 @synthesize imgUrl;
 @synthesize isCommented;
+@synthesize created;
 
 @end

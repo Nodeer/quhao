@@ -16,6 +16,11 @@
 #import "ApiError.h"
 #import "GCDiscreetNotificationView.h"
 #import "ASIFormDataRequest.h"
+typedef enum{
+	PullRefreshPulling = 0,
+	PullRefreshNormal,
+	PullRefreshLoading,
+} RefreshState;
 @interface Helper : NSObject
 
 //是否已经登录
@@ -73,7 +78,8 @@
 //保存UID
 +(void)saveUID:(NSString*)uid;
 +(void)saveDafaultData:(NSString*)value withName:(NSString *) name;
-
+//字符串长度
++(int)getStringLen:(NSString*)strtemp;
 //格式化时间
 +(NSString *)formatDate:(NSString*)dateStr;
 + (void)ReleaseWebView:(UIWebView *)webView;

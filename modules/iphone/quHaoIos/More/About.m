@@ -51,6 +51,7 @@
         [tableView setSeparatorInset:UIEdgeInsetsZero];
     }
 #endif
+    _version = @"";
     if ([Helper isConnectionAvailable]){
         NSString *str1 = [NSString stringWithFormat:@"%@%@",IP,getLastestVersion];
         NSString *response = [QuHaoUtil requestDb:str1];

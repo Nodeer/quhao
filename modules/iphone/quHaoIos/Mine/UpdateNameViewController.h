@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 #import "Helper.h"
 #import "QuHaoUtil.h"
 @interface UpdateNameViewController : UIViewController<UITextViewDelegate,UITextFieldDelegate>

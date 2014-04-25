@@ -288,11 +288,11 @@
 {
     if ([alertView tag] == 1 && buttonIndex == 1) {
         //根据应用的id打开appstore，并跳转到应用下载页面
-        //NSString *appStoreLink = [NSString stringWithFormat:@"http://itunes.apple.com/cn/app/id%@",AppID];
-        //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:appStoreLink]];
-        
-        NSString *appStoreLink = [NSString stringWithFormat:@"itms-apps://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=%@",AppID];
+        NSString *appStoreLink = [NSString stringWithFormat:@"http://itunes.apple.com/cn/app/id%@",AppID];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:appStoreLink]];
+        
+//        NSString *appStoreLink = [NSString stringWithFormat:@"itms-apps://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=%@",AppID];
+//        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:appStoreLink]];
     }else if ([alertView tag]==2 && buttonIndex == 1) {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"access_token" ];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wb_uid" ];

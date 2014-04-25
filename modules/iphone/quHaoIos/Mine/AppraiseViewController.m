@@ -48,6 +48,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title=@"评价信息";
     self.view.backgroundColor = [UIColor whiteColor];
     UILabel *pl = [Helper getLabel:@"人均消费" font:labelFont rect:CGRectMake(10, 8, 85, 20)];
     [self.view addSubview:pl];

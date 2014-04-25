@@ -21,5 +21,6 @@
 @property (nonatomic,strong) NSString *imgUrl;
 @property BOOL isCommented;
 @property int  beforeYou ;
+@property (nonatomic,strong) NSString *created;
 
 @end

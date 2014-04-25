@@ -23,6 +23,7 @@
     NSURL *url=[NSURL URLWithString:str1];
     
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+    [request setTimeOutSeconds:30];
     [request startSynchronous];
     NSError *httpError = [request error];
     NSString *response = @"";

@@ -41,6 +41,34 @@
     return cell;
 }
 
+- (UITableViewCell *)getLoadMoreCell:(UITableView *)tableView
+                    andLoadingString:(NSString *)loadingString
+                        andIsLoading:(BOOL)isLoading
+{
+    LoadingCell * cell = [tableView dequeueReusableCellWithIdentifier:@"loadingCell"];
+    if (!cell) {
+        NSArray *objects = [[NSBundle mainBundle] loadNibNamed:@"LoadingCell" owner:self options:nil];
+        for (NSObject *o in objects) {
+            if ([o isKindOfClass:[LoadingCell class]]) {
+                cell = (LoadingCell *)o;
+                break;
+            }
+        }
+    }
+    cell.lbl.font = [UIFont boldSystemFontOfSize:21.0];
+    cell.lbl.text = loadingString;
+    if (isLoading) {
+        cell.loading.hidden = NO;
+        [cell.loading startAnimating];
+    }
+    else
+    {
+        cell.loading.hidden = YES;
+        [cell.loading stopAnimating];
+    }
+    return cell;
+}
+
 //pragma 单例模式定义
 static DataSingleton * instance = nil;
 +(DataSingleton *) Instance

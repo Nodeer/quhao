@@ -10,30 +10,37 @@
 #import "MerchartModel.h"
 #import "HomeCell.h"
 #import "CurrentDetailController.h"
-#import "MJRefreshFooterView.h"
 #import "MerchartDetail.h"
 #import "MBProgressHUD.h"
-@interface CurrentViewController : UITableViewController<MBProgressHUDDelegate>
+#import "DataSingleton.h"
+typedef enum{
+	EGOOPullRefreshPulling = 0,
+	EGOOPullRefreshNormal,
+	EGOOPullRefreshLoading,
+} PullRefreshState;
+
+@interface CurrentViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,MBProgressHUDDelegate>
 {
 @private
     NSMutableArray *_merchartsArray;
-    BOOL _reloading;
-    BOOL _loadFlag;
-    int _prevItemCount;
-    //上拉刷新用的页码
-    int _pageIndex;
-    //上拉刷新的view
-    MJRefreshFooterView *_footer;
     MBProgressHUD *_HUD;
+    BOOL _isLoading;
+    int _allCount;
+    BOOL _isLoadOver;
+    UIView *_tableFooterView;
+    UILabel * _loadMoreText;
+    UIActivityIndicatorView *_tableFooterActivityIndicator;
+    PullRefreshState _state;
 }
 
 @property (strong,nonatomic) NSString * accouId;
+@property (strong,nonatomic) UITableView * tableView;
 
 //加载页面上的导航
 -(void)loadNavigationItem;
 -(void)clickToHome:(id)sender;
 //请求服务端获取数据
--(void)requestData:(NSString *)urlStr withPage:(int)page;
+-(void)requestData;
 //弹出商家详细页面
 -(void)pushCurrentDetail:(MerchartModel *)model andNavController:(UINavigationController *)navController;
 

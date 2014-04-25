@@ -49,8 +49,8 @@
     self.tview = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, kDeviceHeight) style:UITableViewStyleGrouped];
     [self.tview setDelegate:self];
     [self.tview setDataSource:self];
+    self.view.backgroundColor = [UIColor clearColor];
     self.tview.backgroundColor = [UIColor whiteColor];
-    self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tview];
 #if IOS7_SDK_AVAILABLE
     if ([self.tview respondsToSelector:@selector(setSeparatorInset:)]) {

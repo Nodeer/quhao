@@ -184,11 +184,11 @@
                 if ([Helper isCookie]&&[Helper isFileExist:@"userOrigin.jpg"]) {
                     self.egoImgView.image = [Helper imageWithImageSimple:[UIImage imageWithContentsOfFile:[self userImagePath]] scaledToSize:CGSizeMake(100, 100)];
                 }else{
-                    if(nil==_userInfo.imgUrl||[_userInfo.imgUrl isEqualToString:@""])
+                    if(nil==_userInfo.userImage||[_userInfo.userImage isEqualToString:@""])
                     {
                         self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
                     }else{
-                        self.egoImgView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,_userInfo.imgUrl]];
+                        self.egoImgView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,_userInfo.userImage]];
                     }
                 }
             }
@@ -198,11 +198,12 @@
             [self.egoImgView addGestureRecognizer:singleTap];
         
             
-            UILabel *_numberLabel = [Helper getCustomLabel:@"您还没登录,马上登录" font:18 rect:CGRectMake(egoImgView.frame.origin.x+egoImgView.frame.size.width+15,20, 220, 35)];
+            UILabel *_numberLabel = [Helper getCustomLabel:@"立即登录" font:17 rect:CGRectMake(egoImgView.frame.origin.x+egoImgView.frame.size.width+15,20, 220, 35)];
             _numberLabel.font = [UIFont systemFontOfSize:18];
             [cell.contentView addSubview:_numberLabel];
             if ([Helper isCookie] == NO || _userInfo == nil){
-                _numberLabel.text=@"您还没登录,马上登录";
+                _numberLabel.text=@"立即登录";
+                _numberLabel.textColor = [UIColor redColor];
             }else{
                 _numberLabel.text = _userInfo.username;
             }

@@ -323,6 +323,13 @@
     return [settings objectForKey:@"UID"];
 }
 
++(int)getStringLen:(NSString*)strtemp
+{
+    NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
+    NSData* da = [strtemp dataUsingEncoding:enc];
+    return [da length];
+}
+
 + (UserInfo *)getUserNotice:(ASIHTTPRequest *)request
 {
     NSString *response = [request responseString];
