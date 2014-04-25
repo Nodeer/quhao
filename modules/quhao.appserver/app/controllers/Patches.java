@@ -22,8 +22,6 @@ import play.modules.morphia.Model.MorphiaQuery;
 import vo.CategoryVO;
 
 import com.withiter.common.httprequest.CommonHTTPRequest;
-import com.withiter.common.lbs.bean.Location;
-import com.withiter.common.lbs.business.LocationBusiness;
 import com.withiter.models.merchant.Category;
 import com.withiter.models.merchant.Merchant;
 import com.withiter.models.merchant.Tese;
@@ -236,31 +234,6 @@ public class Patches extends BaseController {
 		
 		MorphiaQuery q = TopMerchant.q();
 		renderJSON(q.count());
-	}
-	
-	/**
-	 * Import the coordinate info for all merchants
-	 * @throws UnsupportedEncodingException
-	 * @throws JSONException
-	 */
-	public static void importMerchantCoordinate() throws UnsupportedEncodingException, JSONException{
-		MorphiaQuery q = Merchant.q();
-		List<Merchant> mList = q.asList();
-		int i = 0;
-		for(Merchant m : mList){
-			if(StringUtils.isEmpty(m.x)){
-				Location location = LocationBusiness.getLocationByAddress("上海", m.address);
-				if(StringUtils.isEmpty(location.x)){
-					continue;
-				}
-				m.x = location.x;
-				m.y = location.y;
-				m.save();
-				i++;
-			}
-		}
-		
-		renderJSON(i);
 	}
 	
 	public static void updateCounts(){

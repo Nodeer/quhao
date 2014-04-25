@@ -24,61 +24,38 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.withiter.utils.ExceptionUtil;
-
 import play.Play;
 
-
+import com.withiter.utils.ExceptionUtil;
 
 public class CommonHTTPRequest {
 
-	private static Logger logger =  LoggerFactory.getLogger(CommonHTTPRequest.class);
-	private static boolean useProxy = false;
+	private static Logger logger = LoggerFactory.getLogger(CommonHTTPRequest.class);
 	private static String HTTP_URL = Play.configuration.getProperty("application.domain");
-	
-	public static boolean isUseProxy() {
-		return useProxy;
-	}
 
-	public static void setUseProxy(boolean useProxy) {
-		CommonHTTPRequest.useProxy = useProxy;
-	}
-
-	private static void initProxy(){
-		System.getProperties().setProperty("proxySet", "true");
-		System.getProperties().setProperty("http.proxyHost", "www-proxy.ericsson.se");
-		System.getProperties().setProperty("http.proxyPort", "8080");
-	}
-	
 	/**
-	 * a http request with given url
-	 * @param strUrl the url you want to request
+	 * a HTTP request with given URL
+	 * 
+	 * @param strUrl
+	 *            the URL you want to request
 	 * @return
 	 */
-	public static String request(String strUrl){
+	public static String request(String strUrl) {
 
 		logger.debug(CommonHTTPRequest.class.getName() + ", request url is : " + strUrl);
-		
-		String userHome = System.getProperty("user.home");
-		if(userHome.contains("eacfgjl")){
-			useProxy = true;
-		}
-		
-		if(useProxy){
-			initProxy();
-		}
-        URL url = null;
-        String result = "";
-        HttpURLConnection urlConn = null;
-        InputStreamReader in = null;
-        try {
+
+		URL url = null;
+		String result = "";
+		HttpURLConnection urlConn = null;
+		InputStreamReader in = null;
+		try {
 			url = new URL(strUrl);
 			urlConn = (HttpURLConnection) url.openConnection();
 			in = new InputStreamReader(urlConn.getInputStream());
 			BufferedReader br = new BufferedReader(in);
-			
+
 			String readerLine = null;
-			while((readerLine=br.readLine())!=null){
+			while ((readerLine = br.readLine()) != null) {
 				result += readerLine;
 			}
 			in.close();
@@ -98,10 +75,10 @@ public class CommonHTTPRequest {
 			}
 			urlConn.disconnect();
 		}
-        
-        return result;
+
+		return result;
 	}
-	
+
 	/**
 	 * A HTTP request(POST) with given URL
 	 * 
@@ -117,11 +94,13 @@ public class CommonHTTPRequest {
 			HttpPost request = new HttpPost(httpUrl);
 			request.setHeader("user-agent", "QuhaoAndroid");
 			HttpParams httpParameters = new BasicHttpParams();
-			// Set the timeout in milliseconds until a connection is established.
+			// Set the timeout in milliseconds until a connection is
+			// established.
 			int timeoutConnection = 10 * 1000;
 			HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
 
-			// Set the default socket timeout in milliseconds which is the timeout
+			// Set the default socket timeout in milliseconds which is the
+			// timeout
 			// for waiting for data.
 			int timeoutSocket = 10 * 1000;
 			HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
@@ -169,11 +148,13 @@ public class CommonHTTPRequest {
 			request.setHeader("user-agent", "QuhaoAndroid");
 
 			HttpParams httpParameters = new BasicHttpParams();
-			// Set the timeout in milliseconds until a connection is established.
+			// Set the timeout in milliseconds until a connection is
+			// established.
 			int timeoutConnection = 10 * 1000;
 			HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
 
-			// Set the default socket timeout in milliseconds which is the timeout
+			// Set the default socket timeout in milliseconds which is the
+			// timeout
 			// for waiting for data.
 			int timeoutSocket = 10 * 1000;
 			HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
