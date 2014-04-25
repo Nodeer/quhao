@@ -4,8 +4,8 @@
    
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/common_top_bar_bg_blue"
+        android:layout_height="50dip"
+        android:background="@drawable/common_top_bar_bg_blue3"
         android:gravity="center_vertical"
         android:paddingBottom="5dip"
         android:paddingLeft="5dip"
@@ -14,15 +14,13 @@
 
         <Button
             android:id="@+id/back_btn"
-            android:layout_width="60dip"
-            android:layout_height="35dip"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="@string/btn_back"
-            android:background="@drawable/btn_back_background"
+            android:layout_width="50dip"
+            android:layout_height="fill_parent"
+            android:background="@null"
+            android:drawableLeft="@drawable/arrow_left"
             android:gravity="center|center_vertical"
             android:textColor="#ff000000"
-            android:textSize="14.0sp"  />
+            android:textSize="18.0sp"  />
 
         <Button
             android:id="@+id/btn_opinion"
@@ -38,9 +36,10 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:gravity="center"
             android:text="@string/more_opinion"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="#ff000000" />

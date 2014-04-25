@@ -7,8 +7,8 @@
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/common_top_bar_bg_blue"
+        android:layout_height="50dip"
+        android:background="@drawable/common_top_bar_bg_blue3"
         android:paddingBottom="5dip"
         android:paddingLeft="5dip"
         android:paddingRight="5dip"
@@ -16,9 +16,10 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:gravity="center"
             android:text="@string/more"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="#ff000000" />

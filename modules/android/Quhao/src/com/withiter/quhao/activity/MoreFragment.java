@@ -43,11 +43,13 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
+import com.withiter.quhao.task.MoreVersionCheckTask;
 import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
+import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.vo.AppVersionVO;
 
 public class MoreFragment extends Fragment implements OnClickListener{
@@ -173,6 +175,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 		if (isClick) {
 			return;
 		}
+		isClick = true;
 		progressDialogUtil = new ProgressDialogUtil(getActivity(), R.string.empty, R.string.querying, false);
 		progressDialogUtil.showProgress();
 		switch (v.getId()) {
@@ -207,8 +210,122 @@ public class MoreFragment extends Fragment implements OnClickListener{
 		case R.id.more_version:// 版本检测
 			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			int currentVersion = ActivityUtil.getVersionCode(getActivity());
+			
+			
+			
+			final int currentVersion = ActivityUtil.getVersionCode(getActivity());
 			String url = "app/appCode";
+			final MoreVersionCheckTask task = new MoreVersionCheckTask(R.string.waitting, getActivity(), url);
+			task.execute(new Runnable() {
+				
+				@Override
+				public void run() {
+					
+					String result = task.result;
+					final AppVersionVO avo = ParseJson.convertToAppVersionVO(result);
+					if (avo == null) {
+						Builder dialog = new AlertDialog.Builder(getActivity());
+						dialog.setTitle("温馨提示").setMessage("网络情况不是很好哟").setPositiveButton("确定", null);
+						dialog.show();
+						return;
+					}
+
+					if (avo.android == currentVersion) {
+						Builder dialog = new AlertDialog.Builder(getActivity());
+						dialog.setTitle("温馨提示").setMessage("APP已经是最新版").setPositiveButton("确定", null);
+						dialog.show();
+						return;
+					}
+
+					if (avo.android > currentVersion) {
+						// TODO there is bug here
+						Dialog dialog = new AlertDialog.Builder(getActivity()).setTitle("软件更新").setMessage("软件有更新，建议更新到最新版本")
+						// 设置内容
+								.setPositiveButton("更新",// 设置确定按钮
+										new DialogInterface.OnClickListener() {
+											@Override
+											public void onClick(DialogInterface dialog, int which) {
+												dialog.dismiss();
+												ProgressDialog pBar = new ProgressDialog(getActivity());
+												pBar.setTitle("正在下载");
+												pBar.setMessage("请稍候...");
+												pBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
+												// downFile();
+												pBar.show();
+												new Thread() {
+													public void run() {
+														HttpClient client = new DefaultHttpClient();
+														HttpGet get = new HttpGet(QuhaoConstant.HTTP_URL + "app/down?t=android");
+														HttpResponse response;
+														try {
+															response = client.execute(get);
+															HttpEntity entity = response.getEntity();
+															long length = entity.getContentLength();
+															InputStream is = entity.getContent();
+															FileOutputStream fileOutputStream = null;
+															if (is != null) {
+																File file = new File(Environment.getExternalStorageDirectory(), "quhaola-v" + avo.android + ".apk");
+																fileOutputStream = new FileOutputStream(file);
+																byte[] buf = new byte[1024];
+																int ch = -1;
+																int count = 0;
+																while ((ch = is.read(buf)) != -1) {
+																	fileOutputStream.write(buf, 0, ch);
+																	count += ch;
+																	if (length > 0) {
+																	}
+																}
+															}
+															fileOutputStream.flush();
+															if (fileOutputStream != null) {
+																fileOutputStream.close();
+															}
+
+//															down();
+															
+															Intent intent = new Intent(Intent.ACTION_VIEW);  
+														    intent.setDataAndType(Uri.fromFile(new File(Environment  
+														            .getExternalStorageDirectory(), "quhaola-v" + avo.android + ".apk")),  
+														            "application/vnd.android.package-archive");  
+														    startActivity(intent);  
+															
+														} catch (ClientProtocolException e) {
+															e.printStackTrace();
+														} catch (IOException e) {
+															e.printStackTrace();
+														}
+														catch (Exception e)
+														{
+															e.printStackTrace();
+														}
+													}
+												}.start();
+
+											}
+										}).setNegativeButton("暂不更新", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int whichButton) {
+										// 点击"取消"按钮之后退出程序
+//										getActivity().finish();
+									}
+								}).create();// 创建
+						// 显示对话框
+						dialog.show();
+					}
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				}
+			},new Runnable() {
+				
+				@Override
+				public void run() {
+					
+					Builder dialog = new AlertDialog.Builder(getActivity());
+					dialog.setTitle("温馨提示").setMessage("网络情况不是很好哟").setPositiveButton("确定", null);
+					dialog.show();
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				}
+			});
+			/*
 			try {
 				String result = CommonHTTPRequest.get(url);
 				if (StringUtils.isNull(result)) {
@@ -309,7 +426,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
+			 */
 			break;
 		case R.id.more_share:// 分享给好友
 			// 显示分享界面
