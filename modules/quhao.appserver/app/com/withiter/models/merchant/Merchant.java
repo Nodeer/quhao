@@ -296,17 +296,17 @@ public class Merchant extends MerchantEntityDef {
 	 * 不用排队商家
 	 * @return
 	 */
-	public static List<String> noQueueMerchants(){
+	public static List<ObjectId> noQueueMerchants(){
 		MorphiaQuery q = Haoma.q();
 		q.filter("noNeedPaidui", true);
 		q.retrievedFields(true, "merchantId");
 		
 		List<Haoma> hList = q.asList();
-		List<String> mList = new ArrayList<String>(); 
+		List<ObjectId> mList = new ArrayList<ObjectId>(); 
 		
 		if(hList != null && !hList.isEmpty()){
 			for(Haoma h : hList){
-				mList.add(h.merchantId);
+				mList.add(new ObjectId(h.merchantId));
 			}
 		}
 		return mList;

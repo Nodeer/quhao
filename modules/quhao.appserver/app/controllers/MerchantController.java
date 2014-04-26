@@ -505,9 +505,9 @@ public class MerchantController extends BaseController {
 	}
 	
 	public static void getNoQueueMerchants(String cityCode){
-		List<String> list = Merchant.noQueueMerchants();
-		for(String s : list){
-			logger.debug(s);
+		List<ObjectId> list = Merchant.noQueueMerchants();
+		for(ObjectId s : list){
+			logger.debug(s.toString());
 		}
 		renderJSON(list);
 	}
@@ -532,16 +532,20 @@ public class MerchantController extends BaseController {
 		geoNearParams.put("distanceField", "dis");
 		geoNearParams.put("distanceMultiplier", 6371000);
 		geoNearParams.put("spherical", true);
-		if (!StringUtils.isEmpty(cityCode)) {
-			geoNearParams.put("citycode", cityCode);
-		}
 		geoNearParams.put("num", num + NEAR_MERCHANT_PAGE_ITEMS_NUMBER);
 
 		pipeline.add(new BasicDBObject("$geoNear", geoNearParams));
 		if (num != 0) {
 			pipeline.add(new BasicDBObject("$skip", num));
 		}
-
+		BasicDBObject matchParams = new BasicDBObject();
+		if (!StringUtils.isEmpty(cityCode)) {
+			matchParams.put("cityCode", cityCode);	
+		}
+		List<ObjectId> list = Merchant.noQueueMerchants();
+		matchParams.put("_id", new BasicDBObject("$in", list));
+		pipeline.add(new BasicDBObject("$match", matchParams));
+		
 		BasicDBObject projectParams = new BasicDBObject();
 		projectParams.put("_id", 1);
 		projectParams.put("name", 1);
@@ -553,7 +557,7 @@ public class MerchantController extends BaseController {
 
 		pipeline.add(new BasicDBObject("$project", projectParams));
 		cmdBody.put("pipeline", pipeline);
-
+System.out.println(cmdBody);
 		if (!MorphiaQuery.ds().getDB().command(cmdBody).ok()) {
 			logger.debug("NoQueue geoNear查询出错: "
 					+ MorphiaQuery.ds().getDB().command(cmdBody)
@@ -591,16 +595,18 @@ public class MerchantController extends BaseController {
 		geoNearParams.put("distanceField", "dis");
 		geoNearParams.put("distanceMultiplier", 6371000);
 		geoNearParams.put("spherical", true);
-		if (!StringUtils.isEmpty(cityCode)) {
-			geoNearParams.put("citycode", cityCode);
-		}
 		geoNearParams.put("num", num + NEAR_MERCHANT_PAGE_ITEMS_NUMBER);
 
 		pipeline.add(new BasicDBObject("$geoNear", geoNearParams));
 		if (num != 0) {
 			pipeline.add(new BasicDBObject("$skip", num));
 		}
-
+		if (!StringUtils.isEmpty(cityCode)) {
+			BasicDBObject matchParams = new BasicDBObject();
+			matchParams.put("cityCode", cityCode);
+			pipeline.add(new BasicDBObject("$match", matchParams));
+		}
+		
 		BasicDBObject projectParams = new BasicDBObject();
 		projectParams.put("_id", 1);
 		projectParams.put("name", 1);
