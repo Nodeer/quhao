@@ -12,7 +12,7 @@ import com.withiter.quhao.util.http.CommonHTTPRequest;
  * @author Administrator
  *
  */
-public class DeleteCreditTask extends BaseTask {
+public class MyAttentionListTask extends BaseTask {
 	
 //	private HashMap<String, String> mParams;
 	private String url;
@@ -26,7 +26,7 @@ public class DeleteCreditTask extends BaseTask {
 	 * @param page
 	 * @param token
 	 */
-	public DeleteCreditTask(int preDialogMessage,Context context,String url) {
+	public MyAttentionListTask(int preDialogMessage,Context context,String url) {
 		super(preDialogMessage,context);
 		this.url = url;
 //		mParams = new HashMap<String, String>();

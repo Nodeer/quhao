@@ -6,7 +6,6 @@ import java.util.List;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,16 +14,13 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantAdapter;
+import com.withiter.quhao.task.MyAttentionListTask;
 import com.withiter.quhao.util.QuhaoLog;
-import com.withiter.quhao.util.StringUtils;
-import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
-import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.view.refresh.PullToRefreshView;
 import com.withiter.quhao.view.refresh.PullToRefreshView.OnFooterRefreshListener;
 import com.withiter.quhao.view.refresh.PullToRefreshView.OnHeaderRefreshListener;
@@ -40,7 +36,6 @@ public class MyAttentionListActivity extends QuhaoBaseActivity implements OnHead
 	private List<Merchant> merchants;
 	private MerchantAdapter merchantAdapter;
 	private final int UNLOCK_CLICK = 1000;
-	private ProgressDialogUtil progressMerchants;
 	private int page;
 	private boolean isFirst = true;
 	private boolean needToLoad = true;
@@ -61,10 +56,18 @@ public class MyAttentionListActivity extends QuhaoBaseActivity implements OnHead
 
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
 		
+		merchantsListView = (ListView) findViewById(R.id.merchantsListView);
+		
+		merchantsListView.setNextFocusDownId(R.id.merchantsListView);
+		
+		merchantsListView.setVisibility(View.GONE);
+		merchantsListView.setOnItemClickListener(merchantItemClickListener);
+		
 		mPullToRefreshView = (PullToRefreshView) this.findViewById(R.id.main_pull_refresh_view);
 		mPullToRefreshView.setOnHeaderRefreshListener(this);
 		mPullToRefreshView.setOnFooterRefreshListener(this);
 		mPullToRefreshView.setEnableFooterView(true);
+		
 		initView();
 	}
 
@@ -122,111 +125,43 @@ public class MyAttentionListActivity extends QuhaoBaseActivity implements OnHead
 
 	private void initView() {
 		
-		merchantsListView = (ListView) findViewById(R.id.merchantsListView);
-		
-		merchantsListView.setNextFocusDownId(R.id.merchantsListView);
-		
-		merchantsListView.setVisibility(View.GONE);
-		merchantsListView.setOnItemClickListener(merchantItemClickListener);
-		
-		/*
-		bt.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				pg.setVisibility(View.VISIBLE);
-				bt.setVisibility(View.GONE);
-				MerchantListActivity.this.page += 1;
-				Thread merchantsThread = new Thread(merchantsRunnable);
-				merchantsThread.start();
-			}
-		});*/
 		getMerchants();
 	}
 
 	private void getMerchants() {
-		if (isClick) {
-			return;
-		}
-		isClick = true;
 
-		progressMerchants = new ProgressDialogUtil(this, R.string.empty, R.string.querying, false);
-		progressMerchants.showProgress();
-		Thread merchantsThread = new Thread(merchantsRunnable);
-		merchantsThread.start();
-	}
-
-	private Runnable merchantsRunnable = new Runnable() {
-		@Override
-		public void run() {
-			try {
-				Looper.prepare();
-				QuhaoLog.v(LOGTAG, "get categorys data form server begin");
-				String url = "MerchantController/nextPage";
-				QuhaoLog.i(LOGTAG, "the request url is : " + url);
-				String buf = CommonHTTPRequest.get(url);
-				if (StringUtils.isNull(buf) || "[]".endsWith(buf)) {
-					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-					needToLoad = false;
-				} else {
-					if (null == merchants) {
-						merchants = new ArrayList<Merchant>();
-					}
-					List<Merchant> mers = ParseJson.getMerchants(buf);
-					if(mers.size()<10)
-					{
-						needToLoad = false;
-					}
-					merchants.addAll(mers);
-
-					merchantsUpdateHandler.obtainMessage(200, merchants).sendToTarget();
-				}
-
-			} catch (Exception e) {
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				e.printStackTrace();
-			} finally {
-				progressMerchants.closeProgress();
-				Looper.loop();
-			}
-		}
-	};
-	
-	/*
-	@Override
-	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		String url = "app/marked?aid=" + QHClientApplication.getInstance().accountInfo.accountId;
+		final MyAttentionListTask task = new MyAttentionListTask(R.string.waitting, this, url);
 		
-		if(scrollState == OnScrollListener.SCROLL_STATE_IDLE
-				&& lastVisibleIndex == merchantAdapter.getCount())
-		{
-			pg.setVisibility(View.VISIBLE);
-			bt.setVisibility(View.GONE);
-			MerchantListActivity.this.page += 1;
-			Thread merchantsThread = new Thread(merchantsRunnable);
-			merchantsThread.start();
-		}
-		
-	}
-
-	@Override
-	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-		// check hit the bottom of current loaded data
-		
-		lastVisibleIndex = firstVisibleItem + visibleItemCount -1;
-		if(!needToLoad)
-		{
-			merchantsListView.removeFooterView(moreView);
-			//Toast.makeText(MerchantListActivity.this, "the data load completely", Toast.LENGTH_LONG).show();
+		task.execute(new Runnable() {
 			
-		}
+			@Override
+			public void run() {
+				String buf = task.result;
+				if (null == merchants) {
+					merchants = new ArrayList<Merchant>();
+				}
+				List<Merchant> mers = ParseJson.getMerchants(buf);
+				if(mers.size()<10)
+				{
+					needToLoad = false;
+				}
+				merchants.addAll(mers);
+
+				merchantsUpdateHandler.obtainMessage(200, merchants).sendToTarget();
+			}
+		}, new Runnable() {
+			
+			@Override
+			public void run() {
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				needToLoad = false;
+				
+			}
+		});
 		
-//		if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount > 0 && needToLoad) {
-//			MerchantListActivity.this.page += 1;
-//			Thread merchantsThread = new Thread(merchantsRunnable);
-//			merchantsThread.start();
-//		}
 	}
-	 */
+
 	@Override
 	public void onClick(View v) {
 
@@ -259,8 +194,8 @@ public class MyAttentionListActivity extends QuhaoBaseActivity implements OnHead
 			@Override
 			public void run() {
 				MyAttentionListActivity.this.page += 1;
-				Thread merchantsThread = new Thread(merchantsRunnable);
-				merchantsThread.start();
+				
+				getMerchants();
 			}
 		}, 1000);
 	}

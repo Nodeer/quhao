@@ -46,7 +46,6 @@ import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
-import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.view.refresh.PullToRefreshView;
 import com.withiter.quhao.view.refresh.PullToRefreshView.OnFooterRefreshListener;
 import com.withiter.quhao.view.refresh.PullToRefreshView.OnHeaderRefreshListener;
@@ -55,7 +54,7 @@ import com.withiter.quhao.vo.Category;
 import com.withiter.quhao.vo.TopMerchant;
 
 public class HomeFragment extends Fragment implements
-OnHeaderRefreshListener, OnFooterRefreshListener{
+OnHeaderRefreshListener, OnFooterRefreshListener, OnClickListener{
 	
 	private static String TAG = HomeFragment.class.getName();
 	
@@ -97,6 +96,10 @@ OnHeaderRefreshListener, OnFooterRefreshListener{
 //	private boolean isFirstScheduled;
 	
 	private View contentView;
+	
+	private ImageView myAttentions;
+	
+	private ImageView noSequenceMerchants;
 	
 	@Override
 	public void onAttach(Activity activity) {
@@ -214,6 +217,12 @@ OnHeaderRefreshListener, OnFooterRefreshListener{
 				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			}
 		});
+		
+		myAttentions = (ImageView) contentView.findViewById(R.id.my_attention);
+		noSequenceMerchants = (ImageView) contentView.findViewById(R.id.no_sequence_merchants);
+		
+		myAttentions.setOnClickListener(this);
+		noSequenceMerchants.setOnClickListener(this);
 		
 		mViewPager = (MyViewPager) contentView.findViewById(R.id.home_view_pager);
 		
@@ -775,5 +784,45 @@ OnHeaderRefreshListener, OnFooterRefreshListener{
 	public void onFooterRefresh(PullToRefreshView view) {
 		// 处理下拉刷新最新数据
 		mPullToRefreshView.onFooterRefreshComplete();
+	}
+
+	@Override
+	public void onClick(View v) {
+		
+		if (isClick) {
+			return;
+		}
+		isClick = true;
+		
+		switch (v.getId()) {
+		case R.id.my_attention:
+			
+			if(QHClientApplication.getInstance().isLogined)
+			{
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				Intent attention = new Intent();
+				attention.setClass(getActivity(), MyAttentionListActivity.class);
+				startActivity(attention);
+			}
+			else
+			{
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				Intent login1 = new Intent(getActivity(), LoginActivity.class);
+				login1.putExtra("activityName", this.getClass().getName());
+				login1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				startActivity(login1);
+			}
+			
+			break;
+		case R.id.no_sequence_merchants:
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			Builder dialog = new AlertDialog.Builder(getActivity());
+			dialog.setTitle("温馨提示").setMessage("亲，暂未开放，敬请期待。").setPositiveButton("确定", null);
+			dialog.show();
+			break;
+		default:
+			break;
+		}
+		
 	}
 }

@@ -185,8 +185,8 @@ public class MerchantsSearchActivity extends QuhaoBaseActivity {
 				String result = CommonHTTPRequest
 						.get("MerchantController/getMerchantsByName?name="
 								+ MerchantsSearchActivity.this.editSearch
-										.getText().toString() + "&cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode);
-				if (StringUtils.isNull(result)) {
+										.getText().toString().trim() + "&cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode);
+				if (StringUtils.isNull(result) || "null".equals(result) || "[]".equals(result)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
 					if (null == merchants) {

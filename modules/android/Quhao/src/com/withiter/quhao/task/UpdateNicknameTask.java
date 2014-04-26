@@ -3,8 +3,8 @@ package com.withiter.quhao.task;
 import org.json.JSONException;
 
 import android.content.Context;
-import android.text.TextUtils;
 
+import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 
 /**
@@ -57,7 +57,7 @@ public class UpdateNicknameTask extends BaseTask {
 	private static JsonPack getJsonPack(String responseString)
 			throws JSONException {
 		JsonPack jp = new JsonPack();
-		if (!TextUtils.isEmpty(responseString)) {
+		if (!StringUtils.isNull(responseString) && !"[]".equals(responseString) && !"null".equals(responseString)) {
 
 			if (responseString instanceof String) {
 				jp.setRe(200);
