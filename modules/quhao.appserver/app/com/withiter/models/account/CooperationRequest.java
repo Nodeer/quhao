@@ -43,10 +43,8 @@ public class CooperationRequest extends CooperationRequestEntityDef{
 	 * @return
 	 */
 	public static List<CooperationRequest> next(int page){
-		List<CooperationRequest> list = new ArrayList<CooperationRequest>();
 		MorphiaQuery q = CooperationRequest.q();
 		q = paginate(q, page);
-		
 		return q.asList();
 	}
 	
@@ -59,9 +57,7 @@ public class CooperationRequest extends CooperationRequestEntityDef{
 	private static MorphiaQuery paginate(MorphiaQuery q, int page){
 		Logger.debug("q size is: " + q.count());
 		q.offset(DEFAULT_NUMBER_PER_PAGE*(page -1)).limit(DEFAULT_NUMBER_PER_PAGE);
-		
 		Logger.debug("q size is: " + q.count());
-		
 		return q;
 	}
 	
