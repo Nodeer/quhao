@@ -1,7 +1,5 @@
 package controllers;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,27 +7,22 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-
 import org.apache.commons.lang.StringUtils;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import play.Play;
 import play.modules.morphia.Model.MorphiaQuery;
-import play.mvc.Before;
-import play.mvc.Http.Header;
-import play.mvc.With;
 import vo.CategoryVO;
-import vo.ErrorVO;
 import vo.HaomaVO;
 import vo.MerchantVO;
 import vo.ReservationVO;
 import vo.TopMerchantVO;
 
-import com.withiter.common.Constants;
+import com.mongodb.BasicDBList;
+import com.mongodb.BasicDBObject;
+import com.mongodb.CommandResult;
 import com.withiter.common.Constants.CreditStatus;
 import com.withiter.models.account.Account;
 import com.withiter.models.account.Credit;
@@ -41,7 +34,6 @@ import com.withiter.models.merchant.Haoma;
 import com.withiter.models.merchant.Merchant;
 import com.withiter.models.merchant.Paidui;
 import com.withiter.models.merchant.TopMerchant;
-import com.withiter.utils.DesUtils;
 
 /**
  * 所有商家的操作
@@ -52,7 +44,7 @@ import com.withiter.utils.DesUtils;
 public class MerchantController extends BaseController {
 
 	private static Logger logger = LoggerFactory.getLogger(MerchantController.class);
-
+	private static int NEAR_MERCHANT_PAGE_ITEMS_NUMBER = 20;
 	/**
 	 * Interception any caller on this controller, will first invoke this method
 	 
@@ -507,5 +499,140 @@ public class MerchantController extends BaseController {
 		}
 		renderJSON(merchantVOList);
 
+	}
+	public static void getNoQueueMerchants(int page, double userX, double userY, double maxDis, String cityCode) {
+		page = (page == 0) ? 1 : page;
+		int num = (page - 1) * NEAR_MERCHANT_PAGE_ITEMS_NUMBER;
+		BasicDBObject cmdBody = new BasicDBObject("aggregate", "Merchant");
+		List<BasicDBObject> pipeline = new ArrayList<BasicDBObject>();
+
+		BasicDBObject geoNearParams = new BasicDBObject();
+		geoNearParams.put("near", new double[] { userX, userY });
+		geoNearParams.put("maxDistance", maxDis / 6371);
+		geoNearParams.put("distanceField", "dis");
+		geoNearParams.put("distanceMultiplier", 6371000);
+		geoNearParams.put("spherical", true);
+		if (!StringUtils.isEmpty(cityCode)) {
+			geoNearParams.put("citycode", cityCode);
+		}
+		geoNearParams.put("num", num + NEAR_MERCHANT_PAGE_ITEMS_NUMBER);
+
+		pipeline.add(new BasicDBObject("$geoNear", geoNearParams));
+		if (num != 0) {
+			pipeline.add(new BasicDBObject("$skip", num));
+		}
+
+		BasicDBObject projectParams = new BasicDBObject();
+		projectParams.put("_id", 1);
+		projectParams.put("name", 1);
+		projectParams.put("dis", 1);
+		projectParams.put("averageCost", 1);
+		projectParams.put("merchantImage", 1);
+		projectParams.put("grade", 1);
+		projectParams.put("enable", 1);
+
+		pipeline.add(new BasicDBObject("$project", projectParams));
+		cmdBody.put("pipeline", pipeline);
+
+		if (!MorphiaQuery.ds().getDB().command(cmdBody).ok()) {
+			logger.debug("NoQueue geoNear查询出错: "
+					+ MorphiaQuery.ds().getDB().command(cmdBody)
+							.getErrorMessage());
+		}
+
+		CommandResult myResult = MorphiaQuery.ds().getDB().command(cmdBody);
+		if (myResult.containsField("result")) {
+			List<MerchantVO> merchantVOList = analyzeResults(myResult);
+			renderJSON(merchantVOList);
+		} else {
+			renderJSON("");
+		}
+	}
+	
+	/**
+	 * 附件商家用
+	 * @param page 分页用
+	 * @param userX  用户所在经度
+	 * @param userY  用户所在纬度
+	 * @param maxDis 限制最大距范围
+	 * @param cityCode 城市代码
+	 */
+	public static void getNearMerchants(int page, double userX, double userY, double maxDis, String cityCode) {
+		page = (page == 0) ? 1 : page;
+		int num = (page - 1) * NEAR_MERCHANT_PAGE_ITEMS_NUMBER;
+		BasicDBObject cmdBody = new BasicDBObject("aggregate", "Merchant");
+		List<BasicDBObject> pipeline = new ArrayList<BasicDBObject>();
+
+		BasicDBObject geoNearParams = new BasicDBObject();
+		geoNearParams.put("near", new double[] { userX, userY });
+		geoNearParams.put("maxDistance", maxDis / 6371);
+		geoNearParams.put("distanceField", "dis");
+		geoNearParams.put("distanceMultiplier", 6371000);
+		geoNearParams.put("spherical", true);
+		if (!StringUtils.isEmpty(cityCode)) {
+			geoNearParams.put("citycode", cityCode);
+		}
+		geoNearParams.put("num", num + NEAR_MERCHANT_PAGE_ITEMS_NUMBER);
+
+		pipeline.add(new BasicDBObject("$geoNear", geoNearParams));
+		if (num != 0) {
+			pipeline.add(new BasicDBObject("$skip", num));
+		}
+
+		BasicDBObject projectParams = new BasicDBObject();
+		projectParams.put("_id", 1);
+		projectParams.put("name", 1);
+		projectParams.put("dis", 1);
+		projectParams.put("averageCost", 1);
+		projectParams.put("merchantImage", 1);
+		projectParams.put("grade", 1);
+		projectParams.put("enable", 1);
+
+		pipeline.add(new BasicDBObject("$project", projectParams));
+		cmdBody.put("pipeline", pipeline);
+
+		if (!MorphiaQuery.ds().getDB().command(cmdBody).ok()) {
+			logger.debug("geoNear查询出错: "
+					+ MorphiaQuery.ds().getDB().command(cmdBody)
+							.getErrorMessage());
+		}
+
+		CommandResult myResult = MorphiaQuery.ds().getDB().command(cmdBody);
+		if (myResult.containsField("result")) {
+			List<MerchantVO> merchantVOList = analyzeResults(myResult);
+			renderJSON(merchantVOList);
+		} else {
+			renderJSON("");
+		}
+	}
+	
+	/**
+	 * 解析geoNear返回的数据
+	 * @param commandResult
+	 * @return
+	 */
+	private static List<MerchantVO> analyzeResults(CommandResult commandResult) {
+        List<MerchantVO> lists = new ArrayList<MerchantVO>();  
+		 BasicDBList resultList = (BasicDBList) commandResult.get("result");
+	     Iterator<Object> it = resultList.iterator();
+	     BasicDBObject resultContainer = null;
+	     ObjectId resultId = null;
+	     MerchantVO m = null;
+		   while (it.hasNext()) {
+			  m = new MerchantVO();
+		      resultContainer = (BasicDBObject) it.next();
+		      resultId = (ObjectId)resultContainer.get("_id");
+
+		      m.id = resultId.toString();
+		      m.distance = resultContainer.getDouble("dis");
+		      m.averageCost = Float.parseFloat(resultContainer.get("averageCost").toString());
+		      m.name = resultContainer.getString("name");
+		      m.merchantImage = resultContainer.getString("merchantImage");
+		      m.grade = Float.parseFloat(resultContainer.get("grade").toString());
+		      m.enable = resultContainer.getBoolean("enable");
+		      
+		      lists.add(m);
+		   }
+		   return lists;
 	}
 }
