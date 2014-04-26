@@ -29,16 +29,12 @@
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
     self.navigationItem.leftBarButtonItem = backButtonItem;
-    
-    UIButton *qhBtn=[Helper getBackBtn:@"button.png" title:@"取 号" rect:CGRectMake( 0, 0, 40, 25 )];
-    [qhBtn addTarget:self action:@selector(clickQuhao:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *btnItem = [[UIBarButtonItem alloc] initWithCustomView:qhBtn];
-    self.navigationItem.rightBarButtonItem = btnItem;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title=@"取号";
     _detailView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, kDeviceWidth, kDeviceHeight) style:UITableViewStylePlain];
     _detailView.backgroundColor = [UIColor whiteColor];
     _detailView.indicatorStyle = UIScrollViewIndicatorStyleWhite;
@@ -79,6 +75,13 @@
 
             dispatch_async(dispatch_get_main_queue(), ^{
                 [hud hide:YES];
+                if(!single.enable){
+                    UIButton *qhBtn=[Helper getBackBtn:@"button.png" title:@"取 号" rect:CGRectMake( 0, 0, 40, 25 )];
+                    [qhBtn addTarget:self action:@selector(clickQuhao:) forControlEvents:UIControlEventTouchUpInside];
+                    UIBarButtonItem *btnItem = [[UIBarButtonItem alloc] initWithCustomView:qhBtn];
+                    self.navigationItem.rightBarButtonItem = btnItem;
+                }
+
                 _detailView.dataSource = self;
                 _detailView.delegate = self;
                 [_detailView reloadData];
@@ -98,6 +101,7 @@
     if (![accountID isEqualToString:@""] && reservation == nil && _isFirst){
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [self reloadReversion];
+            //[self performSelector:@selector(refreshPaidui:)];
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSIndexPath *te=[NSIndexPath indexPathForRow:1 inSection:0];
                 [_detailView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:te,nil] withRowAnimation:UITableViewRowAnimationFade];
@@ -162,8 +166,9 @@
         }else{
             NSString *url = [NSString stringWithFormat:@"%@%@?accountId=%@&mid=%@",IP,openService, accountID,merchartID];
             NSString *response =[QuHaoUtil requestDb:url];
-            if([response isEqualToString:@"success"]){
-                [Helper showHUD2:@"建议成功" andView:self.view andSize:100];
+            if(![response isEqualToString:@"error"]){
+                single.openNum = [response intValue];
+                _kstLabel.text = [NSString stringWithFormat:@"%d",single.openNum];
             }else{
                 [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
             }
@@ -177,6 +182,7 @@
 - (void)clickShare:(id)sender
 {
     ShareViewController *share = [[ShareViewController alloc] init];
+    share.mname = single.name;
     [self.navigationController pushViewController:share animated:YES];
 }
 
@@ -264,6 +270,7 @@
     single.enable = [[jsonObjects objectForKey:@"enable"] boolValue];
     single.x = [[jsonObjects objectForKey:@"x"] doubleValue];
     single.y = [[jsonObjects objectForKey:@"y"] doubleValue];
+    single.openNum = [[jsonObjects objectForKey:@"openNum"] intValue];
 }
 
 //解析我的取号情况
@@ -358,14 +365,14 @@
             [cell.contentView addSubview:titleLabel];
             
             UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            shareButton.frame = CGRectMake( kDeviceWidth-50, 30, 50, 25 );
+            shareButton.frame = CGRectMake( kDeviceWidth-50, 30, 40, 25 );
             shareButton.titleLabel.font = [UIFont systemFontOfSize:13];
             [shareButton setTitle:@"分 享" forState:UIControlStateNormal];
             [shareButton addTarget:self action:@selector(clickShare:) forControlEvents:UIControlEventTouchUpInside];
             [cell.contentView addSubview:shareButton];
             
             dlButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            dlButton.frame=CGRectMake(shareButton.frame.origin.x-70, 30, 60, 25 );
+            dlButton.frame=CGRectMake(shareButton.frame.origin.x-60, 30, 60, 25 );
             dlButton.titleLabel.font = [UIFont systemFontOfSize:13];
             //[dlButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             [dlButton addTarget:self action:@selector(clickGz:) forControlEvents:UIControlEventTouchUpInside];
@@ -374,12 +381,16 @@
             //商家禁用 增加希望开通
             if (!single.enable){
                 UIButton *ktButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-                ktButton.frame=CGRectMake(dlButton.frame.origin.x-70, 30, 60, 25 );
+                ktButton.frame=CGRectMake(self.egoImgView.frame.origin.x+self.egoImgView.frame.size.width, 30, 60, 25 );
                 [ktButton setTitle: @"希望开通" forState: UIControlStateNormal];
-                //[ktButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
                 ktButton.titleLabel.font = [UIFont systemFontOfSize:13.0f];
                 [ktButton addTarget:self action:@selector(clickKt:) forControlEvents:UIControlEventTouchUpInside];
                 [cell.contentView addSubview:ktButton];
+                
+                _kstLabel = [[UILabel alloc]initWithFrame:CGRectMake(ktButton.frame.origin.x+ktButton.frame.size.width, 30, 60, 25 )];
+                _kstLabel.text = [NSString stringWithFormat:@"%d",single.openNum];
+                _kstLabel.font=[UIFont systemFontOfSize:11];
+                [cell.contentView addSubview:_kstLabel];
             }
             
             UILabel *costLabel=[[UILabel alloc]initWithFrame:CGRectZero];
@@ -413,11 +424,15 @@
             _imgView.frame=CGRectMake(5, 7, 30, 26);
             _imgView.image= [UIImage imageNamed:@"dh.png"];
             [cell.contentView addSubview:_imgView];
-            
-            NSString *value = [NSString stringWithFormat:@"%@%@",@" 电话:",[single.telephone objectAtIndex:0]];
+            NSString * ph = [single.telephone objectAtIndex:0];
+            if([[single.telephone objectAtIndex:0] isEqualToString:@""]){
+                ph = @"无";
+            }else{
+                [Helper arrowStyle:cell];
+            }
+            NSString *value = [NSString stringWithFormat:@"%@%@",@" 电话:",ph];
             UILabel *phLabel = [Helper getCustomLabel:value font:14 rect:CGRectMake(35, 5, 260, 30)];
             [cell.contentView addSubview:phLabel];
-            [Helper arrowStyle:cell];
         }else if ([indexPath row] == 5){
             cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"time.jpg"]];
             UIImageView *_imgView=[[UIImageView alloc] initWithFrame:CGRectZero];
@@ -620,15 +635,17 @@
 //拨打电话的
 -(void)CallPhone
 {
+    if([[single.telephone objectAtIndex:0] isEqualToString:@""]){
+        return;
+    }
     UIWebView *phoneCallWebView=nil;
-   
-    
     NSString *phoneNum = [single.telephone objectAtIndex:0];// 电话号码
     NSURL *phoneURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@",phoneNum]];
     if ( !phoneCallWebView ) {
         phoneCallWebView = [[UIWebView alloc] initWithFrame:CGRectZero];// 这个webView只是一个后台的View 不需要add到页面上来  效果跟方法二一样 但是这个方法是合法的
     }
     [phoneCallWebView loadRequest:[NSURLRequest requestWithURL:phoneURL]];
+    [self.view addSubview:phoneCallWebView];
 }
 
 - (void)initMapView

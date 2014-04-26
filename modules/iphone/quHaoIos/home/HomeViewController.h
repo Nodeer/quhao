@@ -18,7 +18,7 @@
 #import "CityViewController.h"
 #import "EScrollerView.h"
 #import "AttentionViewController.h"
-@interface HomeViewController : UIViewController<CityViewDelegate,EScrollerViewDelegate>
+@interface HomeViewController : UIViewController<CityViewDelegate,EScrollerViewDelegate,CLLocationManagerDelegate,MBProgressHUDDelegate>
 {
     NSMutableArray *_categoryArray;
     NSMutableArray *_topUrlArray;
@@ -35,11 +35,13 @@
     UIButton *_cityButton;
     NSString *_cityCode;
     BOOL _isLoading;
+    MBProgressHUD *_HUD;
 }
 
 @property (nonatomic, strong) UIScrollView *menuView;
 @property (nonatomic, assign) BOOL wrap;
 @property (nonatomic, strong) NSMutableArray *items;
+@property(nonatomic, strong) CLLocationManager *locationManager;
 
 //@property (nonatomic, strong) iCarousel *carousel;
 -(void)requestTopData;

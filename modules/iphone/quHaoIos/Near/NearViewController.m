@@ -7,32 +7,20 @@
 //
 
 #import "NearViewController.h"
-#define SearchKey @"60d9c5881dbe8dddd3de33aaacac0cbe"
 #define pageSize 20
-@interface NearViewController ()
-
-@property (nonatomic, strong) MAPointAnnotation *centerPointAnnotation;
-@property (nonatomic) AMapSearchType searchType;
-
-@end
 
 @implementation NearViewController
-@synthesize centerPointAnnotation = _centerPointAnnotation;
-@synthesize searchType = _searchType;
 @synthesize tableView;
 - (id)init
 {
     self = [super init];
     if (self)
     {
-        [MAMapServices sharedServices].apiKey = SearchKey;
-        self.searchType = AMapSearchType_PlaceAround;
         self.title=@"周边美食";
         self.tabBarItem.image = [UIImage imageNamed:@"near"];
         _isOpinion = NO;
-        [self initMapView];
         _showList = 0;
-        _dis = 3000;
+        _dis = 3;
         self.view.backgroundColor = [UIColor whiteColor];
     }
     
@@ -47,18 +35,18 @@
     return self;
 }
 
-- (void)initMapView
+- (void)viewDidLoad
 {
-    self.ownMapView = [[MAMapView alloc] initWithFrame:self.view.bounds];
-    self.ownMapView.userTrackingMode = MAUserTrackingModeNone;
-    self.ownMapView.visibleMapRect = MAMapRectMake(220880104, 101476980, 272496, 466656);
-    self.ownMapView.delegate = self;
-    self.search = [[AMapSearchAPI alloc] initWithSearchKey:[MAMapServices sharedServices].apiKey Delegate:self];
-    self.search.delegate = self;
-    
     _merchartsArray = [[NSMutableArray alloc] initWithCapacity:20];
     _isLoading = NO;
+    _allCount = 0;
     _isLoadOver = NO;
+    if([[Helper returnUserString:@"isLocation"] isEqualToString:@"0"]){
+        return;
+    }else{
+        _latitude = [Helper returnUserString:@"latitude"];
+        _longitude = [Helper returnUserString:@"longitude"];
+    }
 #if IOS7_SDK_AVAILABLE
     if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
         [self.tableView setSeparatorInset:UIEdgeInsetsZero];
@@ -77,66 +65,39 @@
     [_button setTitle:@"3千米" forState:UIControlStateNormal];
     [_button addTarget:self action:@selector(changeDis:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_button];
-    _isFirst = YES;
-    _isRefreshLoading = YES;
-    _pageIndex = 1;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshedNear:) name:Notification_TabClick object:nil];
+    _isRefreshLoading = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    if(_isFirst){
-        [self checkDw];
-        _isRefreshLoading = YES;
-    }
-}
-
-- (void)checkDw
-{
-    _isFirst = NO;
-    if ([CLLocationManager locationServicesEnabled] &&([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized
-                                                       || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined))
-    {
-        self.ownMapView.showsUserLocation = YES;
-        _isMapLoading = 0;
-    }else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied){
+    if([[Helper returnUserString:@"isLocation"] isEqualToString:@"0"]){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"请在系统设置中开启定位服务" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
         [alert show];
         return;
-    }
-    if(![Helper isConnectionAvailable]){
-        [self createHud];
-        _HUD.labelText = @"当前网络不可用";
-        [_HUD hide:YES];
-        return;
-    }
-}
-
--(void)mapView:(MAMapView*)mapView didUpdateUserLocation:(MAUserLocation*)userLocation
-updatingLocation:(BOOL)updatingLocation
-{
-    self.ownMapView.showsUserLocation = NO;
-    _isMapLoading++;
-    if(_isMapLoading == 1){
-        _latitude = userLocation.coordinate.latitude;
-        _longitude = userLocation.coordinate.longitude;
+    }else{
         if([_merchartsArray count]==0){
             [self createHud];
-            [self refreshAction];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [self requestData];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (_tableFooterView == nil) {
+                        if(_isLoadOver||[_merchartsArray count]==0){
+                            self.tableView.tableFooterView = nil;
+                            _isLoading = YES;
+                        }else{
+                            [self createFootView];
+                            [self setFootState:PullRefreshNormal];
+                        }
+                    }
+                    [self.tableView reloadData];
+                    if(_HUD != nil){
+                        [_HUD hide:YES];
+                    }
+                });
+            });
         }
     }
-}
-
--(void)mapView:(MAMapView*)mapView didFailToLocateUserWithError:(NSError*)error
-{
-    if(_HUD!=nil){
-        [_HUD hide:YES];
-    }
-    _isMapLoading++;
-    self.ownMapView.showsUserLocation = NO;
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"定位失败" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
-    [alert show];
-    return;
 }
 
 #pragma mark HUD
@@ -155,16 +116,77 @@ updatingLocation:(BOOL)updatingLocation
     _HUD.delegate = self;
 }
 
+-(void)requestData
+{
+    if ([Helper isConnectionAvailable]){
+        if (_isLoadOver) {
+            return;
+        }
+        int pageIndex = _allCount/10+1;
+        NSString *str1= [NSString stringWithFormat:@"%@%@?userX=%@&userY=%@&cityCode=%@&page=%d&maxDis=%d", IP,getNearMerchants_url,_longitude ,_latitude ,[Helper returnUserString:@"currentcityCode"] ,pageIndex ,_dis];
+        NSString *response =[QuHaoUtil requestDb:str1];
+        if([response isEqualToString:@""]){
+            //异常处理
+            _HUD.labelText = @"服务器错误";
+            [_HUD hide:YES];
+        }else{
+            NSArray *jsonObjects=[QuHaoUtil analyseData:response];
+            if(jsonObjects==nil){
+                //解析错误
+                _HUD.labelText = @"服务器错误";
+                [_HUD hide:YES];
+            }else{
+                NSMutableArray *newMerc = [self addAfterInfo:jsonObjects];
+                int count = [newMerc count];
+                _allCount += count;
+                if (count < 10)
+                {
+                    _isLoadOver = YES;
+                }
+                [_merchartsArray addObjectsFromArray:newMerc];
+            }
+        }
+    }
+    else
+    {
+        _isLoadOver = YES;
+         _HUD.labelText = @"当前网络不可用";
+        [_HUD hide:YES];
+    }
+}
+
+//上拉刷新增加数据
+-(NSMutableArray *)addAfterInfo:(NSArray *) objects
+{
+    NSMutableArray *news = [[NSMutableArray alloc] initWithCapacity:10];
+    MerchartModel *model = nil;
+    for(int i=0; i < [objects count];i++ ){
+        model =[[MerchartModel alloc]init];
+        model.name=[[objects objectAtIndex:i] objectForKey:@"name"];
+        model.averageCost=[[[objects objectAtIndex:i] objectForKey:@"averageCost"] floatValue];
+        model.id=[[objects objectAtIndex:i] objectForKey:@"id"];
+        model.imgUrl=[[objects objectAtIndex:i] objectForKey:@"merchantImage"];
+        model.enable=[[[objects objectAtIndex:i] objectForKey:@"enable"] boolValue];
+        double disTemp=[[[objects objectAtIndex:i] objectForKey:@"distance"] doubleValue];
+        if (disTemp<=1000) {
+            model.distance=[NSString stringWithFormat:@"%.fm",disTemp];
+        } else {
+            float dis=disTemp/1000;
+            model.distance=[NSString stringWithFormat:@"%.1fkm",dis];
+        }
+        [news addObject:model];
+    }
+    return news;
+}
+
 - (void)refreshedNear:(NSNotification *)notification
 {
     if (notification.object) {
         if ([(NSString *)notification.object isEqualToString:@"1"]) {
             if(_isRefreshLoading){
                 _isRefreshLoading = NO;
-                [self checkDw];
                 [self createHud];
                 _HUD.labelText = @"正在刷新";
-                
                 if (self.tableView.contentOffset.y == 0) {
                     [self performSelector:@selector(refreshData:) withObject:nil afterDelay:0.5];
                 }else{
@@ -184,8 +206,28 @@ updatingLocation:(BOOL)updatingLocation
 - (void)refreshData:(id)sender
 {
     [_merchartsArray removeAllObjects];
-    _pageIndex = 1;
-    [self refreshAction];
+    _allCount = 0;
+    _isLoadOver = NO;
+    _tableFooterView = nil;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self requestData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (_tableFooterView == nil) {
+                if(_isLoadOver||[_merchartsArray count]==0){
+                    self.tableView.tableFooterView = nil;
+                    _isLoading = YES;
+                }else{
+                    [self createFootView];
+                    [self setFootState:PullRefreshNormal];
+                }
+            }
+            [self.tableView reloadData];
+            if(_HUD != nil){
+                [_HUD hide:YES];
+            }
+            _isRefreshLoading = YES;
+        });
+    });
 }
 
 #pragma mark tableviewdelegate
@@ -250,120 +292,6 @@ updatingLocation:(BOOL)updatingLocation
     }
 }
 
-#pragma mark  高德地图的方法
-- (void)poiRequestCoordinate:(CLLocationCoordinate2D)coordinate
-{
-    AMapPlaceSearchRequest *request = [[AMapPlaceSearchRequest alloc] init];
-    
-    request.searchType = AMapSearchType_PlaceAround;
-    
-    request.location = [AMapGeoPoint locationWithLatitude:coordinate.latitude longitude:coordinate.longitude];
-    request.keywords = @"餐饮";
-    if(_dis != 0){
-        request.radius = _dis;
-    }
-    request.page = _pageIndex;
-    request.sortrule = 1;
-    request.offset = pageSize;
-    //返回扩展信息
-    //request.requireExtension = YES;
-    
-    [self.search AMapPlaceSearch:request];
-}
-
-#pragma mark - AMapSearchDelegate
-
-/* POI 搜索回调. */
-- (void)onPlaceSearchDone:(AMapPlaceSearchRequest *)request response:(AMapPlaceSearchResponse *)respons
-{
-    if (request.searchType != self.searchType)
-    {
-        return;
-    }
-    int count = respons.pois.count;
-
-    if (count == 0)
-    {
-        _isLoadOver = YES;
-        return;
-    }
-    
-    if (count < pageSize)
-    {
-        _isLoadOver = YES;
-    }
-
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        AMapPOI *obj = nil;
-        for (int i=0; i<count; i++) {
-            obj = [respons.pois objectAtIndex:i];
-            MerchartModel *model=[[MerchartModel alloc]init];
-            model.name=obj.name;
-            if (obj.distance<=1000) {
-                model.distance=[NSString stringWithFormat:@"%dm",obj.distance];
-            } else {
-                float dis=obj.distance/1000;
-                model.distance=[NSString stringWithFormat:@"%.1fkm",dis];
-            }
-            model.pguid=obj.uid;
-            model.imgUrl=@"";
-            MerchartModel * temp=[self getMerchart:obj.uid ];
-            model.id=temp.id;
-            model.enable=temp.enable;
-            [_merchartsArray addObject:model];
-        }
-      dispatch_async(dispatch_get_main_queue(), ^{
-          if (_tableFooterView == nil) {
-              if(_isLoadOver){
-                  self.tableView.tableFooterView = nil;
-                  _isLoading = YES;
-              }else{
-                  [self createFootView];
-              }
-          }
-          if(_HUD!=nil){
-              [_HUD hide:YES];
-          }
-          [self doneLoadingTableViewData];
-          [self.tableView reloadData];
-    });
-    });
-    _isRefreshLoading = YES;
-}
-
-- (void)search:(id)searchRequest error:(NSString*)errInfo
-{
-    //NSLog(@"==============%@",errInfo);
-}
-
-#pragma mark - Action Handle
-- (void)refreshAction
-{
-    if (_isLoadOver) {
-        return;
-    }
-    self.centerPointAnnotation = [[MAPointAnnotation alloc] init];
-    self.centerPointAnnotation.coordinate = CLLocationCoordinate2DMake(_latitude, _longitude);
-    self.centerPointAnnotation.title = @"我的位置";
-
-    [self poiRequestCoordinate:self.centerPointAnnotation.coordinate];
-}
-
--(MerchartModel *)getMerchart:(NSString *)poiId
-{
-    NSString *url = [NSString stringWithFormat:@"%@%@%@",IP,queryMerchantByPoiId,poiId];
-    NSString *response =[QuHaoUtil requestDb:url];
-    MerchartModel *model = [[MerchartModel alloc]init];
-    if(![response isEqualToString:@""]){
-        NSDictionary *jsonObjects=[QuHaoUtil analyseDataToDic:response];
-        if(jsonObjects!=nil){
-            model.enable = [jsonObjects  objectForKey:@"enable"];
-            model.id = [jsonObjects objectForKey:@"id"];
-        }
-    }
-    return model;
-}
-
 //弹出商家详细页面
 - (void)pushMerchartDetail:(MerchartModel *)model andNavController:(UINavigationController *)navController
 {
@@ -372,14 +300,6 @@ updatingLocation:(BOOL)updatingLocation
     mDetail.tabBarItem.image = [UIImage imageNamed:@"detail"];
     mDetail.hidesBottomBarWhenPushed=YES;
     [navController pushViewController:mDetail animated:YES];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    self.ownMapView.showsUserLocation = NO;
-    self.ownMapView.userTrackingMode  = MAUserTrackingModeNone;
-    
-    [super viewDidDisappear:animated];
 }
 
 #pragma mark 下拉选择代码开始
@@ -397,7 +317,7 @@ updatingLocation:(BOOL)updatingLocation
         [_selectList fadeOut];
         _showList = 1;
         arryList = @[@"1千米",@"3千米",@"5千米",@"10千米",@"全城"];
-        arryValueList = @[@"1000",@"3000",@"5000",@"100000",@"0"];
+        arryValueList = @[@"1",@"3",@"5",@"10",@"-1"];
         [self showPopUpwithOption:arryList];
     }
 }
@@ -406,8 +326,6 @@ updatingLocation:(BOOL)updatingLocation
     [_button setTitle:[arryList objectAtIndex:anIndex] forState:UIControlStateNormal];
     _dis = [[arryValueList objectAtIndex:anIndex] intValue];
     _showList = 0;
-    _isRefreshLoading = NO;
-    [self checkDw];
     [self createHud];
     _HUD.labelText = @"正在刷新";
     if (self.tableView.contentOffset.y == 0) {
@@ -458,7 +376,6 @@ updatingLocation:(BOOL)updatingLocation
     [_tableFooterActivityIndicator stopAnimating];
     [_tableFooterView addSubview:_tableFooterActivityIndicator];
     self.tableView.tableFooterView = _tableFooterView;
-    _state = PullRefreshNormal;
 }
 
 -(void)onClickMoreLable:(id)sender
@@ -472,8 +389,17 @@ updatingLocation:(BOOL)updatingLocation
 
 -(void)loadMore
 {
-        _pageIndex++;
-        [self refreshAction];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self requestData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(_isLoadOver){
+                self.tableView.tableFooterView = nil;
+                _isLoading = YES;
+            }
+            [self doneLoadingTableViewData];
+            [self.tableView reloadData];
+        });
+    });
 }
 
 - (void)doneLoadingTableViewData
@@ -516,6 +442,7 @@ updatingLocation:(BOOL)updatingLocation
     //	[UIView setAnimationDuration:.3];
     //	[scrollView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f)];
     //	[UIView commitAnimations];
+	
 	[self setFootState:PullRefreshNormal];
 }
 

@@ -17,6 +17,7 @@
     UILabel *_titleLabel;
     UILabel *_disLabel;
     UILabel *_statusLabel;
+    UILabel *_rjLabel;
     MerchartModel *_merchartModel;
 }
 

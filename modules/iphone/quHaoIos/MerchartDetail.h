@@ -25,6 +25,9 @@
 {
     UITableView *_detailView;
     NSMutableArray *_paiduArray;
+    UIButton *_sxButton;
+    BOOL _isFirst;
+    UILabel *_kstLabel;
 }
 
 @property BOOL isNextPage;

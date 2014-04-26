@@ -30,25 +30,31 @@
     
     
     _titleLabel=[[UILabel alloc]initWithFrame:CGRectZero];
-    _titleLabel.frame=CGRectMake(self.egoImgView.frame.origin.x+self.egoImgView.frame.size.width+5, 15, 200, 30);
+    _titleLabel.frame=CGRectMake(self.egoImgView.frame.origin.x+self.egoImgView.frame.size.width+5, 10, 200, 25);
     _titleLabel.backgroundColor=[UIColor clearColor];
     _titleLabel.font=[UIFont boldSystemFontOfSize:18];
     [self.contentView addSubview:_titleLabel];
     
+    _statusLabel=[[UILabel alloc]initWithFrame:CGRectZero];
+    _statusLabel.backgroundColor=[UIColor clearColor];
+    _statusLabel.frame=CGRectMake(_titleLabel.frame.origin.x, _titleLabel.frame.origin.y+_titleLabel.frame.size.height+10, 130, 25);
+    _statusLabel.textAlignment=NSTextAlignmentLeft;
+    _statusLabel.font=[UIFont boldSystemFontOfSize:13];
+    [self.contentView addSubview:_statusLabel];
     
     _disLabel=[[UILabel alloc]initWithFrame:CGRectZero];
     _disLabel.backgroundColor=[UIColor clearColor];
-    _disLabel.frame=CGRectMake(_titleLabel.frame.origin.x+130, _titleLabel.frame.origin.y+_titleLabel.frame.size.height+10, 50, 35);
+    _disLabel.frame=CGRectMake(_titleLabel.frame.origin.x+120, _statusLabel.frame.origin.y+_statusLabel.frame.size.height, 50, 25);
     _disLabel.textAlignment=NSTextAlignmentRight;
     _disLabel.font=[UIFont boldSystemFontOfSize:13];
     [self.contentView addSubview:_disLabel];
     
-    _statusLabel=[[UILabel alloc]initWithFrame:CGRectZero];
-    _statusLabel.backgroundColor=[UIColor clearColor];
-    _statusLabel.frame=CGRectMake(_titleLabel.frame.origin.x, _titleLabel.frame.origin.y+_titleLabel.frame.size.height+10, 130, 35);
-    _statusLabel.textAlignment=NSTextAlignmentLeft;
-    _statusLabel.font=[UIFont boldSystemFontOfSize:13];
-    [self.contentView addSubview:_statusLabel];
+    _rjLabel=[[UILabel alloc]initWithFrame:CGRectZero];
+    _rjLabel.backgroundColor=[UIColor clearColor];
+    _rjLabel.frame=CGRectMake(_statusLabel.frame.origin.x, _statusLabel.frame.origin.y+_statusLabel.frame.size.height, 80, 25);
+    _rjLabel.textAlignment=NSTextAlignmentLeft;
+    _rjLabel.font=[UIFont boldSystemFontOfSize:13];
+    [self.contentView addSubview:_rjLabel];
 }
 
 -(void) setSelected:(BOOL)selected animated:(BOOL)animated
@@ -72,7 +78,8 @@
         _statusLabel.text=@"暂时不能取号";
     }
     
-    _disLabel.text=self.merchartModel.distance;
+    _rjLabel.text = [NSString stringWithFormat:@"%@%.2lf",@" 人均:¥",self.merchartModel.averageCost];
+    _disLabel.text = self.merchartModel.distance;
 }
 
 -(void)dealloc
