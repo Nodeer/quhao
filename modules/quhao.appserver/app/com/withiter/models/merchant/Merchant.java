@@ -92,7 +92,6 @@ public class Merchant extends MerchantEntityDef {
 		}
 		
 		q.filter("cityCode", cityCode);
-		
 		return paginate(q, page);
 	}
 
@@ -103,8 +102,6 @@ public class Merchant extends MerchantEntityDef {
 	 */
 	public static List<Merchant> findByName(String name) {
 		MorphiaQuery q = Merchant.q();
-		//首字查询
-		//Pattern pattern = Pattern.compile("^" + name + ".*$", Pattern.CASE_INSENSITIVE);
 		Pattern pattern = Pattern.compile("^.*" + name + ".*$", Pattern.CASE_INSENSITIVE);
 		q.filter("name", pattern).limit(DEFAULT_PAGE_ITEMS_NUMBER);
 		return q.asList();
@@ -117,7 +114,6 @@ public class Merchant extends MerchantEntityDef {
 	 */
 	public static List<Merchant> findByName(String name, String cityCode) {
 		MorphiaQuery q = Merchant.q();
-		//首字查询
 		Pattern pattern = Pattern.compile("^.*" + name + ".*$", Pattern.CASE_INSENSITIVE);
 		q.filter("cityCode", cityCode).filter("name", pattern).limit(DEFAULT_PAGE_ITEMS_NUMBER);
 		return q.asList();
@@ -204,21 +200,23 @@ public class Merchant extends MerchantEntityDef {
 				+ this.tags + "],[this.teses:" + this.teses + "]";
 	}
 
-	// TODO add comments here
+	/**
+	 * 通过Reservation查找Merchant
+	 * @param reservations 所有reservation
+	 * @return
+	 */
 	public static List<Merchant> findbyReservations(List<Reservation> reservations) {
 		if (null != reservations && !reservations.isEmpty()) {
-			ArrayList alist=new ArrayList();
+			ArrayList alist = new ArrayList();
 			Reservation reservation = null;
 			for (int i = 0; i < reservations.size(); i++) {
 				reservation = reservations.get(i);
-				if (null != reservation.merchantId
-						&& !"".equals(reservation.merchantId)) {
+				if (!StringUtils.isEmpty(reservation.merchantId)) {
 					alist.add(new ObjectId(reservation.merchantId));
 				}
 			}
 			MorphiaQuery q = Merchant.q();
 			q.filter("_id in ",alist);
-
 			return q.asList();
 		} else {
 			return new ArrayList<Merchant>();
