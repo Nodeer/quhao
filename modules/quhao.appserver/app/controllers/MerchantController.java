@@ -277,14 +277,14 @@ public class MerchantController extends BaseController {
 	 *            商家id
 	 */
 	public static void queryMerchantByPoiId(String poiId) {
+		if(StringUtils.isEmpty(poiId)){
+			renderJSON("poiid不能为空");
+		}
 		Merchant m = Merchant.queryMerchantByPoiId(poiId);
-		if(m!=null)
-		{
+		if(m!=null) {
 			MerchantVO vo = MerchantVO.buildSimpleVo(m);
 			renderJSON(vo);
-		}
-		else
-		{
+		} else {
 			renderJSON("");
 		}
 	}
