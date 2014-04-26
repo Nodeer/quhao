@@ -32,6 +32,7 @@ import com.withiter.models.merchant.Category;
 import com.withiter.models.merchant.Comment;
 import com.withiter.models.merchant.Haoma;
 import com.withiter.models.merchant.Merchant;
+import com.withiter.models.merchant.Open;
 import com.withiter.models.merchant.Paidui;
 import com.withiter.models.merchant.TopMerchant;
 
@@ -215,6 +216,7 @@ public class MerchantController extends BaseController {
 		}
 		
 		boolean isAttention=false;
+		long openNum = 0;
 		if(!accountId.equals("")){
 			Attention attention =Attention.getAttentionById(merchantId, accountId);
 			if(attention==null){
@@ -222,11 +224,13 @@ public class MerchantController extends BaseController {
 			}else{
 				isAttention=attention.flag;
 			}
+			
+			openNum = Open.getNumberByMid(merchantId);
 		}
 		
 		if(null != m)
 		{
-			merchantDetails.put("merchant", MerchantVO.build(m, c,isAttention));
+			merchantDetails.put("merchant", MerchantVO.build(m, c, isAttention, openNum));
 		}
 		
 		if(null != m && m.enable && "false".equals(isLogined))
@@ -565,7 +569,9 @@ public class MerchantController extends BaseController {
 
 		BasicDBObject geoNearParams = new BasicDBObject();
 		geoNearParams.put("near", new double[] { userX, userY });
-		geoNearParams.put("maxDistance", maxDis / 6371);
+		if(maxDis>=0){
+			geoNearParams.put("maxDistance", maxDis / 6371);
+		}
 		geoNearParams.put("distanceField", "dis");
 		geoNearParams.put("distanceMultiplier", 6371000);
 		geoNearParams.put("spherical", true);

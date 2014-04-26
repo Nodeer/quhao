@@ -19,7 +19,9 @@ public class OpenController extends BaseController{
 			open.accountId=accountId;
 			open.mid=mid;
 			open.save();
-			renderText("success");
+			
+			long num = open.getNumberByMid(mid);
+			renderText(num);
 		}else{
 			renderText("error");
 		}
