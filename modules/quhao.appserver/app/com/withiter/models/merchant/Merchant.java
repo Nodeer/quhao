@@ -27,12 +27,19 @@ public class Merchant extends MerchantEntityDef {
 	 * @param cateType the type of category
 	 * @return the list of merchant
 	 */
+	
+	// TODO add paginate
 	public static List<Merchant> findByType(String cateType) {
 		MorphiaQuery q = Merchant.q();
 		q.or(q.criteria("cateType").equal(cateType),q.criteria("cateType1").equal(cateType));
 		return q.asList();
 	}
 	
+	/**
+	 * Get merchant by _id
+	 * @param mid
+	 * @return
+	 */
 	public static Merchant findByMid(String mid){
 		System.out.println(mid);
 		MorphiaQuery q = Merchant.q();
@@ -111,7 +118,6 @@ public class Merchant extends MerchantEntityDef {
 	public static List<Merchant> findByName(String name, String cityCode) {
 		MorphiaQuery q = Merchant.q();
 		//首字查询
-		//Pattern pattern = Pattern.compile("^" + name + ".*$", Pattern.CASE_INSENSITIVE);
 		Pattern pattern = Pattern.compile("^.*" + name + ".*$", Pattern.CASE_INSENSITIVE);
 		q.filter("cityCode", cityCode).filter("name", pattern).limit(DEFAULT_PAGE_ITEMS_NUMBER);
 		return q.asList();
@@ -200,51 +206,6 @@ public class Merchant extends MerchantEntityDef {
 
 	// TODO add comments here
 	public static List<Merchant> findbyReservations(List<Reservation> reservations) {
-		/*
-		String whereSql = "where 1=1 ";
-		if (null != reservations && !reservations.isEmpty()) {
-			whereSql = whereSql + "and _id in (";
-		} else {
-			return new ArrayList<Merchant>();
-		}
-		Reservation reservation = null;
-		for (int i = 0; i < reservations.size(); i++) {
-			reservation = reservations.get(i);
-			if (null != reservation.merchantId
-					&& !"".equals(reservation.merchantId)) {
-				if (i < reservations.size() - 1) {
-					whereSql = whereSql + "\'"+ reservation.merchantId + "\',";
-					continue;
-				}
-				whereSql = whereSql + "\'"+ reservation.merchantId + "\'";
-				//whereSql = whereSql + reservation.merchantId;
-			}
-		}
-		whereSql = whereSql + ")";
-		System.out.println(whereSql);
-		MorphiaQuery q = Merchant.q();
-		q.where(whereSql);
-		return q.asList();
-		
-		List<Merchant> merchants = new ArrayList<Merchant>();
-		
-		Reservation reservation = null;
-		MorphiaQuery q = Merchant.q();
-		for (int i = 0; i < reservations.size(); i++) {
-			reservation = reservations.get(i);
-			if (null != reservation.merchantId
-					&& !"".equals(reservation.merchantId)) {
-				q.filter("_id", new ObjectId(reservation.merchantId));
-				List<Merchant> temps = q.asList();
-				if(temps.size()>0)
-				{
-					merchants.addAll(temps);
-				}
-			}
-		}
-		
-		return merchants;
-		*/
 		if (null != reservations && !reservations.isEmpty()) {
 			ArrayList alist=new ArrayList();
 			Reservation reservation = null;
@@ -288,13 +249,10 @@ public class Merchant extends MerchantEntityDef {
 	}
 
 	/**
-	 * play job for updating merchant evaluate, eg: grade, xingjiabi, kouwei, huanjing, fuwu, renjun
+	 * 通过POIID查询merchant
+	 * @param poiId
+	 * @return
 	 */
-	public static void updateMerchantEvaluate() {
-		
-		
-	}
-
 	public static Merchant queryMerchantByPoiId(String poiId) {
 		System.out.println(poiId);
 		MorphiaQuery q = Merchant.q();
@@ -304,5 +262,24 @@ public class Merchant extends MerchantEntityDef {
 			return null;
 		}
 		return merchants.get(0);
+	}
+	
+	/**
+	 * update merchant evaluate
+	 */
+	public void updateEvaluate(){
+		MorphiaQuery commentQ = Comment.q();
+		commentQ.filter("mid", this.id());
+		if(commentQ.count() == 0){
+			return;
+		}
+		this.xingjiabi =  commentQ.average("xingjiabi");
+		this.kouwei =  commentQ.average("kouwei");
+		this.huanjing =  commentQ.average("huanjing");
+		this.fuwu =  commentQ.average("fuwu");
+		this.grade =  commentQ.average("grade");
+		this.averageCost =  commentQ.average("averageCost");
+		
+		this.save();
 	}
 }

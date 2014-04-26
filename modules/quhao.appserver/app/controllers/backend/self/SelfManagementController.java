@@ -77,7 +77,6 @@ public class SelfManagementController extends BaseController {
 			MerchantAccountRel rel = relList.get(0);
 			String mid = rel.mid;
 			merchant = Merchant.findById(mid);
-			
 			openRequestCount = Open.getNumberByMid(mid);
 		}
 		BackendMerchantInfoVO bmivo = BackendMerchantInfoVO.build(merchant, account, openRequestCount);

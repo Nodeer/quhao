@@ -151,6 +151,9 @@ public class MerchantController extends BaseController {
 	public static void merchant(String id) {
 		System.out.println("merchant:" + id);
 		Merchant m = Merchant.findByMid(id);
+		
+		// 更新商家评价信息
+		m.updateEvaluate();
 		Comment c = Comment.latestOne(id);
 		if (c == null) {
 			c = new Comment();
