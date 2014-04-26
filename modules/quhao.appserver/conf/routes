@@ -66,6 +66,7 @@ GET     /getReservations					MerchantController.getReservations
 GET     /cancel								MerchantController.cancel
 GET		/merchantNew					    MerchantController.merchantNew
 GET		/querytMerchantDetail				MerchantController.querytMerchantDetail
+GET 	/getNearMerchants					MerchantController.getNearMerchants
 
 # Accounts
 GET		/accounts							rsecure.Secure.accounts

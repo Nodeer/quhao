@@ -69,7 +69,8 @@ public class MerchantVO {
 	public String commentDate;
 	//是否关注商家
 	public boolean isAttention;
-	
+	//用户和商家之间距离
+	public double distance;
 	/**
 	 * @param m
 	 * @return
