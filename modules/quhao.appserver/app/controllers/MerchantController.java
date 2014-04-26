@@ -111,7 +111,7 @@ public class MerchantController extends BaseController {
 	 * 通过cateType以及page查询商家列表
 	 * page > 0
 	 */
-	// TODO : check this function used or not
+	@Deprecated
 	public static void merchantByCategory() {
 		String cateType = params.get("cateType");
 		String pageStr = params.get("page");
