@@ -504,7 +504,16 @@ public class MerchantController extends BaseController {
 		renderJSON(merchantVOList);
 
 	}
-	public static void getNoQueueMerchants(int page, double userX, double userY, double maxDis, String cityCode) {
+	
+	/**
+	 * 周边不排队商家
+	 * @param page	分页
+	 * @param userX X坐标
+	 * @param userY	Y坐标
+	 * @param maxDis 最远的距离
+	 * @param cityCode 城市代码
+	 */
+	public static void getNearNoQueueMerchants(int page, double userX, double userY, double maxDis, String cityCode) {
 		page = (page == 0) ? 1 : page;
 		int num = (page - 1) * NEAR_MERCHANT_PAGE_ITEMS_NUMBER;
 		BasicDBObject cmdBody = new BasicDBObject("aggregate", "Merchant");
