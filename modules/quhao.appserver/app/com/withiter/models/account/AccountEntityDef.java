@@ -12,33 +12,23 @@ import com.google.code.morphia.annotations.Indexed;
 
 public abstract class AccountEntityDef extends BaseModel {
 	@Indexed
-	public String phone = "";
+	public String phone = "";					// 手机号码
 	@Indexed
-	public String email = "";
+	public String email = "";					// 邮箱
 	@Indexed
-	public String password = "";
+	public String password = "";				// 密码
 	@Indexed
-	public String nickname = "";
-	/**
-	 * 验证码
-	 */
-	public String authcode;
-	/**
-	 * 获取验证码的时间
-	 */
-	public Date authDate;
-	public int signIn;
-	
-	public boolean isSignIn = false;
-
+	public String nickname = "";				// 昵称
+	public String authcode;						// 验证码
+	public Date authDate;						// 获取验证码时间
+	public int signIn;							// 每日签到总次数
+	public boolean isSignIn = false;			// 是否已经签到
 	public int jifen = 10;						// 默认10个积分
-	
-	public int dianping = 0;
-	public int zhaopian = 0;
-	
-	public String birthDay = "";
-	public String userImage = "";
-	public boolean enable = false;
-	public Constants.MobileOSType mobileOS;
-	public Date lastLogin = new Date();
+	public int dianping = 0;					// 点评次数
+	public int zhaopian = 0;					// 添加的照片个数
+	public String birthDay = "";				// 生日
+	public String userImage = "";				// 用户头像
+	public boolean enable = false;				// 账号是否激活
+	public Constants.MobileOSType mobileOS;		// 手机类型（Android/iOS） 
+	public Date lastLogin = new Date();			// 最后一次登陆时间
 }
