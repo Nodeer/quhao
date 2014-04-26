@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -12,10 +13,13 @@ import android.widget.ImageView;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
+import com.amap.api.location.LocationProviderProxy;
+import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 
 public class MainTabActivity extends FragmentActivity implements AMapLocationListener{
@@ -26,6 +30,8 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 	private FragmentTabHost mTabHost;
 	
 	private LayoutInflater inflater;
+	
+	private long exitTime = 0;
 	
 	/**
 	 * 定义数组来存放Fragment界面
@@ -79,6 +85,9 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 	
 	@Override
 	public void onPause() {
+		if (mAMapLocationManager != null) {
+			mAMapLocationManager.removeUpdates(this);
+		}
 		super.onPause();
 		Log.e("wjzwjz", "MainTabActivity onPause");
 	}
@@ -97,10 +106,10 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 			mAMapLocationManager.destory();
 		}
 		mAMapLocationManager = null;
-		
+		Log.e("wjzwjz", "MainTabActivity onDestroy");
 		super.onDestroy();
 		
-		Log.e("wjzwjz", "MainTabActivity onDestroy");
+		
 	}
 	
 	/**
@@ -108,16 +117,16 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 	 */
 	private void initView() {
 		
-//		if (mAMapLocationManager == null) {  
-//            mAMapLocationManager = LocationManagerProxy.getInstance(this);  
-//            /* 
-//             * mAMapLocManager.setGpsEnable(false);// 
-//             * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true 
-//             */  
-//            // Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效  
-//            mAMapLocationManager.requestLocationUpdates(  
-//                    LocationProviderProxy.AMapNetwork, 5000, 10, this);  
-//        }
+		if (mAMapLocationManager == null) {  
+            mAMapLocationManager = LocationManagerProxy.getInstance(this);  
+            /* 
+             * mAMapLocManager.setGpsEnable(false);// 
+             * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true 
+             */  
+            // Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效  
+            mAMapLocationManager.requestLocationUpdates(  
+                    LocationProviderProxy.AMapNetwork, 5000, 10, this);  
+        }
 		
 		//实例化布局对象
 		inflater = LayoutInflater.from(this);
@@ -191,6 +200,43 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 	@Override
 	public void onLocationChanged(AMapLocation location) {
 		
+		if (null != location) {
+			QHClientApplication.getInstance().location = location;
+			if (mAMapLocationManager != null) {
+				mAMapLocationManager.removeUpdates(this);
+				mAMapLocationManager.destory();
+			}
+			mAMapLocationManager = null;
+		}
 	}
 	
+	@Override
+	public void finish() {
+		Log.e("wjzwjz", "finish");
+		if (mAMapLocationManager != null) {
+			mAMapLocationManager.removeUpdates(this);
+			mAMapLocationManager.destory();
+		}
+		mAMapLocationManager = null;
+		super.finish();
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN)
+		{
+			if(System.currentTimeMillis() - exitTime > 2000)
+			{
+				 Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show(); 
+				 exitTime = System.currentTimeMillis();
+			}
+			else
+			{
+				finish();
+				System.exit(0);
+			}
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 }

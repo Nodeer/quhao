@@ -45,11 +45,11 @@
         <RelativeLayout android:layout_width="fill_parent"
 	        android:layout_height="40dip"
 	        android:gravity="center"
+	        android:padding="5dip"
 	        android:orientation="horizontal">
 	        <EditText android:id="@+id/search_edit"
-	            android:layout_width="match_parent"
-	            android:layout_height="35dip"
-	            android:padding="5dip"
+	            android:layout_width="fill_parent"
+	            android:layout_height="fill_parent"
 	            android:focusable="false"
 	            android:hint="@string/city_search_hint"
 	            android:textSize="10.0sp"
@@ -57,19 +57,33 @@
 	            />
 	        
         </RelativeLayout>
-        <LinearLayout android:layout_width="fill_parent"
-	        android:layout_height="match_parent"
-	        android:gravity="center"
-	        android:orientation="vertical">
+        <RelativeLayout android:layout_width="fill_parent"
+	        android:layout_height="40dip"
+	        android:gravity="center_vertical"
+	        android:orientation="horizontal"
+	        android:padding="5dip">
+	        <Button
+			    android:id="@+id/relocate"
+			    android:layout_width="wrap_content"
+			    android:layout_height="35dip"
+			    android:layout_alignParentRight="true"
+			    android:background="@drawable/btn_weight"
+			    android:text="定位"
+			    android:layout_gravity="right|center_vertical"
+			    android:textAppearance="?android:textAppearanceMediumInverse"
+			    android:textColor="#ff000000"
+			    android:textSize="14.0sp" />
+	        
 	        <TextView  android:id="@+id/locate_message"
+	            android:layout_toLeftOf="@id/relocate"
 	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:padding="5dip"
+	            android:layout_height="fill_parent"
+	            android:gravity="center_vertical"
 	            android:text="@string/city_cannot_locate"
 	            android:textSize="12.0sp"
-	            android:gravity="left"
 	            />
-        </LinearLayout>
+	        
+        </RelativeLayout>
     </LinearLayout>
     
 	<FrameLayout

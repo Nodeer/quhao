@@ -9,7 +9,9 @@ import java.util.TreeSet;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,13 +28,18 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.location.LocationManagerProxy;
+import com.amap.api.location.LocationProviderProxy;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.domain.CityInfo;
+import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SharedprefUtil;
 
-public class CitySelectActivity extends QuhaoBaseActivity {
+public class CitySelectActivity extends QuhaoBaseActivity implements AMapLocationListener{
 
 	/**
 	 * 城市的listView
@@ -46,7 +53,7 @@ public class CitySelectActivity extends QuhaoBaseActivity {
 	
 	private List<String> strList = new ArrayList<String>();
 	private String[] str = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
-			"K", "L", "M", "N", "O", "P", "Q", "U", "V", "W", "X", "Y", "Z" };
+			"K", "L", "M", "N", "O", "P", "Q", "R", "S", "T","U", "V", "W", "X", "Y", "Z" };
 	
 	/**
 	 * 城市数据
@@ -85,6 +92,14 @@ public class CitySelectActivity extends QuhaoBaseActivity {
 	 */
 	private EditText searchEdit;
 	
+	private LocationManagerProxy mAMapLocationManager; 
+	
+	private TextView locateMsg;
+	
+	private Button reLocatonBtn;
+	
+	private CityInfo locateCity;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -97,6 +112,13 @@ public class CitySelectActivity extends QuhaoBaseActivity {
 		cancelBtn = (Button) this.findViewById(R.id.cancel_btn);
 		cancelBtn.setOnClickListener(this);
 		
+		locateMsg = (TextView) this.findViewById(R.id.locate_message);
+		locateMsg.setText("正在定位中...");
+		locateMsg.setOnClickListener(this);
+		
+		reLocatonBtn = (Button) this.findViewById(R.id.relocate);
+		reLocatonBtn.setOnClickListener(this);
+		reLocatonBtn.setVisibility(View.GONE);
 		//
 		searchEdit = (EditText) this.findViewById(R.id.search_edit);
 		
@@ -105,6 +127,25 @@ public class CitySelectActivity extends QuhaoBaseActivity {
 		tv_show.setVisibility(View.INVISIBLE);
 		
 		searchEdit.setOnClickListener(this);
+		
+		if(ActivityUtil.isNetWorkAvailable(this))
+		{
+			if (mAMapLocationManager == null) {  
+	            mAMapLocationManager = LocationManagerProxy.getInstance(this);  
+	            /* 
+	             * mAMapLocManager.setGpsEnable(false);// 
+	             * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true 
+	             */  
+	            // Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效  
+	            mAMapLocationManager.requestLocationUpdates(  
+	                    LocationProviderProxy.AMapNetwork, 5000, 10, this);  
+	        }
+		}
+		else
+		{
+			locateMsg.setText("网络未开启...");
+		}
+		
 		
 //		initView();
 		
@@ -229,10 +270,11 @@ public class CitySelectActivity extends QuhaoBaseActivity {
 			// tv.setTextSize(16);
 			tv.setGravity(Gravity.CENTER);
 			tv.setPadding(10, 0, 10, 0);
+			tv.setTextSize(13);
 			layoutIndex.addView(tv);
 			
 			layoutIndex.setBackgroundColor(Color
-					.parseColor("#606060"));
+					.parseColor("#00000000"));
 			
 			tv.setOnTouchListener(new OnTouchListener() {
 
@@ -284,7 +326,7 @@ public class CitySelectActivity extends QuhaoBaseActivity {
 						break;
 					case MotionEvent.ACTION_UP:
 						layoutIndex.setBackgroundColor(Color
-								.parseColor("#606060"));
+								.parseColor("#00000000"));
 //						layoutIndex.setBackgroundColor(Color
 //								.parseColor("#00ffffff"));
 						tv_show.setVisibility(View.INVISIBLE);
@@ -306,13 +348,45 @@ public class CitySelectActivity extends QuhaoBaseActivity {
 		switch(v.getId())
 		{
 			case R.id.cancel_btn:
+				unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
 				this.finish();
 				break;
 			case R.id.search_edit:
+				unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
 				Intent intent = new Intent();
 				intent.setClass(this, CitySearchActivity.class);
 				startActivity(intent);
 				this.finish();
+				break;
+			case R.id.locate_message:
+				if(locateCity!=null)
+				{
+					QHClientApplication.getInstance().defaultCity = locateCity;
+					SharedprefUtil.put(CitySelectActivity.this, QuhaoConstant.CITY_CODE, locateCity.cityCode);
+					SharedprefUtil.put(CitySelectActivity.this, QuhaoConstant.CITY_NAME, locateCity.cityName);
+					SharedprefUtil.put(CitySelectActivity.this, QuhaoConstant.CITY_PINYIN, locateCity.cityPinyin);
+//					Log.e("wjzwjz", nData.get(position).cityPinyin + "--" + nData.get(position).cityName);
+//					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+					CitySelectActivity.this.finish();
+				}
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				break;
+			case R.id.relocate:
+				if (ActivityUtil.isNetWorkAvailable(this)) {
+					if (mAMapLocationManager == null) {  
+			            mAMapLocationManager = LocationManagerProxy.getInstance(this);  
+			            /* 
+			             * mAMapLocManager.setGpsEnable(false);// 
+			             * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true 
+			             */  
+			            // Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效  
+			            mAMapLocationManager.requestLocationUpdates(  
+			                    LocationProviderProxy.AMapNetwork, 5000, 10, this);  
+			        }
+					reLocatonBtn.setVisibility(View.GONE);
+				}
+				
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				break;
 			default:
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -414,6 +488,83 @@ public class CitySelectActivity extends QuhaoBaseActivity {
 			return convertView;
 		}
 
+	}
+
+	@Override
+	public void onPause() {
+		if (mAMapLocationManager != null) {
+			mAMapLocationManager.removeUpdates(this);
+		}
+		super.onPause();
+		Log.e("wjzwjz", "CitySelectActivity onPause");
+	}
+	
+	@Override
+	public void onStop() {
+		super.onStop();
+		Log.e("wjzwjz", "CitySelectActivity onStop");
+	}
+	
+	
+	@Override
+	public void onDestroy() {
+		if (mAMapLocationManager != null) {
+			mAMapLocationManager.removeUpdates(this);
+			mAMapLocationManager.destory();
+		}
+		mAMapLocationManager = null;
+		Log.e("wjzwjz", "CitySelectActivity onDestroy");
+		super.onDestroy();
+		
+		
+	}
+	
+	@Override
+	public void onLocationChanged(Location location) {
+		Log.e("wjzwjz", "onLocationChanged (Location location)");
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		Log.e("wjzwjz", "onStatusChanged (String provider, int status, Bundle extras)");
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+		Log.e("wjzwjz", "onProviderEnabled(String provider)");
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+		Log.e("wjzwjz", "onProviderDisabled(String provider)");
+	}
+
+	@Override
+	public void onLocationChanged(AMapLocation location) {
+		Log.e("wjzwjz", "onLocationChanged(AMapLocation location)");
+		if(null != location)
+		{
+			QHClientApplication.getInstance().location = location;
+			if (mAMapLocationManager != null) {
+				mAMapLocationManager.removeUpdates(this);
+				mAMapLocationManager.destory();
+			}
+			mAMapLocationManager = null;
+			locateCity = new CityInfo(location.getCityCode(), location.getCity(), "");
+			locateMsg.setText("定位城市：" + location.getCity());
+			reLocatonBtn.setVisibility(View.GONE);
+		}
+		else
+		{
+			if (mAMapLocationManager != null) {
+				mAMapLocationManager.removeUpdates(this);
+				mAMapLocationManager.destory();
+			}
+			mAMapLocationManager = null;
+			locateMsg.setText("定位失败...");
+			reLocatonBtn.setVisibility(View.VISIBLE);
+		}
+		
 	}
 	
 }

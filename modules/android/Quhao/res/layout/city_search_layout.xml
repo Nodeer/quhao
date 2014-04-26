@@ -37,7 +37,7 @@
     </RelativeLayout>
 
     <LinearLayout android:layout_width="fill_parent"
-        android:layout_height="80dip"
+        android:layout_height="50dip"
         android:gravity="center"
         android:orientation="vertical">
         
@@ -59,19 +59,6 @@
 	            />
 	        
         </RelativeLayout>
-        <LinearLayout android:layout_width="fill_parent"
-	        android:layout_height="match_parent"
-	        android:gravity="center"
-	        android:orientation="vertical">
-	        <TextView  android:id="@+id/locate_message"
-	            android:layout_width="match_parent"
-	            android:layout_height="wrap_content"
-	            android:padding="5dip"
-	            android:text="@string/city_cannot_locate"
-	            android:textSize="12.0sp"
-	            android:gravity="left"
-	            />
-        </LinearLayout>
     </LinearLayout>
     
 	<FrameLayout

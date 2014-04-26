@@ -157,6 +157,18 @@ public class CitySearchActivity extends QuhaoBaseActivity {
 					}
 				}
 				
+				for (int i = 0; i < cityData.size(); i++) {
+					CityInfo cityInfo = cityData.get(i);
+					if(cityInfo.cityName.indexOf(content)>=0)
+					{
+						if(searchCityList.contains(cityInfo))
+						{
+							continue;
+						}
+						searchCityList.add(cityInfo);
+					}
+				}
+				
 				searchCityAdapter.notifyDataSetChanged();
 			}
 			else

@@ -171,7 +171,7 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 					
 					creditsUpdateHandler.obtainMessage(200, credits).sendToTarget();
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-					throw new NoResultFromHTTPRequestException();
+//					throw new NoResultFromHTTPRequestException();
 				} else {
 					if (isFirstLoad || null == credits) {
 						credits = new ArrayList<Credit>();
