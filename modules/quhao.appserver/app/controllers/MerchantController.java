@@ -111,6 +111,7 @@ public class MerchantController extends BaseController {
 	 * 通过cateType以及page查询商家列表
 	 * page > 0
 	 */
+	// TODO : check this function used or not
 	public static void merchantByCategory() {
 		String cateType = params.get("cateType");
 		String pageStr = params.get("page");
@@ -146,12 +147,10 @@ public class MerchantController extends BaseController {
 	 *            排序
 	 */
 	public static void nextPage(int page, String cateType, String sortBy, String cityCode) {
-
 		page = (page == 0) ? 1 : page;
-
-		// TODO remove test condiftion
-
-		sortBy = "-modified";
+		if(StringUtils.isEmpty(sortBy)){
+			sortBy = "-modified";
+		}
 
 		List<Merchant> merchantList = Merchant.nextPage(cateType, page, sortBy, cityCode);
 		List<MerchantVO> merchantVOList = new ArrayList<MerchantVO>();

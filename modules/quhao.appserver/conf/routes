@@ -48,7 +48,7 @@ GET		/admin/feedback						backend.admin.AdminController.feedback
 GET		/allCategories						MerchantController.allCategories
 
 # Reservation
-GET		/pStatus								ReservationController.paiduiStatusForApp
+GET		/pStatus							ReservationController.paiduiStatusForApp
 
 # Merchant
 GET		/nextPage							MerchantController.nextPage
