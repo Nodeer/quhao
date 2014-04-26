@@ -107,8 +107,26 @@ public class MerchantController extends BaseController {
 		renderJSON(categoriesVO);
 	}
 
-	public static void merchantByCategory(String cateType) {
-		List<Merchant> merchantList = Merchant.findByType(cateType);
+	/**
+	 * 通过cateType以及page查询商家列表
+	 * page > 0
+	 */
+	public static void merchantByCategory() {
+		String cateType = params.get("cateType");
+		String pageStr = params.get("page");
+		int page = 1;
+		if(StringUtils.isEmpty(cateType)){
+			renderJSON("cateType类型不能为空");
+		}
+		
+		if(!StringUtils.isEmpty(pageStr)){
+			page = Integer.parseInt(pageStr);
+			if(page < 1){
+				page = 1;
+			}
+		}
+		
+		List<Merchant> merchantList = Merchant.findByType(cateType, page);
 		List<MerchantVO> merchantVOList = new ArrayList<MerchantVO>();
 		for (Merchant m : merchantList) {
 			merchantVOList.add(MerchantVO.build(m));

@@ -27,11 +27,22 @@ public class Merchant extends MerchantEntityDef {
 	 * @param cateType the type of category
 	 * @return the list of merchant
 	 */
-	
-	// TODO add paginate
+	@Deprecated
 	public static List<Merchant> findByType(String cateType) {
 		MorphiaQuery q = Merchant.q();
 		q.or(q.criteria("cateType").equal(cateType),q.criteria("cateType1").equal(cateType));
+		return q.asList();
+	}
+
+	/**
+	 * Get merchant list by category type and page number.
+	 * @param cateType the type of category
+	 * @return the list of merchant
+	 */
+	public static List<Merchant> findByType(String cateType, int page) {
+		MorphiaQuery q = Merchant.q();
+		q.or(q.criteria("cateType").equal(cateType),q.criteria("cateType1").equal(cateType));
+		paginate(q, page);
 		return q.asList();
 	}
 	
