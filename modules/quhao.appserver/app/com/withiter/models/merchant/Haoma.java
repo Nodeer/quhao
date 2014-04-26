@@ -200,6 +200,9 @@ public class Haoma extends HaomaEntityDef {
 				r = Reservation.queryForCancel(merchantId, key, p.currentNumber);
 			}
 		}
+		
+		// 检查是否需要排队
+		this.check();
 	}
 	
 	/**
@@ -229,15 +232,30 @@ public class Haoma extends HaomaEntityDef {
 				}
 			}
 		}
-
-		
-		
-
-		// 最后几条做初始化操作
-//		hList = q.offset(i*countPerPage).asList();
-//		for(Haoma h : hList){
-//			h.initPaidui();
-//			h.save();
-//		}
+	}
+	
+	public void check(){
+		Iterator it = this.haomaMap.keySet().iterator();
+		while(it.hasNext()){
+			Integer key = (Integer) it.next();
+			Paidui value = this.haomaMap.get(key);
+			if(!value.enable){
+				continue;
+			}
+			
+			// 不用排队条件：
+			// 1. currentNumber == 0
+			// 2. currentNumber > maxNumber 
+			if(value.currentNumber == 0 || value.currentNumber > value.maxNumber){
+				this.noNeedPaidui = true;
+				this.save();
+				logger.debug("haoma check : no paidui 1:" + this.noNeedPaidui);
+				break;
+			} else {
+				this.noNeedPaidui = false;
+				logger.debug("haoma check : no paidui 2:" + this.noNeedPaidui);
+				this.save();
+			}
+		}
 	}
 }

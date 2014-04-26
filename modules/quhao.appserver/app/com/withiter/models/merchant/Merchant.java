@@ -291,4 +291,24 @@ public class Merchant extends MerchantEntityDef {
 		
 		this.save();
 	}
+	
+	/**
+	 * 不用排队商家
+	 * @return
+	 */
+	public static List<String> noQueueMerchants(){
+		MorphiaQuery q = Haoma.q();
+		q.filter("noNeedPaidui", true);
+		q.retrievedFields(true, "merchantId");
+		
+		List<Haoma> hList = q.asList();
+		List<String> mList = new ArrayList<String>(); 
+		
+		if(hList != null && !hList.isEmpty()){
+			for(Haoma h : hList){
+				mList.add(h.merchantId);
+			}
+		}
+		return mList;
+	}
 }

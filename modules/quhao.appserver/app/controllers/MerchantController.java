@@ -502,7 +502,14 @@ public class MerchantController extends BaseController {
 			merchantVOList.add(MerchantVO.build(m));
 		}
 		renderJSON(merchantVOList);
-
+	}
+	
+	public static void getNoQueueMerchants(String cityCode){
+		List<String> list = Merchant.noQueueMerchants();
+		for(String s : list){
+			logger.debug(s);
+		}
+		renderJSON(list);
 	}
 	
 	/**
