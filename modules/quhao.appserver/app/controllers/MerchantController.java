@@ -126,6 +126,7 @@ public class MerchantController extends BaseController {
 			}
 		}
 		
+		// 返回的list，每页10条数据
 		List<Merchant> merchantList = Merchant.findByType(cateType, page);
 		List<MerchantVO> merchantVOList = new ArrayList<MerchantVO>();
 		for (Merchant m : merchantList) {
