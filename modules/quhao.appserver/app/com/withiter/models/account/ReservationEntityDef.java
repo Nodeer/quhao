@@ -11,12 +11,12 @@ import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Indexed;
 
 public abstract class ReservationEntityDef extends BaseModel {
-	public String accountId;
-	public String merchantId;
-	public int seatNumber;
-	public int myNumber;
+	public String accountId;						// Account ID
+	public String merchantId;						// Merchant ID
+	public int seatNumber;							// 座位类型
+	public int myNumber;							// 我的号码
 	public boolean isCommented = false;				// 是否评价
-	public boolean valid;
-	public Constants.ReservationStatus status;
-	public boolean available = true;						//逻辑删除标识
+	public boolean valid;							// 是否合法
+	public Constants.ReservationStatus status;		// 状态
+	public boolean available = true;				// 逻辑删除标识
 }

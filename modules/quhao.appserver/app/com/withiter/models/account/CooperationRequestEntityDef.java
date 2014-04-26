@@ -11,11 +11,11 @@ import com.withiter.models.BaseModel;
 @NoAutoTimestamp
 public class CooperationRequestEntityDef extends BaseModel{
 
-	public String companyName;
-	public String peopleName;
-	public String peopleContact;
-	public String peopleEmail;
-	public Date createTime = new Date();
-	public boolean handle = false;
+	public String companyName;				// 公司名称
+	public String peopleName;				// 联系人姓名
+	public String peopleContact;			// 联系方式
+	public String peopleEmail;				// 电子邮箱
+	public Date createTime = new Date();	// 创建时间
+	public boolean handle = false;			// 是否处理
 	
 }

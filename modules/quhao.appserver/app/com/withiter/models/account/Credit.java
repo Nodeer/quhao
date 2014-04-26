@@ -82,8 +82,7 @@ public class Credit extends CreditEntityDef {
 			q = sortBy(q,"-created");
 		}
 		
-		if(null != q.asKeyList() && !q.asKeyList().isEmpty())
-		{
+		if(null != q.asKeyList() && !q.asKeyList().isEmpty()){
 			return q.asList();
 		}
 		return new ArrayList<Credit>();
