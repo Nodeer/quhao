@@ -54,7 +54,7 @@
     [button setBackgroundImage:backImage forState:UIControlStateNormal];
     button.titleLabel.font = [UIFont boldSystemFontOfSize:13.0f];
     [button setTitle:@"定位" forState:UIControlStateNormal];
-    
+    button.enabled = NO;
     [button addTarget:self action:@selector(reLoadLoction:) forControlEvents:UIControlEventTouchUpInside];
     
     lable = [[UILabel alloc] initWithFrame:CGRectMake(5, 44, 220, 30)];
@@ -63,24 +63,10 @@
     UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onLocationLable:)];
     lable.userInteractionEnabled=YES;
     [lable addGestureRecognizer:tapGesture];
-    
     [self.view addSubview:button];
     [self.view addSubview:lable];
     
-    
-    if ([CLLocationManager locationServicesEnabled] &&([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized
-                                                       || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined))
-    {
-        //定位功能可用，开始定位
-        locationManager = [[CLLocationManager alloc] init];
-        locationManager.delegate = self;
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-        locationManager.distanceFilter = 3000.0f;
-        [locationManager startUpdatingLocation];
-    }else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied){
-        lable.text = @"请在系统设置中开启定位服务";
-        lable.userInteractionEnabled = NO;
-    }
+    [self locationService];
     
     tbView=[[UITableView alloc] initWithFrame:CGRectMake(0, 74, kDeviceWidth, kDeviceHeight-134)];
     tbView.backgroundColor = [UIColor whiteColor];
@@ -104,6 +90,24 @@
     self.keys = [NSMutableArray arrayWithArray:[[cities allKeys] sortedArrayUsingSelector:@selector(compare:)]];
 }
 
+-(void)locationService
+{
+    if ([CLLocationManager locationServicesEnabled] &&([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized
+                                                       || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined))
+    {
+        //定位功能可用，开始定位
+        locationManager = [[CLLocationManager alloc] init];
+        locationManager.delegate = self;
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        locationManager.distanceFilter = 3000.0f;
+        [locationManager startUpdatingLocation];
+    }else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied){
+        lable.text = @"请在系统设置中开启定位服务";
+        button.enabled = YES;
+        lable.userInteractionEnabled=NO;
+    }
+}
+
 -(void)onLocationLable:(UITapGestureRecognizer *)sender
 {
     if(nil != loctionCityCode &&[loctionCityCode isEqualToString:@""]){
@@ -117,9 +121,10 @@
 
 - (void)reLoadLoction:(id)sender
 {
-    lable.text = @"正在定位...";
+    button.enabled = NO;
     lable.userInteractionEnabled=NO;
-    [locationManager startUpdatingLocation];
+    lable.text = @"正在定位...";
+    [self locationService];
 }
 
 - (void)clickToHome:(id)sender
@@ -271,6 +276,7 @@
          if (error)
          {
              lable.text = @"无法成功定位";
+             button.enabled = YES;
              lable.userInteractionEnabled=NO;
              return;
          }
@@ -283,6 +289,7 @@
              {
                  city = [placemark.addressDictionary objectForKey:@"City"];
                  lable.text = [NSString stringWithFormat:@"%@%@",@"定位城市:",city];
+                 button.enabled = YES;
                  lable.userInteractionEnabled=YES;
                  loctionCity = city;
                  NSArray * value;
@@ -303,13 +310,14 @@
                  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                  [defaults setObject:@"1" forKey:@"isLocation"];
                  [defaults setObject:city forKey:@"currentCity"];
-                 //[defaults setObject:[NSString stringWithFormat:@"%lf",myCoOrdinate.latitude] forKey:@"latitude"];
-                 //[defaults setObject:[NSString stringWithFormat:@"%lf",myCoOrdinate.longitude] forKey:@"longitude"];
+                 [defaults setObject:[NSString stringWithFormat:@"%lf",myCoOrdinate.latitude] forKey:@"latitude"];
+                 [defaults setObject:[NSString stringWithFormat:@"%lf",myCoOrdinate.longitude] forKey:@"longitude"];
                  [defaults setObject:loctionCityCode forKey:@"cityCode"];
                  [defaults synchronize];
              }else if(placemark.administrativeArea){
                  city = [placemark.administrativeArea substringToIndex:2];
                  lable.text = [NSString stringWithFormat:@"%@%@",@"定位城市:",city];
+                 button.enabled = YES;
                  lable.userInteractionEnabled=YES;
                  loctionCity = city;
                  NSArray * value;
@@ -331,11 +339,12 @@
                  [defaults setObject:@"1" forKey:@"isLocation"];
                  [defaults setObject:city forKey:@"currentCity"];
                  [defaults setObject:loctionCityCode forKey:@"cityCode"];
-                 //[defaults setObject:[NSString stringWithFormat:@"%lf",myCoOrdinate.latitude] forKey:@"latitude"];
-                 //[defaults setObject:[NSString stringWithFormat:@"%lf",myCoOrdinate.longitude] forKey:@"longitude"];
+                 [defaults setObject:[NSString stringWithFormat:@"%lf",myCoOrdinate.latitude] forKey:@"latitude"];
+                 [defaults setObject:[NSString stringWithFormat:@"%lf",myCoOrdinate.longitude] forKey:@"longitude"];
                  [defaults synchronize];
              }else{
                  lable.text = @"无法成功定位";
+                 lable.userInteractionEnabled=NO;
              }
          }
      }];
@@ -362,6 +371,7 @@
     }
     lable.userInteractionEnabled=NO;
     lable.text = errorString;
+    button.enabled = YES;
     return;
 }
 

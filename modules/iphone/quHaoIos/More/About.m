@@ -26,7 +26,7 @@
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Icon"]];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo"]];
     imageView.backgroundColor=[UIColor clearColor];
     imageView.frame = CGRectMake(120, 25, 80, 80);
     [self.view addSubview:imageView];
@@ -51,7 +51,7 @@
         [tableView setSeparatorInset:UIEdgeInsetsZero];
     }
 #endif
-    _version = @"";
+    _version = [NSString stringWithFormat:@"最新版本: %@",@" "];
     if ([Helper isConnectionAvailable]){
         NSString *str1 = [NSString stringWithFormat:@"%@%@",IP,getLastestVersion];
         NSString *response = [QuHaoUtil requestDb:str1];
@@ -65,7 +65,7 @@
             }
         }
     }
-    _arrayList = @[_version,@"客服电话: 110",@"官方微博: 取号啦",@"网       址: www.quhao.la"];
+    _arrayList = @[_version,@"客服电话: 18616580943",@"官方微博: 取号啦",@"网       址: www.quhao.la"];
     [tableView reloadData];
 }
 
