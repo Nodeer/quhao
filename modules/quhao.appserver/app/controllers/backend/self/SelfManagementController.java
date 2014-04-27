@@ -183,6 +183,7 @@ public class SelfManagementController extends BaseController {
 			}
 		}
 		haoma.save();
+		haoma.check();
 
 		// update the category counts
 		Category.updateCounts();
