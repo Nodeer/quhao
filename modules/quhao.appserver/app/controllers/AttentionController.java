@@ -1,10 +1,16 @@
 package controllers;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.types.ObjectId;
+
+import play.modules.morphia.Model.MorphiaUpdateOperations;
+
 import vo.MerchantVO;
 
+import com.withiter.models.account.Account;
 import com.withiter.models.merchant.Attention;
 import com.withiter.models.merchant.Merchant;
 import com.withiter.utils.StringUtils;
@@ -29,12 +35,17 @@ public class AttentionController extends BaseController{
 				a.flag=true;
 				a.save();
 			}else{
+				Account account = Account.findById(accountId);
 				if(flag==1){
 					attention.flag=false;
+					account.guanzhu=account.guanzhu-1;
 				}else{
 					attention.flag=true;
+					account.guanzhu=account.guanzhu+1;
 				}	
 				attention.save();
+				
+				account.save();
 			}
 			renderText("success");
 		}else{

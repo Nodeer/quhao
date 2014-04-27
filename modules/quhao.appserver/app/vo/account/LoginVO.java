@@ -38,7 +38,8 @@ public class LoginVO {
 	public boolean isSignIn = false;
 	public int dianping;
 	public int zhaopian;
-	
+	public int guanzhu;
+
 	public LoginVO(){
 		super();
 	}
@@ -70,5 +71,6 @@ public class LoginVO {
 		this.jifen = account.jifen;
 		this.dianping = account.dianping;
 		this.zhaopian = account.zhaopian;
+		this.guanzhu = account.guanzhu;
 	}
 }

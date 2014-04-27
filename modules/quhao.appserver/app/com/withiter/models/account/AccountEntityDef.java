@@ -25,6 +25,7 @@ public abstract class AccountEntityDef extends BaseModel {
 	public boolean isSignIn = false;			// 是否已经签到
 	public int jifen = 10;						// 默认10个积分
 	public int dianping = 0;					// 点评次数
+	public int guanzhu = 0;						// 关注商家数量
 	public int zhaopian = 0;					// 添加的照片个数
 	public String birthDay = "";				// 生日
 	public String userImage = "";				// 用户头像
