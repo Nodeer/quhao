@@ -528,7 +528,9 @@ public class MerchantController extends BaseController {
 
 		BasicDBObject geoNearParams = new BasicDBObject();
 		geoNearParams.put("near", new double[] { userX, userY });
-		geoNearParams.put("maxDistance", maxDis / 6371);
+		if(maxDis>=0){
+			geoNearParams.put("maxDistance", maxDis / 6371);
+		}
 		geoNearParams.put("distanceField", "dis");
 		geoNearParams.put("distanceMultiplier", 6371000);
 		geoNearParams.put("spherical", true);
@@ -557,7 +559,6 @@ public class MerchantController extends BaseController {
 
 		pipeline.add(new BasicDBObject("$project", projectParams));
 		cmdBody.put("pipeline", pipeline);
-System.out.println(cmdBody);
 		if (!MorphiaQuery.ds().getDB().command(cmdBody).ok()) {
 			logger.debug("NoQueue geoNear查询出错: "
 					+ MorphiaQuery.ds().getDB().command(cmdBody)
