@@ -34,5 +34,5 @@
 @synthesize isAttention;
 @synthesize enable;
 @synthesize reservationId;
-
+@synthesize openNum;
 @end

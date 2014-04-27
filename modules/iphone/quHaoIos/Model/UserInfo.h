@@ -15,6 +15,7 @@
 @property int  jifen;
 @property int  signIn;
 @property int  dianping;
+@property int guanzhu;
 @property BOOL isSignIn;
 @property(nonatomic,strong) NSString *phone;
 @property(nonatomic,strong) NSString *userImage;

@@ -18,5 +18,5 @@
 @synthesize phone;
 @synthesize isSignIn;
 @synthesize imgUrl;
-
+@synthesize guanzhu;
 @end

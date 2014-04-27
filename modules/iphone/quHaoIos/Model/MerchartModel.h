@@ -38,4 +38,5 @@
 //是否已经开通
 @property BOOL enable;
 @property (nonatomic,strong) NSString *reservationId;
+@property int openNum;
 @end

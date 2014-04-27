@@ -212,7 +212,7 @@
             [cell.contentView addSubview:_jfLabel];
             [Helper arrowStyle:cell];
         }else if ([indexPath row] ==1 ) { //签到和点评
-            UILabel *_qdLabel = [Helper getCustomLabel:@"签到" font:18 rect:CGRectMake(kDeviceWidth/3-10, 12, 60, 30)];
+            UILabel *_qdLabel = [Helper getCustomLabel:@"签到" font:18 rect:CGRectMake(kDeviceWidth/5-10, 12, 60, 30)];
             if(_userInfo.isSignIn){
                 _qdLabel.textColor=[UIColor blackColor];
             }else{
@@ -224,24 +224,37 @@
             [_qdLabel addGestureRecognizer:qdGesture];
             [cell.contentView addSubview:_qdLabel];
             
-            UILabel *_qdValueLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%d",_userInfo.signIn] font:18 rect:CGRectMake(_qdLabel.frame.origin.x+10, _qdLabel.frame.size.height+8, 60, 30)];
+            UILabel *_qdValueLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%d",_userInfo.signIn] font:18 rect:CGRectMake(_qdLabel.frame.origin.x+15, _qdLabel.frame.size.height+8, 60, 30)];
             _qdValueLabel.font = [UIFont systemFontOfSize:18];
             [cell.contentView addSubview:_qdValueLabel];
             
-            UILabel *_dpLabel = [Helper getCustomLabel:@"点评" font:18 rect:CGRectMake(_qdLabel.frame.origin.x+_qdLabel.frame.size.width+35, _qdLabel.frame.origin.y, _qdLabel.frame.size.width, 30)];
+            UILabel *_dpLabel = [Helper getCustomLabel:@"点评" font:18 rect:CGRectMake(_qdLabel.frame.origin.x+_qdLabel.frame.size.width+30, _qdLabel.frame.origin.y, _qdLabel.frame.size.width, 30)];
             UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickDp:)];
             _dpLabel.userInteractionEnabled=YES;
             _dpLabel.font = [UIFont systemFontOfSize:18];
             [_dpLabel addGestureRecognizer:tapGesture];
             [cell.contentView addSubview:_dpLabel];
             
-            UILabel *_dpValueLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%d",_userInfo.dianping] font:18 rect:CGRectMake(_dpLabel.frame.origin.x+10, _dpLabel.frame.size.height+8, 60, 30)];
+            UILabel *_dpValueLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%d",_userInfo.dianping] font:18 rect:CGRectMake(_dpLabel.frame.origin.x+15, _dpLabel.frame.size.height+8, 60, 30)];
             UITapGestureRecognizer *tapGesture2=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickDp:)];
             _dpValueLabel.userInteractionEnabled=YES;
             [_dpValueLabel addGestureRecognizer:tapGesture2];
             _dpValueLabel.font = [UIFont systemFontOfSize:18];
             [cell.contentView addSubview:_dpValueLabel];
             
+            UILabel *_gzLabel = [Helper getCustomLabel:@"关注" font:18 rect:CGRectMake(_dpLabel.frame.origin.x+_dpLabel.frame.size.width+30, _dpLabel.frame.origin.y, _dpLabel.frame.size.width, 30)];
+            UITapGestureRecognizer *tapGesture3=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickGz:)];
+            _gzLabel.userInteractionEnabled=YES;
+            _gzLabel.font = [UIFont systemFontOfSize:18];
+            [_gzLabel addGestureRecognizer:tapGesture3];
+            [cell.contentView addSubview:_gzLabel];
+            
+            UILabel *_gzValueLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%d",_userInfo.guanzhu] font:18 rect:CGRectMake(_gzLabel.frame.origin.x+15, _gzLabel.frame.size.height+8, 60, 30)];
+            UITapGestureRecognizer *tapGesture4=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickGz:)];
+            _gzValueLabel.userInteractionEnabled=YES;
+            [_gzValueLabel addGestureRecognizer:tapGesture4];
+            _gzValueLabel.font = [UIFont systemFontOfSize:18];
+            [cell.contentView addSubview:_gzValueLabel];
         }else if ([indexPath row] == 2) {
             
             cell.textLabel.text = @"当前取号情况";
@@ -349,7 +362,8 @@
 }
 
 //点击点评
--(void)onClickDp:(UITapGestureRecognizer *)sender{
+-(void)onClickDp:(UITapGestureRecognizer *)sender
+{
     if ([Helper isCookie] == NO) {
         UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"请登录后查看信息" delegate:self cancelButtonTitle:@"返回" destructiveButtonTitle:nil otherButtonTitles:@"登录", nil];
         [sheet showInView:[UIApplication sharedApplication].keyWindow];
@@ -364,6 +378,23 @@
     history.title = @"我的评论";
     history.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:history animated:YES];
+}
+
+-(void)onClickGz:(UITapGestureRecognizer *)sender
+{
+    if ([Helper isCookie] == NO) {
+        UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"请登录后查看信息" delegate:self cancelButtonTitle:@"返回" destructiveButtonTitle:nil otherButtonTitles:@"登录", nil];
+        [sheet showInView:[UIApplication sharedApplication].keyWindow];
+        
+        return;
+    }
+    if(_userInfo.guanzhu ==0 ){
+        return;
+    }
+    AttentionViewController *att = [[AttentionViewController alloc] init];
+    att.accountId = [Helper getUID];
+    att.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:att animated:YES];
 }
 
 //点击历史取号
@@ -425,14 +456,15 @@
             //解析错误
             [Helper showHUD2:@"服务器错误，请稍后再试" andView:self.view andSize:130];
         }else{
-            _userInfo.username=[jsonObjects valueForKey:@"nickname"];
-            _userInfo.jifen=[[jsonObjects valueForKey:@"jifen"] intValue];
-            _userInfo.signIn=[[jsonObjects valueForKey:@"signIn"] intValue];
-            _userInfo.dianping=[[jsonObjects valueForKey:@"dianping"] intValue];
-            _userInfo.phone=[jsonObjects valueForKey:@"phone"];
-            _userInfo.accountId=[jsonObjects valueForKey:@"accountId"];
-            _userInfo.userImage=[jsonObjects valueForKey:@"userImage"];
-            _userInfo.isSignIn=[[jsonObjects valueForKey:@"isSignIn"] boolValue];
+            _userInfo.username = [jsonObjects valueForKey:@"nickname"];
+            _userInfo.jifen = [[jsonObjects valueForKey:@"jifen"] intValue];
+            _userInfo.signIn = [[jsonObjects valueForKey:@"signIn"] intValue];
+            _userInfo.dianping = [[jsonObjects valueForKey:@"dianping"] intValue];
+            _userInfo.guanzhu = [[jsonObjects valueForKey:@"guanzhu"] intValue];
+            _userInfo.phone = [jsonObjects valueForKey:@"phone"];
+            _userInfo.accountId = [jsonObjects valueForKey:@"accountId"];
+            _userInfo.userImage = [jsonObjects valueForKey:@"userImage"];
+            _userInfo.isSignIn = [[jsonObjects valueForKey:@"isSignIn"] boolValue];
         }
     }
 }
@@ -532,7 +564,7 @@
     NSString* fullPathToFile = [documentsDirectory stringByAppendingPathComponent:@"userOrigin.jpg"];
     [imageData writeToFile:fullPathToFile atomically:NO];
     
-    [self upLoadSalesBigImage:imageData];
+    [self upLoadSalesBigImage:fullPathToFile];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -546,13 +578,14 @@
     }
 }
 
-- (void)upLoadSalesBigImage:(NSData *)bigImage
+- (void)upLoadSalesBigImage:(NSString *)bigImage
 {
     NSString *url=[NSString stringWithFormat:@"%@%@",IP,upload_pic];
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:url]];
     [request setRequestMethod:@"POST"];
     [request setPostValue:_userInfo.accountId forKey:@"accountId"];
-    [request setData:bigImage forKey:@"userImage"];
+    [request setFile:bigImage forKey:@"userImage"];
+    //[request setData:bigImage withFileName:_userInfo.accountId andContentType:@"image/jpeg" forKey:@"userImage"];
     [request setDelegate:self];
     //[request setTimeOutSeconds:TIME_OUT_SECONDS];
     [request setDidFailSelector:@selector(uploadFailed:)];
