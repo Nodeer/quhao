@@ -611,11 +611,13 @@ public class AccountController extends BaseController {
 		String accountId = params.get("accountId");
 		if(!StringUtils.isEmpty(accountId)){
 			String userImage = params.get("userImage");
+			System.out.println(userImage);
+
 			if (!StringUtils.isEmpty(userImage)) {
 				GridFSInputFile file = uploadFirst(userImage, accountId);
 				if (file != null) {
 					if (!StringUtils.isEmpty(accountId)) {
-						String imageStorePath = Play.configuration.getProperty("image.store.path");
+						String imageStorePath = Play.configuration.getProperty("imageUser.store.path");
 						try {							
 							MorphiaUpdateOperations o = Account.o();
 							o.set("userImage", URLEncoder.encode(imageStorePath + file.getFilename(), "UTF-8"));
@@ -634,6 +636,7 @@ public class AccountController extends BaseController {
 	private static GridFSInputFile uploadFirst(String param, String aid) {
 		GridFSInputFile gfsFile = null;
 		File[] files = params.get(param, File[].class);
+		System.out.println(files);
 
 		for (File file : files) {
 			try {

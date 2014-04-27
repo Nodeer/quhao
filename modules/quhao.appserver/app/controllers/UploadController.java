@@ -110,5 +110,35 @@ public class UploadController extends BaseController {
 		List<GridFSDBFile> files = gfs.find("mid="+mid);
 		return files;
 	}
-
+	
+	/**
+	 * find file by file name
+	 * @param fileName
+	 * @param type
+	 */
+	public static void findImage(String fileName) {
+		GridFSDBFile gfsFile = findOne(fileName, USER_IMAGE);
+		if (gfsFile.getContentType() == null) {
+			response.contentType = "";
+		} else {
+			response.contentType = gfsFile.getContentType();
+		}
+		renderBinary(gfsFile.getInputStream(), gfsFile.getFilename());
+	}
+	
+	private static GridFSDBFile findOne(String fileName, String type) {
+		GridFSDBFile rtn = null;
+		try {
+			rtn = UploadController.findBinary(fileName,type);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return rtn;
+	}
+	
+	public static GridFSDBFile findBinary(String fileName, String type) throws IOException {
+		GridFS gfs = new GridFS(MorphiaQuery.ds().getDB(), type);
+		GridFSDBFile file = gfs.findOne(fileName);
+		return file;
+	}
 }

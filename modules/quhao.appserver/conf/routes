@@ -134,6 +134,8 @@ GET		/updateGaodeToMerchant				GaodeToMerchantController.updateGaodeToMerchant
 
 # image display
 *		/image/f							UploadController.find
+*		/imageUser/f						UploadController.findImage
+
 # image display
 
 # test

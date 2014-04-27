@@ -54,9 +54,11 @@ public class AttentionController extends BaseController{
 		List<Merchant> ms = Attention.getMerchantsByAid(aid);
 		List<MerchantVO> avos = new ArrayList<MerchantVO>();
 		MerchantVO mvo = null;
-		for(Merchant m : ms){
-			mvo = MerchantVO.build(m);
-			avos.add(mvo);
+		if(ms != null){
+			for(Merchant m : ms){
+				mvo = MerchantVO.build(m);
+				avos.add(mvo);
+			}
 		}
 		renderJSON(avos);
 	}

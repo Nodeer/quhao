@@ -47,7 +47,11 @@ public class Attention extends AttentionEntityDef{
 		}
 		
 		MorphiaQuery mq = Merchant.q();
-		mq.filter("_id in", mids);
-		return mq.asList();
+		if(mids.size() == 0){
+			return null;
+		}else{
+			mq.filter("_id in", mids);
+			return mq.asList();
+		}
 	}
 }
