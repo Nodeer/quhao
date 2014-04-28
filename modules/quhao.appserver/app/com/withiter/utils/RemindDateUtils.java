@@ -10,7 +10,6 @@ public class RemindDateUtils {
 	/**
 	 * 获取 当前年、半年、季度、月、日、小时 开始结束时间
 	 */
-
 	private final SimpleDateFormat shortSdf;
 	private final SimpleDateFormat longHourSdf;
 	private final SimpleDateFormat longSdf;
@@ -343,18 +342,5 @@ public class RemindDateUtils {
 			e.printStackTrace();
 		}
 		return date;
-	}
-	
-	public static void main(String[] args) {
-		RemindDateUtils r = new RemindDateUtils();
-		Date start = r.getLastMonthStartTime();
-		Date end = r.getLastMonthEndTime();
-		
-		Date quarterStart = r.getLastThreeMonthsStartTime();
-		Date quarterEnd = r.getCurrentQuarterEndTime();
-		
-		System.out.println(quarterStart);
-		System.out.println(quarterEnd);
-	}
-	
+	}	
 }
