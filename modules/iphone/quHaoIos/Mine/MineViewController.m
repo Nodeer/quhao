@@ -224,7 +224,8 @@
             [_qdLabel addGestureRecognizer:qdGesture];
             [cell.contentView addSubview:_qdLabel];
             
-            UILabel *_qdValueLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%d",_userInfo.signIn] font:18 rect:CGRectMake(_qdLabel.frame.origin.x+15, _qdLabel.frame.size.height+8, 60, 30)];
+            UILabel *_qdValueLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%d",_userInfo.signIn] font:18 rect:CGRectMake(_qdLabel.frame.origin.x-10, _qdLabel.frame.size.height+8, 60, 30)];
+            _qdValueLabel.textAlignment = NSTextAlignmentCenter;
             _qdValueLabel.font = [UIFont systemFontOfSize:18];
             [cell.contentView addSubview:_qdValueLabel];
             
@@ -235,9 +236,10 @@
             [_dpLabel addGestureRecognizer:tapGesture];
             [cell.contentView addSubview:_dpLabel];
             
-            UILabel *_dpValueLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%d",_userInfo.dianping] font:18 rect:CGRectMake(_dpLabel.frame.origin.x+15, _dpLabel.frame.size.height+8, 60, 30)];
+            UILabel *_dpValueLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%d",_userInfo.dianping] font:18 rect:CGRectMake(_dpLabel.frame.origin.x-10, _dpLabel.frame.size.height+8, 60, 30)];
             UITapGestureRecognizer *tapGesture2=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickDp:)];
             _dpValueLabel.userInteractionEnabled=YES;
+            _dpValueLabel.textAlignment = NSTextAlignmentCenter;
             [_dpValueLabel addGestureRecognizer:tapGesture2];
             _dpValueLabel.font = [UIFont systemFontOfSize:18];
             [cell.contentView addSubview:_dpValueLabel];
@@ -249,9 +251,10 @@
             [_gzLabel addGestureRecognizer:tapGesture3];
             [cell.contentView addSubview:_gzLabel];
             
-            UILabel *_gzValueLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%d",_userInfo.guanzhu] font:18 rect:CGRectMake(_gzLabel.frame.origin.x+15, _gzLabel.frame.size.height+8, 60, 30)];
+            UILabel *_gzValueLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%d",_userInfo.guanzhu] font:18 rect:CGRectMake(_gzLabel.frame.origin.x-10, _gzLabel.frame.size.height+8, 60, 30)];
             UITapGestureRecognizer *tapGesture4=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickGz:)];
             _gzValueLabel.userInteractionEnabled=YES;
+            _gzValueLabel.textAlignment = NSTextAlignmentCenter;
             [_gzValueLabel addGestureRecognizer:tapGesture4];
             _gzValueLabel.font = [UIFont systemFontOfSize:18];
             [cell.contentView addSubview:_gzValueLabel];

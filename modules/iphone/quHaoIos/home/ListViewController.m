@@ -16,7 +16,6 @@
 -(void)viewDidLoad
 {
     [super viewDidLoad];
-    _cityCode = [Helper returnUserString:@"cityCode"];
     self.title=@"商家列表";
 
     //添加的代码
@@ -165,7 +164,7 @@
           return;
       }
       int pageIndex = _allCount/10+1;
-      NSString *str1= [NSString stringWithFormat:@"%@%@%@&sortBy=joinedDate&cityCode=%@&page=%d", IP,homeView_list_url,self.cateType,_cityCode, pageIndex];
+      NSString *str1= [NSString stringWithFormat:@"%@%@%@&sortBy=joinedDate&cityCode=%@&page=%d", IP,homeView_list_url,self.cateType,self.cityCode, pageIndex];
       NSString *response =[QuHaoUtil requestDb:str1];
       if([response isEqualToString:@""]){
           //异常处理

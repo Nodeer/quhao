@@ -28,20 +28,32 @@
     
     
     _titleLabel=[[UILabel alloc]initWithFrame:CGRectZero];
+    _titleLabel.frame=CGRectMake(self.egoImgView.frame.origin.x+self.egoImgView.frame.size.width+5, 10, 200, 25);
     _titleLabel.backgroundColor=[UIColor clearColor];
     _titleLabel.textColor=[UIColor blackColor];
     _titleLabel.font=[UIFont boldSystemFontOfSize:18];
     [self.contentView addSubview:_titleLabel];
     
+    _statusLabel=[[UILabel alloc]initWithFrame:CGRectZero];
+    _statusLabel.backgroundColor=[UIColor clearColor];
+    _statusLabel.frame=CGRectMake(_titleLabel.frame.origin.x, _titleLabel.frame.origin.y+_titleLabel.frame.size.height+10, 130, 25);
+    _statusLabel.textAlignment=NSTextAlignmentLeft;
+    _statusLabel.font=[UIFont boldSystemFontOfSize:13];
+    [self.contentView addSubview:_statusLabel];
     
-    _yearLabel=[[UILabel alloc]initWithFrame:CGRectZero];
-    _yearLabel.backgroundColor=[UIColor whiteColor];
-    [self.contentView addSubview:_yearLabel];
+    _disLabel=[[UILabel alloc]initWithFrame:CGRectZero];
+    _disLabel.backgroundColor=[UIColor clearColor];
+    _disLabel.frame=CGRectMake(_titleLabel.frame.origin.x+120, _statusLabel.frame.origin.y+_statusLabel.frame.size.height, 50, 25);
+    _disLabel.textAlignment=NSTextAlignmentRight;
+    _disLabel.font=[UIFont boldSystemFontOfSize:13];
+    [self.contentView addSubview:_disLabel];
     
-    _ratingView=[[UILabel alloc]initWithFrame:CGRectZero];
-    _ratingView.backgroundColor=[UIColor redColor];
-    [self.contentView addSubview:_ratingView];
-    
+    _rjLabel=[[UILabel alloc]initWithFrame:CGRectZero];
+    _rjLabel.backgroundColor=[UIColor clearColor];
+    _rjLabel.frame=CGRectMake(_titleLabel.frame.origin.x, _statusLabel.frame.origin.y+_statusLabel.frame.size.height, 80, 25);
+    _rjLabel.textAlignment=NSTextAlignmentLeft;
+    _rjLabel.font=[UIFont boldSystemFontOfSize:13];
+    [self.contentView addSubview:_rjLabel];
 }
 
 -(void) setSelected:(BOOL)selected animated:(BOOL)animated
@@ -60,15 +72,19 @@
     _titleLabel.frame=CGRectMake(self.egoImgView.frame.origin.x+self.egoImgView.frame.size.width+5, 10, 200, 30);
     _titleLabel.text=self.merchartModel.name;
     
-    _yearLabel.frame=CGRectMake(_titleLabel.frame.origin.x, _titleLabel.frame.origin.y+_titleLabel.frame.size.height+3, _titleLabel.frame.size.width, 35);
-    _yearLabel.text=self.merchartModel.distance;
-    _yearLabel.textAlignment=NSTextAlignmentRight;
-    _yearLabel.font=[UIFont boldSystemFontOfSize:13];
+    if(self.merchartModel.id != nil && self.merchartModel.enable){
+        _statusLabel.text=@"可以在线取号";
+    }else{
+        _statusLabel.text=@"暂时不能取号";
+    }
+    
+    _rjLabel.text = [NSString stringWithFormat:@"%@%.2lf",@"人均:¥",self.merchartModel.averageCost];
+    _disLabel.text = self.merchartModel.distance;
 }
 -(void)dealloc
 {
     _titleLabel=nil;
-    _yearLabel=nil;
-    _ratingView=nil;
+    _disLabel=nil;
+    _statusLabel=nil;
 }
 @end

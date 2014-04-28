@@ -14,9 +14,10 @@
 {
     @private
     UILabel *_titleLabel;
-    UILabel *_yearLabel;
-    UIView *_ratingView;
-    MerchartModel *_merchartModel;    
+    UILabel *_disLabel;
+    UILabel *_statusLabel;
+    UILabel *_rjLabel;
+    MerchartModel *_merchartModel;
 }
 
 @property(nonatomic,strong) MerchartModel *merchartModel;

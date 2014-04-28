@@ -27,6 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 5, 50, 30 )];
     [backButton addTarget:self action:@selector(clickToHome:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
@@ -50,12 +51,18 @@
     [self.tview setDelegate:self];
     [self.tview setDataSource:self];
     self.view.backgroundColor = [UIColor clearColor];
-    self.tview.backgroundColor = [UIColor whiteColor];
+    self.tview.backgroundColor = [ UIColor colorWithRed: 0.947
+                                                  green: 0.947
+                                                   blue: 0.947
+                                                  alpha: 1.0
+                                  ];
     [self.view addSubview:self.tview];
 #if IOS7_SDK_AVAILABLE
     if ([self.tview respondsToSelector:@selector(setSeparatorInset:)]) {
         [self.tview setSeparatorInset:UIEdgeInsetsZero];
     }
+#else
+    self.tview.backgroundView = nil;
 #endif
     UIView* footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 360, 30.0)];
     UIImage *btnImage = [UIImage   imageNamed:@"max_btn.png"];

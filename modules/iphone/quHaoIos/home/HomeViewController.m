@@ -303,9 +303,9 @@
 
 -(void)zbpd:(id)sender
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"即将开放,敬请期待" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
-    [alert show];
-    return;
+    NoQueueViewController *att = [[NoQueueViewController alloc] init];
+    att.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:att animated:YES];
 }
 
 -(void)requestTopData
@@ -494,6 +494,7 @@
 {
     ListViewController *home = [[ListViewController alloc] init];
     home.cateType = cateType;
+    home.cityCode = _cityCode;
     home.hidesBottomBarWhenPushed=YES;
     [navController pushViewController:home animated:YES];
 }

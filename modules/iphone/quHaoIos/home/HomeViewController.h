@@ -18,6 +18,7 @@
 #import "CityViewController.h"
 #import "EScrollerView.h"
 #import "AttentionViewController.h"
+#import "NoQueueViewController.h"
 @interface HomeViewController : UIViewController<CityViewDelegate,EScrollerViewDelegate,CLLocationManagerDelegate,MBProgressHUDDelegate>
 {
     NSMutableArray *_categoryArray;
