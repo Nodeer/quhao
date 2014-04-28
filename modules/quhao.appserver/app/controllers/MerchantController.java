@@ -228,49 +228,39 @@ public class MerchantController extends BaseController {
 			openNum = Open.getNumberByMid(merchantId);
 		}
 		
-		if(null != m)
-		{
+		if(null != m) {
 			merchantDetails.put("merchant", MerchantVO.build(m, c, isAttention, openNum));
 		}
 		
-		if(null != m && m.enable && "false".equals(isLogined))
-		{
+		if(null != m && m.enable && "false".equals(isLogined)) {
 			Haoma haoma = Haoma.findByMerchantId(m.id());
-
 			//haoma.updateSelf();
 
 			HaomaVO haomaVO = HaomaVO.build(haoma);
 			merchantDetails.put("haomaVO", haomaVO);
 		}
 		
-		if(null != m && m.enable && "true".equals(isLogined))
-		{
+		if(null != m && m.enable && "true".equals(isLogined)) {
 			List<ReservationVO> rvos = new ArrayList<ReservationVO>();
 			Haoma haoma = Haoma.findByMerchantId(merchantId);
 			HaomaVO haomaVO = HaomaVO.build(haoma);
 			merchantDetails.put("haomaVO", haomaVO);
-			
 			ReservationVO rvo = null;
 			List<Reservation> reservations = Reservation.getReservationsByMerchantIdAndAccountId(accountId, merchantId);
 			if (null != reservations && reservations.size() > 0) {
 				for (Reservation r : reservations) {
 					Paidui paidui = haoma.haomaMap.get(r.seatNumber);
-
 					rvo = new ReservationVO();
-
 					int canclCount = (int) Reservation.findCountBetweenCurrentNoAndMyNumber(merchantId, paidui.currentNumber, r.myNumber, r.seatNumber);
 					rvo.beforeYou = r.myNumber - (paidui.currentNumber + canclCount);
 					rvo.currentNumber = paidui.currentNumber;
-					
 					rvo.build(r);
 					rvos.add(rvo);
 				}
-				
 				merchantDetails.put("rvos", rvos);
 			}
 
 		}
-		
 		renderJSON(merchantDetails);
 	}
 	
@@ -333,7 +323,7 @@ public class MerchantController extends BaseController {
 	}
 
 	/**
-	 * 获取用户的座位号码情况
+	 * 获取用户的座位及号码情况（座位人数，当前号码，我的号码，在你前面等等）
 	 * 
 	 * @param id
 	 *            商家id
@@ -504,6 +494,10 @@ public class MerchantController extends BaseController {
 		renderJSON(merchantVOList);
 	}
 	
+	/**
+	 * 获取不用排队商家
+	 * @param cityCode 城市code
+	 */
 	public static void getNoQueueMerchants(String cityCode){
 		List<ObjectId> list = Merchant.noQueueMerchants();
 		for(ObjectId s : list){
