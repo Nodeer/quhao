@@ -496,18 +496,6 @@ public class MerchantController extends BaseController {
 	}
 	
 	/**
-	 * 获取不用排队商家
-	 * @param cityCode 城市code
-	 */
-	public static void getNoQueueMerchants(String cityCode){
-		List<ObjectId> list = Merchant.noQueueMerchants();
-		for(ObjectId s : list){
-			logger.debug(s.toString());
-		}
-		renderJSON(list);
-	}
-	
-	/**
 	 * 周边不排队商家
 	 * @param page	分页
 	 * @param userX X坐标
