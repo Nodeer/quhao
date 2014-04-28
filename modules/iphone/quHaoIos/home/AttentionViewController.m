@@ -30,7 +30,11 @@
         [self.tableView setSeparatorInset:UIEdgeInsetsZero];
     }
 #endif
-    
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [_merchartsArray removeAllObjects];
     [self createHud];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [self requestData];

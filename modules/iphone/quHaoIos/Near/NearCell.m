@@ -51,7 +51,7 @@
     
     _rjLabel=[[UILabel alloc]initWithFrame:CGRectZero];
     _rjLabel.backgroundColor=[UIColor clearColor];
-    _rjLabel.frame=CGRectMake(_statusLabel.frame.origin.x, _statusLabel.frame.origin.y+_statusLabel.frame.size.height, 80, 25);
+    _rjLabel.frame=CGRectMake(_titleLabel.frame.origin.x, _statusLabel.frame.origin.y+_statusLabel.frame.size.height, 80, 25);
     _rjLabel.textAlignment=NSTextAlignmentLeft;
     _rjLabel.font=[UIFont boldSystemFontOfSize:13];
     [self.contentView addSubview:_rjLabel];
@@ -78,7 +78,7 @@
         _statusLabel.text=@"暂时不能取号";
     }
     
-    _rjLabel.text = [NSString stringWithFormat:@"%@%.2lf",@" 人均:¥",self.merchartModel.averageCost];
+    _rjLabel.text = [NSString stringWithFormat:@"%@%.2lf",@"人均:¥",self.merchartModel.averageCost];
     _disLabel.text = self.merchartModel.distance;
 }
 
