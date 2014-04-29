@@ -10,7 +10,6 @@
 #import "MerchartModel.h"
 #import "MBProgressHUD.h"
 #import "Helper.h"
-#import "MerchartLocationController.h"
 #import "Reservation.h"
 #import "LoginView.h"
 #import "EGOImageView.h"
@@ -34,8 +33,6 @@
 -(void)reloadReversion;
 //打开地图
 - (void)pushMap:(NSString *)address andNavController:(UINavigationController *)navController andIsNextPage:(BOOL)isNextPage;
-//初始化地图
-- (void)initMapView;
 //拨打电话
 -(void)CallPhone;
 //展示用户点评

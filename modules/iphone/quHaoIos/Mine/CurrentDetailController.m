@@ -9,14 +9,12 @@
 #import "CurrentDetailController.h"
 
 @interface CurrentDetailController ()
-@property (nonatomic, strong) MAMapView *mapView;
 @end
 
 @implementation CurrentDetailController
 @synthesize single;
 @synthesize merchartID;
 @synthesize isNextPage;
-@synthesize mapView = _mapView;
 @synthesize reservation;
 @synthesize accountID;
 @synthesize egoImgView;
@@ -89,6 +87,9 @@
                 single.closeTime=[jsonObjects objectForKey:@"closeTime"];
                 single.commentContent=[jsonObjects objectForKey:@"commentContent"];
                 single.description=[jsonObjects objectForKey:@"description"];
+                single.x = [[jsonObjects objectForKey:@"x"] doubleValue];
+                single.y = [[jsonObjects objectForKey:@"y"] doubleValue];
+                single.openNum = [[jsonObjects objectForKey:@"openNum"] intValue];
             }
         }
     }else{
@@ -358,20 +359,15 @@
     [phoneCallWebView loadRequest:[NSURLRequest requestWithURL:phoneURL]];
 }
 
-- (void)initMapView
-{
-    self.mapView = [[MAMapView alloc] initWithFrame:self.view.bounds];
-}
-
 //弹出显示商家位置的地图
 - (void)pushMap:(NSString *)address andNavController:(UINavigationController *)navController andIsNextPage:(BOOL)isNextPage
 {
-    if(NULL == self.mapView){
-        [self initMapView];
-    }
-    BaseMapViewController *subViewController = [[MerchartLocationController alloc] init];
+    MapViewController *subViewController = [[MapViewController alloc] init];
     subViewController.title = single.name;
-    subViewController.mapView = self.mapView;
+    //subViewController.mapView = self.mapView;
+    subViewController.x = single.x;
+    subViewController.y = single.y;
+    subViewController.name = single.name;
     [navController pushViewController:(UIViewController*)subViewController animated:YES];
 }
 
