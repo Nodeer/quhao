@@ -98,6 +98,10 @@ public class Merchant extends MerchantEntityDef {
 		} else {
 			q.filter("cateType", CateType.benbangcai.toString());
 		}
+		
+		// 先按照enable排序
+		q = sortBy(q, "enable");
+		
 		if (!StringUtils.isEmpty(sortBy)) {
 			q = sortBy(q, sortBy);
 		}
