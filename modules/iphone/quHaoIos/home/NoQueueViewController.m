@@ -41,9 +41,6 @@
     self.tableView.indicatorStyle=UIScrollViewIndicatorStyleWhite;
     [self.view addSubview:self.tableView];
     _merchartsArray = [[NSMutableArray alloc] initWithCapacity:20];
-    _isLoading = NO;
-    _allCount = 0;
-    _isLoadOver = NO;
 #if IOS7_SDK_AVAILABLE
     if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
         [self.tableView setSeparatorInset:UIEdgeInsetsZero];
@@ -67,6 +64,9 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [_merchartsArray removeAllObjects];
+    _isLoading = NO;
+    _allCount = 0;
+    _isLoadOver = NO;
     [self locationService];
 }
 
@@ -272,7 +272,7 @@
     }
 }
 
-- (void)refreshData:(id)sender
+- (void)refreshNoQueue:(id)sender
 {
     [_merchartsArray removeAllObjects];
     _allCount = 0;

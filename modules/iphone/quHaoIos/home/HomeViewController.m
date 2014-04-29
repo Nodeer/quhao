@@ -33,7 +33,6 @@
     [_cityButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
     UIBarButtonItem *cityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_cityButton];
     
-    NSLog(@"%@",[Helper returnUserString:@"currentCity"]);
     if ([Helper returnUserString:@"currentCity"]!=nil&&[Helper returnUserString:@"currentcityCode"]!=nil)
     {
         [_cityButton  setTitle:[Helper returnUserString:@"currentCity"] forState:UIControlStateNormal];

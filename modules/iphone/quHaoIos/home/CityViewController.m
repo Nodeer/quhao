@@ -234,6 +234,7 @@
         self.isSearch = YES;
         [self findContext];
     }
+    
 }
 
 -(void)findContext
@@ -394,4 +395,5 @@
 {
     [super didReceiveMemoryWarning];
 }
+
 @end

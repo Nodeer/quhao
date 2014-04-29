@@ -13,7 +13,10 @@
 #import "CustomAnnotation.h"
 #import "Helper.h"
 @interface MapViewController : UIViewController<MKMapViewDelegate,CLLocationManagerDelegate>
-
+{
+    NSString *stationX;
+    NSString *stationY;
+}
 @property (nonatomic,strong) MKMapView * myMapView;
 @property (nonatomic,retain) CLLocationManager* locationManager;
 @property (nonatomic,retain) CLLocation* location;

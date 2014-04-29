@@ -217,6 +217,7 @@
         model.averageCost=[[[objects objectAtIndex:i] objectForKey:@"averageCost"] floatValue];
         model.id=[[objects objectAtIndex:i] objectForKey:@"id"];
         model.imgUrl=[[objects objectAtIndex:i] objectForKey:@"merchantImage"];
+        model.enable=[[[objects objectAtIndex:i] objectForKey:@"enable"] boolValue];
         [news addObject:model];
     }
     

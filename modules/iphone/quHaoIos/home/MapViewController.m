@@ -29,6 +29,11 @@
     [backButton addTarget:self action:@selector(clickToHome:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
+    
+    UIButton *qhBtn=[Helper getBackBtn:@"button.png" title:@"导 航" rect:CGRectMake( 0, 0, 40, 25 )];
+    [qhBtn addTarget:self action:@selector(clickBjBtn:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *btnItem = [[UIBarButtonItem alloc] initWithCustomView:qhBtn];
+    self.navigationItem.rightBarButtonItem = btnItem;
 }
 
 - (void)clickToHome:(id)sender
@@ -65,7 +70,7 @@
         return;
     }
     
-    CLLocationCoordinate2D merchantLoc = (CLLocationCoordinate2D){self.y,self.x};
+    CLLocationCoordinate2D merchantLoc = (CLLocationCoordinate2D){self.x,self.y};
     MKCoordinateRegion theRegion = { {0.0, 0.0 }, { 0.0, 0.0 } };
     theRegion.center = merchantLoc;
     theRegion.span.longitudeDelta = 0.01f;
@@ -81,6 +86,8 @@
 
 -(void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation
 {
+    stationX = [NSString stringWithFormat:@"%lf",userLocation.location.coordinate.latitude];
+    stationY = [NSString stringWithFormat:@"%lf",userLocation.location.coordinate.longitude];
     [self.locationManager stopUpdatingLocation];
     //self.myMapView.centerCoordinate = userLocation.location.coordinate;
     
@@ -114,5 +121,30 @@
 {
     [super didReceiveMemoryWarning];
 
+}
+
+-(void)clickBjBtn:(id)sender
+{
+    if (IOS6_SDK_AVAILABLE) {// 直接调用ios自己带的apple map
+        CLLocationCoordinate2D to;
+        to.latitude = self.x;
+        to.longitude = self.y;
+        MKMapItem *currentLocation = [MKMapItem mapItemForCurrentLocation];
+        MKMapItem *toLocation = [[MKMapItem alloc] initWithPlacemark:[[MKPlacemark alloc] initWithCoordinate:to addressDictionary:nil]];
+        
+        toLocation.name = @"导航";
+        [MKMapItem openMapsWithItems:[NSArray arrayWithObjects:currentLocation, toLocation, nil]
+                       launchOptions:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:MKLaunchOptionsDirectionsModeDriving, [NSNumber numberWithBool:YES], nil]
+                                      
+                                      
+                                                                 forKeys:[NSArray arrayWithObjects:MKLaunchOptionsDirectionsModeKey, MKLaunchOptionsShowsTrafficKey, nil]]];
+    } else {// ios6以下，调用google map
+        NSString *urlString = [[NSString alloc]
+                               initWithFormat:@"http://maps.google.com/maps?saddr=%f,%f&daddr=%@,%@&dirfl=d",
+                               self.x,self.y,stationX,stationY];
+        
+        NSURL *aURL = [NSURL URLWithString:urlString];
+        [[UIApplication sharedApplication] openURL:aURL];
+    }
 }
 @end
