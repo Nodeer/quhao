@@ -54,4 +54,13 @@ public class Attention extends AttentionEntityDef{
 			return mq.asList();
 		}
 	}
+	
+	public static int getAttentionCountByAid(String aid){
+		MorphiaQuery q = Attention.q();
+		q.filter("accountId", aid).filter("flag", true);
+//		List<Attention> as = q.asList();
+		
+		return (int) q.count();
+		
+	}
 }

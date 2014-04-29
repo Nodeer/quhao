@@ -304,8 +304,13 @@ public class AccountController extends BaseController {
 				loginVO.msg = "success";
 				loginVO.errorCode = 0;
 				loginVO.build(account);
+				
 				int count = Comment.getCommentCountByAccountId(account.id());
 				loginVO.dianping = count;
+				
+				int attention = Attention.getAttentionCountByAid(account.id());
+				loginVO.attention = attention;
+				
 				session.put(Constants.SESSION_USERNAME, account.id());
 				session.put(account.id(), account.id());
 
@@ -341,6 +346,10 @@ public class AccountController extends BaseController {
 			loginVO.build(account);
 			int count = Comment.getCommentCountByAccountId(account.id());
 			loginVO.dianping = count;
+			
+			int attention = Attention.getAttentionCountByAid(account.id());
+			loginVO.attention = attention;
+			
 			session.put(Constants.SESSION_USERNAME, account.id());
 			session.put(account.id(), account.id());
 
@@ -401,6 +410,10 @@ public class AccountController extends BaseController {
 			loginVO.errorCode = 1;
 			loginVO.msg = "success";
 			loginVO.build(account);
+			
+			int attention = Attention.getAttentionCountByAid(account.id());
+			loginVO.attention = attention;
+			
 		} else if (account.isSignIn) {
 			loginVO.errorCode = -2;
 			loginVO.msg = "you have signed in";
@@ -543,7 +556,14 @@ public class AccountController extends BaseController {
 		} else {
 			loginVO.errorCode = 1;
 			loginVO.msg = "success";
+			
 			loginVO.build(account);
+			
+			int count = Comment.getCommentCountByAccountId(account.id());
+			loginVO.dianping = count;
+			
+			int attention = Attention.getAttentionCountByAid(account.id());
+			loginVO.attention = attention;
 		}
 
 		renderJSON(loginVO);
