@@ -137,6 +137,7 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 
 	private void buildTask() {
 		
+		/*
 		final NearbyMerchantsTask task = new NearbyMerchantsTask(R.string.waitting, this, poiSearch);
 		task.execute(new Runnable() {
 			
@@ -188,6 +189,7 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 				
 			}
 		});
+		*/
 	}
 
 	private void setPoiSearch() {
@@ -276,6 +278,7 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 
 			if (msg.what == 200) {
 
+				/*
 				if (isFirstLoad) {
 
 					nearByAdapter = new MerchantNearByAdapter(
@@ -289,7 +292,7 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 				bt.setVisibility(View.VISIBLE);
 				pg.setVisibility(View.GONE);
 				merchantsListView.setOnScrollListener(NearbyActivity.this);
-				merchantsListView.setOnItemClickListener(NearbyActivity.this);
+				merchantsListView.setOnItemClickListener(NearbyActivity.this);*/
 				findViewById(R.id.loadingbar).setVisibility(View.GONE);
 				findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);

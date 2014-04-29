@@ -1,122 +1,88 @@
 package com.withiter.quhao.task;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.os.AsyncTask;
-import android.util.Log;
+import org.json.JSONException;
 
-import com.amap.api.services.poisearch.PoiResult;
-import com.amap.api.services.poisearch.PoiSearch;
-import com.withiter.quhao.util.ActivityUtil;
+import android.content.Context;
+
+import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.util.http.CommonHTTPRequest;
 
 /**
- * 附近商家中查询商家
- * @author Jazze
+ * 我的帖子、回复、收藏
+ * @author Administrator
  *
  */
-public class NearbyMerchantsTask extends AsyncTask<Runnable, Void, PoiResult> {
+public class NearbyMerchantsTask extends BaseTask {
 	
-	// 进度提示框
-	private static ProgressDialog progressDialog = null;
-	// 进度提示文字
-	private int preDialogMessage = 0;
-
-	private Runnable successRunnable = null;
-	// error处理
-	private Runnable errorRunnable = null;
-
-	protected Context mContext = null;
+//	private HashMap<String, String> mParams;
+	private String url;
 	
-	private PoiSearch poiSearch;
-	
-	public PoiResult poiResult;
-
-	public NearbyMerchantsTask(int preDialogMessage, Context context,
-			PoiSearch poiSearch) {
-		this.preDialogMessage = preDialogMessage;
-		this.mContext = context;
-		this.poiSearch = poiSearch;
-		
-	}
-	
-	/**
-	 * 该方法将在执行实际的后台操作前被UI thread调用。
-	 * 
-	 * 可以在该方法中做一些准备工作，如在界面上显示一个进度条
-	 */
-	@Override
-	protected void onPreExecute() {
-		if (preDialogMessage > 0) {
-			progressDialog = new ProgressDialog(mContext);
-			progressDialog.setTitle("");
-			progressDialog.setMessage(mContext.getResources().getString(preDialogMessage));
-			progressDialog.setIndeterminate(true);
-			if (mContext != null && !((Activity) mContext).isFinishing()) {
-				progressDialog.show();
-			}
-			progressDialog
-					.setOnCancelListener(new DialogInterface.OnCancelListener() {
-
-						@Override
-						public void onCancel(DialogInterface dialog) {
-							NearbyMerchantsTask.this.cancel(true);
-						}
-					});
-		}
-
-	}
-
-	@Override
-	protected PoiResult doInBackground(Runnable... runnables) {
-		PoiResult result = null;
-		try {
-			if (!ActivityUtil.isNetWorkAvailable(mContext)) {
-				return result;
-			}
-			long start = System.currentTimeMillis();
-			// 需要返回值的场合，获得json数据
-			poiResult = poiSearch.searchPOI();
-			long end = System.currentTimeMillis();
-			
-			Log.e("wjzwjz : ", "the date : " + (end-start));
-			
-		} catch (Exception e) {
-			Log.e("BaseTask", e.getMessage(), e);
-			return result;
-		} finally {
-			successRunnable = runnables[0];
-			if (runnables.length > 1) {
-				errorRunnable = runnables[1];
-			}
-		}
-		return result;
-	}
+	public String result;
 
 	/**
-	 * 在doInBackground 执行完成后，onPostExecute方法将被UI thread调用
 	 * 
-	 * 后台的计算结果将通过该方法传递到UI thread.
+	 * @param context
+	 * @param action replay我的回复/thread我的发帖/favorites我的收藏
+	 * @param page
+	 * @param token
 	 */
-	@Override
-	protected void onPostExecute(PoiResult result) {
-		closeProgressDialog();
-		if (!this.isCancelled()) {
-			if (null != poiResult && null != poiResult.getQuery()) {
-				successRunnable.run();
-			} else {
-				errorRunnable.run();
-			}
-		}
+	public NearbyMerchantsTask(int preDialogMessage,Context context,String url) {
+		super(preDialogMessage,context);
+		this.url = url;
+//		mParams = new HashMap<String, String>();
+//		mParams.put("apiname", API_NAME);
+//		mParams.put("method", METHOD);
+//		
+//		mParams.put("action", action);
+//		mParams.put("page", page);
+//		mParams.put("token", token);
+//		mParams.put("userid", userid);
+//		System.out.println("Token"+token+"***************userid"+userid);
 	}
 
-	// 关闭进度提示
-	public void closeProgressDialog() {
-		if (preDialogMessage > 0 && progressDialog.isShowing()) {
-			if (mContext != null && !((Activity) mContext).isFinishing()) {
-				progressDialog.dismiss();
-			}
+	@Override
+	public JsonPack getData() throws Exception {
+		String result = CommonHTTPRequest.get(url); // doGet(mParams);
+		JsonPack jsonPack = getJsonPack(result);
+		return jsonPack;
+	}
+
+	@Override
+	public void onStateFinish(JsonPack result) {
+		if(null != result&&result.getObj()!=null){
+			this.result = result.getObj();
 		}
 	}
+	
+	private static JsonPack getJsonPack(String responseString)
+			throws JSONException {
+		JsonPack jp = new JsonPack();
+		if (!StringUtils.isNull(responseString) && !"[]".equals(responseString) && !"null".equals(responseString)) {
+
+			if (responseString instanceof String) {
+				jp.setRe(200);
+				jp.setMsg("success");
+				jp.setObj(responseString);
+			}
+		}
+		else
+		{
+			jp.setRe(400);
+			jp.setMsg("error");
+		}
+		return jp;
+	}
+
+	@Override
+	public void onStateError(JsonPack result) {
+//		Toast.makeText(mContext, result.getMsg(), Toast.LENGTH_LONG).show();
+//		DialogUtil.showToast(mContext, result.getMsg());
+	}
+
+	@Override
+	public void onPreStart() {
+		// TODO Auto-generated method stub
+
+	}
+
 }

@@ -15,6 +15,7 @@ import android.content.res.Resources.NotFoundException;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -198,6 +199,7 @@ public class QHClientApplication extends Application {
 			return;
 		}
 
+		Log.e("wjzwjz ", "passw0rd:"+ password);
 		String decryptPassword = new DesUtils().decrypt(password);
 		String url = "AccountController/login?phone=" + phone + "&password=" + decryptPassword;
 		try {

@@ -1,21 +1,19 @@
 package com.withiter.quhao.adapter;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.location.AMapLocation;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.QuhaoLog;
@@ -115,11 +113,24 @@ public class MerchantAdapter extends BaseAdapter {
 			holder.merchantAddress.setText(merchant.address);
 			
 			holder.distance.setTag("distance_" + position);
-			LatLonPoint lp = QHClientApplication.getInstance().lp;
-			if(null != lp && merchant.lat != 0 && merchant.lng != 0)
+			AMapLocation location = QHClientApplication.getInstance().location;
+			if(null != location && merchant.lat != 0 && merchant.lng != 0)
 			{
-				holder.distance.setText(String.valueOf(DistanceUtil.computeDistance(lp.getLatitude(), lp.getLongitude(), merchant.lat, merchant.lng)));
-				Log.e("wjzwjz distance : ", String.valueOf(DistanceUtil.computeDistance(lp.getLatitude(), lp.getLongitude(), merchant.lat, merchant.lng)));
+				double distance = DistanceUtil.computeDistance(location.getLatitude(), location.getLongitude(), merchant.lat, merchant.lng);
+				if(distance>1000)
+				{
+					
+					NumberFormat nf = NumberFormat.getNumberInstance();
+			        nf.setMaximumFractionDigits(2);
+					holder.distance.setText(nf.format(distance/1000) + "千米");
+				}
+				else
+				{
+					holder.distance.setText(String.valueOf((int)distance) + "米");
+				}
+				
+//				holder.distance.setText(String.valueOf(DistanceUtil.computeDistance(lp.getLatitude(), lp.getLongitude(), merchant.lat, merchant.lng)));
+//				Log.e("wjzwjz distance : ", String.valueOf(DistanceUtil.computeDistance(lp.getLatitude(), lp.getLongitude(), merchant.lat, merchant.lng)));
 			}
 			else
 			{

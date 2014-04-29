@@ -154,6 +154,10 @@ public class MyAttentionListActivity extends QuhaoBaseActivity implements OnHead
 			
 			@Override
 			public void run() {
+				if (null == merchants) {
+					merchants = new ArrayList<Merchant>();
+				}
+				merchantsUpdateHandler.obtainMessage(200, merchants).sendToTarget();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				needToLoad = false;
 				

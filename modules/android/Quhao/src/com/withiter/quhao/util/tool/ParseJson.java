@@ -169,8 +169,17 @@ public class ParseJson {
 
 	private static Merchant coventMerchant(JSONObject obj) throws JSONException {
 		Merchant merchant;
-		String id = obj.optString("id");
-		String imgUrl = obj.optString("merchantImage");
+		String id = "";
+		if(obj.has("id"))
+		{
+			id = obj.optString("id");
+		}
+		
+		String imgUrl = "";
+		if(obj.has("merchantImage"))
+		{
+			imgUrl = obj.optString("merchantImage");
+		}
 		// TODO: 
 		if (QuhaoConstant.test) {
 			if(null != imgUrl && !"".equals(imgUrl))
@@ -194,56 +203,144 @@ public class ParseJson {
 				e.printStackTrace();
 			}
 		}
-		String name = obj.optString("name");
-		String address = obj.optString("address");
+		String name = "";
+		if(obj.has("name"))
+		{
+			name = obj.optString("name");
+		}
+		
+		String address = "";
+		if(obj.has("address"))
+		{
+			address = obj.optString("address");
+		}
 		String phone = "";
 		if (obj.has("telephone")) {
-			JSONArray array = obj.getJSONArray("telephone");
-			for (int i = 0; i < array.length(); i++) {
-				if (i == array.length() - 1) {
-					phone = phone + array.get(i).toString();
-					break;
+			JSONArray array = obj.optJSONArray("telephone");
+			if(null != array && array.length() > 0)
+			{
+				for (int i = 0; i < array.length(); i++) {
+					if (i == array.length() - 1) {
+						phone = phone + array.get(i).toString();
+						break;
+					}
+					phone = phone + array.get(i).toString() + ",";
 				}
-				phone = phone + array.get(i).toString() + ",";
 			}
 		}
 
-		String cateType = obj.optString("cateType");
-		String grade = obj.optString("grade");
-		String averageCost = obj.optString("averageCost");
-
+		String cateType = "";
+		if(obj.has("cateType"))
+		{
+			cateType = obj.optString("cateType");
+		}
+		
+		String grade = "";
+		if(obj.has("grade"))
+		{
+			grade = obj.optString("grade");
+		}
+		
+		String averageCost = "";
+		if(obj.has("averageCost"))
+		{
+			averageCost = obj.optString("averageCost");
+		}
+		
 		String tags = "";
 		if (obj.has("tags")) {
 			JSONArray array = obj.getJSONArray("tags");
-			for (int i = 0; i < array.length(); i++) {
-				if (i == array.length() - 1) {
-					tags = tags + array.get(i).toString();
-					break;
+			if (null != array && array.length() > 0) {
+				for (int i = 0; i < array.length(); i++) {
+					if (i == array.length() - 1) {
+						tags = tags + array.get(i).toString();
+						break;
+					}
+					tags = tags + array.get(i).toString() + ",";
 				}
-				tags = tags + array.get(i).toString() + ",";
 			}
+			
 		}
 
-		Integer kouwei = obj.optInt("kouwei");
-		Integer huanjing = obj.optInt("huanjing");
-		Integer fuwu = obj.optInt("fuwu");
-		Integer xingjiabi = obj.optInt("xingjiabi");
+		Integer kouwei = 0;
+		if(obj.has("kouwei"))
+		{
+			kouwei = obj.optInt("kouwei");
+		}
+		
+		Integer huanjing = 0;
+		if(obj.has("huanjing"))
+		{
+			huanjing = obj.optInt("huanjing");
+		}
+		
+		Integer fuwu = 0;
+		if(obj.has("fuwu"))
+		{
+			fuwu = obj.optInt("fuwu");
+		}
+		
+		Integer xingjiabi = 0;
+		if(obj.has("xingjiabi"))
+		{
+			xingjiabi = obj.optInt("xingjiabi");
+		}
 
-		String teses = obj.optString("teses");
-		String nickName = obj.optString("nickName");
-		String description = obj.optString("description");
-		String openTime = obj.optString("openTime");
-		String closeTime = obj.optString("closeTime");
+		String teses = "";
+		if(obj.has("teses"))
+		{
+			teses = obj.optString("teses");
+		}
+		
+		String nickName = "";
+		if(obj.has("nickName"))
+		{
+			nickName = obj.optString("nickName");
+		}
+		
+		String description = "";
+		if(obj.has("description"))
+		{
+			description = obj.optString("description");
+		}
+		
+		String openTime = "";
+		if(obj.has("openTime"))
+		{
+			openTime = obj.optString("openTime");
+		}
+		
+		String closeTime = "";
+		if(obj.has("closeTime"))
+		{
+			closeTime = obj.optString("closeTime");
+		}
 
-		Integer marketCount = obj.optInt("marketCount");
-		boolean enable = obj.optBoolean("enable");
-		String joinedDate = obj.optString("joinedDate");
-
-		double lat = obj.optDouble("x");
-		double lng = obj.optDouble("y");
+		Integer marketCount = 0;
+		if(obj.has("marketCount"))
+		{
+			marketCount = obj.optInt("marketCount");
+		}
+		
+		boolean enable = false;
+		if(obj.has("enable"))
+		{
+			enable = obj.optBoolean("enable");
+		}
+		
+		String joinedDate = "";
+		if(obj.has("joinedDate"))
+		{
+			joinedDate = obj.optString("joinedDate");
+		}
+		
+		double distance = obj.optDouble("distance");
+		
+		double lat = obj.optDouble("y");
+		double lng = obj.optDouble("x");
 		boolean isAttention = obj.optBoolean("isAttention");
 		merchant = new Merchant(id, imgUrl, name, address, phone, cateType, grade, averageCost, tags, kouwei, huanjing, fuwu, xingjiabi, teses, nickName, description, openTime, closeTime,
-				marketCount, enable, joinedDate, lat, lng);
+				marketCount, enable, joinedDate, lat, lng,distance);
 
 		String commentAverageCost = obj.optString("commentAverageCost");
 		int commentXingjiabi = obj.optInt("commentXingjiabi");
