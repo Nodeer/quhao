@@ -39,7 +39,6 @@ public class LoginVO {
 	public int dianping;
 	public int zhaopian;
 	public int guanzhu;
-	public int attention;
 
 	public LoginVO(){
 		super();
