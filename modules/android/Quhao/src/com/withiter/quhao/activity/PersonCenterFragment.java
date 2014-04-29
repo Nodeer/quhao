@@ -47,6 +47,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 	private TextView jifen;
 	private TextView value_qiandao;
 	private TextView value_dianpin;
+	private TextView myAttention;
 
 	private LoginInfo loginInfo;
 
@@ -56,6 +57,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 	private LinearLayout historyPaiduiLayout;
 	private LinearLayout creditCostLayout;
 	private RelativeLayout personInfoLayout;
+	private LinearLayout myAttentionLayout;
 	
 	private ImageView avatar;
 
@@ -80,7 +82,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 		
 		value_qiandao = (TextView) contentView.findViewById(R.id.value_qiandao);
 		value_dianpin = (TextView) contentView.findViewById(R.id.value_dianpin);
-
+		myAttention = (TextView) contentView.findViewById(R.id.my_attention);
 		avatar = (ImageView) contentView.findViewById(R.id.avatar);
 		
 		signInLayout = (LinearLayout) contentView.findViewById(R.id.signInLayout);
@@ -90,13 +92,15 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 		historyPaiduiLayout = (LinearLayout) contentView.findViewById(R.id.history_paidui_layout);
 		creditCostLayout = (LinearLayout) contentView.findViewById(R.id.credit_cost_layout);
 		personInfoLayout = (RelativeLayout) contentView.findViewById(R.id.person_info);
+		myAttentionLayout = (LinearLayout) contentView.findViewById(R.id.my_attention_layout);
 		signInLayout.setOnClickListener(this);
 		dianpingLayout.setOnClickListener(this);
-		personInfoLayout.setOnClickListener(this);
 		currentPaiduiLayout.setOnClickListener(this);
+		personInfoLayout.setOnClickListener(this);
+		myAttentionLayout.setOnClickListener(this);
 		historyPaiduiLayout.setOnClickListener(this);
 		creditCostLayout.setOnClickListener(this);
-
+		
 		loginBtn = (Button) contentView.findViewById(R.id.login);
 		regBtn = (Button) contentView.findViewById(R.id.register);
 
@@ -143,7 +147,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				avatar.setImageResource(R.drawable.person_avatar);
 				value_qiandao.setText("0");
 				value_dianpin.setText("0");
-			
+				myAttention.setText("0");
 				loginBtn.setVisibility(View.VISIBLE);
 				regBtn.setVisibility(View.VISIBLE);
 			}
@@ -159,7 +163,8 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 			avatar.setImageResource(R.drawable.person_avatar);
 			value_qiandao.setText("0");
 			value_dianpin.setText("0");
-		
+			myAttention.setText("0");
+			
 			loginBtn.setVisibility(View.VISIBLE);
 			regBtn.setVisibility(View.VISIBLE);
 			loginBtn.setVisibility(View.VISIBLE);
@@ -229,13 +234,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 		
 		value_qiandao.setText(account.signIn);
 		value_dianpin.setText(account.dianping);
-		if ("true".equals(account.isSignIn)) {
-			signInLayout.setEnabled(false);
-		}
-		else
-		{
-			signInLayout.setEnabled(true);
-		}
+		myAttention.setText(account.guanzhu);
 	}
 	
 	private void signIn() {
@@ -387,9 +386,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 
 					value_qiandao.setText(loginInfo.signIn);
 					value_dianpin.setText(loginInfo.dianping);
-					if ("true".equals(loginInfo.isSignIn)) {
-						signInLayout.setEnabled(false);
-					}
+					myAttention.setText(loginInfo.guanzhu);
 					
 				}
 			}
@@ -459,29 +456,43 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 			break;
 		case R.id.signInLayout:
 			if (QHClientApplication.getInstance().isLogined) {
-				
-				Thread thread = new Thread(new Runnable() {
-					
-					@Override
-					public void run() {
-						try
-						{
-							Looper.prepare();
-							signIn();
-						}
-						catch(Exception e)
-						{
-							QuhaoLog.e(TAG, e.getMessage());
-						}
-						finally
-						{
-							Looper.loop();
-						}
-						
-						
+				AccountInfo account = QHClientApplication.getInstance().accountInfo;
+				if(account!=null)
+				{
+					if("true".equals(account.isSignIn))
+					{
+						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+						Builder dialog = new AlertDialog.Builder(getActivity());
+						dialog.setTitle("温馨提示").setMessage("亲，今天已经签过了哦！").setPositiveButton("确定", null);
+						dialog.show();
 					}
-				});
-				thread.start();
+					else
+					{
+						Thread thread = new Thread(new Runnable() {
+							
+							@Override
+							public void run() {
+								try
+								{
+									Looper.prepare();
+									signIn();
+								}
+								catch(Exception e)
+								{
+									QuhaoLog.e(TAG, e.getMessage());
+								}
+								finally
+								{
+									Looper.loop();
+								}
+								
+								
+							}
+						});
+						thread.start();
+					}
+				}
+				
 			} else {
 				
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -499,6 +510,24 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				intentComment.putExtra("accountId", QHClientApplication.getInstance().accountInfo.accountId);
 				intentComment.setClass(getActivity(), CommentsAccountActivity.class);
 				startActivity(intentComment);
+				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+				
+			} else {
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				Intent login3 = new Intent(getActivity(), LoginActivity.class);
+				login3.putExtra("activityName", this.getClass().getName());
+				login3.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				startActivity(login3);
+			}
+			break;
+		case R.id.my_attention_layout:
+			if (QHClientApplication.getInstance().isLogined) {
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				
+				Intent intentAttention = new Intent();
+				intentAttention.putExtra("accountId", QHClientApplication.getInstance().accountInfo.accountId);
+				intentAttention.setClass(getActivity(), MyAttentionListActivity.class);
+				startActivity(intentAttention);
 				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 				
 			} else {

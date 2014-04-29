@@ -63,8 +63,8 @@ public class MerchantAdapter extends BaseAdapter {
 				holder.img.setAdjustViewBounds(true);
 				holder.distance = (TextView) convertView.findViewById(R.id.distance);
 				holder.content = (TextView) convertView.findViewById(R.id.merchantName);
-				holder.merchantAddress = (TextView) convertView.findViewById(R.id.merchantAddress);
-				holder.pinfenImage = (ImageView) convertView.findViewById(R.id.pingfen);
+				holder.merchantEnable = (TextView) convertView.findViewById(R.id.merchant_enable);
+//				holder.pinfenImage = (ImageView) convertView.findViewById(R.id.pingfen);
 				holder.merchantRenjun = (TextView) convertView.findViewById(R.id.merchantRenjun);
 			}
 			if (holder == null) {
@@ -108,9 +108,16 @@ public class MerchantAdapter extends BaseAdapter {
 			*/
 			holder.content.setTag("content_" + position);
 			holder.content.setText(merchant.name);
-			holder.merchantAddress.setTag("merchantAddress_" + position);
+			holder.merchantEnable.setTag("merchantEnable_" + position);
 			
-			holder.merchantAddress.setText(merchant.address);
+			if(merchant.enable)
+			{
+				holder.merchantEnable.setText("可以取号");
+			}
+			else
+			{
+				holder.merchantEnable.setText("暂不支持取号");
+			}
 			
 			holder.distance.setTag("distance_" + position);
 			AMapLocation location = QHClientApplication.getInstance().location;
@@ -136,6 +143,8 @@ public class MerchantAdapter extends BaseAdapter {
 			{
 				holder.distance.setText("没有定位信息，暂时无法显示距离");
 			}
+			
+			/*
 			if (StringUtils.isNull(merchant.grade)) {
 				merchant.grade = "0.0";
 			} else {
@@ -176,7 +185,7 @@ public class MerchantAdapter extends BaseAdapter {
 			if (score == 5.0f) {
 				holder.pinfenImage.setImageResource(R.drawable.star50);
 			}
-
+			*/
 			if (StringUtils.isNull(merchant.averageCost)) {
 				holder.merchantRenjun.setText("人均消费：暂无");
 			} else {
@@ -191,8 +200,8 @@ public class MerchantAdapter extends BaseAdapter {
 	class ViewHolder {
 		ImageView img;
 		TextView content;
-		TextView merchantAddress;
-		ImageView pinfenImage;
+		TextView merchantEnable;
+//		ImageView pinfenImage;
 		TextView merchantRenjun;
 		TextView distance;
 	}

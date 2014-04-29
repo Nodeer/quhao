@@ -409,8 +409,9 @@ public class ParseJson {
 			String isSignIn = obj.optString("isSignIn");
 			String dianping = obj.optString("dianping");
 			String zhaopian = obj.optString("zhaopian");
+			String guanzhu = obj.optString("guanzhu");
 
-			loginInfo = new LoginInfo(msg, accountId, phone, jifen, email, password, nickName, birthday, userImage, enable, mobileOS, lastLogin, signIn, isSignIn, dianping, zhaopian);
+			loginInfo = new LoginInfo(msg, accountId, phone, jifen, email, password, nickName, birthday, userImage, enable, mobileOS, lastLogin, signIn, isSignIn, dianping, zhaopian,guanzhu);
 
 		} catch (JSONException e) {
 			e.printStackTrace();

@@ -60,7 +60,7 @@ public class MerchantNearByAdapter extends BaseAdapter {
 				holder.distance = (TextView) convertView.findViewById(R.id.distance);
 				holder.merchantName = (TextView) convertView.findViewById(R.id.merchantName);
 				holder.merchantEnable = (TextView) convertView.findViewById(R.id.merchant_enable);
-				holder.pinfenImage = (ImageView) convertView.findViewById(R.id.pingfen);
+//				holder.pinfenImage = (ImageView) convertView.findViewById(R.id.pingfen);
 				holder.merchantRenjun = (TextView) convertView.findViewById(R.id.merchantRenjun);
 			}
 			if (holder == null) {
@@ -128,6 +128,7 @@ public class MerchantNearByAdapter extends BaseAdapter {
 				holder.distance.setText(String.valueOf((int)merchant.distance) + "米");
 			}
 			
+			/*
 			if (StringUtils.isNull(merchant.grade)) {
 				merchant.grade = "0.0";
 			} else {
@@ -168,7 +169,7 @@ public class MerchantNearByAdapter extends BaseAdapter {
 			if (score == 5.0f) {
 				holder.pinfenImage.setImageResource(R.drawable.star50);
 			}
-
+			*/
 			if (StringUtils.isNull(merchant.averageCost)) {
 				holder.merchantRenjun.setText("人均消费：暂无");
 			} else {
@@ -184,7 +185,7 @@ public class MerchantNearByAdapter extends BaseAdapter {
 		ImageView img;
 		TextView merchantName;
 		TextView merchantEnable;
-		ImageView pinfenImage;
+//		ImageView pinfenImage;
 		TextView merchantRenjun;
 		TextView distance;
 	}

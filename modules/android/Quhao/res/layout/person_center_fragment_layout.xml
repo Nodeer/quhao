@@ -196,7 +196,8 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="10.0dip"
-            android:textAlignment="center">
+            android:textAlignment="center"
+            >
 
             <LinearLayout android:id="@+id/signInLayout"
                 android:layout_width="wrap_content"
@@ -246,6 +247,34 @@
 
                 <TextView
                     android:id="@+id/value_dianpin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/value_dianpin"
+                    android:textAlignment="center" />
+            </LinearLayout>
+            
+            <LinearLayout android:id="@+id/my_attention_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:padding="10.0dip"
+                android:textAlignment="center" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/attention"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/my_attention"
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
                     android:layout_gravity="center"

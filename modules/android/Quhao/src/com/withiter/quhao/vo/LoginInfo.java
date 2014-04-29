@@ -21,10 +21,11 @@ public class LoginInfo {
 	public String isSignIn;
 	public String dianping;
 	public String zhaopian;
+	public String guanzhu;
 	
 	public LoginInfo(String msg, String accountId,String phone, String jifen, String email, String password,
 			String nickName, String birthday, String userImage, String enable,
-			String mobileOS, String lastLogin,String signIn,String isSignIn,String dianping,String zhaopian) {
+			String mobileOS, String lastLogin,String signIn,String isSignIn,String dianping,String zhaopian,String guanzhu) {
 		this.msg = msg;
 		this.accountId = accountId;
 		this.phone = phone;
@@ -41,6 +42,7 @@ public class LoginInfo {
 		this.isSignIn = isSignIn;
 		this.dianping = dianping;
 		this.zhaopian = zhaopian;
+		this.guanzhu = guanzhu;
 	}
 
 	public LoginInfo() {

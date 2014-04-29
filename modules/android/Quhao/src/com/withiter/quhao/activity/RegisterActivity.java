@@ -76,7 +76,16 @@ public class RegisterActivity extends QuhaoBaseActivity{
 		TelephonyManager telephonyManager = (TelephonyManager) this
 				.getSystemService(Context.TELEPHONY_SERVICE);
 		String phone = telephonyManager.getLine1Number();
-		loginNameText.setText(phone);
+
+		if(StringUtils.isNotNull(phone))
+		{
+			if(phone.contains("+86"))
+			{
+				phone = phone.substring(3);
+			}
+			loginNameText.setText(phone);
+		}
+		
 		loginNameText.setFocusableInTouchMode(true);
 		loginNameText.requestFocus();
 	}
