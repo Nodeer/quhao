@@ -242,6 +242,18 @@ public class Reservation extends ReservationEntityDef {
 			account.jifen += jifen;
 			account.save();
 			
+			// 增加积分消费情况
+			Credit credit = new Credit();
+			credit.accountId = r.accountId;
+			credit.merchantId = r.merchantId;
+			credit.reservationId = r.id();
+			credit.cost = true;
+			credit.jifen = jifen;
+			credit.status = CreditStatus.canceled;
+			credit.created = new Date();
+			credit.modified = new Date();
+			credit.create();
+			
 			return true;
 		}
 
@@ -303,7 +315,19 @@ public class Reservation extends ReservationEntityDef {
 			r.valid = false;
 			r.modified = new Date();
 			r.save();
-
+			
+			// 增加积分消费情况
+			Credit credit = new Credit();
+			credit.accountId = r.accountId;
+			credit.merchantId = r.merchantId;
+			credit.reservationId = r.id();
+			credit.cost = true;
+			credit.jifen = Integer.parseInt(Play.configuration.getProperty("credit.getnumber.jifen"));
+			credit.status = CreditStatus.expired;
+			credit.created = new Date();
+			credit.modified = new Date();
+			credit.create();
+			
 			return true;
 		}
 

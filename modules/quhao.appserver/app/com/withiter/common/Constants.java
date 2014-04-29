@@ -62,6 +62,7 @@ public class Constants {
 		getNumber,		// get one reservation, will cost one credit
 		exchange,		// exchange to get the credits
 		comment,		// comment will get back one credit
+		canceled,		// cancel will get back one credit
 		expired,		// expired reservation, will not get back one credit
 	}
 	
