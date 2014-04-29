@@ -7,7 +7,6 @@
 //
 #import "MerchartDetail.h"
 @interface MerchartDetail ()
-@property (nonatomic, strong) MAMapView *mapView;
 
 @end
 @implementation MerchartDetail
@@ -15,7 +14,6 @@
 @synthesize single;
 @synthesize merchartID;
 @synthesize isNextPage;
-@synthesize mapView = _mapView;
 @synthesize reservation;
 @synthesize accountID;
 @synthesize egoImgView;
@@ -75,7 +73,7 @@
 
             dispatch_async(dispatch_get_main_queue(), ^{
                 [hud hide:YES];
-                if(!single.enable){
+                if(single.enable){
                     UIButton *qhBtn=[Helper getBackBtn:@"button.png" title:@"取 号" rect:CGRectMake( 0, 0, 40, 25 )];
                     [qhBtn addTarget:self action:@selector(clickQuhao:) forControlEvents:UIControlEventTouchUpInside];
                     UIBarButtonItem *btnItem = [[UIBarButtonItem alloc] initWithCustomView:qhBtn];
@@ -366,14 +364,14 @@
             
             UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             shareButton.frame = CGRectMake( kDeviceWidth-50, 30, 40, 25 );
-            shareButton.titleLabel.font = [UIFont systemFontOfSize:13];
+            shareButton.titleLabel.font = [UIFont systemFontOfSize:12];
             [shareButton setTitle:@"分 享" forState:UIControlStateNormal];
             [shareButton addTarget:self action:@selector(clickShare:) forControlEvents:UIControlEventTouchUpInside];
             [cell.contentView addSubview:shareButton];
             
             dlButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
             dlButton.frame=CGRectMake(shareButton.frame.origin.x-60, 30, 60, 25 );
-            dlButton.titleLabel.font = [UIFont systemFontOfSize:13];
+            dlButton.titleLabel.font = [UIFont systemFontOfSize:12];
             //[dlButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             [dlButton addTarget:self action:@selector(clickGz:) forControlEvents:UIControlEventTouchUpInside];
             [cell.contentView addSubview:dlButton];
@@ -648,22 +646,15 @@
     [self.view addSubview:phoneCallWebView];
 }
 
-- (void)initMapView
-{
-    self.mapView = [[MAMapView alloc] initWithFrame:self.view.bounds];
-}
-
 //弹出显示商家位置的地图
 - (void)pushMap:(NSString *)address andNavController:(UINavigationController *)navController andIsNextPage:(BOOL)isNextPage
 {
-    if(NULL == self.mapView){
-        [self initMapView];
-    }
-    BaseMapViewController *subViewController = [[MerchartLocationController alloc] init];
+    MapViewController *subViewController = [[MapViewController alloc] init];
     subViewController.title = single.name;
-    subViewController.mapView = self.mapView;
+    //subViewController.mapView = self.mapView;
     subViewController.x = single.x;
     subViewController.y = single.y;
+    subViewController.name = single.name;
     [navController pushViewController:(UIViewController*)subViewController animated:YES];    
 }
 

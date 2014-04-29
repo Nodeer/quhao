@@ -32,15 +32,18 @@
     _cityButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     [_cityButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
     UIBarButtonItem *cityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_cityButton];
-    _cityCode = @"021";
-    if ([Helper returnUserString:@"currentCity"]!=nil)
+    
+    NSLog(@"%@",[Helper returnUserString:@"currentCity"]);
+    if ([Helper returnUserString:@"currentCity"]!=nil&&[Helper returnUserString:@"currentcityCode"]!=nil)
     {
         [_cityButton  setTitle:[Helper returnUserString:@"currentCity"] forState:UIControlStateNormal];
         _cityCode = [Helper returnUserString:@"currentcityCode"];
     }else{
         [Helper saveDafaultData:_cityCode withName:@"currentcityCode"];
     }
-    
+    if(_cityCode == nil){
+        _cityCode = @"021";
+    }
     UIButton *chooseButton=[Helper getBackBtn:@"chooseArrow" title:@"" rect:CGRectMake( 0, 0, 11, 9 )];
     [chooseButton addTarget:self action:@selector(openCitySearchView:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *chooseButtonItem = [[UIBarButtonItem alloc] initWithCustomView:chooseButton];

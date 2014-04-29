@@ -16,12 +16,13 @@
 #endif
 
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+#define UIColorFromRGB2(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:0.5]
+
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
 #endif
 #define Notification_TabClick @"Notification_TabClick"
-
 #define topSize 6
 #define kDeviceHeight     [UIScreen mainScreen].bounds.size.height
 #define kDeviceWidth     [UIScreen mainScreen].bounds.size.width
@@ -64,17 +65,23 @@
 #define upload_pic @"/updateUserImage"
 #define updateName_url @"/updateUserName"
 #define updatePassword_url @"/updatePassword"
+#define attentionView_list_url @"/app/marked?aid="
+#define getNearMerchants_url @"/getNearMerchants"
+#define getNoQueueMerchants_url @"/getNearNoQueueMerchants"
 
-#define AppID @"1.0.0"
+#define loadNext20Tip @"更多 . . ."
+#define loadingTip @"正在加载 . . ."
+#define AppID @"867985717"
 
-#define AppVersion @"1.0.0"
+#define AppVersion @"1.0"
+#define SearchKey @"60d9c5881dbe8dddd3de33aaacac0cbe"
 
 //com.sina.weibo
-#define kAppKey         @"1954689646"
+#define kAppKey         @"983729496"
 #define kRedirectURI    @"https://api.weibo.com/oauth2/default.html"
 #define OAuth_URL       @"https://api.weibo.com/oauth2/authorize"
 #define ACCESS_TOKEN_URL @"https://api.weibo.com/oauth2/access_token"
-#define APP_SECRET      @"354c6bb1c9611b1884439eb2dea12f31"
+#define APP_SECRET      @"515b476bfc1c7a5b7e4da0bb6eae6764"
 #define GET_UID_URL     @"https://api.weibo.com/2/account/get_uid.json"
 #define WEIBO_UPDATE    @"https://api.weibo.com/2/statuses/update.json"//发送文字微博
 

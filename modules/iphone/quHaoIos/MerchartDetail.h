@@ -10,7 +10,6 @@
 #import "MerchartModel.h"
 #import "MBProgressHUD.h"
 #import "Helper.h"
-#import "MerchartLocationController.h"
 #import "QuHaoViewController.h"
 #import "Reservation.h"
 #import "LoginView.h"
@@ -21,6 +20,7 @@
 #import "CommentViewController.h"
 #import "CustomToolbar.h"
 #import "Paidu.h"
+#import "MapViewController.h"
 @interface MerchartDetail : UIViewController<UITableViewDataSource,UITableViewDelegate>
 {
     UITableView *_detailView;
@@ -46,8 +46,6 @@
 -(void)reloadReversion;
 //打开地图
 - (void)pushMap:(NSString *)address andNavController:(UINavigationController *)navController andIsNextPage:(BOOL)isNextPage;
-//初始化地图
-- (void)initMapView;
 //拨打电话
 -(void)CallPhone;
 //展示用户点评
