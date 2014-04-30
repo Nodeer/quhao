@@ -543,7 +543,7 @@ public class MerchantController extends BaseController {
 		pipeline.add(new BasicDBObject("$project", projectParams));
 		cmdBody.put("pipeline", pipeline);
 		if (!MorphiaQuery.ds().getDB().command(cmdBody).ok()) {
-			logger.debug("NoQueue geoNear查询出错: "
+			logger.warn("NoQueue geoNear查询出错: "
 					+ MorphiaQuery.ds().getDB().command(cmdBody)
 							.getErrorMessage());
 		}
@@ -604,7 +604,7 @@ public class MerchantController extends BaseController {
 		cmdBody.put("pipeline", pipeline);
 
 		if (!MorphiaQuery.ds().getDB().command(cmdBody).ok()) {
-			logger.debug("geoNear查询出错: "
+			logger.warn("geoNear查询出错: "
 					+ MorphiaQuery.ds().getDB().command(cmdBody)
 							.getErrorMessage());
 		}
