@@ -15,9 +15,6 @@ import play.jobs.Job;
 import play.jobs.On;
 import play.jobs.OnApplicationStart;
 
-// async=true 异步job
-//@OnApplicationStart(async=true)
-
 // the job will fire at 1AM everyday. reference: http://www.playframework.com/documentation/1.2.5/jobs
 @On("0 0 1 * * ?")
 

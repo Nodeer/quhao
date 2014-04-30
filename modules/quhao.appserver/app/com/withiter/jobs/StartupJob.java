@@ -7,14 +7,15 @@ import play.jobs.Job;
 import play.jobs.OnApplicationStart;
 import play.modules.morphia.Model.MorphiaQuery;
 
-@OnApplicationStart
+//async=true 异步job
+@OnApplicationStart(async=true)
 public class StartupJob extends Job {
 	@Override
 	public void doJob() throws Exception {
 		MorphiaQuery q = Category.q();
 		if(q.count() == 0){
 			// 初始化Category
-			Logger.debug("start to initial the category");
+			Logger.info("start to initial the category");
 			Category.init();
 		}
 	}
