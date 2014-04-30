@@ -58,6 +58,22 @@ public class Category extends CategoryEntityDef {
 		}
 	}
 
+	// 系统第一次启动时，初始化Category
+	public static void init(){
+		CateType[] categories = Constants.CateType.values();
+		Map<String, String> cates = Constants.categorys;
+		Category c = null;
+		for(CateType cate : categories){
+			c = new Category();
+			c.cateType = cate.toString();
+			c.cateName = cates.get(cate.toString());
+			if(cate == CateType.mianbaodangao || cate == CateType.tianpinyinpin || cate == CateType.xiaochikuaican){
+				c.enable = false;
+			}
+			c.save();
+		}
+	}
+	
 	private static long count(String cateType){
 		MorphiaQuery q = Merchant.q();
 		q.filter("cateType", cateType.toLowerCase());
