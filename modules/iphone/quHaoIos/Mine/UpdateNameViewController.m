@@ -105,7 +105,7 @@
         [alert show];
         return;
     }
-    int len = [Helper getStringLen:temp];
+    NSInteger len = [Helper getStringLen:temp];
     if(len<4 || len>16){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"用户名长度应为4到16字符" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
         [alert show];

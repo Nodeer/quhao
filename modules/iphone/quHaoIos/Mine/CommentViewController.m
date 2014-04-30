@@ -22,30 +22,54 @@
     //添加的代码
     _cellHeight=100.0;
     _commentsArray = [[NSMutableArray alloc] initWithCapacity:20];
-    _reloading = NO;
-    _pageIndex=1;
     //注册
     if(self.whichComment==1){
         _url=commentOfMerchart_url;
     }else{
         _url=commentOfAccount_url;
     }
-    
-    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:HUD];
-    //如果设置此属性则当前的view置于后台
-    HUD.dimBackground = YES;
-    //设置对话框文字
-    HUD.labelText = @"正在加载...";
-    //显示对话框
-    [HUD showAnimated:YES whileExecutingBlock:^{
-        [self requestData:[NSString stringWithFormat:@"%@%@%@",IP,_url,self.accountOrMerchantId] withPage:_pageIndex];
-        [self.tableView reloadData];
-    } completionBlock:^{
-        //操作执行完后取消对话框
-        [HUD removeFromSuperview];
-        [self addFooter];
-    }];
+#if IOS7_SDK_AVAILABLE
+    if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+        [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+    }
+#endif
+    _allCount = 0;
+    _isLoading = NO;
+    _isLoadOver = NO;
+    [self createHud];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self requestData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (_tableFooterView == nil) {
+                if(_isLoadOver){
+                    self.tableView.tableFooterView = nil;
+                    _isLoading = YES;
+                }else{
+                    [self createFootView];
+                    [self setFootState:PullRefreshNormal];
+                }
+            }
+            [self.tableView reloadData];
+            [_HUD hide:YES];
+        });
+    });
+}
+
+
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+    [_HUD removeFromSuperview];
+	_HUD = nil;
+}
+
+-(void)createHud
+{
+    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:_HUD];
+    _HUD.mode = MBProgressHUDModeIndeterminate;
+    _HUD.labelText = @"正在加载";
+    [_HUD show:YES];
+    _HUD.delegate = self;
 }
 
 -(void)loadNavigationItem
@@ -60,29 +84,6 @@
 - (void)clickToHome:(id)sender
 {
     [self.navigationController  popViewControllerAnimated:YES];
-}
-
-//上拉加载更多
-- (void)addFooter
-{
-    MJRefreshFooterView *footer = [MJRefreshFooterView footer];
-    footer.scrollView = self.tableView;
-    footer.beginRefreshingBlock = ^(MJRefreshBaseView *refreshView) {
-        _prevItemCount = [_commentsArray count];
-        ++_pageIndex;
-        [self requestData:[NSString stringWithFormat:@"%@%@%@",IP,_url,self.accountOrMerchantId]  withPage:_pageIndex];
-        [self performSelector:@selector(doneWithView:) withObject:refreshView afterDelay:1.0];
-        
-    };
-    _footer = footer;
-}
-
-- (void)doneWithView:(MJRefreshBaseView *)refreshView
-{
-    // 刷新表格
-    [self.tableView reloadData];
-    // 调用endRefreshing结束刷新状态
-    [refreshView endRefreshing];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -142,49 +143,148 @@
     return [string stringByReplacingOccurrencesOfString:@" " withString:@"%20"];
 }
 
--(void)requestData:(NSString *)urlStr withPage:(int)page
+-(void)requestData
 {
-    loadFlag=YES;
+    if (_isLoadOver) {
+        return;
+    }
     if ([Helper isConnectionAvailable]){
-        NSString *str1= [NSString stringWithFormat:@"%@&page=%d", urlStr, page];
+        int pageIndex = _allCount/10+1;
+        NSString *str1= [NSString stringWithFormat:@"%@%@%@&page=%d",IP,_url,self.accountOrMerchantId, pageIndex];
         NSString *response =[QuHaoUtil requestDb:str1];
         if([response isEqualToString:@""]){
             //异常处理
-            [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+            _HUD.labelText = @"服务器错误";
+            [_HUD hide:YES];
         }else{
             NSArray *jsonObjects=[QuHaoUtil analyseData:response];
             if(jsonObjects==nil){
                 //解析错误
-                [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+                _HUD.labelText = @"服务器错误";
+                [_HUD hide:YES];
             }else{
-                [self addAfterInfo:jsonObjects];
+                NSMutableArray *newMerc = [self addAfterInfo:jsonObjects];
+                NSInteger count = [newMerc count];
+                _allCount += count;
+                if (count < 10)
+                {
+                    _isLoadOver = YES;
+                }
+                [_commentsArray addObjectsFromArray:newMerc];
             }
         }
     }//如果没有网络连接
     else
     {
-        loadFlag = NO;
-        [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
-        
+        _isLoadOver = YES;
+        _HUD.labelText = @"当前网络不可用";
+        [_HUD hide:YES];
     }
 }
 
 //上拉刷新增加数据
--(void)addAfterInfo:(NSArray *) objects
+-(NSMutableArray *)addAfterInfo:(NSArray *) objects
 {
     CommentModel *model = nil;
+    NSMutableArray *news = [[NSMutableArray alloc] initWithCapacity:10];
     for(int i=0; i < [objects count];i++ ){
         model=[[CommentModel alloc]init];
         model.merchantName=[[objects objectAtIndex:i] objectForKey:@"merchantName"];
         model.averageCost=[[objects objectAtIndex:i] objectForKey:@"averageCost"];
         model.content=[[objects objectAtIndex:i] objectForKey:@"content"];
         model.created=[[objects objectAtIndex:i] objectForKey:@"created"];
-        [_commentsArray addObject:model];
+        [news addObject:model];
+    }
+    return news;
+}
+
+#pragma 上提刷新
+-(void)createFootView
+{
+    self.tableView.tableFooterView = nil;
+    _tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, kDeviceWidth, 40.0f)];
+    _loadMoreText = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 116.0f, 40.0f)];
+    [_loadMoreText setCenter:_tableFooterView.center];
+    [_loadMoreText setFont:[UIFont fontWithName:@"Helvetica Neue" size:14]];
+    [_loadMoreText setText:@" 上拉显示更多 "];
+    UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickMoreLable:)];
+    _loadMoreText.userInteractionEnabled=YES;
+    [_loadMoreText addGestureRecognizer:tapGesture];
+    [_tableFooterView addSubview:_loadMoreText];
+    
+    _tableFooterActivityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(75.0f, 10.0f, 20.0f, 20.0f)];
+    [_tableFooterActivityIndicator setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+    [_tableFooterActivityIndicator stopAnimating];
+    [_tableFooterView addSubview:_tableFooterActivityIndicator];
+    self.tableView.tableFooterView = _tableFooterView;
+}
+
+-(void)onClickMoreLable:(id)sender
+{
+    if(_state == PullRefreshNormal){
+        _isLoading = YES;
+        [self setFootState:PullRefreshLoading];
+        [self loadMore];
     }
 }
 
-- (void)delloc
+-(void)loadMore
 {
-    [_footer free];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self requestData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(_isLoadOver){
+                self.tableView.tableFooterView = nil;
+                _isLoading = YES;
+            }
+            [self doneLoadingTableViewData];
+            [self.tableView reloadData];
+        });
+    });
 }
+
+- (void)doneLoadingTableViewData
+{
+    [self refreshScrollViewDataSourceDidFinishedLoading:self.tableView];
+    _isLoading = NO;
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if(scrollView.contentOffset.y + (scrollView.frame.size.height) > scrollView.contentSize.height && !_isLoading &&(_state == PullRefreshNormal))
+    {
+        _isLoading = YES;
+		[self setFootState:PullRefreshLoading];
+        [self loadMore];
+    }
+}
+
+//增加footView状态
+- (void)setFootState:(RefreshState)aState{
+	
+	switch (aState) {
+		case PullRefreshNormal:
+            _loadMoreText.text = @" 上拉显示更多 ";
+			[_tableFooterActivityIndicator stopAnimating];
+			break;
+		case PullRefreshLoading:
+            _loadMoreText.text = @" 正在加载,请稍后";
+			[_tableFooterActivityIndicator startAnimating];
+			break;
+		default:
+			break;
+	}
+	_state = aState;
+}
+
+- (void)refreshScrollViewDataSourceDidFinishedLoading:(UIScrollView *)scrollView {
+	
+    //	[UIView beginAnimations:nil context:NULL];
+    //	[UIView setAnimationDuration:.3];
+    //	[scrollView setContentInset:UIEdgeInsetsMake(0.0f, 0.0f, 0.0f, 0.0f)];
+    //	[UIView commitAnimations];
+	
+	[self setFootState:PullRefreshNormal];
+}
+
 @end

@@ -22,9 +22,9 @@
 
 - (void)viewDidLoad
 {
+    [super viewDidLoad];
     _allCount = 0;
     _results=[[NSMutableArray alloc]initWithCapacity:20];
-    [super viewDidLoad];
     self.navigationItem.title = @"搜 索";
     self.view.backgroundColor = [Helper getBackgroundColor];
     self.tableResult.backgroundColor = [Helper getBackgroundColor];
@@ -35,7 +35,13 @@
     [backButton addTarget:self action:@selector(clickToHome:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
-    [searchBar becomeFirstResponder];
+    //[searchBar becomeFirstResponder];
+    
+#if IOS7_SDK_AVAILABLE
+    if ([self.tableResult respondsToSelector:@selector(setSeparatorInset:)]) {
+        [self.tableResult setSeparatorInset:UIEdgeInsetsZero];
+    }
+#endif
 }
 
 - (void)viewDidUnload
@@ -66,13 +72,18 @@
     [self.searchBar resignFirstResponder];
 }
 
+//点击屏幕空白处去掉键盘
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing:YES];
+}
 
 -(void)doSearch
 {
     _isLoading = YES;
     //请求数据 暂时未分页
     //url含有中文先进行编码
-    NSString *str=[NSString stringWithFormat:@"%@%@",[Helper getIp],@"/search?name="];
+    NSString *str=[NSString stringWithFormat:@"%@%@",IP,@"/search?name="];
     str=[[str stringByAppendingString:self.searchBar.text]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL *url = [NSURL URLWithString:str];
     
@@ -175,7 +186,7 @@
 {
     [self.searchBar resignFirstResponder];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    int row = indexPath.row;
+    NSInteger row = indexPath.row;
     if (row >= _results.count)
     {
         if (!_isLoading && !_isLoadOver)

@@ -13,14 +13,14 @@
 @protocol RatingDelegate;
 @interface RatingControl : UIControl{
 	int numberOfStars;
-	int currentIdx;
+	NSInteger currentIdx;
 	UIImage *star;
 	UIImage *highlightedStar;
     id<RatingDelegate> delegate;
     BOOL isFractionalRatingEnabled;
 }
 - (id)initWithFrame:(CGRect)frame;
-- (id)initWithFrame:(CGRect)frame andStars:(NSUInteger)_numberOfStars isFractional:(BOOL)isFract;
+- (id)initWithFrame:(CGRect)frame andStars:(int)_numberOfStars isFractional:(BOOL)isFract;
 - (void)setStar:(UIImage*)defaultStarImage highlightedStar:(UIImage*)highlightedStarImage atIndex:(int)index;
 
 @property (strong,nonatomic) UIImage *star;

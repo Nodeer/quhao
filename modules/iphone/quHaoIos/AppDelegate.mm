@@ -16,12 +16,12 @@
 @synthesize mineVc;
 @synthesize moreVc;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+{    
     //s设置 UserAgent
     [ASIHTTPRequest setDefaultUserAgentString:@"QuhaoiPhone"];
     
     //系统托盘
-    //[application setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    [application setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
     //主页
     self.homeVc=[[HomeViewController alloc] init];
     BaseNavigationController *homeNavigation=[[BaseNavigationController alloc]initWithRootViewController:homeVc];
@@ -38,7 +38,7 @@
     //更多
     self.moreVc=[[SettingView alloc] init];
     BaseNavigationController *moreNavigation=[[BaseNavigationController alloc]initWithRootViewController:moreVc];
-    moreNavigation.navigationBarHidden = NO;
+    //moreNavigation.navigationBarHidden = NO;
     
     self.tabBarController = [[UITabBarController alloc] init];
     self.tabBarController.delegate = self;
@@ -97,10 +97,9 @@
 #pragma mark UITab双击事件
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
-    int newTabIndex = self.tabBarController.selectedIndex;
+    NSInteger newTabIndex = self.tabBarController.selectedIndex;
     if (newTabIndex == m_lastTabIndex) {
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:Notification_TabClick object:[NSString stringWithFormat:@"%d", newTabIndex]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:Notification_TabClick object:[NSString stringWithFormat:@"%ld",(long)newTabIndex]];
     }
     else
     {

@@ -108,7 +108,7 @@
     currentPageIndex=page;
        
     pageControl.currentPage=(page-1);
-    int titleIndex=page-1;
+    NSInteger titleIndex=page-1;
     if (titleIndex==[titleArray count]) {
         titleIndex=0;
     }

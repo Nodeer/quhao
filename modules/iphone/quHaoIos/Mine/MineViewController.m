@@ -155,7 +155,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    int row = [indexPath row];
+    NSInteger row = [indexPath row];
     if(row==0){
         return 130;
     }else if(row==1){
@@ -303,7 +303,7 @@
         return;
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    int row = [indexPath row];
+    NSInteger row = [indexPath row];
     if (row ==0) {
         [self pushMineInfo];
     }else if (row ==3) {

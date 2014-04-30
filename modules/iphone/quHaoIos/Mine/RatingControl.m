@@ -52,7 +52,7 @@
 	return self;
 }
 
-- (id)initWithFrame:(CGRect)frame andStars:(NSUInteger)_numberOfStars isFractional:(BOOL)isFract{
+- (id)initWithFrame:(CGRect)frame andStars:(int)_numberOfStars isFractional:(BOOL)isFract{
 	self = [super initWithFrame:frame];
 	if (self) {
         isFractionalRatingEnabled = isFract;
@@ -98,14 +98,14 @@
 	return nil;
 }
 
-- (void)disableStarsDownToExclusive:(int)idx {
+- (void)disableStarsDownToExclusive:(NSInteger)idx {
 	for (int i=numberOfStars; i > idx; --i) {
 		UIButton *b = (UIButton*)[self subViewWithTag:i];
 		b.highlighted = NO;
 	}
 }
 
-- (void)disableStarsDownTo:(int)idx {
+- (void)disableStarsDownTo:(NSInteger)idx {
 	for (int i=numberOfStars; i >= idx; --i) {
 		UIButton *b = (UIButton*)[self subViewWithTag:i];
 		b.highlighted = NO;
@@ -113,7 +113,7 @@
 }
 
 
-- (void)enableStarsUpTo:(int)idx {
+- (void)enableStarsUpTo:(NSInteger)idx {
 	for (int i=0; i <= idx; i++) {
 		UIButton *b = (UIButton*)[self subViewWithTag:i];
 		b.highlighted = YES;
@@ -124,7 +124,7 @@
 	CGPoint point = [touch locationInView:self];
 	UIButton *pressedButton = [self starForPoint:point];
 	if (pressedButton) {
-		int idx = pressedButton.tag;
+		NSInteger idx = pressedButton.tag;
 		if (pressedButton.highlighted) {
 			[self disableStarsDownToExclusive:idx];
 		} else {
@@ -144,7 +144,7 @@
 	
 	UIButton *pressedButton = [self starForPoint:point];
 	if (pressedButton) {
-		int idx = pressedButton.tag;
+		NSInteger idx = pressedButton.tag;
 		UIButton *currentButton = (UIButton*)[self subViewWithTag:currentIdx];
 		
 		if (idx < currentIdx) {

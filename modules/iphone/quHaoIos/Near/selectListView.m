@@ -89,7 +89,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentity];
         cell.textLabel.font = [UIFont fontWithName:@"CourierNewPSMT" size:14.0];
     }
-    int row = [indexPath row];
+    NSInteger row = [indexPath row];
     cell.textLabel.text = [_kDropDownOption objectAtIndex:row] ;
     
     return cell;

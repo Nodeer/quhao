@@ -550,7 +550,7 @@
                  NSArray * value;
                  int i ;
                  int j ;
-                 int count = [keys count];
+                 NSInteger count = [keys count];
                  for (i = 0; i < count; i++)
                  {
                      value = [cities objectForKey: [keys objectAtIndex: i]];
@@ -576,7 +576,7 @@
                  NSArray * value;
                  int i ;
                  int j ;
-                 int count = [keys count];
+                 NSInteger count = [keys count];
                  for (i = 0; i < count; i++)
                  {
                      value = [cities objectForKey: [keys objectAtIndex: i]];

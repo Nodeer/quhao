@@ -17,7 +17,7 @@
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate,UITabBarControllerDelegate>
 {
-    int m_lastTabIndex;
+    NSInteger m_lastTabIndex;
 }
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) UITabBarController *tabBarController;
@@ -27,4 +27,5 @@
 @property (strong, nonatomic) NearViewController *nearVc;
 @property (strong, nonatomic) MineViewController *mineVc;
 @property (strong, nonatomic) SettingView *moreVc;
+
 @end

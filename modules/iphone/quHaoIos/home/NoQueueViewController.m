@@ -126,7 +126,7 @@
                 [_HUD hide:YES];
             }else{
                 NSMutableArray *newMerc = [self addAfterInfo:jsonObjects];
-                int count = [newMerc count];
+                NSInteger count = [newMerc count];
                 _allCount += count;
                 if (count < 10)
                 {
@@ -214,7 +214,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-    int row = [indexPath row];
+    NSInteger row = [indexPath row];
     MerchartModel *n = [_merchartsArray objectAtIndex:row];
     
     [self pushMerchartDetail:n andNavController:self.navigationController];
@@ -454,7 +454,7 @@
                  NSArray * value;
                  int i ;
                  int j ;
-                 int count = [keys count];
+                 NSInteger count = [keys count];
                  for (i = 0; i < count; i++)
                  {
                      value = [cities objectForKey: [keys objectAtIndex: i]];
@@ -479,7 +479,7 @@
                  NSArray * value;
                  int i ;
                  int j ;
-                 int count = [keys count];
+                 NSInteger count = [keys count];
                  for (i = 0; i < count; i++)
                  {
                      value = [cities objectForKey: [keys objectAtIndex: i]];

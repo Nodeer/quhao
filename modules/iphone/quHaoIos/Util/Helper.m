@@ -323,7 +323,7 @@
     return [settings objectForKey:@"UID"];
 }
 
-+(int)getStringLen:(NSString*)strtemp
++(NSInteger)getStringLen:(NSString*)strtemp
 {
     NSStringEncoding enc = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingGB_18030_2000);
     NSData* da = [strtemp dataUsingEncoding:enc];

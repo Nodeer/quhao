@@ -123,7 +123,7 @@
     NSUInteger row = [indexPath row];
     NSString *key = [settings objectAtIndex:section];
     NSArray *sets = [settingsInSection objectForKey:key];
-    NSString *CellIdentifier = [NSString stringWithFormat:@"info%d%d",section,row];
+    NSString *CellIdentifier = [NSString stringWithFormat:@"info%ld%ld",(long)section,(long)row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];

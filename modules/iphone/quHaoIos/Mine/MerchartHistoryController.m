@@ -120,7 +120,7 @@
         [self updateDeleteButtonTitle];
     }else{
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        int row = [indexPath row];
+        NSInteger row = [indexPath row];
         Reservation *n = [_reservationArray objectAtIndex:row];
         if (n)
         {
@@ -242,7 +242,7 @@
     }
     else
     {// 否则 删除键为删除（选中行数量）
-        [_mutiButton setTitle:[NSString stringWithFormat:@"删除 (%d)", selectedRows.count] forState:UIControlStateNormal];
+        [_mutiButton setTitle:[NSString stringWithFormat:@"删除 (%ld)", (long)selectedRows.count] forState:UIControlStateNormal];
     }
 }
 

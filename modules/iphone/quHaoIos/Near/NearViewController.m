@@ -11,6 +11,8 @@
 
 @implementation NearViewController
 @synthesize tableView;
+@synthesize locationManager;
+
 - (id)init
 {
     self = [super init];
@@ -38,9 +40,6 @@
 - (void)viewDidLoad
 {
     _merchartsArray = [[NSMutableArray alloc] initWithCapacity:20];
-    _isLoading = NO;
-    _allCount = 0;
-    _isLoadOver = NO;
     if([[Helper returnUserString:@"isLocation"] isEqualToString:@"0"]){
         return;
     }else{
@@ -69,34 +68,31 @@
     _isRefreshLoading = YES;
 }
 
-- (void)viewDidAppear:(BOOL)animated
+-(void)viewDidAppear:(BOOL)animated
 {
-    if([[Helper returnUserString:@"isLocation"] isEqualToString:@"0"]){
+    [_merchartsArray removeAllObjects];
+    _isLoading = NO;
+    _allCount = 0;
+    _isLoadOver = NO;
+    [self locationService];
+}
+
+-(void)locationService
+{
+    if ([CLLocationManager locationServicesEnabled] &&([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized
+                                                       || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined))
+    {
+        //定位功能可用，开始定位
+        [self createHud];
+        locationManager = [[CLLocationManager alloc] init];
+        locationManager.delegate = self;
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        locationManager.distanceFilter = 100.0f;
+        [locationManager startUpdatingLocation];
+    }else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied){
+        [locationManager stopUpdatingLocation];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"请在系统设置中开启定位服务" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
         [alert show];
-        return;
-    }else{
-        if([_merchartsArray count]==0){
-            [self createHud];
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                [self requestData];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (_tableFooterView == nil) {
-                        if(_isLoadOver||[_merchartsArray count]==0){
-                            self.tableView.tableFooterView = nil;
-                            _isLoading = YES;
-                        }else{
-                            [self createFootView];
-                            [self setFootState:PullRefreshNormal];
-                        }
-                    }
-                    [self.tableView reloadData];
-                    if(_HUD != nil){
-                        [_HUD hide:YES];
-                    }
-                });
-            });
-        }
     }
 }
 
@@ -137,7 +133,7 @@
                 [_HUD hide:YES];
             }else{
                 NSMutableArray *newMerc = [self addAfterInfo:jsonObjects];
-                int count = [newMerc count];
+                NSInteger count = [newMerc count];
                 _allCount += count;
                 if (count < 10)
                 {
@@ -271,7 +267,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-    int row = [indexPath row];
+    NSInteger row = [indexPath row];
     MerchartModel *n = [_merchartsArray objectAtIndex:row];
     if (n&&n.id!=nil&&![n.id isEqualToString:@""])
     {
@@ -444,6 +440,141 @@
     //	[UIView commitAnimations];
 	
 	[self setFootState:PullRefreshNormal];
+}
+
+#pragma mark location
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+{
+    CLLocation *currLocation = [locations lastObject];
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    CLLocationCoordinate2D myCoOrdinate;
+    myCoOrdinate.latitude = currLocation.coordinate.latitude;
+    myCoOrdinate.longitude = currLocation.coordinate.longitude;
+    _longitude = [NSString stringWithFormat:@"%lf",currLocation.coordinate.longitude];
+    _latitude = [NSString stringWithFormat:@"%lf",currLocation.coordinate.latitude];
+    [locationManager stopUpdatingLocation];
+    CLLocation *location = [[CLLocation alloc] initWithLatitude:myCoOrdinate.latitude longitude:myCoOrdinate.longitude];
+    [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
+     {
+         if (error)
+         {
+             [Helper saveDafaultData:@"0" withName:@"isLocation"];
+             if(_HUD != nil){
+                 [_HUD hide:YES];
+             }
+             return;
+         }
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+             [self requestData];
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 if (_tableFooterView == nil) {
+                     if(_isLoadOver||[_merchartsArray count]==0){
+                         self.tableView.tableFooterView = nil;
+                         _isLoading = YES;
+                     }else{
+                         [self createFootView];
+                         [self setFootState:PullRefreshNormal];
+                     }
+                 }
+                 [self.tableView reloadData];
+                 if(_HUD != nil){
+                     [_HUD hide:YES];
+                 }
+             });
+         });
+         
+         if(placemarks.count > 0)
+         {
+             
+             NSString *city = @"";
+             NSString *cityCode = @"";
+             CLPlacemark *placemark = placemarks[0];
+             NSString *path=[[NSBundle mainBundle] pathForResource:@"citydict" ofType:@"plist"];
+             NSMutableDictionary *cities = [[NSMutableDictionary alloc] initWithContentsOfFile:path];
+             NSMutableArray *keys = [NSMutableArray arrayWithArray:[[cities allKeys] sortedArrayUsingSelector:@selector(compare:)]];
+             if([placemark.addressDictionary objectForKey:@"City"] != NULL)
+             {
+                 city = [placemark.addressDictionary objectForKey:@"City"];
+                 NSArray * value;
+                 int i ;
+                 int j ;
+                 NSInteger count = [keys count];
+                 for (i = 0; i < count; i++)
+                 {
+                     value = [cities objectForKey: [keys objectAtIndex: i]];
+                     for (j=0; j<[value count]; j++) {
+                         if ([[[value objectAtIndex:j] objectForKey:@"name"] isEqualToString:city]) {
+                             cityCode = [[value objectAtIndex:j] objectForKey:@"cityCode"];
+                             break;
+                         }
+                     }
+                 }
+                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                 [defaults setObject:@"1" forKey:@"isLocation"];
+                 [defaults setObject:city forKey:@"locationCity"];
+                 [defaults setObject:city forKey:@"currentCity"];
+                 [defaults setObject:[NSString stringWithFormat:@"%lf",myCoOrdinate.latitude] forKey:@"latitude"];
+                 [defaults setObject:[NSString stringWithFormat:@"%lf",myCoOrdinate.longitude] forKey:@"longitude"];
+                 [defaults setObject:cityCode forKey:@"cityCode"];
+                 [defaults setObject:cityCode forKey:@"currentcityCode"];
+                 [defaults synchronize];
+             }else if(placemark.administrativeArea){
+                 city = [placemark.administrativeArea substringToIndex:2];
+                 NSArray * value;
+                 int i ;
+                 int j ;
+                 NSInteger count = [keys count];
+                 for (i = 0; i < count; i++)
+                 {
+                     value = [cities objectForKey: [keys objectAtIndex: i]];
+                     for (j=0; j<[value count]; j++) {
+                         if ([[[value objectAtIndex:j] objectForKey:@"name"] isEqualToString:city]) {
+                             cityCode = [[value objectAtIndex:j] objectForKey:@"cityCode"];
+                             break;
+                         }
+                     }
+                 }
+                 NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+                 [defaults setObject:@"1" forKey:@"isLocation"];
+                 [defaults setObject:city forKey:@"locationCity"];
+                 [defaults setObject:city forKey:@"currentCity"];
+                 [defaults setObject:cityCode forKey:@"currentcityCode"];
+                 [defaults setObject:cityCode forKey:@"cityCode"];
+                 [defaults setObject:[NSString stringWithFormat:@"%lf",myCoOrdinate.latitude] forKey:@"latitude"];
+                 [defaults setObject:[NSString stringWithFormat:@"%lf",myCoOrdinate.longitude] forKey:@"longitude"];
+                 [defaults synchronize];
+             }else{
+                 [Helper saveDafaultData:@"0" withName:@"isLocation"];
+             }
+         }
+     }];
+}
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
+    NSString *errorString;
+    [manager stopUpdatingLocation];
+    switch([error code]) {
+        case kCLErrorDenied:
+            //Access denied by user
+            errorString = @"无法成功定位";
+            //Do something...
+            break;
+        case kCLErrorLocationUnknown:
+            //Probably temporary...
+            errorString = @"定位服务不可用";
+            //Do something else...
+            break;
+        default:
+            errorString = @"无法成功定位";
+            break;
+    }
+    [Helper saveDafaultData:@"0" withName:@"isLocation"];
+    if(_HUD != nil){
+        [_HUD hide:YES];
+    }
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: errorString delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+    [alert show];
+    return;
 }
 
 - (void)delloc

@@ -79,7 +79,7 @@ typedef enum{
 +(void)saveUID:(NSString*)uid;
 +(void)saveDafaultData:(NSString*)value withName:(NSString *) name;
 //字符串长度
-+(int)getStringLen:(NSString*)strtemp;
++(NSInteger)getStringLen:(NSString*)strtemp;
 //格式化时间
 +(NSString *)formatDate:(NSString*)dateStr;
 + (void)ReleaseWebView:(UIWebView *)webView;

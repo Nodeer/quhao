@@ -12,7 +12,7 @@
 #import "MerchartDetail.h"
 #import "selectListView.h"
 
-@interface NearViewController :UIViewController<UITableViewDelegate,UITableViewDataSource,selectListViewDelegate,MBProgressHUDDelegate>
+@interface NearViewController :UIViewController<UITableViewDelegate,UITableViewDataSource,selectListViewDelegate,MBProgressHUDDelegate,CLLocationManagerDelegate>
 {
     @private
     NSMutableArray *_merchartsArray;
@@ -39,6 +39,7 @@
 
 }
 @property (strong, nonatomic)  UITableView *tableView;
+@property (strong, nonatomic) CLLocationManager *locationManager;
 
 //上拉刷新增加数据
 -(NSMutableArray *)addAfterInfo:(NSArray *) objects;

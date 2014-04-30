@@ -132,7 +132,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-    int row = [indexPath row];
+    NSInteger row = [indexPath row];
     MerchartModel *n = [_merchartsArray objectAtIndex:row];
     if (n)
     {
@@ -169,7 +169,7 @@
                 [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
             }else{
                  NSMutableArray *newMerc = [self addAfterInfo:jsonObjects];
-                int count = [newMerc count];
+                NSInteger count = [newMerc count];
                 _allCount += count;
                 if (count < 10)
                 {

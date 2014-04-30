@@ -209,7 +209,7 @@
     }
     else
     {// 否则 删除键为删除（选中行数量）
-        [_mutiButton setTitle:[NSString stringWithFormat:@"删除 (%d)", selectedRows.count] forState:UIControlStateNormal];
+        [_mutiButton setTitle:[NSString stringWithFormat:@"删除 (%ld)", (long)selectedRows.count] forState:UIControlStateNormal];
     }
 }
 

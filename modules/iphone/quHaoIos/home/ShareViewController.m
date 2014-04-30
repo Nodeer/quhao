@@ -135,7 +135,7 @@
         [self.view addSubview:overLengthHud];
         //overLengthHud.mode = MBProgressHUDModeText;
         overLengthHud.labelText = @"提示信息";
-        overLengthHud.detailsLabelText = [NSString stringWithFormat:@"微博字数:%d 超过140上限！",contentLength];
+        overLengthHud.detailsLabelText = [NSString stringWithFormat:@"微博字数:%ld 超过140上限！",(long)contentLength];
         [overLengthHud show:YES];
         [overLengthHud hide:YES afterDelay:1];
     }
