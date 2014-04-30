@@ -200,7 +200,7 @@
             [self.navigationController pushViewController:loginView animated:YES];
             return;
         }else{
-            NSString *url = [NSString stringWithFormat:@"%@%@?accountId=%@&mid=%@&flag=%d",IP,updateAttention, accountID,merchartID,btn.tag];
+            NSString *url = [NSString stringWithFormat:@"%@%@?accountId=%@&mid=%@&flag=%ld",IP,updateAttention, accountID,merchartID,(long)btn.tag];
             NSString *response =[QuHaoUtil requestDb:url];
             if([response isEqualToString:@"success"]){
                 if(btn.tag==1){
@@ -311,7 +311,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    int row = [indexPath row];
+    NSInteger row = [indexPath row];
     if(row==0||row==6||row==7){
         return 90;
     }else if(row==3||row==4||row==5){
@@ -337,7 +337,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    NSString *CellIdentifier = [NSString stringWithFormat:@"MerchantCell%d",indexPath.row];
+    NSString *CellIdentifier = [NSString stringWithFormat:@"MerchantCell%ld",(long)indexPath.row];
     UILabel *titleLabel = nil;
     UIButton *dlButton = nil;
     UILabel * tsLabel = nil;
@@ -575,7 +575,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    int row = [indexPath row];
+    NSInteger row = [indexPath row];
     if (row ==4) {
         [self CallPhone];
     }else if(row==3){
