@@ -86,12 +86,12 @@
 			        >
 			        <RelativeLayout android:id="@+id/viewpagerLayout"
 				        android:layout_width="fill_parent"
-				        android:layout_height="166.5dip" >
+				        android:layout_height="100dp" >
 				
 				        <com.withiter.quhao.view.viewpager.MyViewPager
 				            android:id="@+id/home_view_pager"
 				            android:layout_width="fill_parent"
-				            android:layout_height="166.5dip" />
+				            android:layout_height="100dp" />
 				
 				        <LinearLayout
 				            android:id="@+id/home_ad_bottom_layout"
@@ -118,11 +118,14 @@
 				        android:paddingTop="5dip">
 					    <LinearLayout 
 				            android:layout_height="wrap_content"
-				            android:layout_width="fill_parent">
+				            android:layout_width="fill_parent"
+				            android:paddingTop="5dp"
+				            android:paddingBottom="5dp">
 				            <TextView 
 				                android:layout_width="fill_parent"
 				                android:layout_height="fill_parent"
-				                android:text="快速通道:"
+				                android:text="快速通道"
+				                android:paddingLeft="10dp"
 				                android:textColor="@color/red"
 				                android:gravity="center_vertical"
 				                />
@@ -165,12 +168,12 @@
 			            android:gravity="center_vertical"
 			            android:baselineAligned="false"
 			            android:orientation="vertical"
-			            android:paddingTop="5dip"
-			            android:paddingBottom="5dip">
+			            android:paddingTop="5dp">
 				        <TextView android:layout_width="fill_parent"
 				            android:layout_height="wrap_content"
 				            android:textColor="@color/red"
-				            android:text="美食分类:"
+				            android:text="美食分类"
+				            android:paddingLeft="10dp"
 				            android:gravity="left|center_vertical"/>
 				        <com.withiter.quhao.view.MyGridView
 				        android:id="@+id/categorys"
@@ -183,7 +186,6 @@
 				        android:horizontalSpacing="5dip"
 				        android:numColumns="4"
 				        android:minHeight="50dip"
-				        android:paddingTop="5dip"
 				        android:stretchMode="columnWidth"
 				        android:verticalSpacing="5dip" />
 				    </LinearLayout>

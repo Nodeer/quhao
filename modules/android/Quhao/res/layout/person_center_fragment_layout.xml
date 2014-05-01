@@ -88,7 +88,7 @@
                 android:layout_alignParentRight="true"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="8.0dip" >
+                android:padding="8.0dip">
 
                 <ImageView
 	                android:layout_width="wrap_content"
@@ -106,7 +106,7 @@
                 android:layout_height="fill_parent"
                 android:orientation="vertical"
                 android:paddingLeft="10.0dip"
-                android:paddingTop="8.0dip" >
+                android:paddingTop="8.0dip">
 
                 <!-- nickname -->
 
@@ -318,7 +318,7 @@
         <LinearLayout android:id="@+id/current_paidui_layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/list_item_border"
+            android:background="@drawable/more_middle_s"
             android:clickable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -356,7 +356,7 @@
         <LinearLayout android:id="@+id/history_paidui_layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/list_item_border"
+            android:background="@drawable/more_middle_s"
             android:clickable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -394,7 +394,7 @@
         <LinearLayout android:id="@+id/credit_cost_layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/list_item_border"
+            android:background="@drawable/more_middle_s"
             android:clickable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -428,7 +428,16 @@
                 android:paddingRight="6.0dip"
                 android:src="@drawable/arrow_right" />
         </LinearLayout>
-        <!-- current/history quhao, history jifen -->
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/more_middle_s"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10.0dip" >
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -51,7 +51,7 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 	/**
 	 * Tab选项卡的文字
 	 */
-	private String menuTextViews[] = {"商家列表", "周边美食", "个人中心", "更多"};
+	private String menuTextViews[] = {"主页", "周边美食", "我的", "更多"};
 	
 	private LocationManagerProxy mAMapLocationManager; 
 	

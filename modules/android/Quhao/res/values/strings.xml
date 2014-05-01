@@ -122,9 +122,9 @@
 	<!-- 个人中心 -->
 	
 	<!-- menu bar -->
-	<string name="menu_category_list">商家列表</string>
+	<string name="menu_category_list">主页</string>
 	<string name="menu_nearby_merchant">周边美食</string>
-	<string name="menu_person_center">个人中心</string>
+	<string name="menu_person_center">我的</string>
 	<string name="menu_more">更多</string>
 	<!-- menu bar -->
 	
