@@ -49,7 +49,7 @@
     self.textView.font = [UIFont fontWithName:@"Arial" size:16.0];//设置字体名字和字体大小
     self.textView.delegate = self;//设置它的委托方法
     self.textView.backgroundColor = [UIColor whiteColor];//设置它的背景颜色
-    self.textView.text = [NSString stringWithFormat:@"%@%@%@",@"##取号##发现这个软件不错哦!在'",self.mname,@"'手机直接拿号不用排队,快去看看吧。www.quhao.la"];//设置它显示的内容
+    self.textView.text = [NSString stringWithFormat:@"%@%@%@",@"##取号##发现这个软件不错哦!在'",self.mname,@"'手机直接拿号不用排队,快去看看吧。@取号啦"];//设置它显示的内容
     self.textView.returnKeyType = UIReturnKeyDefault;//返回键的类型
     self.textView.keyboardType = UIKeyboardTypeDefault;//键盘类型
     self.textView.scrollEnabled = YES;//是否可以拖动

@@ -179,9 +179,25 @@
 //分享微博
 - (void)clickShare:(id)sender
 {
+//    NSArray *shareButtonTitleArray = @[@"新浪微博",@"微信",@"微信朋友圈"];
+//    NSArray *shareButtonImageNameArray = @[@"sns_icon_1",@"sns_icon_22",@"sns_icon_23"];
+//    
+//    LXActivity *lxActivity = [[LXActivity alloc] initWithTitle:@"分享到社交平台" delegate:self cancelButtonTitle:@"取消" ShareButtonTitles:shareButtonTitleArray withShareButtonImagesName:shareButtonImageNameArray];
+//    [lxActivity showInView:self.view];
     ShareViewController *share = [[ShareViewController alloc] init];
     share.mname = single.name;
     [self.navigationController pushViewController:share animated:YES];
+}
+
+- (void)didClickOnImageIndex:(NSInteger *)imageIndex
+{
+    if((int)imageIndex == 0){
+        ShareViewController *share = [[ShareViewController alloc] init];
+        share.mname = single.name;
+        [self.navigationController pushViewController:share animated:YES];
+    }else if((int)imageIndex == 0){
+        
+    }
 }
 
 //关注的点击事件
@@ -363,14 +379,14 @@
             [cell.contentView addSubview:titleLabel];
             
             UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            shareButton.frame = CGRectMake( kDeviceWidth-50, 30, 40, 25 );
+            shareButton.frame = CGRectMake( kDeviceWidth-35, 30, 30, 25 );
             shareButton.titleLabel.font = [UIFont systemFontOfSize:12];
             [shareButton setTitle:@"分 享" forState:UIControlStateNormal];
             [shareButton addTarget:self action:@selector(clickShare:) forControlEvents:UIControlEventTouchUpInside];
             [cell.contentView addSubview:shareButton];
             
             dlButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            dlButton.frame=CGRectMake(shareButton.frame.origin.x-60, 30, 60, 25 );
+            dlButton.frame=CGRectMake(shareButton.frame.origin.x-55, 30, 50, 25 );
             dlButton.titleLabel.font = [UIFont systemFontOfSize:12];
             //[dlButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             [dlButton addTarget:self action:@selector(clickGz:) forControlEvents:UIControlEventTouchUpInside];

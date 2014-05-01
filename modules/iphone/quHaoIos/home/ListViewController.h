@@ -30,6 +30,8 @@
 @property (strong,nonatomic) NSString * currentDateStr;
 @property (strong,nonatomic) NSString * cateType;
 @property (strong,nonatomic) NSString * cityCode;
+@property  CLLocationDegrees latitude;
+@property  CLLocationDegrees longitude;
 
 //加载页面上的导航
 -(void)loadNavigationItem;

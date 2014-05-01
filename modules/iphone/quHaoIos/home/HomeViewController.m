@@ -93,7 +93,7 @@
         [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
         return;
     }
-    [self locationService];
+    //[self locationService];
     
     [self createHud];
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -497,6 +497,8 @@
     ListViewController *home = [[ListViewController alloc] init];
     home.cateType = cateType;
     home.cityCode = _cityCode;
+    home.latitude = _latitude;
+    home.longitude = _longitude;
     home.hidesBottomBarWhenPushed=YES;
     [navController pushViewController:home animated:YES];
 }
@@ -524,11 +526,10 @@
 {
     CLLocation *currLocation = [locations lastObject];
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
-    CLLocationCoordinate2D myCoOrdinate;
-    myCoOrdinate.latitude = currLocation.coordinate.latitude;
-    myCoOrdinate.longitude = currLocation.coordinate.longitude;
+    _latitude = currLocation.coordinate.latitude;
+    _longitude = currLocation.coordinate.longitude;
     [locationManager stopUpdatingLocation];
-    CLLocation *location = [[CLLocation alloc] initWithLatitude:myCoOrdinate.latitude longitude:myCoOrdinate.longitude];
+    CLLocation *location = [[CLLocation alloc] initWithLatitude:_latitude longitude:_longitude];
     [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
      {
          if (error)
@@ -566,8 +567,8 @@
                  [defaults setObject:@"1" forKey:@"isLocation"];
                  [defaults setObject:city forKey:@"locationCity"];
                  [defaults setObject:city forKey:@"currentCity"];
-                 [defaults setObject:[NSString stringWithFormat:@"%lf",myCoOrdinate.latitude] forKey:@"latitude"];
-                 [defaults setObject:[NSString stringWithFormat:@"%lf",myCoOrdinate.longitude] forKey:@"longitude"];
+                 [defaults setObject:[NSString stringWithFormat:@"%lf",_latitude] forKey:@"latitude"];
+                 [defaults setObject:[NSString stringWithFormat:@"%lf",_longitude] forKey:@"longitude"];
                  [defaults setObject:_cityCode forKey:@"cityCode"];
                  [defaults setObject:_cityCode forKey:@"currentcityCode"];
                  [defaults synchronize];
@@ -594,8 +595,8 @@
                  [defaults setObject:city forKey:@"currentCity"];
                  [defaults setObject:_cityCode forKey:@"currentcityCode"];
                  [defaults setObject:_cityCode forKey:@"cityCode"];
-                 [defaults setObject:[NSString stringWithFormat:@"%lf",myCoOrdinate.latitude] forKey:@"latitude"];
-                 [defaults setObject:[NSString stringWithFormat:@"%lf",myCoOrdinate.longitude] forKey:@"longitude"];
+                 [defaults setObject:[NSString stringWithFormat:@"%lf",_latitude] forKey:@"latitude"];
+                 [defaults setObject:[NSString stringWithFormat:@"%lf",_longitude] forKey:@"longitude"];
                  [defaults synchronize];
              }else{
                  [Helper saveDafaultData:@"0" withName:@"isLocation"];

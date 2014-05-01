@@ -37,6 +37,8 @@
     NSString *_cityCode;
     BOOL _isLoading;
     MBProgressHUD *_HUD;
+    CLLocationDegrees _latitude;
+	CLLocationDegrees _longitude;
 }
 
 @property (nonatomic, strong) UIScrollView *menuView;
