@@ -41,7 +41,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [self requestData];
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (_tableFooterView == nil) {
+            if (_tableFooterView == nil&& [_merchartsArray count]!=0) {
                 if(_isLoadOver){
                     self.tableView.tableFooterView = nil;
                     _isLoading = YES;
@@ -213,11 +213,12 @@
     NSMutableArray *news = [[NSMutableArray alloc] initWithCapacity:10];
     for(int i=0; i < [objects count];i++ ){
         MerchartModel *model=[[MerchartModel alloc]init];
-        model.name=[[objects objectAtIndex:i] objectForKey:@"name"];
-        model.averageCost=[[[objects objectAtIndex:i] objectForKey:@"averageCost"] floatValue];
-        model.id=[[objects objectAtIndex:i] objectForKey:@"id"];
-        model.imgUrl=[[objects objectAtIndex:i] objectForKey:@"merchantImage"];
-        model.enable=[[[objects objectAtIndex:i] objectForKey:@"enable"] boolValue];
+        model.name = [[objects objectAtIndex:i] objectForKey:@"name"];
+        model.averageCost = [[[objects objectAtIndex:i] objectForKey:@"averageCost"] floatValue];
+        model.id = [[objects objectAtIndex:i] objectForKey:@"id"];
+        model.imgUrl = [[objects objectAtIndex:i] objectForKey:@"merchantImage"];
+        model.enable = [[[objects objectAtIndex:i] objectForKey:@"enable"] boolValue];
+        model.distance = [[objects objectAtIndex:i] objectForKey:@"distance"];
         [news addObject:model];
     }
     

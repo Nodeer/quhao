@@ -79,7 +79,7 @@
     }
     
     _rjLabel.text = [NSString stringWithFormat:@"%@%.2lf",@"人均:¥",self.merchartModel.averageCost];
-    if ([self.merchartModel.distance isEqualToString:@"-1"]) {
+    if ([self.merchartModel.distance intValue] == -1) {
         _disLabel.text = @"未定位";
     }else{
         _disLabel.text = self.merchartModel.distance;
