@@ -111,4 +111,10 @@ public class DesUtils {
 		Key key = new javax.crypto.spec.SecretKeySpec(arrB, "DES");
 		return key;
 	}
+	
+	public static void main(String[] args) {
+		DesUtils d = new DesUtils();
+		String dS = d.encrypt("111111");
+		System.out.println(dS);
+	}
 }

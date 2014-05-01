@@ -6,6 +6,7 @@ import android.content.SharedPreferences.Editor;
 
 /**
  * 手机应用的共享数据
+ * 
  * @author ASUS
  */
 public class SharedprefUtil {
@@ -19,8 +20,7 @@ public class SharedprefUtil {
 	 *            key
 	 */
 	public static void remove(Context context, String key) {
-		SharedPreferences settings = context.getSharedPreferences(
-				QuhaoConstant.CONFIG_CACHE, Context.MODE_PRIVATE);
+		SharedPreferences settings = context.getSharedPreferences(QuhaoConstant.CONFIG_CACHE, Context.MODE_PRIVATE);
 		Editor editor = settings.edit();
 		editor.remove(key);
 		editor.commit();
@@ -37,8 +37,7 @@ public class SharedprefUtil {
 	 *            value
 	 */
 	public static void put(Context context, String key, String value) {
-		SharedPreferences settings = context.getSharedPreferences(
-				QuhaoConstant.CONFIG_CACHE, Context.MODE_PRIVATE);
+		SharedPreferences settings = context.getSharedPreferences(QuhaoConstant.CONFIG_CACHE, Context.MODE_PRIVATE);
 		Editor editor = settings.edit();
 		editor.putString(key, value);
 		editor.commit();
@@ -53,8 +52,7 @@ public class SharedprefUtil {
 	 *            key
 	 */
 	public static String get(Context context, String key, String defaultValue) {
-		SharedPreferences settings = context.getSharedPreferences(
-				QuhaoConstant.CONFIG_CACHE, Context.MODE_PRIVATE);
+		SharedPreferences settings = context.getSharedPreferences(QuhaoConstant.CONFIG_CACHE, Context.MODE_PRIVATE);
 		return settings.getString(key, defaultValue);
 	}
 
@@ -64,8 +62,7 @@ public class SharedprefUtil {
 	 * @param context
 	 */
 	public static void clear(Context context) {
-		SharedPreferences settings = context.getSharedPreferences(
-				QuhaoConstant.CONFIG_CACHE, Context.MODE_PRIVATE);
+		SharedPreferences settings = context.getSharedPreferences(QuhaoConstant.CONFIG_CACHE, Context.MODE_PRIVATE);
 		Editor editor = settings.edit();
 		editor.clear();
 		editor.commit();

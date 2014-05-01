@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -15,6 +16,7 @@ import android.content.res.Resources.NotFoundException;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -47,40 +49,40 @@ public class QHClientApplication extends Application {
 	}
 
 	private static final String TAG = QHClientApplication.class.getName();
-	public boolean isLogined = false; 				// Global attribute, indicates the login status
-	public String phone = ""; 						// Global attribute, indicates current login phone number
-	public AccountInfo accountInfo = null;			// Global attribute, indicates current login account
-	
+	public boolean isLogined = false; // Global attribute, indicates the login
+										// status
+	public String phone = ""; // Global attribute, indicates current login phone
+								// number
+	public AccountInfo accountInfo = null; // Global attribute, indicates
+											// current login account
+
 	public boolean isAuto = false;
-	
+
 	/**
-	 * 读取用户设置的时候在2G/3G下浏览图片 true: 
+	 * 读取用户设置的时候在2G/3G下浏览图片 true:
 	 */
 	public boolean is2G3GRead = false;
-	
+
 	/**
 	 * 是否是WIFI连接
 	 */
 	public boolean isWifiOpen = false;
-	
+
 	/**
 	 * 是否可以加载图片
 	 */
 	public boolean canLoadImg = false;
-	
+
 	/**
 	 * 默认城市
 	 */
 	public CityInfo defaultCity;
-	
+
 	/**
 	 * 当前位置信息
 	 */
 	public LatLonPoint lp = new LatLonPoint(31.235048, 121.474794);
-	
 	public AMapLocation location;
-	
-	
 	public static Context mContext;
 	private static QHClientApplication instance;
 
@@ -99,7 +101,7 @@ public class QHClientApplication extends Application {
 		instance = this;
 		initServerConfig();
 		Thread accountThread = new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				initAccountConfig();
@@ -117,34 +119,31 @@ public class QHClientApplication extends Application {
 	/**
 	 * Initial the server configuration
 	 */
-	private void initServerConfig(){
+	private void initServerConfig() {
 		try {
-			
+
 			String is2G3GRead = SharedprefUtil.get(this, QuhaoConstant.IS_2G3G_READ, "true");
 
 			if ("true".equals(is2G3GRead)) {
-				this.is2G3GRead = true; 
+				this.is2G3GRead = true;
 			} else {
 				this.is2G3GRead = false;
 			}
-			
+
 			this.isWifiOpen = ActivityUtil.isWifiOpen(this);
-			
-			if(this.is2G3GRead || (!this.is2G3GRead && this.isWifiOpen))
-			{
+
+			if (this.is2G3GRead || (!this.is2G3GRead && this.isWifiOpen)) {
 				this.canLoadImg = true;
-			}
-			else
-			{
+			} else {
 				this.canLoadImg = false;
 			}
-			
-			//初始化城市
+
+			// 初始化城市
 			String cityCode = SharedprefUtil.get(this, QuhaoConstant.CITY_CODE, "021");
 			String cityName = SharedprefUtil.get(this, QuhaoConstant.CITY_NAME, "上海");
 			String cityPinyin = SharedprefUtil.get(this, QuhaoConstant.CITY_PINYIN, "shanghai");
 			this.defaultCity = new CityInfo(cityCode, cityName, cityPinyin);
-			
+
 			try {
 				ApplicationInfo appInfo = this.getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
 				boolean msg = appInfo.metaData.getBoolean("test");
@@ -153,13 +152,13 @@ public class QHClientApplication extends Application {
 			} catch (NameNotFoundException e) {
 				e.printStackTrace();
 			}
-			
+
 			QuhaoLog.i(TAG, "start to init configurations from application.properties");
 			InputStream input = getResources().openRawResource(R.raw.application);
 			BufferedReader read = new BufferedReader(new InputStreamReader(input));
 			String line = "";
 			while ((line = read.readLine()) != null) {
-				if(line.startsWith("#")){
+				if (line.startsWith("#")) {
 					continue;
 				}
 				if (line.contains("app.server")) {
@@ -176,51 +175,53 @@ public class QHClientApplication extends Application {
 			QuhaoLog.e(TAG, e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Initial the account configuration
 	 */
 	private void initAccountConfig() {
-		
-		if(!PhoneTool.isNetworkAvailable(this)){
+
+		if (!PhoneTool.isNetworkAvailable(this)) {
 			QuhaoLog.w(TAG, "Network is not available!");
 			return;
 		}
-		
+
 		QuhaoLog.i(TAG, "Initial the account configuration");
 		SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
 
 		String phone = SharedprefUtil.get(this, QuhaoConstant.PHONE, "");
-		String password = SharedprefUtil.get(this, QuhaoConstant.PASSWORD, "");
 		String isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_AUTO_LOGIN, "");
+//		String password = SharedprefUtil.get(this, QuhaoConstant.PASSWORD, "");
 
-		if (StringUtils.isNull(isAutoLogin)|| "false".equals(isAutoLogin) || StringUtils.isNull(phone) || StringUtils.isNull(password)) {
-			
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		String password = sharedPreferences.getString(QuhaoConstant.PASSWORD, "");
+		QuhaoLog.d("cross, get password from sp", password);
+
+		if (StringUtils.isNull(isAutoLogin) || "false".equals(isAutoLogin) || StringUtils.isNull(phone) || StringUtils.isNull(password)) {
 			return;
 		}
 
-		Log.e("wjzwjz ", "passw0rd:"+ password);
 		String decryptPassword = new DesUtils().decrypt(password);
 		String url = "AccountController/login?phone=" + phone + "&password=" + decryptPassword;
 		try {
 			Looper.prepare();
 			String result = CommonHTTPRequest.post(url);
-			if(StringUtils.isNull(result)){
-//				SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
+			if (StringUtils.isNull(result)) {
+				// SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
 				this.isLogined = false;
 				Handler handler = new Handler();
 				handler.post(new Runnable() {
-					
+
 					@Override
 					public void run() {
-						
+
 						Toast.makeText(QHClientApplication.this, "自动登陆失败，请进入个人中心登陆", Toast.LENGTH_LONG).show();
-						
+
 					}
 				});
 				return;
 			}
-			
+
 			LoginInfo loginInfo = ParseJson.getLoginInfo(result);
 			AccountInfo account = new AccountInfo();
 			account.build(loginInfo);
@@ -228,15 +229,15 @@ public class QHClientApplication extends Application {
 
 			if ("fail".equals(account.msg)) {
 				this.isLogined = false;
-//				SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
+				// SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
 				Handler handler = new Handler();
 				handler.post(new Runnable() {
-					
+
 					@Override
 					public void run() {
-						
+
 						Toast.makeText(QHClientApplication.this, "自动登陆失败，请进入个人中心登陆", Toast.LENGTH_LONG).show();
-						
+
 					}
 				});
 				return;
@@ -259,17 +260,15 @@ public class QHClientApplication extends Application {
 			this.isLogined = false;
 			Handler handler = new Handler();
 			handler.post(new Runnable() {
-				
+
 				@Override
 				public void run() {
-					
+
 					Toast.makeText(QHClientApplication.this, "自动登陆失败，请进入个人中心登陆", Toast.LENGTH_LONG).show();
-					
+
 				}
 			});
-		}
-		finally
-		{
+		} finally {
 			Looper.loop();
 		}
 	}
@@ -281,7 +280,7 @@ public class QHClientApplication extends Application {
 		if (!Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
 			return;
 		}
-		
+
 		File sdcardDir = Environment.getExternalStorageDirectory();
 		String path = sdcardDir.getPath() + "/quhao";
 		File path1 = new File(path);
