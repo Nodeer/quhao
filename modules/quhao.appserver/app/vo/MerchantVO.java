@@ -12,6 +12,7 @@ import cn.bran.japid.util.StringUtils;
 import com.withiter.models.merchant.Comment;
 import com.withiter.models.merchant.Merchant;
 import com.withiter.models.merchant.Tese;
+import com.withiter.utils.DistanceUtils;
 
 import controllers.backend.self.SelfManagementController;
 
@@ -255,6 +256,53 @@ public class MerchantVO {
 		MerchantVO vo = new MerchantVO();
 		vo.id = m.id();
 		vo.enable = m.enable;
+		return vo;
+	}
+	
+	/**
+	 * @param m
+	 * @param userX 纬度
+	 * @param userY 经度
+	 * @return
+	 */
+	public static MerchantVO build(Merchant m, double userX, double userY) {
+		MerchantVO vo = new MerchantVO();
+		vo.id = m.id();
+		vo.address = m.address;
+		vo.averageCost = m.averageCost;
+		vo.cateType = m.cateType;
+		vo.closeTime = m.closeTime;
+		vo.description = m.description;
+		vo.enable = m.enable;
+		vo.fuwu = m.fuwu;
+		vo.grade = m.grade;
+		vo.huanjing = m.huanjing;
+		vo.joinedDate = m.joinedDate;
+		vo.kouwei = m.kouwei;
+		vo.markedCount = m.markedCount;
+		vo.name = m.name;
+		vo.nickName = m.nickName;
+		vo.openTime = m.openTime;
+		vo.tags = m.tags;
+		vo.telephone = m.telephone;
+		vo.teses = m.teses;
+		vo.xingjiabi = m.xingjiabi;
+		vo.x = m.x;
+		vo.y = m.y;
+		vo.seatType = m.seatType;
+		vo.cityCode = m.cityCode;
+		if(userX != 0 && userY != 0){
+			vo.distance = DistanceUtils.GetDistance(Double.parseDouble(m.x), Double.parseDouble(m.y), userX, userY);
+		}else{
+			vo.distance = -1;
+		}
+		try {
+			vo.merchantImage = URLDecoder.decode(m.merchantImage, "UTF-8");
+			logger.debug("vo.merchantImage"+vo.merchantImage);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
 		return vo;
 	}
 }

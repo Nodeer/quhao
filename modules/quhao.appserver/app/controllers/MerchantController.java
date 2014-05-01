@@ -139,7 +139,7 @@ public class MerchantController extends BaseController {
 	 * @param sortBy
 	 *            排序
 	 */
-	public static void nextPage(int page, String cateType, String sortBy, String cityCode) {
+	public static void nextPage(int page, String cateType, String sortBy, String cityCode, double userX, double userY) {
 		page = (page == 0) ? 1 : page;
 		if(StringUtils.isEmpty(sortBy)){
 			sortBy = "-modified";
@@ -148,7 +148,7 @@ public class MerchantController extends BaseController {
 		List<Merchant> merchantList = Merchant.nextPage(cateType, page, sortBy, cityCode);
 		List<MerchantVO> merchantVOList = new ArrayList<MerchantVO>();
 		for (Merchant m : merchantList) {
-			merchantVOList.add(MerchantVO.build(m));
+			merchantVOList.add(MerchantVO.build(m, userX, userY));
 		}
 		renderJSON(merchantVOList);
 	}
