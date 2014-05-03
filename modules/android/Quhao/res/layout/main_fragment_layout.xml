@@ -26,9 +26,9 @@
             android:gravity="center|center_vertical"
             android:singleLine="true"
             android:textAlignment="viewEnd"
-            android:textColor="#ff000000"
+            android:textColor="@color/white"
             android:textIsSelectable="true"
-            android:textSize="14.0sp" />
+            android:textSize="15.0sp" />
 
         <!-- search button -->
         <Button
@@ -37,11 +37,12 @@
             android:layout_height="35dip"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/btn_weight"
             android:text="@string/search_merchants"
             android:textAppearance="?android:textAppearanceMediumInverse"
-            android:textColor="#ff000000"
-            android:textSize="14.0sp" />
+            android:textColor="@color/white"
+            android:textSize="15.0sp" 
+            android:background="@android:color/transparent"
+            android:paddingRight="10dp"/>
         <!-- search button -->
 
     </RelativeLayout>
