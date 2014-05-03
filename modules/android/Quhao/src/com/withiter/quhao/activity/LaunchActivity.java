@@ -15,7 +15,6 @@ public class LaunchActivity extends Activity {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.launch);
         Handler x = new Handler();
-        
         x.postDelayed(new splashhandler(), 3000);
 	}
 

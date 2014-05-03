@@ -4,5 +4,5 @@
   	<item android:state_selected="true" android:drawable="@drawable/menu_home_img"/>
     <item android:state_pressed="true" android:drawable="@drawable/menu_home_img" />
     <item android:state_focused="true" android:drawable="@drawable/menu_home_img" />
-    <item android:drawable="@drawable/menu_home_img" />
+    <item android:drawable="@drawable/menu_home_img_gray" />
 </selector>

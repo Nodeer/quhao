@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="55.0dip"
     android:layout_gravity="bottom"
-    android:background="@drawable/tool_bar"
+    android:background="@drawable/background_line"
     android:gravity="center_vertical"
     android:orientation="horizontal" 
     >
@@ -15,11 +15,10 @@
         android:layout_width="0.0dip"
         android:layout_height="fill_parent"
         android:layout_weight="1"
-        android:background="@drawable/imagebutton_background"
         android:drawableTop="@drawable/menu_home"
         android:paddingTop="5.0dip"
         android:text="@string/menu_category_list"
-        android:textColor="#ffffffff"
+        android:textColor="@layout/menu_text_color"
         android:textSize="10.0sp" />
 
     <Button
@@ -27,11 +26,10 @@
         android:layout_width="0.0dip"
         android:layout_height="fill_parent"
         android:layout_weight="1"
-        android:background="@drawable/imagebutton_background"
         android:drawableTop="@drawable/menu_nearby"
         android:paddingTop="5.0dip"
         android:text="@string/menu_nearby_merchant"
-        android:textColor="#ffffffff"
+        android:textColor="@layout/menu_text_color"
         android:textSize="10.0sp" />
 
     <Button
@@ -39,11 +37,10 @@
         android:layout_width="0.0dip"
         android:layout_height="fill_parent"
         android:layout_weight="1"
-        android:background="@drawable/imagebutton_background"
         android:drawableTop="@drawable/menu_person_center"
         android:paddingTop="5.0dip"
         android:text="@string/menu_person_center"
-        android:textColor="#ffffffff"
+        android:textColor="@layout/menu_text_color"
         android:textSize="10.0sp" />
 
     <Button
@@ -51,11 +48,10 @@
         android:layout_width="0.0dip"
         android:layout_height="fill_parent"
         android:layout_weight="1.0"
-        android:background="@drawable/imagebutton_background"
         android:drawableTop="@drawable/menu_more"
         android:paddingTop="5.0dip"
         android:text="@string/menu_more"
-        android:textColor="#ffffffff"
+        android:textColor="@layout/menu_text_color"
         android:textSize="10.0sp" />
 
 </LinearLayout>

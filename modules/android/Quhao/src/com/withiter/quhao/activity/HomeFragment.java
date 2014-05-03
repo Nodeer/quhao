@@ -53,15 +53,13 @@ import com.withiter.quhao.view.viewpager.MyViewPager;
 import com.withiter.quhao.vo.Category;
 import com.withiter.quhao.vo.TopMerchant;
 
-public class HomeFragment extends Fragment implements
-OnHeaderRefreshListener, OnFooterRefreshListener, OnClickListener{
-	
+public class HomeFragment extends Fragment implements OnHeaderRefreshListener, OnFooterRefreshListener, OnClickListener {
+
 	private static String TAG = HomeFragment.class.getName();
-	
 	private static final int UNLOCK_CLICK = 1000;
-	
-//	private GridView topMerchantsGird;
-//	private TopMerchantGridAdapter topMerchantGridAdapter;
+
+	// private GridView topMerchantsGird;
+	// private TopMerchantGridAdapter topMerchantGridAdapter;
 	private Button searchTextView;
 	private GridView categorysGird;
 	private CategoryGridAdapter categoryGridAdapter;
@@ -71,145 +69,119 @@ OnHeaderRefreshListener, OnFooterRefreshListener, OnClickListener{
 	protected ProgressDialogUtil progressCategory;
 	protected ProgressDialogUtil progressTopMerchant;
 	private boolean isClick;
-	private TextView homeAdTitle;// ¹ã¸æ¼òµ¥½éÉÜ
+	private TextView homeAdTitle;								// å¹¿å‘Šç®€å•ä»‹ç»
 	private MyViewPager mViewPager;
-	
 	private LinearLayout adBottomLayout;
-	
 	private List<ImageView> mPoints;
-	
-	private int mPosition;// pagerµÄÎ»ÖÃ,¾ÍÊÇµ±Ç°Í¼Æ¬µÄË÷ÒıºÅ
-	
+	private int mPosition;										// pagerçš„ä½ç½®,å°±æ˜¯å½“å‰å›¾ç‰‡çš„ç´¢å¼•å·
 	private MyPagerAdapter mPagerAdapter;
-	
 	private PullToRefreshView mPullToRefreshView;
-	
+
 	private float xDistance, yDistance;
-	/** ¼ÇÂ¼°´ÏÂµÄX×ø±ê  **/
-	private float mLastMotionX,mLastMotionY;
-	/** ÊÇ·ñÊÇ×óÓÒ»¬¶¯   **/
+	/** è®°å½•æŒ‰ä¸‹çš„Xåæ ‡ **/
+	private float mLastMotionX, mLastMotionY;
+	/** æ˜¯å¦æ˜¯å·¦å³æ»‘åŠ¨ **/
 	private boolean mIsBeingDragged = true;
-	
-	// /////Ö´ĞĞ¹ã¸æ×Ô¶¯¹ö¶¯ĞèÒªÓÃµÄ///////////////
-//	private ScheduledExecutorService scheduledExecutorService;
-	
-//	private boolean isFirstScheduled;
-	
+
+	// /////æ‰§è¡Œå¹¿å‘Šè‡ªåŠ¨æ»šåŠ¨éœ€è¦ç”¨çš„///////////////
+	// private ScheduledExecutorService scheduledExecutorService;
+	// private boolean isFirstScheduled;
+
 	private View contentView;
-	
 	private ImageView myAttentions;
-	
 	private ImageView noSequenceMerchants;
-	
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		Log.e("wjzwjz", "HomeFragment onAttach");
+		QuhaoLog.d(TAG, "HomeFragment onAttach");
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		Log.e("wjzwjz", "HomeFragment onActivityCreated");
+		QuhaoLog.d(TAG, "HomeFragment onActivityCreated");
 	}
-	
+
 	@Override
 	public void onViewStateRestored(Bundle savedInstanceState) {
 		super.onViewStateRestored(savedInstanceState);
-		Log.e("wjzwjz", "HomeFragment onViewStateRestored");
+		QuhaoLog.d(TAG, "HomeFragment onViewStateRestored");
 	}
-	
+
 	@Override
 	public void onStart() {
 		super.onStart();
 		/*
-		if(scheduledExecutorService != null && isFirstScheduled)
-		{
-			scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-			// µ±ActivityÏÔÊ¾³öÀ´ºó£¬Ã¿ÈıÃëÖÓÇĞ»»Ò»´ÎÍ¼Æ¬ÏÔÊ¾
-			scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 1, 3,
-					TimeUnit.SECONDS);
-			
-		}*/
-		Log.e("wjzwjz", "HomeFragment onStart");
+		 * if(scheduledExecutorService != null && isFirstScheduled) {
+		 * scheduledExecutorService =
+		 * Executors.newSingleThreadScheduledExecutor(); //
+		 * å½“Activityæ˜¾ç¤ºå‡ºæ¥åï¼Œæ¯ä¸‰ç§’é’Ÿåˆ‡æ¢ä¸€æ¬¡å›¾ç‰‡æ˜¾ç¤º
+		 * scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 1, 3,
+		 * TimeUnit.SECONDS);
+		 * 
+		 * }
+		 */
 	}
-	
+
 	@Override
 	public void onPause() {
 		super.onPause();
-		Log.e("wjzwjz", "HomeFragment onPause");
 	}
-	
+
 	@Override
 	public void onStop() {
 		super.onStop();
 		/*
-		// µ±Activity²»¿É¼ûµÄÊ±ºòÍ£Ö¹ÇĞ»»
-		if(null != scheduledExecutorService)
-		{
-			scheduledExecutorService.shutdown();
-		}
-		*/
-		Log.e("wjzwjz", "HomeFragment onStop");
+		 * // å½“Activityä¸å¯è§çš„æ—¶å€™åœæ­¢åˆ‡æ¢ if(null != scheduledExecutorService) {
+		 * scheduledExecutorService.shutdown(); }
+		 */
 	}
-	
+
 	/*
-	// ÇĞ»»µ±Ç°ÏÔÊ¾µÄÍ¼Æ¬
-	private Handler handler = new Handler() {
-		public void handleMessage(android.os.Message msg) {
-			mViewPager.setCurrentItem(mPosition);// ÇĞ»»µ±Ç°ÏÔÊ¾µÄÍ¼Æ¬
-			homeAdTitle.setText(topMerchants.get(mPosition).name);
-		};
-	};
+	 * // åˆ‡æ¢å½“å‰æ˜¾ç¤ºçš„å›¾ç‰‡ private Handler handler = new Handler() { public void
+	 * handleMessage(android.os.Message msg) {
+	 * mViewPager.setCurrentItem(mPosition);// åˆ‡æ¢å½“å‰æ˜¾ç¤ºçš„å›¾ç‰‡
+	 * homeAdTitle.setText(topMerchants.get(mPosition).name); }; };
+	 * 
+	 * // æ¢è¡Œåˆ‡æ¢ä»»åŠ¡
+	 * 
+	 * private class ScrollTask implements Runnable { public void run() {
+	 * synchronized (mViewPager) { // System.out.println("mPosition: " +
+	 * mPosition); mPosition = (mPosition + 1) % mPoints.size();
+	 * handler.obtainMessage().sendToTarget(); // é€šè¿‡Handleråˆ‡æ¢å›¾ç‰‡ //
+	 * System.out.println("åˆ‡æ¢å›¾ç‰‡++++"+mPosition); } }
+	 * 
+	 * }
+	 */
 
-	// »»ĞĞÇĞ»»ÈÎÎñ
-
-	private class ScrollTask implements Runnable {
-		public void run() {
-			synchronized (mViewPager) {
-				// System.out.println("mPosition: " + mPosition);
-				mPosition = (mPosition + 1) % mPoints.size();
-				handler.obtainMessage().sendToTarget(); // Í¨¹ıHandlerÇĞ»»Í¼Æ¬
-				// System.out.println("ÇĞ»»Í¼Æ¬++++"+mPosition);
-			}
-		}
-
-	}*/
-	
-	
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
-		Log.e("wjzwjz", "HomeFragment onDestroyView");
 	}
-	
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		Log.e("wjzwjz", "HomeFragment onDestroy");
 	}
-	
+
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		Log.e("wjzwjz", "HomeFragment onDetach");
 	}
-	
+
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		Log.e("wjzwjz", "HomeFragment onCreateView");
-		
-		contentView = inflater.inflate(R.layout.main_fragment_layout, container,false);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		contentView = inflater.inflate(R.layout.main_fragment_layout, container, false);
 		mPullToRefreshView = (PullToRefreshView) contentView.findViewById(R.id.main_pull_refresh_view);
-		
+
 		mPullToRefreshView.setOnHeaderRefreshListener(this);
 		mPullToRefreshView.setOnFooterRefreshListener(this);
-//		mPullToRefreshView.setLastUpdated(new Date().toLocaleString());
-		
+		// mPullToRefreshView.setLastUpdated(new Date().toLocaleString());
+
 		searchTextView = (Button) contentView.findViewById(R.id.edit_search);
 		searchTextView.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity(), MerchantsSearchActivity.class);
@@ -217,62 +189,61 @@ OnHeaderRefreshListener, OnFooterRefreshListener, OnClickListener{
 				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			}
 		});
-		
+
 		myAttentions = (ImageView) contentView.findViewById(R.id.my_attention);
 		noSequenceMerchants = (ImageView) contentView.findViewById(R.id.no_sequence_merchants);
-		
+
 		myAttentions.setOnClickListener(this);
 		noSequenceMerchants.setOnClickListener(this);
-		
+
 		mViewPager = (MyViewPager) contentView.findViewById(R.id.home_view_pager);
-		
+
 		homeAdTitle = (TextView) contentView.findViewById(R.id.home_ad_title);
 		adBottomLayout = (LinearLayout) contentView.findViewById(R.id.home_ad_bottom_layout);
 		mPoints = new ArrayList<ImageView>();
-		InputMethodManager inputMethodManager = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+		InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		inputMethodManager.hideSoftInputFromWindow(searchTextView.getWindowToken(), 0);
 
 		// top merchant function
 		topMerchants = new ArrayList<TopMerchant>();
-//		topMerchantsGird = (GridView) contentView.findViewById(R.id.topMerchants);
-//		topMerchantsGird.setOnItemClickListener(topMerchantClickListener);
-		
+		// topMerchantsGird = (GridView)
+		// contentView.findViewById(R.id.topMerchants);
+		// topMerchantsGird.setOnItemClickListener(topMerchantClickListener);
+
 		// all categories
 		categorys = new ArrayList<Category>();
 		categorysGird = (GridView) contentView.findViewById(R.id.categorys);
-		
+
 		categorysGird.setOnItemClickListener(categorysClickListener);
-		
+
 		cityBtn = (TextView) contentView.findViewById(R.id.city);
-		
+
 		cityBtn.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 
-				if(isClick)
-				{
+				if (isClick) {
 					return;
 				}
-				
+
 				isClick = true;
-				
-				switch(v.getId())
-				{
-					case R.id.city:
-						Intent intent = new Intent();
-						intent.setClass(getActivity(), CitySelectActivity.class);
-						startActivity(intent);
-		 			default:
-						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+
+				switch (v.getId()) {
+				case R.id.city:
+					Intent intent = new Intent();
+					intent.setClass(getActivity(), CitySelectActivity.class);
+					startActivity(intent);
+				default:
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					break;
 				}
 			}
 		});
-		
+
 		return contentView;
 	}
-	
+
 	@Override
 	public void onHeaderRefresh(PullToRefreshView view) {
 		mPullToRefreshView.postDelayed(new Runnable() {
@@ -281,37 +252,35 @@ OnHeaderRefreshListener, OnFooterRefreshListener, OnClickListener{
 			public void run() {
 				getTopMerchantsFromServerAndDisplay();
 				getCategoriesFromServerAndDisplay();
-				mPullToRefreshView.onHeaderRefreshComplete("¸üĞÂÓÚ:"+new Date().toLocaleString());
-//				mPullToRefreshView.onHeaderRefreshComplete();
+				mPullToRefreshView.onHeaderRefreshComplete("æ›´æ–°äº:" + new Date().toLocaleString());
+				// mPullToRefreshView.onHeaderRefreshComplete();
 			}
 		}, 1000);
 
 	}
-	
+
 	private void buildPager() {
-		// ¹ã¸æÏÂ·½µÄview
+		// å¹¿å‘Šä¸‹æ–¹çš„view
 		adBottomLayout.setGravity(Gravity.CENTER_VERTICAL);
-		if(null != mPoints && !mPoints.isEmpty())
-		{
+		if (null != mPoints && !mPoints.isEmpty()) {
 			for (int i = 0; i < mPoints.size(); i++) {
 				adBottomLayout.removeView(mPoints.get(i));
 			}
 		}
 		mPoints = new ArrayList<ImageView>();
 		adBottomLayout.getChildAt(0);
-		
+
 		ArrayList<ImageView> views = new ArrayList<ImageView>();
 		ImageView image;
 		if (topMerchants != null) {
 			for (int num = 0; num < topMerchants.size(); num++) {
 				image = new ImageView(getActivity());
-				// Í¼Æ¬Ëõ·Å
+				// å›¾ç‰‡ç¼©æ”¾
 				image.setScaleType(ScaleType.FIT_XY);
 				views.add(image);
-				
-				if(StringUtils.isNotNull(topMerchants.get(num).merchantImage))
-				{
-					ImageTask task = new ImageTask(image,topMerchants.get(num).merchantImage, false, getActivity());
+
+				if (StringUtils.isNotNull(topMerchants.get(num).merchantImage)) {
+					ImageTask task = new ImageTask(image, topMerchants.get(num).merchantImage, false, getActivity());
 
 					task.execute(new Runnable() {
 
@@ -320,50 +289,45 @@ OnHeaderRefreshListener, OnFooterRefreshListener, OnClickListener{
 
 						}
 
-					},new Runnable() {
-						
+					}, new Runnable() {
+
 						@Override
 						public void run() {
-							
+
 						}
 					});
-				}
-				else
-				{
+				} else {
 					image.setImageResource(R.drawable.no_logo);
 				}
-				
-				// ¹ã¸æÏÂ·½µÄÔ­ÓÚÔ²µãview
+
+				// å¹¿å‘Šä¸‹æ–¹çš„åŸäºåœ†ç‚¹view
 				ImageView point = new ImageView(getActivity());
 				point.setAdjustViewBounds(true);
-				if (num == 0)
-				{
+				if (num == 0) {
 					homeAdTitle.setText(topMerchants.get(num).name);
 					point.setBackgroundResource(R.drawable.point_white);
-				}
-				else
-				{
+				} else {
 					point.setBackgroundResource(R.drawable.point_deep);
 				}
 
 				point.setLayoutParams(new LayoutParams(10, 10));
 				mPoints.add(point);
 
-//				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-//						LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+				// LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+				// LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
-//				lp.setMargins(10, 0, 10, 0);
+				// lp.setMargins(10, 0, 10, 0);
 
 				image.setOnClickListener(new View.OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
-						if (topMerchants.get(mPosition)!=null) {
+						if (topMerchants.get(mPosition) != null) {
 							String mid = topMerchants.get(mPosition).mid;
 							QuhaoLog.d(TAG, "mid:" + mid);
 							if (StringUtils.isNull(mid)) {
 								Builder dialog = new AlertDialog.Builder(getActivity());
-								dialog.setTitle("ÎÂÜ°ÌáÊ¾").setMessage("ÍÆ¼öÉÌ¼ÒĞéÏ¯ÒÔ´ı").setPositiveButton("È·¶¨", null);
+								dialog.setTitle("æ¸©é¦¨æç¤º").setMessage("æ¨èå•†å®¶è™šå¸­ä»¥å¾…").setPositiveButton("ç¡®å®š", null);
 								dialog.show();
 								return;
 							}
@@ -376,61 +340,60 @@ OnHeaderRefreshListener, OnFooterRefreshListener, OnClickListener{
 						}
 					}
 				});
-				
-				if(point.getParent() != null)
-				{
+
+				if (point.getParent() != null) {
 					ViewGroup vg = (ViewGroup) point.getParent();
 					vg.removeView(point);
 				}
-				
+
 				adBottomLayout.addView(point);
 			}
 
 			mPagerAdapter = new MyPagerAdapter(getActivity(), views, topMerchants);
 			mViewPager.setAdapter(mPagerAdapter);
-			
+
 			mViewPager.setOnTouchListener(new OnTouchListener() {
-				
+
 				@Override
 				public boolean onTouch(View v, MotionEvent event) {
 					mViewPager.getGestureDetector().onTouchEvent(event);
 					final float x = event.getRawX();
 					final float y = event.getRawY();
-					
-	                switch (event.getAction()) {  
-	                case MotionEvent.ACTION_DOWN:  
-	                    xDistance = yDistance = 0f;
-	                	mLastMotionX = x;
-	                	mLastMotionY = y;
-	                case MotionEvent.ACTION_MOVE:  
-	                    final float xDiff = Math.abs(x - mLastMotionX);
-	                    final float yDiff = Math.abs(y - mLastMotionY);
-	                    xDistance += xDiff;
-	                    yDistance += yDiff;
-	                    
-	                    float dx = xDistance - yDistance;
-	                    // ×óÓÒ»¬¶¯±ÜÃâºÍÏÂÀ­Ë¢ĞÂ³åÍ»   
-	                    if (xDistance > yDistance || Math.abs(xDistance - yDistance) < 0.00001f) {
-	                        mIsBeingDragged = true;
-	                        mLastMotionX =  x;
-	                        mLastMotionY = y;
-	                        ((ViewParent) v.getParent()).requestDisallowInterceptTouchEvent(true);
-	                    } else {
-	                        mIsBeingDragged = false;
-	                        ((ViewParent) v.getParent()).requestDisallowInterceptTouchEvent(false);
-	                    }
-	                    break;  
-	                case MotionEvent.ACTION_UP:  
-	                 	break;  
-	                case MotionEvent.ACTION_CANCEL:
-	                	if(mIsBeingDragged) {
-	                		((ViewParent) v.getParent()).requestDisallowInterceptTouchEvent(false);
+
+					switch (event.getAction()) {
+					case MotionEvent.ACTION_DOWN:
+						xDistance = yDistance = 0f;
+						mLastMotionX = x;
+						mLastMotionY = y;
+					case MotionEvent.ACTION_MOVE:
+						final float xDiff = Math.abs(x - mLastMotionX);
+						final float yDiff = Math.abs(y - mLastMotionY);
+						xDistance += xDiff;
+						yDistance += yDiff;
+
+						float dx = xDistance - yDistance;
+						// å·¦å³æ»‘åŠ¨é¿å…å’Œä¸‹æ‹‰åˆ·æ–°å†²çª
+						if (xDistance > yDistance || Math.abs(xDistance - yDistance) < 0.00001f) {
+							mIsBeingDragged = true;
+							mLastMotionX = x;
+							mLastMotionY = y;
+							((ViewParent) v.getParent()).requestDisallowInterceptTouchEvent(true);
+						} else {
+							mIsBeingDragged = false;
+							((ViewParent) v.getParent()).requestDisallowInterceptTouchEvent(false);
 						}
-	                	break;
-	                default:  
-	                    break;  
-	                }  
-	                return false;  
+						break;
+					case MotionEvent.ACTION_UP:
+						break;
+					case MotionEvent.ACTION_CANCEL:
+						if (mIsBeingDragged) {
+							((ViewParent) v.getParent()).requestDisallowInterceptTouchEvent(false);
+						}
+						break;
+					default:
+						break;
+					}
+					return false;
 				}
 			});
 			if (topMerchants.size() > 1) {
@@ -446,36 +409,35 @@ OnHeaderRefreshListener, OnFooterRefreshListener, OnClickListener{
 			mViewPager.setAdapter(new MyPagerAdapter(views, getActivity()));
 		}
 		/*
-		if(null == scheduledExecutorService)
-		{
-			scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-			
-			// µ±ActivityÏÔÊ¾³öÀ´ºó£¬Ã¿ÈıÃëÖÓÇĞ»»Ò»´ÎÍ¼Æ¬ÏÔÊ¾
-			scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 1, 3,
-					TimeUnit.SECONDS);
-			
-			isFirstScheduled = true;
-		}*/
+		 * if(null == scheduledExecutorService) { scheduledExecutorService =
+		 * Executors.newSingleThreadScheduledExecutor();
+		 * 
+		 * // å½“Activityæ˜¾ç¤ºå‡ºæ¥åï¼Œæ¯ä¸‰ç§’é’Ÿåˆ‡æ¢ä¸€æ¬¡å›¾ç‰‡æ˜¾ç¤º
+		 * scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 1, 3,
+		 * TimeUnit.SECONDS);
+		 * 
+		 * isFirstScheduled = true; }
+		 */
 
 	}
 
-	// ¹ã¸æ»¬¶¯¼àÌı
+	// å¹¿å‘Šæ»‘åŠ¨ç›‘å¬
 	class MyListener implements OnPageChangeListener {
 
 		@Override
 		public void onPageScrollStateChanged(int arg0) {
-			
+
 		}
 
 		@Override
 		public void onPageScrolled(int arg0, float arg1, int arg2) {
-			
+
 		}
 
-		// µ±Ñ¡×´Ì¬
+		// å½“é€‰çŠ¶æ€
 		@Override
 		public void onPageSelected(int arg0) {
-			// System.out.println("¹ã¸æ" + arg0);
+			// System.out.println("å¹¿å‘Š" + arg0);
 			// currentItem = arg0;
 			homeAdTitle.setText(topMerchants.get(arg0).name);
 			mPosition = arg0;
@@ -483,20 +445,19 @@ OnHeaderRefreshListener, OnFooterRefreshListener, OnClickListener{
 			for (i = 0; i < mPoints.size(); i++) {
 				mPoints.get(i).setBackgroundResource(R.drawable.point_deep);
 				if (arg0 == i) {
-					mPoints.get(i)
-							.setBackgroundResource(R.drawable.point_white);
+					mPoints.get(i).setBackgroundResource(R.drawable.point_white);
 				}
 			}
 
 			// if (i == 3) {
-			// System.out.println("¶¯»­Éè¼ÆºÍ¼Æ»®µÄ»°ÊÖ»úºÅ");
+			// System.out.println("åŠ¨ç”»è®¾è®¡å’Œè®¡åˆ’çš„è¯æ‰‹æœºå·");
 			// onPageSelected(0);
 			// }
 
 		}
 
 	}
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -504,12 +465,12 @@ OnHeaderRefreshListener, OnFooterRefreshListener, OnClickListener{
 		// TODO add default view here
 		if (!ActivityUtil.isNetWorkAvailable(getActivity())) {
 			Builder dialog = new AlertDialog.Builder(getActivity());
-			dialog.setTitle("ÎÂÜ°ÌáÊ¾").setMessage("Wifi/·äÎÑÍøÂçÎ´´ò¿ª£¬»òÕßÍøÂçÇé¿ö²»ÊÇºÜºÃÓ´").setPositiveButton("È·¶¨", null);
+			dialog.setTitle("æ¸©é¦¨æç¤º").setMessage("Wifi/èœ‚çªç½‘ç»œæœªæ‰“å¼€ï¼Œæˆ–è€…ç½‘ç»œæƒ…å†µä¸æ˜¯å¾ˆå¥½å“Ÿ").setPositiveButton("ç¡®å®š", null);
 			dialog.show();
-			
+
 		}
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -518,25 +479,26 @@ OnHeaderRefreshListener, OnFooterRefreshListener, OnClickListener{
 		getTopMerchantsFromServerAndDisplay();
 		getCategoriesFromServerAndDisplay();
 	}
-	
+
 	protected Handler unlockHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what == UNLOCK_CLICK) {
-				
+
 				isClick = false;
 			}
 		}
 	};
-	
+
 	/**
 	 * get top merchants from server side and display
 	 */
 	public void getTopMerchantsFromServerAndDisplay() {
-//		progressTopMerchant = new ProgressDialogUtil(getActivity(), R.string.empty, R.string.querying, false);
-//		progressTopMerchant.showProgress();
+		// progressTopMerchant = new ProgressDialogUtil(getActivity(),
+		// R.string.empty, R.string.querying, false);
+		// progressTopMerchant.showProgress();
 		final TopMerchantsTask task = new TopMerchantsTask(0, getActivity(), "MerchantController/getTopMerchants?x=6&cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode);
 		task.execute(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				String result = task.result;
@@ -545,7 +507,7 @@ OnHeaderRefreshListener, OnFooterRefreshListener, OnClickListener{
 				}
 				topMerchants.clear();
 				topMerchants.addAll(ParseJson.getTopMerchants(result));
-				
+
 				// check the numbers of top merchant
 				int topMerchantCount = topMerchants.size();
 				if (topMerchantCount < 6) {
@@ -554,14 +516,15 @@ OnHeaderRefreshListener, OnFooterRefreshListener, OnClickListener{
 						topMerchants.add(topMerchant);
 					}
 				}
-				
-				//TODO: ¸Ä±ätop MerchantµÄÏÔÊ¾·½Ê½Îª»¬¶¯ĞÎÊ½µÄ¡£
+
+				// TODO: æ”¹å˜top Merchantçš„æ˜¾ç¤ºæ–¹å¼ä¸ºæ»‘åŠ¨å½¢å¼çš„ã€‚
 				buildPager();
-//				topMerchantsUpdateHandler.obtainMessage(200, topMerchants).sendToTarget();
-				
+				// topMerchantsUpdateHandler.obtainMessage(200,
+				// topMerchants).sendToTarget();
+
 			}
 		}, new Runnable() {
-			
+
 			@Override
 			public void run() {
 				String result = task.result;
@@ -579,67 +542,50 @@ OnHeaderRefreshListener, OnFooterRefreshListener, OnClickListener{
 						topMerchants.add(topMerchant);
 					}
 				}
-				//TODO: ¸Ä±ätop MerchantµÄÏÔÊ¾·½Ê½Îª»¬¶¯ĞÎÊ½µÄ¡£
+				// TODO: æ”¹å˜top Merchantçš„æ˜¾ç¤ºæ–¹å¼ä¸ºæ»‘åŠ¨å½¢å¼çš„ã€‚
 				buildPager();
-//				topMerchantsUpdateHandler.obtainMessage(200, topMerchants).sendToTarget();
-				
+				// topMerchantsUpdateHandler.obtainMessage(200,
+				// topMerchants).sendToTarget();
+
 			}
 		});
-		
-		/*
-		Thread t = new Thread() {
-			@Override
-			public void run() {
-				Looper.prepare();
-				try {
-					QuhaoLog.d(TAG, "Start to get Top Merchants data form server.");
-					String result = CommonHTTPRequest.get("MerchantController/getTopMerchants?x=6");
-					QuhaoLog.d(TAG, result);
-					if (StringUtils.isNull(result)) {
-						// TODO display error page here
-						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-					} else {
-						if (null == topMerchants) {
-							topMerchants = new ArrayList<TopMerchant>();
-						}
-						topMerchants.clear();
-						topMerchants.addAll(ParseJson.getTopMerchants(result));
 
-						// check the numbers of top merchant
-						int topMerchantCount = topMerchants.size();
-						if (topMerchantCount < 6) {
-							for (int i = 0; i < 6 - topMerchantCount; i++) {
-								TopMerchant topMerchant = new TopMerchant();
-								topMerchants.add(topMerchant);
-							}
-						}
-						topMerchantsUpdateHandler.obtainMessage(200, topMerchants).sendToTarget();
-					}
-				} catch (ClientProtocolException e) {
-					// TODO display error page here
-					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-					e.printStackTrace();
-					Builder dialog = new AlertDialog.Builder(getActivity());
-					dialog.setTitle("ÎÂÜ°ÌáÊ¾").setMessage("Ê¹ÓÃ\"È¡ºÅ\"ÈËÊı»ğ±¬£¬Ç×£¬ÉÔµÈÆ¬¿Ì").setPositiveButton("È·¶¨", null);
-					dialog.show();
-				} catch (IOException e) {
-					// TODO display error page here
-					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-					// Log.e(TAG, e.getCause().toString(), e);
-					e.printStackTrace();
-					Builder dialog = new AlertDialog.Builder(getActivity());
-					dialog.setTitle("ÎÂÜ°ÌáÊ¾").setMessage("Ê¹ÓÃ\"È¡ºÅ\"ÈËÊı»ğ±¬£¬Ç×£¬ÉÔµÈÆ¬¿Ì").setPositiveButton("È·¶¨", null);
-					dialog.show();
-				} finally {
-					progressTopMerchant.closeProgress();
-				}
-				Looper.loop();
-			}
-		};
-		t.start();
-		*/
+		/*
+		 * Thread t = new Thread() {
+		 * 
+		 * @Override public void run() { Looper.prepare(); try { QuhaoLog.d(TAG,
+		 * "Start to get Top Merchants data form server."); String result =
+		 * CommonHTTPRequest.get("MerchantController/getTopMerchants?x=6");
+		 * QuhaoLog.d(TAG, result); if (StringUtils.isNull(result)) { // TODO
+		 * display error page here
+		 * unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000); } else {
+		 * if (null == topMerchants) { topMerchants = new
+		 * ArrayList<TopMerchant>(); } topMerchants.clear();
+		 * topMerchants.addAll(ParseJson.getTopMerchants(result));
+		 * 
+		 * // check the numbers of top merchant int topMerchantCount =
+		 * topMerchants.size(); if (topMerchantCount < 6) { for (int i = 0; i <
+		 * 6 - topMerchantCount; i++) { TopMerchant topMerchant = new
+		 * TopMerchant(); topMerchants.add(topMerchant); } }
+		 * topMerchantsUpdateHandler.obtainMessage(200,
+		 * topMerchants).sendToTarget(); } } catch (ClientProtocolException e) {
+		 * // TODO display error page here
+		 * unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+		 * e.printStackTrace(); Builder dialog = new
+		 * AlertDialog.Builder(getActivity());
+		 * dialog.setTitle("æ¸©é¦¨æç¤º").setMessage
+		 * ("ä½¿ç”¨\"å–å·\"äººæ•°ç«çˆ†ï¼Œäº²ï¼Œç¨ç­‰ç‰‡åˆ»").setPositiveButton("ç¡®å®š", null); dialog.show();
+		 * } catch (IOException e) { // TODO display error page here
+		 * unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000); //
+		 * Log.e(TAG, e.getCause().toString(), e); e.printStackTrace(); Builder
+		 * dialog = new AlertDialog.Builder(getActivity());
+		 * dialog.setTitle("æ¸©é¦¨æç¤º"
+		 * ).setMessage("ä½¿ç”¨\"å–å·\"äººæ•°ç«çˆ†ï¼Œäº²ï¼Œç¨ç­‰ç‰‡åˆ»").setPositiveButton("ç¡®å®š", null);
+		 * dialog.show(); } finally { progressTopMerchant.closeProgress(); }
+		 * Looper.loop(); } }; t.start();
+		 */
 	}
-	
+
 	private OnItemClickListener topMerchantClickListener = new OnItemClickListener() {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -647,7 +593,7 @@ OnHeaderRefreshListener, OnFooterRefreshListener, OnClickListener{
 			QuhaoLog.d(TAG, "mid:" + mid);
 			if (StringUtils.isNull(mid)) {
 				Builder dialog = new AlertDialog.Builder(getActivity());
-				dialog.setTitle("ÎÂÜ°ÌáÊ¾").setMessage("ÍÆ¼öÉÌ¼ÒĞéÏ¯ÒÔ´ı").setPositiveButton("È·¶¨", null);
+				dialog.setTitle("æ¸©é¦¨æç¤º").setMessage("æ¨èå•†å®¶è™šå¸­ä»¥å¾…").setPositiveButton("ç¡®å®š", null);
 				dialog.show();
 				return;
 			}
@@ -658,7 +604,7 @@ OnHeaderRefreshListener, OnFooterRefreshListener, OnClickListener{
 			getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 		}
 	};
-	
+
 	private OnItemClickListener categorysClickListener = new OnItemClickListener() {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -675,23 +621,20 @@ OnHeaderRefreshListener, OnFooterRefreshListener, OnClickListener{
 			getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 		}
 	};
-	
+
 	/**
-	 * ´¦Àítop merchantµÄUI¸üĞÂ
-	 
-	private Handler topMerchantsUpdateHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			if (msg.what == 200) {
-				super.handleMessage(msg);
-				topMerchantGridAdapter = new TopMerchantGridAdapter(topMerchants, getActivity());
-				topMerchantsGird.setAdapter(topMerchantGridAdapter);
-				topMerchantGridAdapter.notifyDataSetChanged();
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			}
-		}
-	};
-	*/
+	 * å¤„ç†top merchantçš„UIæ›´æ–°
+	 * 
+	 * private Handler topMerchantsUpdateHandler = new Handler() {
+	 * 
+	 * @Override public void handleMessage(Message msg) { if (msg.what == 200) {
+	 *           super.handleMessage(msg); topMerchantGridAdapter = new
+	 *           TopMerchantGridAdapter(topMerchants, getActivity());
+	 *           topMerchantsGird.setAdapter(topMerchantGridAdapter);
+	 *           topMerchantGridAdapter.notifyDataSetChanged();
+	 *           unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000); } }
+	 *           };
+	 */
 	private Handler categorysUpdateHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -709,12 +652,13 @@ OnHeaderRefreshListener, OnFooterRefreshListener, OnClickListener{
 	 * get all categories from server and display them
 	 */
 	public void getCategoriesFromServerAndDisplay() {
-//		progressCategory = new ProgressDialogUtil(getActivity(), R.string.empty, R.string.querying, false);
-//		progressCategory.showProgress();
-		
+		// progressCategory = new ProgressDialogUtil(getActivity(),
+		// R.string.empty, R.string.querying, false);
+		// progressCategory.showProgress();
+
 		final AllCategoriesTask task = new AllCategoriesTask(0, getActivity(), "MerchantController/allCategories?cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode);
 		task.execute(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				String result = task.result;
@@ -728,10 +672,10 @@ OnHeaderRefreshListener, OnFooterRefreshListener, OnClickListener{
 					categorys.addAll(ParseJson.getCategorys(result));
 					categorysUpdateHandler.obtainMessage(200, categorys).sendToTarget();
 				}
-				
+
 			}
 		}, new Runnable() {
-			
+
 			@Override
 			public void run() {
 				String result = task.result;
@@ -747,82 +691,67 @@ OnHeaderRefreshListener, OnFooterRefreshListener, OnClickListener{
 				}
 			}
 		});
-		
-		/*
-		Thread t = new Thread() {
-			@Override
-			public void run() {
-				Looper.prepare();
-				try {
-					QuhaoLog.v(TAG, "get categorys data form server begin");
-					String result = CommonHTTPRequest.get("MerchantController/allCategories");
-					if (StringUtils.isNull(result)) {
-						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-					} else {
-						if (null == categorys) {
-							categorys = new ArrayList<Category>();
-						}
-						categorys.clear();
-						categorys.addAll(ParseJson.getCategorys(result));
-						categorysUpdateHandler.obtainMessage(200, categorys).sendToTarget();
-					}
 
-				} catch (Exception e) {
-					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-					e.printStackTrace();
-				} finally {
-					progressCategory.closeProgress();
-				}
-				Looper.loop();
-			}
-		};
-		t.start();
-		*/
+		/*
+		 * Thread t = new Thread() {
+		 * 
+		 * @Override public void run() { Looper.prepare(); try { QuhaoLog.v(TAG,
+		 * "get categorys data form server begin"); String result =
+		 * CommonHTTPRequest.get("MerchantController/allCategories"); if
+		 * (StringUtils.isNull(result)) {
+		 * unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000); } else {
+		 * if (null == categorys) { categorys = new ArrayList<Category>(); }
+		 * categorys.clear(); categorys.addAll(ParseJson.getCategorys(result));
+		 * categorysUpdateHandler.obtainMessage(200, categorys).sendToTarget();
+		 * }
+		 * 
+		 * } catch (Exception e) {
+		 * unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+		 * e.printStackTrace(); } finally { progressCategory.closeProgress(); }
+		 * Looper.loop(); } }; t.start();
+		 */
 	}
 
 	@Override
 	public void onFooterRefresh(PullToRefreshView view) {
-		// ´¦ÀíÏÂÀ­Ë¢ĞÂ×îĞÂÊı¾İ
+		// å¤„ç†ä¸‹æ‹‰åˆ·æ–°æœ€æ–°æ•°æ®
 		mPullToRefreshView.onFooterRefreshComplete();
 	}
 
 	@Override
 	public void onClick(View v) {
-		
+
 		if (isClick) {
 			return;
 		}
 		isClick = true;
-		
+
 		switch (v.getId()) {
 		case R.id.my_attention:
-			
-			if(QHClientApplication.getInstance().isLogined)
-			{
+
+			if (QHClientApplication.getInstance().isLogined) {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				Intent attention = new Intent();
 				attention.setClass(getActivity(), MyAttentionListActivity.class);
 				startActivity(attention);
-			}
-			else
-			{
+			} else {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				Intent login1 = new Intent(getActivity(), LoginActivity.class);
 				login1.putExtra("activityName", this.getClass().getName());
 				login1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(login1);
 			}
-			
+
 			break;
 		case R.id.no_sequence_merchants:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			Builder dialog = new AlertDialog.Builder(getActivity());
-			dialog.setTitle("ÎÂÜ°ÌáÊ¾").setMessage("Ç×£¬ÔİÎ´¿ª·Å£¬¾´ÇëÆÚ´ı¡£").setPositiveButton("È·¶¨", null);
+			dialog.setTitle("æ¸©é¦¨æç¤º").setMessage("äº²ï¼Œæš‚æœªå¼€æ”¾ï¼Œæ•¬è¯·æœŸå¾…ã€‚").setPositiveButton("ç¡®å®š", null);
 			dialog.show();
 			break;
 		default:
 			break;
 		}
-		
+
 	}
 }

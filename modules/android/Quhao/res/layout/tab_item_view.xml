@@ -10,17 +10,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:focusable="false"
-        android:padding="3dp" 
-        android:src="@drawable/image_button_pressed">
-    </ImageView>
+        android:padding="3dp"
+        android:contentDescription="@string/empty" 
+        android:src="@drawable/home_text_1"
+        />
 
     <TextView
         android:id="@+id/textview"       
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:text="首页"
-        android:textSize="10sp"
-        android:textColor="#ffffff">
-    </TextView>
+        android:layout_height="wrap_content"
+        android:textIsSelectable="false"
+        android:textSize="12sp"
+        android:textColor="@layout/menu_text_color"
+        />
 
 </LinearLayout>
