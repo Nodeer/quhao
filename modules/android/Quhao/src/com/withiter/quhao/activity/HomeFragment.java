@@ -33,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
@@ -177,11 +178,9 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 
 		mPullToRefreshView.setOnHeaderRefreshListener(this);
 		mPullToRefreshView.setOnFooterRefreshListener(this);
-		// mPullToRefreshView.setLastUpdated(new Date().toLocaleString());
 
 		searchTextView = (Button) contentView.findViewById(R.id.edit_search);
 		searchTextView.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity(), MerchantsSearchActivity.class);
@@ -206,29 +205,21 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 
 		// top merchant function
 		topMerchants = new ArrayList<TopMerchant>();
-		// topMerchantsGird = (GridView)
-		// contentView.findViewById(R.id.topMerchants);
-		// topMerchantsGird.setOnItemClickListener(topMerchantClickListener);
 
 		// all categories
 		categorys = new ArrayList<Category>();
 		categorysGird = (GridView) contentView.findViewById(R.id.categorys);
-
 		categorysGird.setOnItemClickListener(categorysClickListener);
 
+		// 城市选择按钮
 		cityBtn = (TextView) contentView.findViewById(R.id.city);
-
 		cityBtn.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-
 				if (isClick) {
 					return;
 				}
-
 				isClick = true;
-
 				switch (v.getId()) {
 				case R.id.city:
 					Intent intent = new Intent();
@@ -461,20 +452,14 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.e("wjzwjz", "HomeFragment onCreate");
-		// TODO add default view here
 		if (!ActivityUtil.isNetWorkAvailable(getActivity())) {
-			Builder dialog = new AlertDialog.Builder(getActivity());
-			dialog.setTitle("温馨提示").setMessage("Wifi/蜂窝网络未打开，或者网络情况不是很好哟").setPositiveButton("确定", null);
-			dialog.show();
-
+			Toast.makeText(this.getActivity().getApplicationContext(), "Wifi/蜂窝网络未打开，或者网络情况不是很好哟", Toast.LENGTH_SHORT).show();
 		}
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		Log.e("wjzwjz", "HomeFragment onResume");
 		cityBtn.setText(QHClientApplication.getInstance().defaultCity.cityName);
 		getTopMerchantsFromServerAndDisplay();
 		getCategoriesFromServerAndDisplay();
@@ -483,7 +468,6 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	protected Handler unlockHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what == UNLOCK_CLICK) {
-
 				isClick = false;
 			}
 		}

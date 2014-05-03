@@ -17,8 +17,7 @@ public class CategoryGridAdapter extends BaseAdapter {
 	private List<? extends Object> list;
 	private Context context;
 
-	public CategoryGridAdapter(List<? extends Object> list,
-			Context context) {
+	public CategoryGridAdapter(List<? extends Object> list, Context context) {
 		this.list = list;
 		this.context = context;
 	}
@@ -50,11 +49,7 @@ public class CategoryGridAdapter extends BaseAdapter {
 				holder = new ViewHolder();
 				LayoutInflater inflator = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				convertView = inflator.inflate(R.layout.category_item, null);
-				// holder.img = (ImageView) convertView.findViewById(R.id.img);
-				holder.itemView = (TextView) convertView
-						.findViewById(R.id.category_item_type);
-				holder.countView = (TextView) convertView
-						.findViewById(R.id.category_item_count);
+				holder.itemView = (TextView) convertView.findViewById(R.id.category_item_type);
 			}
 
 			if (holder == null) {
@@ -62,7 +57,6 @@ public class CategoryGridAdapter extends BaseAdapter {
 			}
 
 			holder.itemView.setText(category.cateName);
-			holder.countView.setText("(" + category.count + ")");
 			convertView.setTag(holder);
 			return convertView;
 		}
@@ -70,8 +64,6 @@ public class CategoryGridAdapter extends BaseAdapter {
 	}
 
 	class ViewHolder {
-		// ImageView img;
 		TextView itemView;
-		TextView countView;
 	}
 }

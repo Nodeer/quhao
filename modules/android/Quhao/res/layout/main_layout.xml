@@ -98,15 +98,15 @@
 		        style="@style/CustomGridView"
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
-		        android:layout_marginTop="0dip"
-		        android:columnWidth="60dip"
+		        android:layout_marginTop="0dp"
+		        android:columnWidth="60dp"
 		        android:gravity="center"
-		        android:horizontalSpacing="5dip"
-		        android:numColumns="4"
-		        android:minHeight="50dip"
-		        android:paddingTop="5dip"
+		        android:horizontalSpacing="5dp"
+		        android:numColumns="3"
+		        android:minHeight="50dp"
+		        android:paddingTop="5dp"
 		        android:stretchMode="columnWidth"
-		        android:verticalSpacing="5dip" />
+		        android:verticalSpacing="5dp" />
 	    </LinearLayout>
 	</ScrollView>
 </RelativeLayout>
