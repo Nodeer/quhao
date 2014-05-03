@@ -49,7 +49,7 @@
 		<!-- android:name=".QHClientApplication" -->
 
 		<!-- TODO: WARNING 部署时请修改test的值为false -->
-		<meta-data android:name="test" android:value="true" />
+		<meta-data android:name="test" android:value="false" />
 		<!-- TODO: WARNING 部署时请修改test的值为false -->
 		
 		<meta-data android:name="com.amap.api.v2.apikey" android:value="60d9c5881dbe8dddd3de33aaacac0cbe" />

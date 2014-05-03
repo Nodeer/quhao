@@ -33,7 +33,7 @@ import com.withiter.quhao.vo.TopMerchant;
 public class ParseJson {
 
 	private static String TAG = ParseJson.class.getName();
-	
+
 	// TODO need to optimize these methods
 
 	public static Collection<? extends Category> getCategorys(String buf) {
@@ -51,16 +51,16 @@ public class ParseJson {
 				if (obj.has("count")) {
 					count = Long.valueOf(obj.optString("count"));
 				}
-				
+
 				if (obj.has("cateType")) {
 					categoryType = obj.optString("cateType");
 				}
-				
+
 				String cateName = null;
 				if (obj.has("cateName")) {
 					cateName = obj.optString("cateName");
 				}
-				
+
 				Category category = new Category(count, categoryType, cateName);
 				categroys.add(category);
 			}
@@ -89,20 +89,13 @@ public class ParseJson {
 					// TODO test here
 					imgUrl = obj.optString("merchantImage");
 					if (QuhaoConstant.test) {
-						if(null != imgUrl && !"".equals(imgUrl))
-						{
-//							imgUrl = obj.optString("merchantImage").replace("http://localhost:9081/", QuhaoConstant.HTTP_URL);
+						if (null != imgUrl && !"".equals(imgUrl)) {
 							imgUrl = QuhaoConstant.HTTP_URL + obj.optString("merchantImage").substring(1);
 						}
-						
-//						imgUrl = obj.getString("merchantImage").replace("http://localhost:9081/", "http://192.168.2.100:9081/");
-						System.out.println(imgUrl);
 					} else {
-						if(null != imgUrl && !"".equals(imgUrl))
-						{
+						if (null != imgUrl && !"".equals(imgUrl)) {
 							imgUrl = QuhaoConstant.HTTP_URL + obj.optString("merchantImage").substring(1);
 						}
-						
 					}
 
 					try {
@@ -170,29 +163,28 @@ public class ParseJson {
 	private static Merchant coventMerchant(JSONObject obj) throws JSONException {
 		Merchant merchant;
 		String id = "";
-		if(obj.has("id"))
-		{
+		if (obj.has("id")) {
 			id = obj.optString("id");
 		}
-		
+
 		String imgUrl = "";
-		if(obj.has("merchantImage"))
-		{
+		if (obj.has("merchantImage")) {
 			imgUrl = obj.optString("merchantImage");
 		}
-		// TODO: 
+		// TODO:
 		if (QuhaoConstant.test) {
-			if(null != imgUrl && !"".equals(imgUrl))
-			{
-//				imgUrl = obj.optString("merchantImage").replace("http://localhost:9081/", QuhaoConstant.HTTP_URL);
+			if (null != imgUrl && !"".equals(imgUrl)) {
+				// imgUrl =
+				// obj.optString("merchantImage").replace("http://localhost:9081/",
+				// QuhaoConstant.HTTP_URL);
 				imgUrl = QuhaoConstant.HTTP_URL + obj.optString("merchantImage").substring(1);
 			}
-			
-//			imgUrl = obj.optString("merchantImage").replace("http://localhost:9081/", "http://192.168.2.100:9081/");
-			System.out.println(imgUrl);
+
+			// imgUrl =
+			// obj.optString("merchantImage").replace("http://localhost:9081/",
+			// "http://192.168.2.100:9081/");
 		} else {
-			if(null != imgUrl && !"".equals(imgUrl))
-			{
+			if (null != imgUrl && !"".equals(imgUrl)) {
 				imgUrl = QuhaoConstant.HTTP_URL + obj.optString("merchantImage").substring(1);
 			}
 		}
@@ -204,21 +196,18 @@ public class ParseJson {
 			}
 		}
 		String name = "";
-		if(obj.has("name"))
-		{
+		if (obj.has("name")) {
 			name = obj.optString("name");
 		}
-		
+
 		String address = "";
-		if(obj.has("address"))
-		{
+		if (obj.has("address")) {
 			address = obj.optString("address");
 		}
 		String phone = "";
 		if (obj.has("telephone")) {
 			JSONArray array = obj.optJSONArray("telephone");
-			if(null != array && array.length() > 0)
-			{
+			if (null != array && array.length() > 0) {
 				for (int i = 0; i < array.length(); i++) {
 					if (i == array.length() - 1) {
 						phone = phone + array.get(i).toString();
@@ -230,23 +219,20 @@ public class ParseJson {
 		}
 
 		String cateType = "";
-		if(obj.has("cateType"))
-		{
+		if (obj.has("cateType")) {
 			cateType = obj.optString("cateType");
 		}
-		
+
 		String grade = "";
-		if(obj.has("grade"))
-		{
+		if (obj.has("grade")) {
 			grade = obj.optString("grade");
 		}
-		
+
 		String averageCost = "";
-		if(obj.has("averageCost"))
-		{
+		if (obj.has("averageCost")) {
 			averageCost = obj.optString("averageCost");
 		}
-		
+
 		String tags = "";
 		if (obj.has("tags")) {
 			JSONArray array = obj.getJSONArray("tags");
@@ -259,88 +245,76 @@ public class ParseJson {
 					tags = tags + array.get(i).toString() + ",";
 				}
 			}
-			
+
 		}
 
 		Integer kouwei = 0;
-		if(obj.has("kouwei"))
-		{
+		if (obj.has("kouwei")) {
 			kouwei = obj.optInt("kouwei");
 		}
-		
+
 		Integer huanjing = 0;
-		if(obj.has("huanjing"))
-		{
+		if (obj.has("huanjing")) {
 			huanjing = obj.optInt("huanjing");
 		}
-		
+
 		Integer fuwu = 0;
-		if(obj.has("fuwu"))
-		{
+		if (obj.has("fuwu")) {
 			fuwu = obj.optInt("fuwu");
 		}
-		
+
 		Integer xingjiabi = 0;
-		if(obj.has("xingjiabi"))
-		{
+		if (obj.has("xingjiabi")) {
 			xingjiabi = obj.optInt("xingjiabi");
 		}
 
 		String teses = "";
-		if(obj.has("teses"))
-		{
+		if (obj.has("teses")) {
 			teses = obj.optString("teses");
 		}
-		
+
 		String nickName = "";
-		if(obj.has("nickName"))
-		{
+		if (obj.has("nickName")) {
 			nickName = obj.optString("nickName");
 		}
-		
+
 		String description = "";
-		if(obj.has("description"))
-		{
+		if (obj.has("description")) {
 			description = obj.optString("description");
 		}
-		
+
 		String openTime = "";
-		if(obj.has("openTime"))
-		{
+		if (obj.has("openTime")) {
 			openTime = obj.optString("openTime");
 		}
-		
+
 		String closeTime = "";
-		if(obj.has("closeTime"))
-		{
+		if (obj.has("closeTime")) {
 			closeTime = obj.optString("closeTime");
 		}
 
 		Integer marketCount = 0;
-		if(obj.has("marketCount"))
-		{
+		if (obj.has("marketCount")) {
 			marketCount = obj.optInt("marketCount");
 		}
-		
+
 		boolean enable = false;
-		if(obj.has("enable"))
-		{
+		if (obj.has("enable")) {
 			enable = obj.optBoolean("enable");
 		}
-		
+
 		String joinedDate = "";
-		if(obj.has("joinedDate"))
-		{
+		if (obj.has("joinedDate")) {
 			joinedDate = obj.optString("joinedDate");
 		}
-		
+
 		double distance = obj.optDouble("distance");
-		
+
 		double lat = obj.optDouble("y");
 		double lng = obj.optDouble("x");
 		boolean isAttention = obj.optBoolean("isAttention");
 		merchant = new Merchant(id, imgUrl, name, address, phone, cateType, grade, averageCost, tags, kouwei, huanjing, fuwu, xingjiabi, teses, nickName, description, openTime, closeTime,
-				marketCount, enable, joinedDate, lat, lng,distance);
+				marketCount, enable, joinedDate, lat, lng, distance);
 
 		String commentAverageCost = obj.optString("commentAverageCost");
 		int commentXingjiabi = obj.optInt("commentXingjiabi");
@@ -381,17 +355,11 @@ public class ParseJson {
 			String birthday = obj.optString("birthDay");
 			String userImage = obj.optString("userImage");
 			if (QuhaoConstant.test) {
-				if(null != userImage && !"".equals(userImage))
-				{
-//					userImage = obj.getString("userImage").replace("http://localhost:9081/", QuhaoConstant.HTTP_URL);
+				if (null != userImage && !"".equals(userImage)) {
 					userImage = QuhaoConstant.HTTP_URL + obj.optString("userImage").substring(1);
 				}
-				
-//				imgUrl = obj.getString("merchantImage").replace("http://localhost:9081/", "http://192.168.2.100:9081/");
-				System.out.println(userImage);
 			} else {
-				if(null != userImage && !"".equals(userImage))
-				{
+				if (null != userImage && !"".equals(userImage)) {
 					userImage = QuhaoConstant.HTTP_URL + obj.optString("userImage").substring(1);
 				}
 			}
@@ -411,7 +379,7 @@ public class ParseJson {
 			String zhaopian = obj.optString("zhaopian");
 			String guanzhu = obj.optString("guanzhu");
 
-			loginInfo = new LoginInfo(msg, accountId, phone, jifen, email, password, nickName, birthday, userImage, enable, mobileOS, lastLogin, signIn, isSignIn, dianping, zhaopian,guanzhu);
+			loginInfo = new LoginInfo(msg, accountId, phone, jifen, email, password, nickName, birthday, userImage, enable, mobileOS, lastLogin, signIn, isSignIn, dianping, zhaopian, guanzhu);
 
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -535,17 +503,11 @@ public class ParseJson {
 		String merchantAddress = obj.optString("merchantAddress");
 		String merchantImage = obj.optString("merchantImage");
 		if (QuhaoConstant.test) {
-			if(null !=merchantImage && !"".equals(merchantImage))
-			{
-//				merchantImage = obj.getString("merchantImage").replace("http://localhost:9081/", QuhaoConstant.HTTP_URL);
+			if (null != merchantImage && !"".equals(merchantImage)) {
 				merchantImage = QuhaoConstant.HTTP_URL + obj.optString("merchantImage").substring(1);
 			}
-			
-//			imgUrl = obj.getString("merchantImage").replace("http://localhost:9081/", "http://192.168.2.100:9081/");
-			System.out.println(merchantImage);
 		} else {
-			if(null != merchantImage && !"".equals(merchantImage))
-			{
+			if (null != merchantImage && !"".equals(merchantImage)) {
 				merchantImage = QuhaoConstant.HTTP_URL + obj.optString("merchantImage").substring(1);
 			}
 		}
@@ -557,7 +519,7 @@ public class ParseJson {
 			}
 		}
 
-		rvo = new ReservationVO(rId,accountId, merchantId, seatNumber, myNumber, beforeYou, currentNumber, valid, tipKey, tipValue, merchantName, merchantAddress,isCommented,merchantImage);
+		rvo = new ReservationVO(rId, accountId, merchantId, seatNumber, myNumber, beforeYou, currentNumber, valid, tipKey, tipValue, merchantName, merchantAddress, isCommented, merchantImage);
 		return rvo;
 	}
 
@@ -641,10 +603,10 @@ public class ParseJson {
 		float fuwu = Float.valueOf(obj.optString("fuwu"));
 		String content = obj.optString("content");
 		String created = DateUtils.formatDate(obj.optString("created"), "yyyy-MM-dd HH:mm:ss");
-		
+
 		String modified = DateUtils.formatDate(obj.optString("modified"), "yyyy-MM-dd HH:mm:ss");
 
-		comment = new Comment(uid, accountId, nickName, mid,merchantName,merchantAddress, rId, averageCost, xingjiabi, kouwei, huanjing, fuwu, content, created, modified);
+		comment = new Comment(uid, accountId, nickName, mid, merchantName, merchantAddress, rId, averageCost, xingjiabi, kouwei, huanjing, fuwu, content, created, modified);
 		return comment;
 	}
 
@@ -680,14 +642,16 @@ public class ParseJson {
 		String merchantAddress = obj.optString("merchantAddress");
 		String reservationId = obj.optString("reservationId");
 
-//		int seatNumber = obj.optInt("seatNumber");
-//		int myNumber = obj.optInt("myNumber");
+		// int seatNumber = obj.optInt("seatNumber");
+		// int myNumber = obj.optInt("myNumber");
 		boolean cost = obj.optBoolean("cost");
 		String status = obj.optString("status");
 		String created = DateUtils.formatDate(obj.optString("created"), "yyyy-MM-dd HH:mm:ss");
 
-//		Credit credit = new Credit(accountId, merchantId, merchantName, merchantAddress, reservationId, seatNumber, myNumber, cost, status,created);
-		Credit credit = new Credit(creditId,accountId, merchantId, merchantName, merchantAddress, reservationId, cost, status,created);
+		// Credit credit = new Credit(accountId, merchantId, merchantName,
+		// merchantAddress, reservationId, seatNumber, myNumber, cost,
+		// status,created);
+		Credit credit = new Credit(creditId, accountId, merchantId, merchantName, merchantAddress, reservationId, cost, status, created);
 		return credit;
 	}
 
@@ -714,8 +678,8 @@ public class ParseJson {
 
 		return signup;
 	}
-	
-	public static AppVersionVO convertToAppVersionVO(String result){
+
+	public static AppVersionVO convertToAppVersionVO(String result) {
 		try {
 			JSONObject json = new JSONObject(result);
 			int android = json.optInt("android");
@@ -734,47 +698,43 @@ public class ParseJson {
 		if (null == buf || "".equals(buf)) {
 			return merchantDetail;
 		}
-		
+
 		try {
 			JSONObject jsonMaps = new JSONObject(buf);
-			
+
 			boolean isMerchantExsit = jsonMaps.has("merchant");
 			Merchant merchant = null;
-			if(isMerchantExsit)
-			{
+			if (isMerchantExsit) {
 				JSONObject merchantJson = jsonMaps.getJSONObject("merchant");
 				merchant = coventMerchant(merchantJson);
 			}
-			
+
 			boolean isHaomaExsit = jsonMaps.has("haomaVO");
 			Haoma haoma = null;
-			if(isHaomaExsit)
-			{
+			if (isHaomaExsit) {
 				String haomaStr = jsonMaps.getString("haomaVO");
 				haoma = getHaoma(haomaStr);
 			}
-			
+
 			boolean isRvosExsit = jsonMaps.has("rvos");
 			List<ReservationVO> rvos = null;
-			if(isRvosExsit)
-			{
+			if (isRvosExsit) {
 				String reservationsStr = jsonMaps.getString("rvos");
-				
+
 				rvos = getReservations(reservationsStr);
 			}
-			
-			
+
 			merchantDetail = new MerchantDetailVO();
 			merchantDetail.merchant = merchant;
 			merchantDetail.haoma = haoma;
 			merchantDetail.rvos = rvos;
-			
+
 		} catch (JSONException e) {
 			e.printStackTrace();
 			QuhaoLog.e(TAG, ExceptionUtil.getTrace(e));
 			return null;
 		}
-		
+
 		return merchantDetail;
 	}
 
