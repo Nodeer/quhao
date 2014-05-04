@@ -14,7 +14,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -695,9 +694,12 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 			break;
 		case R.id.no_sequence_merchants:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			Builder dialog = new AlertDialog.Builder(getActivity());
-			dialog.setTitle("温馨提示").setMessage("亲，暂未开放，敬请期待。").setPositiveButton("确定", null);
-			dialog.show();
+//			Builder dialog = new AlertDialog.Builder(getActivity());
+//			dialog.setTitle("温馨提示").setMessage("亲，暂未开放，敬请期待。").setPositiveButton("确定", null);
+//			dialog.show();
+			Intent login1 = new Intent(getActivity(), NoQueueMerchantListActivity.class);
+			login1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+			startActivity(login1);
 			break;
 		default:
 			break;
