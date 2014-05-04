@@ -5,8 +5,7 @@
     android:background="#ffffffff"
     android:orientation="vertical" >
 
-    <!-- Merchant List page's title, eg, 本帮菜【共1000家】 -->
-
+    <!-- Merchant List page's title, eg, 本帮菜-->
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="50dip"
@@ -24,45 +23,47 @@
             android:background="@null"
             android:drawableLeft="@drawable/arrow_left"
             android:gravity="center|center_vertical"
-            android:textColor="#ff000000"
-            android:textSize="18.0sp"  />
+            />
 
         <TextView
             android:id="@+id/categoryTypeTitle"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:gravity="center_vertical"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:gravity="center_vertical"
             android:text=""
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="#ff000000" />
-
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
     </RelativeLayout>
-    <!-- Merchant List page's title, eg, 本帮菜【共1000家】 -->
+    <!-- Merchant List page's title, eg, 本帮菜 -->
 
     <LinearLayout
         android:id="@+id/merchantsLayout"
         android:layout_width="fill_parent"
         android:layout_height="0dip"
         android:layout_weight="1.0" >
-		<com.withiter.quhao.view.refresh.PullToRefreshView xmlns:android="http://schemas.android.com/apk/res/android" 
-		  	    android:id="@+id/main_pull_refresh_view"
-			    android:layout_width="fill_parent"
-			    android:layout_height="fill_parent"
-			    android:background="@android:color/white">
-        <ListView
-            android:id="@+id/merchantsListView"
+
+        <com.withiter.quhao.view.refresh.PullToRefreshView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/main_pull_refresh_view"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_gravity="center_horizontal"
-            android:cacheColorHint="@null"
-            android:divider="@null"
-            android:entries="@null"
-            android:headerDividersEnabled="true"
-            android:listSelector="@drawable/list_item_trans"
-            android:scrollbarThumbVertical="@drawable/scrollbar"
-            android:scrollbars="vertical" />
+            android:background="@android:color/white" >
+
+            <ListView
+                android:id="@+id/merchantsListView"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center_horizontal"
+                android:cacheColorHint="@null"
+                android:divider="@null"
+                android:entries="@null"
+                android:headerDividersEnabled="true"
+                android:listSelector="@drawable/list_item_trans"
+                android:scrollbarThumbVertical="@drawable/scrollbar"
+                android:scrollbars="vertical" />
         </com.withiter.quhao.view.refresh.PullToRefreshView>
     </LinearLayout>
 

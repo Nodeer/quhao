@@ -32,7 +32,6 @@ public class MerchantAdapter extends BaseAdapter {
 		super();
 		this.listView = listView;
 		this.merchants = merchants;
-
 	}
 
 	@Override

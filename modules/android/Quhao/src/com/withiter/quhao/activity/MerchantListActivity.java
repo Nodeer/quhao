@@ -33,7 +33,7 @@ import com.withiter.quhao.vo.Merchant;
 /**
  * 商家列表页面
  */
-public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderRefreshListener,OnFooterRefreshListener{
+public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderRefreshListener, OnFooterRefreshListener {
 
 	private String LOGTAG = MerchantListActivity.class.getName();
 	protected ListView merchantsListView;
@@ -49,7 +49,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 	private boolean isFirst = true;
 	private boolean needToLoad = true;
 	public static boolean backClicked = false;
-	
+
 	private PullToRefreshView mPullToRefreshView;
 
 	@Override
@@ -64,13 +64,12 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 		QuhaoLog.i(LOGTAG, "init page is : " + this.page);
 		this.categoryType = getIntent().getStringExtra("categoryType");
 		this.cateName = getIntent().getStringExtra("cateName");
-		this.categoryCount = getIntent().getStringExtra("categoryCount");
 
 		this.categoryTypeTitle = (TextView) findViewById(R.id.categoryTypeTitle);
-		this.categoryTypeTitle.setText(cateName + "[" + categoryCount + "家]");
-		
+		this.categoryTypeTitle.setText(cateName);
+
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
-		
+
 		mPullToRefreshView = (PullToRefreshView) this.findViewById(R.id.main_pull_refresh_view);
 		mPullToRefreshView.setOnHeaderRefreshListener(this);
 		mPullToRefreshView.setOnFooterRefreshListener(this);
@@ -83,7 +82,6 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
-
 				LinearLayout.LayoutParams merchantsParams = (LayoutParams) merchantsListView.getLayoutParams();
 
 				// 设置自定义的layout
@@ -103,12 +101,9 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 				merchantAdapter.notifyDataSetChanged();
 				mPullToRefreshView.onHeaderRefreshComplete();
 				mPullToRefreshView.onFooterRefreshComplete();
-				if (!needToLoad) 
-				{
+				if (!needToLoad) {
 					mPullToRefreshView.setEnableFooterView(false);
-				}
-				else
-				{
+				} else {
 					mPullToRefreshView.setEnableFooterView(true);
 				}
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -131,26 +126,10 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 	};
 
 	private void initView() {
-		
 		merchantsListView = (ListView) findViewById(R.id.merchantsListView);
-		
 		merchantsListView.setNextFocusDownId(R.id.merchantsListView);
-		
 		merchantsListView.setVisibility(View.GONE);
 		merchantsListView.setOnItemClickListener(merchantItemClickListener);
-		
-		/*
-		bt.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				pg.setVisibility(View.VISIBLE);
-				bt.setVisibility(View.GONE);
-				MerchantListActivity.this.page += 1;
-				Thread merchantsThread = new Thread(merchantsRunnable);
-				merchantsThread.start();
-			}
-		});*/
 		getMerchants();
 	}
 
@@ -171,9 +150,9 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 		public void run() {
 			try {
 				Looper.prepare();
-				QuhaoLog.v(LOGTAG, "get categorys data form server begin");
+				QuhaoLog.d(LOGTAG, "get categorys data form server begin");
 				String url = "MerchantController/nextPage?page=" + page + "&cateType=" + categoryType + "&cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode;
-				QuhaoLog.i(LOGTAG, "the request url is : " + url);
+				QuhaoLog.d(LOGTAG, "the request url is : " + url);
 				String buf = CommonHTTPRequest.get(url);
 				if (StringUtils.isNull(buf) || "[]".endsWith(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -183,12 +162,10 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 						merchants = new ArrayList<Merchant>();
 					}
 					List<Merchant> mers = ParseJson.getMerchants(buf);
-					if(mers.size()<10)
-					{
+					if (mers.size() < 10) {
 						needToLoad = false;
 					}
 					merchants.addAll(mers);
-
 					merchantsUpdateHandler.obtainMessage(200, merchants).sendToTarget();
 				}
 
@@ -201,41 +178,34 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 			}
 		}
 	};
-	
-	/*
-	@Override
-	public void onScrollStateChanged(AbsListView view, int scrollState) {
-		
-		if(scrollState == OnScrollListener.SCROLL_STATE_IDLE
-				&& lastVisibleIndex == merchantAdapter.getCount())
-		{
-			pg.setVisibility(View.VISIBLE);
-			bt.setVisibility(View.GONE);
-			MerchantListActivity.this.page += 1;
-			Thread merchantsThread = new Thread(merchantsRunnable);
-			merchantsThread.start();
-		}
-		
-	}
 
-	@Override
-	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-		// check hit the bottom of current loaded data
-		
-		lastVisibleIndex = firstVisibleItem + visibleItemCount -1;
-		if(!needToLoad)
-		{
-			merchantsListView.removeFooterView(moreView);
-			//Toast.makeText(MerchantListActivity.this, "the data load completely", Toast.LENGTH_LONG).show();
-			
-		}
-		
-//		if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount > 0 && needToLoad) {
-//			MerchantListActivity.this.page += 1;
-//			Thread merchantsThread = new Thread(merchantsRunnable);
-//			merchantsThread.start();
-//		}
-	}
+	/*
+	 * @Override public void onScrollStateChanged(AbsListView view, int
+	 * scrollState) {
+	 * 
+	 * if(scrollState == OnScrollListener.SCROLL_STATE_IDLE && lastVisibleIndex
+	 * == merchantAdapter.getCount()) { pg.setVisibility(View.VISIBLE);
+	 * bt.setVisibility(View.GONE); MerchantListActivity.this.page += 1; Thread
+	 * merchantsThread = new Thread(merchantsRunnable); merchantsThread.start();
+	 * }
+	 * 
+	 * }
+	 * 
+	 * @Override public void onScroll(AbsListView view, int firstVisibleItem,
+	 * int visibleItemCount, int totalItemCount) { // check hit the bottom of
+	 * current loaded data
+	 * 
+	 * lastVisibleIndex = firstVisibleItem + visibleItemCount -1;
+	 * if(!needToLoad) { merchantsListView.removeFooterView(moreView);
+	 * //Toast.makeText(MerchantListActivity.this, "the data load completely",
+	 * Toast.LENGTH_LONG).show();
+	 * 
+	 * }
+	 * 
+	 * // if (firstVisibleItem + visibleItemCount == totalItemCount &&
+	 * totalItemCount > 0 && needToLoad) { // MerchantListActivity.this.page +=
+	 * 1; // Thread merchantsThread = new Thread(merchantsRunnable); //
+	 * merchantsThread.start(); // } }
 	 */
 	@Override
 	public void onClick(View v) {
@@ -284,13 +254,13 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 				MerchantListActivity.this.page = 1;
 				isFirst = true;
 				needToLoad = true;
-				
-//				merchantsListView.setSelectionFromTop(0, 0);// 滑动到第一项
+
+				// merchantsListView.setSelectionFromTop(0, 0);// 滑动到第一项
 				MerchantListActivity.this.merchants = new ArrayList<Merchant>();
 				getMerchants();
 			}
 		}, 1000);
-		
+
 	}
 
 }
