@@ -56,7 +56,7 @@
             }
             else
             {
-                imgView.imageURL =[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,imgURL]];
+                imgView.imageURL =[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,[imgURL    stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ]]];
             }
             [imgView setFrame:CGRectMake(viewSize.size.width*i, 0,viewSize.size.width, viewSize.size.height)];
             imgView.tag=i;

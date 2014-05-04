@@ -103,7 +103,7 @@
         
         UIImage *image = [UIImage   imageNamed:@"arrow_down.png"];
         _arrowButton= [UIButton buttonWithType:UIButtonTypeCustom];
-        _arrowButton.frame = CGRectMake(140, 27, image.size.width, image.size.height);
+        _arrowButton.frame = CGRectMake(140, 22, image.size.width+5, image.size.height+5);
         [_arrowButton setBackgroundImage:image forState:UIControlStateNormal];
         [_arrowButton addTarget:self action:@selector(dropdown:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:_arrowButton];

@@ -290,9 +290,17 @@
                     [self setFootState:PullRefreshNormal];
                 }
             }
-            [self.tableView reloadData];
-            if(_HUD != nil){
-                [_HUD hide:YES];
+            if([_merchartsArray count]!=0){
+                [self.tableView reloadData];
+                if(_HUD != nil){
+                    [_HUD hide:YES];
+                }
+                
+            }else{
+                _HUD.labelText = @"暂无不排队商家,可以先看看其他的";
+                if(_HUD != nil){
+                    [_HUD hide:YES afterDelay:1];
+                }
             }
         });
     });
@@ -433,11 +441,19 @@
                          [self setFootState:PullRefreshNormal];
                      }
                  }
-                 [self.tableView reloadData];
-                 if(_HUD != nil){
-                     [_HUD hide:YES];
+                 if([_merchartsArray count]!=0){
+                     [self.tableView reloadData];
+                     if(_HUD != nil){
+                         [_HUD hide:YES];
+                     }
+
+                 }else{
+                     _HUD.labelText = @"暂无不排队商家,可以看看其他";
+                     if(_HUD != nil){
+                         [_HUD hide:YES afterDelay:1];
+                     }
                  }
-             });
+              });
          });
          if(placemarks.count > 0)
          {

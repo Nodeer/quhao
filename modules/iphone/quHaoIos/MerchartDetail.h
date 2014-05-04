@@ -21,6 +21,7 @@
 #import "CustomToolbar.h"
 #import "Paidu.h"
 #import "MapViewController.h"
+#import "SjmsViewController.h"
 @interface MerchartDetail : UIViewController<UITableViewDataSource,UITableViewDelegate>
 {
     UITableView *_detailView;

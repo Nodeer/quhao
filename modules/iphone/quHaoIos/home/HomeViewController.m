@@ -32,13 +32,16 @@
     _cityButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     [_cityButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
     UIBarButtonItem *cityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_cityButton];
-    
+    _cityCode = @"021";
     if ([Helper returnUserString:@"currentCity"]!=nil&&[Helper returnUserString:@"currentcityCode"]!=nil)
     {
         [_cityButton  setTitle:[Helper returnUserString:@"currentCity"] forState:UIControlStateNormal];
         _cityCode = [Helper returnUserString:@"currentcityCode"];
     }else{
-        [Helper saveDafaultData:_cityCode withName:@"currentcityCode"];
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setObject:_cityCode forKey:@"currentcityCode"];
+        [defaults setObject:@"上海" forKey:@"currentCity"];
+        [defaults synchronize];
     }
     if(_cityCode == nil){
         _cityCode = @"021";
@@ -57,7 +60,6 @@
     [btnButton addTarget:self action:@selector(clickSearch:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:btnButton];
     self.navigationItem.rightBarButtonItem = buttonItem;
-
 }
 
 - (void)viewDidLoad
@@ -93,7 +95,7 @@
         [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
         return;
     }
-    //[self locationService];
+    [self locationService];
     
     [self createHud];
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);

@@ -440,7 +440,7 @@
             [cell.contentView addSubview:_imgView];
             NSString * ph = [single.telephone objectAtIndex:0];
             if([[single.telephone objectAtIndex:0] isEqualToString:@""]){
-                ph = @"无";
+                ph = @"暂无";
             }else{
                 [Helper arrowStyle:cell];
             }
@@ -455,10 +455,17 @@
             _imgView.image= [UIImage imageNamed:@"clock.png"];
             [cell.contentView addSubview:_imgView];
             
-            NSString *value = [NSString stringWithFormat:@"%@%@ 至 %@",@" 营业时间:",single.openTime,single.closeTime];
-            UILabel *sjLabel = [Helper getCustomLabel:value font:14 rect:CGRectMake(35, 5, 260, 30)];
-            [cell.contentView addSubview:sjLabel];
+            if(single.openTime == nil || [single.openTime isEqualToString:@""]){
+                NSString *value = [NSString stringWithFormat:@"%@%@",@" 营业时间:",@"暂无"];
+                UILabel *sjLabel = [Helper getCustomLabel:value font:14 rect:CGRectMake(35, 5, 260, 30)];
+                [cell.contentView addSubview:sjLabel];
+            }else{
+                NSString *value = [NSString stringWithFormat:@"%@%@ 至 %@",@" 营业时间:",single.openTime,single.closeTime];
+                UILabel *sjLabel = [Helper getCustomLabel:value font:14 rect:CGRectMake(35, 5, 260, 30)];
+                [cell.contentView addSubview:sjLabel];
+            }
             cell.textLabel.font = [UIFont boldSystemFontOfSize:16];
+
         }else if ([indexPath row] == 6){
             cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tj.jpg"]];
             UILabel *nameLabel = [Helper getCustomLabel:@"  网友推荐:" font:16 rect:CGRectMake(0, 15, 80, 15)];
@@ -491,10 +498,16 @@
             cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ms.jpg"]];
             UILabel *nameLabel = [Helper getCustomLabel:@"  商家描述:" font:16 rect:CGRectMake(0, 25, 100, 15)];
             [cell.contentView addSubview:nameLabel];
-            
-            UILabel *msLabel = [Helper getCustomLabel:single.description font:14 rect:CGRectMake(10, 25, kDeviceWidth-10,65)];
-            [msLabel setNumberOfLines:0];
-            [cell.contentView addSubview:msLabel];
+            if(single.description!=nil && ![single.description isEqualToString:@""]){
+                UILabel *msLabel = [Helper getCustomLabel:single.description font:14 rect:CGRectMake(10, 40, kDeviceWidth-50,65)];
+                [msLabel setNumberOfLines:0];
+                [cell.contentView addSubview:msLabel];
+                [Helper arrowStyle:cell];
+            }else{
+                UILabel *msLabel = [Helper getCustomLabel:@"暂无介绍" font:14 rect:CGRectMake(10, 40, kDeviceWidth-50,65)];
+                [msLabel setNumberOfLines:0];
+                [cell.contentView addSubview:msLabel];
+            }
         }
 
     }
@@ -505,7 +518,7 @@
         }
         else
         {
-            self.egoImgView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,single.imgUrl]];
+            self.egoImgView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,[single.imgUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ]]];
         }
         titleLabel.text = single.name;
         
@@ -598,6 +611,8 @@
          [self pushMap:@"d" andNavController:self.navigationController andIsNextPage:NO];
     }else if(row==7){
         [self pushComment:@"d" andNavController:self.navigationController];
+    }else if(row==8){
+        [self pushSjms:self.navigationController];
     }
 }
 
@@ -682,6 +697,14 @@
     comment.title = @"评论";
     comment.hidesBottomBarWhenPushed=YES;
     [navController pushViewController:comment animated:YES];
+}
+
+- (void)pushSjms:(UINavigationController *)navController
+{
+    SjmsViewController *sjmsView = [[SjmsViewController alloc] init];
+    sjmsView.sjms = single.description;
+    sjmsView.hidesBottomBarWhenPushed=YES;
+    [navController pushViewController:sjmsView animated:YES];
 }
 
 - (void)viewDidUnload

@@ -66,7 +66,7 @@
     [super layoutSubviews];
     if ([[Helper returnUserString:@"showImage"] boolValue]&&![self.merchartModel.imgUrl isEqualToString:@""])
     {
-        self.egoImgView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,self.merchartModel.imgUrl]];
+        self.egoImgView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,[self.merchartModel.imgUrl  stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ]]];
     }
     
     _titleLabel.frame=CGRectMake(self.egoImgView.frame.origin.x+self.egoImgView.frame.size.width+5, 10, 200, 30);
@@ -82,7 +82,12 @@
     if ([self.merchartModel.distance intValue] == -1) {
         _disLabel.text = @"未定位";
     }else{
-        _disLabel.text = self.merchartModel.distance;
+        float dis = [self.merchartModel.distance floatValue];
+        if (dis<=1000) {
+            _disLabel.text=[NSString stringWithFormat:@"%.fm",dis];
+        } else {
+            _disLabel.text=[NSString stringWithFormat:@"%.1fkm",dis/1000];
+        }
     }
 }
 -(void)dealloc

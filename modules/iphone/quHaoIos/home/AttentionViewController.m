@@ -23,7 +23,7 @@
     _merchartsArray = [[NSMutableArray alloc] initWithCapacity:20];
     //注册
     self.tableView.frame = CGRectMake(0, 0, kDeviceWidth, kDeviceHeight);
-    [self.tableView registerClass:[HomeCell class] forCellReuseIdentifier:@"attentionCell"];
+    //[self.tableView registerClass:[HomeCell class] forCellReuseIdentifier:@"attentionCell"];
     
 #if IOS7_SDK_AVAILABLE
     if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
@@ -39,8 +39,13 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [self requestData];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
-            [_HUD hide:YES];
+            if([_merchartsArray count]!=0){
+                [self.tableView reloadData];
+                [_HUD hide:YES];
+            }else{
+                _HUD.labelText = @"您还没有添加关注";
+                [_HUD hide:YES afterDelay:1];
+            }
         });
     });
 }
@@ -98,16 +103,15 @@
 //dataSource
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentify=@"attentionCell";
-    HomeCell *cell=[tableView dequeueReusableCellWithIdentifier:cellIdentify];
-    //检查视图中有没闲置的单元格
-    if(cell==nil){
-        cell=[[HomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentify];
-    }
-    cell.merchartModel=_merchartsArray[indexPath.row];
-    [Helper arrowStyle:cell];
-    
-    return cell;
+        static NSString *cellIdentify=@"attentionCell";
+        HomeCell *cell=[tableView dequeueReusableCellWithIdentifier:cellIdentify];
+        //检查视图中有没闲置的单元格
+        if(cell==nil){
+            cell=[[HomeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentify];
+        }
+        cell.merchartModel=_merchartsArray[indexPath.row];
+        [Helper arrowStyle:cell];
+        return cell;
 }
 
 //选中一条纪录触发的事件
@@ -115,12 +119,13 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSInteger row = [indexPath row];
-    MerchartModel *n = [_merchartsArray objectAtIndex:row];
-    if (n)
-    {
-        [self pushMerchartDetail:n andNavController:self.navigationController andIsNextPage:NO];
+    if([_merchartsArray count]>0){
+        MerchartModel *n = [_merchartsArray objectAtIndex:row];
+        if (n)
+        {
+            [self pushMerchartDetail:n andNavController:self.navigationController andIsNextPage:NO];
+        }
     }
-    
 }
 
 //弹出商家详细页面
@@ -151,6 +156,7 @@
                 [_HUD hide:YES];
             }else{
                 [self addAfterInfo:jsonObjects];
+                
             }
         }
     }
