@@ -73,6 +73,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 
 	private LinearLayout currentQuHaoLayout;
 	private LinearLayout critiqueLayout;
+	private LinearLayout descLayout;
 	private ListView reservationListView;
 	private ReservationAdapter reservationAdapter;
 	private List<ReservationVO> rvos;
@@ -148,6 +149,8 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		});
 
 		this.merchantBusinessTime = (TextView) info.findViewById(R.id.merchantBusinessTime);
+		this.descLayout = (LinearLayout) info.findViewById(R.id.desc_layout);
+		descLayout.setOnClickListener(this);
 		this.merchantDesc = (TextView) info.findViewById(R.id.description);
 		this.merchantAverageCost = (TextView) info.findViewById(R.id.merchant_details_AverageCost);
 		this.xingjiabi = (TextView) info.findViewById(R.id.xingjiabi);
@@ -835,6 +838,22 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			{
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				Toast.makeText(this, "对不起，暂无评论。", Toast.LENGTH_LONG).show();
+			}
+			break;
+		case R.id.desc_layout:
+			if(StringUtils.isNotNull(this.merchant.description))
+			{
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				QuhaoLog.d("", "the commentContent : " + this.merchant.commentContent);
+				Intent intent = new Intent(this, MerchantDescActivity.class);
+				intent.putExtra("merchantDesc", this.merchant.description);
+				
+				startActivity(intent);
+			}
+			else
+			{
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				Toast.makeText(this, "对不起，暂无描述。", Toast.LENGTH_LONG).show();
 			}
 			break;
 		case R.id.seatNo:

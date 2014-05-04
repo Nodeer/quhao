@@ -155,7 +155,11 @@
 			android:screenOrientation="portrait"  />
 		<!-- merchant details page -->
 
-
+		<!-- merchant description page -->
+		<activity android:name="com.withiter.quhao.activity.MerchantDescActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
+			android:screenOrientation="portrait"  />
+		<!-- merchant description page -->
+		
 		<!-- search page -->
 		<!-- TODO: remove search page -->
 		<activity android:name="com.withiter.quhao.activity.MerchantsSearchActivity" android:label="@string/app_name" android:configChanges="keyboardHidden|orientation" android:launchMode="singleTop"
