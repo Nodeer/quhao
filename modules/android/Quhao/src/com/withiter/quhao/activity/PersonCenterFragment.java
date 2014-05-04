@@ -309,7 +309,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 							SharedprefUtil.put(getActivity(), QuhaoConstant.ACCOUNT_ID, loginInfo.accountId);
 							SharedprefUtil.put(getActivity(), QuhaoConstant.PHONE, loginInfo.phone);
 //							String encryptPassword = new DesUtils().decrypt(loginInfo.password);
-							SharedprefUtil.put(getActivity(), QuhaoConstant.PASSWORD, loginInfo.password);
+//							SharedprefUtil.put(getActivity(), QuhaoConstant.PASSWORD, loginInfo.password);
 							String isAutoLogin = SharedprefUtil.get(getActivity(), QuhaoConstant.IS_AUTO_LOGIN, "false");
 							SharedprefUtil.put(getActivity(), QuhaoConstant.IS_AUTO_LOGIN, isAutoLogin);
 							QHClientApplication.getInstance().accountInfo = account;

@@ -81,7 +81,7 @@ public class QHClientApplication extends Application {
 	/**
 	 * 当前位置信息
 	 */
-	public LatLonPoint lp = new LatLonPoint(31.235048, 121.474794);
+//	public LatLonPoint lp = new LatLonPoint(31.235048, 121.474794);
 	public AMapLocation location;
 	public static Context mContext;
 	private static QHClientApplication instance;
@@ -191,10 +191,10 @@ public class QHClientApplication extends Application {
 
 		String phone = SharedprefUtil.get(this, QuhaoConstant.PHONE, "");
 		String isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_AUTO_LOGIN, "");
-//		String password = SharedprefUtil.get(this, QuhaoConstant.PASSWORD, "");
+		String password = SharedprefUtil.get(this, QuhaoConstant.PASSWORD, "");
 
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-		String password = sharedPreferences.getString(QuhaoConstant.PASSWORD, "");
+//		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//		String password = sharedPreferences.getString(QuhaoConstant.PASSWORD, "");
 		QuhaoLog.d("cross, get password from sp", password);
 
 		if (StringUtils.isNull(isAutoLogin) || "false".equals(isAutoLogin) || StringUtils.isNull(phone) || StringUtils.isNull(password)) {
@@ -246,7 +246,7 @@ public class QHClientApplication extends Application {
 			if ("success".equals(account.msg)) {
 				SharedprefUtil.put(this, QuhaoConstant.ACCOUNT_ID, loginInfo.accountId);
 				SharedprefUtil.put(this, QuhaoConstant.PHONE, phone);
-				String encryptPassword = new DesUtils().encrypt(password);
+				String encryptPassword = new DesUtils().encrypt(decryptPassword);
 				SharedprefUtil.put(this, QuhaoConstant.PASSWORD, encryptPassword);
 				SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN, isAutoLogin);
 				this.accountInfo = account;

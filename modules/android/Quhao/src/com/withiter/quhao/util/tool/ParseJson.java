@@ -310,8 +310,8 @@ public class ParseJson {
 
 		double distance = obj.optDouble("distance");
 
-		double lat = obj.optDouble("y");
-		double lng = obj.optDouble("x");
+		double lat = obj.optDouble("x");
+		double lng = obj.optDouble("y");
 		boolean isAttention = obj.optBoolean("isAttention");
 		merchant = new Merchant(id, imgUrl, name, address, phone, cateType, grade, averageCost, tags, kouwei, huanjing, fuwu, xingjiabi, teses, nickName, description, openTime, closeTime,
 				marketCount, enable, joinedDate, lat, lng, distance);

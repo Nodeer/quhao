@@ -17,6 +17,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.amap.api.location.AMapLocation;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantAdapter;
@@ -152,6 +153,15 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 				Looper.prepare();
 				QuhaoLog.d(LOGTAG, "get categorys data form server begin");
 				String url = "MerchantController/nextPage?page=" + page + "&cateType=" + categoryType + "&cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode;
+				AMapLocation location = QHClientApplication.getInstance().location;
+				if(location != null)
+				{
+					url = url + "&userX=" + location.getLatitude() + "&userY=" + location.getLongitude();
+				}
+				else
+				{
+					url = url + "&userX=0.000000&userY=0.000000";
+				}
 				QuhaoLog.d(LOGTAG, "the request url is : " + url);
 				String buf = CommonHTTPRequest.get(url);
 				if (StringUtils.isNull(buf) || "[]".endsWith(buf)) {

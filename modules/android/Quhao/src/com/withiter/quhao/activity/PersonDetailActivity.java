@@ -250,10 +250,10 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 			{
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-//				Intent intentCredit = new Intent(); TODO : wjzwjz
-//				intentCredit.setClass(this, UpdatePasswordActivity.class);
-//				startActivity(intentCredit);
-//				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+				Intent updatePassword = new Intent();// TODO : wjzwjz
+				updatePassword.setClass(this, UpdatePasswordActivity.class);
+				startActivity(updatePassword);
+				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			} 
 			else 
 			{
@@ -669,7 +669,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 							SharedprefUtil.put(this, QuhaoConstant.ACCOUNT_ID, loginInfo.accountId);
 							SharedprefUtil.put(this, QuhaoConstant.PHONE, loginInfo.phone);
 //							String encryptPassword = new DesUtils().decrypt(loginInfo.password);
-							SharedprefUtil.put(this, QuhaoConstant.PASSWORD, loginInfo.password);
+//							SharedprefUtil.put(this, QuhaoConstant.PASSWORD, loginInfo.password);
 							String isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_AUTO_LOGIN, "false");
 							SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN, isAutoLogin);
 							QHClientApplication.getInstance().accountInfo = account;
