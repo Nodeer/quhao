@@ -48,7 +48,7 @@
             android:hint="@string/search_placeholder"
             android:background="@drawable/style_edittext"
             android:textSize="12sp"
-            android:textAlignment="center"
+            android:paddingLeft="20dp"
             android:imeOptions="actionSearch"
             />
 
