@@ -95,34 +95,21 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		QuhaoLog.d(TAG, "HomeFragment onAttach");
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		QuhaoLog.d(TAG, "HomeFragment onActivityCreated");
 	}
 
 	@Override
 	public void onViewStateRestored(Bundle savedInstanceState) {
 		super.onViewStateRestored(savedInstanceState);
-		QuhaoLog.d(TAG, "HomeFragment onViewStateRestored");
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
-		/*
-		 * if(scheduledExecutorService != null && isFirstScheduled) {
-		 * scheduledExecutorService =
-		 * Executors.newSingleThreadScheduledExecutor(); //
-		 * 当Activity显示出来后，每三秒钟切换一次图片显示
-		 * scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 1, 3,
-		 * TimeUnit.SECONDS);
-		 * 
-		 * }
-		 */
 	}
 
 	@Override
@@ -133,28 +120,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	@Override
 	public void onStop() {
 		super.onStop();
-		/*
-		 * // 当Activity不可见的时候停止切换 if(null != scheduledExecutorService) {
-		 * scheduledExecutorService.shutdown(); }
-		 */
 	}
-
-	/*
-	 * // 切换当前显示的图片 private Handler handler = new Handler() { public void
-	 * handleMessage(android.os.Message msg) {
-	 * mViewPager.setCurrentItem(mPosition);// 切换当前显示的图片
-	 * homeAdTitle.setText(topMerchants.get(mPosition).name); }; };
-	 * 
-	 * // 换行切换任务
-	 * 
-	 * private class ScrollTask implements Runnable { public void run() {
-	 * synchronized (mViewPager) { // System.out.println("mPosition: " +
-	 * mPosition); mPosition = (mPosition + 1) % mPoints.size();
-	 * handler.obtainMessage().sendToTarget(); // 通过Handler切换图片 //
-	 * System.out.println("切换图片++++"+mPosition); } }
-	 * 
-	 * }
-	 */
 
 	@Override
 	public void onDestroyView() {

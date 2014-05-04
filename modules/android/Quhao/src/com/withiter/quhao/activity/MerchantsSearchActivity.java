@@ -44,54 +44,6 @@ public class MerchantsSearchActivity extends QuhaoBaseActivity {
 	private boolean isFirst = true;
 	public static boolean backClicked = false;
 
-	private Handler merchantsUpdateHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			if (msg.what == 200) {
-				super.handleMessage(msg);
-				LinearLayout.LayoutParams merchantsParams = (LayoutParams) merchantsListView
-						.getLayoutParams();
-
-				// 设置自定义的layout
-				merchantsListView.setLayoutParams(merchantsParams);
-				merchantsListView.invalidate();
-				merchantsListView.setVisibility(View.VISIBLE);
-				// merchantsListView.addFocusables(merchants,
-				// merchants.size()-9);
-
-				// 默认isFirst是true.
-				if (isFirst) {
-					merchantAdapter = new MerchantAdapter(
-							MerchantsSearchActivity.this, merchantsListView,
-							merchants);
-					merchantsListView.setAdapter(merchantAdapter);
-					isFirst = false;
-				} else {
-					merchantAdapter.merchants = merchants;
-				}
-
-				merchantAdapter.notifyDataSetChanged();
-				merchantsListView
-						.setOnItemClickListener(merchantItemClickListener);
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			}
-		}
-	};
-
-	private AdapterView.OnItemClickListener merchantItemClickListener = new AdapterView.OnItemClickListener() {
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position,
-				long id) {
-			Merchant merchant = merchants.get(position);
-			Intent intent = new Intent();
-			intent.putExtra("merchantId", merchant.id);
-			intent.setClass(MerchantsSearchActivity.this,
-					MerchantDetailActivity.class);
-			startActivity(intent);
-			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-		}
-	};
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -107,8 +59,47 @@ public class MerchantsSearchActivity extends QuhaoBaseActivity {
 		merchantsListView.setVisibility(View.GONE);
 
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
-		// initView();
 	}
+	
+	private Handler merchantsUpdateHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.what == 200) {
+				super.handleMessage(msg);
+				LinearLayout.LayoutParams merchantsParams = (LayoutParams) merchantsListView.getLayoutParams();
+
+				// 设置自定义的layout
+				merchantsListView.setLayoutParams(merchantsParams);
+				merchantsListView.invalidate();
+				merchantsListView.setVisibility(View.VISIBLE);
+
+				// 默认isFirst是true.
+				if (isFirst) {
+					merchantAdapter = new MerchantAdapter(MerchantsSearchActivity.this, merchantsListView, merchants);
+					merchantsListView.setAdapter(merchantAdapter);
+					isFirst = false;
+				} else {
+					merchantAdapter.merchants = merchants;
+				}
+
+				merchantAdapter.notifyDataSetChanged();
+				merchantsListView.setOnItemClickListener(merchantItemClickListener);
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			}
+		}
+	};
+
+	private AdapterView.OnItemClickListener merchantItemClickListener = new AdapterView.OnItemClickListener() {
+		@Override
+		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+			Merchant merchant = merchants.get(position);
+			Intent intent = new Intent();
+			intent.putExtra("merchantId", merchant.id);
+			intent.setClass(MerchantsSearchActivity.this, MerchantDetailActivity.class);
+			startActivity(intent);
+			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+		}
+	};
 
 	@Override
 	protected void onResume() {
@@ -120,13 +111,12 @@ public class MerchantsSearchActivity extends QuhaoBaseActivity {
 	protected void onPause() {
 		super.onPause();
 		Log.i(LOGTAG, "backClicked: " + backClicked);
-		if(backClicked){
+		if (backClicked) {
 			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 		}
 	}
 
-	private OnClickListener goSearchMerchantsListener(
-			MerchantsSearchActivity merchantsSearchActivity) {
+	private OnClickListener goSearchMerchantsListener(MerchantsSearchActivity merchantsSearchActivity) {
 		OnClickListener listener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -139,19 +129,10 @@ public class MerchantsSearchActivity extends QuhaoBaseActivity {
 				// 让软键盘消失
 				InputMethodManager m = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 				if (m != null) {
-//					if(this.getCurrentFocus()!=null && this.getCurrentFocus().getWindowToken() != null)
-//					{
-//						m.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-//					}
-					
-					//R.id.login
-					//m.hideSoftInputFromWindow(passwordText.getWindowToken(), 0);
-					//m.hideSoftInputFromWindow(loginNameText.getWindowToken(), 0);
-					if(m.isActive()){
+					if (m.isActive()) {
 						m.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
 					}
-					
-					
+
 				}
 				getMerchants();
 
@@ -161,8 +142,7 @@ public class MerchantsSearchActivity extends QuhaoBaseActivity {
 	}
 
 	private void getMerchants() {
-		progressMerchants = new ProgressDialogUtil(this, R.string.empty,
-				R.string.querying, false);
+		progressMerchants = new ProgressDialogUtil(this, R.string.empty, R.string.querying, false);
 		progressMerchants.showProgress();
 		Thread merchantsThread = new Thread(merchantsRunnable);
 		merchantsThread.start();
@@ -173,19 +153,14 @@ public class MerchantsSearchActivity extends QuhaoBaseActivity {
 		public void run() {
 			try {
 				Looper.prepare();
-				Log.v(LOGTAG, "search merchants data from server begin : "
-						+ MerchantsSearchActivity.this.editSearch.getText());
-				if (null == MerchantsSearchActivity.this.editSearch.getText()
-						|| "".equals(MerchantsSearchActivity.this.editSearch
-								.getText().toString())) {
+				Log.v(LOGTAG, "search merchants data from server begin : " + MerchantsSearchActivity.this.editSearch.getText());
+				if (null == MerchantsSearchActivity.this.editSearch.getText() || "".equals(MerchantsSearchActivity.this.editSearch.getText().toString())) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					progressMerchants.closeProgress();
 
 				}
-				String result = CommonHTTPRequest
-						.get("MerchantController/getMerchantsByName?name="
-								+ MerchantsSearchActivity.this.editSearch
-										.getText().toString().trim() + "&cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode);
+				String result = CommonHTTPRequest.get("MerchantController/getMerchantsByName?name=" + MerchantsSearchActivity.this.editSearch.getText().toString().trim() + "&cityCode="
+						+ QHClientApplication.getInstance().defaultCity.cityCode);
 				if (StringUtils.isNull(result) || "null".equals(result) || "[]".equals(result)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
@@ -195,8 +170,7 @@ public class MerchantsSearchActivity extends QuhaoBaseActivity {
 
 					merchants.addAll(ParseJson.getMerchants(result));
 
-					merchantsUpdateHandler.obtainMessage(200, merchants)
-							.sendToTarget();
+					merchantsUpdateHandler.obtainMessage(200, merchants).sendToTarget();
 				}
 
 			} catch (Exception e) {

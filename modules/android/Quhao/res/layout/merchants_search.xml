@@ -6,30 +6,51 @@
     android:orientation="vertical" >
 
     <RelativeLayout
-        android:id="@+id/base_title"
         android:layout_width="fill_parent"
-        android:layout_height="50dip"  
-    	android:background="@drawable/common_top_bar_bg_blue3"
-    	android:padding="5dip"
-    	>
-    	<Button
+        android:layout_height="50dip"
+        android:layout_gravity="center"
+        android:background="@drawable/common_top_bar_bg_blue3"
+        android:padding="5dip" >
+
+        <Button
             android:id="@+id/back_btn"
             android:layout_width="50dip"
             android:layout_height="fill_parent"
             android:background="@null"
             android:drawableLeft="@drawable/arrow_left"
             android:gravity="center|center_vertical"
-            android:textColor="#ff000000"
-            android:textSize="18.0sp"  />
-    	
-		<EditText
-            android:id="@+id/edit_search1"
+            android:textSize="18.0sp" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:gravity="left|center"
-            android:hint="@string/search_placeholder"
+            android:gravity="center"
+            android:text="@string/search_title"
+            android:textColor="@color/white"
+            android:textStyle="bold"
             android:textAppearance="?android:textAppearanceMedium" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/base_title"
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:padding="5dip" >
+
+        <EditText
+            android:id="@+id/edit_search1"
+            android:layout_width="fill_parent"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:gravity="left|center"
+            android:singleLine="true"
+            android:hint="@string/search_placeholder"
+            android:background="@drawable/style_edittext"
+            android:textSize="12sp"
+            android:textAlignment="center"
+            android:imeOptions="actionSearch"
+            />
 
         <Button
             android:id="@+id/search_btn"
@@ -37,17 +58,15 @@
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:paddingLeft="20dip"
             android:background="@drawable/category_search_btn"
-            android:gravity="left|center" />
-	
-	</RelativeLayout>
-	
+            android:gravity="left|center"
+            android:paddingLeft="20dip" />
+    </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/merchantsLayout"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content" >
 
         <ListView
             android:id="@+id/merchantsListView"

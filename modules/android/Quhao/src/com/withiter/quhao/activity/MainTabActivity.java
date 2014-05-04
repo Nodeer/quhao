@@ -137,8 +137,6 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 
 			}
 		});
-		// TabWidget tabWidget = (TabWidget)findViewById(R.id.tabs);
-		// tabWidget.setBackgroundResource(R.drawable.ic_action_search);
 	}
 
 	private View getTabItemView(int i) {

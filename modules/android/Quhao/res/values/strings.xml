@@ -23,12 +23,17 @@
     <string name="dingwei">定位</string>
     <!-- 首页 -->
     
+    <!-- 搜索页面 -->
+    <string name="search_title">搜&#160;索</string>
+    <string name="search_placeholder">请输入关键字</string>
+    <!-- 搜索页面 -->
+    
     <!-- 加载页面 -->
     <string name="startup">排队不用等</string>
     <!-- 加载页面 -->
 
 	<!-- 分类页面 -->
-	<string name="search_placeholder">商户名,地址等&#8230;</string>
+	
 	<!-- 分类页面 -->
 
 	<string name="imageDesc">图片描述</string>
