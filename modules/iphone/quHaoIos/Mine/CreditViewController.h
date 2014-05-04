@@ -13,7 +13,7 @@
 #import "CreditCell.h"
 #import "Helper.h"
 #import "QuHaoUtil.h"
-@interface CreditViewController : UITableViewController
+@interface CreditViewController : UITableViewController<MBProgressHUDDelegate>
 {
 @private
     NSMutableArray *_creditArray;
@@ -23,6 +23,7 @@
     UIBarButtonItem *_cancelBarButtonItem;
     UIButton * _mutiButton;
     NSMutableArray *_delArray;
+    MBProgressHUD *_HUD;
 }
 
 @property (retain,nonatomic) NSString * accouId;

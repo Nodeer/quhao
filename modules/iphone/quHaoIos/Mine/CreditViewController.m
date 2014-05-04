@@ -60,21 +60,34 @@
 #endif
     _creditArray = [[NSMutableArray alloc] initWithCapacity:0];
     _delArray = [[NSMutableArray alloc] initWithCapacity:0];
-    MBProgressHUD *HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:HUD];
-    //如果设置此属性则当前的view置于后台
-    HUD.dimBackground = YES;
-    //设置对话框文字
-    HUD.labelText = @"正在加载...";
-    //显示对话框
-    [HUD showAnimated:YES whileExecutingBlock:^{
+    [self createHud];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [self requestData:[NSString stringWithFormat:@"%@%@?accountId=%@",IP,credit_url,self.accouId]];
-        [self.tableView reloadData];
-    } completionBlock:^{
-        //操作执行完后取消对话框
-        [HUD removeFromSuperview];
-        [self.tableView reloadData];
-    }];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if([_creditArray count]!=0){
+                [self.tableView reloadData];
+                [_HUD hide:YES];
+            }else{
+                _HUD.labelText = @"暂无积分消费信息";
+                [_HUD hide:YES afterDelay:1];
+            }
+        });
+    });
+}
+
+- (void)hudWasHidden:(MBProgressHUD *)hud {
+    [_HUD removeFromSuperview];
+	_HUD = nil;
+}
+
+-(void)createHud
+{
+    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:_HUD];
+    _HUD.mode = MBProgressHUDModeIndeterminate;
+    _HUD.labelText = @"正在加载";
+    [_HUD show:YES];
+    _HUD.delegate = self;
 }
 
 //设置行高
@@ -146,12 +159,14 @@
         NSString *response =[QuHaoUtil requestDb:str1];
         if([response isEqualToString:@""]){
             //异常处理
-            [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+            _HUD.labelText = @"服务器错误";
+            [_HUD hide:YES];
         }else{
             NSArray *jsonObjects=[QuHaoUtil analyseData:response];
             if(jsonObjects==nil){
                 //解析错误
-                [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+                _HUD.labelText = @"服务器错误";
+                [_HUD hide:YES];
             }else{
                 Credit *model = nil;
                 int i ;
@@ -174,7 +189,8 @@
     }//如果没有网络连接
     else
     {
-        [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
+        _HUD.labelText = @"当前网络不可用";
+        [_HUD hide:YES];
     }
 }
 

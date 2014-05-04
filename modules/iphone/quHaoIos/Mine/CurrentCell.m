@@ -57,7 +57,7 @@
     [super layoutSubviews];
     if ([[Helper returnUserString:@"showImage"] boolValue]&&![self.merchartModel.imgUrl isEqualToString:@""])
     {
-        self.egoImgView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,self.merchartModel.imgUrl]];
+        self.egoImgView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,[self.merchartModel.imgUrl  stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ]]];
     }
     
     _titleLabel.text=self.merchartModel.name;

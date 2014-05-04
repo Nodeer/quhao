@@ -65,8 +65,13 @@
                     [self setFootState:EGOOPullRefreshNormal];
                 }
             }
-            [self.tableView reloadData];
-            [_HUD hide:YES];
+            if([_merchartsArray count]!=0){
+                [self.tableView reloadData];
+                [_HUD hide:YES];
+            }else{
+                _HUD.labelText = @"您当前还没有取过号";
+                [_HUD hide:YES afterDelay:1];
+            }
         });
     });
 }

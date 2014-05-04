@@ -71,8 +71,13 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [self requestData:[NSString stringWithFormat:@"%@%@%@",IP,history_list_url,self.accouId]];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
-            [_HUD hide:YES];
+            if([_reservationArray count]!=0){
+                [self.tableView reloadData];
+                [_HUD hide:YES];
+            }else{
+                _HUD.labelText = @"暂无历史取号信息";
+                [_HUD hide:YES afterDelay:1];
+            }
         });
     });
 }

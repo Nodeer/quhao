@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 #import "MerchartModel.h"
-#import "MJRefreshFooterView.h"
 #import "MerchartDetail.h"
 #import "HistoryCell.h"
 #import "AppraiseViewController.h"

@@ -57,7 +57,7 @@
     [super layoutSubviews];
     if ([[Helper returnUserString:@"showImage"] boolValue]&&![self.reservationModel.imgUrl isEqualToString:@""])
     {
-        self.egoImgView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,self.reservationModel.imgUrl]];
+        self.egoImgView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,[self.reservationModel.imgUrl  stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ]]];
     }
     
     _titleLabel.text=self.reservationModel.name;

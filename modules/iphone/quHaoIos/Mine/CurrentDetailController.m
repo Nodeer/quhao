@@ -174,7 +174,7 @@
 {
     NSInteger row = [indexPath row];
     if(row==0||row==5||row==6){
-        return 100;
+        return 90;
     }else if(row==2||row==3||row==4){
         return 35;
     }else if (row==7){
@@ -208,7 +208,7 @@
             }
             else
             {
-                self.egoImgView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,single.imgUrl]];
+                self.egoImgView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,[single.imgUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ]]];
             }
             
             UILabel *_titleLabel = [Helper getCustomLabel:single.name font:18 rect:CGRectMake(egoImgView.frame.origin.x+egoImgView.frame.size.width+5, 5, kDeviceWidth-110, 25)];
@@ -226,9 +226,10 @@
             _pjLabel.font=[UIFont systemFontOfSize:12];
             [cell.contentView addSubview:_pjLabel];
         }else if ([indexPath row] ==1 ) { //取号情况的
-            CGSize size=CGSizeMake(320,75);
-            cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"qhqk.jpg" toSize:size]];
-            UILabel *nameLabel = [Helper getCustomLabel:@"  取号情况:" font:16 rect:CGRectMake(0, 5, 80, 15)];
+            //CGSize size=CGSizeMake(320,75);
+            //cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"qhqk.jpg" toSize:size]];
+            cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"qhmk"]];
+            UILabel *nameLabel = [Helper getCustomLabel:@"我的取号情况:" font:16 rect:CGRectMake(5, 5, 120, 15)];
             [cell.contentView addSubview:nameLabel];
             
             if(reservation == nil){
@@ -284,9 +285,15 @@
             _imgView.image= [UIImage imageNamed:@"clock.png"];
             [cell.contentView addSubview:_imgView];
             
-            NSString *value = [NSString stringWithFormat:@"%@%@ 至 %@",@" 营业时间:",single.openTime,single.closeTime];
-            UILabel *sjLabel = [Helper getCustomLabel:value font:14 rect:CGRectMake(35, 5, 260, 30)];
-            [cell.contentView addSubview:sjLabel];
+            if(single.openTime == nil || [single.openTime isEqualToString:@""]){
+                NSString *value = [NSString stringWithFormat:@"%@%@",@" 营业时间:",@"暂无"];
+                UILabel *sjLabel = [Helper getCustomLabel:value font:14 rect:CGRectMake(35, 5, 260, 30)];
+                [cell.contentView addSubview:sjLabel];
+            }else{
+                NSString *value = [NSString stringWithFormat:@"%@%@ 至 %@",@" 营业时间:",single.openTime,single.closeTime];
+                UILabel *sjLabel = [Helper getCustomLabel:value font:14 rect:CGRectMake(35, 5, 260, 30)];
+                [cell.contentView addSubview:sjLabel];
+            }
             cell.textLabel.font = [UIFont boldSystemFontOfSize:16];
         }else if ([indexPath row] == 5){
             cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tj.jpg"]];
@@ -320,10 +327,16 @@
             cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ms.jpg"]];
             UILabel *nameLabel = [Helper getCustomLabel:@"  商家描述:" font:16 rect:CGRectMake(0, 25, 100, 15)];
             [cell.contentView addSubview:nameLabel];
-            
-            UILabel *msLabel = [Helper getCustomLabel:single.description font:14 rect:CGRectMake(10, 25, 295,65)];
-            [msLabel setNumberOfLines:0];
-            [cell.contentView addSubview:msLabel];
+            if(single.description!=nil && ![single.description isEqualToString:@""]){
+                UILabel *msLabel = [Helper getCustomLabel:single.description font:14 rect:CGRectMake(10, 40, kDeviceWidth-50,65)];
+                [msLabel setNumberOfLines:0];
+                [cell.contentView addSubview:msLabel];
+                [Helper arrowStyle:cell];
+            }else{
+                UILabel *msLabel = [Helper getCustomLabel:@"暂无介绍" font:14 rect:CGRectMake(10, 40, kDeviceWidth-50,65)];
+                [msLabel setNumberOfLines:0];
+                [cell.contentView addSubview:msLabel];
+            }
         }
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
@@ -347,16 +360,17 @@
 //拨打电话的
 -(void)CallPhone
 {
-    NSString *phoneNum = [single.telephone objectAtIndex:0];// 电话号码
-    UIWebView *phoneCallWebView=nil;
-    NSURL *phoneURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@",phoneNum]];
-    
-    if ( !phoneCallWebView ) {
-        // 这个webView只是一个后台的容易 不需要add到页面上来  效果跟方法二一样 但是这个方法是合法的
-        phoneCallWebView = [[UIWebView alloc] initWithFrame:CGRectZero];
+    if([[single.telephone objectAtIndex:0] isEqualToString:@""]){
+        return;
     }
-    
+    UIWebView *phoneCallWebView=nil;
+    NSString *phoneNum = [single.telephone objectAtIndex:0];// 电话号码
+    NSURL *phoneURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@",phoneNum]];
+    if ( !phoneCallWebView ) {
+        phoneCallWebView = [[UIWebView alloc] initWithFrame:CGRectZero];// 这个webView只是一个后台的View 不需要add到页面上来  效果跟方法二一样 但是这个方法是合法的
+    }
     [phoneCallWebView loadRequest:[NSURLRequest requestWithURL:phoneURL]];
+    [self.view addSubview:phoneCallWebView];
 }
 
 //弹出显示商家位置的地图
@@ -379,6 +393,14 @@
     comment.title = @"评论";
     comment.hidesBottomBarWhenPushed=YES;
     [navController pushViewController:comment animated:YES];
+}
+
+- (void)pushSjms:(UINavigationController *)navController
+{
+    SjmsViewController *sjmsView = [[SjmsViewController alloc] init];
+    sjmsView.sjms = single.description;
+    sjmsView.hidesBottomBarWhenPushed=YES;
+    [navController pushViewController:sjmsView animated:YES];
 }
 
 - (void)viewDidUnload

@@ -35,13 +35,13 @@
     
     self.settingsInSection = [[NSMutableDictionary alloc] initWithCapacity:2];
     NSArray *first = [[NSArray alloc] initWithObjects:
-                      [[SettingModel alloc] initWith:[NSString stringWithFormat:@"%@%d",@"现有积分:",_jifen] andImg:@"image" andTag:1 andTitle2:nil],
-                      [[SettingModel alloc] initWith:@"积分说明" andImg:@"logout_status" andTag:2 andTitle2:nil],
+                      [[SettingModel alloc] initWith:[NSString stringWithFormat:@"%@%d",@"现有积分:",_jifen] andImg:@"viewJiFen" andTag:1 andTitle2:nil],
+                      [[SettingModel alloc] initWith:@"积分说明" andImg:@"jfsm" andTag:2 andTitle2:nil],
                       nil];
     
     NSArray *second = [[NSArray alloc] initWithObjects:
-                       [[SettingModel alloc] initWith:_name andImg:@"share" andTag:5 andTitle2:nil],
-                       [[SettingModel alloc] initWith:@"修改账户密码" andImg:@"opinion" andTag:6 andTitle2:nil],
+                       [[SettingModel alloc] initWith:_name andImg:@"logout_status" andTag:5 andTitle2:nil],
+                       [[SettingModel alloc] initWith:@"修改账户密码" andImg:@"xgmm" andTag:6 andTitle2:nil],
                        nil];
     [self.settingsInSection setObject:first forKey:@"积分"];
     [self.settingsInSection setObject:second forKey:@"账户"];
