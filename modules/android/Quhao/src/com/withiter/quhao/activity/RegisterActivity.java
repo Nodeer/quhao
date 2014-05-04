@@ -22,6 +22,8 @@ import android.widget.Toast;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
+import com.withiter.quhao.domain.AccountInfo;
+import com.withiter.quhao.task.LoginTask;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.encrypt.DesUtils;
@@ -30,6 +32,7 @@ import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SharedprefUtil;
+import com.withiter.quhao.vo.LoginInfo;
 import com.withiter.quhao.vo.SignupVO;
 
 public class RegisterActivity extends QuhaoBaseActivity {
@@ -127,12 +130,83 @@ public class RegisterActivity extends QuhaoBaseActivity {
 						editor.putString(QuhaoConstant.PASSWORD, HexedPwd);
 						editor.commit();
 
-						QHClientApplication.getInstance().isLogined = false;
-						Intent intent = new Intent();
-						intent.putExtra("activityName", RegisterActivity.class.getName());
-						intent.setClass(RegisterActivity.this, LoginActivity.class);
-						startActivity(intent);
-						RegisterActivity.this.finish();
+						String url = "AccountController/login?phone=" + loginName + "&email=&password=" + password;
+						final LoginTask task = new LoginTask(R.string.waitting, RegisterActivity.this, url);
+						task.execute(new Runnable() {
+							
+							@Override
+							public void run() {
+								String result = task.result;
+
+								LoginInfo loginInfo = ParseJson.getLoginInfo(result);
+								AccountInfo account = new AccountInfo();
+
+								account.build(loginInfo);
+								account.isAuto = "true";
+								SharedprefUtil.put(RegisterActivity.this, QuhaoConstant.IS_AUTO_LOGIN, "true");
+								if (account.msg.equals("fail")) {
+
+									Toast.makeText(RegisterActivity.this, "亲，网络不好哦，请重新登录！", Toast.LENGTH_LONG).show();
+									QHClientApplication.getInstance().accountInfo = null;
+									QHClientApplication.getInstance().isLogined = false;
+									RegisterActivity.this.finish();
+									// Handler handler = new Handler();
+									// handler.post(new Runnable() {
+									//
+									// @Override
+									// public void run() {
+									//
+									// loginResult.setText("用户名或密码错误，登陆失败");
+									// passwordText.setText("");
+									//
+									// }
+									// });
+								}
+								if (account.msg.equals("success")) {
+
+									SharedprefUtil.put(RegisterActivity.this, QuhaoConstant.ACCOUNT_ID, loginInfo.accountId);
+									SharedprefUtil.put(RegisterActivity.this, QuhaoConstant.PHONE, account.phone);
+
+									String HexedPwd = new DesUtils().encrypt(passwordText.getText().toString());
+									QuhaoLog.d("cross: login hexed password: ", HexedPwd);
+									SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+									SharedPreferences.Editor editor = sharedPreferences.edit();
+									editor.putString(QuhaoConstant.PASSWORD, HexedPwd);
+									editor.commit();
+//									SharedprefUtil.put(this, QuhaoConstant.PASSWORD, HexedPwd);
+
+									// login state will store in QHClientApplication
+									QHClientApplication.getInstance().accountInfo = account;
+									QHClientApplication.getInstance().isLogined = true;
+									RegisterActivity.this.finish();
+									
+								}
+							
+							}
+						},new Runnable() {
+							
+							@Override
+							public void run() {
+								Handler handler = new Handler();
+								handler.post(new Runnable() {
+
+									@Override
+									public void run() {
+
+										Toast.makeText(RegisterActivity.this, "亲，网络不是很好哦", Toast.LENGTH_LONG).show();
+										unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+									}
+								});
+								
+							}
+						});
+						
+//						QHClientApplication.getInstance().isLogined = false;
+//						Intent intent = new Intent();
+//						intent.putExtra("activityName", RegisterActivity.class.getName());
+//						intent.setClass(RegisterActivity.this, LoginActivity.class);
+//						startActivity(intent);
+//						RegisterActivity.this.finish();
 					} else {
 						Toast.makeText(RegisterActivity.this, signup.errorText, Toast.LENGTH_LONG).show();
 					}
