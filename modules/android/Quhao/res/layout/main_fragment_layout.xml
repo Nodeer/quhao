@@ -27,7 +27,7 @@
             android:singleLine="true"
             android:textAlignment="viewEnd"
             android:textColor="@color/white"
-            android:textIsSelectable="true"
+            android:textIsSelectable="false"
             android:textSize="15.0sp" />
 
         <!-- search button -->
