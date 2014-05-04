@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="#ffffffff"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+   
+    <LinearLayout android:layout_alignParentTop="true"
+        android:id="@+id/titleBar"
+		android:layout_width="fill_parent"    
+    	android:layout_height="50dip"    
+    	android:background="@drawable/common_top_bar_bg_blue3"    
+    	android:paddingLeft="5dip"    
+    	android:paddingRight="5dip" 
+    	android:paddingTop="5dip"
+    	android:paddingBottom="5dip" 
+    	android:gravity="center_vertical|center_horizontal" 
+    	>
+    	
+        <Button
+            android:id="@+id/back_btn"
+            android:layout_width="50dip"
+            android:layout_height="fill_parent"
+            android:background="@null"
+            android:drawableLeft="@drawable/arrow_left"
+            android:gravity="center|center_vertical"
+            />
+
+		<TextView
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="@string/no_queue_merchant_list_title"
+		    android:textAppearance="?android:textAppearanceMedium"
+		    android:textColor="#ff000000" />
+	
+	</LinearLayout>
+	<LinearLayout
+        android:id="@+id/loadingbar"
+        android:layout_below="@id/titleBar"
+        android:layout_alignParentBottom="true"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffffff"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dip">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="10dip"
+            android:layout_height="10dip" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading"
+            android:textColor="#ff000000" />
+    </LinearLayout>
+	<LinearLayout android:id="@+id/serverdata"
+	    android:layout_below="@id/titleBar"
+	    android:layout_alignParentBottom="true"
+	    android:orientation="vertical"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="match_parent" 
+	    android:background="#ffffffff"
+	    android:visibility="gone">
+		<LinearLayout 
+		    android:orientation="vertical"
+		    android:layout_width="fill_parent" 
+		    android:layout_height="50dip" 
+		    android:background="#ffffffff">
+	
+			<com.withiter.quhao.view.expandtab.ExpandTabView 
+			    android:id="@+id/expandtab_view"
+		        android:layout_width="fill_parent"
+		        android:layout_height="fill_parent"/>
+			
+		</LinearLayout>
+		<LinearLayout 
+		    android:orientation="vertical"
+		    android:layout_width="fill_parent" 
+		    android:layout_height="match_parent" 
+		    android:background="#ffffffff">
+			<com.withiter.quhao.view.refresh.PullToRefreshView xmlns:android="http://schemas.android.com/apk/res/android" 
+		  	    android:id="@+id/main_pull_refresh_view"
+			    android:layout_width="fill_parent"
+			    android:layout_height="fill_parent"
+			    android:background="@android:color/white">
+		       	<ListView
+		       	    android:id="@+id/merchantsListView"
+		       	    android:layout_width="fill_parent"
+		       	    android:layout_height="fill_parent"
+		       	    android:layout_gravity="center_horizontal"
+		       	    android:cacheColorHint="@null"
+		       	    android:divider="@null"
+		       	    android:entries="@null"
+		       	    android:headerDividersEnabled="true"
+		       	    android:listSelector="@drawable/list_item_trans"
+		       	    android:scrollbarThumbVertical="@drawable/scrollbar"
+		       	    android:scrollbars="vertical" />
+			</com.withiter.quhao.view.refresh.PullToRefreshView>
+		</LinearLayout>
+    </LinearLayout>  
+    
+</RelativeLayout> 

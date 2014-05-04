@@ -245,11 +245,11 @@ public class LoginActivity extends QuhaoBaseActivity {
 					
 					String HexedPwd = new DesUtils().encrypt(passwordText.getText().toString());
 					QuhaoLog.d("cross: login hexed password: ", HexedPwd);
-					SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-					SharedPreferences.Editor editor = sharedPreferences.edit();
-					editor.putString(QuhaoConstant.PASSWORD, HexedPwd);
-					editor.commit();
-//					SharedprefUtil.put(this, QuhaoConstant.PASSWORD, HexedPwd);
+//					SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//					SharedPreferences.Editor editor = sharedPreferences.edit();
+//					editor.putString(QuhaoConstant.PASSWORD, HexedPwd);
+//					editor.commit();
+					SharedprefUtil.put(this, QuhaoConstant.PASSWORD, HexedPwd);
 
 					SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN, isAutoLogin.trim());
 

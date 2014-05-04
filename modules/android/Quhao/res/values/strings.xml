@@ -223,4 +223,6 @@
     <string name="pull_to_refresh_footer_pull_label">上拉加载更多</string>
     <string name="pull_to_refresh_footer_refreshing_label">加载中\u2026</string>
 	<!-- refresh view end -->
+	<string name="no_queue_merchant_list_title">不用排队商家</string>
+	
 </resources>

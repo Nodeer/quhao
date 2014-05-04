@@ -80,8 +80,9 @@ public class UpdatePasswordActivity extends QuhaoBaseActivity {
 					{
 						Toast.makeText(UpdatePasswordActivity.this, "亲，修改密码成功！", Toast.LENGTH_LONG).show();
 						
-						SharedprefUtil.put(UpdatePasswordActivity.this, QuhaoConstant.PASSWORD, newPassword);
-						QHClientApplication.getInstance().accountInfo.password = newPassword;
+						String HexedPwd = new DesUtils().encrypt(newPassword);
+						SharedprefUtil.put(UpdatePasswordActivity.this, QuhaoConstant.PASSWORD, HexedPwd);
+//						QHClientApplication.getInstance().accountInfo.password = newPassword;
 						UpdatePasswordActivity.this.finish();
 					}
 					else
@@ -134,8 +135,7 @@ public class UpdatePasswordActivity extends QuhaoBaseActivity {
 						currentPassword = currentPasswordText.getText().toString().trim();
 //						String HexedPwd = new DesUtils().decrypt(accountInfo.password); TODO : 密码加密问题
 //						SharedprefUtil.put(this, QuhaoConstant.PASSWORD, HexedPwd); 1711bd2d3d6441525f4826681a8b4d9a
-						if (StringUtils.isNotNull(currentPassword)
-								&& null != accountInfo && currentPassword.equals(new DesUtils().decrypt(accountInfo.password))) {
+						if (StringUtils.isNotNull(currentPassword)) {
 							newPassword = newPasswordText.getText().toString().trim();
 							newPassword2 = newPassword2Text.getText().toString().trim();
 							if(StringUtils.isNull(newPassword))
@@ -157,7 +157,7 @@ public class UpdatePasswordActivity extends QuhaoBaseActivity {
 							}
 							
 
-							if(!currentPassword.equals(newPassword))
+							if(currentPassword.equals(newPassword))
 							{
 								progressDialogUtil.closeProgress();
 								Toast.makeText(UpdatePasswordActivity.this, "新密码与旧密码必须不同。", Toast.LENGTH_LONG).show();

@@ -143,6 +143,11 @@
 		<activity android:name="com.withiter.quhao.activity.MerchantListActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
 			android:screenOrientation="portrait"  />
 		<!-- merchant list page -->
+		
+		<!-- merchant list page -->
+		<activity android:name="com.withiter.quhao.activity.NoQueueMerchantListActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
+			android:screenOrientation="portrait"  />
+		<!-- merchant list page -->
 
 
 		<!-- merchant details page -->

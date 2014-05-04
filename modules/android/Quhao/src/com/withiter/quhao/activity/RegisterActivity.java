@@ -123,12 +123,12 @@ public class RegisterActivity extends QuhaoBaseActivity {
 						SharedprefUtil.put(RegisterActivity.this, QuhaoConstant.PHONE, loginName);
 						String HexedPwd = new DesUtils().encrypt(password.trim());
 						QuhaoLog.d("cross", "HexedPwd password:" + HexedPwd);
-//						SharedprefUtil.put(RegisterActivity.this, QuhaoConstant.PASSWORD, HexedPwd);
+						SharedprefUtil.put(RegisterActivity.this, QuhaoConstant.PASSWORD, HexedPwd);
 
-						SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-						SharedPreferences.Editor editor = sharedPreferences.edit();
-						editor.putString(QuhaoConstant.PASSWORD, HexedPwd);
-						editor.commit();
+//						SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//						SharedPreferences.Editor editor = sharedPreferences.edit();
+//						editor.putString(QuhaoConstant.PASSWORD, HexedPwd);
+//						editor.commit();
 
 						String url = "AccountController/login?phone=" + loginName + "&email=&password=" + password;
 						final LoginTask task = new LoginTask(R.string.waitting, RegisterActivity.this, url);
@@ -169,11 +169,11 @@ public class RegisterActivity extends QuhaoBaseActivity {
 
 									String HexedPwd = new DesUtils().encrypt(passwordText.getText().toString());
 									QuhaoLog.d("cross: login hexed password: ", HexedPwd);
-									SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-									SharedPreferences.Editor editor = sharedPreferences.edit();
-									editor.putString(QuhaoConstant.PASSWORD, HexedPwd);
-									editor.commit();
-//									SharedprefUtil.put(this, QuhaoConstant.PASSWORD, HexedPwd);
+//									SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//									SharedPreferences.Editor editor = sharedPreferences.edit();
+//									editor.putString(QuhaoConstant.PASSWORD, HexedPwd);
+//									editor.commit();
+									SharedprefUtil.put(RegisterActivity.this, QuhaoConstant.PASSWORD, HexedPwd);
 
 									// login state will store in QHClientApplication
 									QHClientApplication.getInstance().accountInfo = account;
@@ -274,7 +274,7 @@ public class RegisterActivity extends QuhaoBaseActivity {
 							String buf = CommonHTTPRequest.get(url);
 							if (StringUtils.isNull(buf) || "[]".equals(buf)) {
 								progressDialogUtil.closeProgress();
-								Toast.makeText(RegisterActivity.this, "发送验证码失败， 请重按验证码按钮。", Toast.LENGTH_LONG).show();
+								Toast.makeText(RegisterActivity.this, "亲，注册失败了，请重新注册。", Toast.LENGTH_LONG).show();
 								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 								return;
 							}
@@ -290,7 +290,7 @@ public class RegisterActivity extends QuhaoBaseActivity {
 					} catch (Exception e) {
 						e.printStackTrace();
 						progressDialogUtil.closeProgress();
-						Toast.makeText(RegisterActivity.this, "发送验证码失败， 请重发", Toast.LENGTH_LONG).show();
+						Toast.makeText(RegisterActivity.this, "亲，注册失败了，请重新注册。", Toast.LENGTH_LONG).show();
 						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 
 					} finally {

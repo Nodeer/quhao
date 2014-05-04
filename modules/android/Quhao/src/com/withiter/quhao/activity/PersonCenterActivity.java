@@ -503,7 +503,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 							SharedprefUtil.put(this, QuhaoConstant.ACCOUNT_ID, loginInfo.accountId);
 							SharedprefUtil.put(this, QuhaoConstant.PHONE, loginInfo.phone);
 //							String encryptPassword = new DesUtils().decrypt(loginInfo.password);
-							SharedprefUtil.put(this, QuhaoConstant.PASSWORD, loginInfo.password);
+//							SharedprefUtil.put(this, QuhaoConstant.PASSWORD, loginInfo.password);
 							String isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_AUTO_LOGIN, "false");
 							SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN, isAutoLogin);
 							QHClientApplication.getInstance().accountInfo = account;
