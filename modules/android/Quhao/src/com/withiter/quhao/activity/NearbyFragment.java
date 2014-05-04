@@ -41,8 +41,7 @@ import com.withiter.quhao.view.refresh.PullToRefreshView.OnFooterRefreshListener
 import com.withiter.quhao.view.refresh.PullToRefreshView.OnHeaderRefreshListener;
 import com.withiter.quhao.vo.Merchant;
 
-public class NearbyFragment extends Fragment implements AMapLocationListener, OnItemClickListener, 
-	OnClickListener,OnHeaderRefreshListener, OnFooterRefreshListener {
+public class NearbyFragment extends Fragment implements AMapLocationListener, OnItemClickListener, OnClickListener, OnHeaderRefreshListener, OnFooterRefreshListener {
 
 	private LocationManagerProxy mAMapLocationManager = null;
 	private int page = 1;
@@ -53,139 +52,129 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 	private List<Merchant> merchantList;
 
 	private boolean isFirstLocation = false;
-	
+
 	private AMapLocation firstLocation = null;
-	
+
 	private ExpandTabView expandTabView;
 	private ArrayList<View> mViewArray = new ArrayList<View>();
 	private ViewLeft viewLeft;
-	
+
 	private int searchDistence;
-	
+
 	private String[] distanceItems;
-	
+
 	private String[] distanceItemsValue;
-	
+
 	private boolean isClick;
-	
+
 	private static final int UNLOCK_CLICK = 1000;
-	
+
 	private View contentView;
-	
+
 	private ViewGroup group;
-	
+
 	private PullToRefreshView mPullToRefreshView;
-	
+
 	protected Handler unlockHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what == UNLOCK_CLICK) {
-				
 				isClick = false;
 			}
 		}
 	};
-	
+
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		Log.e("wjzwjz", "NearbyFragment onCreateView");
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		this.group = container;
 		page = 1;
 		isFirstLoad = true;
 		needToLoad = true;
 		isFirstLocation = false;
 		firstLocation = null;
-		contentView = inflater.inflate(R.layout.nearby_fragment_layout, container,false);
-		merchantsListView = (ListView) contentView
-				.findViewById(R.id.merchantsListView);
-		
+		contentView = inflater.inflate(R.layout.nearby_fragment_layout, container, false);
+		merchantsListView = (ListView) contentView.findViewById(R.id.merchantsListView);
+
 		mPullToRefreshView = (PullToRefreshView) contentView.findViewById(R.id.main_pull_refresh_view);
 		mPullToRefreshView.setEnableFooterView(true);
 		mPullToRefreshView.setOnHeaderRefreshListener(this);
 		mPullToRefreshView.setOnFooterRefreshListener(this);
-		
+
 		merchantsListView.setNextFocusDownId(R.id.merchantsListView);
-		
+
 		initExpandView();
-		
+
 		if (!ActivityUtil.isNetWorkAvailable(getActivity())) {
 			Builder dialog = new AlertDialog.Builder(getActivity());
 			dialog.setTitle("温馨提示").setMessage("Wifi/蜂窝网络未打开，或者网络情况不是很好哟").setPositiveButton("确定", null);
 			dialog.show();
-			
 		}
-		
-		if (mAMapLocationManager == null) {  
-            mAMapLocationManager = LocationManagerProxy.getInstance(getActivity());  
-            /* 
-             * mAMapLocManager.setGpsEnable(false);// 
-             * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true 
-             */  
-            // Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效  
-            mAMapLocationManager.requestLocationUpdates(  
-                    LocationProviderProxy.AMapNetwork, 5000, 10, this);  
-        }
+
+		if (mAMapLocationManager == null) {
+			mAMapLocationManager = LocationManagerProxy.getInstance(getActivity());
+			/*
+			 * mAMapLocManager.setGpsEnable(false);//
+			 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
+			 */
+			// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
+			mAMapLocationManager.requestLocationUpdates(LocationProviderProxy.AMapNetwork, 5000, 10, this);
+		}
 		contentView.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
 		contentView.findViewById(R.id.serverdata).setVisibility(View.GONE);
 		return contentView;
 	}
 
 	private void initExpandView() {
-		
-		if(searchDistence == 0)
-		{
+
+		if (searchDistence == 0) {
 			searchDistence = 1;
-			distanceItems = new String[] { "1000米", "2000米", "3000米", "4000米", "5000米", "搜全城" };//显示字段
-			distanceItemsValue = new String[] { "1", "2", "3", "4", "5","-1" };//显示字段
+			distanceItems = new String[] { "1000米", "2000米", "3000米", "4000米", "5000米", "搜全城" };// 显示字段
+			distanceItemsValue = new String[] { "1", "2", "3", "4", "5", "-1" };// 显示字段
 		}
-		
+
 		expandTabView = (ExpandTabView) contentView.findViewById(R.id.expandtab_view);
-		viewLeft = new ViewLeft(contentView.getContext(),distanceItems,distanceItemsValue,String.valueOf(searchDistence));
-		
+		viewLeft = new ViewLeft(contentView.getContext(), distanceItems, distanceItemsValue, String.valueOf(searchDistence));
+
 		mViewArray = new ArrayList<View>();
 		mViewArray.add(viewLeft);
 		ArrayList<String> mTextArray = new ArrayList<String>();
 		mTextArray.add("距离");
 		expandTabView.setValue(mTextArray, mViewArray);
 		expandTabView.setTitle(viewLeft.getShowText(), 0);
-		
-		viewLeft.setOnSelectListener(new ViewLeft.OnSelectListener() {
 
+		viewLeft.setOnSelectListener(new ViewLeft.OnSelectListener() {
 			@Override
 			public void getValue(String distance, String showText) {
 				onRefresh(viewLeft, showText);
 			}
 		});
 	}
-	
+
 	private void onRefresh(View view, String showText) {
-		
+
 		expandTabView.onPressBack();
 		int position = getPositon(view);
 		if (position >= 0 && !expandTabView.getTitle(position).equals(showText)) {
 			expandTabView.setTitle(showText, position);
 		}
-		
+
 		for (int i = 0; i < distanceItems.length; i++) {
-			if(showText.equals(distanceItems[i]))
-			{
-				searchDistence = Integer.valueOf(distanceItemsValue[i]); 
+			if (showText.equals(distanceItems[i])) {
+				searchDistence = Integer.valueOf(distanceItemsValue[i]);
 				break;
 			}
 		}
-//		setPoiSearch();
-//		buildTask();
+		// setPoiSearch();
+		// buildTask();
 		merchantsListView.setSelectionFromTop(0, 0);// 滑动到第一项
 		page = 1;
-//		isFirstLoad = true;
+		// isFirstLoad = true;
 		needToLoad = true;
-//		isFirstLocation = false;
-//		firstLocation = null;
-		
-		
+		// isFirstLocation = false;
+		// firstLocation = null;
+
 		merchantList = new ArrayList<Merchant>();
 		queryNearbyMerchants();
-		
+
 		Toast.makeText(getActivity(), showText, Toast.LENGTH_SHORT).show();
 
 	}
@@ -198,7 +187,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		}
 		return -1;
 	}
-	
+
 	protected Handler updateMerchantsHandler = new Handler() {
 
 		@Override
@@ -210,26 +199,22 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 				if (isFirstLoad) {
 
-					nearByAdapter = new MerchantNearByAdapter(
-							getActivity(), merchantsListView, merchantList);
+					nearByAdapter = new MerchantNearByAdapter(getActivity(), merchantsListView, merchantList);
 					merchantsListView.setAdapter(nearByAdapter);
 					isFirstLoad = false;
 				} else {
 					nearByAdapter.merchants = merchantList;
 				}
 				nearByAdapter.notifyDataSetChanged();
-//				merchantsListView.setOnScrollListener(NearbyFragment.this);
+				// merchantsListView.setOnScrollListener(NearbyFragment.this);
 				merchantsListView.setOnItemClickListener(NearbyFragment.this);
 				contentView.findViewById(R.id.loadingbar).setVisibility(View.GONE);
 				contentView.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
 				mPullToRefreshView.onHeaderRefreshComplete();
 				mPullToRefreshView.onFooterRefreshComplete();
-				if(!needToLoad)
-				{
+				if (!needToLoad) {
 					mPullToRefreshView.setEnableFooterView(false);
-				}
-				else
-				{
+				} else {
 					mPullToRefreshView.setEnableFooterView(true);
 				}
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -237,7 +222,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		}
 
 	};
-	
+
 	@Override
 	public void onPause() {
 		super.onPause();
@@ -248,55 +233,46 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 	@Override
 	public void onDestroyView() {
-		Log.e("wjzwjz", "NearbyFragment onDestroyView" + this.getId());
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
 			mAMapLocationManager.destory();
 		}
 		mAMapLocationManager = null;
-		Log.e("wjzwjz", "NearbyFragment end onDestroyView" + this.getId());
 		super.onDestroyView();
 	}
 
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		Log.e("wjzwjz", "NearbyFragment onAttach");
 	}
-	
+
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		Log.e("wjzwjz", "NearbyFragment onActivityCreated");
 	}
-	
+
 	@Override
 	public void onViewStateRestored(Bundle savedInstanceState) {
 		super.onViewStateRestored(savedInstanceState);
-		Log.e("wjzwjz", "NearbyFragment onViewStateRestored");
 	}
-	
+
 	@Override
 	public void onStart() {
 		super.onStart();
-		Log.e("wjzwjz", "NearbyFragment onStart");
 	}
-	
+
 	@Override
 	public void onStop() {
 		super.onStop();
-		Log.e("wjzwjz", "NearbyFragment onStop");
 	}
-	
+
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		Log.e("wjzwjz", "NearbyFragment onDetach");
 	}
-	
+
 	@Override
 	public void onDestroy() {
-		Log.e("wjzwjz", "NearbyFragment onDestroy");
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
 			mAMapLocationManager.destory();
@@ -304,34 +280,29 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		mAMapLocationManager = null;
 		super.onDestroy();
 	}
-	
+
 	@Override
 	public void onLocationChanged(Location location) {
-		
 
 	}
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		
 
 	}
 
 	@Override
 	public void onProviderEnabled(String provider) {
-		
 
 	}
 
 	@Override
 	public void onProviderDisabled(String provider) {
-		
 
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 		// 已经点过，直接返回
 		if (isClick) {
@@ -342,44 +313,39 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		isClick = true;
 		// 解锁
 		try {
-			if (null != merchantList && !merchantList.isEmpty() && null != merchantList.get(position) 
-					&& StringUtils.isNotNull(merchantList.get(position).id) && merchantList.get(position).enable) {
+			if (null != merchantList && !merchantList.isEmpty() && null != merchantList.get(position) && StringUtils.isNotNull(merchantList.get(position).id) && merchantList.get(position).enable) {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				Intent intent = new Intent();
 				intent.setClass(getActivity(), MerchantDetailActivity.class);
 				intent.putExtra("merchantId", merchantList.get(position).id);
 				getActivity().startActivity(intent);
-				getActivity().overridePendingTransition(R.anim.in_from_right,
-						R.anim.out_to_left);
-				
+				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+
 			} else {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				AlertDialog.Builder builder = new Builder(getActivity());
 				builder.setTitle("温馨提示");
 				builder.setMessage("对不起，该商家未在取号系统注册。");
-				builder.setPositiveButton("确认",
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								dialog.dismiss();
-							}
-						});
+				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
 				builder.create().show();
 			}
-			
+
 		} catch (Exception e) {
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			AlertDialog.Builder builder = new Builder(getActivity());
 			builder.setTitle("温馨提示");
 			builder.setMessage("对不起，网络异常。");
-			builder.setPositiveButton("确认",
-					new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							dialog.dismiss();
-						}
-					});
+			builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
 			builder.create().show();
 			e.printStackTrace();
 		}
@@ -390,56 +356,49 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 	public void onLocationChanged(AMapLocation location) {
 
 		if (null != location) {
-			if(!isFirstLocation)
-			{
+			if (!isFirstLocation) {
 				isFirstLocation = true;
 				firstLocation = location;
 				merchantList = new ArrayList<Merchant>();
 				queryNearbyMerchants();
-			}
-			else
-			{
+			} else {
 				float distance = firstLocation.distanceTo(location);
-				if(distance>100)
-				{
+				if (distance > 100) {
 					firstLocation = location;
 					merchantList = new ArrayList<Merchant>();
 					queryNearbyMerchants();
-				}
-				else
-				{
+				} else {
 					return;
 				}
-				
+
 			}
-			
+
 		}
 	}
 
 	private void queryNearbyMerchants() {
-		String url = "getNearMerchants?userX=" + firstLocation.getLongitude() + "&userY=" + firstLocation.getLatitude() + "&cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode + 
-				"&page=" + page + "&maxDis=" + searchDistence;
+		String url = "getNearMerchants?userX=" + firstLocation.getLongitude() + "&userY=" + firstLocation.getLatitude() + "&cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode
+				+ "&page=" + page + "&maxDis=" + searchDistence;
 		final NearbyMerchantsTask task = new NearbyMerchantsTask(R.string.waitting, getActivity(), url);
 		task.execute(new Runnable() {
-			
+
 			@Override
 			public void run() {
-				
+
 				String result = task.result;
 				List<Merchant> tempList = ParseJson.getMerchants(result);
-				if (null == tempList || tempList.isEmpty() || tempList.size()<20) {
+				if (null == tempList || tempList.isEmpty() || tempList.size() < 20) {
 					needToLoad = false;
 				}
-				if(null == merchantList)
-				{
+				if (null == merchantList) {
 					merchantList = new ArrayList<Merchant>();
 				}
 				merchantList.addAll(tempList);
 				Log.e("wjzwjz ", " success merchant list size : " + merchantList.size());
 				updateMerchantsHandler.obtainMessage(200, null).sendToTarget();
 			}
-		},new Runnable() {
-			
+		}, new Runnable() {
+
 			@Override
 			public void run() {
 				Log.e("wjzwjz ", " error merchant list size : " + merchantList.size());
@@ -452,13 +411,12 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 	@Override
 	public void onResume() {
 		super.onResume();
-//		contentView.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
-//		contentView.findViewById(R.id.serverdata).setVisibility(View.GONE);
-		
-//		buildTask();
+		// contentView.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
+		// contentView.findViewById(R.id.serverdata).setVisibility(View.GONE);
+
+		// buildTask();
 	};
 
-		
 	@Override
 	public void onClick(View v) {
 
@@ -477,59 +435,60 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 			break;
 		}
 	}
-	
+
 	@Override
 	public void onHeaderRefresh(PullToRefreshView view) {
 		page = 1;
-//		isFirstLoad = true;
+		// isFirstLoad = true;
 		needToLoad = true;
-//		isFirstLocation = false;
-//		firstLocation = null;
-		
+		// isFirstLocation = false;
+		// firstLocation = null;
+
 		merchantList = new ArrayList<Merchant>();
 		queryNearbyMerchants();
-//		mPullToRefreshView.postDelayed(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//
-//				page = 1;
-//				isFirstLoad = true;
-//				needToLoad = true;
-//				isFirstLocation = false;
-////				firstLocation = null;
-//				
-//				merchantList = new ArrayList<Merchant>();
-//				queryNearbyMerchants();
-////				mAMapLocationManager = LocationManagerProxy.getInstance(this);
-////				mAMapLocationManager.requestLocationUpdates(
-////						LocationProviderProxy.AMapNetwork, 5000, 10, this);
-//				
-////				buildTask();
-//				
-////				mPullToRefreshView.onHeaderRefreshComplete("更新于:"+new Date().toLocaleString());
-//				
-////				mPullToRefreshView.onHeaderRefreshComplete();
-//			}
-//		}, 1000);
+		// mPullToRefreshView.postDelayed(new Runnable() {
+		//
+		// @Override
+		// public void run() {
+		//
+		// page = 1;
+		// isFirstLoad = true;
+		// needToLoad = true;
+		// isFirstLocation = false;
+		// // firstLocation = null;
+		//
+		// merchantList = new ArrayList<Merchant>();
+		// queryNearbyMerchants();
+		// // mAMapLocationManager = LocationManagerProxy.getInstance(this);
+		// // mAMapLocationManager.requestLocationUpdates(
+		// // LocationProviderProxy.AMapNetwork, 5000, 10, this);
+		//
+		// // buildTask();
+		//
+		// // mPullToRefreshView.onHeaderRefreshComplete("更新于:"+new
+		// Date().toLocaleString());
+		//
+		// // mPullToRefreshView.onHeaderRefreshComplete();
+		// }
+		// }, 1000);
 
 	}
-	
+
 	@Override
 	public void onFooterRefresh(PullToRefreshView view) {
 		page++;
 		queryNearbyMerchants();
-//		mPullToRefreshView.postDelayed(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				// 处理下拉刷新最新数据
-////				merchantList = new ArrayList<Merchant>();
-//				
-//				
-//			}
-//		}, 1000);
+		// mPullToRefreshView.postDelayed(new Runnable() {
+		//
+		// @Override
+		// public void run() {
+		// // 处理下拉刷新最新数据
+		// // merchantList = new ArrayList<Merchant>();
+		//
+		//
+		// }
+		// }, 1000);
 
 	}
-	
+
 }

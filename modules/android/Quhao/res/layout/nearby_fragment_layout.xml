@@ -17,9 +17,9 @@
 		    android:id="@+id/merchantName"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:text="附近商家"
-		    android:textAppearance="?android:textAppearanceMedium"
-		    android:textColor="#ff000000" />
+		    android:text="@string/menu_nearby_merchant"
+		    android:textColor="@color/white"
+		    android:textAppearance="?android:textAppearanceMedium" />
 	
 	</LinearLayout>
 	<LinearLayout
@@ -30,7 +30,7 @@
         android:layout_height="match_parent"
         android:background="#ffffffff"
         android:gravity="center"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="10dip">
 
         <ProgressBar
@@ -38,8 +38,8 @@
             android:layout_height="wrap_content" />
 
         <View
-            android:layout_width="10dip"
-            android:layout_height="10dip" />
+            android:layout_width="12dip"
+            android:layout_height="12dip" />
 
         <TextView
             android:layout_width="wrap_content"

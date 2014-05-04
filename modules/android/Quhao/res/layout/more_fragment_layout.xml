@@ -21,7 +21,7 @@
             android:layout_centerVertical="true"
             android:text="@string/more"
             android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="#ff000000" />
+            android:textColor="@color/white" />
     </RelativeLayout>
 
     <ScrollView

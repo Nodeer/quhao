@@ -37,6 +37,7 @@
             android:layout_height="35dip"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
             android:text="@string/search_merchants"
             android:textAppearance="?android:textAppearanceMediumInverse"
             android:textColor="@color/white"

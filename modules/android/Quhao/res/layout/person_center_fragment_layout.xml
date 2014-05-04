@@ -19,12 +19,13 @@
 			android:id="@+id/register"
 			android:layout_width="wrap_content"
 			android:layout_height="35dip"
-			android:background="@drawable/btn_weight"
 			android:text="@string/register_3space"
 			android:layout_gravity="left|center_vertical"
 			android:textAppearance="?android:textAppearanceMediumInverse"
-			android:textColor="#ff000000"
-			android:textSize="14.0sp" />
+			android:textColor="@color/white"
+            android:textSize="15.0sp" 
+            android:background="@android:color/transparent"
+            android:paddingLeft="5dp"/>
 		<TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -32,17 +33,18 @@
             android:gravity="center"
             android:text="@string/gerenzhongxin"
             android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="#ff000000" />
+            android:textColor="@color/white" />
 		<Button
 		    android:id="@+id/login"
 		    android:layout_width="wrap_content"
 		    android:layout_height="35dip"
-		    android:background="@drawable/btn_weight"
 		    android:text="@string/login_3space"
 		    android:layout_gravity="right|center_vertical"
 		    android:textAppearance="?android:textAppearanceMediumInverse"
-		    android:textColor="#ff000000"
-		    android:textSize="14.0sp" />
+		    android:textColor="@color/white"
+            android:textSize="15.0sp" 
+            android:background="@android:color/transparent"
+            android:paddingRight="5dp"/>
 
     </FrameLayout>
     <!-- title -->
@@ -197,6 +199,7 @@
             android:orientation="horizontal"
             android:padding="10.0dip"
             android:textAlignment="center"
+            android:background="@drawable/background_line"
             >
 
             <LinearLayout android:id="@+id/signInLayout"

@@ -55,7 +55,7 @@
 	<string name="fuwu_4_space">服&#160;&#160;&#160;&#160;务:</string>
 	<string name="quhaoqingkuang">取号情况:</string>
 	<string name="search_merchant">搜索 - 美食</string>
-	<string name="loading">载入中&#8230;&#8230;&#8230;</string>
+	<string name="loading">载入中&#8230;</string>
 	<string name="merchant_description">商户描述:</string>
 	<string name="comment">网友点评:</string>
 	<string name="opentime">营业时间:</string>
@@ -70,7 +70,7 @@
 	
     <!-- 提示信息 -->
 	<string name="empty" />
-	<string name="deleting">清空中请稍后....</string>
+	<string name="deleting">清空中请稍后&#8230;</string>
 	<string name="connecting">连接中&#8230;</string>
 	<string name="network_error_info">网络连接失败，请检查网络设置！</string>
 	<string name="logining">登录中&#8230;</string>
@@ -95,8 +95,8 @@
 	<string name="quhao_states_comment">点评</string>
 	<!-- 当前/历史取号情况 -->
 	
-	<!-- 个人中心 -->
-	<string name="gerenzhongxin">个人中心</string>
+	<!-- 我的 -->
+	<string name="gerenzhongxin">我&#160;的</string>
 	<string name="gerenxinxi">个人信息</string>
 	<string name="avatar">您的优雅头像</string>
 	<string name="noname">无名人士</string>
@@ -127,7 +127,7 @@
 	<string name="input_nickname">请填写昵称</string>
 	<string name="nickname_cannot_null">请填写昵称</string>
 	<string name="nickname_update_failed">亲，网络原因，昵称更新失败！</string>
-	<!-- 个人中心 -->
+	<!-- 我的 -->
 	
 	<!-- menu bar -->
 	<string name="menu_category_list">主页</string>
@@ -156,7 +156,7 @@
 	<!-- jifen cost states -->
 	
 	<!-- more begin -->
-	<string name="more">更多</string>
+	<string name="more">更&#160;多</string>
 	<string name="more_setting">系统设置</string>
 	<string name="more_new_version">检查更新</string>
 	<string name="more_opinion">意见反馈</string>
@@ -185,8 +185,8 @@
     <string name="more_no_login">登录</string>
     
     
-    <string name="login_3space">登&#160;&#160;&#160;录</string>
-    <string name="register_3space">注&#160;&#160;&#160;册</string>
+    <string name="login_3space">登录</string>
+    <string name="register_3space">注册</string>
     
     <string-array name="share_title">
         <item>新浪微博</item>
