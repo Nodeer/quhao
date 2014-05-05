@@ -890,15 +890,15 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 							Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_LONG).show();
 							
 						} else {
-							if("success".equals(buf))
+							if("error".equals(buf))
 							{
 								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-								Toast.makeText(MerchantDetailActivity.this, R.string.committing_success, Toast.LENGTH_LONG).show();
+								Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_LONG).show();
 							}
 							else
 							{
 								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-								Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_LONG).show();
+								Toast.makeText(MerchantDetailActivity.this, R.string.committing_success, Toast.LENGTH_LONG).show();
 							}
 							
 						}

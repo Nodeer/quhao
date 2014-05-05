@@ -28,11 +28,6 @@
 			android:textColor="#ff000000"/>
 	
 	</RelativeLayout>
-	<ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1.0"
-        android:fillViewport="true" >
     <LinearLayout android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
@@ -50,5 +45,4 @@
             android:layout_height="match_parent" />
 	
     </LinearLayout>
-    </ScrollView>
 </LinearLayout> 

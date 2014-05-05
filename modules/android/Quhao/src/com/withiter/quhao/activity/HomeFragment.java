@@ -126,7 +126,10 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	public void onStop() {
 		Log.e("wjzwjz", "HomeFragment onStop");
 		// 当Activity不可见的时候停止切换
-		scheduledExecutorService.shutdown();
+		if(scheduledExecutorService != null)
+		{
+			scheduledExecutorService.shutdown();
+		}
 		scheduledExecutorService = null;
 		super.onStop();
 	}
