@@ -158,7 +158,7 @@ public class AccountController extends BaseController {
 			renderJSON(false);
 		}
 		
-		CooperationRequest c = new CooperationRequest(companyName,peopleName,peopleContact,peopleContact);
+		CooperationRequest c = new CooperationRequest(companyName,peopleName,peopleContact,peopleEmail);
 		c.save();
 		String subject = "商家合作申请提醒";
 		String href = Play.configuration.getProperty("application.domain")+"/admin";

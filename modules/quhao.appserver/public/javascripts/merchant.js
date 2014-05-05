@@ -575,7 +575,8 @@ Merchant.saveYouhui = function(mid){
 			success:function(data){
 				console.log(data);
 				if(data){
-					$("#errorTip").html("添加优惠信息成功！").removeClass().addClass("text-success").show();
+					$("#errorTip").html("添加优惠信息成功，3秒后刷新优惠列表！").removeClass().addClass("text-success").show();
+					setTimeout('location.reload()',3000);
 				}
 			},
 			error:function(){
@@ -588,9 +589,6 @@ Merchant.saveYouhui = function(mid){
 Merchant.validateYouhui = function(mid){
 	var youhuiTitle = $("#youhuiTitle").val();
 	var youhuiContent = $("#youhuiContent").val();
-	
-	console.log(youhuiTitle);
-	console.log(youhuiContent);
 	
 	if(Common.isEmpty(youhuiTitle)){
 		$("#errorTip").html("请输入优惠标题").addClass("text-danger").show();
