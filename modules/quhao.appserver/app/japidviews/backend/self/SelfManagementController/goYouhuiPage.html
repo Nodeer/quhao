@@ -1,0 +1,120 @@
+`import static press.Plugin.*;
+`import vo.YouhuiVO;
+`import vo.BackendMerchantInfoVO;
+`extends base_layout
+`set cssAndJs
+$addJS("merchant.js", true)
+$addCSS("backend.css", true)
+`
+`set title:i18n("取号啦 - 消费统计管理")
+
+`args List<YouhuiVO> youhuiList, BackendMerchantInfoVO bmivo
+
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="/public/images/common/quhao_favicon.jpg" type="image/png" rel="shortcut icon">
+
+<style type="text/css">
+.dataHeader{
+	float: left;
+	width: 150px;
+	text-align: center;
+	font-size: large;
+	color: black;
+	padding-bottom: 20px;
+	border: 1px solid;
+	margin-left: 15px;
+	vertical-align: middle;
+}
+
+.dataElement{
+	float: left;
+	width: 150px;
+	text-align: center;
+	border: 1px solid;
+	height: 38px;
+	margin-left: 15px;
+	vertical-align: middle;
+}
+
+.color_red{
+	border-color: inherit;
+	color: red;
+	font: bolder;
+}
+</style>
+
+</head>
+<body>
+
+	<div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+      <div class="container">
+        <div class="collapse navbar-collapse" style="font-size: 15px; font-weight: bolder;">
+          `t merchantMenu(bmivo,"youhui")
+        </div><!-- /.nav-collapse -->
+      </div><!-- /.container -->
+    </div><!-- /.navbar -->
+
+    <div class="container">
+      <div class="row row-offcanvas row-offcanvas-right">
+        <div class="col-xs-12 col-sm-12">
+        <div style="margin-top: 100px;" class="panel panel-default" id="">
+			  <div class="panel-heading">添加优惠信息<span style="margin-left: 10px;" id="errorTip"></span></div>
+			  <table class="table" >
+			  	<tr>
+			  		<td>
+					  <div class="form-group">
+					    <label for="youhuiTitle">优惠信息标题<span title="APP 用户第一眼看到的优惠标题（广告），越有吸引力的标题越好！" style="margin-left: 10px;" class="glyphicon glyphicon-info-sign"></span></label>
+					    <input type="text" class="form-control" id="youhuiTitle" placeholder="输入优惠信息标题，如：你敢消费，我敢买单" maxlength="100"/>
+					  </div>
+					  <div class="form-group">
+					    <label for="youhuiContent">优惠信息详细规则<span title="App 用户将使用如下优惠规则享受优惠，请认真核对优惠规则，由于规则不清晰引起的纠纷商家自行承担" style="margin-left: 10px;" class="glyphicon glyphicon-info-sign"></span></label>
+					    <textarea type="password" class="form-control" id="youhuiContent" placeholder="输入优惠信息详细规则，如：1. 享受95折优惠。2.消费满300元免费送啤酒5瓶。" maxlength="200" rows="3"></textarea>
+					  </div>
+					  <button class="btn btn-primary" onclick="Merchant.saveYouhui('${bmivo.mid}');">保存优惠信息</button>
+			  		</td>
+			  	</tr>
+			  </table>
+			</div>
+          <div class="panel panel-default" id="">
+			  <div class="panel-heading">当前优惠信息</div>
+			  <table class="table" >
+		  		`if(youhuiList.size() == 0){
+			  	<tr align="center">
+			  		<td>
+			  			暂无优惠信息
+			  		</td>
+			  	</tr>
+		  		`} else {
+		  			<thead>
+		  				<th style="border-right: 1px solid #ddd;">
+		  					优惠信息标题
+		  				</th>
+		  				<th>
+		  					优惠信息详细规则
+		  				</th>
+		  			</thead>
+		  			`for(YouhuiVO vo : youhuiList){
+	  				<tr style="border-bottom: 1px solid #ddd;">
+				  		<td style="border-right: 1px solid #ddd;">
+				  			${vo.title}
+				  		</td>
+				  		<td>
+				  			${vo.content}
+				  		</td>
+				  	</tr>
+		  			`}
+		  		`}
+			  </table>
+			</div>
+        </div><!--/span-->
+      </div><!--/row-->
+
+	  <!-- footer -->
+      `t merchantFoot
+	  <!-- footer -->
+    </div><!--/.container-->
+</body>
+</html>

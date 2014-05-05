@@ -231,6 +231,9 @@ Merchant.goPersonalPage = function(aid, mid){
 Merchant.goStatisticPage = function(mid){
 	window.location.href="/b/w/goStatisticPage?mid="+mid;
 }
+Merchant.goYouhuiPage = function(mid){
+	window.location.href="/b/w/goYouhuiPage?mid="+mid;
+}
 
 Merchant.autoRefresh = function(mid){
 	window.setInterval(refresh,1000 * 60,mid);
@@ -558,4 +561,45 @@ Merchant.logout = function(aid){
 			alert("服务器维护中，马上就好。");
 		}
 	});
+}
+
+Merchant.saveYouhui = function(mid){
+	if(Merchant.validateYouhui()){
+		var youhuiTitle = $("#youhuiTitle").val();
+		var youhuiContent = $("#youhuiContent").val();
+		$.ajax({
+			type:"POST",
+			url:"/b/w/saveYouhui",
+			dataType:"json",
+			data:{"mid":mid,"title":youhuiTitle,"content":youhuiContent},
+			success:function(data){
+				console.log(data);
+				if(data){
+					$("#errorTip").html("添加优惠信息成功！").removeClass().addClass("text-success").show();
+				}
+			},
+			error:function(){
+				alert("服务器维护中，马上就好。");
+			}
+		});
+	}
+}
+
+Merchant.validateYouhui = function(mid){
+	var youhuiTitle = $("#youhuiTitle").val();
+	var youhuiContent = $("#youhuiContent").val();
+	
+	console.log(youhuiTitle);
+	console.log(youhuiContent);
+	
+	if(Common.isEmpty(youhuiTitle)){
+		$("#errorTip").html("请输入优惠标题").addClass("text-danger").show();
+		return false;
+	}
+	if(Common.isEmpty(youhuiContent)){
+		$("#errorTip").html("请输入优惠详细规则").addClass("text-danger").show();
+		return false;
+	}
+	
+	return true;
 }

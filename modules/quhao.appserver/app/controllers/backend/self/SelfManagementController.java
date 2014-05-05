@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import play.Play;
+import play.libs.Codec;
 import play.libs.Images;
 import play.mvc.Before;
 import play.mvc.Scope.Session;
@@ -21,6 +23,7 @@ import vo.BackendMerchantInfoVO;
 import vo.HaomaVO;
 import vo.ReservationVO;
 import vo.StatisticsVO;
+import vo.YouhuiVO;
 import vo.account.MerchantAccountVO;
 import cn.bran.japid.util.StringUtils;
 
@@ -36,6 +39,7 @@ import com.withiter.models.merchant.Haoma;
 import com.withiter.models.merchant.Merchant;
 import com.withiter.models.merchant.Open;
 import com.withiter.models.merchant.Paidui;
+import com.withiter.models.merchant.Youhui;
 import com.withiter.utils.ExceptionUtil;
 
 import controllers.BaseController;
@@ -52,7 +56,8 @@ public class SelfManagementController extends BaseController {
 	static void checkAuthentification() {
 		if (!session.contains(Constants.SESSION_USERNAME)) {
 			logger.debug("no session is found in Constants.SESSION_USERNAME");
-			renderJapidWith("japidviews.LandingController.business");
+			String randomID = Codec.UUID();
+			renderJapidWith("japidviews.LandingController.business", randomID);
 		}
 	}
 
@@ -242,7 +247,9 @@ public class SelfManagementController extends BaseController {
 		renderJapid(avo, bmivo);
 	}
 
-	// TODO add statistic report here
+	/**
+	 * 消费统计管理
+	 */
 	public static void goStatisticPage() {
 		String mid = params.get("mid");
 		
@@ -261,19 +268,50 @@ public class SelfManagementController extends BaseController {
 		MerchantAccount account = MerchantAccount.findById(uid);
 		Merchant merchant = Merchant.findById(mid);
 		BackendMerchantInfoVO bmivo = BackendMerchantInfoVO.build(merchant, account);
-
-		
-//		long lastQuarterFinishCount = Reservation.lastQuarterFinishCount(mid);
-//		long lastQuarterCancelCount = Reservation.lastQuarterCancelCount(mid);
-		
-//		List<Reservation> rList = Reservation.findReservationsByMerchantIdandDate(mid);
-//		List<ReservationVO> voList = ReservationVO.build(rList);
-
-//		System.out.println(voList.size());
-
 		renderJapid(svo, bmivo);
 	}
 
+	/**
+	 * 优惠管理
+	 */
+	public static void goYouhuiPage(){
+		String mid = params.get("mid");
+		
+		List<Youhui> youhuiList = Youhui.getAllEnabledYouhui(mid);
+		List<YouhuiVO> yvoList = new ArrayList<YouhuiVO>();
+		for(Youhui yh : youhuiList){
+			yvoList.add(YouhuiVO.build(yh));
+		}
+		
+		String uid = Session.current().get(Constants.SESSION_USERNAME);
+		MerchantAccount account = MerchantAccount.findById(uid);
+		Merchant merchant = Merchant.findById(mid);
+		BackendMerchantInfoVO bmivo = BackendMerchantInfoVO.build(merchant, account);
+		renderJapid(yvoList, bmivo);
+	}
+	
+	/**
+	 * 添加优惠信息
+	 */
+	public static void saveYouhui(){
+		String mid = params.get("mid");
+		String title = params.get("title");
+		String content = params.get("content");
+		
+		logger.debug(mid);
+		logger.debug(title);
+		logger.debug(content);
+		
+		Youhui y = new Youhui();
+		y.mid = mid;
+		y.title = title;
+		y.content = content;
+		y.enable = true;
+		y.save();
+		
+		renderJSON(true);
+	}
+	
 	/**
 	 * refresh paidui table
 	 */

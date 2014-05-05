@@ -124,10 +124,12 @@ GET		/updateGaodeToMerchant				GaodeToMerchantController.updateGaodeToMerchant
 *		/b/w/goPaiduiPage					backend.self.SelfManagementController.goPaiduiPage
 *		/b/w/goPersonalPage					backend.self.SelfManagementController.goPersonalPage
 *		/b/w/goStatisticPage				backend.self.SelfManagementController.goStatisticPage
+*		/b/w/goYouhuiPage					backend.self.SelfManagementController.goYouhuiPage
 *		/b/w/paiduiPageAutoRefresh			backend.self.SelfManagementController.paiduiPageAutoRefresh
 *		/b/w/finishByMerchant				backend.self.SelfManagementController.finishByMerchant
 *		/b/w/expireByMerchant				backend.self.SelfManagementController.expireByMerchant
 *		/b/w/quhaoOnsite					backend.self.SelfManagementController.quhaoOnsite
+*		/b/w/saveYouhui						backend.self.SelfManagementController.saveYouhui
 
 *		/b/a/updatePwd						backend.self.AccountController.updatePwd
 *		/b/a/logout							backend.self.AccountController.logout

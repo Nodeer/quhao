@@ -18,6 +18,11 @@
   		  class="active"
   		`}
     ><a href="javascript:void(0);" onclick="Merchant.goStatisticPage('${bmivo.mid}');">消费统计管理</a></li>
+    <li
+    	`if(asBoolean(type.equals("youhui"))){
+  		  class="active"
+  		`}
+    ><a href="javascript:void(0);" onclick="Merchant.goYouhuiPage('${bmivo.mid}');">优惠管理</a></li>
   `}
 
   <li><a href="#about" data-toggle="modal" data-target="#about" onclick="Merchant.about();">关于</a></li>
