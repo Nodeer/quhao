@@ -51,6 +51,9 @@ GET		/allCategories						MerchantController.allCategories
 # Reservation
 GET		/pStatus							ReservationController.paiduiStatusForApp
 
+# Youhui
+GET		/youhui								YouhuiController.youhui
+
 # Merchant
 GET		/nextPage							MerchantController.nextPage
 GET		/merchantByCategory					MerchantController.merchantByCategory
