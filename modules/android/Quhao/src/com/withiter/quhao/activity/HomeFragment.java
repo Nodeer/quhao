@@ -1,8 +1,10 @@
 package com.withiter.quhao.activity;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,6 +16,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -58,8 +61,6 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	private static String TAG = HomeFragment.class.getName();
 	private static final int UNLOCK_CLICK = 1000;
 
-	// private GridView topMerchantsGird;
-	// private TopMerchantGridAdapter topMerchantGridAdapter;
 	private Button searchTextView;
 	private GridView categorysGird;
 	private CategoryGridAdapter categoryGridAdapter;
@@ -84,7 +85,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	private boolean mIsBeingDragged = true;
 
 	// /////执行广告自动滚动需要用的///////////////
-	// private ScheduledExecutorService scheduledExecutorService;
+	 private ScheduledExecutorService scheduledExecutorService;
 	// private boolean isFirstScheduled;
 
 	private View contentView;
@@ -93,46 +94,58 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 
 	@Override
 	public void onAttach(Activity activity) {
+		Log.e("wjzwjz", "HomeFragment onAttach");
 		super.onAttach(activity);
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
+		Log.e("wjzwjz", "HomeFragment onActivityCreated");
 		super.onActivityCreated(savedInstanceState);
 	}
 
 	@Override
 	public void onViewStateRestored(Bundle savedInstanceState) {
+		Log.e("wjzwjz", "HomeFragment onViewStateRestored");
 		super.onViewStateRestored(savedInstanceState);
 	}
 
 	@Override
 	public void onStart() {
+		Log.e("wjzwjz", "HomeFragment onStart");
 		super.onStart();
 	}
 
 	@Override
 	public void onPause() {
+		Log.e("wjzwjz", "HomeFragment onPause");
 		super.onPause();
 	}
 
 	@Override
 	public void onStop() {
+		Log.e("wjzwjz", "HomeFragment onStop");
+		// 当Activity不可见的时候停止切换
+		scheduledExecutorService.shutdown();
+		scheduledExecutorService = null;
 		super.onStop();
 	}
 
 	@Override
 	public void onDestroyView() {
+		Log.e("wjzwjz", "HomeFragment onDestroyView");
 		super.onDestroyView();
 	}
 
 	@Override
 	public void onDestroy() {
+		Log.e("wjzwjz", "HomeFragment onDestroy");
 		super.onDestroy();
 	}
 
 	@Override
 	public void onDetach() {
+		Log.e("wjzwjz", "HomeFragment onDetach");
 		super.onDetach();
 	}
 
@@ -208,12 +221,35 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 			public void run() {
 				getTopMerchantsFromServerAndDisplay();
 				getCategoriesFromServerAndDisplay();
-				mPullToRefreshView.onHeaderRefreshComplete("更新于:" + new Date().toLocaleString());
+				mPullToRefreshView.onHeaderRefreshComplete();
 				// mPullToRefreshView.onHeaderRefreshComplete();
 			}
 		}, 1000);
 
 	}
+	
+	// 换行切换任务
+
+	private class ScrollTask implements Runnable {
+		public void run() {
+			synchronized (mViewPager) {
+				// System.out.println("mPosition: " + mPosition);
+				mPosition = (mPosition + 1) % mPoints.size();
+				handler.obtainMessage().sendToTarget(); // 通过Handler切换图片
+				// System.out.println("切换图片++++"+mPosition);
+			}
+		}
+
+	}
+	
+	// 切换当前显示的图片
+	private Handler handler = new Handler() {
+		public void handleMessage(android.os.Message msg) {
+			mViewPager.setCurrentItem(mPosition);// 切换当前显示的图片
+			homeAdTitle.setText(topMerchants.get(mPosition)
+					.name);
+		};
+	};
 
 	private void buildPager() {
 		// 广告下方的view
@@ -364,16 +400,17 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 			views.add(image);
 			mViewPager.setAdapter(new MyPagerAdapter(views, getActivity()));
 		}
-		/*
-		 * if(null == scheduledExecutorService) { scheduledExecutorService =
-		 * Executors.newSingleThreadScheduledExecutor();
-		 * 
-		 * // 当Activity显示出来后，每三秒钟切换一次图片显示
-		 * scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 1, 3,
-		 * TimeUnit.SECONDS);
-		 * 
-		 * isFirstScheduled = true; }
-		 */
+		
+		  if(null == scheduledExecutorService) { 
+			  scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+		  
+		  // 当Activity显示出来后，每三秒钟切换一次图片显示
+		  scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 1, 3,
+				  TimeUnit.SECONDS);
+		  
+//		  isFirstScheduled = true; 
+		  }
+		 
 
 	}
 
@@ -466,7 +503,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 					}
 				}
 
-				// TODO: 改变top Merchant的显示方式为滑动形式的。
+				// 改变top Merchant的显示方式为滑动形式的。
 				buildPager();
 				// topMerchantsUpdateHandler.obtainMessage(200,
 				// topMerchants).sendToTarget();
@@ -491,7 +528,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 						topMerchants.add(topMerchant);
 					}
 				}
-				// TODO: 改变top Merchant的显示方式为滑动形式的。
+				//改变top Merchant的显示方式为滑动形式的。
 				buildPager();
 				// topMerchantsUpdateHandler.obtainMessage(200,
 				// topMerchants).sendToTarget();
@@ -499,60 +536,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 			}
 		});
 
-		/*
-		 * Thread t = new Thread() {
-		 * 
-		 * @Override public void run() { Looper.prepare(); try { QuhaoLog.d(TAG,
-		 * "Start to get Top Merchants data form server."); String result =
-		 * CommonHTTPRequest.get("MerchantController/getTopMerchants?x=6");
-		 * QuhaoLog.d(TAG, result); if (StringUtils.isNull(result)) { // TODO
-		 * display error page here
-		 * unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000); } else {
-		 * if (null == topMerchants) { topMerchants = new
-		 * ArrayList<TopMerchant>(); } topMerchants.clear();
-		 * topMerchants.addAll(ParseJson.getTopMerchants(result));
-		 * 
-		 * // check the numbers of top merchant int topMerchantCount =
-		 * topMerchants.size(); if (topMerchantCount < 6) { for (int i = 0; i <
-		 * 6 - topMerchantCount; i++) { TopMerchant topMerchant = new
-		 * TopMerchant(); topMerchants.add(topMerchant); } }
-		 * topMerchantsUpdateHandler.obtainMessage(200,
-		 * topMerchants).sendToTarget(); } } catch (ClientProtocolException e) {
-		 * // TODO display error page here
-		 * unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-		 * e.printStackTrace(); Builder dialog = new
-		 * AlertDialog.Builder(getActivity());
-		 * dialog.setTitle("温馨提示").setMessage
-		 * ("使用\"取号\"人数火爆，亲，稍等片刻").setPositiveButton("确定", null); dialog.show();
-		 * } catch (IOException e) { // TODO display error page here
-		 * unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000); //
-		 * Log.e(TAG, e.getCause().toString(), e); e.printStackTrace(); Builder
-		 * dialog = new AlertDialog.Builder(getActivity());
-		 * dialog.setTitle("温馨提示"
-		 * ).setMessage("使用\"取号\"人数火爆，亲，稍等片刻").setPositiveButton("确定", null);
-		 * dialog.show(); } finally { progressTopMerchant.closeProgress(); }
-		 * Looper.loop(); } }; t.start();
-		 */
 	}
-
-	private OnItemClickListener topMerchantClickListener = new OnItemClickListener() {
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			String mid = topMerchants.get(position).mid;
-			QuhaoLog.d(TAG, "mid:" + mid);
-			if (StringUtils.isNull(mid)) {
-				Builder dialog = new AlertDialog.Builder(getActivity());
-				dialog.setTitle("温馨提示").setMessage("推荐商家虚席以待").setPositiveButton("确定", null);
-				dialog.show();
-				return;
-			}
-			Intent intent = new Intent();
-			intent.putExtra("merchantId", mid);
-			intent.setClass(getActivity(), MerchantDetailActivity.class);
-			startActivity(intent);
-			getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-		}
-	};
 
 	private OnItemClickListener categorysClickListener = new OnItemClickListener() {
 		@Override
@@ -571,19 +555,6 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 		}
 	};
 
-	/**
-	 * 处理top merchant的UI更新
-	 * 
-	 * private Handler topMerchantsUpdateHandler = new Handler() {
-	 * 
-	 * @Override public void handleMessage(Message msg) { if (msg.what == 200) {
-	 *           super.handleMessage(msg); topMerchantGridAdapter = new
-	 *           TopMerchantGridAdapter(topMerchants, getActivity());
-	 *           topMerchantsGird.setAdapter(topMerchantGridAdapter);
-	 *           topMerchantGridAdapter.notifyDataSetChanged();
-	 *           unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000); } }
-	 *           };
-	 */
 	private Handler categorysUpdateHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -601,9 +572,6 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	 * get all categories from server and display them
 	 */
 	public void getCategoriesFromServerAndDisplay() {
-		// progressCategory = new ProgressDialogUtil(getActivity(),
-		// R.string.empty, R.string.querying, false);
-		// progressCategory.showProgress();
 
 		final AllCategoriesTask task = new AllCategoriesTask(0, getActivity(), "MerchantController/allCategories?cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode);
 		task.execute(new Runnable() {
@@ -641,24 +609,6 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 			}
 		});
 
-		/*
-		 * Thread t = new Thread() {
-		 * 
-		 * @Override public void run() { Looper.prepare(); try { QuhaoLog.v(TAG,
-		 * "get categorys data form server begin"); String result =
-		 * CommonHTTPRequest.get("MerchantController/allCategories"); if
-		 * (StringUtils.isNull(result)) {
-		 * unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000); } else {
-		 * if (null == categorys) { categorys = new ArrayList<Category>(); }
-		 * categorys.clear(); categorys.addAll(ParseJson.getCategorys(result));
-		 * categorysUpdateHandler.obtainMessage(200, categorys).sendToTarget();
-		 * }
-		 * 
-		 * } catch (Exception e) {
-		 * unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-		 * e.printStackTrace(); } finally { progressCategory.closeProgress(); }
-		 * Looper.loop(); } }; t.start();
-		 */
 	}
 
 	@Override
