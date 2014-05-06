@@ -294,6 +294,20 @@
     return  [outputFormatter stringFromDate:inputDate];
 }
 
++(NSTimeInterval)checkTime:(NSString *)timeStr
+{
+    NSDateFormatter *inputFormatter = [[NSDateFormatter alloc] init];
+    [inputFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US"]];
+    [inputFormatter setDateFormat:@"MMM d,yyyy hh:mm:ss aa"];
+    NSDate* d = [inputFormatter dateFromString:timeStr];
+    NSTimeInterval qhSj=[d timeIntervalSince1970]*1;
+    
+    NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
+    NSTimeInterval now = [dat timeIntervalSince1970]*1;
+    
+    return now-qhSj;
+}
+
 + (void)ReleaseWebView:(UIWebView *)webView
 {
     [webView stopLoading];

@@ -44,6 +44,7 @@
                 [_HUD hide:YES];
             }else{
                 _HUD.labelText = @"您还没有添加关注";
+                [self.tableView reloadData];
                 [_HUD hide:YES afterDelay:1];
             }
         });

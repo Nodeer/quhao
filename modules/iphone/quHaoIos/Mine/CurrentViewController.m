@@ -70,6 +70,7 @@
                 [_HUD hide:YES];
             }else{
                 _HUD.labelText = @"您当前还没有取过号";
+                [self.tableView reloadData];
                 [_HUD hide:YES afterDelay:1];
             }
         });

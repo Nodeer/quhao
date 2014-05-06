@@ -82,6 +82,8 @@ typedef enum{
 +(NSInteger)getStringLen:(NSString*)strtemp;
 //格式化时间
 +(NSString *)formatDate:(NSString*)dateStr;
+//计算时间差
++(NSTimeInterval)checkTime:(NSString *)timeStr;
 + (void)ReleaseWebView:(UIWebView *)webView;
 + (void)clearWebViewBackground:(UIWebView *)webView;
 + (UserInfo *)getUserNotice:(ASIHTTPRequest *)request;

@@ -16,7 +16,8 @@
 #import "HomeCell.h"
 #import "QuHaoUtil.h"
 #import "CommentViewController.h"
-@interface CurrentDetailController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+#import "YouHui.h"
+@interface CurrentDetailController : UIViewController<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
 {
     UITableView *_detailView;
 }
@@ -27,15 +28,13 @@
 @property (strong,nonatomic) MerchartModel * single;
 @property (strong,nonatomic) Reservation * reservation;
 @property (strong,nonatomic) EGOImageView * egoImgView;
-
+@property (strong,nonatomic) YouHui * youhui;
 - (void)clickToHome:(id)sender;
-//获取取号信息
--(void)reloadReversion;
 //打开地图
 - (void)pushMap:(NSString *)address andNavController:(UINavigationController *)navController andIsNextPage:(BOOL)isNextPage;
 //拨打电话
 -(void)CallPhone;
 //展示用户点评
 - (void)pushComment:(NSString *)cateType andNavController:(UINavigationController *)navController;
-
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
 @end

@@ -38,7 +38,8 @@
     _currentField = [self createField:CGRectMake(15, 10.0f, kDeviceWidth-30, 31.0f) withName:@"当前密码"];
     _newField = [self createField:CGRectMake(15, 55.0f, kDeviceWidth-30, 31.0f) withName:@"新密码"];
     _comfirmField = [self createField:CGRectMake(15, 100.0f, kDeviceWidth-30, 31.0f) withName:@"确认新密码"];
-    
+    [_currentField becomeFirstResponder];
+
     UIImage *btnImage = [UIImage   imageNamed:@"max_btn.png"];
     UIButton *tjBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     tjBtn.frame = CGRectMake(10, 140, 300, 30);
@@ -46,9 +47,6 @@
     [tjBtn setTitle: @"确认提交" forState: UIControlStateNormal];
     [tjBtn addTarget:self action:@selector(clickTj:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:tjBtn];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [_currentField becomeFirstResponder];
-    });
 }
 
 -(UITextField *)createField:(CGRect)size withName:(NSString *)title

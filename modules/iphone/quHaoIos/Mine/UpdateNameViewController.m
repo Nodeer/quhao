@@ -59,9 +59,7 @@
     _accountField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 0)];
     _accountField.leftViewMode = UITextFieldViewModeAlways;
     [self.view addSubview:_accountField];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [_accountField becomeFirstResponder];
-    });
+    [_accountField becomeFirstResponder];
     
     UILabel *paddingLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 0, 70, 25)];
     paddingLabel.text = @" 用户名: ";

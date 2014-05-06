@@ -27,7 +27,7 @@
             }
         }
     }
-    cell.lbl.font = [UIFont boldSystemFontOfSize:21.0];
+    cell.lbl.font = [UIFont systemFontOfSize:18.0];
     cell.lbl.text = isLoadOver ? loadOverString : loadingString;
     if (isLoading) {
         cell.loading.hidden = NO;
@@ -38,6 +38,8 @@
         cell.loading.hidden = YES;
         [cell.loading stopAnimating];
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     return cell;
 }
 
