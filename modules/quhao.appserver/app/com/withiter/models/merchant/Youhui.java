@@ -22,6 +22,9 @@ public class Youhui extends YouhuiEntityDef {
 
 	public static Youhui getRandomEnabledYouhui(String mid) {
 		List<Youhui> list = getAllEnabledYouhui(mid);
+		if(list == null || list.size() == 0){
+			return null;
+		}
 		Random rd = new Random();
 		int x = 0;
 		int y = list.size();

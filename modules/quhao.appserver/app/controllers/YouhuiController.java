@@ -22,6 +22,9 @@ public class YouhuiController extends BaseController {
 		}
 		
 		Youhui youhui = Youhui.getRandomEnabledYouhui(mid);
+		if(youhui == null){
+			renderJSON(false);
+		}
 		renderJSON(YouhuiVO.build(youhui));
 	}
 }
