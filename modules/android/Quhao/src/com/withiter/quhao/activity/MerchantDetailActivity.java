@@ -440,6 +440,9 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				QuhaoLog.v(LOGTAG, "MerchantDetailActivity.this.merchantId : " + merchantId + ",account ID : " + accountId);
 				String buf = CommonHTTPRequest.get("MerchantController/querytMerchantDetail?merchantId=" + merchantId + "&accountId=" + accountId + "&isLogined=" + String.valueOf(QHClientApplication.getInstance().isLogined));
 				if (StringUtils.isNull(buf)) {
+					//TODO: wjzwjz 系统异常时，怎么处理
+					info.findViewById(R.id.loadingbar).setVisibility(View.GONE);
+					info.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
 					paiduiConditionLayoutHandler.sendEmptyMessage(200);
 					currentQuHaoLayoutHandler.sendEmptyMessage(200);
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -449,6 +452,9 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				}
 
 			} catch (Exception e) {
+				//TODO: wjzwjz 系统异常时，怎么处理
+				info.findViewById(R.id.loadingbar).setVisibility(View.GONE);
+				info.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				e.printStackTrace();
 			} finally {
@@ -634,6 +640,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 							btnOpen.setVisibility(View.VISIBLE);
 							paiduiConditionLayout.setVisibility(View.GONE);
 							currentQuHaoLayout.setVisibility(View.GONE);
+							btnAttention.setVisibility(View.GONE);
 							
 						}
 	
