@@ -35,4 +35,5 @@
 @synthesize enable;
 @synthesize reservationId;
 @synthesize openNum;
+@synthesize checkTime;
 @end

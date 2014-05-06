@@ -39,4 +39,5 @@
 @property BOOL enable;
 @property (nonatomic,strong) NSString *reservationId;
 @property int openNum;
+@property int checkTime;
 @end
