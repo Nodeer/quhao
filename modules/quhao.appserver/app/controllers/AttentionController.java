@@ -28,14 +28,18 @@ public class AttentionController extends BaseController{
 	public static void updateAttention(String mid,String accountId,int flag) {
 		if(!mid.equals("")&&!accountId.equals("")){
 			Attention attention = Attention.getAttentionById(mid,accountId);
+			Account account = Account.findById(accountId);
 			if (attention == null) {
+				
 				Attention a=new Attention();
 				a.accountId=accountId;
 				a.mid=mid;
 				a.flag=true;
 				a.save();
+				
+				account.guanzhu=account.guanzhu+1;
+				
 			}else{
-				Account account = Account.findById(accountId);
 				if(flag==1){
 					attention.flag=false;
 					account.guanzhu=account.guanzhu-1;
@@ -45,8 +49,8 @@ public class AttentionController extends BaseController{
 				}	
 				attention.save();
 				
-				account.save();
 			}
+			account.save();
 			renderText("success");
 		}else{
 			renderText("error");
