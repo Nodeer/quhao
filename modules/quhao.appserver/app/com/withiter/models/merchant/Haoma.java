@@ -103,6 +103,7 @@ public class Haoma extends HaomaEntityDef {
 		paidui.enable = true;
 		paidui.maxNumber += 1;
 		haoma.save();
+		haoma.updateSelf();
 
 		Reservation reservation = new Reservation();
 		
