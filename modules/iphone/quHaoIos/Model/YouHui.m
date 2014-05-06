@@ -10,4 +10,7 @@
 
 @implementation YouHui
 
+@synthesize title;
+@synthesize content ;
+
 @end
