@@ -396,11 +396,15 @@ public class MerchantController extends BaseController {
 			renderJSON(rvo);
 		}
 		if (left >= getNumberJifen) {
+			// 拿号生成Reservation，并且最大号码增加1，reservation中我的号码是最大号码
 			Reservation reservation = Haoma.nahao(accountId, mid, seatNumber, null);
 			Haoma haomaNew = Haoma.findByMerchantId(mid);
 			rvo.currentNumber = haomaNew.haomaMap.get(seatNumber).currentNumber;
 			int cancelCount = (int) Reservation.findCountBetweenCurrentNoAndMyNumber(mid, haomaNew.haomaMap.get(seatNumber).currentNumber, reservation.myNumber, seatNumber);
 			rvo.beforeYou = reservation.myNumber - (haomaNew.haomaMap.get(seatNumber).currentNumber + cancelCount);
+
+			logger.debug("取号：reservation.myNumber: " + reservation.myNumber + ", rvo.currentNumber: " + rvo.currentNumber + ", cancelCount: " + cancelCount + ", rvo.beforeYou: " + rvo.beforeYou);
+			
 			rvo.tipKey = true;
 			rvo.tipValue = "NAHAO_SUCCESS";
 			rvo.build(reservation);

@@ -146,7 +146,6 @@ public class Reservation extends ReservationEntityDef {
 	public static List<Reservation> findHistroyReservations(String accountId, int page, String sortBy) {
 		MorphiaQuery q = Reservation.q();
 		q.filter("accountId", accountId).filter("valid", false).filter("available", true);
-;
 
 		if (!StringUtils.isEmpty(sortBy)) {
 			q = sortBy(q, sortBy);
@@ -424,18 +423,11 @@ public class Reservation extends ReservationEntityDef {
 		c.set(Calendar.MINUTE, 0);
 		c.set(Calendar.SECOND, 0);
 		
-		// query latest one day's reservation
-//		q.filter("created >", (new DateTime(c.getTimeInMillis()).toDate()));
-//		q.filter("merchantId", merchantId).filter("seatNumber", seatNumber);
-//		q.filter("myNumber", currentNumber);
-
 		q.filter("created >", (new DateTime(c.getTimeInMillis()).toDate()));
 		q.filter("merchantId", merchantId).filter("seatNumber", seatNumber);
 		
 		q.filter("myNumber =", currentNumber);
-//		q.filter("valid", true);
 		q.order("myNumber").limit(1);
-
 		return q.first();
 	}
 	
