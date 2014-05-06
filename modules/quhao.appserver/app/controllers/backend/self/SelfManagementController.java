@@ -252,13 +252,16 @@ public class SelfManagementController extends BaseController {
 	 */
 	public static void goStatisticPage() {
 		String mid = params.get("mid");
-		
+		long lastDayFinishCount = Reservation.lastDayFinishCount(mid);
+		long lastDayCancelCount = Reservation.lastDayCancelCount(mid);
 		long lastMonthFinishCount = Reservation.lastMonthFinishCount(mid);
 		long lastMonthCancelCount = Reservation.lastMonthCancelCount(mid);
 		long lastThreeMonthsFinishCount = Reservation.lastThreeMonthsFinishCount(mid);
 		long lastThreeMonthsCancelCount = Reservation.lastThreeMonthsCancelCount(mid);
 		
 		StatisticsVO svo = new StatisticsVO();
+		svo.lastDayFinish = lastDayFinishCount;
+		svo.lastDayCancel = lastDayCancelCount;
 		svo.lastMonthFinish = lastMonthFinishCount;
 		svo.lastMonthCancel = lastMonthCancelCount;
 		svo.lastThreeMonthFinish = lastThreeMonthsFinishCount;

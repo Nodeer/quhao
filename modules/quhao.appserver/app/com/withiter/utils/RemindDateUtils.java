@@ -292,9 +292,10 @@ public class RemindDateUtils {
 
 	/**
 	 * 获取上个月第一天时间
+	 * 
 	 * @return
 	 */
-	public Date getLastMonthStartTime(){
+	public Date getLastMonthStartTime() {
 		Calendar c = Calendar.getInstance();
 		Date date = null;
 		try {
@@ -306,12 +307,13 @@ public class RemindDateUtils {
 		}
 		return date;
 	}
-	
+
 	/**
 	 * 获取上个月最后一天时间
+	 * 
 	 * @return
 	 */
-	public Date getLastMonthEndTime(){
+	public Date getLastMonthEndTime() {
 		Calendar c = Calendar.getInstance();
 		Date date = null;
 		try {
@@ -326,12 +328,13 @@ public class RemindDateUtils {
 		}
 		return date;
 	}
-	
+
 	/**
 	 * 获取上3个月第一天时间
+	 * 
 	 * @return
 	 */
-	public Date getLastThreeMonthsStartTime(){
+	public Date getLastThreeMonthsStartTime() {
 		Calendar c = Calendar.getInstance();
 		Date date = null;
 		try {
@@ -342,5 +345,39 @@ public class RemindDateUtils {
 			e.printStackTrace();
 		}
 		return date;
-	}	
+	}
+
+	/**
+	 * 获得前一天的开始时间，即2012-01-01 00:00:00
+	 * 
+	 * @return
+	 */
+	public Date getLastDayStartTime() {
+		Calendar c = Calendar.getInstance();
+		Date now = null;
+		try {
+			c.add(Calendar.DATE, -1);
+			now = longSdf.parse(shortSdf.format(c.getTime()) + " 00:00:00");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return now;
+	}
+
+	/**
+	 * 获得前一天的结束时间，即2012-01-01 23:59:59
+	 * 
+	 * @return
+	 */
+	public Date getLastDayEndTime() {
+		Calendar c = Calendar.getInstance();
+		Date now = null;
+		try {
+			c.add(Calendar.DATE, -1);
+			now = longSdf.parse(shortSdf.format(c.getTime()) + " 23:59:59");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return now;
+	}
 }
