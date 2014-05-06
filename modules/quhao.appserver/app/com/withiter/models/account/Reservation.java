@@ -34,7 +34,7 @@ public class Reservation extends ReservationEntityDef {
 	 */
 	public static List<Reservation> findValidReservations(String accountId) {
 		MorphiaQuery q = Reservation.q();
-		q.filter("accountId", accountId).filter("valid", true).filter("available", true);
+		q.filter("accountId", accountId).filter("valid", true).filter("status !=", ReservationStatus.canceled).filter("available", true);
 		return q.asList();
 	}
 	
