@@ -21,11 +21,7 @@ public class YouhuiController extends BaseController {
 			renderJSON(false);
 		}
 		
-		List<Youhui> youhuiList = Youhui.getAllEnabledYouhui(mid);
-		List<YouhuiVO> yvoList = new ArrayList<YouhuiVO>();
-		for(Youhui yh : youhuiList){
-			yvoList.add(YouhuiVO.build(yh));
-		}
-		renderJSON(youhuiList);
+		Youhui youhui = Youhui.getRandomEnabledYouhui(mid);
+		renderJSON(YouhuiVO.build(youhui));
 	}
 }
