@@ -58,6 +58,8 @@
     if ([[Helper returnUserString:@"showImage"] boolValue]&&![self.merchartModel.imgUrl isEqualToString:@""])
     {
         self.egoImgView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,[self.merchartModel.imgUrl  stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ]]];
+    }else{
+        self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
     }
     
     _titleLabel.text=self.merchartModel.name;

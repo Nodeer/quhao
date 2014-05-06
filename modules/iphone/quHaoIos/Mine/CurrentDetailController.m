@@ -55,55 +55,6 @@
 {
     [super viewDidLoad];
     self.single = [[MerchartModel alloc] init];
-//    if([Helper isConnectionAvailable]){
-//        
-//        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//        hud.labelText = NSLocalizedString(@"正在加载", nil);
-//        hud.square = YES;
-//        NSString *url = [NSString stringWithFormat:@"%@%@?id=%@",IP,merchant_url, merchartID];
-//        NSString *response =[QuHaoUtil requestDb:url];
-//        [hud hide:YES];
-//        if([response isEqualToString:@""]){
-//            //异常处理
-//            [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
-//        }else{
-//            NSDictionary *jsonObjects=[QuHaoUtil analyseDataToDic:response];
-//            if(jsonObjects==nil){
-//                //解析错误
-//                [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
-//            }else{
-//                single.id=[jsonObjects objectForKey:@"id"];
-//                single.name=[jsonObjects  objectForKey:@"name"];
-//                single.averageCost=[[jsonObjects objectForKey:@"averageCost"] floatValue];
-//                single.xingjiabi=[[jsonObjects objectForKey:@"xingjiabi"] floatValue];
-//                single.fuwu=[[jsonObjects objectForKey:@"fuwu"] floatValue];
-//                single.kouwei=[[jsonObjects objectForKey:@"kouwei"] floatValue];
-//                single.huanjing=[[jsonObjects objectForKey:@"huanjing"] floatValue];
-//                single.address=[jsonObjects  objectForKey:@"address"];
-//                single.telephone=[jsonObjects  objectForKey:@"telephone"];
-//                single.tags=[jsonObjects  objectForKey:@"tags"];
-//                single.imgUrl=[jsonObjects  objectForKey:@"merchantImage"];
-//                single.openTime=[jsonObjects objectForKey:@"openTime"];
-//                single.closeTime=[jsonObjects objectForKey:@"closeTime"];
-//                single.commentContent=[jsonObjects objectForKey:@"commentContent"];
-//                single.description=[jsonObjects objectForKey:@"description"];
-//                single.x = [[jsonObjects objectForKey:@"x"] doubleValue];
-//                single.y = [[jsonObjects objectForKey:@"y"] doubleValue];
-//                single.openNum = [[jsonObjects objectForKey:@"openNum"] intValue];
-//                single.checkTime = [[jsonObjects objectForKey:@"checkTime"] intValue];
-//            }
-//        }
-//    }else{
-//        [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
-//    }
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//        [self reloadReversion];
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            NSIndexPath *te=[NSIndexPath indexPathForRow:1 inSection:0];
-//            [_detailView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:te,nil] withRowAnimation:UITableViewRowAnimationFade];            });
-//    });
-//    //[_detailView reloadData];
-//    //[self initMapView];
     NSString *isLogined = @"false";
     if ([Helper isCookie]){
         accountID =[Helper getUID];
@@ -135,12 +86,14 @@
                 //异常处理
                 hud.labelText = @"服务器错误";
             }else{
-                NSDictionary *jsonObjects=[QuHaoUtil analyseDataToDic:response];
-                if(jsonObjects==nil){
-                    //解析错误
-                    hud.labelText = @"服务器错误";
-                }else{
-                    [self analyzeYh:jsonObjects];
+                if(![response isEqualToString:@"false"]){
+                    NSDictionary *jsonObjects=[QuHaoUtil analyseDataToDic:response];
+                    if(jsonObjects==nil){
+                        //解析错误
+                        hud.labelText = @"服务器错误";
+                    }else{
+                        [self analyzeYh:jsonObjects];
+                    }
                 }
             }
             
