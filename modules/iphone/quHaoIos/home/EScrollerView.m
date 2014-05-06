@@ -82,29 +82,39 @@
         pageControl=[[UIPageControl alloc]initWithFrame:CGRectMake((self.frame.size.width-pageControlWidth),6, pageControlWidth, pagecontrolHeight)];
         pageControl.currentPage=0;
         pageControl.numberOfPages=(pageCount-2);
-//        [self addSubview:pageControl];
         [noteView addSubview:pageControl];
         
+//        [self addSubview:pageControl];
 //        noteTitle=[[UILabel alloc] initWithFrame:CGRectMake(5, 6, self.frame.size.width-pageControlWidth-15, 20)];
 //        [noteTitle setText:[titleArray objectAtIndex:0]];
 //        [noteTitle setBackgroundColor:[UIColor clearColor]];
 //        [noteTitle setFont:[UIFont systemFontOfSize:13]];
 //        [noteView addSubview:noteTitle];
-//        
+        
         [self addSubview:noteView];
         [noteView release];
+        self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:4
+                                                               target:self
+                                                             selector:@selector(scrollTimer)
+                                                             userInfo:nil
+                                                              repeats:YES];
 	}
 	return self;
 }
 
-
-
-
+//设置滚动
+-(void)scrollTimer{
+    timerCount = currentPageIndex+1;
+    if (currentPageIndex==([imageArray count]-2)) {
+        [scrollView setContentOffset:CGPointMake(viewSize.size.width, 0)];
+    }else{
+        [scrollView setContentOffset:CGPointMake(kDeviceWidth * timerCount, 0) animated:YES];
+    }
+}
 
 - (void)scrollViewDidScroll:(UIScrollView *)sender
 {
-    CGFloat pageWidth = scrollView.frame.size.width;
-    int page = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    int page = floor((scrollView.contentOffset.x - kDeviceWidth / 2) / kDeviceWidth) + 1;
     currentPageIndex=page;
        
     pageControl.currentPage=(page-1);
@@ -128,8 +138,19 @@
         [_scrollView setContentOffset:CGPointMake(viewSize.size.width, 0)];
         
     }
-
 }
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self.animationTimer pauseTimer];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    [self.animationTimer resumeTimerAfterTimeInterval:4];
+}
+
+
 - (void)imagePressed:(UITapGestureRecognizer *)sender
 {
 

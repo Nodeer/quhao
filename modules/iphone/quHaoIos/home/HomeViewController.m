@@ -333,6 +333,10 @@
                 [_topUrlArray addObject:[[jsonObjects objectAtIndex:i] objectForKey:@"merchantImage"]];
                 [_topIdArray addObject:[[jsonObjects objectAtIndex:i] objectForKey:@"mid"]];
             }
+            for(int j=(int)[jsonObjects count]; j < 6;j++ ){
+                [_topIdArray addObject:@""];
+                [_topUrlArray addObject:@""];
+            }
             if([jsonObjects count] == 0){
                 [_topIdArray addObject:@""];
                 [_topUrlArray addObject:@""];
