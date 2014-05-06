@@ -350,6 +350,9 @@ public class MerchantController extends BaseController {
 				rvo.beforeYou = r.myNumber - (paidui.currentNumber + canclCount);
 				rvo.currentNumber = paidui.currentNumber;
 				
+				// 添加检查优惠时间
+				int checkTime = Integer.parseInt(Play.configuration.getProperty("cancelNumber.checkTime"));
+				rvo.promptYouhuiTime = checkTime;
 				rvo.build(r);
 				rvos.add(rvo);
 			}
@@ -474,9 +477,9 @@ public class MerchantController extends BaseController {
 		if (null != merchantList && !merchantList.isEmpty()) {
 			merchantVOList = new ArrayList<MerchantVO>();
 			for (Merchant m : merchantList) {
-				if(m.enable){
-					merchantVOList.add(MerchantVO.build(m));
-				}
+				
+				merchantVOList.add(MerchantVO.build(m));
+				
 			}
 		}
 		renderJSON(merchantVOList);

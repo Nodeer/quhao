@@ -520,6 +520,8 @@ public class ParseJson {
 		}
 
 		rvo = new ReservationVO(rId, accountId, merchantId, seatNumber, myNumber, beforeYou, currentNumber, valid, tipKey, tipValue, merchantName, merchantAddress, isCommented, merchantImage);
+		int promptYouhuiTime = obj.optInt("promptYouhuiTime");
+		rvo.promptYouhuiTime = promptYouhuiTime;
 		return rvo;
 	}
 

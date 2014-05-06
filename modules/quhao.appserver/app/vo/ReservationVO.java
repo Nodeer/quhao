@@ -25,6 +25,11 @@ public class ReservationVO {
 	public String merchantAddress;
 	public String merchantImage;
 	public Date created = new Date();
+	
+	/**
+	 * 检查优惠时间
+	 */
+	public int promptYouhuiTime;
 
 	public void build(Reservation r){
 		this.id = r.id();

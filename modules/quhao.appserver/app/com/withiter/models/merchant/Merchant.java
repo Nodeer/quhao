@@ -119,7 +119,7 @@ public class Merchant extends MerchantEntityDef {
 	public static List<Merchant> findByName(String name) {
 		MorphiaQuery q = Merchant.q();
 		Pattern pattern = Pattern.compile("^.*" + name + ".*$", Pattern.CASE_INSENSITIVE);
-		q.filter("name", pattern).limit(DEFAULT_PAGE_ITEMS_NUMBER);
+		q.filter("name", pattern).filter("enable",true).limit(DEFAULT_PAGE_ITEMS_NUMBER);
 		return q.asList();
 	}
 
@@ -131,7 +131,7 @@ public class Merchant extends MerchantEntityDef {
 	public static List<Merchant> findByName(String name, String cityCode) {
 		MorphiaQuery q = Merchant.q();
 		Pattern pattern = Pattern.compile("^.*" + name + ".*$", Pattern.CASE_INSENSITIVE);
-		q.filter("cityCode", cityCode).filter("name", pattern).limit(DEFAULT_PAGE_ITEMS_NUMBER);
+		q.filter("cityCode", cityCode).filter("name", pattern).filter("enable",true).limit(DEFAULT_PAGE_ITEMS_NUMBER);
 		return q.asList();
 	}
 	
