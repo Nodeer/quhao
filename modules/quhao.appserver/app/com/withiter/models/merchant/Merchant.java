@@ -94,7 +94,8 @@ public class Merchant extends MerchantEntityDef {
 	public static List<Merchant> nextPage(String cateType, int page, String sortBy, String cityCode) {
 		MorphiaQuery q = Merchant.q();
 		if (!StringUtils.isEmpty(cateType)) {
-			q.filter("cateType", cateType);
+//			q.filter("cateType", cateType);
+			q.or(q.criteria("cateType").equal(cateType),q.criteria("cateType1").equal(cateType));
 		} else {
 			q.filter("cateType", CateType.benbangcai.toString());
 		}
