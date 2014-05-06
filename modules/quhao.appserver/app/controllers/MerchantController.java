@@ -160,17 +160,18 @@ public class MerchantController extends BaseController {
 	 *            商家id
 	 */
 	public static void merchant(String id) {
-		System.out.println("merchant:" + id);
+		//System.out.println("merchant:" + id);
 		Merchant m = Merchant.findByMid(id);
 		
 		// 更新商家评价信息
-		m.updateEvaluate();
+		//m.updateEvaluate();
 		Comment c = Comment.latestOne(id);
 		if (c == null) {
 			c = new Comment();
 			c.mid = id;
 		}
-		renderJSON(MerchantVO.build(m, c));
+		int checkTime = Integer.parseInt(Play.configuration.getProperty("cancelNumber.checkTime"));
+		renderJSON(MerchantVO.build(m, c, checkTime));
 	}
 	
 	/**
@@ -229,7 +230,9 @@ public class MerchantController extends BaseController {
 		}
 		
 		if(null != m) {
-			merchantDetails.put("merchant", MerchantVO.build(m, c, isAttention, openNum));
+			int checkTime = Integer.parseInt(Play.configuration.getProperty("cancelNumber.checkTime"));
+
+			merchantDetails.put("merchant", MerchantVO.build(m, c, isAttention, openNum, checkTime));
 		}
 		
 		if(null != m && m.enable && "false".equals(isLogined)) {

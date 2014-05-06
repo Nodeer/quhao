@@ -74,6 +74,8 @@ public class MerchantVO {
 	public double distance;
 	//希望开通数量
 	public long openNum;
+	//取消号码时候弹出优惠提示的条件
+	public int checkTime;
 	/**
 	 * @param m
 	 * @return
@@ -115,7 +117,7 @@ public class MerchantVO {
 		return vo;
 	}
 	
-	public static MerchantVO build(Merchant m, Comment c) {
+	public static MerchantVO build(Merchant m, Comment c, int checkTime) {
 		MerchantVO vo = new MerchantVO();
 		vo.id = m.id();
 		vo.address = m.address;
@@ -157,6 +159,7 @@ public class MerchantVO {
 		vo.commentHuanjing = c.huanjing;
 		vo.commentKouwei = c.kouwei;
 		vo.commentXingjiabi = c.xingjiabi;
+		vo.checkTime = checkTime;
 		
 		return vo;
 	}
@@ -206,7 +209,7 @@ public class MerchantVO {
 		return vo;
 	}
 	
-	public static MerchantVO build(Merchant m, Comment c,boolean isAttention ,long num) {
+	public static MerchantVO build(Merchant m, Comment c,boolean isAttention, long num, int checkTime) {
 		MerchantVO vo = new MerchantVO();
 		vo.id = m.id();
 		vo.address = m.address;
@@ -249,6 +252,7 @@ public class MerchantVO {
 		
 		vo.isAttention=isAttention;
 		vo.openNum = num;
+		vo.checkTime = checkTime;
 		return vo;
 	}
 	
