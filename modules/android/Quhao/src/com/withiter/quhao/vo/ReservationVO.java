@@ -29,13 +29,15 @@ public class ReservationVO {
 	 */
 	public int promptYouhuiTime;
 	
+	public String created;
+	
 	public ReservationVO()
 	{
 		
 	}
 	
 	public ReservationVO(String rId,String accountId,String merchantId,String seatNumber,String myNumber,String beforeYou,
-			String currentNumber,boolean valid,boolean tipKey,String tipValue,String merchantName,String merchantAddress,boolean isCommented,String merchantImage){
+			String currentNumber,boolean valid,boolean tipKey,String tipValue,String merchantName,String merchantAddress,boolean isCommented,String merchantImage,String created){
 		this.rId = rId;
 		this.accountId = accountId;
 		this.merchantId = merchantId;
@@ -52,6 +54,6 @@ public class ReservationVO {
 		this.merchantAddress = merchantAddress;
 		this.isCommented = isCommented;
 		this.merchantImage = merchantImage;
-		
+		this.created = created;
 	}
 }

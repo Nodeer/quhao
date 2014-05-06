@@ -2,6 +2,7 @@ package com.withiter.quhao.util.tool;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -29,6 +30,7 @@ import com.withiter.quhao.vo.Paidui;
 import com.withiter.quhao.vo.ReservationVO;
 import com.withiter.quhao.vo.SignupVO;
 import com.withiter.quhao.vo.TopMerchant;
+import com.withiter.quhao.vo.YouhuiVO;
 
 public class ParseJson {
 
@@ -159,7 +161,7 @@ public class ParseJson {
 
 		return merchant;
 	}
-
+	
 	private static Merchant coventMerchant(JSONObject obj) throws JSONException {
 		Merchant merchant;
 		String id = "";
@@ -513,13 +515,14 @@ public class ParseJson {
 		}
 		if (!merchantImage.contains("=")) {
 			try {
-				merchantImage = URLDecoder.decode(obj.getString("merchantImage"), "UTF-8");
+				merchantImage = URLDecoder.decode(merchantImage, "UTF-8");
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
 		}
-
-		rvo = new ReservationVO(rId, accountId, merchantId, seatNumber, myNumber, beforeYou, currentNumber, valid, tipKey, tipValue, merchantName, merchantAddress, isCommented, merchantImage);
+		
+		String created = DateUtils.formatDate(obj.optString("created"), "yyyy-MM-dd HH:mm:ss");
+		rvo = new ReservationVO(rId, accountId, merchantId, seatNumber, myNumber, beforeYou, currentNumber, valid, tipKey, tipValue, merchantName, merchantAddress, isCommented, merchantImage,created);
 		int promptYouhuiTime = obj.optInt("promptYouhuiTime");
 		rvo.promptYouhuiTime = promptYouhuiTime;
 		return rvo;
@@ -740,4 +743,47 @@ public class ParseJson {
 		return merchantDetail;
 	}
 
+	public static YouhuiVO getYouhui(String buf) {
+		YouhuiVO youhui = null;
+		if (null == buf || "".equals(buf)) {
+			return youhui;
+		}
+
+		try {
+			JSONObject obj = new JSONObject(buf);
+			youhui = coventYouhui(obj);
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		return youhui;
+	}
+	
+	private static YouhuiVO coventYouhui(JSONObject obj) throws JSONException {
+		YouhuiVO youhui = null;
+		String mid = "";
+		if (obj.has("mid")) {
+			mid = obj.optString("mid");
+		}
+
+		boolean enable = false;
+		if (obj.has("enable")) {
+			enable = obj.optBoolean("enable");
+		}
+
+		String title = "";
+		if (obj.has("title")) {
+			title = obj.optString("title");
+		}
+
+		String content = "";
+		if (obj.has("content")) {
+			content = obj.optString("content");
+		}
+		
+		youhui = new YouhuiVO(mid, enable, title, content);
+
+		return youhui;
+	}
 }

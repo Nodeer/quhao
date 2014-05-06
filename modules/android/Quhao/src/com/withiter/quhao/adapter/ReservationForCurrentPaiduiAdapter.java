@@ -1,5 +1,9 @@
 package com.withiter.quhao.adapter;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -8,6 +12,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Looper;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,11 +27,14 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.activity.MerchantDetailActivity;
 import com.withiter.quhao.activity.QuhaoCurrentStatesActivity;
 import com.withiter.quhao.exception.NoResultFromHTTPRequestException;
+import com.withiter.quhao.task.QueryYouhuiInReservationTask;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.AsynImageLoader;
+import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.vo.ReservationVO;
+import com.withiter.quhao.vo.YouhuiVO;
 
 public class ReservationForCurrentPaiduiAdapter extends BaseAdapter {
 
@@ -149,71 +157,181 @@ public class ReservationForCurrentPaiduiAdapter extends BaseAdapter {
 			holder.currentNumber.setText(rvo.currentNumber);
 			
 			final String reservationId = rvo.rId;
+			final String createDate = rvo.created;
+			final int promptYouhuiTime = rvo.promptYouhuiTime;
+			final String mid = rvo.merchantId;
 			holder.cancelBtn.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
 					
-					AlertDialog.Builder builder = new Builder(activity);
-					builder.setTitle("温馨提示");
-					builder.setMessage("您确定要取消该号码吗？");
-					builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							dialog.dismiss();
-							Thread thread = new Thread(new Runnable()
-							{
-
+					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					Date created = null;
+					try {
+						created = format.parse(createDate);
+					} catch (ParseException e1) {
+						created = null;
+					}
+					
+					if(created != null)
+					{
+						Calendar cal = Calendar.getInstance();
+						cal.setTime(created);
+						cal.add(Calendar.MINUTE, promptYouhuiTime);
+						
+						if(cal.before(Calendar.getInstance()))
+						{
+							String url = "youhui?mid=" + mid;
+							final QueryYouhuiInReservationTask task = new QueryYouhuiInReservationTask(R.string.waitting, activity, url);
+							task.execute(new Runnable() {
+								
 								@Override
 								public void run() {
-									Looper.prepare();
-									progress = new ProgressDialogUtil(activity, R.string.empty, R.string.waitting, false);
-									progress.showProgress();
-									try {
-										String url = "";
-										url = "MerchantController/cancel?reservationId=" + reservationId;
-										
-										String buf = CommonHTTPRequest.get(url);
-										if (StringUtils.isNull(buf) || "[]".equals(buf)) {
-											throw new NoResultFromHTTPRequestException();
-									 	} else {
-									 		if("true".equals(buf.trim()))
-									 		{
-												activity.initData();
-									 		}
-									 		else
-									 		{
-												activity.initData();
-									 		}
-										}
-
-									} catch (Exception e) {
-										e.printStackTrace();
-									} finally {
-										progress.closeProgress();
-										Looper.loop();
+									String result = task.result;
+									
+									YouhuiVO youhui = ParseJson.getYouhui(result);
+									if(null != youhui)
+									{
+										AlertDialog.Builder builder = new Builder(activity);
+										builder.setTitle(youhui.title);
+										builder.setMessage("您有优惠：" + youhui.content + ",确定要取消该号码吗？");
+										builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+											@Override
+											public void onClick(DialogInterface dialog, int which) {
+												dialog.dismiss();
+												Thread thread = new Thread(new Runnable()
+												{
+	
+													@Override
+													public void run() {
+														Looper.prepare();
+														progress = new ProgressDialogUtil(activity, R.string.empty, R.string.waitting, false);
+														progress.showProgress();
+														try {
+															String url = "";
+															url = "MerchantController/cancel?reservationId=" + reservationId;
+															
+															String buf = CommonHTTPRequest.get(url);
+															if (StringUtils.isNull(buf) || "[]".equals(buf)) {
+																throw new NoResultFromHTTPRequestException();
+														 	} else {
+														 		if("true".equals(buf.trim()))
+														 		{
+																	activity.initData();
+														 		}
+														 		else
+														 		{
+																	activity.initData();
+														 		}
+															}
+	
+														} catch (Exception e) {
+															e.printStackTrace();
+														} finally {
+															progress.closeProgress();
+															Looper.loop();
+														}
+													
+												}});
+												thread.start();
+											}});
+											builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+												
+												@Override
+												public void onClick(DialogInterface dialog, int which) {
+													dialog.dismiss();
+												}
+											});
+											builder.create().show();
 									}
+									else
+									{
+										cancelListener(reservationId);
+									}
+									
+								}
+							},new Runnable() {
 								
-							}});
-							thread.start();
-					}});
-					builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-						
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							dialog.dismiss();
+								@Override
+								public void run() {
+									
+									cancelListener(reservationId);
+									
+								}
+							});
 						}
-					});
-					builder.create().show();
-					
-					
+						else
+						{
+							cancelListener(reservationId);
+						}
+					}
+					else
+					{
+						cancelListener(reservationId);
+						
+					}
 				}
+					
 			});
 			
 			convertView.setTag(holder);
 			return convertView;
 		}
 
+	}
+	
+	private void cancelListener(final String reservationId) {
+		AlertDialog.Builder builder = new Builder(activity);
+		builder.setTitle("温馨提示");
+		builder.setMessage("您确定要取消该号码吗？");
+		builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+				Thread thread = new Thread(new Runnable()
+				{
+
+					@Override
+					public void run() {
+						Looper.prepare();
+						progress = new ProgressDialogUtil(activity, R.string.empty, R.string.waitting, false);
+						progress.showProgress();
+						try {
+							String url = "";
+							url = "MerchantController/cancel?reservationId=" + reservationId;
+							
+							String buf = CommonHTTPRequest.get(url);
+							if (StringUtils.isNull(buf) || "[]".equals(buf)) {
+								throw new NoResultFromHTTPRequestException();
+						 	} else {
+						 		if("true".equals(buf.trim()))
+						 		{
+									activity.initData();
+						 		}
+						 		else
+						 		{
+									activity.initData();
+						 		}
+							}
+
+						} catch (Exception e) {
+							e.printStackTrace();
+						} finally {
+							progress.closeProgress();
+							Looper.loop();
+						}
+					
+				}});
+				thread.start();
+			}});
+			builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+				}
+			});
+			builder.create().show();
 	}
 
 }
