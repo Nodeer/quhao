@@ -203,7 +203,8 @@
                     UILabel *belabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%d",@" 在你前面:   ",reservation.beforeYou ]font:18 rect:CGRectMake(_currlabel.frame.origin.x, _currlabel.frame.origin.y+30, 140, 30)];
                     [self.view addSubview:belabel];
                 }
-                
+                _currlabel.text = [NSString stringWithFormat:@"%@%@",@" 下一号码:   ",reservation.currentNumber];
+
                 if(reservation.beforeYou<=5){
                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"恭喜：取号成功，由于在你前面排队的不多于5桌，为了避免排队号过期，请抓紧时间前往商家。" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
                     [alert show];
