@@ -433,6 +433,9 @@ public class AccountController extends BaseController {
 			merchant = Merchant.findById(reservation.merchantId);
 			reservationVO.merchantName = merchant.name;
 			reservationVO.merchantAddress = merchant.address;
+			// 添加检查优惠时间
+			int checkTime = Integer.parseInt(Play.configuration.getProperty("cancelNumber.checkTime"));
+			reservationVO.promptYouhuiTime = checkTime;
 			try {
 				reservationVO.merchantImage = URLDecoder.decode(merchant.merchantImage, "UTF-8");
 			} catch (UnsupportedEncodingException e) {
