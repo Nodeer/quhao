@@ -9,7 +9,7 @@ import play.jobs.OnApplicationStart;
 
 import com.withiter.models.merchant.Haoma;
 
-@OnApplicationStart(async=true)
+//@OnApplicationStart(async=true)
 
 // 每天1:00AM开始job
 @On("0 0 1 * * ?")
