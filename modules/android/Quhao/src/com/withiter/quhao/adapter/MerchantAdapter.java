@@ -60,8 +60,8 @@ public class MerchantAdapter extends BaseAdapter {
 				convertView = inflator.inflate(R.layout.merchant_list_item, null);
 				holder.img = (ImageView) convertView.findViewById(R.id.img);
 				holder.img.setAdjustViewBounds(true);
-				holder.distance = (TextView) convertView.findViewById(R.id.distance);
 				holder.content = (TextView) convertView.findViewById(R.id.merchantName);
+				holder.distance = (TextView) convertView.findViewById(R.id.distance);
 				holder.merchantEnable = (TextView) convertView.findViewById(R.id.merchant_enable);
 //				holder.pinfenImage = (ImageView) convertView.findViewById(R.id.pingfen);
 				holder.merchantRenjun = (TextView) convertView.findViewById(R.id.merchantRenjun);

@@ -154,12 +154,9 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 				QuhaoLog.d(LOGTAG, "get categorys data form server begin");
 				String url = "MerchantController/nextPage?page=" + page + "&cateType=" + categoryType + "&cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode;
 				AMapLocation location = QHClientApplication.getInstance().location;
-				if(location != null)
-				{
+				if (location != null) {
 					url = url + "&userX=" + location.getLatitude() + "&userY=" + location.getLongitude();
-				}
-				else
-				{
+				} else {
 					url = url + "&userX=0.000000&userY=0.000000";
 				}
 				QuhaoLog.d(LOGTAG, "the request url is : " + url);
