@@ -89,7 +89,7 @@
     _topIdArray= [[NSMutableArray alloc] init];
     _topUrlArray= [[NSMutableArray alloc] init];
     _categoryArray = [[NSMutableArray alloc] init];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshed:) name:Notification_TabClick object:nil];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshed:) name:Notification_TabClick object:nil];
 
     if(![Helper isConnectionAvailable]){
         [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
@@ -115,6 +115,13 @@
         [self.view bringSubviewToFront:_HUD];
         [_HUD hide:YES];
     });
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    if(_scroller!=nil){
+        [_scroller.animationTimer resumeTimerAfterTimeInterval:3];
+    }
 }
 
 -(void)locationService
@@ -152,20 +159,20 @@
     [self.navigationController.view.layer addAnimation:animation forKey:nil];
 }
 
-- (void)refreshed:(NSNotification *)notification
-{
-    if (notification.object) {
-        if ([(NSString *)notification.object isEqualToString:@"0"]) {
-            if(_isLoading){
-                _isLoading = NO;
-                //if([[Helper returnUserString:@"isLocation"] isEqualToString:@"0"]){
-                    [self locationService];
-                //}
-                [self realRefresh];
-            }
-        }
-    }
-}
+//- (void)refreshed:(NSNotification *)notification
+//{
+//    if (notification.object) {
+//        if ([(NSString *)notification.object isEqualToString:@"0"]) {
+//            if(_isLoading){
+//                _isLoading = NO;
+//                //if([[Helper returnUserString:@"isLocation"] isEqualToString:@"0"]){
+//                    [self locationService];
+//                //}
+//                [self realRefresh];
+//            }
+//        }
+//    }
+//}
 
 #pragma mark HUD
 - (void)hudWasHidden:(MBProgressHUD *)hud {
@@ -186,10 +193,10 @@
 - (void)realRefresh
 {
     if([Helper isConnectionAvailable]){
+        [_scroller.animationTimer invalidate];
         [_categoryArray removeAllObjects];
-        [_topIdArray removeAllObjects];
+        [_topIdArray removeAllObjects];             
         [_topUrlArray removeAllObjects];
-
         [self createHud];
         dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         dispatch_group_t group = dispatch_group_create();
@@ -337,10 +344,10 @@
                 [_topIdArray addObject:@""];
                 [_topUrlArray addObject:@""];
             }
-            if([jsonObjects count] == 0){
-                [_topIdArray addObject:@""];
-                [_topUrlArray addObject:@""];
-            }
+//            if([jsonObjects count] == 0){
+//                [_topIdArray addObject:@""];
+//                [_topUrlArray addObject:@""];
+//            }
         }
     }
 }
@@ -456,11 +463,11 @@
 
 -(void)topSetOrReset
 {
-    EScrollerView *scroller=[[EScrollerView alloc] initWithFrameRect:CGRectMake(0, 0, kDeviceWidth, 105)
+    _scroller=[[EScrollerView alloc] initWithFrameRect:CGRectMake(0, 0, kDeviceWidth, 105)
                                                           ImageArray:_topUrlArray
                                                           TitleArray:_topIdArray];
-    scroller.delegate=self;
-    [self.view addSubview:scroller];
+    _scroller.delegate=self;
+    [self.view addSubview:_scroller];
 }
 
 -(void)EScrollerViewDidClicked:(NSUInteger)index
@@ -633,6 +640,11 @@
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: errorString delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
     [alert show];
     return;
+}
+
+-(void) viewDidDisappear:(BOOL)animated
+{
+    [_scroller.animationTimer pauseTimer];
 }
 
 - (void)viewDidUnload

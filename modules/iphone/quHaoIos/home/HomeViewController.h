@@ -39,6 +39,7 @@
     MBProgressHUD *_HUD;
     CLLocationDegrees _latitude;
 	CLLocationDegrees _longitude;
+    EScrollerView *_scroller;
 }
 
 @property (nonatomic, strong) UIScrollView *menuView;

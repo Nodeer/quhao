@@ -64,8 +64,13 @@
     [_button setTitle:@"3千米" forState:UIControlStateNormal];
     [_button addTarget:self action:@selector(changeDis:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_button];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshedNear:) name:Notification_TabClick object:nil];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshedNear:) name:Notification_TabClick object:nil];
     _isRefreshLoading = YES;
+    
+    locationManager = [[CLLocationManager alloc] init];
+    locationManager.delegate = self;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    locationManager.distanceFilter = 1000.0f;
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -84,10 +89,6 @@
     {
         //定位功能可用，开始定位
         [self createHud];
-        locationManager = [[CLLocationManager alloc] init];
-        locationManager.delegate = self;
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-        locationManager.distanceFilter = 100.0f;
         [locationManager startUpdatingLocation];
     }else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied){
         [locationManager stopUpdatingLocation];
@@ -175,23 +176,23 @@
     return news;
 }
 
-- (void)refreshedNear:(NSNotification *)notification
-{
-    if (notification.object) {
-        if ([(NSString *)notification.object isEqualToString:@"1"]) {
-            if(_isRefreshLoading){
-                _isRefreshLoading = NO;
-                [self createHud];
-                _HUD.labelText = @"正在刷新";
-                if (self.tableView.contentOffset.y == 0) {
-                    [self performSelector:@selector(refreshData:) withObject:nil afterDelay:0.5];
-                }else{
-                    [self.tableView setContentOffset:CGPointZero animated:YES];
-                }
-            }
-        }
-    }
-}
+//- (void)refreshedNear:(NSNotification *)notification
+//{
+//    if (notification.object) {
+//        if ([(NSString *)notification.object isEqualToString:@"1"]) {
+//            if(_isRefreshLoading){
+//                _isRefreshLoading = NO;
+//                [self createHud];
+//                _HUD.labelText = @"正在刷新";
+//                if (self.tableView.contentOffset.y == 0) {
+//                    [self performSelector:@selector(refreshData:) withObject:nil afterDelay:0.5];
+//                }else{
+//                    [self.tableView setContentOffset:CGPointZero animated:YES];
+//                }
+//            }
+//        }
+//    }
+//}
 
 //滚动条到达顶部时候刷新
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
@@ -452,6 +453,7 @@
     myCoOrdinate.longitude = currLocation.coordinate.longitude;
     _longitude = [NSString stringWithFormat:@"%lf",currLocation.coordinate.longitude];
     _latitude = [NSString stringWithFormat:@"%lf",currLocation.coordinate.latitude];
+    NSLog(@"%@,%@",_longitude,_latitude);
     [locationManager stopUpdatingLocation];
     CLLocation *location = [[CLLocation alloc] initWithLatitude:myCoOrdinate.latitude longitude:myCoOrdinate.longitude];
     [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
@@ -577,9 +579,9 @@
     return;
 }
 
-- (void)delloc
-{
-    [[NSNotificationCenter defaultCenter]removeObserver:self];
-}
+//- (void)delloc
+//{
+//    [[NSNotificationCenter defaultCenter]removeObserver:self];
+//}
 @end
 
