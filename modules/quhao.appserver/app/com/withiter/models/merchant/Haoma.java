@@ -48,7 +48,7 @@ public class Haoma extends HaomaEntityDef {
 	 * 初始化Paidui信息，enable=false;
 	 */
 	public void initPaidui() {
-		logger.debug("merchant id : " + this.merchantId);
+		logger.debug("initPaidui, merchant id : " + this.merchantId);
 		Merchant m = Merchant.findByMid(this.merchantId);
 		if(m == null){
 			logger.error("Merchant does not find!");
@@ -223,8 +223,6 @@ public class Haoma extends HaomaEntityDef {
 			} else {
 				time = count / 10 +1;
 			}
-			logger.debug("count : " + count);
-			logger.debug("time : " + time);
 			for(int i=0;i< time; i++){
 				hList = q.offset(i*countPerPage).limit(countPerPage).asList();
 				for(Haoma h : hList){
@@ -258,5 +256,7 @@ public class Haoma extends HaomaEntityDef {
 				this.save();
 			}
 		}
+		
+		logger.debug("merchant id: "+this.merchantId+", no paidui: " + this.noNeedPaidui);
 	}
 }
