@@ -359,7 +359,7 @@ public class Reservation extends ReservationEntityDef {
 	 */
 	public static long findCountBetweenCurrentNoAndMyNumber(String mid, int currentNo, int myNumber, int seatNumber) {
 		MorphiaQuery q = Reservation.q();
-		q.filter("seatNumber", seatNumber).filter("merchantId", mid).filter("status", "canceled").filter("myNumber", "<" + myNumber).filter("myNumber", ">" + currentNo);
+		q.filter("seatNumber", seatNumber).filter("merchantId", mid).filter("status", "canceled").filter("myNumber <" , myNumber).filter("myNumber >" , currentNo);
 		return q.count();
 	}
 
