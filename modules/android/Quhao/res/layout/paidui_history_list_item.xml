@@ -93,12 +93,12 @@
 			            android:id="@+id/btn_comment"
 			            android:layout_width="50dip"
 			            android:layout_height="30dip"
-			            android:background="@drawable/btn_weight"
 			            android:text="@string/quhao_states_comment"
 			            android:textAppearance="?android:textAppearanceMediumInverse"
-			            android:textColor="#ff000000"
 			            android:textSize="11.0sp" 
-			            android:layout_gravity="right|center_vertical"
+			            android:textColor="#64bae9"
+			            android:background="@android:color/transparent"
+			            android:layout_gravity="center_vertical"
 			            />
 					<TextView
 			            android:id="@+id/is_comment"
@@ -124,7 +124,8 @@
 				        android:focusable="false"
 				        android:clickable="false"
 				        android:focusableInTouchMode="false"
-				        android:gravity="right|center_vertical" />
+				        android:gravity="center_vertical"
+				        android:layout_gravity="right" />
 				</LinearLayout>
             </LinearLayout>
             <LinearLayout

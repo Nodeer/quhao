@@ -88,11 +88,12 @@
 		            android:id="@+id/btn_cancel"
 		            android:layout_width="50dip"
 		            android:layout_height="30dip"
-		            android:background="@drawable/btn_weight"
 		            android:text="@string/cancel_sequence"
 		            android:textAppearance="?android:textAppearanceMediumInverse"
-		            android:textColor="#ff000000"
+		            android:textColor="#64bae9"
 		            android:textSize="11.0sp" 
+		            android:background="@android:color/transparent"
+		            android:paddingRight="10dp"
 		            android:layout_gravity="right|center_vertical"
 		            />
             </LinearLayout>

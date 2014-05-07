@@ -119,6 +119,30 @@ public class MerchantAdapter extends BaseAdapter {
 			}
 			
 			holder.distance.setTag("distance_" + position);
+			
+			if(merchant.distance != 0)
+			{
+				if(merchant.distance>1000)
+				{
+					
+					NumberFormat nf = NumberFormat.getNumberInstance();
+			        nf.setMaximumFractionDigits(2);
+					holder.distance.setText(nf.format(merchant.distance/1000) + "千米");
+				}
+				else
+				{
+					holder.distance.setText(String.valueOf((int)merchant.distance) + "米");
+				}
+				
+//				holder.distance.setText(String.valueOf(DistanceUtil.computeDistance(lp.getLatitude(), lp.getLongitude(), merchant.lat, merchant.lng)));
+//				Log.e("wjzwjz distance : ", String.valueOf(DistanceUtil.computeDistance(lp.getLatitude(), lp.getLongitude(), merchant.lat, merchant.lng)));
+			}
+			else
+			{
+				holder.distance.setText("没有定位信息，暂时无法显示距离");
+			}
+			
+			/*
 			AMapLocation location = QHClientApplication.getInstance().location;
 			if(null != location && merchant.lat != 0 && merchant.lng != 0)
 			{
@@ -142,7 +166,7 @@ public class MerchantAdapter extends BaseAdapter {
 			{
 				holder.distance.setText("没有定位信息，暂时无法显示距离");
 			}
-			
+			*/
 			/*
 			if (StringUtils.isNull(merchant.grade)) {
 				merchant.grade = "0.0";

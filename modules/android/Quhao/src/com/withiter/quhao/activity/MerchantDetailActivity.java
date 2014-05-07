@@ -936,7 +936,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					String accountId = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.ACCOUNT_ID, "");
 					String merchantId = merchant.id;
 					int flag = 0;
-					if(!merchant.isAttention)
+					if(merchant.isAttention)
 					{
 						flag = 1;
 					}
