@@ -568,17 +568,18 @@ public class MerchantController extends BaseController {
 		geoNearParams.put("spherical", true);
 		geoNearParams.put("num", num + NEAR_MERCHANT_PAGE_ITEMS_NUMBER);
 
+		BasicDBObject fitlerParams = new BasicDBObject();
+		if (!StringUtils.isEmpty(cityCode)) {
+			fitlerParams.put("cityCode", cityCode);	
+		}
+		List<ObjectId> list = Merchant.noQueueMerchants();
+		fitlerParams.put("_id", new BasicDBObject("$in", list));
+		geoNearParams.put("query", fitlerParams);
+		
 		pipeline.add(new BasicDBObject("$geoNear", geoNearParams));
 		if (num != 0) {
 			pipeline.add(new BasicDBObject("$skip", num));
 		}
-		BasicDBObject matchParams = new BasicDBObject();
-		if (!StringUtils.isEmpty(cityCode)) {
-			matchParams.put("cityCode", cityCode);	
-		}
-		List<ObjectId> list = Merchant.noQueueMerchants();
-		matchParams.put("_id", new BasicDBObject("$in", list));
-		pipeline.add(new BasicDBObject("$match", matchParams));
 		
 		BasicDBObject projectParams = new BasicDBObject();
 		projectParams.put("_id", 1);
@@ -630,14 +631,15 @@ public class MerchantController extends BaseController {
 		geoNearParams.put("spherical", true);
 		geoNearParams.put("num", num + NEAR_MERCHANT_PAGE_ITEMS_NUMBER);
 
+		if (!StringUtils.isEmpty(cityCode)) {
+			BasicDBObject filterParams = new BasicDBObject();
+			filterParams.put("cityCode", cityCode);
+			geoNearParams.put("query", filterParams);
+		}
+		
 		pipeline.add(new BasicDBObject("$geoNear", geoNearParams));
 		if (num != 0) {
 			pipeline.add(new BasicDBObject("$skip", num));
-		}
-		if (!StringUtils.isEmpty(cityCode)) {
-			BasicDBObject matchParams = new BasicDBObject();
-			matchParams.put("cityCode", cityCode);
-			pipeline.add(new BasicDBObject("$match", matchParams));
 		}
 		
 		BasicDBObject projectParams = new BasicDBObject();
