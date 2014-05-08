@@ -132,7 +132,7 @@
         MKMapItem *currentLocation = [MKMapItem mapItemForCurrentLocation];
         MKMapItem *toLocation = [[MKMapItem alloc] initWithPlacemark:[[MKPlacemark alloc] initWithCoordinate:to addressDictionary:nil]];
         
-        toLocation.name = @"导航";
+        toLocation.name = self.name;
         [MKMapItem openMapsWithItems:[NSArray arrayWithObjects:currentLocation, toLocation, nil]
                        launchOptions:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:MKLaunchOptionsDirectionsModeDriving, [NSNumber numberWithBool:YES], nil]
                                       

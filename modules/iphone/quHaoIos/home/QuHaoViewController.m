@@ -53,6 +53,11 @@
     if([popView respondsToSelector:@selector(setSeparatorInset:)]){
         [popView setSeparatorInset:UIEdgeInsetsZero];
     }
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.navigationController.navigationBar.translucent = NO;
+    self.tabBarController.tabBar.translucent = NO;
+    self.extendedLayoutIncludesOpaqueBars = NO;
 #endif
     popView.indicatorStyle = UIScrollViewIndicatorStyleBlack;
     popView.hidden = YES;

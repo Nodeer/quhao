@@ -89,7 +89,7 @@
     _topIdArray= [[NSMutableArray alloc] init];
     _topUrlArray= [[NSMutableArray alloc] init];
     _categoryArray = [[NSMutableArray alloc] init];
-    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshed:) name:Notification_TabClick object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshed:) name:Notification_TabClick object:nil];
 
     if(![Helper isConnectionAvailable]){
         [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
@@ -159,20 +159,20 @@
     [self.navigationController.view.layer addAnimation:animation forKey:nil];
 }
 
-//- (void)refreshed:(NSNotification *)notification
-//{
-//    if (notification.object) {
-//        if ([(NSString *)notification.object isEqualToString:@"0"]) {
-//            if(_isLoading){
-//                _isLoading = NO;
-//                //if([[Helper returnUserString:@"isLocation"] isEqualToString:@"0"]){
-//                    [self locationService];
-//                //}
-//                [self realRefresh];
-//            }
-//        }
-//    }
-//}
+- (void)refreshed:(NSNotification *)notification
+{
+    if (notification.object) {
+        if ([(NSString *)notification.object isEqualToString:@"0"]) {
+            if(_isLoading){
+                _isLoading = NO;
+                //if([[Helper returnUserString:@"isLocation"] isEqualToString:@"0"]){
+                    [self locationService];
+                //}
+                [self realRefresh];
+            }
+        }
+    }
+}
 
 #pragma mark HUD
 - (void)hudWasHidden:(MBProgressHUD *)hud {

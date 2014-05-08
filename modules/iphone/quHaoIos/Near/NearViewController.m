@@ -443,6 +443,11 @@
 	[self setFootState:PullRefreshNormal];
 }
 
+-(void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
+{
+    
+}
+
 #pragma mark location
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
@@ -453,7 +458,6 @@
     myCoOrdinate.longitude = currLocation.coordinate.longitude;
     _longitude = [NSString stringWithFormat:@"%lf",currLocation.coordinate.longitude];
     _latitude = [NSString stringWithFormat:@"%lf",currLocation.coordinate.latitude];
-    NSLog(@"%@,%@",_longitude,_latitude);
     [locationManager stopUpdatingLocation];
     CLLocation *location = [[CLLocation alloc] initWithLatitude:myCoOrdinate.latitude longitude:myCoOrdinate.longitude];
     [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
