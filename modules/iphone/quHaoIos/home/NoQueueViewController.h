@@ -13,6 +13,7 @@
 #import "MerchartModel.h"
 #import "MerchartDetail.h"
 #import "selectListView.h"
+#import "WGS84TOGCJ02.h"
 @interface NoQueueViewController :UIViewController<UITableViewDelegate,UITableViewDataSource,selectListViewDelegate,MBProgressHUDDelegate,CLLocationManagerDelegate>
 {
 @private

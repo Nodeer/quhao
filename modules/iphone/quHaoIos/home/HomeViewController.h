@@ -11,7 +11,6 @@
 #import "ASIHTTPRequest.h"
 #import "Helper.h"
 #import "ListViewController.h"
-#import "SBJson.h"
 #import "Category.h"
 #import "UICustomLabel.h"
 #import "SearchView.h"
@@ -19,6 +18,7 @@
 #import "EScrollerView.h"
 #import "AttentionViewController.h"
 #import "NoQueueViewController.h"
+#import "WGS84TOGCJ02.h"
 @interface HomeViewController : UIViewController<CityViewDelegate,EScrollerViewDelegate,CLLocationManagerDelegate,MBProgressHUDDelegate>
 {
     NSMutableArray *_categoryArray;

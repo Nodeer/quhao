@@ -297,7 +297,7 @@
                 }
                 
             }else{
-                _HUD.labelText = @"暂无不排队商家,可以先看看其他的";
+                _HUD.labelText = @"暂无不排队商家,可以先看看其他";
                 if(_HUD != nil){
                     [_HUD hide:YES afterDelay:1];
                 }
@@ -411,12 +411,21 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
     CLLocation *currLocation = [locations lastObject];
-    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     CLLocationCoordinate2D myCoOrdinate;
-    myCoOrdinate.latitude = currLocation.coordinate.latitude;
-    myCoOrdinate.longitude = currLocation.coordinate.longitude;
-    _longitude = [NSString stringWithFormat:@"%lf",currLocation.coordinate.longitude];
-    _latitude = [NSString stringWithFormat:@"%lf",currLocation.coordinate.latitude];
+    if (![WGS84TOGCJ02 isLocationOutOfChina:[currLocation coordinate]]) {
+        //转换后的coord
+        CLLocationCoordinate2D coord = [WGS84TOGCJ02 transformFromWGSToGCJ:[currLocation coordinate]];
+        myCoOrdinate.latitude = coord.latitude;
+        myCoOrdinate.longitude = coord.longitude;
+    }else{
+        myCoOrdinate.latitude = currLocation.coordinate.latitude;
+        myCoOrdinate.longitude = currLocation.coordinate.longitude;
+    }
+    //121.389573 31.132515
+    //121.385059 31.134540
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    _longitude = [NSString stringWithFormat:@"%lf",myCoOrdinate.longitude];
+    _latitude = [NSString stringWithFormat:@"%lf",myCoOrdinate.latitude];
     [locationManager stopUpdatingLocation];
     CLLocation *location = [[CLLocation alloc] initWithLatitude:myCoOrdinate.latitude longitude:myCoOrdinate.longitude];
     [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)

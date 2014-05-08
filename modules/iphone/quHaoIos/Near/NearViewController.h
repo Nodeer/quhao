@@ -11,7 +11,7 @@
 #import "MerchartModel.h"
 #import "MerchartDetail.h"
 #import "selectListView.h"
-
+#import "WGS84TOGCJ02.h"
 @interface NearViewController :UIViewController<UITableViewDelegate,UITableViewDataSource,selectListViewDelegate,MBProgressHUDDelegate,CLLocationManagerDelegate>
 {
     @private

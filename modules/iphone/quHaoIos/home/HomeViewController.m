@@ -539,8 +539,18 @@
 {
     CLLocation *currLocation = [locations lastObject];
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
-    _latitude = currLocation.coordinate.latitude;
-    _longitude = currLocation.coordinate.longitude;
+    CLLocationCoordinate2D myCoOrdinate;
+    if (![WGS84TOGCJ02 isLocationOutOfChina:[currLocation coordinate]]) {
+        //转换后的coord
+        CLLocationCoordinate2D coord = [WGS84TOGCJ02 transformFromWGSToGCJ:[currLocation coordinate]];
+        myCoOrdinate.latitude = coord.latitude;
+        myCoOrdinate.longitude = coord.longitude;
+    }else{
+        myCoOrdinate.latitude = currLocation.coordinate.latitude;
+        myCoOrdinate.longitude = currLocation.coordinate.longitude;
+    }
+    _longitude = myCoOrdinate.longitude;
+    _latitude = myCoOrdinate.latitude;
     [locationManager stopUpdatingLocation];
     CLLocation *location = [[CLLocation alloc] initWithLatitude:_latitude longitude:_longitude];
     [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)

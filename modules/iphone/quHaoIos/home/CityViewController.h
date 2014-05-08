@@ -11,6 +11,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <CoreLocation/CLLocationManagerDelegate.h>
 #import <QuartzCore/QuartzCore.h>
+#import "WGS84TOGCJ02.h"
 
 @interface CityViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate,CLLocationManagerDelegate>
 {
