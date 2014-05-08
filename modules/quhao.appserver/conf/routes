@@ -64,6 +64,7 @@ GET		/getTopMerchants					MerchantController.getTopMerchants
 GET		/nahao								MerchantController.nahao
 POST	/nahao								MerchantController.nahao
 GET		/search								MerchantController.getMerchantsByName
+GET		/check								MerchantController.checkMerchant
 GET     /lastest							MerchantController.getLastMerchants
 GET     /getCurrentNo						MerchantController.getCurrentNo
 GET     /getReservations					MerchantController.getReservations

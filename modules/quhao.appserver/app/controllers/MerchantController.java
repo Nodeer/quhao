@@ -488,6 +488,45 @@ public class MerchantController extends BaseController {
 		}
 		renderJSON(merchantVOList);
 	}
+	
+	/**
+	 * 模糊查询 route:check
+	 * 
+	 * @return 返回匹配的商家列表
+	 * @param name
+	 *            商家名称
+	 */
+	public static void checkMerchant(String name, String cityCode) {
+		
+		String type = params.get("type");
+		List<Merchant> merchantList = null;
+		// 自动联想
+		if(!StringUtils.isEmpty(type) && type.equals("think")){
+			if(!StringUtils.isEmpty(cityCode)){
+				merchantList = Merchant.searchByName(name, cityCode);
+			}else{
+				merchantList = Merchant.searchByName(name);
+			}
+		} else { // 检查商家名称是否被使用了
+			if(!StringUtils.isEmpty(cityCode)){
+				merchantList = Merchant.checkByName(name, cityCode);
+			}else{
+				merchantList = Merchant.checkByName(name);
+			}
+		}
+		
+		
+		logger.debug("search result size: " + merchantList.size());
+		
+		List<MerchantVO> merchantVOList = null;
+		if (null != merchantList && !merchantList.isEmpty()) {
+			merchantVOList = new ArrayList<MerchantVO>();
+			for (Merchant m : merchantList) {
+				merchantVOList.add(MerchantVO.build(m));
+			}
+		}
+		renderJSON(merchantVOList);
+	}
 
 	/**
 	 * @return 返回新加入的商家列表

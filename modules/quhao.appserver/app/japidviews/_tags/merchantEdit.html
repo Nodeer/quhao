@@ -38,7 +38,7 @@
 		<label for="merchantName" class="col-sm-3 control-label">商家名称：</label>
 		<div class="col-xs-7">
 			<div class="input-group">
-			<input class="form-control" onkeyup="Merchant.findMerchant(this);" type="text" name="merchantName" id="merchantName" value="${bmivo.name}" placeHolder="商家名称" autocomplete="off"
+			<input class="form-control" onkeyup="Merchant.findMerchant(this,event);" type="text" name="merchantName" id="merchantName" value="${bmivo.name}" placeHolder="商家名称, 输入关键字回车联想" autocomplete="off"
 				`if(bmivo.merchantExist){ 
 					disabled="disabled" 
 				`}

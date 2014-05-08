@@ -136,6 +136,54 @@ public class Merchant extends MerchantEntityDef {
 	}
 	
 	/**
+	 * Search merchants by key word name
+	 * @param name the key word
+	 * @return the merchants
+	 */
+	public static List<Merchant> searchByName(String name) {
+		MorphiaQuery q = Merchant.q();
+		Pattern pattern = Pattern.compile("^.*" + name + ".*$", Pattern.CASE_INSENSITIVE);
+		q.filter("name", pattern).filter("enable",false);
+		return q.asList();
+	}
+	
+	/**
+	 * Search merchants by key word name and cityCode
+	 * @param name the key word
+	 * @return the merchants
+	 */
+	public static List<Merchant> searchByName(String name, String cityCode) {
+		MorphiaQuery q = Merchant.q();
+		Pattern pattern = Pattern.compile("^.*" + name + ".*$", Pattern.CASE_INSENSITIVE);
+		q.filter("cityCode", cityCode).filter("name", pattern).filter("enable",false);
+		return q.asList();
+	}
+	
+	/**
+	 * Check merchants by key word name
+	 * @param name the key word
+	 * @return the merchants
+	 */
+	public static List<Merchant> checkByName(String name) {
+		MorphiaQuery q = Merchant.q();
+		Pattern pattern = Pattern.compile("^.*" + name + ".*$", Pattern.CASE_INSENSITIVE);
+		q.filter("name", pattern).filter("enable",true);
+		return q.asList();
+	}
+	
+	/**
+	 * Check merchants by key word name and cityCode
+	 * @param name the key word
+	 * @return the merchants
+	 */
+	public static List<Merchant> checkByName(String name, String cityCode) {
+		MorphiaQuery q = Merchant.q();
+		Pattern pattern = Pattern.compile("^.*" + name + ".*$", Pattern.CASE_INSENSITIVE);
+		q.filter("cityCode", cityCode).filter("name", pattern).filter("enable",true);
+		return q.asList();
+	}
+	
+	/**
 	 * 
 	 * @param date joinedDate Of Merchant
 	 * @return the newest merchants
