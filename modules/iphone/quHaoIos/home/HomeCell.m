@@ -41,19 +41,19 @@
     _statusLabel.font=[UIFont boldSystemFontOfSize:13];
     [self.contentView addSubview:_statusLabel];
     
-    _disLabel=[[UILabel alloc]initWithFrame:CGRectZero];
-    _disLabel.backgroundColor=[UIColor clearColor];
-    _disLabel.frame=CGRectMake(_titleLabel.frame.origin.x+120, _statusLabel.frame.origin.y+_statusLabel.frame.size.height, 50, 25);
-    _disLabel.textAlignment=NSTextAlignmentRight;
-    _disLabel.font=[UIFont boldSystemFontOfSize:13];
-    [self.contentView addSubview:_disLabel];
-    
     _rjLabel=[[UILabel alloc]initWithFrame:CGRectZero];
     _rjLabel.backgroundColor=[UIColor clearColor];
     _rjLabel.frame=CGRectMake(_titleLabel.frame.origin.x, _statusLabel.frame.origin.y+_statusLabel.frame.size.height, 80, 25);
     _rjLabel.textAlignment=NSTextAlignmentLeft;
     _rjLabel.font=[UIFont boldSystemFontOfSize:13];
     [self.contentView addSubview:_rjLabel];
+    
+    _disLabel=[[UILabel alloc]initWithFrame:CGRectZero];
+    _disLabel.backgroundColor=[UIColor clearColor];
+    _disLabel.frame=CGRectMake(kDeviceWidth-110, _statusLabel.frame.origin.y+_statusLabel.frame.size.height, 90, 25);
+    _disLabel.textAlignment=NSTextAlignmentRight;
+    _disLabel.font=[UIFont boldSystemFontOfSize:13];
+    [self.contentView addSubview:_disLabel];
 }
 
 -(void) setSelected:(BOOL)selected animated:(BOOL)animated
