@@ -93,7 +93,7 @@
         
         [self addSubview:noteView];
         [noteView release];
-        self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:4
+        self.animationTimer = [NSTimer scheduledTimerWithTimeInterval:3
                                                                target:self
                                                              selector:@selector(scrollTimer)
                                                              userInfo:nil
@@ -147,7 +147,7 @@
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    [self.animationTimer resumeTimerAfterTimeInterval:4];
+    [self.animationTimer resumeTimerAfterTimeInterval:3];
 }
 
 
