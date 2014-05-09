@@ -228,6 +228,19 @@ public class Haoma extends HaomaEntityDef {
 				for(Haoma h : hList){
 					h.resetPaidui();
 					h.save();
+					
+					// set Reservation valid=false
+					String mid = h.merchantId;
+					MorphiaQuery qq = Reservation.q();
+					qq.filter("merchantId", mid).filter("valid", true);
+					List<Reservation> rs = qq.asList();
+					if(rs !=null){
+						for(Reservation r : rs){
+							r.valid = false;
+							r.status = ReservationStatus.invalidByMerchantUpdate;
+							r.save();
+						}
+					}
 				}
 			}
 		}
