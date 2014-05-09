@@ -33,6 +33,7 @@
     [_cityButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
     UIBarButtonItem *cityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_cityButton];
     _cityCode = @"021";
+    NSLog(@"%@",[Helper returnUserString:@"currentCity"]);
     if ([Helper returnUserString:@"currentCity"]!=nil&&[Helper returnUserString:@"currentcityCode"]!=nil)
     {
         [_cityButton  setTitle:[Helper returnUserString:@"currentCity"] forState:UIControlStateNormal];
@@ -564,6 +565,8 @@
          {
              
              NSString *city = @"";
+             NSString *isLocation = [Helper returnUserString:@"isLocation"];
+             NSString *tempCityCode = @"";
              CLPlacemark *placemark = placemarks[0];
              NSString *path=[[NSBundle mainBundle] pathForResource:@"citydict" ofType:@"plist"];
              NSMutableDictionary *cities = [[NSMutableDictionary alloc] initWithContentsOfFile:path];
@@ -580,20 +583,25 @@
                      value = [cities objectForKey: [keys objectAtIndex: i]];
                      for (j=0; j<[value count]; j++) {
                          if ([[[value objectAtIndex:j] objectForKey:@"name"] isEqualToString:city]) {
-                             _cityCode = [[value objectAtIndex:j] objectForKey:@"cityCode"];
+                             tempCityCode = [[value objectAtIndex:j] objectForKey:@"cityCode"];
                              break;
                          }
                      }
                  }
-                 [_cityButton setTitle:city forState:UIControlStateNormal];
+                 if(![isLocation isEqualToString:@"1"]){
+                     [_cityButton setTitle:city forState:UIControlStateNormal];
+                      _cityCode = tempCityCode;
+                 }
                  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                  [defaults setObject:@"1" forKey:@"isLocation"];
                  [defaults setObject:city forKey:@"locationCity"];
-                 [defaults setObject:city forKey:@"currentCity"];
                  [defaults setObject:[NSString stringWithFormat:@"%lf",_latitude] forKey:@"latitude"];
                  [defaults setObject:[NSString stringWithFormat:@"%lf",_longitude] forKey:@"longitude"];
-                 [defaults setObject:_cityCode forKey:@"cityCode"];
-                 [defaults setObject:_cityCode forKey:@"currentcityCode"];
+                 [defaults setObject:tempCityCode forKey:@"cityCode"];
+                 if(![isLocation isEqualToString:@"1"]){
+                     [defaults setObject:city forKey:@"currentCity"];
+                     [defaults setObject:tempCityCode forKey:@"currentcityCode"];
+                 }
                  [defaults synchronize];
              }else if(placemark.administrativeArea){
                  city = [placemark.administrativeArea substringToIndex:2];
@@ -606,18 +614,23 @@
                      value = [cities objectForKey: [keys objectAtIndex: i]];
                      for (j=0; j<[value count]; j++) {
                          if ([[[value objectAtIndex:j] objectForKey:@"name"] isEqualToString:city]) {
-                             _cityCode = [[value objectAtIndex:j] objectForKey:@"cityCode"];
+                             tempCityCode = [[value objectAtIndex:j] objectForKey:@"cityCode"];
                              break;
                          }
                      }
                  }
-                 [_cityButton setTitle:city forState:UIControlStateNormal];
+                 if(![isLocation isEqualToString:@"1"]){
+                     [_cityButton setTitle:city forState:UIControlStateNormal];
+                     _cityCode = tempCityCode;
+                 }
                  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                  [defaults setObject:@"1" forKey:@"isLocation"];
                  [defaults setObject:city forKey:@"locationCity"];
-                 [defaults setObject:city forKey:@"currentCity"];
-                 [defaults setObject:_cityCode forKey:@"currentcityCode"];
-                 [defaults setObject:_cityCode forKey:@"cityCode"];
+                 [defaults setObject:tempCityCode forKey:@"cityCode"];
+                 if(![isLocation isEqualToString:@"1"]){
+                     [defaults setObject:city forKey:@"currentCity"];
+                     [defaults setObject:tempCityCode forKey:@"currentcityCode"];
+                 }
                  [defaults setObject:[NSString stringWithFormat:@"%lf",_latitude] forKey:@"latitude"];
                  [defaults setObject:[NSString stringWithFormat:@"%lf",_longitude] forKey:@"longitude"];
                  [defaults synchronize];
