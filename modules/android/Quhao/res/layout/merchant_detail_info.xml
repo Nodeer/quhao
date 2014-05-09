@@ -343,7 +343,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1.0"
                     android:maxLines="2"
-                    android:text="@string/current_number"
+                    android:text="@string/next_number"
                     android:textAppearance="?android:textAppearanceMedium"
                     android:textColor="#ff000000"
                     android:textSize="14.0sp" />

@@ -124,7 +124,16 @@ public class AsynImageLoader {
 				Log.i(TAG, "return image in cache" + path);
 				return bitmap;
 			}
-		} else {
+		}
+		else if(FileUtil.exists4ImageUrl(path))
+		{
+			Bitmap bitmap = FileUtil.getImageBitmap(path);
+			if(null != bitmap)
+			{
+				return bitmap;
+			}
+		}
+		else {
 			// 如果缓存中不常在该图片，则创建图片下载任务
 			Task task = new Task();
 			task.path = path;
@@ -181,7 +190,7 @@ public class AsynImageLoader {
 			imageView.setImageResource(resId);
 			return;
 		}
-		imageView.setTag(url + "" + position);
+		imageView.setTag(url);
 		Bitmap bitmap = loadImageAsyn(url, roundedType, getImageCallback(
 				imageView, resId), itemWidth);
 
@@ -220,7 +229,16 @@ public class AsynImageLoader {
 				Log.i(TAG, "return image in cache" + path);
 				return bitmap;
 			}
-		} else {
+		}
+		else if(FileUtil.exists4ImageUrl(path))
+		{
+			Bitmap bitmap = FileUtil.getImageBitmap(path);
+			if(null != bitmap)
+			{
+				return bitmap;
+			}
+		}
+		else {
 			// 如果缓存中不常在该图片，则创建图片下载任务
 			Task task = new Task();
 			task.path = path;

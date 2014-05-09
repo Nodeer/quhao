@@ -142,6 +142,7 @@
 	<string name="get_number">取号</string>
 	<string name="seat_number">座位人数：</string>
 	<string name="current_number">当前号码：</string>
+	<string name="next_number">下一号码：</string>
 	<string name="my_number">我的号码：</string>
 	<string name="before_you">在你前面：</string>
 	<string name="nahao">拿&#160;&#160;&#160;号</string>

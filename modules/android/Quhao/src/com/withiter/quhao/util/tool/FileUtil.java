@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
@@ -34,6 +36,19 @@ public class FileUtil {
 		return true;
 	}
 
+	public static boolean exists4ImageUrl(String imageUrl)
+	{
+		String fileName = getFileName(imageUrl);
+		try {
+			return exists(Environment.getExternalStorageDirectory().getCanonicalPath() + "/"
+					+ QuhaoConstant.IMAGES_SD_URL + "/" + fileName);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	public static boolean exists(String file) {
 		return new File(file).exists();
 	}
@@ -84,6 +99,20 @@ public class FileUtil {
 		try {
 			InputStream inp = new FileInputStream(new File(file));
 			return BitmapDrawable.createFromStream(inp, "img");
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static Bitmap getImageBitmap(String path) {
+		if (!exists4ImageUrl(path))
+			return null;
+		try {
+			Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getCanonicalPath() + "/"
+					+ QuhaoConstant.IMAGES_SD_URL + "/" + getFileName(path));
+			
+			return bitmap;
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
