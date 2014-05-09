@@ -111,8 +111,10 @@
 	<div class="form-group">
 		<label for="address" class="col-sm-3 control-label">商家地址：</label>
 		<div class="col-xs-7">
-			<input class="form-control" disabled="disabled" name="address" id="address" value="${bmivo.address}" placeHolder="商家地址" />
+			<input class="form-control" disabled="disabled" name="address" id="address" value="${bmivo.address}" placeHolder="商家地址" onblur="getLoc();"/>
 			<p class="help-block" style="color: red;">注意：请认真填写商家地址，错误的地址将导致消费者无法到贵店消费</p>
+			<input type="hidden" name="x" id="x" value="" />
+			<input type="hidden" name="y" id="y" value="" />
 	    </div>
 	</div>
 	<div class="form-group">
@@ -210,6 +212,8 @@
 	</div>
 </form>
 
+<div id="iCenter" style="display: none;"></div>
+
 `if(bmivo.merchantExist){
 	<script type="text/javascript">
 		$("#merchantName").val("${bmivo.name}");
@@ -229,3 +233,54 @@
 		</script>
 	`}
 `}
+
+<script language="javascript" src="http://webapi.amap.com/maps?v=1.2&key=60d9c5881dbe8dddd3de33aaacac0cbe"></script>
+
+<script language="javascript">
+var mapObj;
+var marker = new Array();
+var windowsArr = new Array(); 
+//function mapInit() { 
+    mapObj = new AMap.Map("iCenter");  
+//}  
+function geocoder() {
+    var MGeocoder;
+    //加载地理编码插件
+    mapObj.plugin(["AMap.Geocoder"], function() {        
+        MGeocoder = new AMap.Geocoder({ 
+        });
+        //返回地理编码结果 
+        AMap.event.addListener(MGeocoder, "complete", geocoder_CallBack); 
+        //地理编码
+        var city = $("#cityCode").find("option:selected").text();
+        var address = $("#address").val();
+        
+        console.log(city+"市"+address);
+        
+        MGeocoder.getLocation(city+"市"+address); 
+    });
+}  
+
+//地理编码返回结果展示   
+function geocoder_CallBack(data){
+    var resultStr="";
+    //地理编码结果数组
+    var geocode = new Array();
+    geocode = data.geocodes;  
+    for (var i = 0; i < geocode.length; i++) {
+    	$("#x").val(geocode[i].location.getLng());
+    	$("#y").val(geocode[i].location.getLat());
+        console.log(geocode[i].location.getLng()+","+geocode[i].location.getLat());
+    }
+    
+}  
+</script>
+<script type="text/javascript">
+
+function getLoc(){
+	geocoder();
+}
+<!--
+
+//-->
+</script>

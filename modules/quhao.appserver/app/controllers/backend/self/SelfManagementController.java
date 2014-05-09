@@ -96,6 +96,10 @@ public class SelfManagementController extends BaseController {
 		String description = params.get("description");
 		String cityCode = params.get("cityCode");
 		String address = params.get("address");
+		
+		String x = params.get("x");
+		String y = params.get("y");
+		
 		String tel = params.get("tel");
 		String cateType = params.get("cateType");
 		String cateName = params.get("cateName");
@@ -136,6 +140,12 @@ public class SelfManagementController extends BaseController {
 		m.description = description;
 		m.cityCode = cityCode;
 		m.address = address;
+		
+		m.x = x;
+		m.y = y;
+		double[] d = {Double.parseDouble(x), Double.parseDouble(y)};
+		m.loc = d;
+		
 		m.telephone = tel.split(",");
 		m.cateType = cateType;
 		m.cateName = cateName;
