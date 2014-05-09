@@ -79,7 +79,7 @@
 #define loadingTip @"正在加载 . . ."
 #define AppID @"867985717"
 
-#define AppVersion @"1.0"
+#define AppVersion @"1.1.1"
 #define SearchKey @"60d9c5881dbe8dddd3de33aaacac0cbe"
 
 //com.sina.weibo

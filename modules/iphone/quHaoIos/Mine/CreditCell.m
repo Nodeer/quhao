@@ -66,6 +66,8 @@
         }else if ([creditModel.status isEqualToString:@"comment"]) {
             [_titleLabel removeFromSuperview];
             _pjLabel.text=[NSString stringWithFormat:@"%@%d%@",@"评价，获得",creditModel.jifen,@"积分"];
+        }else if([creditModel.status isEqualToString:@"canceled"]){
+            _pjLabel.text=[NSString stringWithFormat:@"%@%d%@",@"取消号码，返还",creditModel.jifen,@"积分"];
         }
 
         _timeLabel.text=[Helper formatDate:creditModel.created];

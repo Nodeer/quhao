@@ -421,8 +421,6 @@
         myCoOrdinate.latitude = currLocation.coordinate.latitude;
         myCoOrdinate.longitude = currLocation.coordinate.longitude;
     }
-    //121.389573 31.132515
-    //121.385059 31.134540
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     _longitude = [NSString stringWithFormat:@"%lf",myCoOrdinate.longitude];
     _latitude = [NSString stringWithFormat:@"%lf",myCoOrdinate.latitude];
