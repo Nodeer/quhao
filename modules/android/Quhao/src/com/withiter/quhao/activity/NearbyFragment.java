@@ -44,6 +44,9 @@ import com.withiter.quhao.vo.Merchant;
 public class NearbyFragment extends Fragment implements AMapLocationListener, OnItemClickListener, OnClickListener, OnHeaderRefreshListener, OnFooterRefreshListener {
 
 	private LocationManagerProxy mAMapLocationManager = null;
+	
+	private Handler locationHandler = new Handler();
+	
 	private int page = 1;
 	private ListView merchantsListView;
 	private MerchantNearByAdapter nearByAdapter;
@@ -117,12 +120,36 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 			 */
 			// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
 			mAMapLocationManager.requestLocationUpdates(LocationProviderProxy.AMapNetwork, 5000, 10, this);
+			
+			locationHandler.postDelayed(new Runnable() {
+				
+				@Override
+				public void run() {
+					if (firstLocation == null) {
+						Toast.makeText(getActivity(), "亲，定位失败，请检查网络状态！", Toast.LENGTH_SHORT).show();
+						contentView.findViewById(R.id.loadingbar).setVisibility(View.GONE);
+						contentView.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
+						stopLocation();// 销毁掉定位
+					}
+				}
+			}, 10000);// 设置超过12秒还没有定位到就停止定位
 		}
 		contentView.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
 		contentView.findViewById(R.id.serverdata).setVisibility(View.GONE);
 		return contentView;
 	}
 
+	/**
+	 * 销毁定位
+	 */
+	private void stopLocation() {
+		if (mAMapLocationManager != null) {
+			mAMapLocationManager.removeUpdates(this);
+			mAMapLocationManager.destory();
+		}
+		mAMapLocationManager = null;
+	}
+	
 	private void initExpandView() {
 
 		if (searchDistence == 0) {
@@ -377,6 +404,11 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 	}
 
 	private void queryNearbyMerchants() {
+		if(null == firstLocation)
+		{
+			Toast.makeText(getActivity(), "亲，现在没有定位信息，不能查看哦。", Toast.LENGTH_LONG).show();
+			return;
+		}
 		String url = "getNearMerchants?userX=" + firstLocation.getLongitude() + "&userY=" + firstLocation.getLatitude() + "&cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode
 				+ "&page=" + page + "&maxDis=" + searchDistence;
 		final NearbyMerchantsTask task = new NearbyMerchantsTask(R.string.waitting, getActivity(), url);

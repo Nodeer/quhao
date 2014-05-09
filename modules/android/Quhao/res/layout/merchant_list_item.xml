@@ -1,23 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/frameLayout1"
-    android:layout_width="fill_parent"
-    android:layout_height="110dip"
-    android:background="@drawable/list_selector" >
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="110dp"
-        android:paddingLeft="0dp"
-        android:layout_marginLeft="0dp"
-        android:orientation="vertical" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="80dip"
+        android:paddingLeft="0dip"
+        android:layout_marginLeft="0dip"
+    	android:background="@drawable/list_selector">
 
         <!-- 商家logo -->
 
         <ImageView
             android:id="@+id/img"
-            android:layout_width="108dp"
-            android:layout_height="80dp"
+            android:layout_width="108dip"
+            android:layout_height="80dip"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:contentDescription="@string/empty"
@@ -29,14 +23,15 @@
         <LinearLayout
             android:id="@+id/linearLayout2"
             android:layout_width="fill_parent"
-            android:layout_height="80dp"
+            android:layout_height="80dip"
             android:layout_alignParentRight="true"
             android:layout_centerHorizontal="false"
             android:layout_centerInParent="true"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/img"
             android:orientation="vertical"
-            android:paddingTop="2dp" >
+            android:paddingLeft="5dip"
+            android:paddingTop="2dip" >
 
             <!-- 商家名称 -->
 
@@ -96,7 +91,7 @@
 
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="35dip"
+                android:layout_height="match_parent"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -120,6 +115,4 @@
                     android:textSize="13sp" />
             </LinearLayout>
         </LinearLayout>
-    </RelativeLayout>
-
-</FrameLayout>
+ </RelativeLayout>
