@@ -111,8 +111,14 @@ public class CommentController  extends BaseController{
 
 		List<Comment> comments = Comment.findbyMid(page,mid,sortBy);
 		List<CommentVO> commentVOs = new ArrayList<CommentVO>();
+		CommentVO vo = null;
+		Merchant merchant = null;
 		for (Comment comment : comments) {
-			commentVOs.add(CommentVO.build(comment));
+		    vo = CommentVO.build(comment);
+			merchant = Merchant.findByMid(comment.mid);
+			vo.merchantName = merchant.name;
+			vo.merchantAddress = merchant.address;
+			commentVOs.add(vo);
 		}
 		renderJSON(commentVOs);
 		
