@@ -34,27 +34,32 @@
             android:layout_height="35dip"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/btn_weight"
             android:text="@string/commit"
-            android:textColor="#ff000000"
-            android:textSize="14.0sp" />
+            android:textAppearance="?android:textAppearanceMediumInverse"
+            android:textColor="@color/white"
+            android:textSize="15.0sp" 
+            android:background="@android:color/transparent"
+            android:paddingRight="10dp"
+            />
 
     </RelativeLayout>
 
 	<ScrollView android:layout_width="fill_parent" android:layout_height="wrap_content" android:fillViewport="true" android:layout_weight="1.0">
 	<LinearLayout
 	    android:layout_width="fill_parent"
-	    android:layout_height="match_parent"
+	    android:layout_height="wrap_content"
+	    android:padding="5dip"
 	    android:background="#ffffffff"
 	    android:gravity="center"
 	    android:orientation="vertical" >
 
 	    <LinearLayout android:layout_width="fill_parent" 
-	        android:layout_height="wrap_content">
+	        android:layout_height="wrap_content" android:layout_gravity="center_vertical" android:orientation="horizontal">
 		    <TextView android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_marginLeft="5dp"
-		        android:text="口味    ："/>
+		        android:layout_marginLeft="5dip"
+		        android:text="口味    ："
+		        android:gravity="center_vertical"/>
 		    <RatingBar style="@style/commentRatingBar" android:stepSize="1"
 				android:layout_marginLeft="10dip" android:layout_width="wrap_content"
 				android:layout_height="wrap_content" android:id="@+id/kouwei_ratingbar">
@@ -98,26 +103,42 @@
 		    </RatingBar>
 	    </LinearLayout>
 
-	    <EditText
-		    android:id="@+id/avg_cost_edit"
-		    android:layout_width="292dp"
-		    android:layout_height="wrap_content"
-		    android:layout_marginTop="15dip"
-		    android:background="@drawable/post_edit_bg"
-		    android:ems="10"
-		    android:maxLength="5"
-		    android:gravity="center"
-		    android:inputType="number"
-		    android:textSize="14.0sp" />
+	    <LinearLayout android:layout_width="fill_parent" 
+	        android:layout_height="wrap_content"
+	        android:paddingTop="5dip" android:orientation="horizontal" android:layout_gravity="center_vertical">
+		    <TextView android:layout_width="wrap_content"
+		        android:layout_height="fill_parent"
+		        android:layout_marginLeft="5dp"
+		        android:gravity="center_vertical"
+		        android:text="平均消费："/>
 		    
-		<EditText
-		    android:id="@+id/comment_edit"
-		    android:layout_width="293dp"
-		    android:layout_height="365dp"
-		    android:background="@drawable/post_edit_bg"
-		    android:gravity="left"
-		    android:hint="@string/more_option_hint"
-		    android:textSize="14.0sp" />
+		    <EditText
+			    android:id="@+id/avg_cost_edit"
+			    android:layout_width="fill_parent"
+			    android:layout_height="40dip"
+			    android:background="@drawable/post_edit_bg"
+			    android:ems="10"
+			    android:padding="5dip"
+			    android:maxLength="5"
+			    android:hint="平均消费"
+			    android:gravity="center"
+			    android:inputType="number"
+			    android:textSize="14.0sp" />
+	    </LinearLayout>
+	    
+		<LinearLayout android:layout_width="fill_parent" 
+	        android:layout_height="wrap_content"
+	        android:paddingTop="5dip">
+			 
+			<EditText
+			    android:id="@+id/comment_edit"
+			    android:layout_width="fill_parent"
+			    android:layout_height="365dp"
+			    android:background="@drawable/post_edit_bg"
+			    android:gravity="left"
+			    android:hint="@string/more_option_hint"
+			    android:textSize="14.0sp" />
+	    </LinearLayout>
 
 	</LinearLayout>
 	</ScrollView>

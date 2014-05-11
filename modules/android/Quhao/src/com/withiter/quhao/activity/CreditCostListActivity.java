@@ -33,7 +33,7 @@ import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.vo.Credit;
 
-public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemClickListener{
+public class CreditCostListActivity extends QuhaoBaseActivity{
 
 	protected static boolean backClicked = false;
 	private static String TAG = CreditCostListActivity.class.getName();
@@ -75,7 +75,6 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 		super.onCreate(savedInstanceState);
 
 		creditsListView = (ListView) this.findViewById(R.id.creditsListView);
-		creditsListView.setOnItemClickListener(CreditCostListActivity.this);
 		
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
 		
@@ -382,45 +381,6 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 		if (backClicked) {
 			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 		}
-	}
-
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
-		
-		// 已经点过，直接返回
-		if (isClick) {
-			return;
-		}
-
-		// 设置已点击标志，避免快速重复点击
-		isClick = true;
-		// 解锁
-		unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-		
-		Credit credit = credits.get(position);
-		if(StringUtils.isNotNull(credit.merchantId))
-		{
-			Intent intent = new Intent();
-			intent.putExtra("merchantId", credit.merchantId);
-			intent.setClass(CreditCostListActivity.this, MerchantDetailActivity.class);
-			startActivity(intent);
-			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-		}
-		else
-		{
-			AlertDialog.Builder builder = new Builder(this);
-			builder.setTitle("温馨提示");
-			builder.setMessage("对不起，亲，不是商家不能查看哦。");
-			builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-				}
-			});
-			builder.create().show();
-		}
-		
 	}
 
 }

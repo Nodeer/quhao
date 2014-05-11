@@ -349,6 +349,7 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 		deleteLayout.setVisibility(View.GONE);
 		QuhaoHistoryStatesActivity.this.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
 		QuhaoHistoryStatesActivity.this.findViewById(R.id.serverdata).setVisibility(View.GONE);
+		reservations = new ArrayList<ReservationVO>();
 		initData();
 		super.onResume();
 	}
