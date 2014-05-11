@@ -5,7 +5,7 @@
     android:background="@drawable/list_item_border"
     android:orientation="horizontal" >
 
-    <LinearLayout
+    <LinearLayout android:id="@+id/cb_layout"
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:background="@drawable/list_item_border"
@@ -20,7 +20,7 @@
 	        android:focusableInTouchMode="false"
 	        android:gravity="right|center_vertical" />
     </LinearLayout>
-    <LinearLayout
+    <LinearLayout android:id="@+id/credit_layout"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:gravity="center_vertical"

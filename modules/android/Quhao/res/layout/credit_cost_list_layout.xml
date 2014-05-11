@@ -28,11 +28,12 @@
             android:layout_height="35dip"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/btn_weight"
             android:text="删除"
             android:textAppearance="?android:textAppearanceMediumInverse"
-            android:textColor="#ff000000"
-            android:textSize="14.0sp" 
+            android:textColor="@color/white"
+            android:textSize="15.0sp" 
+            android:background="@android:color/transparent"
+            android:paddingRight="10dp"
             />
         <!-- delete button -->
         
@@ -95,12 +96,13 @@
 		            android:id="@+id/bt_selectall"
 		            android:layout_width="wrap_content"
 		            android:layout_height="35dip"
-		            android:background="@drawable/btn_weight"
 		            android:text="全选"
 		            android:textAppearance="?android:textAppearanceMediumInverse"
-		            android:textColor="#ff000000"
 		            android:layout_gravity="center"
+		            android:textColor="#64bae9"
 		            android:textSize="14.0sp" 
+		            android:background="@android:color/transparent"
+		            android:paddingRight="10dp"
 		            />
 		        <!-- delete button -->
             </LinearLayout>
@@ -115,11 +117,11 @@
 		            android:id="@+id/bt_deselectall"
 		            android:layout_width="wrap_content"
 		            android:layout_height="35dip"
-		            android:background="@drawable/btn_weight"
 		            android:text="反选"
 		            android:padding="5dip"
 		            android:textAppearance="?android:textAppearanceMediumInverse"
-		            android:textColor="#ff000000"
+		            android:textColor="#64bae9"
+		            android:background="@android:color/transparent"
 		            android:textSize="14.0sp" 
 		            android:layout_gravity="center_horizontal"
 		            />
@@ -136,11 +138,11 @@
 		            android:id="@+id/bt_cancel"
 		            android:layout_width="wrap_content"
 		            android:layout_height="35dip"
-		            android:background="@drawable/btn_weight"
 		            android:text="取消删除"
 		            android:padding="5dip"
 		            android:textAppearance="?android:textAppearanceMediumInverse"
-		            android:textColor="#ff000000"
+		            android:textColor="#64bae9"
+		            android:background="@android:color/transparent"
 		            android:textSize="14.0sp" 
 		            android:layout_gravity="right"
 		            />

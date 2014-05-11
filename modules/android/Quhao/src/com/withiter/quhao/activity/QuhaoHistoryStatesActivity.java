@@ -226,6 +226,7 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 						}
 						reservationForPaiduiAdapter.rvos = reservations;
 						reservationForPaiduiAdapter.notifyDataSetChanged();
+						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 						Toast.makeText(QuhaoHistoryStatesActivity.this, R.string.delete_success, Toast.LENGTH_LONG).show();
 					}
 					
@@ -242,7 +243,7 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 						reservationForPaiduiAdapter.rvos = reservations;
 						reservationForPaiduiAdapter.notifyDataSetChanged();
 						Toast.makeText(QuhaoHistoryStatesActivity.this, R.string.delete_failed, Toast.LENGTH_LONG).show();
-						
+						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					}
 				});
 				
@@ -255,9 +256,9 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 				deleteLayout.setVisibility(View.VISIBLE);
 				reservationForPaiduiAdapter.isShowDelete = "true";
 				reservationForPaiduiAdapter.notifyDataSetChanged();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 			
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;
 		case R.id.bt_selectall:
 			if(null!=reservationForPaiduiAdapter && "true".equals(reservationForPaiduiAdapter.isShowDelete))

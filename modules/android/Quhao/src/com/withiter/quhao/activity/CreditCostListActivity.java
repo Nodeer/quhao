@@ -27,7 +27,6 @@ import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.CreditAdapter;
 import com.withiter.quhao.adapter.CreditCostHolder;
-import com.withiter.quhao.exception.NoResultFromHTTPRequestException;
 import com.withiter.quhao.task.DeleteCreditTask;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
@@ -372,6 +371,7 @@ public class CreditCostListActivity extends QuhaoBaseActivity implements OnItemC
 		super.onResume();
 		CreditCostListActivity.this.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
 		CreditCostListActivity.this.findViewById(R.id.serverdata).setVisibility(View.GONE);
+		credits = new ArrayList<Credit>();
 		initListView();
 	}
 
