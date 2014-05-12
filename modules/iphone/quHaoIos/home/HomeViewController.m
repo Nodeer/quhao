@@ -33,7 +33,6 @@
     [_cityButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
     UIBarButtonItem *cityButtonItem = [[UIBarButtonItem alloc] initWithCustomView:_cityButton];
     _cityCode = @"021";
-    NSLog(@"%@",[Helper returnUserString:@"currentCity"]);
     if ([Helper returnUserString:@"currentCity"]!=nil&&[Helper returnUserString:@"currentcityCode"]!=nil)
     {
         [_cityButton  setTitle:[Helper returnUserString:@"currentCity"] forState:UIControlStateNormal];
@@ -168,7 +167,7 @@
             if(_isLoading){
                 _isLoading = NO;
                 //if([[Helper returnUserString:@"isLocation"] isEqualToString:@"0"]){
-                    [self locationService];
+                //    [self locationService];
                 //}
                 [self realRefresh];
             }
@@ -195,11 +194,11 @@
 - (void)realRefresh
 {
     if([Helper isConnectionAvailable]){
+        [self createHud];
         [_scroller.animationTimer invalidate];
         [_categoryArray removeAllObjects];
         [_topIdArray removeAllObjects];             
         [_topUrlArray removeAllObjects];
-        [self createHud];
         dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         dispatch_group_t group = dispatch_group_create();
         dispatch_group_async(group, queue, ^{
@@ -604,6 +603,7 @@
                      [defaults setObject:tempCityCode forKey:@"currentcityCode"];
                  }
                  [defaults synchronize];
+                 [self realRefresh];
              }else if(placemark.administrativeArea){
                  city = [placemark.administrativeArea substringToIndex:2];
                  NSArray * value;
@@ -635,6 +635,7 @@
                  [defaults setObject:[NSString stringWithFormat:@"%lf",_latitude] forKey:@"latitude"];
                  [defaults setObject:[NSString stringWithFormat:@"%lf",_longitude] forKey:@"longitude"];
                  [defaults synchronize];
+                 [self realRefresh];
              }else{
                  [Helper saveDafaultData:@"0" withName:@"isLocation"];
              }
