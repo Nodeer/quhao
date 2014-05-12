@@ -22,7 +22,7 @@ public class YouhuiController extends BaseController {
 		}
 		
 		List<Youhui> youhuiList = Youhui.getAllEnabledYouhui(mid);
-		if(youhuiList == null){
+		if(youhuiList == null || youhuiList.isEmpty()){
 			renderJSON(false);
 		}
 		
