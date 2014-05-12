@@ -114,8 +114,7 @@ p {
 }
 
 .hero-header {
-	margin-top: 130px;
-	margin-bottom: 19px;
+	margin-top: 10px;
 	font-family: Montserrat;
 	color: white;
 	font-size: 42px;
@@ -123,7 +122,6 @@ p {
 }
 
 .hero-subtitle {
-	margin-bottom: 20px;
 	color: rgba(255, 255, 255, 0.83);
 	font-size: 15px;
 	line-height: 22px;

@@ -21,10 +21,33 @@ public class YouhuiController extends BaseController {
 			renderJSON(false);
 		}
 		
-		Youhui youhui = Youhui.getRandomEnabledYouhui(mid);
-		if(youhui == null){
+		List<Youhui> youhuiList = Youhui.getAllEnabledYouhui(mid);
+		if(youhuiList == null || youhuiList.isEmpty()){
 			renderJSON(false);
 		}
-		renderJSON(YouhuiVO.build(youhui));
+		
+		List<YouhuiVO> voList = new ArrayList<YouhuiVO>();
+		for(Youhui youhui : youhuiList){
+			voList.add(YouhuiVO.build(youhui));
+		}
+		
+		renderJSON(voList);
+	}
+	
+	/**
+	 * 判断是否有优惠
+	 */
+	public static void youhuiExist(){
+		String mid = params.get("mid");
+		if(StringUtils.isEmpty(mid)){
+			renderJSON(false);
+		}
+		
+		List<Youhui> youhuiList = Youhui.getAllEnabledYouhui(mid);
+		if(youhuiList == null || youhuiList.isEmpty()){
+			renderJSON(false);
+		}
+		
+		renderJSON(true);
 	}
 }

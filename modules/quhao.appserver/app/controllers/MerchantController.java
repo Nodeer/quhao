@@ -35,6 +35,7 @@ import com.withiter.models.merchant.Merchant;
 import com.withiter.models.merchant.Open;
 import com.withiter.models.merchant.Paidui;
 import com.withiter.models.merchant.TopMerchant;
+import com.withiter.models.merchant.Youhui;
 
 /**
  * 所有商家的操作
@@ -218,7 +219,7 @@ public class MerchantController extends BaseController {
 		
 		boolean isAttention=false;
 		long openNum = 0;
-		if(!accountId.equals("")){
+		if(null != accountId && !accountId.equals("")){
 			Attention attention =Attention.getAttentionById(merchantId, accountId);
 			if(attention==null){
 				isAttention=false;
@@ -232,7 +233,16 @@ public class MerchantController extends BaseController {
 		if(null != m) {
 			int checkTime = Integer.parseInt(Play.configuration.getProperty("cancelNumber.checkTime"));
 
-			merchantDetails.put("merchant", MerchantVO.build(m, c, isAttention, openNum, checkTime));
+			List<Youhui> youhuiList = Youhui.getAllEnabledYouhui(m.id());
+			
+			boolean youhuiExist = false;
+			
+			if(null != youhuiList && !youhuiList.isEmpty())
+			{
+				youhuiExist = true;
+			}
+			
+			merchantDetails.put("merchant", MerchantVO.build(m, c, isAttention, openNum, checkTime,youhuiExist));
 		}
 		
 		if(null != m && m.enable && "false".equals(isLogined)) {
