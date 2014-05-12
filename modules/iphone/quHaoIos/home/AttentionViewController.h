@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <CoreLocation/CLAvailability.h>
 #import "MerchartModel.h"
 #import "MerchartDetail.h"
 #import "QuHaoUtil.h"
@@ -17,6 +19,8 @@
     NSMutableArray *_merchartsArray;
     MBProgressHUD *_HUD;
 }
+@property  double latitude;
+@property  double longitude;
 @property (strong,nonatomic) NSString * accountId;
 
 //加载页面上的导航

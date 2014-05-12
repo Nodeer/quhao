@@ -143,7 +143,7 @@
 -(void)requestData
 {
     if ([Helper isConnectionAvailable]){
-        NSString *str1= [NSString stringWithFormat:@"%@%@%@", IP,attentionView_list_url,self.accountId];
+        NSString *str1= [NSString stringWithFormat:@"%@%@%@&userX=%f&userY=%f", IP,attentionView_list_url,self.accountId, self.latitude, self.longitude];
         NSString *response =[QuHaoUtil requestDb:str1];
         if([response isEqualToString:@""]){
             //异常处理
@@ -178,6 +178,8 @@
         model.averageCost=[[[objects objectAtIndex:i] objectForKey:@"averageCost"] floatValue];
         model.id=[[objects objectAtIndex:i] objectForKey:@"id"];
         model.imgUrl=[[objects objectAtIndex:i] objectForKey:@"merchantImage"];
+        model.enable = [[[objects objectAtIndex:i] objectForKey:@"enable"] boolValue];
+        model.distance = [[objects objectAtIndex:i] objectForKey:@"distance"];
         [_merchartsArray addObject:model];
     }
 }

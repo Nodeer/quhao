@@ -26,31 +26,31 @@
     self.egoImgView.frame = CGRectMake(5, 10, 105, 80);
     [self.contentView addSubview:self.egoImgView];
     
-    
     _titleLabel=[[UILabel alloc]initWithFrame:CGRectZero];
-    _titleLabel.frame=CGRectMake(self.egoImgView.frame.origin.x+self.egoImgView.frame.size.width+5, 10, 200, 25);
+    _titleLabel.frame=CGRectMake(self.egoImgView.frame.origin.x+self.egoImgView.frame.size.width+5, 10, 200, 30);
     _titleLabel.backgroundColor=[UIColor clearColor];
     _titleLabel.textColor=[UIColor blackColor];
     _titleLabel.font=[UIFont boldSystemFontOfSize:18];
     [self.contentView addSubview:_titleLabel];
     
-    _statusLabel=[[UILabel alloc]initWithFrame:CGRectZero];
-    _statusLabel.backgroundColor=[UIColor clearColor];
-    _statusLabel.frame=CGRectMake(_titleLabel.frame.origin.x, _titleLabel.frame.origin.y+_titleLabel.frame.size.height+10, 130, 25);
-    _statusLabel.textAlignment=NSTextAlignmentLeft;
-    _statusLabel.font=[UIFont boldSystemFontOfSize:13];
-    [self.contentView addSubview:_statusLabel];
+    _youhui = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"youhui"]];
+    _youhui.frame = CGRectMake(_titleLabel.frame.origin.x, _titleLabel.frame.origin.y+_titleLabel.frame.size.height+15, 15, 15);
+    [self.contentView addSubview:_youhui];
+
+    _quhao = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"quhao"]];
+    _quhao.frame = CGRectMake(_youhui.frame.origin.x+_youhui.frame.size.width+5, _youhui.frame.origin.y, 15, 15);
+    [self.contentView addSubview:_quhao];
     
     _rjLabel=[[UILabel alloc]initWithFrame:CGRectZero];
     _rjLabel.backgroundColor=[UIColor clearColor];
-    _rjLabel.frame=CGRectMake(_titleLabel.frame.origin.x, _statusLabel.frame.origin.y+_statusLabel.frame.size.height, 80, 25);
+    _rjLabel.frame=CGRectMake(_titleLabel.frame.origin.x, _quhao.frame.origin.y+_quhao.frame.size.height, 80, 25);
     _rjLabel.textAlignment=NSTextAlignmentLeft;
     _rjLabel.font=[UIFont boldSystemFontOfSize:13];
     [self.contentView addSubview:_rjLabel];
     
     _disLabel=[[UILabel alloc]initWithFrame:CGRectZero];
     _disLabel.backgroundColor=[UIColor clearColor];
-    _disLabel.frame=CGRectMake(kDeviceWidth-110, _statusLabel.frame.origin.y+_statusLabel.frame.size.height, 90, 25);
+    _disLabel.frame=CGRectMake(kDeviceWidth-110, _quhao.frame.origin.y+_quhao.frame.size.height, 90, 25);
     _disLabel.textAlignment=NSTextAlignmentRight;
     _disLabel.font=[UIFont boldSystemFontOfSize:13];
     [self.contentView addSubview:_disLabel];
@@ -71,13 +71,18 @@
         self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
     }
     
-    _titleLabel.frame=CGRectMake(self.egoImgView.frame.origin.x+self.egoImgView.frame.size.width+5, 10, 200, 30);
     _titleLabel.text=self.merchartModel.name;
     
-    if(self.merchartModel.id != nil && self.merchartModel.enable){
-        _statusLabel.text=@"可以在线取号";
+    if(self.merchartModel.youhuiExist){
+        _youhui.hidden = YES;
     }else{
-        _statusLabel.text=@"暂时不能取号";
+        _youhui.hidden = NO;
+    }
+    
+    if(self.merchartModel.id != nil && self.merchartModel.enable){
+        _quhao.hidden = NO;
+    }else{
+        _quhao.hidden = YES;
     }
     
     _rjLabel.text = [NSString stringWithFormat:@"%@%.2lf",@"人均:¥",self.merchartModel.averageCost];
@@ -96,6 +101,6 @@
 {
     _titleLabel=nil;
     _disLabel=nil;
-    _statusLabel=nil;
+    _quhao=nil;
 }
 @end

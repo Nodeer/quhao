@@ -305,6 +305,8 @@
         }else{
             AttentionViewController *att = [[AttentionViewController alloc] init];
             att.accountId = [Helper getUID];
+            att.latitude = _latitude;
+            att.longitude = _longitude;
             att.hidesBottomBarWhenPushed=YES;
             [self.navigationController pushViewController:att animated:YES];
         }
