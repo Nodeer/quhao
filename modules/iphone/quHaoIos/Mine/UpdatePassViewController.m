@@ -36,8 +36,11 @@
     self.view=scrollView;
     self.view.backgroundColor = [UIColor whiteColor];
     _currentField = [self createField:CGRectMake(15, 10.0f, kDeviceWidth-30, 31.0f) withName:@"当前密码"];
+    [self.view addSubview:_currentField];
     _newField = [self createField:CGRectMake(15, 55.0f, kDeviceWidth-30, 31.0f) withName:@"新密码"];
+    [self.view addSubview:_newField];
     _comfirmField = [self createField:CGRectMake(15, 100.0f, kDeviceWidth-30, 31.0f) withName:@"确认新密码"];
+    [self.view addSubview:_comfirmField];
     [_currentField becomeFirstResponder];
 
     UIImage *btnImage = [UIImage   imageNamed:@"max_btn.png"];
@@ -71,7 +74,6 @@
     currentField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 0)];
     currentField.leftViewMode = UITextFieldViewModeAlways;
     currentField.secureTextEntry = YES;
-    [self.view addSubview:currentField];
     
     return currentField;
 }

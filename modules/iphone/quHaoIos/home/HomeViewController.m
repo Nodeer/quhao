@@ -601,9 +601,9 @@
                  if(![isLocation isEqualToString:@"1"]){
                      [defaults setObject:city forKey:@"currentCity"];
                      [defaults setObject:tempCityCode forKey:@"currentcityCode"];
+                     [self realRefresh];
                  }
                  [defaults synchronize];
-                 [self realRefresh];
              }else if(placemark.administrativeArea){
                  city = [placemark.administrativeArea substringToIndex:2];
                  NSArray * value;
@@ -623,6 +623,7 @@
                  if(![isLocation isEqualToString:@"1"]){
                      [_cityButton setTitle:city forState:UIControlStateNormal];
                      _cityCode = tempCityCode;
+                     [self realRefresh];
                  }
                  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                  [defaults setObject:@"1" forKey:@"isLocation"];
@@ -635,7 +636,6 @@
                  [defaults setObject:[NSString stringWithFormat:@"%lf",_latitude] forKey:@"latitude"];
                  [defaults setObject:[NSString stringWithFormat:@"%lf",_longitude] forKey:@"longitude"];
                  [defaults synchronize];
-                 [self realRefresh];
              }else{
                  [Helper saveDafaultData:@"0" withName:@"isLocation"];
              }
