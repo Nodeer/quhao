@@ -60,7 +60,7 @@ public class AttentionController extends BaseController{
 	/**
 	 * 返回我的关注商家
 	 */
-	public static void marked(){
+	public static void marked(double userX, double userY){
 		String aid = params.get("aid");
 		if(StringUtils.isEmpty(aid)){
 			renderJSON(false);
@@ -71,7 +71,7 @@ public class AttentionController extends BaseController{
 		MerchantVO mvo = null;
 		if(ms != null){
 			for(Merchant m : ms){
-				mvo = MerchantVO.build(m);
+				mvo = MerchantVO.build(m, userX, userY);
 				avos.add(mvo);
 			}
 		}
