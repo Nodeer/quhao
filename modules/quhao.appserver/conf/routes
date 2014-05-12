@@ -93,6 +93,7 @@ GET		/delCredit				            AccountController.delHistoryCredit
 POST    /updateUserImage					AccountController.updateUserImage
 GET  	/updatePassword						AccountController.updatePassword
 GET	    /updateUserName						AccountController.updateUserName
+GET	    /getUserAgreement					AccountController.getUserAgreement
 
 # Comment
 GET		/updateComment						CommentController.updateComment

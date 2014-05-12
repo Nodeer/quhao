@@ -20,6 +20,7 @@ import play.libs.Images;
 import play.modules.morphia.Model.MorphiaQuery;
 import play.modules.morphia.Model.MorphiaUpdateOperations;
 import vo.ReservationVO;
+import vo.UserAgreementVO;
 import vo.account.CreditVO;
 import vo.account.LoginVO;
 import vo.account.SignupVO;
@@ -732,6 +733,12 @@ public class AccountController extends BaseController {
 			suVO.errorText = "修改成功";
 			renderJSON(suVO);
 		}
+	}
+	
+	public static void getUserAgreement()
+	{
+		UserAgreementVO vo = new UserAgreementVO();
+		renderJSON(vo);
 	}
 	
 }
