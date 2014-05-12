@@ -17,12 +17,12 @@
 -(void)loadNavigationItem
 {   
     self.tabBarItem.title=@"积分消费情况";
-    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 5, 50, 30 )];
+    UIButton *backButton=[Helper getBackBtn:@"back"];
     [backButton addTarget:self action:@selector(clickToHome:) forControlEvents:UIControlEventTouchUpInside];
     _backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = _backButtonItem;
     
-    UIButton *btnButton = [Helper getBackBtn:@"button.png" title:@" 编 辑" rect:CGRectMake( 0, 0, 40, 25 )];
+    UIButton *btnButton = [Helper getBtn:@" 编 辑" rect:CGRectMake( 0, 0, 40, 25 )];
     [btnButton addTarget:self action:@selector(remove:) forControlEvents:UIControlEventTouchUpInside];
     _editItem = [[UIBarButtonItem alloc] initWithCustomView:btnButton];
     self.navigationItem.rightBarButtonItem = _editItem;
@@ -45,11 +45,11 @@
     //添加上面的导航
     [self loadNavigationItem];
     
-    _mutiButton = [Helper getBackBtn:@"button.png" title:@"全部删除" rect:CGRectMake( 0, 0, 60, 25 )];
+    _mutiButton = [Helper getBtn:@"全部删除" rect:CGRectMake( 0, 0, 60, 25 )];
     [_mutiButton addTarget:self action:@selector(multiDeleteClicked:) forControlEvents:UIControlEventTouchUpInside];
     _multiDeleteBarButton = [[UIBarButtonItem alloc] initWithCustomView:_mutiButton];
     
-    UIButton *cancelButton = [Helper getBackBtn:@"button.png" title:@"取 消" rect:CGRectMake( 0, 0, 40, 25 )];
+    UIButton *cancelButton = [Helper getBtn:@"取 消" rect:CGRectMake( 0, 0, 40, 25 )];
     [cancelButton addTarget:self action:@selector(cancelButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     _cancelBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     

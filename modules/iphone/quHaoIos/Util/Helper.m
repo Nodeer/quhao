@@ -140,6 +140,29 @@
     return backButton;
 }
 
++(UIButton *)getBackBtn:(NSString *)imgName
+{
+    UIImage *backImage = [UIImage imageNamed:imgName];
+    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    backButton.frame = CGRectMake( 0, 5, 23, 23 );
+    [backButton setBackgroundImage:backImage forState:UIControlStateNormal];
+    [backButton setTitle: @"" forState: UIControlStateNormal];
+    backButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0f];         //设置button显示字体的大小
+    //[backButton setTitleColor:[UIColor blackColor]forState:UIControlStateNormal];
+    
+    return backButton;
+}
+
++(UIButton *)getBtn:(NSString *)name rect:(CGRect)size
+{
+    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    backButton.frame = size;
+    [backButton setTitle: name forState: UIControlStateNormal];
+    backButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0f];         //设置button显示字体的大小
+    
+    return backButton;
+}
+
 +(UILabel *)getCustomLabel:(NSString *)text font:(CGFloat) fontSize rect:(CGRect)labelRect
 {
     UILabel *label = [[UILabel alloc] initWithFrame:labelRect];

@@ -30,12 +30,12 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor whiteColor];
-    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 5, 50, 30 )];
+    UIButton *backButton=[Helper getBackBtn:@"back"];
     [backButton addTarget:self action:@selector(clickToHome:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
-    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@" 分 享" rect:CGRectMake( 0, 0, 40, 25 )];
+    UIButton *btnButton=[Helper getBtn:@" 分 享" rect:CGRectMake( 0, 0, 40, 25 )];
     [btnButton addTarget:self action:@selector(shareWb:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:btnButton];
     self.navigationItem.rightBarButtonItem = buttonItem;

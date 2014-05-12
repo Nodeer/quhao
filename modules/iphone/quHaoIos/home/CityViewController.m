@@ -23,7 +23,7 @@
 {
     self.view.backgroundColor=[UIColor whiteColor];
     
-    UIButton *backButton=[Helper getBackBtn:@"button.png" title:@"关 闭" rect:CGRectMake( 0, 0, 40, 25 )];
+    UIButton *backButton=[Helper getBtn:@"关 闭" rect:CGRectMake( 0, 0, 40, 25 )];
     [backButton addTarget:self action:@selector(clickToHome:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;

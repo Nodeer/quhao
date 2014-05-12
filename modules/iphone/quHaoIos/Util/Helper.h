@@ -45,7 +45,9 @@ typedef enum{
 //是否有缓存
 +(BOOL)isCookie;
 //设置返回按钮
++(UIButton *)getBackBtn:(NSString *)imgName;
 +(UIButton *)getBackBtn:(NSString *)imgName title:(NSString *)name rect:(CGRect)size;
++(UIButton *)getBtn:(NSString *)name rect:(CGRect)size;
 //按字号文字设置label
 +(UILabel *)getCustomLabel:(NSString *)text font:(CGFloat) fontSize rect:(CGRect)labelRect;
 +(UILabel *)getLabel:(NSString *)text font:(CGFloat) fontSize rect:(CGRect)labelRect;

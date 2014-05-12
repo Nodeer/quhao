@@ -68,9 +68,6 @@
     _isRefreshLoading = YES;
     
     locationManager = [[CLLocationManager alloc] init];
-    locationManager.delegate = self;
-    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    locationManager.distanceFilter = 1000.0f;
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -89,6 +86,9 @@
     {
         //定位功能可用，开始定位
         [self createHud];
+        locationManager.delegate = self;
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        locationManager.distanceFilter = 1000.0f;
         [locationManager startUpdatingLocation];
     }else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied){
         [locationManager stopUpdatingLocation];
@@ -441,11 +441,6 @@
     //	[UIView commitAnimations];
 	
 	[self setFootState:PullRefreshNormal];
-}
-
--(void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
-{
-    
 }
 
 #pragma mark location

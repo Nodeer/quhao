@@ -25,12 +25,12 @@
 
 -(void)loadNavigationItem
 {
-    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 5, 50, 30 )];
+    UIButton *backButton=[Helper getBackBtn:@"back"];
     [backButton addTarget:self action:@selector(clickToHome:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
-    UIButton *qhBtn=[Helper getBackBtn:@"button.png" title:@"导 航" rect:CGRectMake( 0, 0, 40, 25 )];
+    UIButton *qhBtn=[Helper getBtn:@"导 航" rect:CGRectMake( 0, 0, 40, 25 )];
     [qhBtn addTarget:self action:@selector(clickBjBtn:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *btnItem = [[UIBarButtonItem alloc] initWithCustomView:qhBtn];
     self.navigationItem.rightBarButtonItem = btnItem;

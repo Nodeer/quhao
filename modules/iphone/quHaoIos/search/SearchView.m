@@ -24,18 +24,17 @@
 {
     [super viewDidLoad];
     _allCount = 0;
-    _results=[[NSMutableArray alloc]initWithCapacity:20];
     self.navigationItem.title = @"搜 索";
     self.view.backgroundColor = [Helper getBackgroundColor];
     self.tableResult.backgroundColor = [Helper getBackgroundColor];
     _results = [[NSMutableArray alloc] initWithCapacity:20];
     
     
-    UIButton *backButton=[Helper getBackBtn:@"back.png" title:@" 返 回" rect:CGRectMake( 0, 5, 50, 30 )];
+    UIButton *backButton=[Helper getBackBtn:@"back"];
     [backButton addTarget:self action:@selector(clickToHome:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
-    //[searchBar becomeFirstResponder];
+    [searchBar becomeFirstResponder];
     
 #if IOS7_SDK_AVAILABLE
     if ([self.tableResult respondsToSelector:@selector(setSeparatorInset:)]) {
