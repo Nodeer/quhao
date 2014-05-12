@@ -30,6 +30,7 @@ import com.withiter.quhao.vo.Paidui;
 import com.withiter.quhao.vo.ReservationVO;
 import com.withiter.quhao.vo.SignupVO;
 import com.withiter.quhao.vo.TopMerchant;
+import com.withiter.quhao.vo.UserAgreementVO;
 import com.withiter.quhao.vo.YouhuiVO;
 
 public class ParseJson {
@@ -785,5 +786,27 @@ public class ParseJson {
 		youhui = new YouhuiVO(mid, enable, title, content);
 
 		return youhui;
+	}
+
+	public static UserAgreementVO getUserAgreement(String result) {
+		UserAgreementVO vo = null;
+		if (null == result || "".equals(result)) {
+			return vo;
+		}
+
+		try {
+			JSONObject obj = new JSONObject(result);
+			String content = "";
+			if (obj.has("content")) {
+				content = obj.optString("content");
+			}
+			
+			vo = new UserAgreementVO(content);
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		return vo;
 	}
 }

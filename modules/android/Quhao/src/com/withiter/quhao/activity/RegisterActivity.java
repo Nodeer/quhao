@@ -5,18 +5,17 @@ import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +49,12 @@ public class RegisterActivity extends QuhaoBaseActivity {
 	private String password2;
 	private TextView regResult;
 	private SignupVO signup;
+	
+	private boolean userAgreementFlag = true;
+	
+	private ImageView userAgreementCheckBox;
+	
+	private TextView userAgreementText;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +70,22 @@ public class RegisterActivity extends QuhaoBaseActivity {
 		registerBtn = (Button) this.findViewById(R.id.register_btn);
 		regResult = (TextView) this.findViewById(R.id.register_result);
 		backBtn = (Button) this.findViewById(R.id.back_btn);
-
+		userAgreementCheckBox = (ImageView) this.findViewById(R.id.agreement_check_box);
+		
+		if(userAgreementFlag)
+		{
+			userAgreementCheckBox.setImageResource(R.drawable.checkbox_on);
+		}
+		else
+		{
+			userAgreementCheckBox.setImageResource(R.drawable.checkbox_off);
+		}
+		
+		userAgreementCheckBox.setOnClickListener(this);
+		
+		userAgreementText = (TextView) this.findViewById(R.id.user_agreement);
+		userAgreementText.setOnClickListener(this);
+		
 		registerBtn.setOnClickListener(this);
 		verifyCodeBtn.setOnClickListener(this);
 		backBtn.setOnClickListener(goBack(this));
@@ -235,6 +255,14 @@ public class RegisterActivity extends QuhaoBaseActivity {
 					Looper.prepare();
 					try {
 
+						if(!userAgreementFlag)
+						{
+							progressDialogUtil.closeProgress();
+							unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+							Toast.makeText(RegisterActivity.this, "请选择同意取号啦用户使用协议。", Toast.LENGTH_LONG).show();
+							return;
+						}
+						
 						loginName = loginNameText.getText().toString().trim();
 						if (StringUtils.isNotNull(loginName) && validatePhoneNumber(loginName)) {
 							password = passwordText.getText().toString().trim();
@@ -310,6 +338,7 @@ public class RegisterActivity extends QuhaoBaseActivity {
 					try {
 
 						loginName = loginNameText.getText().toString().trim();
+						
 						if (StringUtils.isNull(loginName) || validatePhoneNumber(loginName)) {
 							String url = "generateAuthCode?mobile=" + loginName + "&os=ANDROID";
 
@@ -343,6 +372,27 @@ public class RegisterActivity extends QuhaoBaseActivity {
 				}
 			});
 			threadVerify.start();
+			break;
+		case R.id.agreement_check_box:
+			if (userAgreementFlag) 
+			{
+				userAgreementFlag = false;
+				userAgreementCheckBox.setImageResource(R.drawable.checkbox_off);
+			}
+			else
+			{
+				userAgreementFlag = true;
+				userAgreementCheckBox.setImageResource(R.drawable.checkbox_on);
+			}
+			progressDialogUtil.closeProgress();
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			break;
+		case R.id.user_agreement:
+			progressDialogUtil.closeProgress();
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			Intent intent = new Intent();
+			intent.setClass(this, UserAgreementActivity.class);
+			startActivity(intent);
 			break;
 		default:
 			progressDialogUtil.closeProgress();
