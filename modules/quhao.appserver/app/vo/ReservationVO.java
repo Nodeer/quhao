@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.withiter.common.Constants;
 import com.withiter.models.account.Reservation;
+import com.withiter.utils.DistanceUtils;
 
 public class ReservationVO {
 	public String id;
@@ -25,7 +26,8 @@ public class ReservationVO {
 	public String merchantAddress;
 	public String merchantImage;
 	public Date created = new Date();
-	
+	//用户和商家之间距离
+	public double distance;
 	/**
 	 * 检查优惠时间
 	 */
@@ -40,6 +42,22 @@ public class ReservationVO {
 		this.status = r.status;
 		this.isCommented=r.isCommented;
 		this.created = r.created;
+	}
+	
+	public void build(Reservation r, String mX, String mY, double userX, double userY){
+		this.id = r.id();
+		this.accountId = r.accountId;
+		this.merchantId = r.merchantId;
+		this.myNumber = r.myNumber;
+		this.seatNumber = r.seatNumber;
+		this.status = r.status;
+		this.isCommented=r.isCommented;
+		this.created = r.created;
+		if(userX != 0 && userY != 0){
+			this.distance = DistanceUtils.GetDistance(Double.parseDouble(mX), Double.parseDouble(mY), userX, userY);
+		}else{
+			this.distance = -1;
+		}
 	}
 	
 	public static List<ReservationVO> build(List<Reservation> rList){
