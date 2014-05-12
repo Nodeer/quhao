@@ -54,7 +54,7 @@ public class MerchantDescActivity extends QuhaoBaseActivity {
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
 		
 		findViewById(R.id.loadingbar).setVisibility(View.GONE);
-		findViewById(R.id.helpLayout).setVisibility(View.VISIBLE);
+		findViewById(R.id.scrollViewLayout).setVisibility(View.VISIBLE);
 		
 	}
 

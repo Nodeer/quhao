@@ -61,17 +61,21 @@
             android:textColor="#ff000000" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/helpLayout"
-        android:visibility="gone"
+    <ScrollView
+        android:id="@+id/scrollViewLayout"
         android:layout_width="fill_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1.0"
-        android:padding="5dip" >
+        android:layout_height="match_parent"
+        android:visibility="gone" >
 
-        <TextView android:id="@+id/desc"
+        <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"/>
-    </LinearLayout>
-
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical" >
+			<TextView android:id="@+id/desc"
+	          	android:layout_width="fill_parent"
+	          	android:layout_height="fill_parent"/>
+        </LinearLayout>
+    </ScrollView>
+        
 </LinearLayout>
