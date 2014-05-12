@@ -20,6 +20,12 @@ public class Youhui extends YouhuiEntityDef {
 		return q.asList();
 	}
 
+	/**
+	 * @获取随机优惠
+	 * @param mid
+	 * @return
+	 */
+	@Deprecated
 	public static Youhui getRandomEnabledYouhui(String mid) {
 		List<Youhui> list = getAllEnabledYouhui(mid);
 		if(list == null || list.size() == 0){
