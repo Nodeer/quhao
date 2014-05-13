@@ -35,8 +35,11 @@
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
     self.view.backgroundColor  = [ UIColor whiteColor];
-    UIScrollView *sc = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, kDeviceHeight-64)];
-    [self.view addSubview:sc];
+    _sc = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, kDeviceHeight-64)];
+    _sc.contentSize = CGSizeMake(kDeviceWidth, kDeviceHeight);
+    _sc.scrollEnabled = YES;
+    _sc.backgroundColor  = [ UIColor whiteColor];
+    [self.view addSubview:_sc];
     _titles = [[NSMutableArray alloc] init];
     _contexts = [[NSMutableArray alloc] init];
     [self createHud];
@@ -64,7 +67,7 @@
         textLabel.text = [NSString stringWithFormat:@"%d.%@", i+1 , item ];
         [textLabel sizeToFit];
         height += textLabel.bounds.size.height + 10;
-        [self.view addSubview:textLabel];
+        [_sc addSubview:textLabel];
         
         
         sectionFrame = CGRectMake(xOffset+10, height, width - xOffset-15, 0.0);
@@ -79,8 +82,10 @@
         //CGFloat sectionSpace = i < self.items.count - 1 ? self.itemsSpacing : 0.0;
         height += contextLabel.bounds.size.height + 10;
         //sectionFrame = CGRectMake(xOffset, height, width - xOffset, 0.0);
-        [self.view addSubview:contextLabel];
+        [_sc addSubview:contextLabel];
     }
+    _sc.contentSize = CGSizeMake(kDeviceWidth, height);
+
 }
 
 -(void)requestData

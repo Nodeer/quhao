@@ -15,6 +15,7 @@
     NSMutableArray *_titles;
     NSMutableArray *_contexts;
     MBProgressHUD *_HUD;
+    UIScrollView * _sc;
 }
 @property (strong,nonatomic) NSString * mid;
 

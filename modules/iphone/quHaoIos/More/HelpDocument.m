@@ -23,6 +23,11 @@
     
     
     self.view.backgroundColor  = [ UIColor whiteColor];
+    _sc = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, kDeviceHeight-64)];
+    _sc.contentSize = CGSizeMake(kDeviceWidth, kDeviceHeight);
+    _sc.scrollEnabled = YES;
+    _sc.backgroundColor  = [ UIColor whiteColor];
+    [self.view addSubview:_sc];
     _titles = @[@"积分有什么用？",@"如何获得积分？",@"关于签到？"];
     _contexts = @[@"在商家取号是要消耗一定积分的，没有积分是不能取号的。",@"在商家成功消费后，会返回一定积分；另外可以通过签到，完成任务等可以获得一定的积分。",
                   @"每天可签到一次，满五次会增加一个积分"];
@@ -65,6 +70,7 @@
         //sectionFrame = CGRectMake(xOffset, height, width - xOffset, 0.0);
         [self.view addSubview:contextLabel];
     }
+    _sc.contentSize = CGSizeMake(kDeviceWidth, height);
 }
 
 - (void)clickToHome:(id)sender

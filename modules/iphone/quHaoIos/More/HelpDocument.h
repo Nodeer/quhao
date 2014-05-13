@@ -12,6 +12,7 @@
 {
     NSArray *_titles;
     NSArray *_contexts;
+    UIScrollView * _sc;
 }
 
 //生成label
