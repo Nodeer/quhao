@@ -202,7 +202,7 @@ public class QHClientApplication extends Application {
 		}
 
 		String decryptPassword = new DesUtils().decrypt(password);
-		String url = "AccountController/login?phone=" + phone + "&password=" + decryptPassword;
+		String url = "login?phone=" + phone + "&password=" + decryptPassword;
 		try {
 			Looper.prepare();
 			String result = CommonHTTPRequest.post(url);

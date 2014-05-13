@@ -390,7 +390,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 	private void signIn() {
 		String accountId = SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "");
 		try {
-			String result = CommonHTTPRequest.get("AccountController/signIn?accountId=" + accountId);
+			String result = CommonHTTPRequest.get("signIn?accountId=" + accountId);
 			QuhaoLog.i(TAG, result);
 			if (StringUtils.isNull(result)) {
 			} else {
@@ -479,7 +479,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			}
 			else
 			{
-				String url = "AccountController/queryByAccountId?accountId=" + accountId;
+				String url = "queryByAccountId?accountId=" + accountId;
 				try {
 					String result = CommonHTTPRequest.post(url);
 					if(StringUtils.isNull(result)){

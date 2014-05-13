@@ -438,7 +438,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				QuhaoLog.v(LOGTAG, "get merchant details form server begin");
 				String accountId = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.ACCOUNT_ID, "");
 				QuhaoLog.v(LOGTAG, "MerchantDetailActivity.this.merchantId : " + merchantId + ",account ID : " + accountId);
-				String buf = CommonHTTPRequest.get("MerchantController/querytMerchantDetail?merchantId=" + merchantId + "&accountId=" + accountId + "&isLogined=" + String.valueOf(QHClientApplication.getInstance().isLogined));
+				String buf = CommonHTTPRequest.get("querytMerchantDetail?merchantId=" + merchantId + "&accountId=" + accountId + "&isLogined=" + String.valueOf(QHClientApplication.getInstance().isLogined));
 				if (StringUtils.isNull(buf)) {
 					//TODO: wjzwjz 系统异常时，怎么处理
 					info.findViewById(R.id.loadingbar).setVisibility(View.GONE);

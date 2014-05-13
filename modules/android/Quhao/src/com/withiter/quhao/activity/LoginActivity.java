@@ -142,7 +142,7 @@ public class LoginActivity extends QuhaoBaseActivity {
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;
 		case R.id.login:
-			String url = "AccountController/login?phone=" + loginNameText.getText().toString().trim() + "&email=&password=" + passwordText.getText().toString();
+			String url = "login?phone=" + loginNameText.getText().toString().trim() + "&email=&password=" + passwordText.getText().toString();
 			final LoginTask task = new LoginTask(R.string.waitting, this, url);
 			task.execute(new Runnable() {
 				

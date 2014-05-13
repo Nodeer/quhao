@@ -209,7 +209,7 @@ public class ReservationForCurrentPaiduiAdapter extends BaseAdapter {
 														progress.showProgress();
 														try {
 															String url = "";
-															url = "MerchantController/cancel?reservationId=" + reservationId;
+															url = "cancel?reservationId=" + reservationId;
 															
 															String buf = CommonHTTPRequest.get(url);
 															if (StringUtils.isNull(buf) || "[]".equals(buf)) {
@@ -298,7 +298,7 @@ public class ReservationForCurrentPaiduiAdapter extends BaseAdapter {
 						progress.showProgress();
 						try {
 							String url = "";
-							url = "MerchantController/cancel?reservationId=" + reservationId;
+							url = "cancel?reservationId=" + reservationId;
 							
 							String buf = CommonHTTPRequest.get(url);
 							if (StringUtils.isNull(buf) || "[]".equals(buf)) {
