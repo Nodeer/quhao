@@ -287,7 +287,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 			{
 				String url = "queryByAccountId?accountId=" + accountId;
 				try {
-					String result = CommonHTTPRequest.post(url);
+					String result = CommonHTTPRequest.get(url);
 					if(StringUtils.isNull(result)){
 						QHClientApplication.getInstance().isLogined = false;
 						Toast.makeText(getActivity(), "帐号超时，请重新登录", Toast.LENGTH_LONG).show();
