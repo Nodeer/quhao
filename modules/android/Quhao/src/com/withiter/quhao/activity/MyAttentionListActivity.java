@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,9 +13,14 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.location.LocationManagerProxy;
+import com.amap.api.location.LocationProviderProxy;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantAdapter;
@@ -29,19 +35,26 @@ import com.withiter.quhao.vo.Merchant;
 /**
  * 商家列表页面
  */
-public class MyAttentionListActivity extends QuhaoBaseActivity implements OnHeaderRefreshListener,OnFooterRefreshListener{
+public class MyAttentionListActivity extends QuhaoBaseActivity implements OnHeaderRefreshListener,OnFooterRefreshListener,AMapLocationListener{
 
 	private String LOGTAG = MyAttentionListActivity.class.getName();
 	protected ListView merchantsListView;
 	private List<Merchant> merchants;
 	private MerchantAdapter merchantAdapter;
 	private final int UNLOCK_CLICK = 1000;
-	private int page;
 	private boolean isFirst = true;
 	private boolean needToLoad = true;
 	public static boolean backClicked = false;
 	
 	private PullToRefreshView mPullToRefreshView;
+	
+	private LocationManagerProxy mAMapLocationManager = null;
+	
+	private Handler locationHandler = new Handler();
+	
+	private boolean isFirstLocation = false;
+
+	private AMapLocation firstLocation = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +63,6 @@ public class MyAttentionListActivity extends QuhaoBaseActivity implements OnHead
 		super.onCreate(savedInstanceState);
 
 		this.merchants = new ArrayList<Merchant>();
-
-		this.page = getIntent().getIntExtra("page", 1);
-		QuhaoLog.i(LOGTAG, "init page is : " + this.page);
 
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
 		
@@ -66,11 +76,42 @@ public class MyAttentionListActivity extends QuhaoBaseActivity implements OnHead
 		mPullToRefreshView = (PullToRefreshView) this.findViewById(R.id.main_pull_refresh_view);
 		mPullToRefreshView.setOnHeaderRefreshListener(this);
 		mPullToRefreshView.setOnFooterRefreshListener(this);
-		mPullToRefreshView.setEnableFooterView(true);
+		
+		if (mAMapLocationManager == null) {
+			mAMapLocationManager = LocationManagerProxy.getInstance(this);
+			/*
+			 * mAMapLocManager.setGpsEnable(false);//
+			 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
+			 */
+			// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
+			mAMapLocationManager.requestLocationUpdates(LocationProviderProxy.AMapNetwork, 5000, 10, this);
+			
+			locationHandler.postDelayed(new Runnable() {
+				
+				@Override
+				public void run() {
+					if (firstLocation == null) {
+						Toast.makeText(MyAttentionListActivity.this, "亲，定位失败，请检查网络状态！", Toast.LENGTH_SHORT).show();
+						stopLocation();// 销毁掉定位
+					}
+				}
+			}, 10000);// 设置超过12秒还没有定位到就停止定位
+		}
 		
 		initView();
 	}
 
+	/**
+	 * 销毁定位
+	 */
+	private void stopLocation() {
+		if (mAMapLocationManager != null) {
+			mAMapLocationManager.removeUpdates(this);
+			mAMapLocationManager.destory();
+		}
+		mAMapLocationManager = null;
+	}
+	
 	private Handler merchantsUpdateHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -125,12 +166,20 @@ public class MyAttentionListActivity extends QuhaoBaseActivity implements OnHead
 
 	private void initView() {
 		
-		getMerchants();
 	}
 
 	private void getMerchants() {
 
 		String url = "app/marked?aid=" + QHClientApplication.getInstance().accountInfo.accountId;
+		if(firstLocation!=null)
+		{
+			url = url + "&userX=" + firstLocation.getLongitude() + "&userY=" + firstLocation.getLatitude();
+		}
+		else
+		{
+			url = url + "&userX=0.000000&userY=0.000000";
+		}
+		
 		final MyAttentionListTask task = new MyAttentionListTask(R.string.waitting, this, url);
 		
 		task.execute(new Runnable() {
@@ -183,7 +232,26 @@ public class MyAttentionListActivity extends QuhaoBaseActivity implements OnHead
 	}
 
 	@Override
+	public void onStop() {
+		super.onStop();
+	}
+
+	@Override
+	public void onDestroy() {
+		if (mAMapLocationManager != null) {
+			mAMapLocationManager.removeUpdates(this);
+			mAMapLocationManager.destory();
+		}
+		mAMapLocationManager = null;
+		super.onDestroy();
+
+	}
+	
+	@Override
 	public void onPause() {
+		if (mAMapLocationManager != null) {
+			mAMapLocationManager.removeUpdates(this);
+		}
 		super.onPause();
 		QuhaoLog.i(LOGTAG, LOGTAG + " on pause");
 		if (backClicked) {
@@ -192,12 +260,21 @@ public class MyAttentionListActivity extends QuhaoBaseActivity implements OnHead
 	}
 
 	@Override
+	public void finish() {
+		if (mAMapLocationManager != null) {
+			mAMapLocationManager.removeUpdates(this);
+			mAMapLocationManager.destory();
+		}
+		mAMapLocationManager = null;
+		super.finish();
+	}
+	
+	@Override
 	public void onFooterRefresh(PullToRefreshView view) {
 		mPullToRefreshView.postDelayed(new Runnable() {
 
 			@Override
 			public void run() {
-				MyAttentionListActivity.this.page += 1;
 				
 				getMerchants();
 			}
@@ -210,7 +287,6 @@ public class MyAttentionListActivity extends QuhaoBaseActivity implements OnHead
 
 			@Override
 			public void run() {
-				MyAttentionListActivity.this.page = 1;
 				isFirst = true;
 				needToLoad = true;
 				
@@ -220,6 +296,54 @@ public class MyAttentionListActivity extends QuhaoBaseActivity implements OnHead
 			}
 		}, 1000);
 		
+	}
+
+	@Override
+	public void onLocationChanged(Location location) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onLocationChanged(AMapLocation location) {
+
+		if (null != location) {
+			if (!isFirstLocation) {
+				isFirstLocation = true;
+				firstLocation = location;
+				merchants = new ArrayList<Merchant>();
+				getMerchants();
+			} else {
+				float distance = firstLocation.distanceTo(location);
+				if (distance > 100) {
+					firstLocation = location;
+					merchants = new ArrayList<Merchant>();
+					getMerchants();
+				} else {
+					return;
+				}
+
+			}
+
+		}
 	}
 
 }

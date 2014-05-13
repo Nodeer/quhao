@@ -155,7 +155,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 				String url = "nextPage?page=" + page + "&cateType=" + categoryType + "&cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode;
 				AMapLocation location = QHClientApplication.getInstance().location;
 				if (location != null) {
-					url = url + "&userX=" + location.getLatitude() + "&userY=" + location.getLongitude();
+					url = url + "&userX=" + location.getLongitude() + "&userY=" + location.getLatitude();
 				} else {
 					url = url + "&userX=0.000000&userY=0.000000";
 				}
