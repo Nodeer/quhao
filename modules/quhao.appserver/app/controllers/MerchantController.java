@@ -206,7 +206,7 @@ public class MerchantController extends BaseController {
 	 * @param id 商家id
 	 * @param accountId 用户id
 	 */
-	public static void querytMerchantDetail(String merchantId,String accountId,String isLogined) {
+	public static void queryMerchantDetail(String merchantId,String accountId,String isLogined) {
 		
 		Map<String, Object> merchantDetails = new HashMap<String, Object>();
 		Merchant m = Merchant.findByMid(merchantId);
