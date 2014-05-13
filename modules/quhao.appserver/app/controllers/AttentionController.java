@@ -58,10 +58,11 @@ public class AttentionController extends BaseController{
 	}
 	
 	/**
+	 * @param userX  用户所在经度
+	 * @param userY  用户所在纬度
 	 * 返回我的关注商家
 	 */
-	public static void marked(double userX, double userY){
-		String aid = params.get("aid");
+	public static void marked(String aid, double userX, double userY){
 		if(StringUtils.isEmpty(aid)){
 			renderJSON(false);
 		}

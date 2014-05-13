@@ -419,7 +419,8 @@ public class AccountController extends BaseController {
 	/**
 	 * 
 	 * get current merchants by account id
-	 * 
+	 * @param userX  用户所在经度
+	 * @param userY  用户所在纬度
 	 * @param accountId
 	 *            account id
 	 */

@@ -285,8 +285,8 @@ public class MerchantVO {
 	
 	/**
 	 * @param m
-	 * @param userX 纬度
-	 * @param userY 经度
+	 * @param userX 经度
+	 * @param userY 纬度
 	 * @return
 	 */
 	public static MerchantVO build(Merchant m, double userX, double userY) {
@@ -317,7 +317,7 @@ public class MerchantVO {
 		vo.seatType = m.seatType;
 		vo.cityCode = m.cityCode;
 		if(userX != 0 && userY != 0){
-			vo.distance = DistanceUtils.GetDistance(Double.parseDouble(m.x), Double.parseDouble(m.y), userX, userY);
+			vo.distance = DistanceUtils.GetDistance(Double.parseDouble(m.y), Double.parseDouble(m.x), userX, userY);
 		}else{
 			vo.distance = -1;
 		}
