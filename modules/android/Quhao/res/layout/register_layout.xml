@@ -117,7 +117,7 @@
 	                android:id="@+id/verify_code_button"
 	                android:layout_width="wrap_content"
 	                android:layout_height="35dip"
-	                android:background="@drawable/btn_weight"
+	                android:background="@drawable/button_background_blue"
 	                android:textSize="14sp"
             		android:textAppearance="?android:textAppearanceMediumInverse"
 	                android:text="获取验证码" >
@@ -210,7 +210,7 @@
 	            android:layout_width="fill_parent"
 	            android:layout_height="35dip"
 	            android:text="@string/register_3space"
-	            android:background="@drawable/btn_weight"
+	            android:background="@drawable/button_background_blue"
 	            android:gravity="center"
 	            android:layout_gravity="center"
 	            android:textAppearance="?android:textAppearanceMediumInverse"
