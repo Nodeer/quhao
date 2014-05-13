@@ -143,7 +143,7 @@
 -(void)requestData
 {
     if ([Helper isConnectionAvailable]){
-        NSString *str1= [NSString stringWithFormat:@"%@%@%@&userX=%f&userY=%f", IP,attentionView_list_url,self.accountId, self.latitude, self.longitude];
+        NSString *str1= [NSString stringWithFormat:@"%@%@%@&userX=%f&userY=%f", IP,attentionView_list_url,self.accountId,self.longitude,self.latitude];
         NSString *response =[QuHaoUtil requestDb:str1];
         if([response isEqualToString:@""]){
             //异常处理
