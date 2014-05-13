@@ -78,9 +78,6 @@ public class Patches extends BaseController {
 						String[] s = line.replaceAll("：", ":").split("\\|");
 						
 						Merchant m = new Merchant();
-						for(String ss : s){
-							System.out.println(ss);
-						}
 						
 						m.cityCode = s[1].split(":")[1].trim();
 						m.email = (s[4].split(":").length == 1) ? "" : s[4].split(":")[1].trim();
@@ -270,9 +267,6 @@ public class Patches extends BaseController {
 	
 	private static void build(String[] s, String fileName){
 		Merchant m = new Merchant();
-		for(String ss : s){
-			System.out.println(ss);
-		}
 		m.name = s[0].split(":")[1].trim();
 		m.address = (s[1].split(":").length == 1) ? "" : s[1].split(":")[1].trim();
 		
@@ -314,9 +308,6 @@ public class Patches extends BaseController {
 	
 	private static void buildTopMerchant(String[] s, String fileName){
 		TopMerchant m = new TopMerchant();
-		for(String ss : s){
-			System.out.println(ss);
-		}
 		m.name = s[0].split(":")[1].trim();
 		m.address = (s[1].split(":").length == 1) ? "" : s[1].split(":")[1].trim();
 		

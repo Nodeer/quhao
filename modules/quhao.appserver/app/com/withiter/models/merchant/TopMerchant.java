@@ -93,9 +93,6 @@ public class TopMerchant extends TopMerchantEntityDef {
 			mq.criteria("merchantImage").notEqual("");
 			List<Merchant> mList = mq.limit(6).asList();
 			for(Merchant m : mList){
-				
-//				System.out.println(q.filter("mid", m.id()).count());
-				
 				if(q.filter("mid", m.id()).count() <= 0){
 					TopMerchant tm = TopMerchant.build(m);
 					tm.save();

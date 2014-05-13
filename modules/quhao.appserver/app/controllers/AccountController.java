@@ -625,7 +625,6 @@ public class AccountController extends BaseController {
 		String accountId = params.get("accountId");
 		if(!StringUtils.isEmpty(accountId)){
 			String userImage = params.get("userImage");
-			System.out.println(userImage);
 
 			if (!StringUtils.isEmpty(userImage)) {
 				GridFSInputFile file = uploadFirst(userImage, accountId);
@@ -650,8 +649,6 @@ public class AccountController extends BaseController {
 	private static GridFSInputFile uploadFirst(String param, String aid) {
 		GridFSInputFile gfsFile = null;
 		File[] files = params.get(param, File[].class);
-		System.out.println(files);
-
 		for (File file : files) {
 			try {
 				gfsFile = UploadController.saveBinaryForUser(file, aid);

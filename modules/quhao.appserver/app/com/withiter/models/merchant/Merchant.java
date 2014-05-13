@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 
+import play.Logger;
 import play.modules.morphia.Model.MorphiaQuery;
 import play.modules.morphia.Model.NoAutoTimestamp;
 import cn.bran.japid.util.StringUtils;
@@ -52,7 +53,6 @@ public class Merchant extends MerchantEntityDef {
 	 * @return
 	 */
 	public static Merchant findByMid(String mid){
-		System.out.println(mid);
 		MorphiaQuery q = Merchant.q();
 		q.filter("_id", new ObjectId(mid));
 		if(q.asKeyList().size() == 0){
@@ -316,7 +316,6 @@ public class Merchant extends MerchantEntityDef {
 	 * @return
 	 */
 	public static Merchant queryMerchantByPoiId(String poiId) {
-		System.out.println(poiId);
 		MorphiaQuery q = Merchant.q();
 		q.filter("poiId", poiId);
 		List<Merchant> merchants = q.asList();
@@ -330,6 +329,7 @@ public class Merchant extends MerchantEntityDef {
 	 * update merchant evaluate
 	 */
 	public void updateEvaluate(){
+		Logger.debug("start to update evaluate datas");
 		MorphiaQuery commentQ = Comment.q();
 		commentQ.filter("mid", this.id());
 		if(commentQ.count() == 0){

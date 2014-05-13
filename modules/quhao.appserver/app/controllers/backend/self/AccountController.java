@@ -62,6 +62,8 @@ public class AccountController extends BaseController {
 
 			} else {
 				for (Merchant m : mList) {
+					// 更新商家评价信息
+					m.updateEvaluate();
 					avo.mList.add(MerchantVO.build(m));
 				}
 			}

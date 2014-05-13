@@ -162,7 +162,6 @@ public class SelfManagementController extends BaseController {
 		// 设置桌位类型
 		Set<String> seatTypeSet = new HashSet<String>();
 		for (String seatNoNeedToEnable : seatType) {
-			System.out.println(seatNoNeedToEnable);
 			seatTypeSet.add(seatNoNeedToEnable);
 		}
 
