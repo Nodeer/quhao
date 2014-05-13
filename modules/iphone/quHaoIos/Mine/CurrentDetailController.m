@@ -45,7 +45,7 @@
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
 
-    UIButton *btnButton=[Helper getBackBtn:@"button.png" title:@"取消号码" rect:CGRectMake( 0, 0, 60, 25 )];
+    UIButton *btnButton=[Helper getBtn:@"取消号码" rect:CGRectMake( 0, 0, 60, 25 )];
     [btnButton addTarget:self action:@selector(clickCancel:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:btnButton];
     self.navigationItem.rightBarButtonItem = buttonItem;
@@ -80,22 +80,22 @@
                 }
             }
             
-            url = [NSString stringWithFormat:@"%@%@?mid=%@",IP,getYouHui_url, merchartID];
-            response =[QuHaoUtil requestDb:url];
-            if([response isEqualToString:@""]){
-                //异常处理
-                hud.labelText = @"服务器错误";
-            }else{
-                if(![response isEqualToString:@"false"]){
-                    NSDictionary *jsonObjects=[QuHaoUtil analyseDataToDic:response];
-                    if(jsonObjects==nil){
-                        //解析错误
-                        hud.labelText = @"服务器错误";
-                    }else{
-                        [self analyzeYh:jsonObjects];
-                    }
-                }
-            }
+//            url = [NSString stringWithFormat:@"%@%@?mid=%@",IP,getYouHui_url, merchartID];
+//            response =[QuHaoUtil requestDb:url];
+//            if([response isEqualToString:@""]){
+//                //异常处理
+//                hud.labelText = @"服务器错误";
+//            }else{
+//                if(![response isEqualToString:@"false"]){
+//                    NSDictionary *jsonObjects=[QuHaoUtil analyseDataToDic:response];
+//                    if(jsonObjects==nil){
+//                        //解析错误
+//                        hud.labelText = @"服务器错误";
+//                    }else{
+//                        [self analyzeYh:jsonObjects];
+//                    }
+//                }
+//            }
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 [hud hide:YES afterDelay:0.5];
@@ -116,16 +116,16 @@
 - (void)clickCancel:(id)sender
 {
     if([Helper isConnectionAvailable]){
-        if(youhui != nil){
-            if ([Helper checkTime:reservation.created]/60 < single.checkTime) {
-                NSString *str = [NSString stringWithFormat:@"由于您等待超过了%d个小时,前往商家消费会有优惠,是否继续取消？\n 优惠详情:%@",single.checkTime/60,youhui.content];
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:str delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
-                [alert setTag: 1];
-                [alert show];
-            }
-        }else{
+//        if(youhui != nil){
+//            if ([Helper checkTime:reservation.created]/60 < single.checkTime) {
+//                NSString *str = [NSString stringWithFormat:@"由于您等待超过了%d个小时,前往商家消费会有优惠,是否继续取消？\n 优惠详情:%@",single.checkTime/60,youhui.content];
+//                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:str delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
+//                [alert setTag: 1];
+//                [alert show];
+//            }
+//        }else{
             [self realCancelNum];
-        }
+//        }
     }else{
         [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
     }
@@ -210,11 +210,11 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row = [indexPath row];
-    if(row==0||row==5||row==6){
+    if(row==0||row==6||row==7){
         return 90;
-    }else if(row==2||row==3||row==4){
+    }else if(row==2||row==3||row==4||row==5){
         return 35;
-    }else if (row==7){
+    }else if (row==8){
         return 120;
     }
     return 72;
@@ -290,7 +290,23 @@
                 UILabel *beforeLabel = [Helper getCustomLabel:before font:15 rect:CGRectMake(175, 52, 130, 15)];
                 [cell.contentView addSubview:beforeLabel];
             }
-        }else if ([indexPath row] == 2) {//商家地址
+        }else if ([indexPath row] == 2) {//优惠
+            cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"phone.jpg"]];
+            UIImageView *_imgView=[[UIImageView alloc] initWithFrame:CGRectZero];
+            _imgView.backgroundColor=[UIColor clearColor];
+            _imgView.frame=CGRectMake(10, 12, 15, 15);
+            _imgView.image= [UIImage imageNamed:@"youhui"];
+            [cell.contentView addSubview:_imgView];
+            NSString * ph = @"";
+            if(single.youhuiExist){
+                ph = @"暂无优惠信息";
+            }else{
+                ph = @"查看优惠详情";
+                [Helper arrowStyle:cell];
+            }
+            UILabel *phLabel = [Helper getCustomLabel:ph font:14 rect:CGRectMake(35, 5, 260, 30)];
+            [cell.contentView addSubview:phLabel];
+        }else if ([indexPath row] == 3) {//商家地址
             cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"address.jpg" toSize:CGSizeMake(kDeviceWidth-10,35)]];
             
             UIImageView *_imgView=[[UIImageView alloc] initWithFrame:CGRectZero];
@@ -302,7 +318,7 @@
             UILabel *mapLabel = [Helper getCustomLabel:[NSString stringWithFormat:@"%@%@",@" 地址:",single.address] font:14 rect:CGRectMake(35, 5, kDeviceWidth-60, 30)];
             [cell.contentView addSubview:mapLabel];
             [Helper arrowStyle:cell];
-        }else if ([indexPath row] == 3) {//电话
+        }else if ([indexPath row] == 4) {//电话
             cell.backgroundView = [[UIImageView alloc] initWithImage:[Helper reSizeImage:@"phone.jpg" toSize:CGSizeMake(kDeviceWidth-10,35)]];
             UIImageView *_imgView=[[UIImageView alloc] initWithFrame:CGRectZero];
             _imgView.backgroundColor=[UIColor clearColor];
@@ -314,7 +330,7 @@
             UILabel *phLabel = [Helper getCustomLabel:value font:14 rect:CGRectMake(35, 5, 260, 30)];
             [cell.contentView addSubview:phLabel];
             [Helper arrowStyle:cell];
-        }else if ([indexPath row] == 4){
+        }else if ([indexPath row] == 5){
             cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"time.jpg"]];
             UIImageView *_imgView=[[UIImageView alloc] initWithFrame:CGRectZero];
             _imgView.backgroundColor=[UIColor clearColor];
@@ -332,7 +348,7 @@
                 [cell.contentView addSubview:sjLabel];
             }
             cell.textLabel.font = [UIFont boldSystemFontOfSize:16];
-        }else if ([indexPath row] == 5){
+        }else if ([indexPath row] == 6){
             cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tj.jpg"]];
             UILabel *nameLabel = [Helper getCustomLabel:@"  网友推荐:" font:16 rect:CGRectMake(0, 15, 80, 15)];
             [cell.contentView addSubview:nameLabel];
@@ -348,7 +364,7 @@
             UILabel *tjLabel = [Helper getCustomLabel:result font:14 rect:CGRectMake(10, 25, 295,65)];
             [tjLabel setNumberOfLines:0];
             [cell.contentView addSubview:tjLabel];
-        }else if ([indexPath row] == 6){//点评
+        }else if ([indexPath row] == 7){//点评
             cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"dp.jpg"]];
             UILabel *nameLabel = [Helper getCustomLabel:@"  点评:" font:16 rect:CGRectMake(0, 7, 70, 15)];
             [cell.contentView addSubview:nameLabel];
@@ -360,7 +376,7 @@
             [[cell contentView] addSubview:dpLabel];
             
             [Helper arrowStyle:cell];
-        }else if ([indexPath row] == 7){
+        }else if ([indexPath row] == 8){
             cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ms.jpg"]];
             UILabel *nameLabel = [Helper getCustomLabel:@"  商家描述:" font:16 rect:CGRectMake(0, 25, 100, 15)];
             [cell.contentView addSubview:nameLabel];
@@ -385,13 +401,25 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSInteger row = [indexPath row];
-    if (row ==3) {
+    if (row ==4) {
         [self CallPhone];
     }else if(row==2){
+        [self pushYouhui:self.navigationController];
+    }else if(row==3){
         [self pushMap:@"d" andNavController:self.navigationController andIsNextPage:NO];
-    }else if(row==6){
+    }else if(row==7){
         [self pushComment:@"d" andNavController:self.navigationController];
+    }else if(row==8){
+        [self pushSjms:self.navigationController];
     }
+}
+
+- (void)pushYouhui:(UINavigationController *)navController
+{
+    YouhuiViewController *youhuiView = [[YouhuiViewController alloc] init];
+    youhuiView.mid = single.id;
+    youhuiView.hidesBottomBarWhenPushed=YES;
+    [navController pushViewController:youhuiView animated:YES];
 }
 
 //拨打电话的

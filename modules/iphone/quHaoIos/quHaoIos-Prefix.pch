@@ -22,7 +22,6 @@
 #endif
 
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
-#define UIColorFromRGB2(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:0.5]
 
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
@@ -49,7 +48,6 @@
 #define getCurrentNo_url @"/getCurrentNo"
 #define updateComment_url @"/updateComment"
 #define getLatestComment_url @"/getComment"
-#define merchant_url @"/merchant"
 #define merchant_newurl @"/querytMerchantDetail"
 #define credit_url @"/getCreditCost"
 #define signIn_url @"/signIn"
@@ -75,11 +73,13 @@
 #define getNearMerchants_url @"/getNearMerchants"
 #define getNoQueueMerchants_url @"/getNearNoQueueMerchants"
 #define getYouHui_url @"/youhui"
+#define getProtocol_url @"/protocol"
+#define getUserAgreement @"/getUserAgreement"
 #define loadNext20Tip @"更多 . . ."
 #define loadingTip @"正在加载 . . ."
 #define AppID @"867985717"
 
-#define AppVersion @"1.1.1"
+#define AppVersion @"1.1.2"
 #define SearchKey @"60d9c5881dbe8dddd3de33aaacac0cbe"
 
 //com.sina.weibo

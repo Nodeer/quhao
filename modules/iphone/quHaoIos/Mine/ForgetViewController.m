@@ -30,10 +30,13 @@
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
-    UIButton *btnButton = [Helper getBtn:@"提 交" rect:CGRectMake( 0, 0, 40, 25 )];
-    [btnButton addTarget:self action:@selector(resetPass:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:btnButton];
-    self.navigationItem.rightBarButtonItem = buttonItem;
+    UIImage *btnImage = [UIImage   imageNamed:@"max_btn.png"];
+    UIButton *zcBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    zcBtn.frame = CGRectMake(15, 230, 290, 30);
+    [zcBtn setBackgroundImage:btnImage forState:UIControlStateNormal];
+    [zcBtn setTitle: @"提 交" forState: UIControlStateNormal];
+    [zcBtn addTarget:self action:@selector(resetPass:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:zcBtn];
 }
 
 - (void)clickToHome:(id)sender
