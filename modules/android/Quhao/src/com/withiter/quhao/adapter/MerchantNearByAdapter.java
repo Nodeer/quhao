@@ -59,7 +59,8 @@ public class MerchantNearByAdapter extends BaseAdapter {
 				holder.img.setAdjustViewBounds(true);
 				holder.distance = (TextView) convertView.findViewById(R.id.distance);
 				holder.merchantName = (TextView) convertView.findViewById(R.id.merchantName);
-				holder.merchantEnable = (TextView) convertView.findViewById(R.id.merchant_enable);
+				holder.youhui = (ImageView) convertView.findViewById(R.id.youhui);
+				holder.quhao = (ImageView) convertView.findViewById(R.id.quhao);
 //				holder.pinfenImage = (ImageView) convertView.findViewById(R.id.pingfen);
 				holder.merchantRenjun = (TextView) convertView.findViewById(R.id.merchantRenjun);
 			}
@@ -104,28 +105,50 @@ public class MerchantNearByAdapter extends BaseAdapter {
 			*/
 			holder.merchantName.setTag("merchantName_" + position);
 			holder.merchantName.setText(merchant.name);
-			holder.merchantEnable.setTag("merchantEnable_" + position);
+			holder.youhui.setTag("youhui_" + position);
+			if(merchant.youhuiExist)
+			{
+				holder.youhui.setVisibility(View.VISIBLE);
+				holder.youhui.setImageResource(R.drawable.ic_youhui);
+			}
+			else
+			{
+				holder.youhui.setVisibility(View.GONE);
+			}
+			
+			holder.quhao.setTag("quhao_" + position);
 			
 			if(merchant.enable)
 			{
-				holder.merchantEnable.setText("可以取号");
+				holder.quhao.setVisibility(View.VISIBLE);
+				holder.quhao.setImageResource(R.drawable.ic_quhao);
 			}
 			else
 			{
-				holder.merchantEnable.setText("暂不支持取号");
+				holder.quhao.setVisibility(View.GONE);
 			}
 			
 			holder.distance.setTag("distance_" + position);
-			if(merchant.distance>1000)
+			if(merchant.distance != 0)
 			{
-				double distance = merchant.distance;
-				NumberFormat nf = NumberFormat.getNumberInstance();
-		        nf.setMaximumFractionDigits(2);
-				holder.distance.setText(nf.format(distance/1000) + "千米");
+				if(merchant.distance>1000)
+				{
+					
+					NumberFormat nf = NumberFormat.getNumberInstance();
+			        nf.setMaximumFractionDigits(2);
+					holder.distance.setText(nf.format(merchant.distance/1000) + "千米");
+				}
+				else
+				{
+					holder.distance.setText(String.valueOf((int)merchant.distance) + "米");
+				}
+				
+//				holder.distance.setText(String.valueOf(DistanceUtil.computeDistance(lp.getLatitude(), lp.getLongitude(), merchant.lat, merchant.lng)));
+//				Log.e("wjzwjz distance : ", String.valueOf(DistanceUtil.computeDistance(lp.getLatitude(), lp.getLongitude(), merchant.lat, merchant.lng)));
 			}
 			else
 			{
-				holder.distance.setText(String.valueOf((int)merchant.distance) + "米");
+				holder.distance.setText("未定位");
 			}
 			
 			/*
@@ -184,8 +207,8 @@ public class MerchantNearByAdapter extends BaseAdapter {
 	class ViewHolder {
 		ImageView img;
 		TextView merchantName;
-		TextView merchantEnable;
-//		ImageView pinfenImage;
+		ImageView youhui;
+		ImageView quhao;
 		TextView merchantRenjun;
 		TextView distance;
 	}

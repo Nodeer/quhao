@@ -2,7 +2,6 @@ package com.withiter.quhao.util.tool;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -305,7 +304,12 @@ public class ParseJson {
 		if (obj.has("enable")) {
 			enable = obj.optBoolean("enable");
 		}
-
+		
+		boolean youhuiExist = false;
+		if (obj.has("youhuiExist")) {
+			youhuiExist = obj.optBoolean("youhuiExist");
+		}
+		
 		String joinedDate = "";
 		if (obj.has("joinedDate")) {
 			joinedDate = obj.optString("joinedDate");
@@ -317,7 +321,7 @@ public class ParseJson {
 		double lng = obj.optDouble("y");
 		boolean isAttention = obj.optBoolean("isAttention");
 		merchant = new Merchant(id, imgUrl, name, address, phone, cateType, grade, averageCost, tags, kouwei, huanjing, fuwu, xingjiabi, teses, nickName, description, openTime, closeTime,
-				marketCount, enable, joinedDate, lat, lng, distance);
+				marketCount, enable, joinedDate, lat, lng, distance,youhuiExist);
 
 		String commentAverageCost = obj.optString("commentAverageCost");
 		int commentXingjiabi = obj.optInt("commentXingjiabi");
@@ -744,6 +748,30 @@ public class ParseJson {
 		return merchantDetail;
 	}
 
+	public static List<YouhuiVO> getYouhuis(String buf) {
+
+		List<YouhuiVO> youhuis = new ArrayList<YouhuiVO>();
+		if (StringUtils.isNull(buf)) {
+			return youhuis;
+		}
+
+		try {
+			JSONArray array = new JSONArray(buf);
+			for (int i = 0; i < array.length(); i++) {
+				JSONObject obj = array.getJSONObject(i);
+				YouhuiVO youhui = coventYouhui(obj);
+				if (null != youhui) {
+					youhuis.add(youhui);
+				}
+
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		return youhuis;
+	}
+	
 	public static YouhuiVO getYouhui(String buf) {
 		YouhuiVO youhui = null;
 		if (null == buf || "".equals(buf)) {

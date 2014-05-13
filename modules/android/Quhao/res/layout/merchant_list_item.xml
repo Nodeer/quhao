@@ -33,33 +33,58 @@
             android:paddingLeft="5dip"
             android:paddingTop="2dip" >
 
-            <!-- 商家名称 -->
-
-            <TextView
-                android:id="@+id/merchantName"
-                android:layout_width="wrap_content"
+			<LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:text="@string/empty"
-                android:textColor="@color/black"
-                android:textSize="15sp" />
-            <!-- 商家名称 -->
+                android:orientation="horizontal" >
 
-
-            <!-- 是否可以取号 -->
-
-            <TextView
-                android:id="@+id/merchant_enable"
-                android:layout_width="wrap_content"
+                 <!-- 商家名称 -->
+	            <TextView
+	                android:id="@+id/merchantName"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:ellipsize="end"
+	                android:singleLine="true"
+	                android:text="@string/empty"
+	                android:textColor="@color/black"
+	                android:textSize="15sp" />
+	            <!-- 商家名称 -->
+            </LinearLayout>
+			<LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:text="@string/empty"
-                android:textColor="@color/red"
-                android:textSize="13sp" />
-            <!-- 是否可以取号 -->
+                android:orientation="horizontal" >
 
+			    <ImageView android:id="@+id/youhui"
+			        android:layout_width="20dip"
+			        android:layout_height="20dip"
+			        android:src="@drawable/ic_youhui"
+			        android:contentDescription="@string/empty"/>
+			    <TextView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:ellipsize="end"
+	                android:singleLine="true"
+	                android:text="@string/null_2_space"
+	                android:textColor="@color/red"
+	                android:textSize="13sp" />
+                 <!-- 是否可以取号 -->
+                 <ImageView android:id="@+id/quhao"
+			        android:layout_width="20dip"
+			        android:layout_height="20dip"
+			        android:src="@drawable/ic_quhao"
+			        android:contentDescription="@string/empty"/>
+	            <!--<TextView
+	                android:id="@+id/quhao"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:ellipsize="end"
+	                android:singleLine="true"
+	                android:text="@string/empty"
+	                android:textColor="@color/red"
+	                android:textSize="13sp" />
+	             	是否可以取号 -->
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/linearLayout3"
                 android:layout_width="fill_parent"
