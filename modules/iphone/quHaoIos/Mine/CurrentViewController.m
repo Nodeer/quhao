@@ -171,7 +171,7 @@
         if(longitude == nil){
             longitude = @"0";
         }
-        NSString *str1 = [NSString stringWithFormat:@"%@%@%@&page=%d&userX=%@&userY=%@", IP,currentMerchant_url,self.accouId, pageIndex, latitude ,longitude];
+        NSString *str1 = [NSString stringWithFormat:@"%@%@%@&page=%d&userX=%@&userY=%@", IP,currentMerchant_url,self.accouId, pageIndex, longitude,latitude];
         NSString *response = [QuHaoUtil requestDb:str1];
         
         if([response isEqualToString:@""]){

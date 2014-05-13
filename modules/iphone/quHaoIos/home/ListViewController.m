@@ -165,7 +165,7 @@
           return;
       }
       int pageIndex = _allCount/10+1;
-      NSString *str1= [NSString stringWithFormat:@"%@%@%@&sortBy=joinedDate&cityCode=%@&page=%d&userX=%f&userY=%f", IP,homeView_list_url,self.cateType,self.cityCode, pageIndex, self.latitude, self.longitude];
+      NSString *str1= [NSString stringWithFormat:@"%@%@%@&sortBy=joinedDate&cityCode=%@&page=%d&userX=%f&userY=%f", IP,homeView_list_url,self.cateType,self.cityCode, pageIndex,self.longitude,self.latitude];
       NSString *response =[QuHaoUtil requestDb:str1];
       if([response isEqualToString:@""]){
           //异常处理
