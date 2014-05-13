@@ -11,6 +11,7 @@
     <string name="btn_ok">确&#160;&#160;&#160;定</string>
     <string name="btn_back">返&#160;回</string>
     <string name="btn_calcel_1_space">取&#160;消</string>
+    <string name="null_2_space">&#160;&#160;</string>
 	
     <string name="commit">提&#160;&#160;&#160;交</string>
     <string name="delete">删除</string>
@@ -68,6 +69,9 @@
 	<string name="paidui_condition">排队情况</string>
 	<string name="no_description">暂无描述</string>
 	<string name="distance">距离你</string>
+	<string name="no_youhui_info">暂无优惠信息</string>
+	<string name="check_youhui_list_info">查看优惠信息</string>
+	<string name="youhui_list_info">优惠信息</string>
 	<!-- 详细页面 -->
 	
     <!-- 提示信息 -->

@@ -298,6 +298,7 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 
 			if (msg.what == 200) {
 
+				merchantsListView.setVisibility(View.VISIBLE);
 				if (isFirstLoad) {
 
 					merchantNoQueueAdapter = new MerchantNoQueueAdapter(

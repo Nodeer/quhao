@@ -90,6 +90,10 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	
 	public static boolean backClicked = false;
 
+	private LinearLayout youhuiLayout;
+	
+	private TextView youhuiView;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -164,6 +168,11 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		paiduiConditionLayout = (LinearLayout) info.findViewById(R.id.paidui_condition_layout);
 		seatNoView = (TextView) info.findViewById(R.id.seatNo);
 		currentNumberView = (TextView) info.findViewById(R.id.currentNumber);
+		
+		//添加优惠信息栏
+		youhuiLayout = (LinearLayout) info.findViewById(R.id.youhui_layout);
+		youhuiLayout.setOnClickListener(this);
+		youhuiView = (TextView) info.findViewById(R.id.youhui);
 		initView();
 	}
 	
@@ -519,6 +528,14 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 							merchantDesc.setText(R.string.no_desc);
 						}
 	
+						if (m.youhuiExist) {
+							youhuiView.setText(R.string.check_youhui_list_info);
+						}
+						else
+						{
+							youhuiView.setText(R.string.no_youhui_info);
+						}
+						
 						merchantAverageCost.setText(m.averageCost);
 						xingjiabi.setText(String.valueOf(m.xingjiabi));
 						kouwei.setText(String.valueOf(m.kouwei));
@@ -826,6 +843,21 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		}
 		isClick = true;
 		switch (v.getId()) {
+		case R.id.youhui_layout:
+			if(this.merchant.youhuiExist)
+			{
+				QuhaoLog.d("", "the commentContent : " + this.merchant.commentContent);
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				Intent intent = new Intent(this, YouhuiListActivity.class);
+				intent.putExtra("merchantId", this.merchant.id);
+				
+				startActivity(intent);
+			}
+			else
+			{
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			}
+			break;
 		case R.id.critiqueLayout:
 			if(StringUtils.isNotNull(this.merchant.commentContent))
 			{

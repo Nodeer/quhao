@@ -362,7 +362,46 @@
 			</LinearLayout>
 	    </LinearLayout>
     </LinearLayout>
+	<LinearLayout
+        android:id="@+id/youhui_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/address"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10.0dip">
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_address_big" 
+            android:contentDescription="@string/empty"
+            />
+  		
+        <TextView
+            android:id="@+id/youhui"
+            android:layout_width="0.0px"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6.0dip"
+            android:layout_weight="1.0"
+            android:maxLines="2"
+            android:paddingRight="6.0dip"
+            android:text="@string/no_youhui_info"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="#ff000000"
+            android:textSize="16.0sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:duplicateParentState="true"
+            android:paddingRight="6.0dip"
+            android:src="@drawable/arrow_right" 
+            android:contentDescription="@string/empty"
+            />
+    </LinearLayout>
     <!-- 地址 -->
     <LinearLayout
         android:id="@+id/mapLayout"

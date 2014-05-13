@@ -13,13 +13,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.amap.api.location.AMapLocation;
-import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.AsynImageLoader;
-import com.withiter.quhao.util.tool.DistanceUtil;
 import com.withiter.quhao.vo.Merchant;
 
 public class MerchantAdapter extends BaseAdapter {
@@ -62,7 +59,8 @@ public class MerchantAdapter extends BaseAdapter {
 				holder.img.setAdjustViewBounds(true);
 				holder.content = (TextView) convertView.findViewById(R.id.merchantName);
 				holder.distance = (TextView) convertView.findViewById(R.id.distance);
-				holder.merchantEnable = (TextView) convertView.findViewById(R.id.merchant_enable);
+				holder.youhui = (ImageView) convertView.findViewById(R.id.youhui);
+				holder.quhao = (ImageView) convertView.findViewById(R.id.quhao);
 //				holder.pinfenImage = (ImageView) convertView.findViewById(R.id.pingfen);
 				holder.merchantRenjun = (TextView) convertView.findViewById(R.id.merchantRenjun);
 			}
@@ -107,15 +105,28 @@ public class MerchantAdapter extends BaseAdapter {
 			*/
 			holder.content.setTag("content_" + position);
 			holder.content.setText(merchant.name);
-			holder.merchantEnable.setTag("merchantEnable_" + position);
 			
-			if(merchant.enable)
+			holder.youhui.setTag("youhui_" + position);
+			if(merchant.youhuiExist)
 			{
-				holder.merchantEnable.setText("可以取号");
+				holder.youhui.setVisibility(View.VISIBLE);
+				holder.youhui.setImageResource(R.drawable.ic_youhui);
 			}
 			else
 			{
-				holder.merchantEnable.setText("暂不支持取号");
+				holder.youhui.setVisibility(View.GONE);
+			}
+			
+			holder.quhao.setTag("quhao_" + position);
+			
+			if(merchant.enable)
+			{
+				holder.quhao.setVisibility(View.VISIBLE);
+				holder.quhao.setImageResource(R.drawable.ic_quhao);
+			}
+			else
+			{
+				holder.quhao.setVisibility(View.GONE);
 			}
 			
 			holder.distance.setTag("distance_" + position);
@@ -139,7 +150,7 @@ public class MerchantAdapter extends BaseAdapter {
 			}
 			else
 			{
-				holder.distance.setText("没有定位信息，暂时无法显示距离");
+				holder.distance.setText("未定位");
 			}
 			
 			/*
@@ -223,7 +234,8 @@ public class MerchantAdapter extends BaseAdapter {
 	class ViewHolder {
 		ImageView img;
 		TextView content;
-		TextView merchantEnable;
+		ImageView youhui;
+		ImageView quhao;
 //		ImageView pinfenImage;
 		TextView merchantRenjun;
 		TextView distance;
