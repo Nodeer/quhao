@@ -230,6 +230,7 @@
 {
     if (searchText.length == 0) {
         self.isSearch = NO;
+        [tbView reloadData];
     }else{
         self.isSearch = YES;
         [self findContext];
@@ -396,6 +397,11 @@
     [super viewWillDisappear:animated];
     //停止定位
     [locationManager stopUpdatingLocation];
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing:YES];
 }
 
 - (void)didReceiveMemoryWarning

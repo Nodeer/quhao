@@ -35,6 +35,8 @@
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
     self.view.backgroundColor  = [ UIColor whiteColor];
+    UIScrollView *sc = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, kDeviceHeight-64)];
+    [self.view addSubview:sc];
     _titles = [[NSMutableArray alloc] init];
     _contexts = [[NSMutableArray alloc] init];
     [self createHud];

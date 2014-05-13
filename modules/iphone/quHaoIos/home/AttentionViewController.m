@@ -43,7 +43,6 @@
                 [self.tableView reloadData];
                 [_HUD hide:YES];
             }else{
-                _HUD.labelText = @"您还没有添加关注";
                 [self.tableView reloadData];
                 [_HUD hide:YES afterDelay:1];
             }
@@ -139,7 +138,6 @@
     [navController pushViewController:mDetail animated:YES];
 }
 
-
 -(void)requestData
 {
     if ([Helper isConnectionAvailable]){
@@ -148,16 +146,16 @@
         if([response isEqualToString:@""]){
             //异常处理
             _HUD.labelText = @"服务器错误";
-            [_HUD hide:YES];
         }else{
             NSArray *jsonObjects=[QuHaoUtil analyseData:response];
             if(jsonObjects==nil){
                 //解析错误
                 _HUD.labelText = @"服务器错误";
-                [_HUD hide:YES];
             }else{
                 [self addAfterInfo:jsonObjects];
-                
+                if([_merchartsArray count] == 0){
+                    _HUD.labelText = @"您还没有添加关注";
+                }
             }
         }
     }

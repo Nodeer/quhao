@@ -66,17 +66,21 @@
     [self.view addSubview:_button];
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshedNear:) name:Notification_TabClick object:nil];
     _isRefreshLoading = YES;
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshed:) name:Notification_TabSingleClick object:nil];
     locationManager = [[CLLocationManager alloc] init];
 }
 
--(void)viewDidAppear:(BOOL)animated
+- (void)refreshed:(NSNotification *)notification
 {
-    [_merchartsArray removeAllObjects];
-    _isLoading = NO;
-    _allCount = 0;
-    _isLoadOver = NO;
-    [self locationService];
+    if (notification.object) {
+        if ([(NSString *)notification.object isEqualToString:@"1"]) {
+            [_merchartsArray removeAllObjects];
+            _isLoading = NO;
+            _allCount = 0;
+            _isLoadOver = NO;
+            [self locationService];
+        }
+    }
 }
 
 -(void)locationService
