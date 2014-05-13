@@ -165,7 +165,7 @@
           return;
       }
       int pageIndex = _allCount/10+1;
-      NSString *str1= [NSString stringWithFormat:@"%@%@%@&sortBy=joinedDate&cityCode=%@&page=%d&userX=%f&userY=%f", IP,homeView_list_url,self.cateType,self.cityCode, pageIndex, self.latitude, self.longitude];
+      NSString *str1= [NSString stringWithFormat:@"%@%@%@&sortBy=joinedDate&cityCode=%@&page=%d&userX=%f&userY=%f", IP,homeView_list_url,self.cateType,self.cityCode, pageIndex,self.longitude,self.latitude];
       NSString *response =[QuHaoUtil requestDb:str1];
       if([response isEqualToString:@""]){
           //异常处理
@@ -220,6 +220,7 @@
         model.imgUrl = [[objects objectAtIndex:i] objectForKey:@"merchantImage"];
         model.enable = [[[objects objectAtIndex:i] objectForKey:@"enable"] boolValue];
         model.distance = [[objects objectAtIndex:i] objectForKey:@"distance"];
+        model.youhuiExist = [[[objects objectAtIndex:i] objectForKey:@"youhuiExist"] boolValue];
         [news addObject:model];
     }
     

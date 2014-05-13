@@ -240,7 +240,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 	private void signIn() {
 		String accountId = SharedprefUtil.get(getActivity(), QuhaoConstant.ACCOUNT_ID, "");
 		try {
-			String result = CommonHTTPRequest.get("AccountController/signIn?accountId=" + accountId);
+			String result = CommonHTTPRequest.get("signIn?accountId=" + accountId);
 			QuhaoLog.i(TAG, result);
 			if (StringUtils.isNull(result)) {
 			} else {
@@ -285,9 +285,9 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 			}
 			else
 			{
-				String url = "AccountController/queryByAccountId?accountId=" + accountId;
+				String url = "queryByAccountId?accountId=" + accountId;
 				try {
-					String result = CommonHTTPRequest.post(url);
+					String result = CommonHTTPRequest.get(url);
 					if(StringUtils.isNull(result)){
 						QHClientApplication.getInstance().isLogined = false;
 						Toast.makeText(getActivity(), "帐号超时，请重新登录", Toast.LENGTH_LONG).show();

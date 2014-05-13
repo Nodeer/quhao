@@ -12,6 +12,7 @@
 #import "ApiError.h"
 #import "ASIFormDataRequest.h"
 #import "MineViewController.h"
+#import "ProtocolViewController.h"
 @interface RegisterViewController : UIViewController<UITextFieldDelegate>
 
 @property (strong, nonatomic) IBOutlet UITextField *mdField;

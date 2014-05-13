@@ -132,7 +132,8 @@ public class MerchantController extends BaseController {
 
 	/**
 	 * 进入分类商家
-	 * 
+     * @param userX 经度
+	 * @param userY 纬度
 	 * @param page
 	 *            分页
 	 * @param cateType
@@ -140,6 +141,7 @@ public class MerchantController extends BaseController {
 	 * @param sortBy
 	 *            排序
 	 */
+
 	public static void nextPage(int page, String cateType, String sortBy, String cityCode, double userX, double userY) {
 		page = (page == 0) ? 1 : page;
 		if(StringUtils.isEmpty(sortBy)){
@@ -553,8 +555,8 @@ public class MerchantController extends BaseController {
 	/**
 	 * 周边不排队商家
 	 * @param page	分页
-	 * @param userX X坐标
-	 * @param userY	Y坐标
+	 * @param userX 经度
+	 * @param userY 纬度
 	 * @param maxDis 最远的距离
 	 * @param cityCode 城市代码
 	 */

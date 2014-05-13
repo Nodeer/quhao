@@ -485,7 +485,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 		// progressTopMerchant = new ProgressDialogUtil(getActivity(),
 		// R.string.empty, R.string.querying, false);
 		// progressTopMerchant.showProgress();
-		final TopMerchantsTask task = new TopMerchantsTask(0, getActivity(), "MerchantController/getTopMerchants?x=6&cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode);
+		final TopMerchantsTask task = new TopMerchantsTask(0, getActivity(), "getTopMerchants?x=6&cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode);
 		task.execute(new Runnable() {
 
 			@Override
@@ -576,7 +576,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	 */
 	public void getCategoriesFromServerAndDisplay() {
 
-		final AllCategoriesTask task = new AllCategoriesTask(0, getActivity(), "MerchantController/allCategories?cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode);
+		final AllCategoriesTask task = new AllCategoriesTask(0, getActivity(), "allCategories?cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode);
 		task.execute(new Runnable() {
 
 			@Override

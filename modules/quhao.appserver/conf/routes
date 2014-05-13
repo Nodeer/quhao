@@ -70,7 +70,7 @@ GET     /getCurrentNo						MerchantController.getCurrentNo
 GET     /getReservations					MerchantController.getReservations
 GET     /cancel								MerchantController.cancel
 GET		/merchantNew					    MerchantController.merchantNew
-GET		/queryMerchantDetail				MerchantController.queryMerchantDetail
+GET		/querytMerchantDetail				MerchantController.queryMerchantDetail
 GET 	/getNearMerchants					MerchantController.getNearMerchants
 GET 	/getNoQueueMerchants				MerchantController.getNoQueueMerchants
 GET		/getNearNoQueueMerchants			MerchantController.getNearNoQueueMerchants
@@ -94,6 +94,8 @@ POST    /updateUserImage					AccountController.updateUserImage
 GET  	/updatePassword						AccountController.updatePassword
 GET	    /updateUserName						AccountController.updateUserName
 GET	    /getUserAgreement					AccountController.getUserAgreement
+GET	    /queryByAccountId					AccountController.queryByAccountId
+
 
 # Comment
 GET		/updateComment						CommentController.updateComment

@@ -23,17 +23,34 @@
     [super viewDidLoad];
     self.view.backgroundColor=[UIColor whiteColor ];
 
-    [self.scrollView setContentSize:CGSizeMake(kDeviceWidth, 480)];
+    [self.scrollView setContentSize:CGSizeMake(kDeviceWidth, 510)];
 
     UIButton *backButton=[Helper getBackBtn:@"back.png"];
     [backButton addTarget:self action:@selector(clickToMine:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
-    UIButton *btnButton=[Helper getBtn:@"注 册" rect:CGRectMake( 0, 0, 40, 25 )];
-    [btnButton addTarget:self action:@selector(addAccount:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *buttonItem = [[UIBarButtonItem alloc] initWithCustomView:btnButton];
-    self.navigationItem.rightBarButtonItem = buttonItem;
+    UIImage *btnImage = [UIImage   imageNamed:@"max_btn.png"];
+    UIButton *zcBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    zcBtn.frame = CGRectMake(15, 230, 290, 30);
+    [zcBtn setBackgroundImage:btnImage forState:UIControlStateNormal];
+    [zcBtn setTitle: @"注 册" forState: UIControlStateNormal];
+    [zcBtn addTarget:self action:@selector(addAccount:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:zcBtn];
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 265, 80, 30)];
+    label.textColor = [UIColor darkGrayColor];
+    label.font = [UIFont fontWithName:@"Arial" size:13.0];
+    label.text = @"注册视为同意";
+    [self.view addSubview:label];
+    
+    UIButton *yhxy = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    yhxy.frame = CGRectMake(90, 265, 60, 30);
+    [yhxy setTitle:@"用户协议" forState:UIControlStateNormal];
+    yhxy.titleLabel.font = [UIFont boldSystemFontOfSize:13.0f];
+    [yhxy setTitleColor:UIColorFromRGB(0x559ee2) forState:UIControlStateNormal];
+    [yhxy addTarget:self action:@selector(viewProtocol:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:yhxy];
 }
 
 //按下Done按钮的调用方法，我们让键盘消失
@@ -162,5 +179,13 @@
     }
     btn.enabled = YES;
 }
+
+-(void)viewProtocol:(id)sender
+{
+    ProtocolViewController *pro = [[ProtocolViewController alloc] init];
+    pro.title = @"用户协议";
+    [self.navigationController pushViewController:pro animated:YES];
+}
+
 @end
 

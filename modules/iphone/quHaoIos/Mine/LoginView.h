@@ -11,7 +11,7 @@
 #import "MineViewController.h"
 #import "RegisterViewController.h"
 #import "ForgetViewController.h"
-@interface LoginView : UIViewController<UIWebViewDelegate> 
+@interface LoginView : UIViewController<UIWebViewDelegate>
 {
     ASIFormDataRequest *_request;
 }

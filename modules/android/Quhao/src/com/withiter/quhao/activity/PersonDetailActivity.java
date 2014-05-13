@@ -645,7 +645,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 			}
 			else
 			{
-				String url = "AccountController/queryByAccountId?accountId=" + accountId;
+				String url = "queryByAccountId?accountId=" + accountId;
 				try {
 					String result = CommonHTTPRequest.post(url);
 					if(StringUtils.isNull(result)){

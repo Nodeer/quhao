@@ -149,9 +149,10 @@
 //弹出商家详细页面
 - (void)pushCurrentDetail:(MerchartModel *)model andNavController:(UINavigationController *)navController
 {
-    CurrentDetailController *current = [[CurrentDetailController alloc] init];
+    MerchartDetail *current = [[MerchartDetail alloc] init];
     current.merchartID = model.id;
     current.accountID = self.accouId;
+    current.type = @"current";
     [navController pushViewController:current animated:YES];
 }
 
@@ -162,7 +163,15 @@
             return;
         }
         int pageIndex = _allCount/10+1;
-        NSString *str1 = [NSString stringWithFormat:@"%@%@%@&page=%d", IP,currentMerchant_url,self.accouId, pageIndex];
+        NSString * latitude = [Helper returnUserString:@"latitude"];
+        NSString * longitude = [Helper returnUserString:@"longitude"];
+        if(latitude == nil){
+            latitude = @"0";
+        }
+        if(longitude == nil){
+            longitude = @"0";
+        }
+        NSString *str1 = [NSString stringWithFormat:@"%@%@%@&page=%d&userX=%@&userY=%@", IP,currentMerchant_url,self.accouId, pageIndex, longitude,latitude];
         NSString *response = [QuHaoUtil requestDb:str1];
         
         if([response isEqualToString:@""]){
@@ -205,6 +214,9 @@
         model.reservationId = [[objects objectAtIndex:i] objectForKey:@"id"];
         model.averageCost = [[[objects objectAtIndex:i] objectForKey:@"averageCost"] boolValue];
         model.imgUrl = [[objects objectAtIndex:i] objectForKey:@"merchantImage"];
+        model.enable = true;
+        model.distance = [[objects objectAtIndex:i] objectForKey:@"distance"];
+        model.youhuiExist = [[[objects objectAtIndex:i] objectForKey:@"youhuiExist"] boolValue];
         [news addObject:model];
     }
     return news;

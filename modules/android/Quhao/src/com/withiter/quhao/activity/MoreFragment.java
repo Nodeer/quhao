@@ -246,7 +246,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 											@Override
 											public void onClick(DialogInterface dialog, int which) {
 												dialog.dismiss();
-												ProgressDialog pBar = new ProgressDialog(getActivity());
+												final ProgressDialog pBar = new ProgressDialog(getActivity());
 												pBar.setTitle("正在下载");
 												pBar.setMessage("请稍候...");
 												pBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -281,7 +281,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 															if (fileOutputStream != null) {
 																fileOutputStream.close();
 															}
-
+															pBar.dismiss();
 //															down();
 															
 															Intent intent = new Intent(Intent.ACTION_VIEW);  

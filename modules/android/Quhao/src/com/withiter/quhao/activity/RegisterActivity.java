@@ -150,7 +150,7 @@ public class RegisterActivity extends QuhaoBaseActivity {
 //						editor.putString(QuhaoConstant.PASSWORD, HexedPwd);
 //						editor.commit();
 
-						String url = "AccountController/login?phone=" + loginName + "&email=&password=" + password;
+						String url = "login?phone=" + loginName + "&email=&password=" + password;
 						final LoginTask task = new LoginTask(R.string.waitting, RegisterActivity.this, url);
 						task.execute(new Runnable() {
 							

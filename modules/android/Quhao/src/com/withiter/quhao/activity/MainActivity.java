@@ -173,7 +173,7 @@ public class MainActivity extends QuhaoBaseActivity {
 				Looper.prepare();
 				try {
 					QuhaoLog.d(TAG, "Start to get Top Merchants data form server.");
-					String result = CommonHTTPRequest.get("MerchantController/getTopMerchants?x=6");
+					String result = CommonHTTPRequest.get("getTopMerchants?x=6");
 					QuhaoLog.d(TAG, result);
 					if (StringUtils.isNull(result)) {
 						// TODO display error page here
@@ -231,7 +231,7 @@ public class MainActivity extends QuhaoBaseActivity {
 				Looper.prepare();
 				try {
 					QuhaoLog.v(TAG, "get categorys data form server begin");
-					String result = CommonHTTPRequest.get("MerchantController/allCategories");
+					String result = CommonHTTPRequest.get("allCategories");
 					if (StringUtils.isNull(result)) {
 						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					} else {

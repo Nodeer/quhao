@@ -128,7 +128,7 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 			try {
 				Looper.prepare();
 				QuhaoLog.v(TAG, "get categorys data form server begin");
-				String buf = CommonHTTPRequest.get("merchant?id=" + MerchantLBSActivity.this.merchantId);
+				String buf = CommonHTTPRequest.get("querytMerchantDetail?id=" + MerchantLBSActivity.this.merchantId);
 				// + MerchantDetailActivity.this.merchantId);
 				if (StringUtils.isNull(buf) && "[]".equals(buf)) {
 				} else {

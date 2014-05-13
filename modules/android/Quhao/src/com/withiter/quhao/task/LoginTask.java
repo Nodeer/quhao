@@ -42,7 +42,7 @@ public class LoginTask extends BaseTask {
 
 	@Override
 	public JsonPack getData() throws Exception {
-		String result = CommonHTTPRequest.get(url); // doGet(mParams);
+		String result = CommonHTTPRequest.post(url); // doGet(mParams);
 		JsonPack jsonPack = getJsonPack(result);
 		return jsonPack;
 	}

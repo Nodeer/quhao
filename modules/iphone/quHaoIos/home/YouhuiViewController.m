@@ -48,7 +48,7 @@
     CGRect sectionFrame;
     CGFloat width = self.view.frame.size.width;
     CGFloat xOffset = 10;
-    CGFloat height = 20.0;
+    CGFloat height = 15.0;
     
     for (int i=0; i < _titles.count; i++) {
         id item = [_titles objectAtIndex:i];
