@@ -35,9 +35,18 @@ $addCSS("backend.css", true)
           
           <!-- 控制开放/关闭取号 -->
           <div style="margin-top: 80px;" >
-          	<button type="button" class="btn btn-primary" >关闭取号</button>
+          	<button type="button" class="btn btn-primary" onclick="Merchant.changeStatus('${bmivo.mid}','${!bmivo.online}');">
+          	`if(bmivo.online){
+          		关闭取号
+          	`} else {
+          		开放取号
+          	`}
+          	</button>
+          	<!-- 控制开放/关闭取号 -->
+	          <font style="margin-top: 0px;" id="paiduipageTip">
+	          </font>
+	          <!-- 控制开放/关闭取号 -->
           </div>
-          <!-- 控制开放/关闭取号 -->
           <div style="margin-top: 10px;" class="panel panel-info" id="autoRefreshDiv">
 	  					<!-- Default panel contents -->
 						  <div class="panel-heading">排队实时情况</div>

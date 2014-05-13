@@ -44,6 +44,7 @@ public abstract class TopMerchantEntityDef extends BaseModel {
 	public String closeTime;	
 	public int markedCount;
 	public boolean enable = false;
+	public boolean online = true;
 	public Date joinedDate = new Date();
 	
 	public String cityCode = "";

@@ -364,4 +364,21 @@ public class Merchant extends MerchantEntityDef {
 		}
 		return mList;
 	}
+	
+	/**
+	 * 改变商家状态（开放取号，关闭取号）
+	 * @param mid	商家id
+	 * @param online	在线状态（true->开放取号，false->关闭取号）
+	 * @return 是否更改成功
+	 */
+	public static boolean changeStatus(String mid, boolean online){
+		Merchant m = Merchant.findByMid(mid);
+		if(m == null){
+			return false;
+		}
+		
+		m.online = online;
+		m.save();
+		return true;
+	}
 }

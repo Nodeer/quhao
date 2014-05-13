@@ -673,3 +673,35 @@ Merchant.validateYouhui = function(mid) {
 
 	return true;
 }
+
+Merchant.changeStatus = function(mid, online){
+	if(Common.isEmpty(mid) || Common.isEmpty(online)){
+		alert("请联系管理员");
+		return;
+	}
+	
+	$.ajax({
+		type : "POST",
+		url : "/b/w/changeStatus",
+		dataType : "json",
+		data : {
+			"mid" : mid,
+			"online" : online
+		},
+		success : function(data) {
+			console.log(data);
+			if (data) {
+				if(online == 'false'){
+					$("#paiduipageTip").html("关闭排队成功！注意：需要时可开放排队，3秒后刷新页面。").removeClass().addClass("text-danger");
+				} else {
+					$("#paiduipageTip").html("开放排队成功！3秒后刷新页面。").removeClass().addClass("text-success");
+				}
+				setTimeout('location.reload()', 3000);
+			}
+		},
+		error : function() {
+			alert("服务器维护中，马上就好。");
+		}
+	});
+	
+}

@@ -36,6 +36,7 @@ public class BackendMerchantInfoVO {
 	public int markedCount;
 	public Date joinedDate = new Date();
 	public boolean enable = false;
+	public boolean online = false;
 	public String x;
 	public String y;
 	
@@ -90,6 +91,7 @@ public class BackendMerchantInfoVO {
 			vo.closeTime = m.closeTime;
 			vo.description = m.description;
 			vo.enable = m.enable;
+			vo.online = m.online;
 			vo.joinedDate = m.joinedDate;
 			vo.markedCount = m.markedCount;
 			vo.name = m.name;
@@ -107,11 +109,8 @@ public class BackendMerchantInfoVO {
 			vo.xingjiabi = m.xingjiabi;
 			
 			vo.seatType = m.seatType;
-			
 			vo.cityCode = m.cityCode;
-			
 			vo.openRequestCount = openRequestCount;
-			
 			
 			String imageStorePath = Play.configuration.getProperty("image.store.path");
 			// generate merchant image list
@@ -122,7 +121,6 @@ public class BackendMerchantInfoVO {
 				}
 			}
 		}
-		
 		
 		//account info
 		vo.aid = a.id();
@@ -152,6 +150,7 @@ public class BackendMerchantInfoVO {
 			vo.closeTime = m.closeTime;
 			vo.description = m.description;
 			vo.enable = m.enable;
+			vo.online = m.online;
 			vo.joinedDate = m.joinedDate;
 			vo.markedCount = m.markedCount;
 			vo.name = m.name;
@@ -181,7 +180,6 @@ public class BackendMerchantInfoVO {
 				}
 			}
 		}
-		
 		
 		//account info
 		vo.aid = a.id();

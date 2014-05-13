@@ -42,6 +42,7 @@ public class TopMerchantVO {
 	public String closeTime;
 	public int markedCount;
 	public boolean enable = false;
+	public boolean online = false;
 	public String joinedDate = new Date().toString();
 
 	public String merchantImage = "";
@@ -51,6 +52,7 @@ public class TopMerchantVO {
 		TopMerchantVO vo = new TopMerchantVO();
 		vo.id = m.id();
 		vo.enable = m.enable;
+		vo.online = m.online;
 		vo.name = m.name;
 		vo.mid = m.mid;
 

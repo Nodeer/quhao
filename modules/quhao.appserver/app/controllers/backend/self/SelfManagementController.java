@@ -422,7 +422,6 @@ public class SelfManagementController extends BaseController {
 			e.printStackTrace();
 			logger.error(ExceptionUtil.getTrace(e));
 		}
-
 	}
 
 	/**
@@ -512,5 +511,22 @@ public class SelfManagementController extends BaseController {
 		} else {
 			return gfsFile;
 		}
+	}
+	
+	/**
+	 * 改变商家状态（开放取号，关闭取号）
+	 * @param mid	商家id
+	 * @param online	在线状态（true->开放取号，false->关闭取号）
+	 */
+	public static void changeStatus(){
+		String mid = params.get("mid");
+		String online = params.get("online");
+		
+		if(StringUtils.isEmpty(mid) || StringUtils.isEmpty(online)){
+			renderJSON(false);
+		}
+		
+		boolean flag = Merchant.changeStatus(mid, Boolean.valueOf(online));
+		renderJSON(flag);
 	}
 }

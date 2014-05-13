@@ -135,6 +135,7 @@ GET		/updateGaodeToMerchant				GaodeToMerchantController.updateGaodeToMerchant
 *		/b/w/expireByMerchant				backend.self.SelfManagementController.expireByMerchant
 *		/b/w/quhaoOnsite					backend.self.SelfManagementController.quhaoOnsite
 *		/b/w/saveYouhui						backend.self.SelfManagementController.saveYouhui
+*		/b/w/changeStatus					backend.self.SelfManagementController.changeStatus
 
 *		/b/a/updatePwd						backend.self.AccountController.updatePwd
 *		/b/a/logout							backend.self.AccountController.logout
