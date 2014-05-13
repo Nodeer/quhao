@@ -74,9 +74,10 @@
     _titleLabel.text=self.merchartModel.name;
     
     if(self.merchartModel.youhuiExist){
-        _youhui.hidden = YES;
-    }else{
         _youhui.hidden = NO;
+    }else{
+        _youhui.hidden = YES;
+        _quhao.frame = CGRectMake(_titleLabel.frame.origin.x, _titleLabel.frame.origin.y+_titleLabel.frame.size.height+15, 15, 15);
     }
     
     if(self.merchartModel.id != nil && self.merchartModel.enable){

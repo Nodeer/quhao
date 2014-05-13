@@ -220,6 +220,7 @@
         model.imgUrl = [[objects objectAtIndex:i] objectForKey:@"merchantImage"];
         model.enable = [[[objects objectAtIndex:i] objectForKey:@"enable"] boolValue];
         model.distance = [[objects objectAtIndex:i] objectForKey:@"distance"];
+        model.youhuiExist = [[[objects objectAtIndex:i] objectForKey:@"youhuiExist"] boolValue];
         [news addObject:model];
     }
     
