@@ -12,7 +12,7 @@ import com.withiter.models.merchant.Haoma;
 //@OnApplicationStart(async=true)
 
 // 每天1:00AM开始job
-@On("0 0 2 * * ?")
+@On("0 0 3 * * ?")
 
 public class CleanPaiduiJob extends Job {
 	
