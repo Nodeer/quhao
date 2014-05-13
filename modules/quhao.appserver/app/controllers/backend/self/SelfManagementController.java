@@ -141,9 +141,9 @@ public class SelfManagementController extends BaseController {
 		m.cityCode = cityCode;
 		m.address = address;
 		
-		m.x = y;
-		m.y = x;
-		double[] d = {Double.parseDouble(x), Double.parseDouble(y)};
+		m.x = x;
+		m.y = y;
+		double[] d = {Double.parseDouble(y), Double.parseDouble(x)};
 		m.loc = d;
 		
 		m.telephone = tel.split(",");

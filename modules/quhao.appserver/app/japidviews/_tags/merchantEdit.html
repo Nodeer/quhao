@@ -267,9 +267,10 @@ function geocoder_CallBack(data){
     var geocode = new Array();
     geocode = data.geocodes;  
     for (var i = 0; i < geocode.length; i++) {
-    	$("#x").val(geocode[i].location.getLng());
-    	$("#y").val(geocode[i].location.getLat());
-        console.log(geocode[i].location.getLng()+","+geocode[i].location.getLat());
+    	$("#x").val(geocode[i].location.getLat());
+    	$("#y").val(geocode[i].location.getLng());
+        console.log(geocode[i].location.getLat()+","+geocode[i].location.getLng());
+        break;
     }
     
 }  
