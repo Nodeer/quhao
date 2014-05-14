@@ -36,7 +36,7 @@
     UIActivityIndicatorView *_tableFooterActivityIndicator;
     PullRefreshState _state;
     BOOL _isRefreshLoading;
-
+    BOOL _isFristLoad;
 }
 @property (strong, nonatomic)  UITableView *tableView;
 @property (strong, nonatomic) CLLocationManager *locationManager;

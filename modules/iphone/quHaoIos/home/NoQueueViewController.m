@@ -34,7 +34,7 @@
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     self.navigationItem.leftBarButtonItem = backButtonItem;
     
-    self.tableView=[[UITableView alloc] initWithFrame:CGRectMake(0, 25, kDeviceWidth, kDeviceHeight-133)];
+    self.tableView=[[UITableView alloc] initWithFrame:CGRectMake(0, 25, kDeviceWidth, kDeviceHeight-89)];
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.delegate=self;
     self.tableView.dataSource=self;

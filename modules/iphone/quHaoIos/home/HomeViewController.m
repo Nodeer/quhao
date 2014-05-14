@@ -305,8 +305,8 @@
         }else{
             AttentionViewController *att = [[AttentionViewController alloc] init];
             att.accountId = [Helper getUID];
-            att.latitude = _latitude;
-            att.longitude = _longitude;
+            att.latitude = [[Helper returnUserString:@"latitude"] doubleValue];
+            att.longitude = [[Helper returnUserString:@"longitude"] doubleValue];
             att.hidesBottomBarWhenPushed=YES;
             [self.navigationController pushViewController:att animated:YES];
         }
@@ -513,8 +513,8 @@
     ListViewController *home = [[ListViewController alloc] init];
     home.cateType = cateType;
     home.cityCode = _cityCode;
-    home.latitude = _latitude;
-    home.longitude = _longitude;
+    home.latitude = [[Helper returnUserString:@"latitude"] doubleValue];
+    home.longitude = [[Helper returnUserString:@"longitude"] doubleValue];
     home.hidesBottomBarWhenPushed=YES;
     [navController pushViewController:home animated:YES];
 }
@@ -541,10 +541,10 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
     CLLocation *currLocation = [locations lastObject];
-    NSTimeInterval howRecent = [currLocation.timestamp timeIntervalSinceNow];
-    if(howRecent < -10 || currLocation.horizontalAccuracy > 100) {
-        return;
-    }
+//    NSTimeInterval howRecent = [currLocation.timestamp timeIntervalSinceNow];
+//    if(howRecent < -10 || currLocation.horizontalAccuracy > 100) {
+//        return;
+//    }
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     CLLocationCoordinate2D myCoOrdinate;
     if (![WGS84TOGCJ02 isLocationOutOfChina:[currLocation coordinate]]) {

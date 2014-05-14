@@ -66,16 +66,23 @@
     [self.view addSubview:_button];
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshedNear:) name:Notification_TabClick object:nil];
     _isRefreshLoading = YES;
-    locationManager = [[CLLocationManager alloc] init];
-}
-
--(void)viewDidAppear:(BOOL)animated
-{
-    _isRefreshLoading = NO;
-    [_merchartsArray removeAllObjects];
     _isLoading = NO;
     _allCount = 0;
     _isLoadOver = NO;
+    _isFristLoad = YES;
+    locationManager = [[CLLocationManager alloc] init];
+    locationManager.delegate = self;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    locationManager.distanceFilter = 100.0f;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    //_isLoading = NO;
+    //_allCount = 0;
+    //_isLoadOver = NO;
+    //[_merchartsArray removeAllObjects];
     [self locationService];
 }
 
@@ -84,11 +91,10 @@
     if ([CLLocationManager locationServicesEnabled] &&([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized
                                                        || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined))
     {
+        if(_isFristLoad){
+            [self createHud];
+        }
         //定位功能可用，开始定位
-        [self createHud];
-        locationManager.delegate = self;
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-        locationManager.distanceFilter = 1000.0f;
         [locationManager startUpdatingLocation];
     }else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied){
         [locationManager stopUpdatingLocation];
@@ -351,6 +357,7 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:YES];
+    [locationManager stopUpdatingLocation];
     if(_HUD!=nil){
         [_HUD hide:YES];
     }
@@ -467,6 +474,29 @@
     _longitude = [NSString stringWithFormat:@"%lf",myCoOrdinate.longitude];
     _latitude = [NSString stringWithFormat:@"%lf",myCoOrdinate.latitude];
     [locationManager stopUpdatingLocation];
+    
+    if(_isFristLoad){
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [self requestData];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                _isFristLoad = NO;
+                if (_tableFooterView == nil) {
+                    if(_isLoadOver||[_merchartsArray count]==0){
+                        self.tableView.tableFooterView = nil;
+                        _isFristLoad = YES;
+                        _isLoading = YES;
+                    }else{
+                        [self createFootView];
+                        [self setFootState:PullRefreshNormal];
+                    }
+                }
+                [self.tableView reloadData];
+                if(_HUD != nil){
+                    [_HUD hide:YES];
+                }
+            });
+        });
+    }
     CLLocation *location = [[CLLocation alloc] initWithLatitude:myCoOrdinate.latitude longitude:myCoOrdinate.longitude];
     [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
      {
@@ -478,25 +508,6 @@
              }
              return;
          }
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-             [self requestData];
-             dispatch_async(dispatch_get_main_queue(), ^{
-                 if (_tableFooterView == nil) {
-                     if(_isLoadOver||[_merchartsArray count]==0){
-                         self.tableView.tableFooterView = nil;
-                         _isLoading = YES;
-                     }else{
-                         [self createFootView];
-                         [self setFootState:PullRefreshNormal];
-                     }
-                 }
-                 [self.tableView reloadData];
-                 if(_HUD != nil){
-                     [_HUD hide:YES];
-                 }
-             });
-         });
-         
          if(placemarks.count > 0)
          {
              
