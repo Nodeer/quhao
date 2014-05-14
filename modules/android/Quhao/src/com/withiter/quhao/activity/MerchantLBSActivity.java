@@ -39,6 +39,7 @@ import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.vo.Merchant;
+import com.withiter.quhao.vo.MerchantDetailVO;
 
 public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerClickListener, OnMapLoadedListener, 
 	OnInfoWindowClickListener, InfoWindowAdapter,LocationSource, AMapLocationListener {
@@ -133,7 +134,9 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 				if (StringUtils.isNull(buf) && "[]".equals(buf)) {
 				} else {
 
-					merchant = ParseJson.getMerchant(buf);
+					MerchantDetailVO merchantDetail = ParseJson.getMerchantDetail(buf);
+					merchant = merchantDetail.merchant;
+					
 					// merchant.lat = 31.678109;
 					// merchant.lng = 31.678109;
 					// List<ReservationVO> rvos =
