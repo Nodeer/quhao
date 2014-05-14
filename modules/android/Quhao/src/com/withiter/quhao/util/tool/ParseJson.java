@@ -320,8 +320,14 @@ public class ParseJson {
 		double lat = obj.optDouble("x");
 		double lng = obj.optDouble("y");
 		boolean isAttention = obj.optBoolean("isAttention");
+		
+		boolean online = false;
+		if (obj.has("online")) {
+			online = obj.optBoolean("online");
+		}
+		
 		merchant = new Merchant(id, imgUrl, name, address, phone, cateType, grade, averageCost, tags, kouwei, huanjing, fuwu, xingjiabi, teses, nickName, description, openTime, closeTime,
-				marketCount, enable, joinedDate, lat, lng, distance,youhuiExist);
+				marketCount, enable, joinedDate, lat, lng, distance,youhuiExist,online);
 
 		String commentAverageCost = obj.optString("commentAverageCost");
 		int commentXingjiabi = obj.optInt("commentXingjiabi");

@@ -59,11 +59,11 @@ public class CommentAccountAdapter extends BaseAdapter {
 				holder.nickName = (TextView) convertView.findViewById(R.id.nickName);
 				holder.modified = (TextView) convertView.findViewById(R.id.modified);
 				holder.merchantName = (TextView) convertView.findViewById(R.id.merchantName);
-				holder.merchantAddress = (TextView) convertView.findViewById(R.id.merchantAddress);
-				holder.fuwu = (TextView) convertView.findViewById(R.id.fuwu);
-				holder.huanjing = (TextView) convertView.findViewById(R.id.huanjing);
-				holder.kouwei = (TextView) convertView.findViewById(R.id.kouwei);
-				holder.xingjiabi = (TextView) convertView.findViewById(R.id.xingjiabi);
+//				holder.merchantAddress = (TextView) convertView.findViewById(R.id.merchantAddress);
+//				holder.fuwu = (TextView) convertView.findViewById(R.id.fuwu);
+//				holder.huanjing = (TextView) convertView.findViewById(R.id.huanjing);
+//				holder.kouwei = (TextView) convertView.findViewById(R.id.kouwei);
+//				holder.xingjiabi = (TextView) convertView.findViewById(R.id.xingjiabi);
 				holder.star = (ImageView) convertView.findViewById(R.id.star);
 				holder.content = (TextView) convertView.findViewById(R.id.content);
 				
@@ -91,11 +91,11 @@ public class CommentAccountAdapter extends BaseAdapter {
 			}
 			holder.modified.setText(comment.modified);
 			holder.merchantName.setText(comment.merchantName);
-			holder.merchantAddress.setText(comment.merchantAddress);
-			holder.fuwu.setText(String.valueOf(comment.fuwu));
-			holder.huanjing.setText(String.valueOf(comment.huanjing));
-			holder.kouwei.setText(String.valueOf(comment.kouwei));
-			holder.xingjiabi.setText(String.valueOf(comment.xingjiabi));
+//			holder.merchantAddress.setText(comment.merchantAddress);
+//			holder.fuwu.setText(String.valueOf(comment.fuwu));
+//			holder.huanjing.setText(String.valueOf(comment.huanjing));
+//			holder.kouwei.setText(String.valueOf(comment.kouwei));
+//			holder.xingjiabi.setText(String.valueOf(comment.xingjiabi));
 			holder.star = (ImageView) convertView.findViewById(R.id.star);
 			holder.content.setText(comment.content);
 			holder.averageCost.setText(comment.averageCost);
@@ -133,11 +133,11 @@ public class CommentAccountAdapter extends BaseAdapter {
 	class ViewHolder {
 		TextView nickName;
 		TextView merchantName;
-		TextView merchantAddress;
-		TextView xingjiabi;
-		TextView kouwei;
-		TextView huanjing;
-		TextView fuwu;
+//		TextView merchantAddress;
+//		TextView xingjiabi;
+//		TextView kouwei;
+//		TextView huanjing;
+//		TextView fuwu;
 		ImageView star;
 		TextView averageCost;
 		TextView content;

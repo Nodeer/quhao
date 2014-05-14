@@ -31,6 +31,8 @@ public class Merchant implements Serializable {
 	
 	public double distance;
 	
+	public boolean online;
+	
 	/**
 	 * 经度
 	 */
@@ -59,7 +61,7 @@ public class Merchant implements Serializable {
 			String tags, Integer kouwei, Integer huanjing, Integer fuwu,
 			Integer xingjiabi, String teses, String nickName,
 			String description, String openTime, String closeTime,
-			Integer marketCount, boolean enable, String joinedDate,double lat,double lng,double distance,boolean youhuiExist) {
+			Integer marketCount, boolean enable, String joinedDate,double lat,double lng,double distance,boolean youhuiExist,boolean online) {
 		this.id = id;
 		this.merchantImage = merchantImage;
 		this.name = name;
@@ -85,6 +87,7 @@ public class Merchant implements Serializable {
 		this.lng = lng;
 		this.distance = distance;
 		this.youhuiExist = youhuiExist;
+		this.online = online;
 	}
 
 	public Merchant() {

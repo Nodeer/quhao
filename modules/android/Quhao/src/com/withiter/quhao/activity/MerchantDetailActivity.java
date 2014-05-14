@@ -584,27 +584,35 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						
 						// check the merchant is enabled
 						if (m.enable) {
-							Calendar cal = Calendar.getInstance();
-							int currentHour = cal.get(Calendar.HOUR_OF_DAY);
-							int openHour = 25;
 							
-							if(StringUtils.isNotNull(m.openTime))
+							if(m.online)
 							{
-								openHour = Integer.valueOf(m.openTime.substring(0, m.openTime.indexOf(":")));
-							}
-							
-							int closeHour = 26;
-							if(StringUtils.isNotNull(m.closeTime))
-							{
-								closeHour = Integer.valueOf(m.closeTime.substring(0, m.closeTime.indexOf(":")));
-							}
-							if(currentHour<openHour || currentHour>closeHour)
-							{
-								btnGetNumber.setVisibility(View.GONE);
+								Calendar cal = Calendar.getInstance();
+								int currentHour = cal.get(Calendar.HOUR_OF_DAY);
+								int openHour = 25;
+								
+								if(StringUtils.isNotNull(m.openTime))
+								{
+									openHour = Integer.valueOf(m.openTime.substring(0, m.openTime.indexOf(":")));
+								}
+								
+								int closeHour = 26;
+								if(StringUtils.isNotNull(m.closeTime))
+								{
+									closeHour = Integer.valueOf(m.closeTime.substring(0, m.closeTime.indexOf(":")));
+								}
+								if(currentHour<openHour || currentHour>closeHour)
+								{
+									btnGetNumber.setVisibility(View.GONE);
+								}
+								else
+								{
+									btnGetNumber.setVisibility(View.VISIBLE);
+								}
 							}
 							else
 							{
-								btnGetNumber.setVisibility(View.VISIBLE);
+								btnGetNumber.setVisibility(View.GONE);
 							}
 							
 							btnOpen.setVisibility(View.GONE);
