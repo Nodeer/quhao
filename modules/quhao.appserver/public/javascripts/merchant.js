@@ -52,6 +52,9 @@ Merchant.ajaxSearch = function(keyword, type) {
 
 											// add merchant image here
 											$("#address").val(data.address);
+											$("#x").val(data.x);
+											$("#y").val(data.y);
+											
 											$("#tel").val(data.telephone);
 											$("#cityCode").val(data.cityCode);
 											Merchant.enableEdit();
