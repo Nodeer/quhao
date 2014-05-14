@@ -582,16 +582,12 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 			@Override
 			public void run() {
 				String result = task.result;
-				if (StringUtils.isNull(result)) {
-					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				} else {
-					if (null == categorys) {
-						categorys = new ArrayList<Category>();
-					}
-					categorys.clear();
-					categorys.addAll(ParseJson.getCategorys(result));
-					categorysUpdateHandler.obtainMessage(200, categorys).sendToTarget();
+				if (null == categorys) {
+					categorys = new ArrayList<Category>();
 				}
+				categorys.clear();
+				categorys.addAll(ParseJson.getCategorys(result));
+				categorysUpdateHandler.obtainMessage(200, categorys).sendToTarget();
 
 			}
 		}, new Runnable() {
@@ -599,16 +595,12 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 			@Override
 			public void run() {
 				String result = task.result;
-				if (StringUtils.isNull(result)) {
-					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				} else {
-					if (null == categorys) {
-						categorys = new ArrayList<Category>();
-					}
-					categorys.clear();
-					categorys.addAll(ParseJson.getCategorys(result));
-					categorysUpdateHandler.obtainMessage(200, categorys).sendToTarget();
+				if (null == categorys) {
+					categorys = new ArrayList<Category>();
 				}
+				categorys.clear();
+				categorys.addAll(ParseJson.getCategorys(result));
+				categorysUpdateHandler.obtainMessage(200, categorys).sendToTarget();
 			}
 		});
 

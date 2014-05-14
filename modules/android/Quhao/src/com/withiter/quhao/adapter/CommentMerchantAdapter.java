@@ -58,10 +58,10 @@ public class CommentMerchantAdapter extends BaseAdapter {
 						null);
 				holder.nickName = (TextView) convertView.findViewById(R.id.nickName);
 				holder.modified = (TextView) convertView.findViewById(R.id.modified);
-				holder.fuwu = (TextView) convertView.findViewById(R.id.fuwu);
-				holder.huanjing = (TextView) convertView.findViewById(R.id.huanjing);
-				holder.kouwei = (TextView) convertView.findViewById(R.id.kouwei);
-				holder.xingjiabi = (TextView) convertView.findViewById(R.id.xingjiabi);
+//				holder.fuwu = (TextView) convertView.findViewById(R.id.fuwu);
+//				holder.huanjing = (TextView) convertView.findViewById(R.id.huanjing);
+//				holder.kouwei = (TextView) convertView.findViewById(R.id.kouwei);
+//				holder.xingjiabi = (TextView) convertView.findViewById(R.id.xingjiabi);
 				holder.star = (ImageView) convertView.findViewById(R.id.star);
 				holder.content = (TextView) convertView.findViewById(R.id.content);
 				
@@ -88,10 +88,10 @@ public class CommentMerchantAdapter extends BaseAdapter {
 				holder.nickName.setText("匿名");
 			}
 			holder.modified.setText(comment.modified);
-			holder.fuwu.setText(String.valueOf(comment.fuwu));
-			holder.huanjing.setText(String.valueOf(comment.huanjing));
-			holder.kouwei.setText(String.valueOf(comment.kouwei));
-			holder.xingjiabi.setText(String.valueOf(comment.xingjiabi));
+//			holder.fuwu.setText(String.valueOf(comment.fuwu));
+//			holder.huanjing.setText(String.valueOf(comment.huanjing));
+//			holder.kouwei.setText(String.valueOf(comment.kouwei));
+//			holder.xingjiabi.setText(String.valueOf(comment.xingjiabi));
 			holder.star = (ImageView) convertView.findViewById(R.id.star);
 			holder.content.setText(comment.content);
 			holder.averageCost.setText(comment.averageCost);
@@ -128,10 +128,10 @@ public class CommentMerchantAdapter extends BaseAdapter {
 
 	class ViewHolder {
 		TextView nickName;
-		TextView xingjiabi;
-		TextView kouwei;
-		TextView huanjing;
-		TextView fuwu;
+//		TextView xingjiabi;
+//		TextView kouwei;
+//		TextView huanjing;
+//		TextView fuwu;
 		ImageView star;
 		TextView averageCost;
 		TextView content;
