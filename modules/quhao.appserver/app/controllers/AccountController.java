@@ -7,6 +7,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.httpclient.HttpException;
@@ -36,6 +37,7 @@ import com.withiter.models.account.Credit;
 import com.withiter.models.account.Reservation;
 import com.withiter.models.merchant.Attention;
 import com.withiter.models.merchant.Comment;
+import com.withiter.models.merchant.Haoma;
 import com.withiter.models.merchant.Merchant;
 import com.withiter.utils.StringUtils;
 
@@ -435,6 +437,24 @@ public class AccountController extends BaseController {
 			merchant = Merchant.findById(reservation.merchantId);
 			reservationVO.merchantName = merchant.name;
 			reservationVO.merchantAddress = merchant.address;
+			
+			Haoma haoma = Haoma.findByMerchantId(reservation.merchantId);
+			// HaomaVO vo = HaomaVO.build(haoma);
+			if(null != haoma && null != haoma.haomaMap && !haoma.haomaMap.isEmpty())
+			{
+				Iterator ite = haoma.haomaMap.keySet().iterator();
+				while (ite.hasNext()) {
+					Integer key = (Integer) ite.next();
+					if (key.equals(Integer.valueOf(reservation.seatNumber))) {
+						if(null != haoma.haomaMap.get(key))
+						{
+							reservationVO.currentNumber = haoma.haomaMap.get(key).currentNumber;
+						}
+					}
+				}
+			}
+			
+			
 			// 添加检查优惠时间
 			int checkTime = Integer.parseInt(Play.configuration.getProperty("cancelNumber.checkTime"));
 			reservationVO.promptYouhuiTime = checkTime;

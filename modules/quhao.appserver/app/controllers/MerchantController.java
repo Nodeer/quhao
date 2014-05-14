@@ -320,16 +320,24 @@ public class MerchantController extends BaseController {
 		if(StringUtils.isEmpty(id) || StringUtils.isEmpty(seatNo)){
 			renderJSON("商家ID为空或者座位号为空");
 		}
+		
 		Haoma haoma = Haoma.findByMerchantId(id);
 		// HaomaVO vo = HaomaVO.build(haoma);
-		Iterator ite = haoma.haomaMap.keySet().iterator();
-		while (ite.hasNext()) {
-			Integer key = (Integer) ite.next();
-			if (key.equals(Integer.valueOf(seatNo))) {
-				renderJSON(haoma.haomaMap.get(key).currentNumber);
-
+		if(null != haoma && null != haoma.haomaMap && !haoma.haomaMap.isEmpty())
+		{
+			Iterator ite = haoma.haomaMap.keySet().iterator();
+			while (ite.hasNext()) {
+				Integer key = (Integer) ite.next();
+				if (key.equals(Integer.valueOf(seatNo))) {
+					if(null != haoma.haomaMap.get(key))
+					{
+						renderJSON(haoma.haomaMap.get(key).currentNumber);
+					}
+					
+				}
 			}
 		}
+		
 		// renderJSON(vo);
 	}
 
