@@ -32,29 +32,37 @@ public class CommonHTTPRequest {
 	 */
 	public static String post(String url) throws ClientProtocolException, IOException {
 		String result = "";
-		String httpUrl = QuhaoConstant.HTTP_URL + url;
-		QuhaoLog.d(TAG, "HTTP REQUEST POST, URL: " + httpUrl);
-		httpUrl = encodeURL(httpUrl);
-		HttpPost request = new HttpPost(httpUrl);
-		request.setHeader("user-agent", "QuhaoAndroid");
-		
-		HttpParams httpParameters = new BasicHttpParams();
-		// Set the timeout in milliseconds until a connection is established.
-		int timeoutConnection = 10 * 1000;
-		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+		try
+		{
+			String httpUrl = QuhaoConstant.HTTP_URL + url;
+			QuhaoLog.d(TAG, "HTTP REQUEST POST, URL: " + httpUrl);
+			httpUrl = encodeURL(httpUrl);
+			HttpPost request = new HttpPost(httpUrl);
+			request.setHeader("user-agent", "QuhaoAndroid");
+			
+			HttpParams httpParameters = new BasicHttpParams();
+			// Set the timeout in milliseconds until a connection is established.
+			int timeoutConnection = 10 * 1000;
+			HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
 
-		// Set the default socket timeout in milliseconds which is the timeout
-		// for waiting for data.
-		int timeoutSocket = 10 * 1000;
-		HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+			// Set the default socket timeout in milliseconds which is the timeout
+			// for waiting for data.
+			int timeoutSocket = 10 * 1000;
+			HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
 
-		HttpClient httpClient = new DefaultHttpClient(httpParameters);
-		HttpResponse response = httpClient.execute(request);
+			HttpClient httpClient = new DefaultHttpClient(httpParameters);
+			HttpResponse response = httpClient.execute(request);
 
-		QuhaoLog.i(TAG, "get data from server, the status code is  : " + response.getStatusLine().getStatusCode());
-		if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-			result = EntityUtils.toString(response.getEntity());
-			QuhaoLog.v(TAG, "get data from server : " + result);
+			QuhaoLog.i(TAG, "get data from server, the status code is  : " + response.getStatusLine().getStatusCode());
+			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+				result = EntityUtils.toString(response.getEntity());
+				QuhaoLog.v(TAG, "get data from server : " + result);
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return result;
 		}
 
 		return result;
@@ -69,29 +77,37 @@ public class CommonHTTPRequest {
 	 */
 	public static String get(String url) throws ClientProtocolException, IOException {
 		String result = "";
-		String httpUrl = QuhaoConstant.HTTP_URL + url;
-		QuhaoLog.d(TAG, "HTTP REQUEST POST, URL: " + httpUrl);
-		httpUrl = encodeURL(httpUrl);
-		QuhaoLog.d(TAG, "HTTP REQUEST POST, URL after encode: " + httpUrl);
-		HttpGet request = new HttpGet(httpUrl);
-		request.setHeader("user-agent", "QuhaoAndroid");
+		try
+		{
+			String httpUrl = QuhaoConstant.HTTP_URL + url;
+			QuhaoLog.d(TAG, "HTTP REQUEST POST, URL: " + httpUrl);
+			httpUrl = encodeURL(httpUrl);
+			QuhaoLog.d(TAG, "HTTP REQUEST POST, URL after encode: " + httpUrl);
+			HttpGet request = new HttpGet(httpUrl);
+			request.setHeader("user-agent", "QuhaoAndroid");
 
-		HttpParams httpParameters = new BasicHttpParams();
-		// Set the timeout in milliseconds until a connection is established.
-		int timeoutConnection = 10 * 1000;
-		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+			HttpParams httpParameters = new BasicHttpParams();
+			// Set the timeout in milliseconds until a connection is established.
+			int timeoutConnection = 10 * 1000;
+			HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
 
-		// Set the default socket timeout in milliseconds which is the timeout
-		// for waiting for data.
-		int timeoutSocket = 10 * 1000;
-		HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+			// Set the default socket timeout in milliseconds which is the timeout
+			// for waiting for data.
+			int timeoutSocket = 10 * 1000;
+			HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
 
-		HttpClient httpClient = new DefaultHttpClient(httpParameters);
-		HttpResponse response = httpClient.execute(request);
-		QuhaoLog.i(TAG, "get data from server, the status code is  : " + response.getStatusLine().getStatusCode());
-		if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-			result = EntityUtils.toString(response.getEntity());
-			QuhaoLog.v(TAG, "get data from server : " + result);
+			HttpClient httpClient = new DefaultHttpClient(httpParameters);
+			HttpResponse response = httpClient.execute(request);
+			QuhaoLog.i(TAG, "get data from server, the status code is  : " + response.getStatusLine().getStatusCode());
+			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+				result = EntityUtils.toString(response.getEntity());
+				QuhaoLog.v(TAG, "get data from server : " + result);
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return result;
 		}
 
 		return result;

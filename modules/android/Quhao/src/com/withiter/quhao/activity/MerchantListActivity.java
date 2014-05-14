@@ -162,8 +162,15 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 				QuhaoLog.d(LOGTAG, "the request url is : " + url);
 				String buf = CommonHTTPRequest.get(url);
 				if (StringUtils.isNull(buf) || "[]".endsWith(buf)) {
-					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-					needToLoad = false;
+					if (null == merchants) {
+						merchants = new ArrayList<Merchant>();
+					}
+					List<Merchant> mers = ParseJson.getMerchants(buf);
+					if (mers.size() < 10) {
+						needToLoad = false;
+					}
+					merchants.addAll(mers);
+					merchantsUpdateHandler.obtainMessage(200, merchants).sendToTarget();
 				} else {
 					if (null == merchants) {
 						merchants = new ArrayList<Merchant>();
@@ -186,34 +193,6 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 		}
 	};
 
-	/*
-	 * @Override public void onScrollStateChanged(AbsListView view, int
-	 * scrollState) {
-	 * 
-	 * if(scrollState == OnScrollListener.SCROLL_STATE_IDLE && lastVisibleIndex
-	 * == merchantAdapter.getCount()) { pg.setVisibility(View.VISIBLE);
-	 * bt.setVisibility(View.GONE); MerchantListActivity.this.page += 1; Thread
-	 * merchantsThread = new Thread(merchantsRunnable); merchantsThread.start();
-	 * }
-	 * 
-	 * }
-	 * 
-	 * @Override public void onScroll(AbsListView view, int firstVisibleItem,
-	 * int visibleItemCount, int totalItemCount) { // check hit the bottom of
-	 * current loaded data
-	 * 
-	 * lastVisibleIndex = firstVisibleItem + visibleItemCount -1;
-	 * if(!needToLoad) { merchantsListView.removeFooterView(moreView);
-	 * //Toast.makeText(MerchantListActivity.this, "the data load completely",
-	 * Toast.LENGTH_LONG).show();
-	 * 
-	 * }
-	 * 
-	 * // if (firstVisibleItem + visibleItemCount == totalItemCount &&
-	 * totalItemCount > 0 && needToLoad) { // MerchantListActivity.this.page +=
-	 * 1; // Thread merchantsThread = new Thread(merchantsRunnable); //
-	 * merchantsThread.start(); // } }
-	 */
 	@Override
 	public void onClick(View v) {
 
