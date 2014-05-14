@@ -7,7 +7,7 @@
 //
 
 #import "NoQueueViewController.h"
-
+#define pageSize 20
 @interface NoQueueViewController ()
 
 @end
@@ -111,7 +111,7 @@
         if (_isLoadOver) {
             return;
         }
-        int pageIndex = _allCount/10+1;
+        int pageIndex = _allCount/pageSize+1;
         NSString *str1= [NSString stringWithFormat:@"%@%@?userX=%@&userY=%@&cityCode=%@&page=%d&maxDis=%d", IP,getNoQueueMerchants_url,_longitude ,_latitude ,[Helper returnUserString:@"currentcityCode"] ,pageIndex ,_dis];
         NSString *response =[QuHaoUtil requestDb:str1];
         if([response isEqualToString:@""]){
@@ -126,7 +126,7 @@
                 NSMutableArray *newMerc = [self addAfterInfo:jsonObjects];
                 NSInteger count = [newMerc count];
                 _allCount += count;
-                if (count < 10)
+                if (count < pageSize)
                 {
                     _isLoadOver = YES;
                 }
@@ -148,7 +148,7 @@
 //上拉刷新增加数据
 -(NSMutableArray *)addAfterInfo:(NSArray *) objects
 {
-    NSMutableArray *news = [[NSMutableArray alloc] initWithCapacity:10];
+    NSMutableArray *news = [[NSMutableArray alloc] initWithCapacity:20];
     MerchartModel *model = nil;
     for(int i=0; i < [objects count];i++ ){
         model =[[MerchartModel alloc]init];
@@ -413,6 +413,10 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
     CLLocation *currLocation = [locations lastObject];
+    NSTimeInterval howRecent = [currLocation.timestamp timeIntervalSinceNow];
+    if(howRecent < -10 || currLocation.horizontalAccuracy > 100) {
+        return;
+    }
     CLLocationCoordinate2D myCoOrdinate;
     if (![WGS84TOGCJ02 isLocationOutOfChina:[currLocation coordinate]]) {
         //转换后的coord

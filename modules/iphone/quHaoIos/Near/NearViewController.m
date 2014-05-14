@@ -66,21 +66,17 @@
     [self.view addSubview:_button];
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshedNear:) name:Notification_TabClick object:nil];
     _isRefreshLoading = YES;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshed:) name:Notification_TabSingleClick object:nil];
     locationManager = [[CLLocationManager alloc] init];
 }
 
-- (void)refreshed:(NSNotification *)notification
+-(void)viewDidAppear:(BOOL)animated
 {
-    if (notification.object) {
-        if ([(NSString *)notification.object isEqualToString:@"1"]) {
-            [_merchartsArray removeAllObjects];
-            _isLoading = NO;
-            _allCount = 0;
-            _isLoadOver = NO;
-            [self locationService];
-        }
-    }
+    _isRefreshLoading = NO;
+    [_merchartsArray removeAllObjects];
+    _isLoading = NO;
+    _allCount = 0;
+    _isLoadOver = NO;
+    [self locationService];
 }
 
 -(void)locationService
@@ -123,7 +119,7 @@
         if (_isLoadOver) {
             return;
         }
-        int pageIndex = _allCount/10+1;
+        int pageIndex = _allCount/pageSize+1;
         NSString *str1= [NSString stringWithFormat:@"%@%@?userX=%@&userY=%@&cityCode=%@&page=%d&maxDis=%d", IP,getNearMerchants_url,_longitude ,_latitude ,[Helper returnUserString:@"currentcityCode"] ,pageIndex ,_dis];
         NSString *response =[QuHaoUtil requestDb:str1];
         if([response isEqualToString:@""]){
@@ -140,7 +136,7 @@
                 NSMutableArray *newMerc = [self addAfterInfo:jsonObjects];
                 NSInteger count = [newMerc count];
                 _allCount += count;
-                if (count < 10)
+                if (count < pageSize)
                 {
                     _isLoadOver = YES;
                 }
@@ -154,12 +150,13 @@
          _HUD.labelText = @"当前网络不可用";
         [_HUD hide:YES];
     }
+
 }
 
 //上拉刷新增加数据
 -(NSMutableArray *)addAfterInfo:(NSArray *) objects
 {
-    NSMutableArray *news = [[NSMutableArray alloc] initWithCapacity:10];
+    NSMutableArray *news = [[NSMutableArray alloc] initWithCapacity:20];
     MerchartModel *model = nil;
     for(int i=0; i < [objects count];i++ ){
         model =[[MerchartModel alloc]init];
@@ -227,7 +224,6 @@
             if(_HUD != nil){
                 [_HUD hide:YES];
             }
-            _isRefreshLoading = YES;
         });
     });
 }
@@ -256,6 +252,7 @@
 //dataSource
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+
     static NSString *cellIdentify=@"NearCell";
     NearCell *cell=[self.tableView dequeueReusableCellWithIdentifier:cellIdentify];
     //检查视图中有没闲置的单元格
@@ -452,6 +449,10 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
     CLLocation *currLocation = [locations lastObject];
+    NSTimeInterval howRecent = [currLocation.timestamp timeIntervalSinceNow];
+    if(howRecent < -10 || currLocation.horizontalAccuracy > 100) {
+        return;
+    }
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     CLLocationCoordinate2D myCoOrdinate;
     if (![WGS84TOGCJ02 isLocationOutOfChina:[currLocation coordinate]]) {
@@ -560,6 +561,7 @@
                  [Helper saveDafaultData:@"0" withName:@"isLocation"];
              }
          }
+         _isRefreshLoading = YES;
      }];
 }
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
@@ -585,6 +587,7 @@
     if(_HUD != nil){
         [_HUD hide:YES];
     }
+    _isRefreshLoading = YES;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: errorString delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
     [alert show];
     return;

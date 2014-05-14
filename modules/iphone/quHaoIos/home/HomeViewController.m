@@ -541,6 +541,10 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
     CLLocation *currLocation = [locations lastObject];
+    NSTimeInterval howRecent = [currLocation.timestamp timeIntervalSinceNow];
+    if(howRecent < -10 || currLocation.horizontalAccuracy > 100) {
+        return;
+    }
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     CLLocationCoordinate2D myCoOrdinate;
     if (![WGS84TOGCJ02 isLocationOutOfChina:[currLocation coordinate]]) {
