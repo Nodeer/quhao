@@ -46,7 +46,7 @@ import com.withiter.models.merchant.Youhui;
 public class MerchantController extends BaseController {
 
 	private static Logger logger = LoggerFactory.getLogger(MerchantController.class);
-	private static int NEAR_MERCHANT_PAGE_ITEMS_NUMBER = 20;
+	private static int NEAR_MERCHANT_PAGE_ITEMS_NUMBER = 10;
 	/**
 	 * Interception any caller on this controller, will first invoke this method
 	 
