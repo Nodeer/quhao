@@ -443,7 +443,7 @@ public class AccountController extends BaseController {
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
-			reservationVO.build(reservation, merchant.x, merchant.y, userX, userY);
+			reservationVO.build(reservation, merchant.y, merchant.x,  userX, userY);
 			currentReservationVOs.add(reservationVO);
 		}
 
