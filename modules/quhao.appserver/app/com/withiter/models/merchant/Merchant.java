@@ -101,10 +101,10 @@ public class Merchant extends MerchantEntityDef {
 		}
 		
 		// 先按照enable排序
-		q = sortBy(q, "enable");
-		
 		if (!StringUtils.isEmpty(sortBy)) {
-			q = sortBy(q, sortBy);
+			q = sortBy(q, "-enable,"+sortBy);
+		}else{
+			q = sortBy(q, "-enable");
 		}
 		
 		q.filter("cityCode", cityCode);
