@@ -179,6 +179,7 @@ public class SelfManagementController extends BaseController {
 				// currentNumber = 0; maxNumber = 0; enable = false; ...
 				Paidui p = haoma.haomaMap.get(key);
 				p.reset();
+				haoma.haomaMap.put(key, p);
 				
 				// set the reservations status with this seatNumber to invalid(valid = false) 
 				// and the change Constants.ReservationStatus status to invalidByMerchantUpdate
