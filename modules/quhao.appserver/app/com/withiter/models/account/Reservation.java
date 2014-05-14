@@ -168,7 +168,7 @@ public class Reservation extends ReservationEntityDef {
 	 */
 	public static List<Reservation> findHistroyReservationsNew(String accountId, String sortBy) {
 		MorphiaQuery q = Reservation.q();
-		q.filter("accountId", accountId).filter("valid", false).filter("available", true);
+		q.filter("accountId", accountId).filter("valid", false).filter("available", true).filter("status !=", ReservationStatus.invalidByMerchantUpdate);
 
 		if (!StringUtils.isEmpty(sortBy)) {
 			q = sortBy(q, sortBy);
