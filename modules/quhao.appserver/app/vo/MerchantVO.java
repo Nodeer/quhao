@@ -47,6 +47,7 @@ public class MerchantVO {
 	public int markedCount;
 	public boolean enable = false;
 	public boolean online = false;
+	public boolean youhui = false;
 	public Date joinedDate = new Date();
 	
 	/**
@@ -93,6 +94,7 @@ public class MerchantVO {
 		vo.description = m.description;
 		vo.enable = m.enable;
 		vo.online = m.online;
+		vo.youhui = m.youhui;
 		vo.fuwu = m.fuwu;
 		vo.grade = m.grade;
 		vo.huanjing = m.huanjing;
@@ -131,6 +133,7 @@ public class MerchantVO {
 		vo.description = m.description;
 		vo.enable = m.enable;
 		vo.online = m.online;
+		vo.youhui = m.youhui;
 		vo.fuwu = m.fuwu;
 		vo.grade = m.grade;
 		vo.huanjing = m.huanjing;
@@ -186,6 +189,7 @@ public class MerchantVO {
 		vo.description = m.description;
 		vo.enable = m.enable;
 		vo.online = m.online;
+		vo.youhui = m.youhui;
 		vo.fuwu = m.fuwu;
 		vo.grade = m.grade;
 		vo.huanjing = m.huanjing;
@@ -238,6 +242,7 @@ public class MerchantVO {
 		vo.description = m.description;
 		vo.enable = m.enable;
 		vo.online = m.online;
+		vo.youhui = m.youhui;
 		vo.fuwu = m.fuwu;
 		vo.grade = m.grade;
 		vo.huanjing = m.huanjing;
@@ -299,6 +304,7 @@ public class MerchantVO {
 		vo.description = m.description;
 		vo.enable = m.enable;
 		vo.online = m.online;
+		vo.youhui = m.youhui;
 		vo.fuwu = m.fuwu;
 		vo.grade = m.grade;
 		vo.huanjing = m.huanjing;

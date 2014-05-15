@@ -37,6 +37,7 @@ public class BackendMerchantInfoVO {
 	public Date joinedDate = new Date();
 	public boolean enable = false;
 	public boolean online = false;
+	public boolean youhui = false;
 	public String x;
 	public String y;
 	
@@ -92,6 +93,7 @@ public class BackendMerchantInfoVO {
 			vo.description = m.description;
 			vo.enable = m.enable;
 			vo.online = m.online;
+			vo.youhui = m.youhui;
 			vo.joinedDate = m.joinedDate;
 			vo.markedCount = m.markedCount;
 			vo.name = m.name;
@@ -152,6 +154,7 @@ public class BackendMerchantInfoVO {
 			vo.description = m.description;
 			vo.enable = m.enable;
 			vo.online = m.online;
+			vo.youhui = m.youhui;
 			vo.joinedDate = m.joinedDate;
 			vo.markedCount = m.markedCount;
 			vo.name = m.name;
