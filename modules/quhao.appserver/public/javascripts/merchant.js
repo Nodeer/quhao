@@ -632,6 +632,10 @@ Merchant.logout = function(aid) {
 			});
 }
 
+/**
+ * 添加优惠
+ * @param {} mid
+ */
 Merchant.saveYouhui = function(mid) {
 	if (Merchant.validateYouhui()) {
 		var youhuiTitle = $("#youhuiTitle").val();
@@ -661,6 +665,39 @@ Merchant.saveYouhui = function(mid) {
 	}
 }
 
+/**
+ * 取消优惠
+ * @param {} mid
+ */
+Merchant.disableYouhui = function(mid, yid) {
+	$.ajax({
+		type : "POST",
+		url : "/b/w/disableYouhui",
+		dataType : "json",
+		data : {
+			"mid" : mid,
+			"yid" : yid,
+		},
+		success : function(data) {
+			console.log(data);
+			if (data) {
+				$("#deleteErrorTip").html("删除优惠信息成功，3秒后刷新优惠列表！")
+						.removeClass().addClass("text-success")
+						.show();
+				setTimeout('location.reload()', 3000);
+			}
+		},
+		error : function() {
+			alert("服务器维护中，马上就好。");
+		}
+	});
+}
+
+/**
+ * 添加优惠表单检查
+ * @param {} mid
+ * @return {Boolean}
+ */
 Merchant.validateYouhui = function(mid) {
 	var youhuiTitle = $("#youhuiTitle").val();
 	var youhuiContent = $("#youhuiContent").val();
@@ -677,6 +714,11 @@ Merchant.validateYouhui = function(mid) {
 	return true;
 }
 
+/**
+ * 关闭排队/开放排队
+ * @param {} mid
+ * @param {} online
+ */
 Merchant.changeStatus = function(mid, online){
 	if(Common.isEmpty(mid) || Common.isEmpty(online)){
 		alert("请联系管理员");

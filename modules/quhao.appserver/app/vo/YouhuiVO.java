@@ -3,6 +3,7 @@ package vo;
 import com.withiter.models.merchant.Youhui;
 
 public class YouhuiVO {
+	public String id = "";
 	public String mid = "";
 	public boolean enable = false;
 	public String title = "";
@@ -10,6 +11,7 @@ public class YouhuiVO {
 
 	public static YouhuiVO build(Youhui yh) {
 		YouhuiVO yvo = new YouhuiVO();
+		yvo.id = yh.id();
 		yvo.mid = yh.mid;
 		yvo.enable = yh.enable;
 		yvo.title = yh.title;

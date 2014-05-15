@@ -381,4 +381,15 @@ public class Merchant extends MerchantEntityDef {
 		m.save();
 		return true;
 	}
+
+	public void updateYouhuiInfo() {
+		MorphiaQuery q = Youhui.q();
+		q.filter("mid", this.id()).filter("enable", true);
+		if(q.count() > 0){
+			this.youhui = true;
+		} else {
+			this.youhui = false;
+		}
+		this.save();
+	}
 }

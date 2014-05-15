@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.httpclient.HttpException;
+import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -321,6 +322,27 @@ public class SelfManagementController extends BaseController {
 		y.content = content;
 		y.enable = true;
 		y.save();
+		
+		Merchant m = Merchant.findByMid(mid);
+		m.youhui = true;
+		m.save();
+		
+		renderJSON(true);
+	}
+	
+	/**
+	 * 取消优惠信息
+	 */
+	public static void disableYouhui(){
+		String mid = params.get("mid");
+		String yid = params.get("yid");
+
+		Youhui y = Youhui.findById(new ObjectId(yid));
+		y.enable = false;
+		y.save();
+		
+		Merchant m = Merchant.findByMid(mid);
+		m.updateYouhuiInfo();
 		
 		renderJSON(true);
 	}

@@ -79,7 +79,7 @@ $addCSS("backend.css", true)
 			  </table>
 			</div>
           <div class="panel panel-default" id="">
-			  <div class="panel-heading">当前优惠信息</div>
+			  <div class="panel-heading">当前优惠信息<span style="margin-left: 10px;" id="deleteErrorTip"></span></div>
 			  <table class="table" >
 		  		`if(youhuiList.size() == 0){
 			  	<tr align="center">
@@ -92,8 +92,11 @@ $addCSS("backend.css", true)
 		  				<th style="border-right: 1px solid #ddd;">
 		  					优惠信息标题
 		  				</th>
-		  				<th>
+		  				<th style="border-right: 1px solid #ddd;">
 		  					优惠信息详细规则
+		  				</th>
+		  				<th>
+		  					操作
 		  				</th>
 		  			</thead>
 		  			`for(YouhuiVO vo : youhuiList){
@@ -101,8 +104,11 @@ $addCSS("backend.css", true)
 				  		<td style="border-right: 1px solid #ddd;">
 				  			${vo.title}
 				  		</td>
-				  		<td>
+				  		<td style="border-right: 1px solid #ddd;">
 				  			${vo.content}
+				  		</td>
+				  		<td align="center">
+				  			<button class="btn btn-primary" onclick="Merchant.disableYouhui('${bmivo.mid}','${vo.id}')">删除</button>
 				  		</td>
 				  	</tr>
 		  			`}

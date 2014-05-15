@@ -55,6 +55,7 @@ public abstract class MerchantEntityDef extends BaseModel {
 	public int markedCount = 0;								// 关注数
 	public boolean enable = false;							// 是否正常使用后台排队平台
 	public boolean online = true;							// 默认在线
+	public boolean youhui = false;							// 是否有优惠
 	public Date joinedDate = new Date();					// 导入数据库时间 
 	public String[] seatType;								// 桌位类型 eg: {2,4,6,8} 此商家有2人，4人，6人，8人桌
 	
