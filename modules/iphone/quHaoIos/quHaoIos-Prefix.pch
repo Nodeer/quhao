@@ -28,6 +28,7 @@
     #import <Foundation/Foundation.h>
 #endif
 #define Notification_TabClick @"Notification_TabClick"
+#define Notification_TabSingleClick @"Notification_TabSingleClick"
 #define topSize 6
 #define kDeviceHeight     [UIScreen mainScreen].bounds.size.height
 #define kDeviceWidth     [UIScreen mainScreen].bounds.size.width
