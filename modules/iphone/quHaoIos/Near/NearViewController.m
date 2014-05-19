@@ -457,8 +457,10 @@
 {
     CLLocation *currLocation = [locations lastObject];
     NSTimeInterval howRecent = [currLocation.timestamp timeIntervalSinceNow];
-    if(howRecent < -10 || currLocation.horizontalAccuracy > 100) {
-        return;
+    if(!_isFristLoad){
+        if(howRecent < -10 || currLocation.horizontalAccuracy > 100) {
+            return;
+        }
     }
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     CLLocationCoordinate2D myCoOrdinate;
@@ -477,6 +479,10 @@
     
     if(_isFristLoad){
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            _isLoading = NO;
+            _allCount = 0;
+            _isLoadOver = NO;
+            [_merchartsArray removeAllObjects];
             [self requestData];
             dispatch_async(dispatch_get_main_queue(), ^{
                 _isFristLoad = NO;
@@ -599,6 +605,7 @@
         [_HUD hide:YES];
     }
     _isRefreshLoading = YES;
+    _isFristLoad = YES;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: errorString delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
     [alert show];
     return;

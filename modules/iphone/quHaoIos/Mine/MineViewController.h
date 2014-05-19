@@ -17,11 +17,12 @@
 #import "EGOImageView.h"
 #import "MineInfoViewController.h"
 #import "AttentionViewController.h"
-@interface MineViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+@interface MineViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,MBProgressHUDDelegate>
 {
     UITableView *_mineView;
     Helper *_helper;
     UserInfo * _userInfo;
+    MBProgressHUD *_HUD;
 }
 
 @property BOOL isLoginJustNow;

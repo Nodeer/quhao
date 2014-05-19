@@ -93,6 +93,22 @@
 
 }
 
+#pragma mark HUD
+- (void)hudWasHidden:(MBProgressHUD *)hud {
+    [_HUD removeFromSuperview];
+	_HUD = nil;
+}
+
+-(void)createHud
+{
+    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:_HUD];
+    _HUD.mode = MBProgressHUDModeIndeterminate;
+    _HUD.labelText = @"服务器错误，请稍后再试";
+    [_HUD show:YES];
+    _HUD.delegate = self;
+}
+
 - (void)loadByLoginType
 {
   if(self.isLoginJustNow)
@@ -396,6 +412,8 @@
     }
     AttentionViewController *att = [[AttentionViewController alloc] init];
     att.accountId = [Helper getUID];
+    att.latitude = [[Helper returnUserString:@"latitude"] doubleValue];
+    att.longitude = [[Helper returnUserString:@"longitude"] doubleValue];
     att.hidesBottomBarWhenPushed=YES;
     [self.navigationController pushViewController:att animated:YES];
 }
@@ -450,14 +468,15 @@
     
     if([response isEqualToString:@""]){
         //异常处理
-        [Helper showHUD2:@"服务器错误，请稍后再试" andView:self.view andSize:130];
+        [self createHud];
+        //[Helper showHUD2:@"服务器错误，请稍后再试" andView:self.view andSize:130];
         //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"数据错误，请稍后再试" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
         //[alert show];
     }else{
         NSArray *jsonObjects=[QuHaoUtil analyseData:response];
         if(jsonObjects==nil){
             //解析错误
-            [Helper showHUD2:@"服务器错误，请稍后再试" andView:self.view andSize:130];
+            [self createHud];
         }else{
             _userInfo.username = [jsonObjects valueForKey:@"nickname"];
             _userInfo.jifen = [[jsonObjects valueForKey:@"jifen"] intValue];
@@ -469,6 +488,9 @@
             _userInfo.userImage = [jsonObjects valueForKey:@"userImage"];
             _userInfo.isSignIn = [[jsonObjects valueForKey:@"isSignIn"] boolValue];
         }
+    }
+    if(_HUD!=nil){
+        [_HUD hide:YES];
     }
 }
 
@@ -603,13 +625,15 @@
         NSIndexPath *te=[NSIndexPath indexPathForRow:0 inSection:0];
         [_mineView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:te,nil] withRowAnimation:UITableViewRowAnimationMiddle];
     }else{
-        [Helper showHUD2:@"服务器错误，请稍后再试" andView:self.view andSize:130];
+        [self createHud];
+        [_HUD hide:YES];
     }
 }
 
 - (void)uploadFailed:(ASIHTTPRequest *)requestNew
 {
-    [Helper showHUD2:@"服务器错误，请稍后再试" andView:self.view andSize:130];
+    [self createHud];
+    [_HUD hide:YES];
 }
 
 - (NSString *)userImagePath

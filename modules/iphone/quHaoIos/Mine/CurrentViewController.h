@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "MerchartModel.h"
 #import "HomeCell.h"
-#import "CurrentDetailController.h"
 #import "MerchartDetail.h"
 #import "MBProgressHUD.h"
 #import "DataSingleton.h"
