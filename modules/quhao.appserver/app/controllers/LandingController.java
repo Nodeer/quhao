@@ -26,7 +26,8 @@ public class LandingController extends BaseController {
 	
 	public static void androidDown(){
 		String android = Play.configuration.getProperty("android.download.path");
-		response.setContentTypeIfNotSet("application/vnd.android.package-archive");
+	    response.contentType = "application/vnd.android.package-archive";
+	    response.setContentTypeIfNotSet("apk");
 		renderBinary(new File(android));
 	}
 }
