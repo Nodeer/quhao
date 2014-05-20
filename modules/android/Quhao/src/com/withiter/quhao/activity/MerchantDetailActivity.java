@@ -572,6 +572,15 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	
 						critiqueLayout.setOnClickListener(MerchantDetailActivity.this);
 						
+						btnAttention.setVisibility(View.VISIBLE);
+						if(m.isAttention)
+						{
+							btnAttention.setText(R.string.cancel_attention);
+						}
+						else
+						{
+							btnAttention.setText(R.string.attention);
+						}
 						
 						// check the merchant is enabled
 						if (m.enable) {
@@ -615,15 +624,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 							}
 							else
 							{
-								btnAttention.setVisibility(View.VISIBLE);
-								if(m.isAttention)
-								{
-									btnAttention.setText(R.string.cancel_attention);
-								}
-								else
-								{
-									btnAttention.setText(R.string.attention);
-								}
 								currentQuHaoLayout.setVisibility(View.VISIBLE);
 								
 								paiduiConditionLayout.setVisibility(View.GONE);								
