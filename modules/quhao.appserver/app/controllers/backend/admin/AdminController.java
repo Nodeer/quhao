@@ -7,7 +7,6 @@ import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import notifiers.MailsController;
@@ -23,12 +22,14 @@ import play.libs.Images;
 import play.modules.morphia.Model.MorphiaQuery;
 import play.mvc.Before;
 import vo.AdminVO;
+import vo.AppConfigVO;
 import cn.bran.japid.util.StringUtils;
 
 import com.mongodb.gridfs.GridFSInputFile;
 import com.withiter.common.Constants;
 import com.withiter.models.account.CooperationRequest;
 import com.withiter.models.admin.MerchantAccount;
+import com.withiter.models.appconfig.AppConfig;
 import com.withiter.models.merchant.Merchant;
 import com.withiter.models.merchant.TopMerchant;
 import com.withiter.models.opinion.Opinion;
@@ -304,11 +305,35 @@ public class AdminController extends BaseController {
 	}
 	
 	/**
-	 * 
+	 * admin退出
 	 */
 	public static void logout(){
 		session.current().remove(Constants.ADMIN_SESSION_USERNAME);
 		session.current().remove(Constants.ADMIN_COOKIE_USERNAME);
 		index();
+	}
+	
+	public static void app(){
+		List<AppConfig> configs = AppConfig.allConfig();
+		AppConfig android = null;
+		AppConfig ios = null;
+		List<AppConfigVO> acvos = new ArrayList<AppConfigVO>();
+		if(configs == null || configs.isEmpty()){
+			android = new AppConfig();
+			android.type = "Android";
+			android.version = "1.0";
+			android.save();
+			ios = new AppConfig();
+			ios.type = "iOS";
+			ios.version = "1.0";
+			ios.save();
+			acvos.add(AppConfigVO.bulid(android));
+			acvos.add(AppConfigVO.bulid(ios));
+		} else {
+			for(AppConfig vo : configs){
+				acvos.add(AppConfigVO.bulid(vo));
+			}
+		}
+		renderJapid(acvos);
 	}
 }

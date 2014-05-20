@@ -1,0 +1,42 @@
+`import static press.Plugin.*;
+`import vo.AppConfigVO;
+`extends admin_layout
+`set title "取号啦 - APP管理"
+
+$addJS("admin.js",true)
+
+`args List<AppConfigVO> acvos
+
+`set contents
+
+   <div class="container-fluid">
+   	<table class="table table-striped" style="text-align:center;">
+   		<thead>
+   			<tr>
+   				<th>ID</th>
+   				<th>APP类型</th>
+   				<th>version</th>
+   				<th>操作</th>
+   			</tr>
+   		</thead>
+   		<tbody>
+   			`for(AppConfigVO acvo : acvos){
+	   		<tr>
+	   			<td style="vertical-align: middle;">${acvo.id}</td>
+	   			<td style="vertical-align: middle;">${acvo.type}</td>
+	   			<td style="vertical-align: middle;"><input type="text" value="${acvo.version}" /></td>
+	   			<td style="vertical-align: middle;">
+	   				<button type="button" class="btn btn-default"><a href="/admin/app/updateversion?id=${acvo.id}&version=">更新</a></button>
+	   			</td>
+	   		</tr>
+	   		`}
+   		</tbody>
+	</table>
+   	</div>
+   <script type="text/javascript">
+   		$("#app").css("color","#fff");
+   </script>
+   	
+`
+
+
