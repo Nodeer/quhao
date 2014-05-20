@@ -223,7 +223,6 @@ public class AdminController extends BaseController {
 			GridFSInputFile file = uploadFirst(image, t.id());
 			if (file != null) {
 				try {
-					String server = Play.configuration.getProperty("application.domain");
 					String imageStorePath = Play.configuration.getProperty("image.store.path");
 					t.merchantImage = URLEncoder.encode(imageStorePath + file.getFilename(), "UTF-8");
 					t.save();
@@ -304,4 +303,12 @@ public class AdminController extends BaseController {
 		renderJapid(list);
 	}
 	
+	/**
+	 * 
+	 */
+	public static void logout(){
+		session.current().remove(Constants.ADMIN_SESSION_USERNAME);
+		session.current().remove(Constants.ADMIN_COOKIE_USERNAME);
+		index();
+	}
 }
