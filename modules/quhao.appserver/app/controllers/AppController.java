@@ -33,10 +33,10 @@ public class AppController extends BaseController {
 		}
 		for(AppConfig c : configs){
 			if(c.type.equalsIgnoreCase("android")){
-				android = c.type;
+				android = c.version;
 			}
 			if(c.type.equalsIgnoreCase("ios")){
-				ios = c.type;
+				ios = c.version;
 			}
 		}
 		
