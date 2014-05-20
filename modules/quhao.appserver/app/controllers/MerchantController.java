@@ -219,7 +219,7 @@ public class MerchantController extends BaseController {
 		long openNum = 0;
 		if(null != accountId && !accountId.equals("")){
 			Attention attention =Attention.getAttentionById(merchantId, accountId);
-			if(attention==null){
+			if(attention==null || "false".equals(isLogined)){
 				isAttention=false;
 			}else{
 				isAttention=attention.flag;

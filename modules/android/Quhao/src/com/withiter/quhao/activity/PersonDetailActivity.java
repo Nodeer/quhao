@@ -42,6 +42,7 @@ import com.withiter.quhao.domain.CityInfo;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
+import com.withiter.quhao.util.tool.AsynImageLoader;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
@@ -587,6 +588,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 	}
 
 	private void setPersonDetail() {
+		Bitmap bitmap = null;
 		// get cached image from SD card
 		if (SDTool.instance().SD_EXIST) {
 			File f = new File(Environment
@@ -600,7 +602,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 			}
 			
 			if(f.exists()){
-				Bitmap bitmap = BitmapFactory.decodeFile(f.getPath());
+				bitmap = BitmapFactory.decodeFile(f.getPath());
 				if (null != bitmap) {
 					personAvatar.setImageBitmap(bitmap);
 				}
@@ -608,6 +610,11 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		}
 		
 		AccountInfo account = QHClientApplication.getInstance().accountInfo;
+		
+		if(bitmap == null)
+		{
+			AsynImageLoader.getInstance().showImageAsyn(personAvatar, 0,"" + account.userImage, R.drawable.person_avatar);
+		}
 		
 		if(StringUtils.isNull(account.nickName))
 		{
