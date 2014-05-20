@@ -21,14 +21,16 @@ $addJS("admin.js",true)
    		</thead>
    		<tbody>
    			`for(AppConfigVO acvo : acvos){
+   			<form action="/admin/updateversion" method="post">
 	   		<tr>
-	   			<td style="vertical-align: middle;">${acvo.id}</td>
+	   			<td style="vertical-align: middle;">${acvo.id}<input type="hidden" name="id" value="${acvo.id}" /></td>
 	   			<td style="vertical-align: middle;">${acvo.type}</td>
-	   			<td style="vertical-align: middle;"><input type="text" value="${acvo.version}" /></td>
+	   			<td style="vertical-align: middle;"><input type="text" name="version" value="${acvo.version}" /></td>
 	   			<td style="vertical-align: middle;">
-	   				<button type="button" class="btn btn-default"><a href="/admin/app/updateversion?id=${acvo.id}&version=">更新</a></button>
+	   				<button type="submit" class="btn btn-default">更新</button>
 	   			</td>
 	   		</tr>
+   			</form>
 	   		`}
    		</tbody>
 	</table>
