@@ -155,7 +155,7 @@ public class Merchant extends MerchantEntityDef {
 	public static List<Merchant> searchByName(String name, String cityCode) {
 		MorphiaQuery q = Merchant.q();
 		Pattern pattern = Pattern.compile("^.*" + name + ".*$", Pattern.CASE_INSENSITIVE);
-		q.filter("cityCode", cityCode).filter("name", pattern).filter("enable",false);
+		q.filter("cityCode", cityCode).filter("name", pattern);
 		return q.asList();
 	}
 	
