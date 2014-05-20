@@ -80,9 +80,9 @@ public class CommonHTTPRequest {
 		try
 		{
 			String httpUrl = QuhaoConstant.HTTP_URL + url;
-			QuhaoLog.d(TAG, "HTTP REQUEST POST, URL: " + httpUrl);
+			QuhaoLog.d(TAG, "HTTP REQUEST GET, URL: " + httpUrl);
 			httpUrl = encodeURL(httpUrl);
-			QuhaoLog.d(TAG, "HTTP REQUEST POST, URL after encode: " + httpUrl);
+			QuhaoLog.d(TAG, "HTTP REQUEST GET, URL after encode: " + httpUrl);
 			HttpGet request = new HttpGet(httpUrl);
 			request.setHeader("user-agent", "QuhaoAndroid");
 

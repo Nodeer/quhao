@@ -45,6 +45,7 @@ GET		/admin/requesthandle				backend.admin.AdminController.requesthandle
 GET		/admin/feedback						backend.admin.AdminController.feedback
 GET		/admin/logout						backend.admin.AdminController.logout
 GET		/admin/app							backend.admin.AdminController.app
+POST	/admin/updateversion				backend.admin.AdminController.updateversion
 
 
 # Category

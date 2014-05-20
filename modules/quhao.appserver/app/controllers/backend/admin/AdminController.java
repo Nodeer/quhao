@@ -336,4 +336,11 @@ public class AdminController extends BaseController {
 		}
 		renderJapid(acvos);
 	}
+	
+	public static void updateversion(){
+		String id = params.get("id");
+		String version = params.get("version");
+		AppConfig.update(id, version);
+		app();
+	}
 }

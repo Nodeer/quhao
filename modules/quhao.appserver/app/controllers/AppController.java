@@ -1,16 +1,45 @@
 package controllers;
 
 import java.io.File;
+import java.util.List;
 
-import cn.bran.japid.util.StringUtils;
 import play.Play;
+import play.modules.morphia.Model.MorphiaQuery;
 import vo.AppVersionVO;
+import cn.bran.japid.util.StringUtils;
+
+import com.withiter.models.appconfig.AppConfig;
 
 public class AppController extends BaseController {
 	
 	public static void appCode(){
-		String android = Play.configuration.getProperty("app.versioncode.android");
-		String ios = Play.configuration.getProperty("app.versioncode.ios");
+		String android = null;
+		String ios = null;
+		
+		MorphiaQuery q = AppConfig.q();
+		List<AppConfig> configs = q.asList();
+		if(configs == null || configs.isEmpty()){
+			AppConfig androidconfig = new AppConfig();
+			androidconfig.type = "Android";
+			androidconfig.version = "1.0";
+			androidconfig.save();
+			AppConfig iosconfig = new AppConfig();
+			iosconfig.type = "iOS";
+			iosconfig.version = "1.0";
+			iosconfig.save();
+			
+			configs.add(androidconfig);
+			configs.add(iosconfig);
+		}
+		for(AppConfig c : configs){
+			if(c.type.equalsIgnoreCase("android")){
+				android = c.version;
+			}
+			if(c.type.equalsIgnoreCase("ios")){
+				ios = c.version;
+			}
+		}
+		
 		AppVersionVO avo = new AppVersionVO(android, ios);
 		renderJSON(avo);
 	}
