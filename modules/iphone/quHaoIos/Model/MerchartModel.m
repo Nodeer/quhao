@@ -17,6 +17,7 @@
 @synthesize kouwei;
 @synthesize huanjing;
 @synthesize fuwu;
+@synthesize grade;
 @synthesize address;
 @synthesize telephone;
 @synthesize openTime;
@@ -36,4 +37,6 @@
 @synthesize reservationId;
 @synthesize openNum;
 @synthesize checkTime;
+@synthesize youhui;
+@synthesize online;
 @end

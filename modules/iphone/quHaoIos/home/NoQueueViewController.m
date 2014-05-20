@@ -158,7 +158,7 @@
         model.imgUrl=[[objects objectAtIndex:i] objectForKey:@"merchantImage"];
         model.enable=[[[objects objectAtIndex:i] objectForKey:@"enable"] boolValue];
         double disTemp=[[[objects objectAtIndex:i] objectForKey:@"distance"] doubleValue];
-        model.youhuiExist = [[[objects objectAtIndex:i] objectForKey:@"youhuiExist"] boolValue];
+        model.youhui = [[[objects objectAtIndex:i] objectForKey:@"youhui"] boolValue];
         if (disTemp<=1000) {
             model.distance=[NSString stringWithFormat:@"%.fm",disTemp];
         } else {
@@ -414,7 +414,7 @@
 {
     CLLocation *currLocation = [locations lastObject];
     NSTimeInterval howRecent = [currLocation.timestamp timeIntervalSinceNow];
-    if(howRecent < -10 || currLocation.horizontalAccuracy > 100) {
+    if(howRecent < -10 || currLocation.horizontalAccuracy > 500) {
         return;
     }
     CLLocationCoordinate2D myCoOrdinate;

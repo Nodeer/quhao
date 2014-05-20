@@ -72,7 +72,7 @@
     }
     _titleLabel.text=self.merchartModel.name;
     
-    if(self.merchartModel.youhuiExist){
+    if(self.merchartModel.youhui){
         _youhui.hidden = NO;
     }else{
         _youhui.hidden = YES;

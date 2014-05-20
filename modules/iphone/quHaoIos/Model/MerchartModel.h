@@ -17,6 +17,7 @@
 @property float kouwei;
 @property float huanjing;
 @property float fuwu;
+@property float grade;
 @property (nonatomic,strong) NSString * address;
 @property (nonatomic,strong) NSArray *telephone;
 @property (nonatomic,strong) NSString *openTime;
@@ -40,4 +41,6 @@
 @property (nonatomic,strong) NSString *reservationId;
 @property int openNum;
 @property int checkTime;
+@property BOOL youhui;
+@property BOOL online;
 @end

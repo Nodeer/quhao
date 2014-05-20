@@ -171,7 +171,7 @@
         model.id=[[objects objectAtIndex:i] objectForKey:@"id"];
         model.imgUrl=[[objects objectAtIndex:i] objectForKey:@"merchantImage"];
         model.enable=[[[objects objectAtIndex:i] objectForKey:@"enable"] boolValue];
-        model.youhuiExist = [[[objects objectAtIndex:i] objectForKey:@"youhuiExist"] boolValue];
+        model.youhui = [[[objects objectAtIndex:i] objectForKey:@"youhui"] boolValue];
         double disTemp=[[[objects objectAtIndex:i] objectForKey:@"distance"] doubleValue];
         if (disTemp<=1000) {
             model.distance=[NSString stringWithFormat:@"%.fm",disTemp];
