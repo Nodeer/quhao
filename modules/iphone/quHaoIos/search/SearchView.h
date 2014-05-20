@@ -18,7 +18,7 @@
 }
 @property (strong, nonatomic) IBOutlet UITableView *tableResult;
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
-
+@property (strong,nonatomic) NSString * cityCode;
 -(void)doSearch;
 -(void)clear;
 

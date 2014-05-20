@@ -411,6 +411,7 @@
 - (void)clickSearch:(id)sender
 {
     SearchView * sView = [[SearchView alloc] init];
+    sView.cityCode = _cityCode;
     sView.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:sView animated:YES];
 }

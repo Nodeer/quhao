@@ -82,7 +82,7 @@
     _isLoading = YES;
     //请求数据 暂时未分页
     //url含有中文先进行编码
-    NSString *str=[NSString stringWithFormat:@"%@%@",IP,@"/search?name="];
+    NSString *str=[NSString stringWithFormat:@"%@/search?cityCode=%@%@",IP,self.cityCode,@"&name="];
     str=[[str stringByAppendingString:self.searchBar.text]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL *url = [NSURL URLWithString:str];
     
