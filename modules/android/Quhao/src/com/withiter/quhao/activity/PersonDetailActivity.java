@@ -54,8 +54,8 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 	private final static String TAG = PersonDetailActivity.class.getName();
 
 	private TextView nickNameText;
-	private TextView phoneText;
-	private TextView usualCityText;
+//	private TextView phoneText;
+//	private TextView usualCityText;
 	private TextView currentJifenText;
 
 	private LoginInfo loginInfo;
@@ -620,13 +620,13 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		
 		cityInfo = QHClientApplication.getInstance().defaultCity;
 		
-		usualCityText.setText(cityInfo.cityName);
+//		usualCityText.setText(cityInfo.cityName);
 		
-		phoneText.setText(account.phone);
-		if(StringUtils.isNull(account.phone))
-		{
-			phoneText.setText(R.string.nomobile);
-		}
+//		phoneText.setText(account.phone);
+//		if(StringUtils.isNull(account.phone))
+//		{
+//			phoneText.setText(R.string.nomobile);
+//		}
 		
 		currentJifenText.setText(account.jifen);
 		if(StringUtils.isNull(account.jifen))

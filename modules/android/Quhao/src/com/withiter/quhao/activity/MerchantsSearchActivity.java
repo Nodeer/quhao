@@ -134,6 +134,7 @@ public class MerchantsSearchActivity extends QuhaoBaseActivity {
 					}
 
 				}
+				merchants = new ArrayList<Merchant>();
 				getMerchants();
 
 			}
@@ -162,6 +163,8 @@ public class MerchantsSearchActivity extends QuhaoBaseActivity {
 				String result = CommonHTTPRequest.get("search?name=" + MerchantsSearchActivity.this.editSearch.getText().toString().trim() + "&cityCode="
 						+ QHClientApplication.getInstance().defaultCity.cityCode);
 				if (StringUtils.isNull(result) || "null".equals(result) || "[]".equals(result)) {
+					merchants = new ArrayList<Merchant>();
+					merchantsUpdateHandler.obtainMessage(200, merchants).sendToTarget();
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
 					if (null == merchants) {
