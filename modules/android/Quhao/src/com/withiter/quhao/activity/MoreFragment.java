@@ -15,9 +15,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,7 +35,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
@@ -45,8 +44,6 @@ import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.task.MoreVersionCheckTask;
 import com.withiter.quhao.util.ActivityUtil;
-import com.withiter.quhao.util.StringUtils;
-import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
@@ -462,6 +459,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 				
 			});
 			oks.show(this);*/
+			
 			final OnekeyShare oks = new OnekeyShare();
 			oks.setNotification(R.drawable.ic_launcher, getResources().getString(R.string.app_name));
 //			oks.setAddress("12345678901");
@@ -516,9 +514,10 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			});
 			oks.show(getActivity());
 //			oks.setapp
-//			Intent intent4 = new Intent(this, ShareDialogActivity.class);
+ 
+ 
+//			Intent intent4 = new Intent(getActivity(), SinaInfoActivity.class);
 //			startActivity(intent4);
-//			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 
 		case R.id.more_login_status:// 分享给好友

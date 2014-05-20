@@ -127,15 +127,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		
 		btnAttention.setOnClickListener(this);
 		
-		if(!QHClientApplication.getInstance().isLogined)
-		{
-			btnAttention.setVisibility(View.GONE);
-		}
-		else
-		{
-			btnAttention.setVisibility(View.VISIBLE);
-		}
-		
 		this.merchantPhone.setClickable(true);
 		this.merchantPhone.setOnClickListener(new OnClickListener() {
 			@Override
@@ -665,7 +656,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 							btnOpen.setVisibility(View.VISIBLE);
 							paiduiConditionLayout.setVisibility(View.GONE);
 							currentQuHaoLayout.setVisibility(View.GONE);
-							btnAttention.setVisibility(View.GONE);
+//							btnAttention.setVisibility(View.GONE);
 							
 						}
 	
@@ -676,7 +667,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		}
 
 		private void handlerPaidui() {
-			btnAttention.setVisibility(View.GONE);
+//			btnAttention.setVisibility(View.GONE);
 			currentQuHaoLayout.setVisibility(View.GONE);
 			
 			paiduiConditionLayout.setVisibility(View.VISIBLE);
@@ -900,7 +891,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			else
 			{
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				Toast.makeText(this, "对不起，暂无描述。", Toast.LENGTH_LONG).show();
+//				Toast.makeText(this, "对不起，暂无描述。", Toast.LENGTH_LONG).show();
 			}
 			break;
 		case R.id.seatNo:
@@ -965,40 +956,53 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			thread.start();
 			break;
 			case R.id.btn_attention:
-			Thread thread1 = new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
-					Looper.prepare();
-					progressDialogUtil = new ProgressDialogUtil(MerchantDetailActivity.this, R.string.empty, R.string.waitting_for_commit, false);
-					progressDialogUtil.showProgress();
-					
-					String accountId = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.ACCOUNT_ID, "");
-					String merchantId = merchant.id;
-					int flag = 0;
-					if(merchant.isAttention)
-					{
-						flag = 1;
-					}
-					
-					try {
-						QuhaoLog.v(LOGTAG, "pay attention to merchant, account id  : " + accountId + " , merchant ID : " + merchantId + ",flag : " + flag);
-						String buf = CommonHTTPRequest.get("updateAttention?mid=" + merchantId + "&accountId=" + accountId + "&flag=" + flag);
-						attentionHandler.obtainMessage(200, buf).sendToTarget();
+				if(QHClientApplication.getInstance().isLogined)
+				{
+					Thread thread1 = new Thread(new Runnable() {
 						
+						@Override
+						public void run() {
+							Looper.prepare();
+							progressDialogUtil = new ProgressDialogUtil(MerchantDetailActivity.this, R.string.empty, R.string.waitting_for_commit, false);
+							progressDialogUtil.showProgress();
+							
+							String accountId = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.ACCOUNT_ID, "");
+							String merchantId = merchant.id;
+							int flag = 0;
+							if(merchant.isAttention)
+							{
+								flag = 1;
+							}
+							
+							try {
+								QuhaoLog.v(LOGTAG, "pay attention to merchant, account id  : " + accountId + " , merchant ID : " + merchantId + ",flag : " + flag);
+								String buf = CommonHTTPRequest.get("updateAttention?mid=" + merchantId + "&accountId=" + accountId + "&flag=" + flag);
+								attentionHandler.obtainMessage(200, buf).sendToTarget();
+								
 
-					} catch (Exception e) {
-						progressDialogUtil.closeProgress();
-						Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_LONG).show();
-						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-						e.printStackTrace();
-					} finally {
-						Looper.loop();
-					}
-					
+							} catch (Exception e) {
+								progressDialogUtil.closeProgress();
+								Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_LONG).show();
+								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+								e.printStackTrace();
+							} finally {
+								Looper.loop();
+							}
+							
+						}
+					});
+					thread1.start();
 				}
-			});
-			thread1.start();
+				else
+				{
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+					Intent intent = new Intent(MerchantDetailActivity.this, LoginActivity.class);
+					intent.putExtra("activityName", MerchantDetailActivity.class.getName());
+					intent.putExtra("forAttention", "true");
+					intent.putExtra("merchantId", MerchantDetailActivity.this.merchantId);
+					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivity(intent);
+				}
 			break;
 		default:
 			break;
