@@ -63,8 +63,8 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 	private LinearLayout nickNameLayout;
 	private LinearLayout currentJifenLayout;
 	private LinearLayout jifenIntructionLayout;
-	private LinearLayout usualCityLayout;
-	private LinearLayout phoneLayout;
+//	private LinearLayout usualCityLayout;
+//	private LinearLayout phoneLayout;
 	private LinearLayout updatePasswordLayout;
 	
 	private Button logoutButton;
@@ -96,11 +96,11 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		nickNameLayout = (LinearLayout) this.findViewById(R.id.nick_name_layout);
 		nickNameLayout.setOnClickListener(this);
 		
-		usualCityLayout = (LinearLayout) this.findViewById(R.id.usual_city_layout);
-		usualCityLayout.setOnClickListener(this);
+//		usualCityLayout = (LinearLayout) this.findViewById(R.id.usual_city_layout);
+//		usualCityLayout.setOnClickListener(this);
 		
-		phoneLayout = (LinearLayout) this.findViewById(R.id.phone_layout);
-		phoneLayout.setOnClickListener(this);
+//		phoneLayout = (LinearLayout) this.findViewById(R.id.phone_layout);
+//		phoneLayout.setOnClickListener(this);
 		
 		currentJifenLayout = (LinearLayout) this.findViewById(R.id.current_jifen_layout);
 		currentJifenLayout.setOnClickListener(this);
@@ -113,8 +113,8 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		
 		nickNameText = (TextView) this.findViewById(R.id.nick_name);
 		
-		usualCityText = (TextView) this.findViewById(R.id.usual_city);
-		phoneText = (TextView) this.findViewById(R.id.phone_number);
+//		usualCityText = (TextView) this.findViewById(R.id.usual_city);
+//		phoneText = (TextView) this.findViewById(R.id.phone_number);
 		
 		logoutButton = (Button) this.findViewById(R.id.logout_btn);
 		logoutButton.setOnClickListener(this);
@@ -167,6 +167,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 				builder.create().show();
 			}
 			break;
+			/*
 		case R.id.usual_city_layout:
 			progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
 			progressDialogUtil.showProgress();
@@ -192,7 +193,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 				});
 				builder.create().show();
 			}
-			break;
+			break;*/
 		case R.id.current_jifen_layout:
 			progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
 			progressDialogUtil.showProgress();

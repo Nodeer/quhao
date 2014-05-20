@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -16,17 +15,14 @@ import android.content.res.Resources.NotFoundException;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
-import com.amap.api.services.core.LatLonPoint;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.domain.CityInfo;
 import com.withiter.quhao.util.ActivityUtil;
-import com.withiter.quhao.util.QuhaoLog;
+//import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.encrypt.DesUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
@@ -95,7 +91,7 @@ public class QHClientApplication extends Application {
 
 	@Override
 	public void onCreate() {
-		QuhaoLog.i(TAG, "onCreate method is called");
+//		QuhaoLog.i(TAG, "onCreate method is called");
 		QHClientApplication.mContext = this;
 		// isLogined = false;
 		instance = this;
@@ -148,12 +144,12 @@ public class QHClientApplication extends Application {
 				ApplicationInfo appInfo = this.getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
 				boolean msg = appInfo.metaData.getBoolean("test");
 				QuhaoConstant.test = msg;
-				QuhaoLog.i(TAG, "current deployment is test mode : " + msg);
+//				QuhaoLog.i(TAG, "current deployment is test mode : " + msg);
 			} catch (NameNotFoundException e) {
 				e.printStackTrace();
 			}
 
-			QuhaoLog.i(TAG, "start to init configurations from application.properties");
+//			QuhaoLog.i(TAG, "start to init configurations from application.properties");
 			InputStream input = getResources().openRawResource(R.raw.application);
 			BufferedReader read = new BufferedReader(new InputStreamReader(input));
 			String line = "";
@@ -163,16 +159,16 @@ public class QHClientApplication extends Application {
 				}
 				if (line.contains("app.server")) {
 					QuhaoConstant.HTTP_URL = line.split("=")[1];
-					QuhaoLog.i(TAG, "server url is : " + QuhaoConstant.HTTP_URL);
+//					QuhaoLog.i(TAG, "server url is : " + QuhaoConstant.HTTP_URL);
 				}
 			}
 			input.close();
 		} catch (NotFoundException e) {
 			e.printStackTrace();
-			QuhaoLog.e(TAG, e.getMessage());
+//			QuhaoLog.e(TAG, e.getMessage());
 		} catch (IOException e) {
 			e.printStackTrace();
-			QuhaoLog.e(TAG, e.getMessage());
+//			QuhaoLog.e(TAG, e.getMessage());
 		}
 	}
 
@@ -182,11 +178,11 @@ public class QHClientApplication extends Application {
 	private void initAccountConfig() {
 
 		if (!PhoneTool.isNetworkAvailable(this)) {
-			QuhaoLog.w(TAG, "Network is not available!");
+//			QuhaoLog.w(TAG, "Network is not available!");
 			return;
 		}
 
-		QuhaoLog.i(TAG, "Initial the account configuration");
+//		QuhaoLog.i(TAG, "Initial the account configuration");
 		SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
 
 		String phone = SharedprefUtil.get(this, QuhaoConstant.PHONE, "");
@@ -195,7 +191,7 @@ public class QHClientApplication extends Application {
 
 //		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 //		String password = sharedPreferences.getString(QuhaoConstant.PASSWORD, "");
-		QuhaoLog.d("cross, get password from sp", password);
+//		QuhaoLog.d("cross, get password from sp", password);
 
 		if (StringUtils.isNull(isAutoLogin) || "false".equals(isAutoLogin) || StringUtils.isNull(phone) || StringUtils.isNull(password)) {
 			return;
@@ -225,7 +221,7 @@ public class QHClientApplication extends Application {
 			LoginInfo loginInfo = ParseJson.getLoginInfo(result);
 			AccountInfo account = new AccountInfo();
 			account.build(loginInfo);
-			QuhaoLog.d(TAG, account.msg);
+//			QuhaoLog.d(TAG, account.msg);
 
 			if ("fail".equals(account.msg)) {
 				this.isLogined = false;
@@ -256,7 +252,7 @@ public class QHClientApplication extends Application {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			QuhaoLog.e(TAG, e);
+//			QuhaoLog.e(TAG, e);
 			this.isLogined = false;
 			Handler handler = new Handler();
 			handler.post(new Runnable() {

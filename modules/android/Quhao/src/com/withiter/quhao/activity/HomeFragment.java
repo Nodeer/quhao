@@ -319,7 +319,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 					public void onClick(View v) {
 						if (topMerchants.get(mPosition) != null) {
 							String mid = topMerchants.get(mPosition).mid;
-							QuhaoLog.d(TAG, "mid:" + mid);
+//							QuhaoLog.d(TAG, "mid:" + mid);
 							if (StringUtils.isNull(mid)) {
 								Builder dialog = new AlertDialog.Builder(getActivity());
 								dialog.setTitle("温馨提示").setMessage("推荐商家虚席以待").setPositiveButton("确定", null);
@@ -545,7 +545,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			Category category = categorys.get(position);
-			QuhaoLog.d(TAG, "the category is : " + category.categoryType + ", the count is : " + category.count);
+//			QuhaoLog.d(TAG, "the category is : " + category.categoryType + ", the count is : " + category.count);
 			Intent intent = new Intent();
 			intent.putExtra("categoryType", category.categoryType);
 			intent.putExtra("cateName", category.cateName);
