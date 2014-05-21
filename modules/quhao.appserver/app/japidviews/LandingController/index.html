@@ -1,10 +1,13 @@
 `import static press.Plugin.*; 
+`import vo.AppConfigVO;
 `extends landing_layout
 `set cssAndJs
 `
 `set title
 取号啦 - 改变你的排队生活
 `
+`args AppConfigVO android
+
 `set mainContent
   <div class="section hero">
     <div class="w-container">
@@ -34,11 +37,13 @@
 		  	</tr>
 		  	<tr>
 		  		<td align="center" style="padding-bottom: 20px;"><img align="middle" height="213px;" src="/public/images/home/codeimage_ios.png" /></td>
-		  		<td align="center" style="padding-left: 20px;padding-bottom: 20px;" ><img align="middle" height="213px;" src="/public/images/home/codeimage_android.png" /></td>
+		  		`if(android != null && !android.erweimalink.equals("")){
+		  			<td align="center" style="padding-left: 20px;padding-bottom: 20px;" ><img align="middle" height="213px;" src="${android.erweimalink}" /></td>
+		  		`} else {
+		  			<td align="center" style="padding-left: 20px;padding-bottom: 20px;" ><img align="middle" height="213px;" src="/public/images/home/codeimage_android.png" /></td>
+		  		`}
 		  	</tr>
 		  </table>
-		  
-		  
         </div>
       </div>
     </div>

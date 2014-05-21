@@ -4,11 +4,18 @@ import java.io.File;
 
 import play.Play;
 import play.libs.Codec;
+import vo.AppConfigVO;
+
+import com.withiter.models.appconfig.AppConfig;
 
 public class LandingController extends BaseController {
 	public static void index() {
-//		String android = Play.configuration.getProperty("android");
-		renderJapid();
+		AppConfig android = AppConfig.android();
+		AppConfigVO vo = null;
+		if(android != null){
+			vo = AppConfigVO.bulid(android);
+		}
+		renderJapid(vo);
 	}
 
 	public static void home() {

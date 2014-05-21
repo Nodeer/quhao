@@ -16,6 +16,7 @@ $addJS("admin.js",true)
    				<th>ID</th>
    				<th>APP类型</th>
    				<th>version</th>
+   				<th>二维码地址</th>
    				<th>操作</th>
    			</tr>
    		</thead>
@@ -26,6 +27,7 @@ $addJS("admin.js",true)
 	   			<td style="vertical-align: middle;">${acvo.id}<input type="hidden" name="id" value="${acvo.id}" /></td>
 	   			<td style="vertical-align: middle;">${acvo.type}</td>
 	   			<td style="vertical-align: middle;"><input type="text" name="version" value="${acvo.version}" /></td>
+	   			<td style="vertical-align: middle;"><input type="text" name="erweimalink" value="${acvo.erweimalink}" /></td>
 	   			<td style="vertical-align: middle;">
 	   				<button type="submit" class="btn btn-default">更新</button>
 	   			</td>

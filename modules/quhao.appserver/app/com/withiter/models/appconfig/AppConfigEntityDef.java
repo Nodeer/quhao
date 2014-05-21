@@ -6,4 +6,5 @@ public abstract class AppConfigEntityDef extends BaseModel {
 
 	public String type;
 	public String version;
+	public String erweimalink;
 }

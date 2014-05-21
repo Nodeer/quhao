@@ -322,10 +322,12 @@ public class AdminController extends BaseController {
 			android = new AppConfig();
 			android.type = "Android";
 			android.version = "1.0";
+			android.erweimalink = "";
 			android.save();
 			ios = new AppConfig();
 			ios.type = "iOS";
 			ios.version = "1.0";
+			ios.erweimalink = "";
 			ios.save();
 			acvos.add(AppConfigVO.bulid(android));
 			acvos.add(AppConfigVO.bulid(ios));
@@ -340,7 +342,8 @@ public class AdminController extends BaseController {
 	public static void updateversion(){
 		String id = params.get("id");
 		String version = params.get("version");
-		AppConfig.update(id, version);
+		String erweimalink = params.get("erweimalink");
+		AppConfig.update(id, version, erweimalink);
 		app();
 	}
 }
