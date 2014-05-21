@@ -92,7 +92,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0.0dip"
-                android:orientation="vertical" >
+                android:orientation="horizontal" >
 
                 <Button
 		            android:id="@+id/btn_attention"
@@ -103,10 +103,41 @@
 		            android:textColor="#64bae9"
 		            android:textSize="11.0sp" 
 		            android:background="@android:color/transparent"
-		            android:paddingRight="10dp"
+		            android:paddingRight="10dip"
 		            android:layout_gravity="right|center_vertical"
 		            />
 
+                <TextView
+                	android:layout_width="wrap_content"
+		            android:layout_height="35dip"
+		            android:text="@string/null_2_space"
+		            android:textSize="11.0sp" 
+		            android:paddingRight="10dip"/>
+                
+                <Button
+		            android:id="@+id/btn_open"
+		            android:layout_width="wrap_content"
+		            android:layout_height="35dip"
+		            android:text="@string/open_service"
+		            android:textAppearance="?android:textAppearanceMediumInverse"
+		            android:textColor="#64bae9"
+		            android:textSize="11.0sp" 
+		            android:background="@android:color/transparent"
+		            android:paddingRight="10dip"
+		            android:layout_gravity="right|center_vertical"
+		            />
+                
+                <TextView android:id="@+id/open_number"
+                    android:layout_width="wrap_content"
+		            android:layout_height="35dip"
+		            android:text="@string/empty"
+		            android:textAppearance="?android:textAppearanceMediumInverse"
+		            android:textColor="@color/black"
+		            android:textSize="11.0sp" 
+		            android:paddingRight="10dip"
+		            android:gravity="center"
+		            android:layout_gravity="center"/>
+                
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/tex2_lay3"
@@ -643,6 +674,7 @@
                 <LinearLayout
 			        android:layout_width="fill_parent"
 			        android:layout_height="wrap_content"
+			        android:baselineAligned="false"
 			        android:orientation="horizontal">
 	                <LinearLayout
 				        android:layout_width="0dip"
@@ -670,6 +702,7 @@
 		            </LinearLayout>
 	            </LinearLayout>
 	            <LinearLayout
+	                android:baselineAligned="false"
 			        android:layout_width="fill_parent"
 			        android:layout_height="wrap_content"
 			        android:orientation="horizontal">
@@ -686,6 +719,7 @@
 		                    android:textColor="#ff000000" />
 		            </LinearLayout>
 		            <LinearLayout
+		                android:baselineAligned="false"
 				        android:layout_width="0dip"
 				        android:layout_height="wrap_content"
 				        android:layout_weight="1.0">

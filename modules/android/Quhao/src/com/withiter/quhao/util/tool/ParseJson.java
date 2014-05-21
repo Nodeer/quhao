@@ -326,9 +326,17 @@ public class ParseJson {
 			online = obj.optBoolean("online");
 		}
 		
+		
+		Integer openNum = 0;
+		if (obj.has("openNum")) {
+			openNum = obj.optInt("openNum");
+		}
+		
 		merchant = new Merchant(id, imgUrl, name, address, phone, cateType, grade, averageCost, tags, kouwei, huanjing, fuwu, xingjiabi, teses, nickName, description, openTime, closeTime,
 				marketCount, enable, joinedDate, lat, lng, distance,youhuiExist,online);
 
+		merchant.openNum = openNum;
+		
 		String commentAverageCost = obj.optString("commentAverageCost");
 		int commentXingjiabi = obj.optInt("commentXingjiabi");
 		int commentKouwei = obj.optInt("commentHuanjing");

@@ -56,6 +56,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	private MerchantDetailVO merchantDetail;
 	private Button btnGetNumber;
 	private Button btnOpen;
+	private TextView openNumView;
 	 private Button btnAttention;
 	private LinearLayout info;
 	private LinearLayout mapLayout;
@@ -107,8 +108,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		btnGetNumber = (Button) findViewById(R.id.btn_GetNumber);
 		btnGetNumber.setOnClickListener(getNumberClickListener());
 		
-		btnOpen = (Button) findViewById(R.id.btn_open);
-		btnOpen.setOnClickListener(this);
 		LayoutInflater inflater = LayoutInflater.from(this);
 		info = (LinearLayout) inflater.inflate(R.layout.merchant_detail_info, null);
 		LinearLayout scroll = (LinearLayout) findViewById(R.id.lite_list);
@@ -126,6 +125,11 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		this.btnAttention = (Button) info.findViewById(R.id.btn_attention);
 		
 		btnAttention.setOnClickListener(this);
+		
+		btnOpen = (Button) info.findViewById(R.id.btn_open);
+		btnOpen.setOnClickListener(this);
+		
+		openNumView = (TextView) info.findViewById(R.id.open_number);
 		
 		this.merchantPhone.setClickable(true);
 		this.merchantPhone.setOnClickListener(new OnClickListener() {
@@ -240,7 +244,8 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		OnClickListener listener = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (QHClientApplication.getInstance().isLogined) {
+				if (QHClientApplication.getInstance().isLogined && null != merchantDetail.haoma 
+						&& null != merchantDetail.haoma.paiduiList && !merchantDetail.haoma.paiduiList.isEmpty()) {
 					Intent intent = new Intent();
 					intent.putExtra("merchantId", merchantId);
 					intent.putExtra("merchantName", mName);
@@ -515,6 +520,9 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						merchantBusinessTime.setText(m.openTime + "~" + m.closeTime);
 	
 						merchantDesc.setText(m.description);
+						
+						openNumView.setText(String.valueOf(m.openNum));
+						
 						if (StringUtils.isNull(m.description)) {
 							merchantDesc.setText(R.string.no_desc);
 						}
@@ -616,7 +624,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 							}
 							
 							btnOpen.setVisibility(View.GONE);
-							
+							openNumView.setVisibility(View.GONE);
 							QuhaoLog.d(LOGTAG, "check login state on MerchantDetailActivity, isLogined : " + QHClientApplication.getInstance().isLogined);
 							if(!QHClientApplication.getInstance().isLogined)
 							{
@@ -654,12 +662,13 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						} else {
 							btnGetNumber.setVisibility(View.GONE);
 							btnOpen.setVisibility(View.VISIBLE);
+							openNumView.setVisibility(View.VISIBLE);
 							paiduiConditionLayout.setVisibility(View.GONE);
 							currentQuHaoLayout.setVisibility(View.GONE);
 //							btnAttention.setVisibility(View.GONE);
 							
 						}
-	
+
 					}
 				}
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -734,7 +743,8 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				
 			} else {
 				// TODO : 没有位置时， 该怎么做， 应该返回到列表页面， 在酒店详细信息页面应该判断
-				Toast.makeText(MerchantDetailActivity.this, "此酒店没有座位，请选择其他酒店。", Toast.LENGTH_LONG).show();
+//				Toast.makeText(MerchantDetailActivity.this, "此酒店没有座位，请选择其他酒店。", Toast.LENGTH_LONG).show();
+				btnGetNumber.setVisibility(View.INVISIBLE);
 				paiduiConditionLayout.setVisibility(View.GONE);
 			}
 		}
@@ -908,52 +918,65 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;
 		case R.id.btn_open:
-			
-			Thread thread = new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
-					Looper.prepare();
-					progressDialogUtil = new ProgressDialogUtil(MerchantDetailActivity.this, R.string.empty, R.string.waitting_for_commit, false);
-					progressDialogUtil.showProgress();
+			if(QHClientApplication.getInstance().isLogined)
+			{
+				Thread thread = new Thread(new Runnable() {
 					
-					String accountId = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.ACCOUNT_ID, "");
-					String merchantId = merchant.id;
-					
-					try {
-						QuhaoLog.v(LOGTAG, "commit open service, account id  : " + accountId + " , merchant ID : " + merchantId);
-						String buf = CommonHTTPRequest.get("openService?mid=" + merchantId + "&accountId=" + accountId);
-						if (StringUtils.isNull(buf)) {
-							unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-							Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_LONG).show();
-							
-						} else {
-							if("error".equals(buf))
-							{
+					@Override
+					public void run() {
+						Looper.prepare();
+						progressDialogUtil = new ProgressDialogUtil(MerchantDetailActivity.this, R.string.empty, R.string.waitting_for_commit, false);
+						progressDialogUtil.showProgress();
+						
+						String accountId = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.ACCOUNT_ID, "");
+						String merchantId = merchant.id;
+						
+						try {
+							QuhaoLog.v(LOGTAG, "commit open service, account id  : " + accountId + " , merchant ID : " + merchantId);
+							String buf = CommonHTTPRequest.get("openService?mid=" + merchantId + "&accountId=" + accountId);
+							if (StringUtils.isNull(buf)) {
 								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 								Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_LONG).show();
+								
+							} else {
+								if("error".equals(buf))
+								{
+									unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+									Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_LONG).show();
+								}
+								else
+								{
+									unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+									Toast.makeText(MerchantDetailActivity.this, R.string.committing_success, Toast.LENGTH_LONG).show();
+								}
+								
 							}
-							else
-							{
-								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-								Toast.makeText(MerchantDetailActivity.this, R.string.committing_success, Toast.LENGTH_LONG).show();
-							}
-							
-						}
-						progressDialogUtil.closeProgress();
+							progressDialogUtil.closeProgress();
 
-					} catch (Exception e) {
-						progressDialogUtil.closeProgress();
-						Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_LONG).show();
-						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-						e.printStackTrace();
-					} finally {
-						Looper.loop();
+						} catch (Exception e) {
+							progressDialogUtil.closeProgress();
+							Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_LONG).show();
+							unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+							e.printStackTrace();
+						} finally {
+							Looper.loop();
+						}
+						
 					}
-					
-				}
-			});
-			thread.start();
+				});
+				thread.start();
+			}
+			else
+			{
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				Intent intent = new Intent(MerchantDetailActivity.this, LoginActivity.class);
+				intent.putExtra("activityName", MerchantDetailActivity.class.getName());
+				intent.putExtra("notGetNumber", "true");
+				intent.putExtra("merchantId", MerchantDetailActivity.this.merchantId);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+			}
+			
 			break;
 			case R.id.btn_attention:
 				if(QHClientApplication.getInstance().isLogined)
@@ -998,7 +1021,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					Intent intent = new Intent(MerchantDetailActivity.this, LoginActivity.class);
 					intent.putExtra("activityName", MerchantDetailActivity.class.getName());
-					intent.putExtra("forAttention", "true");
+					intent.putExtra("notGetNumber", "true");
 					intent.putExtra("merchantId", MerchantDetailActivity.this.merchantId);
 					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(intent);

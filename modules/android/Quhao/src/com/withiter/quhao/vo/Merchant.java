@@ -45,6 +45,8 @@ public class Merchant implements Serializable {
 	
 	public boolean isAttention;
 	
+	public int openNum;
+	
 	/** latest one comment **/
 	public String commentAverageCost;
 	public int commentXingjiabi;

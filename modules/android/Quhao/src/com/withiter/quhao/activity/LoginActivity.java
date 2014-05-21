@@ -261,7 +261,7 @@ public class LoginActivity extends QuhaoBaseActivity {
 				} else {
 					
 					if (MerchantDetailActivity.class.getName().equals(activityName)) {
-						if("true".equals(transfortParams.get("merchantId")))
+						if("true".equals(transfortParams.get("notGetNumber")))
 						{
 							finish();
 						}
