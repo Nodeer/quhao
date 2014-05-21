@@ -104,6 +104,11 @@ public class CreditAdapter extends BaseAdapter {
 				convertView.findViewById(R.id.merchantLayout).setVisibility(View.GONE);
 			}
 			
+			// 取消号码增加积分
+			if ("canceled".equals(credit.status)) {
+				holder.desc.setText("取消号码,系统返还一个积分。");
+			}
+			
 			// 取号消费积分
 			if ("getNumber".equals(credit.status)) {
 				holder.desc.setText("排队取号,消费一个积分");
@@ -111,12 +116,12 @@ public class CreditAdapter extends BaseAdapter {
 
 			// 完成消费返还积分
 			if ("finished".equals(credit.status)) {
-				holder.desc.setText("完成消费,系统返还一个积分");
+				holder.desc.setText("完成消费,系统返还一个积分。");
 			}
 			
 			// 评论增加积分
 			if ("comment".equals(credit.status)) {
-				holder.desc.setText("评论,增加一个积分");
+				holder.desc.setText("评论,增加一个积分。");
 			}
 
 			if ("exchange".equals(credit.status)) {

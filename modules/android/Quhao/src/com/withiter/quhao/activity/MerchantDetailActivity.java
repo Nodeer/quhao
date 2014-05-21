@@ -57,7 +57,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	private Button btnGetNumber;
 	private Button btnOpen;
 	private TextView openNumView;
-	 private Button btnAttention;
+	private Button btnAttention;
 	private LinearLayout info;
 	private LinearLayout mapLayout;
 	private TextView merchantName;
@@ -106,7 +106,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		this.merchantId = getIntent().getStringExtra("merchantId");
 		
 		btnGetNumber = (Button) findViewById(R.id.btn_GetNumber);
-		btnGetNumber.setOnClickListener(getNumberClickListener());
+		btnGetNumber.setOnClickListener(this);
 		
 		LayoutInflater inflater = LayoutInflater.from(this);
 		info = (LinearLayout) inflater.inflate(R.layout.merchant_detail_info, null);
@@ -116,7 +116,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		scroll.addView(info, layoutParams);
 
 		this.mapLayout = (LinearLayout) findViewById(R.id.mapLayout);
-
+		mapLayout.setOnClickListener(this);
 		this.merchantImg = (ImageView) info.findViewById(R.id.merchantImg);
 		this.merchantAddress = (TextView) info.findViewById(R.id.merchantAddress);
 		this.merchantPhone = (TextView) info.findViewById(R.id.merchantPhone);
@@ -132,20 +132,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		openNumView = (TextView) info.findViewById(R.id.open_number);
 		
 		this.merchantPhone.setClickable(true);
-		this.merchantPhone.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// 取得输入的电话号码串
-				String phoneNO = merchantPhone.getText().toString();
-				// 如果输入不为空创建打电话的Intent
-				if (StringUtils.isNotNull(phoneNO)) {
-					Intent phoneIntent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + phoneNO));
-					startActivity(phoneIntent);
-				} else {
-					Toast.makeText(MerchantDetailActivity.this, "此商家还未添加联系方式", Toast.LENGTH_LONG).show();
-				}
-			}
-		});
+		this.merchantPhone.setOnClickListener(this);
 
 		this.merchantBusinessTime = (TextView) info.findViewById(R.id.merchantBusinessTime);
 		this.descLayout = (LinearLayout) info.findViewById(R.id.desc_layout);
@@ -233,37 +220,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			}
 		}
 	};
-
-	/**
-	 * 
-	 * 取号按钮的 click listener
-	 * 
-	 * @return 取号按钮的listener R.id.btn_GetNumber
-	 */
-	private OnClickListener getNumberClickListener() {
-		OnClickListener listener = new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (QHClientApplication.getInstance().isLogined && null != merchantDetail.haoma 
-						&& null != merchantDetail.haoma.paiduiList && !merchantDetail.haoma.paiduiList.isEmpty()) {
-					Intent intent = new Intent();
-					intent.putExtra("merchantId", merchantId);
-					intent.putExtra("merchantName", mName);
-					intent.setClass(MerchantDetailActivity.this, GetNumberActivity.class);
-					startActivity(intent);
-
-				} else {
-					Intent intent = new Intent(MerchantDetailActivity.this, LoginActivity.class);
-					intent.putExtra("activityName", MerchantDetailActivity.class.getName());
-					intent.putExtra("merchantId", MerchantDetailActivity.this.merchantId);
-					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					startActivity(intent);
-				}
-//				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-			}
-		};
-		return listener;
-	}
 
 	private void initView() {
 		if (isClick) {
@@ -566,17 +522,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						commentXingjiabi.setText(getString(R.string.xingjiabi) + "  " + String.valueOf(m.commentXingjiabi));
 						commentContent.setText(m.commentContent);
 						commentDate.setText(m.commentDate);
-	
-						mapLayout.setOnClickListener(new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								Intent intent = new Intent(MerchantDetailActivity.this, MerchantLBSActivity.class);
-								intent.putExtra("merchantId", merchantId);
-								intent.putExtra("merchantName", merchant.name);
-								startActivity(intent);
-								overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-							}
-						});
 	
 						critiqueLayout.setOnClickListener(MerchantDetailActivity.this);
 						
@@ -1038,6 +983,43 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					startActivity(intent);
 				}
 			break;
+			case R.id.mapLayout:
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				Intent intent = new Intent(MerchantDetailActivity.this, MerchantLBSActivity.class);
+				intent.putExtra("merchantId", merchantId);
+				intent.putExtra("merchantName", merchant.name);
+				startActivity(intent);
+				break;
+			case R.id.merchantPhone:
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				// 取得输入的电话号码串
+				String phoneNO = merchantPhone.getText().toString();
+				// 如果输入不为空创建打电话的Intent
+				if (StringUtils.isNotNull(phoneNO)) {
+					Intent phoneIntent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + phoneNO));
+					startActivity(phoneIntent);
+				} else {
+					Toast.makeText(MerchantDetailActivity.this, "此商家还未添加联系方式", Toast.LENGTH_LONG).show();
+				}
+				break;
+			case R.id.btn_GetNumber:
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				if (QHClientApplication.getInstance().isLogined && null != merchantDetail.haoma 
+						&& null != merchantDetail.haoma.paiduiList && !merchantDetail.haoma.paiduiList.isEmpty()) {
+					Intent intentGetNumber = new Intent();
+					intentGetNumber.putExtra("merchantId", merchantId);
+					intentGetNumber.putExtra("merchantName", mName);
+					intentGetNumber.setClass(MerchantDetailActivity.this, GetNumberActivity.class);
+					startActivity(intentGetNumber);
+		
+				} else {
+					Intent intentGetNumber = new Intent(MerchantDetailActivity.this, LoginActivity.class);
+					intentGetNumber.putExtra("activityName", MerchantDetailActivity.class.getName());
+					intentGetNumber.putExtra("merchantId", MerchantDetailActivity.this.merchantId);
+					intentGetNumber.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivity(intentGetNumber);
+				}
+				break;
 		default:
 			break;
 		}

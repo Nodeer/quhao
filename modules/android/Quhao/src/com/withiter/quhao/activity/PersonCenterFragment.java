@@ -34,6 +34,7 @@ import com.withiter.quhao.util.ImageTask;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
+import com.withiter.quhao.util.tool.AsynImageLoader;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SDTool;
@@ -219,20 +220,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 		
 		if(null == bitmap)
 		{
-			ImageTask task = new ImageTask(avatar, account.userImage, true, getActivity());
-			task.execute(new Runnable() {
-				
-				@Override
-				public void run() {
-					
-				}
-			},new Runnable() {
-				
-				@Override
-				public void run() {
-					
-				}
-			});
+			AsynImageLoader.getInstance().showImageAsyn(avatar, 0, account.userImage, R.drawable.person_avatar);
 		}
 		
 		
