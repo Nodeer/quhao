@@ -64,7 +64,7 @@ public class TestController extends BaseController {
 		clear();
 		newTestAccount();
 		
-		final String mid = "53576e370364b1f506926c50";
+		final String mid = "5367accb0cf2c147bc369a16";
 		final int seatType = 2;
 		
 		MorphiaQuery q = Account.q();
