@@ -208,8 +208,6 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			
-			
-			
 			final int currentVersion = ActivityUtil.getVersionCode(getActivity());
 			String url = "app/appCode";
 			final MoreVersionCheckTask task = new MoreVersionCheckTask(R.string.waitting, getActivity(), url);
@@ -243,6 +241,10 @@ public class MoreFragment extends Fragment implements OnClickListener{
 											@Override
 											public void onClick(DialogInterface dialog, int which) {
 												dialog.dismiss();
+												Uri uri = Uri.parse("http://www.quhao.la/");
+												Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+												startActivity(intent);
+												/*
 												final ProgressDialog pBar = new ProgressDialog(getActivity());
 												pBar.setTitle("正在下载");
 												pBar.setMessage("请稍候...");
@@ -298,6 +300,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 														}
 													}
 												}.start();
+												*/
 
 											}
 										}).setNegativeButton("暂不更新", new DialogInterface.OnClickListener() {

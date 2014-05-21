@@ -199,10 +199,6 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 		// 设置已点击标志，避免快速重复点击
 		isClick = true;
 		
-		
-		// 解锁
-		unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-
 		switch (v.getId()) {
 			case R.id.btn_delete:
 				
@@ -231,6 +227,8 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 						}
 					}
 					Log.e(TAG, ridStr);
+					// 解锁
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					String url = "delCredit?id=" + ridStr;
 					final DeleteCreditTask task = new DeleteCreditTask(R.string.waitting,this,url);
 					task.execute(new Runnable(){
@@ -276,9 +274,10 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 					deleteLayout.setVisibility(View.VISIBLE);
 					creditAdapter.isShowDelete = "true";
 					creditAdapter.notifyDataSetChanged();
+					// 解锁
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				}
 				
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				break;
 			case R.id.bt_selectall:
 				if(null!=creditAdapter && "true".equals(creditAdapter.isShowDelete))

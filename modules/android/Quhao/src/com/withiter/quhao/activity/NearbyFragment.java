@@ -154,8 +154,8 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 		if (searchDistence == 0) {
 			searchDistence = 1;
-			distanceItems = new String[] { "1000米", "2000米", "3000米", "4000米", "5000米", "搜全城" };// 显示字段
-			distanceItemsValue = new String[] { "1", "2", "3", "4", "5", "-1" };// 显示字段
+			distanceItems = new String[] { "1千米", "3千米", "5千米", "10千米", "全城" };// 显示字段
+			distanceItemsValue = new String[] { "1", "3", "5", "10", "-1" };// 显示字段
 		}
 
 		expandTabView = (ExpandTabView) contentView.findViewById(R.id.expandtab_view);
@@ -202,7 +202,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		merchantList = new ArrayList<Merchant>();
 		queryNearbyMerchants();
 
-		Toast.makeText(getActivity(), showText, Toast.LENGTH_SHORT).show();
+//		Toast.makeText(getActivity(), showText, Toast.LENGTH_SHORT).show();
 
 	}
 

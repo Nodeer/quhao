@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/list_item_border"
+    android:background="@drawable/list_selector"
     android:orientation="horizontal" >
 
     <LinearLayout android:id="@+id/cb_layout"
