@@ -195,16 +195,20 @@
             //self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
             self.egoImgView.frame = CGRectMake(10, 10, 110, 110);
             [cell.contentView addSubview:self.egoImgView];
-            if ([[Helper returnUserString:@"showImage"] boolValue])
-            {
-                if ([Helper isCookie]&&[Helper isFileExist:@"userOrigin.jpg"]) {
-                    self.egoImgView.image = [Helper imageWithImageSimple:[UIImage imageWithContentsOfFile:[self userImagePath]] scaledToSize:CGSizeMake(100, 100)];
-                }else{
-                    if(nil==_userInfo.userImage||[_userInfo.userImage isEqualToString:@""])
-                    {
-                        self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
+            if ([Helper isCookie] == NO || _userInfo == nil){
+                self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
+            }else{
+                if ([[Helper returnUserString:@"showImage"] boolValue])
+                {
+                    if ([Helper isCookie]&&[Helper isFileExist:@"userOrigin.jpg"]) {
+                        self.egoImgView.image = [Helper imageWithImageSimple:[UIImage imageWithContentsOfFile:[self userImagePath]] scaledToSize:CGSizeMake(100, 100)];
                     }else{
-                        self.egoImgView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,_userInfo.userImage]];
+                        if(nil==_userInfo.userImage||[_userInfo.userImage isEqualToString:@""])
+                        {
+                            self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
+                        }else{
+                            self.egoImgView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,_userInfo.userImage]];
+                        }
                     }
                 }
             }
@@ -219,6 +223,10 @@
             [cell.contentView addSubview:_numberLabel];
             if ([Helper isCookie] == NO || _userInfo == nil){
                 _numberLabel.text=@"立即登录";
+                _userInfo.signIn = 0;
+                _userInfo.dianping = 0;
+                _userInfo.guanzhu = 0;
+                _userInfo.jifen = 0;
                 _numberLabel.textColor = [UIColor redColor];
             }else{
                 _numberLabel.text = _userInfo.username;
