@@ -53,7 +53,7 @@ public class Comment extends CommentEntityDef {
 	public static Comment latestOne(String mid) {
 		MorphiaQuery q = Comment.q();
 		q.filter("mid", mid);
-		q.order("modified");
+		q.order("-modified");
 		return q.first();
 	}
 	

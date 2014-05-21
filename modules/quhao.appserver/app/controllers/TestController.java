@@ -13,6 +13,10 @@ import com.withiter.models.merchant.Comment;
 
 public class TestController extends BaseController {
 	
+	public static void quhaoConcurrent(){
+		
+	}
+	
 	public static void mailtest(){
 		MailsController.sendTo("mag_lee@126.com");
 	}
@@ -150,6 +154,5 @@ public class TestController extends BaseController {
 		credit3.created = new Date();
 		credit3.modified = new Date();
 		credit3.save();
-
 	}
 }
