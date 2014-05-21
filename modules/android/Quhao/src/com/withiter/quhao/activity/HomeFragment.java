@@ -45,8 +45,8 @@ import com.withiter.quhao.task.AllCategoriesTask;
 import com.withiter.quhao.task.TopMerchantsTask;
 import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.ImageTask;
-import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.util.tool.AsynImageLoader;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.view.refresh.PullToRefreshView;
@@ -275,22 +275,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 				views.add(image);
 
 				if (StringUtils.isNotNull(topMerchants.get(num).merchantImage)) {
-					ImageTask task = new ImageTask(image, topMerchants.get(num).merchantImage, false, getActivity());
-
-					task.execute(new Runnable() {
-
-						@Override
-						public void run() {
-
-						}
-
-					}, new Runnable() {
-
-						@Override
-						public void run() {
-
-						}
-					});
+					AsynImageLoader.getInstance().showImageAsyn(image, 0, topMerchants.get(num).merchantImage, R.drawable.no_logo);
 				} else {
 					image.setImageResource(R.drawable.no_logo);
 				}
