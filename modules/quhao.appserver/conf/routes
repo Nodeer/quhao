@@ -73,7 +73,7 @@ GET     /getCurrentNo						MerchantController.getCurrentNo
 GET     /getReservations					MerchantController.getReservations
 GET     /cancel								MerchantController.cancel
 GET		/merchantNew					    MerchantController.merchantNew
-GET		/queryMerchantDetail				MerchantController.queryMerchantDetail
+GET		/querytMerchantDetail				MerchantController.queryMerchantDetail
 GET 	/getNearMerchants					MerchantController.getNearMerchants
 GET 	/getNoQueueMerchants				MerchantController.getNoQueueMerchants
 GET		/getNearNoQueueMerchants			MerchantController.getNearNoQueueMerchants
