@@ -32,6 +32,7 @@ public class ReservationVO {
 	 * 检查优惠时间
 	 */
 	public int promptYouhuiTime;
+	public boolean youhui;
 
 	public void build(Reservation r){
 		this.id = r.id();
@@ -44,7 +45,7 @@ public class ReservationVO {
 		this.created = r.created;
 	}
 	
-	public void build(Reservation r, String mX, String mY, double userX, double userY){
+	public void build(Reservation r, String mX, String mY, boolean youhui, double userX, double userY){
 		this.id = r.id();
 		this.accountId = r.accountId;
 		this.merchantId = r.merchantId;
@@ -53,6 +54,7 @@ public class ReservationVO {
 		this.status = r.status;
 		this.isCommented=r.isCommented;
 		this.created = r.created;
+		this.youhui = youhui;
 		if(userX != 0 && userY != 0){
 			this.distance = DistanceUtils.GetDistance(Double.parseDouble(mX), Double.parseDouble(mY), userX, userY);
 		}else{

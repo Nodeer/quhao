@@ -1,3 +1,3 @@
 # 拿号API
 # Cross
-http://localhost:9081/nahao?accountId=5368c6590cf2021c64dc601e&mid=53576e370364b1f506926c50&seatNumber=2
+http://localhost:9081/nahao?accountId=5368c6590cf2021c64dc601e&mid=5367accb0cf2c147bc369a16&seatNumber=2
