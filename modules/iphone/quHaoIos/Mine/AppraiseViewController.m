@@ -105,7 +105,7 @@
     self.textView.font = [UIFont fontWithName:@"Arial" size:16.0];//设置字体名字和字体大小
     self.textView.delegate = self;//设置它的委托方法
     self.textView.backgroundColor = [UIColor clearColor];//设置它的背景颜色
-    self.textView.text = @"我要评论";//设置它显示的内容
+    self.textView.text = @"好评!";//设置它显示的内容
     self.textView.returnKeyType = UIReturnKeyDefault;//返回键的类型
     self.textView.keyboardType = UIKeyboardTypeDefault;//键盘类型
     self.textView.scrollEnabled = YES;//是否可以拖动
@@ -127,7 +127,7 @@
     control.delegate = self;
 	control.backgroundColor = [UIColor clearColor];
 	control.autoresizingMask =  UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-	control.rating = 0;
+	control.rating = 4;
 	[self.view addSubview:control];
 }
 
@@ -164,9 +164,9 @@
 #pragma mark - 调整输入框与关闭键盘
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
-    if ([self.textView.text isEqualToString:@"我要评论"]) {
-        self.textView.text = @"";
-    }
+//    if ([self.textView.text isEqualToString:@"我要评论"]) {
+//        self.textView.text = @"";
+//    }
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.3];
     self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y-210, self.view.frame.size.width, self.view.frame.size.height);
@@ -219,6 +219,11 @@
     [self.textView resignFirstResponder];
     [self.rjxfField resignFirstResponder];
     NSString * acc = self.rjxfField.text;
+    if (nil == acc || [acc isEqualToString:@""]){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"亲，人均消费还没填写" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+            [alert show];
+            return;
+    }
     if (nil != acc && ![acc isEqualToString:@""]){
         if ([acc stringByTrimmingCharactersInSet: [NSCharacterSet decimalDigitCharacterSet]].length >0) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"请输入合法数字" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
@@ -226,9 +231,13 @@
             return;
         }
     }else{
-        acc=@" ";
+        acc=@"0";
     }
-    
+    if([self.textView.text isEqualToString:@""]){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"亲，还没填写评论信息" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+            [alert show];
+            return;
+    }
     if([Helper isConnectionAvailable]){
         NSString *urlStr = [NSString stringWithFormat:@"%@%@?rid=%@&kouwei=%f&huanjing=%f&fuwu=%f&xingjiabi=%f&content=%@&grade=%f&cost=%@",IP,updateComment_url,rid,customNumberOfStars.rating,hjNumberOfStars.rating,fwNumberOfStars.rating,xjbNumberOfStars.rating,[self.textView.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],ztNumberOfStars.rating,acc];
         NSString *response = [QuHaoUtil requestDb:urlStr];

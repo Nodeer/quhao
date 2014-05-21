@@ -200,6 +200,7 @@
 {
     SettingModel *sm = [[settingsInSection objectForKey:@"账户"] objectAtIndex:0];
     sm.title = username;
+    self.name = username;
     NSIndexPath *te=[NSIndexPath indexPathForRow:0 inSection:1];
     [self.tview reloadRowsAtIndexPaths:[NSArray arrayWithObjects:te,nil] withRowAnimation:UITableViewRowAnimationFade];
 }

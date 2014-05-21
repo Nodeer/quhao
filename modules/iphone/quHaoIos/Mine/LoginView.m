@@ -46,7 +46,7 @@
 
 - (void)clickToHome:(id)sender
 {
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)click_Login:(id)sender {
