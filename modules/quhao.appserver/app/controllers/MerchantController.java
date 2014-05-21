@@ -390,6 +390,7 @@ public class MerchantController extends BaseController {
 			renderJSON(false);
 		}
 		
+		synchronized(MerchantController.class){
 		ReservationVO rvo = new ReservationVO();
 		Reservation r = Reservation.reservationExist(accountId, mid, seatNumber);
 		Haoma haoma = Haoma.findByMerchantId(mid);
@@ -450,6 +451,7 @@ public class MerchantController extends BaseController {
 			renderJSON(rvo);
 		}
 
+		}
 	}
 
 	/**
