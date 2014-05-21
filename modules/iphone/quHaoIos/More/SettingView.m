@@ -44,7 +44,7 @@
                       nil];
 
     NSArray *second = [[NSArray alloc] initWithObjects:
-                      [[SettingModel alloc] initWith:@"分享微博" andImg:@"share" andTag:3 andTitle2:nil],
+                      [[SettingModel alloc] initWith:@"绑定微博" andImg:@"share" andTag:3 andTitle2:nil],
                       [[SettingModel alloc] initWith:@"意见反馈" andImg:@"opinion" andTag:4 andTitle2:nil],
                       [[SettingModel alloc] initWith:@"关于我们" andImg:@"about_us" andTag:5 andTitle2:nil],
                       [[SettingModel alloc] initWith:@"检测更新" andImg:@"check_vetsion" andTag:6 andTitle2:nil],
