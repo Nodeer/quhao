@@ -119,7 +119,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 			 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
 			 */
 			// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
-			mAMapLocationManager.requestLocationUpdates(LocationProviderProxy.AMapNetwork, 5000, 10, this);
+			mAMapLocationManager.requestLocationUpdates(LocationProviderProxy.AMapNetwork, 10000, 100, this);
 			
 			locationHandler.postDelayed(new Runnable() {
 				

@@ -212,7 +212,7 @@
                 android:padding="10.0dip"
                 android:textAlignment="center" >
 
-                <TextView
+                <TextView android:id="@+id/qiandao_label"
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
                     android:layout_gravity="center"

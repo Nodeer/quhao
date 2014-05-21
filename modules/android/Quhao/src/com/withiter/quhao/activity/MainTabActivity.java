@@ -2,6 +2,7 @@ package com.withiter.quhao.activity;
 
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
 import android.view.KeyEvent;
@@ -50,6 +51,8 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 	 */
 	private String menuTextViews[] = { "主页", "周边美食", "我的", "更多" };
 	private LocationManagerProxy mAMapLocationManager;
+	private Handler locationHandler = new Handler();
+	private AMapLocation location;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +113,18 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 			 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
 			 */
 			// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
-			mAMapLocationManager.requestLocationUpdates(LocationProviderProxy.AMapNetwork, 5000, 10, this);
+			mAMapLocationManager.requestLocationUpdates(LocationProviderProxy.AMapNetwork, 10000, 100, this);
+			
+			locationHandler .postDelayed(new Runnable() {
+				
+				@Override
+				public void run() {
+					if (location == null) {
+						Toast.makeText(MainTabActivity.this, "亲，定位失败，请检查网络状态！", Toast.LENGTH_SHORT).show();
+						stopLocation();// 销毁掉定位
+					}
+				}
+			}, 10000);// 设置超过12秒还没有定位到就停止定位
 		}
 
 		// 实例化布局对象
@@ -135,6 +149,17 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 		});
 	}
 
+	/**
+	 * 销毁定位
+	 */
+	private void stopLocation() {
+		if (mAMapLocationManager != null) {
+			mAMapLocationManager.removeUpdates(this);
+			mAMapLocationManager.destory();
+		}
+		mAMapLocationManager = null;
+	}
+	
 	private View getTabItemView(int i) {
 		View view = inflater.inflate(R.layout.tab_item_view, null);
 		
@@ -172,6 +197,7 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 	public void onLocationChanged(AMapLocation location) {
 
 		if (null != location) {
+			this.location = location;
 			QHClientApplication.getInstance().location = location;
 			if (mAMapLocationManager != null) {
 				mAMapLocationManager.removeUpdates(this);

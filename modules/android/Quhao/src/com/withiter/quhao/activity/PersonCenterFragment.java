@@ -5,8 +5,10 @@ import java.io.File;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -45,6 +47,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 	private TextView nickName;
 	private TextView mobile;
 	private TextView jifen;
+	private TextView label_qiandao;
 	private TextView value_qiandao;
 	private TextView value_dianpin;
 	private TextView myAttention;
@@ -80,6 +83,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 		mobile = (TextView) contentView.findViewById(R.id.mobile);
 		jifen = (TextView) contentView.findViewById(R.id.jifen);
 		
+		label_qiandao = (TextView) contentView.findViewById(R.id.qiandao_label);
 		value_qiandao = (TextView) contentView.findViewById(R.id.value_qiandao);
 		value_dianpin = (TextView) contentView.findViewById(R.id.value_dianpin);
 		myAttention = (TextView) contentView.findViewById(R.id.my_attention);
@@ -233,6 +237,15 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 		
 		
 		value_qiandao.setText(account.signIn);
+		if ("true".equals(account.isSignIn)) {
+			label_qiandao.setTextColor(this.getResources().getColor(R.color.black));
+			value_qiandao.setTextColor(this.getResources().getColor(R.color.black));
+		}
+		else
+		{
+			label_qiandao.setTextColor(this.getResources().getColor(R.color.red));
+			value_qiandao.setTextColor(this.getResources().getColor(R.color.red));
+		}
 		value_dianpin.setText(account.dianping);
 		myAttention.setText(account.guanzhu);
 	}
@@ -384,6 +397,17 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 					// TODO add jifen from backend
 					jifen.setText(loginInfo.jifen);
 
+					if ("true".equals(loginInfo.isSignIn)) {
+						label_qiandao.setTextColor(getActivity().getResources().getColor(R.color.black));
+						value_qiandao.setTextColor(getActivity().getResources().getColor(R.color.black));
+						
+					}
+					else
+					{
+						label_qiandao.setTextColor(getActivity().getResources().getColor(R.color.red));
+						value_qiandao.setTextColor(getActivity().getResources().getColor(R.color.red));
+					}
+					
 					value_qiandao.setText(loginInfo.signIn);
 					value_dianpin.setText(loginInfo.dianping);
 					myAttention.setText(loginInfo.guanzhu);

@@ -387,7 +387,7 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 			 * ，第一个参数是定位provider，第二个参数时间最短是5000毫秒，第三个参数距离间隔单位是米，第四个参数是定位监听者
 			 */
 			mAMapLocationManager.requestLocationUpdates(
-					LocationProviderProxy.AMapNetwork, 5000, 10, this);
+					LocationProviderProxy.AMapNetwork, 10000, 100, this);
 		}
 	}
 

@@ -73,6 +73,7 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 	private String[] distanceItemsValue;
 	
 	private LocationManagerProxy mAMapLocationManager = null;
+	private Handler locationHandler = new Handler();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +101,21 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
              */  
             // Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效  
             mAMapLocationManager.requestLocationUpdates(  
-                    LocationProviderProxy.AMapNetwork, 5000, 10, this);  
+                    LocationProviderProxy.AMapNetwork, 10000, 100, this);
+            
+            locationHandler .postDelayed(new Runnable() {
+				
+				@Override
+				public void run() {
+					if (firstLocation == null) {
+						Toast.makeText(NoQueueMerchantListActivity.this, "亲，定位失败，请检查网络状态！", Toast.LENGTH_SHORT).show();
+						NoQueueMerchantListActivity.this.findViewById(R.id.loadingbar).setVisibility(View.GONE);
+						NoQueueMerchantListActivity.this.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
+						stopLocation();// 销毁掉定位
+					}
+				}
+			}, 10000);// 设置超过12秒还没有定位到就停止定位
+            
         }
 		
 		mPullToRefreshView = (PullToRefreshView) this.findViewById(R.id.main_pull_refresh_view);
@@ -110,6 +125,17 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 		initView();
 	}
 
+	/**
+	 * 销毁定位
+	 */
+	private void stopLocation() {
+		if (mAMapLocationManager != null) {
+			mAMapLocationManager.removeUpdates(this);
+			mAMapLocationManager.destory();
+		}
+		mAMapLocationManager = null;
+	}
+	
 	private AdapterView.OnItemClickListener merchantItemClickListener = new AdapterView.OnItemClickListener() {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

@@ -29,12 +29,13 @@
             android:id="@+id/categoryTypeTitle"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:layout_gravity="center_vertical"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:gravity="center_vertical"
             android:text="我的关注"
-            android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="#ff000000" />
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
     </RelativeLayout>
     <!-- Merchant List page's title, eg, 本帮菜【共1000家】 -->

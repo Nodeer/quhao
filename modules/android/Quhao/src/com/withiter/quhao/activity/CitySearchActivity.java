@@ -224,11 +224,6 @@ public class CitySearchActivity extends QuhaoBaseActivity {
 				startActivity(intent1);
 				this.finish();
 				break;
-			case R.id.search_edit:
-				Intent intent = new Intent();
-				intent.setClass(this, CitySearchActivity.class);
-				startActivity(intent);
-				break;
 			default:
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				break;

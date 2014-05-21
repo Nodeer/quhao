@@ -759,6 +759,15 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		};
 	};
 	
+	private Handler openServiceHandler = new Handler(){
+		public void handleMessage(Message msg) {
+			if(msg.what == 0){
+				String num = (String) msg.obj;;
+				openNumView.setText(num);
+			}
+		};
+	};
+	
 	private Handler reservationUpdateHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -947,7 +956,9 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 								else
 								{
 									unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-									Toast.makeText(MerchantDetailActivity.this, R.string.committing_success, Toast.LENGTH_LONG).show();
+									
+									openServiceHandler.obtainMessage(0, buf).sendToTarget();
+//									Toast.makeText(MerchantDetailActivity.this, R.string.committing_success, Toast.LENGTH_LONG).show();
 								}
 								
 							}
