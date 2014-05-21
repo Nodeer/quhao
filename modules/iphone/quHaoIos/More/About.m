@@ -7,7 +7,7 @@
 //
 
 #import "About.h"
-
+#define phone_Number @"18616580943"
 @implementation About
 
 
@@ -65,7 +65,7 @@
             }
         }
     }
-    _arrayList = @[_version,@"客服电话: 18616580943",@"官方微博: 取号啦",@"网       址: www.quhao.la"];
+    _arrayList = @[_version,@"官方微博: 取号啦"];
     [tableView reloadData];
 }
 
@@ -93,7 +93,33 @@
         cell.textLabel.textAlignment = NSTextAlignmentLeft;
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
-    cell.textLabel.text =_arrayList[indexPath.row];
+    if(indexPath.row == 0){
+        UILabel *wz = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, 200, 30)];
+        wz.text = _arrayList[0];
+        [cell.contentView addSubview:wz];
+    }else if(indexPath.row == 1){
+        UILabel *wz = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, 80, 30)];
+        wz.text = @"客服电话: ";
+        [cell.contentView addSubview:wz];
+        
+        UILabel *url = [[UILabel alloc] initWithFrame:CGRectMake(wz.frame.origin.x+wz.frame.size.width, 10, 150, 30)];
+        url.text = @"18616580943";
+        url.textColor = [UIColor blueColor];
+        [cell.contentView addSubview:url];
+    }else if(indexPath.row == 2){
+        UILabel *wz = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, 200, 30)];
+        wz.text = _arrayList[1];
+        [cell.contentView addSubview:wz];
+    }else if(indexPath.row == 3){
+        UILabel *wz = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, 80, 30)];
+        wz.text = @"网        址: ";
+        [cell.contentView addSubview:wz];
+        
+        UILabel *url = [[UILabel alloc] initWithFrame:CGRectMake(wz.frame.origin.x+wz.frame.size.width, 10, 150, 30)];
+        url.text = @"www.quhao.la";
+        url.textColor = [UIColor blueColor];
+        [cell.contentView addSubview:url];
+    }
     
     return cell;
 }
@@ -105,7 +131,23 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    if(indexPath.row == 1){
+        [self CallPhone];
+    }else if(indexPath.row == 3){
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.quhao.la"]];
+    }
+}
+
+//拨打电话的
+-(void)CallPhone
+{
+    UIWebView *phoneCallWebView=nil;
+    NSURL *phoneURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel:%@",phone_Number]];
+    if ( !phoneCallWebView ) {
+        phoneCallWebView = [[UIWebView alloc] initWithFrame:CGRectZero];// 这个webView只是一个后台的View 不需要add到页面上来  效果跟方法二一样 但是这个方法是合法的
+    }
+    [phoneCallWebView loadRequest:[NSURLRequest requestWithURL:phoneURL]];
+    [self.view addSubview:phoneCallWebView];
 }
 
 - (void)clickToHome:(id)sender
