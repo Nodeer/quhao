@@ -7,13 +7,29 @@ import notifiers.MailsController;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cn.bran.japid.util.StringUtils;
+
 import com.withiter.common.Constants.CreditStatus;
+import com.withiter.common.httprequest.CommonHTTPRequest;
+import com.withiter.models.account.Account;
 import com.withiter.models.account.Credit;
 import com.withiter.models.merchant.Comment;
 
 public class TestController extends BaseController {
 	
-	public static void quhaoConcurrent(){
+	public static void quhaoConcurrentTest(){
+		String mobile = params.get("mobile");
+		String mid = "5367accb0cf2c147bc369a16";
+		int seatType = 2;
+		
+		if(StringUtils.isEmpty(mobile)){
+			renderJSON("请添加手机参数");
+		}
+		
+		Account account = Account.findByPhone(mobile);
+		String aid = account.id();
+		String url = "http://quhao.la/nahao?accountId="+aid+"&mid="+mid+"&seatNumber="+seatType;
+		String result = CommonHTTPRequest.get(url);
 		
 	}
 	

@@ -386,10 +386,16 @@ public class MerchantController extends BaseController {
 	 *            几人桌
 	 */
 	public static void nahao(String accountId, String mid, int seatNumber) {
+		if(StringUtils.isEmpty(accountId) || StringUtils.isEmpty(mid) || seatNumber == 0){
+			renderJSON(false);
+		}
+		
 		ReservationVO rvo = new ReservationVO();
 		Reservation r = Reservation.reservationExist(accountId, mid, seatNumber);
 		Haoma haoma = Haoma.findByMerchantId(mid);
-		haoma.updateSelf();
+		if(haoma != null){
+			haoma.updateSelf();
+		}
 		
 		// if r != null, means current user had been got a paidui ticket
 		if (r != null) {
@@ -399,6 +405,9 @@ public class MerchantController extends BaseController {
 		}
 
 		Account account = Account.findById(accountId);
+		if(account == null){
+			renderJSON(false);
+		}
 		int getNumberJifen = Integer.parseInt(Play.configuration.getProperty("credit.getnumber.jifen"));
 		int left = account.jifen;
 		if (left < getNumberJifen) {
