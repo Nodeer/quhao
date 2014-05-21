@@ -1,35 +1,149 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import notifiers.MailsController;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cn.bran.japid.util.StringUtils;
+import play.Play;
+import play.modules.morphia.Model.MorphiaQuery;
 
 import com.withiter.common.Constants.CreditStatus;
 import com.withiter.common.httprequest.CommonHTTPRequest;
 import com.withiter.models.account.Account;
 import com.withiter.models.account.Credit;
+import com.withiter.models.account.Reservation;
 import com.withiter.models.merchant.Comment;
+import com.withiter.models.merchant.Haoma;
 
 public class TestController extends BaseController {
 	
-	public static void quhaoConcurrentTest(){
-		String mobile = params.get("mobile");
-		String mid = "5367accb0cf2c147bc369a16";
-		int seatType = 2;
+	private static void newTestAccount(){
 		
-		if(StringUtils.isEmpty(mobile)){
-			renderJSON("请添加手机参数");
+		MorphiaQuery q = Account.q();
+		q.filter("nickname", "quhaotest");
+		if(q.first() != null){
+			return;
 		}
 		
-		Account account = Account.findByPhone(mobile);
-		String aid = account.id();
-		String url = "http://quhao.la/nahao?accountId="+aid+"&mid="+mid+"&seatNumber="+seatType;
-		String result = CommonHTTPRequest.get(url);
+		Account a = null;
+		for(int i=0; i< 10000; i++){
+			a = new Account();
+			a.phone = 10000000000l+(long)i + "";
+			a.enable = true;
+			a.jifen = 500;
+			a.nickname = "quhaotest";
+			a.save();
+		}
+	}
+	
+	/**
+	 * 删除reservation，haoma，credit
+	 */
+	private static void clear(){
+		String mid = "5367accb0cf2c147bc369a16";
+		MorphiaQuery q = Reservation.q();
+		q.filter("merchantId", mid);
+		q.delete();
+		
+		MorphiaQuery qq = Haoma.q();
+		qq.filter("merchantId", mid);
+		qq.delete();
+		
+		MorphiaQuery qqq = Credit.q();
+		qqq.filter("merchantId", mid);
+		qqq.delete();
+	}
+	
+	public static void quhaoConcurrentTest(){
+		
+		clear();
+		newTestAccount();
+		
+		final String mid = "53576e370364b1f506926c50";
+		final int seatType = 2;
+		
+		MorphiaQuery q = Account.q();
+		final List<Account> list = q.filter("nickname", "quhaotest").asList();
+		final List<String> results = new ArrayList<String>();
+			Thread t = new Thread(){
+				@Override
+				public void run() {
+					for(int j = 0; j < 100; j++){
+						String url = "/nahao?accountId="+list.get(j).id()+"&mid="+mid+"&seatNumber="+seatType;
+						String result = CommonHTTPRequest.get(url);
+						results.add(result);
+					}
+					super.run();
+				}
+			};
+			Thread t1 = new Thread(){
+				@Override
+				public void run() {
+					for(int j = 100; j < 200; j++){
+						String url = "/nahao?accountId="+list.get(j).id()+"&mid="+mid+"&seatNumber="+seatType;
+						String result = CommonHTTPRequest.get(url);
+						results.add(result);
+					}
+					super.run();
+				}
+			};
+			Thread t2 = new Thread(){
+				@Override
+				public void run() {
+					for(int j = 200; j < 300; j++){
+						String url = "/nahao?accountId="+list.get(j).id()+"&mid="+mid+"&seatNumber="+seatType;
+						String result = CommonHTTPRequest.get(url);
+						results.add(result);
+					}
+					super.run();
+				}
+			};
+			Thread t3 = new Thread(){
+				@Override
+				public void run() {
+					for(int j = 300; j < 400; j++){
+						String url = "/nahao?accountId="+list.get(j).id()+"&mid="+mid+"&seatNumber="+seatType;
+						String result = CommonHTTPRequest.post(url);
+						results.add(result);
+					}
+					super.run();
+				}
+			};
+			Thread t4 = new Thread(){
+				@Override
+				public void run() {
+					for(int j = 400; j < 500; j++){
+						String url = "/nahao?accountId="+list.get(j).id()+"&mid="+mid+"&seatNumber="+seatType;
+						String result = CommonHTTPRequest.get(url);
+						results.add(result);
+					}
+					super.run();
+				}
+			};
+			
+			t.start();
+			t1.start();
+			t2.start();
+			t3.start();
+			t4.start();
+			
+			try {
+				t.join();
+				t1.join();
+				t2.join();
+				t3.join();
+				t4.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			renderJSON(results);
 		
 	}
 	

@@ -140,23 +140,23 @@ public class CommonHTTPRequest {
 	public static String get(String url) {
 		String result = "";
 		String httpUrl = HTTP_URL + url;
-		logger.debug("HTTP REQUEST POST, URL: " + httpUrl);
+		logger.debug("HTTP REQUEST GET, URL: " + httpUrl);
 		try {
 			httpUrl = encodeURL(httpUrl);
-			logger.debug("HTTP REQUEST POST, URL after encode: " + httpUrl);
+			logger.debug("HTTP REQUEST GET, URL after encode: " + httpUrl);
 			HttpGet request = new HttpGet(httpUrl);
-			request.setHeader("user-agent", "QuhaoAndroid");
+//			request.setHeader("user-agent", "QuhaoAndroid");
 
 			HttpParams httpParameters = new BasicHttpParams();
 			// Set the timeout in milliseconds until a connection is
 			// established.
-			int timeoutConnection = 10 * 1000;
+			int timeoutConnection = 100 * 1000;
 			HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
 
 			// Set the default socket timeout in milliseconds which is the
 			// timeout
 			// for waiting for data.
-			int timeoutSocket = 10 * 1000;
+			int timeoutSocket = 100 * 1000;
 			HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
 
 			HttpClient httpClient = new DefaultHttpClient(httpParameters);

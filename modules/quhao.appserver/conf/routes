@@ -156,6 +156,7 @@ GET		/updateGaodeToMerchant				GaodeToMerchantController.updateGaodeToMerchant
 # test
 GET		/test/list							TestController.list
 GET		/test/amapmerchant/{action}			TestController.{action}
+GET		/test/quhaoConcurrentTest			TestController.quhaoConcurrentTest
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                            staticDir:public
