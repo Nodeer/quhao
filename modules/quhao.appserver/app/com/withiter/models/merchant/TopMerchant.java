@@ -114,10 +114,11 @@ public class TopMerchant extends TopMerchantEntityDef {
 		tm.address = m.address;
 		tm.averageCost = m.averageCost;
 		tm.cateType = m.cateType;
+		tm.openTime = m.openTime;
 		tm.closeTime = m.closeTime;
 		tm.description = m.description;
+		
 		tm.enable = m.enable;
-		tm.enable = true;
 		tm.fuwu = m.fuwu;
 		tm.grade = m.grade;
 		tm.huanjing = m.huanjing;
@@ -126,7 +127,6 @@ public class TopMerchant extends TopMerchantEntityDef {
 		tm.markedCount = m.markedCount;
 		tm.name = m.name;
 		tm.nickName = m.nickName;
-		tm.openTime = m.openTime;
 		tm.tags = m.tags;
 		tm.telephone = m.telephone;
 		tm.teses = m.teses;

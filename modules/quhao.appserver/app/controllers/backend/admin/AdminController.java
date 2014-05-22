@@ -7,6 +7,7 @@ import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import notifiers.MailsController;
@@ -212,6 +213,13 @@ public class AdminController extends BaseController {
 		try {
 			t.start = DateFormat.getDateInstance().parse(starttime);
 			t.end = DateFormat.getDateInstance().parse(endtime);
+			Date now = new Date();
+			if(t.start.after(now)){
+				t.enable = false;
+			} else {
+				t.enable = true;
+			}
+			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
