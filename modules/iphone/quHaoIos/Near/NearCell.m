@@ -45,7 +45,7 @@
     
     _disLabel=[[UILabel alloc]initWithFrame:CGRectZero];
     _disLabel.backgroundColor=[UIColor clearColor];
-    _disLabel.frame=CGRectMake(_titleLabel.frame.origin.x+120, _quhao.frame.origin.y+_quhao.frame.size.height, 50, 25);
+    _disLabel.frame=CGRectMake(kDeviceWidth-110, _quhao.frame.origin.y+_quhao.frame.size.height, 90, 25);
     _disLabel.textAlignment=NSTextAlignmentRight;
     _disLabel.font=[UIFont boldSystemFontOfSize:13];
     [self.contentView addSubview:_disLabel];

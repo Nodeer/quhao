@@ -250,7 +250,7 @@
     {
         key = [keys objectAtIndex: i];
         value = [cities objectForKey: key];
-        if ([key hasPrefix:_searchBar.text])
+        if ([key hasPrefix:[_searchBar.text lowercaseString]])
         {
             for (j=0; j<[value count]; j++) {
                 [tempArray addObject:[[value objectAtIndex:j] objectForKey:@"name"]];
@@ -349,7 +349,7 @@
                          }
                      }
                  }
-                 NSLog(@"%@",loctionCityCode);
+                 //NSLog(@"%@",loctionCityCode);
 
                  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                  [defaults setObject:@"1" forKey:@"isLocation"];
