@@ -1,13 +1,16 @@
 package com.withiter.models.merchant;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import play.modules.morphia.Model.MorphiaQuery;
+import play.modules.morphia.Model.MorphiaUpdateOperations;
 import cn.bran.japid.util.StringUtils;
 
 import com.google.code.morphia.annotations.Entity;
 import com.withiter.common.Constants.CateType;
-import com.withiter.common.Constants.SortBy;
+import com.withiter.models.account.Account;
 
 @Entity
 public class TopMerchant extends TopMerchantEntityDef {
@@ -147,6 +150,26 @@ public class TopMerchant extends TopMerchantEntityDef {
 		SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd");
 		String formattedEnd = sdf.format(this.end);
 		return formattedEnd;
+	}
+
+	/**
+	 * job 每天检查topmerchant是否到期
+	 */
+	public static void verifyAndupdateTops() {
+		// end time < current time
+		MorphiaQuery q = TopMerchant.q();
+		q.filter("end <", new Date());
+		MorphiaUpdateOperations o = TopMerchant.o();
+		o.set("enable", false);
+		o.update(q);
+		
+		// start time < current time < end time
+		MorphiaQuery q1 = TopMerchant.q();
+		Date now = new Date();
+		q1.filter("start <", now).filter("end >", now);
+		MorphiaUpdateOperations oo = TopMerchant.o();
+		oo.set("enable", true);
+		oo.update(q);
 	}
 }
 
