@@ -10,9 +10,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -51,6 +53,36 @@ public class MerchantsSearchActivity extends QuhaoBaseActivity {
 		super.onCreate(savedInstanceState);
 
 		editSearch = (EditText) findViewById(R.id.edit_search1);
+		editSearch.setOnKeyListener(new OnKeyListener() {
+			
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				
+				if (keyCode == KeyEvent.KEYCODE_ENTER) {
+					
+					if (isClick) {
+						return false;
+					}
+					isClick = true;
+					editSearch.clearFocus();
+
+					// 让软键盘消失
+					InputMethodManager m = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+					if (m != null) {
+						if (m.isActive()) {
+							m.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
+						}
+
+					}
+					merchants = new ArrayList<Merchant>();
+					getMerchants();
+					
+					return true;
+				}
+				
+				return false;
+			}
+		});
 		searchBtn = (Button) findViewById(R.id.search_btn);
 		searchBtn.setOnClickListener(goSearchMerchantsListener(this));
 

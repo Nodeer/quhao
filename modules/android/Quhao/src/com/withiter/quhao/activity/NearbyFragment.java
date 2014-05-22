@@ -87,7 +87,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		
+		Log.e("wjzwjz", "NearByFragment onCreateView");
 		if(contentView != null)
 		{
 			ViewGroup vg = (ViewGroup) contentView.getParent();
@@ -119,28 +119,19 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 			dialog.show();
 		}
 
-		if (mAMapLocationManager == null) {
-			mAMapLocationManager = LocationManagerProxy.getInstance(getActivity());
-			/*
-			 * mAMapLocManager.setGpsEnable(false);//
-			 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
-			 */
-			// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
-			mAMapLocationManager.requestLocationUpdates(LocationProviderProxy.AMapNetwork, 10000, 100, this);
 			
-			locationHandler.postDelayed(new Runnable() {
-				
-				@Override
-				public void run() {
-					if (firstLocation == null) {
-						Toast.makeText(getActivity(), "亲，定位失败，请检查网络状态！", Toast.LENGTH_SHORT).show();
-						contentView.findViewById(R.id.loadingbar).setVisibility(View.GONE);
-						contentView.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
-						stopLocation();// 销毁掉定位
-					}
+		locationHandler.postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				if (firstLocation == null) {
+					Toast.makeText(getActivity(), "亲，定位失败，请检查网络状态！", Toast.LENGTH_SHORT).show();
+					contentView.findViewById(R.id.loadingbar).setVisibility(View.GONE);
+					contentView.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
+					stopLocation();// 销毁掉定位
 				}
-			}, 60000);// 设置超过12秒还没有定位到就停止定位
-		}
+			}
+		}, 60000);// 设置超过12秒还没有定位到就停止定位
 		contentView.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
 		contentView.findViewById(R.id.serverdata).setVisibility(View.GONE);
 		return contentView;
@@ -160,7 +151,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 	private void initExpandView() {
 
 		if (searchDistence == 0) {
-			searchDistence = 1;
+			searchDistence = 3;
 			distanceItems = new String[] { "1千米", "3千米", "5千米", "10千米", "全城" };// 显示字段
 			distanceItemsValue = new String[] { "1", "3", "5", "10", "-1" };// 显示字段
 		}
@@ -259,6 +250,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 	@Override
 	public void onPause() {
+		Log.e("wjzwjz", "NearByFragment onPause");
 		super.onPause();
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
@@ -267,6 +259,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 	@Override
 	public void onDestroyView() {
+		Log.e("wjzwjz", "NearByFragment onDestroyView");
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
 			mAMapLocationManager.destory();
@@ -277,36 +270,43 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 	@Override
 	public void onAttach(Activity activity) {
+		Log.e("wjzwjz", "NearByFragment onAttach");
 		super.onAttach(activity);
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
+		Log.e("wjzwjz", "NearByFragment onActivityCreated");
 		super.onActivityCreated(savedInstanceState);
 	}
 
 	@Override
 	public void onViewStateRestored(Bundle savedInstanceState) {
+		Log.e("wjzwjz", "NearByFragment onViewStateRestored");
 		super.onViewStateRestored(savedInstanceState);
 	}
 
 	@Override
 	public void onStart() {
+		Log.e("wjzwjz", "NearByFragment onStart");
 		super.onStart();
 	}
 
 	@Override
 	public void onStop() {
+		Log.e("wjzwjz", "NearByFragment onStop");
 		super.onStop();
 	}
 
 	@Override
 	public void onDetach() {
+		Log.e("wjzwjz", "NearByFragment onDetach");
 		super.onDetach();
 	}
 
 	@Override
 	public void onDestroy() {
+		Log.e("wjzwjz", "NearByFragment onDestroy");
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
 			mAMapLocationManager.destory();
@@ -388,7 +388,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 	@Override
 	public void onLocationChanged(AMapLocation location) {
-
+		Log.e("wjzwjz", "NearByFragment onLocationChanged");
 		if (null != location) {
 			if (!isFirstLocation) {
 				isFirstLocation = true;
@@ -449,10 +449,20 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 	@Override
 	public void onResume() {
+		Log.e("wjzwjz", "NearByFragment onResume");
 		super.onResume();
 		// contentView.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
 		// contentView.findViewById(R.id.serverdata).setVisibility(View.GONE);
-
+		if (mAMapLocationManager == null) {
+			mAMapLocationManager = LocationManagerProxy.getInstance(getActivity());
+			/*
+			 * mAMapLocManager.setGpsEnable(false);//
+			 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
+			 */
+			// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
+			mAMapLocationManager.requestLocationUpdates(LocationProviderProxy.AMapNetwork, 10000, 100, this);
+			
+		}
 		// buildTask();
 	};
 

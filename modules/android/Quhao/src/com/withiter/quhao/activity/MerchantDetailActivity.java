@@ -337,7 +337,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					
 				} else {
 					// TODO : 没有位置时， 该怎么做， 应该返回到列表页面， 在酒店详细信息页面应该判断
-					Toast.makeText(MerchantDetailActivity.this, "此酒店没有座位，请选择其他酒店。", Toast.LENGTH_LONG).show();
+//					Toast.makeText(MerchantDetailActivity.this, "此酒店没有座位，请选择其他酒店。", Toast.LENGTH_LONG).show();
 					paiduiConditionLayout.setVisibility(View.GONE);
 				}
 				
@@ -765,7 +765,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					if("success".equals(buf))
 					{
 						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-						Toast.makeText(MerchantDetailActivity.this, R.string.committing_success, Toast.LENGTH_LONG).show();
+//						Toast.makeText(MerchantDetailActivity.this, R.string.committing_success, Toast.LENGTH_LONG).show();
 						if(merchant.isAttention)
 						{
 							btnAttention.setText(R.string.attention);
@@ -840,7 +840,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			else
 			{
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				Toast.makeText(this, "对不起，暂无评论。", Toast.LENGTH_LONG).show();
+//				Toast.makeText(this, "对不起，暂无评论。", Toast.LENGTH_LONG).show();
 			}
 			break;
 		case R.id.desc_layout:

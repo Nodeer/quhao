@@ -57,7 +57,7 @@
         SortId="1"
         AppKey="983729496"
         AppSecret="515b476bfc1c7a5b7e4da0bb6eae6764"
-        RedirectUrl="http://www.quhao.la"
+        RedirectUrl="https://api.weibo.com/oauth2/default.html"
         ShareByAppClient="false"
         Enable="true" />
 

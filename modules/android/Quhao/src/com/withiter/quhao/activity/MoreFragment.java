@@ -1,29 +1,16 @@
 package com.withiter.quhao.activity;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -476,7 +463,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			oks.setTitleUrl("http://service.quhao.la/");
 			oks.setText("取号啦--让你排队不用等！");
 //			oks.setImagePath(MainActivity.TEST_IMAGE);
-			oks.setImageUrl("http://b.hiphotos.baidu.com/baike/c0%3Dbaike80%2C5%2C5%2C80%2C26/sign=e2d3e87841a98226accc2375ebebd264/a044ad345982b2b7d9b553c933adcbef77094b36acafa3a8.jpg");
+			oks.setImageUrl("http://www.quhao.la/public/images/home/site_iphone.png");
 			oks.setUrl("http://service.quhao.la/");
 //			oks.setFilePath(MainActivity.TEST_IMAGE);
 //			oks.setComment(getResources().getString(R.string.share));

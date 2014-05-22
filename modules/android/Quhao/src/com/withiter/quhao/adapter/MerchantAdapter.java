@@ -138,11 +138,11 @@ public class MerchantAdapter extends BaseAdapter {
 					
 					NumberFormat nf = NumberFormat.getNumberInstance();
 			        nf.setMaximumFractionDigits(2);
-					holder.distance.setText(nf.format(merchant.distance/1000) + "千米");
+					holder.distance.setText(nf.format(merchant.distance/1000) + "km");
 				}
 				else
 				{
-					holder.distance.setText(String.valueOf((int)merchant.distance) + "米");
+					holder.distance.setText(String.valueOf((int)merchant.distance) + "m");
 				}
 				
 //				holder.distance.setText(String.valueOf(DistanceUtil.computeDistance(lp.getLatitude(), lp.getLongitude(), merchant.lat, merchant.lng)));

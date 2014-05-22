@@ -57,12 +57,14 @@
                 android:paddingTop="3dip"
                 android:orientation="horizontal"
                 android:gravity="center_vertical" >
-
-			    <ImageView android:id="@+id/youhui"
+	            
+				<!-- 是否可以取号 -->
+                <ImageView android:id="@+id/quhao"
 			        android:layout_width="20dip"
 			        android:layout_height="20dip"
-			        android:src="@drawable/ic_youhui"
+			        android:src="@drawable/ic_quhao"
 			        android:contentDescription="@string/empty"/>
+			    
 			    <TextView
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
@@ -71,12 +73,13 @@
 	                android:text="@string/null_2_space"
 	                android:textColor="@color/red"
 	                android:textSize="13sp" />
-                 <!-- 是否可以取号 -->
-                 <ImageView android:id="@+id/quhao"
+                 
+			    <ImageView android:id="@+id/youhui"
 			        android:layout_width="20dip"
 			        android:layout_height="20dip"
-			        android:src="@drawable/ic_quhao"
+			        android:src="@drawable/ic_youhui"
 			        android:contentDescription="@string/empty"/>
+			    
 	            <!--<TextView
 	                android:id="@+id/quhao"
 	                android:layout_width="wrap_content"
@@ -149,7 +152,7 @@
                     android:paddingLeft="6dip"
                     android:singleLine="true"
                     android:text="@string/empty"
-                    android:textColor="@color/gray"
+                    android:textColor="@color/black"
                     android:textSize="13sp" />
             </LinearLayout>
             </LinearLayout>
