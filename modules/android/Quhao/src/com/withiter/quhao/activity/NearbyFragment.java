@@ -20,7 +20,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
@@ -76,6 +78,11 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 	private ViewGroup group;
 
 	private PullToRefreshView mPullToRefreshView;
+	
+	private LinearLayout resultLayout;
+	private LinearLayout noResultLayout;
+	private TextView noResultView;
+	private TextView locationResult;
 
 	protected Handler unlockHandler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -104,6 +111,11 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		contentView = inflater.inflate(R.layout.nearby_fragment_layout, container, false);
 		merchantsListView = (ListView) contentView.findViewById(R.id.merchantsListView);
 
+		resultLayout = (LinearLayout) contentView.findViewById(R.id.result_layout);
+		noResultLayout = (LinearLayout) contentView.findViewById(R.id.no_result_layout);
+		noResultView = (TextView) contentView.findViewById(R.id.no_result_text);
+		locationResult = (TextView) contentView.findViewById(R.id.location_result);
+		locationResult.setOnClickListener(this);
 		mPullToRefreshView = (PullToRefreshView) contentView.findViewById(R.id.main_pull_refresh_view);
 		mPullToRefreshView.setEnableFooterView(true);
 		mPullToRefreshView.setOnHeaderRefreshListener(this);
@@ -118,25 +130,32 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 			dialog.setTitle("温馨提示").setMessage("Wifi/蜂窝网络未打开，或者网络情况不是很好哟").setPositiveButton("确定", null);
 			dialog.show();
 		}
-
 			
-		locationHandler.postDelayed(new Runnable() {
-			
-			@Override
-			public void run() {
-				if (firstLocation == null) {
-					Toast.makeText(getActivity(), "亲，定位失败，请检查网络状态！", Toast.LENGTH_SHORT).show();
-					contentView.findViewById(R.id.loadingbar).setVisibility(View.GONE);
-					contentView.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
-					stopLocation();// 销毁掉定位
-				}
-			}
-		}, 60000);// 设置超过12秒还没有定位到就停止定位
 		contentView.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
 		contentView.findViewById(R.id.serverdata).setVisibility(View.GONE);
+		resultLayout.setVisibility(View.VISIBLE);
+		noResultLayout.setVisibility(View.GONE);
+		locationResult.setVisibility(View.GONE);
 		return contentView;
 	}
 
+	private Runnable locationRunnable = new Runnable() {
+		
+		@Override
+		public void run() {
+			if (firstLocation == null) {
+				Toast.makeText(getActivity(), "亲，定位失败，请检查网络状态！", Toast.LENGTH_SHORT).show();
+				contentView.findViewById(R.id.loadingbar).setVisibility(View.GONE);
+				contentView.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
+				resultLayout.setVisibility(View.GONE);
+				noResultLayout.setVisibility(View.VISIBLE);
+				noResultView.setText(R.string.location_failed);
+				locationResult.setText(R.string.re_location);
+				locationResult.setVisibility(View.VISIBLE);
+				stopLocation();// 销毁掉定位
+			}
+		}
+	};
 	/**
 	 * 销毁定位
 	 */
@@ -235,6 +254,19 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 				merchantsListView.setOnItemClickListener(NearbyFragment.this);
 				contentView.findViewById(R.id.loadingbar).setVisibility(View.GONE);
 				contentView.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
+				if(null != merchantList && !merchantList.isEmpty())
+				{
+					resultLayout.setVisibility(View.VISIBLE);
+					noResultLayout.setVisibility(View.GONE);
+				}
+				else
+				{
+					resultLayout.setVisibility(View.GONE);
+					noResultLayout.setVisibility(View.VISIBLE);
+					noResultView.setText(R.string.no_result);
+					locationResult.setVisibility(View.GONE);
+				}
+				
 				mPullToRefreshView.onHeaderRefreshComplete();
 				mPullToRefreshView.onFooterRefreshComplete();
 				if (!needToLoad) {
@@ -254,6 +286,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		super.onPause();
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
+			locationHandler.removeCallbacks(locationRunnable);
 		}
 	}
 
@@ -263,6 +296,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
 			mAMapLocationManager.destory();
+			locationHandler.removeCallbacks(locationRunnable);
 		}
 		mAMapLocationManager = null;
 		super.onDestroyView();
@@ -310,6 +344,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
 			mAMapLocationManager.destory();
+			locationHandler.removeCallbacks(locationRunnable);
 		}
 		mAMapLocationManager = null;
 		super.onDestroy();
@@ -461,6 +496,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 			 */
 			// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
 			mAMapLocationManager.requestLocationUpdates(LocationProviderProxy.AMapNetwork, 10000, 100, this);
+			locationHandler.postDelayed(locationRunnable, 60000);// 设置超过12秒还没有定位到就停止定位
 			
 		}
 		// buildTask();
@@ -477,10 +513,37 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		// 设置已点击标志，避免快速重复点击
 		isClick = true;
 		// 解锁
-		unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+		
 
 		switch (v.getId()) {
+		case R.id.location_result:
+			contentView.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
+			contentView.findViewById(R.id.serverdata).setVisibility(View.GONE);
+			resultLayout.setVisibility(View.VISIBLE);
+			noResultLayout.setVisibility(View.GONE);
+			locationResult.setVisibility(View.GONE);
+			if (mAMapLocationManager == null) {
+				mAMapLocationManager = LocationManagerProxy.getInstance(getActivity());
+				/*
+				 * mAMapLocManager.setGpsEnable(false);//
+				 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
+				 */
+				// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
+				mAMapLocationManager.requestLocationUpdates(LocationProviderProxy.AMapNetwork, 10000, 100, this);
+				locationHandler.removeCallbacks(locationRunnable);
+				locationHandler.postDelayed(locationRunnable, 60000);
+				
+			}
+			else
+			{
+				mAMapLocationManager.requestLocationUpdates(LocationProviderProxy.AMapNetwork, 10000, 100, this);
+				locationHandler.removeCallbacks(locationRunnable);
+				locationHandler.postDelayed(locationRunnable, 60000);
+			}
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			break;
 		default:
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;
 		}
 	}

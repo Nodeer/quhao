@@ -232,4 +232,10 @@
 	<!-- refresh view end -->
 	<string name="no_queue_merchant_list_title">不用排队商家</string>
 	
+	<string name="no_result">亲，没有查询结果哦。</string>
+	<string name="re_location">重新定位</string>
+	
+	<!-- nearby fragment begin -->
+	<string name="location_failed">亲，定位失败，请检查网络设置或者重新定位。</string>
+	<!-- nearby fragment end -->
 </resources>
