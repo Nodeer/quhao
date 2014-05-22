@@ -394,16 +394,30 @@
 
 -(void)populateMenu {
     UIControl *menuItem = nil;
-    for (Category *cate in _categoryArray) {
-        if(menuItem == nil){
-            UILabel *cateLabel = [[UICustomLabel alloc] initWithFrame:CGRectMake(5,190, 80, 20)];
-            cateLabel.text = @"美食分类";
-            cateLabel.font = [UIFont systemFontOfSize:14];
-            cateLabel.textColor = [UIColor redColor];
-            [self.view addSubview:cateLabel];
+    if([_categoryArray count] == 0){
+        for (Category *cate in _categoryArray) {
+            if(menuItem == nil){
+                UILabel *cateLabel = [[UICustomLabel alloc] initWithFrame:CGRectMake(5,190, 80, 20)];
+                cateLabel.text = @"美食分类";
+                cateLabel.font = [UIFont systemFontOfSize:14];
+                cateLabel.textColor = [UIColor redColor];
+                [self.view addSubview:cateLabel];
+            }
+            menuItem = [self createMenuItem:cate];
+            [self.view addSubview:menuItem];
         }
-        menuItem = [self createMenuItem:cate];
-        [self.view addSubview:menuItem];
+    }else{
+        UILabel *cateLabel = [[UICustomLabel alloc] initWithFrame:CGRectMake(5,190, 80, 20)];
+        cateLabel.text = @"美食分类";
+        cateLabel.font = [UIFont systemFontOfSize:14];
+        cateLabel.textColor = [UIColor redColor];
+        [self.view addSubview:cateLabel];
+        
+        UILabel *noLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,270, kDeviceWidth, 30)];
+        noLabel.textAlignment = NSTextAlignmentCenter;
+        noLabel.font = [UIFont systemFontOfSize:14];
+        noLabel.text = @"该城市暂未开通,请切换其他城市试试";
+        [self.view addSubview:noLabel];
     }
 }
 
