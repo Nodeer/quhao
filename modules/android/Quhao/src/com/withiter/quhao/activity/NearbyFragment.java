@@ -27,7 +27,6 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
-import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantNearByAdapter;
 import com.withiter.quhao.task.NearbyMerchantsTask;
@@ -88,6 +87,14 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		
+		if(contentView != null)
+		{
+			ViewGroup vg = (ViewGroup) contentView.getParent();
+			vg.removeView(contentView);
+			return contentView;
+		}
+		
 		this.group = container;
 		page = 1;
 		isFirstLoad = true;

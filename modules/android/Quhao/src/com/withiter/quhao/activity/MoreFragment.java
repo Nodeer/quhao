@@ -46,7 +46,6 @@ import com.withiter.quhao.task.MoreVersionCheckTask;
 import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
-import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.vo.AppVersionVO;
 
 public class MoreFragment extends Fragment implements OnClickListener{
@@ -96,6 +95,13 @@ public class MoreFragment extends Fragment implements OnClickListener{
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+		if(contentView != null)
+		{
+			ViewGroup vg = (ViewGroup) contentView.getParent();
+			vg.removeView(contentView);
+			return contentView;
+		}
+		
 		contentView = inflater.inflate(R.layout.more_fragment_layout, container,false);
 		
 		settings = (LinearLayout) contentView.findViewById(R.id.more_settings);

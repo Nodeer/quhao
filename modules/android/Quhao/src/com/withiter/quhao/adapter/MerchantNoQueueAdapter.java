@@ -193,9 +193,9 @@ public class MerchantNoQueueAdapter extends BaseAdapter {
 			}
 			*/
 			if (StringUtils.isNull(merchant.averageCost)) {
-				holder.merchantRenjun.setText("人均消费：暂无");
+				holder.merchantRenjun.setText("人均：暂无");
 			} else {
-				holder.merchantRenjun.setText("人均消费：￥" + merchant.averageCost);
+				holder.merchantRenjun.setText("人均：￥" + merchant.averageCost);
 			}
 			convertView.setTag(holder);
 			return convertView;

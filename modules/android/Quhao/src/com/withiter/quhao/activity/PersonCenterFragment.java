@@ -5,10 +5,8 @@ import java.io.File;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -30,7 +28,6 @@ import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.ActivityUtil;
-import com.withiter.quhao.util.ImageTask;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
@@ -74,7 +71,15 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 	
 	private boolean isClick;
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {	
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+		
+		if(contentView != null)
+		{
+			ViewGroup vg = (ViewGroup) contentView.getParent();
+			vg.removeView(contentView);
+			return contentView;
+		}
+		
 		contentView = inflater.inflate(R.layout.person_center_fragment_layout, null);
 		
 		QuhaoLog.d(TAG, "PersonCenterFragment onCreateView");

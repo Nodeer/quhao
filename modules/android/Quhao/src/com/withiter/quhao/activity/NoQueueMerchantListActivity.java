@@ -25,7 +25,6 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
-import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantNoQueueAdapter;
 import com.withiter.quhao.task.QueryNoQueueMerchantsTask;
