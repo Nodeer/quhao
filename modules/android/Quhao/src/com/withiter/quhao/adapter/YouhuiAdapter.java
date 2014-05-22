@@ -63,7 +63,7 @@ public class YouhuiAdapter extends BaseAdapter {
 			}
 
 			holder.title.setTag("title_" + position);
-			holder.title.setText(youhui.title);
+			holder.title.setText((position +1) +"." + youhui.title);
 			holder.title.setTag("content_" + position);
 			holder.content.setText(youhui.content);
 			

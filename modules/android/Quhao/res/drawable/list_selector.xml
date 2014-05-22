@@ -7,5 +7,4 @@
     <item android:drawable="@drawable/background_line_grey" android:state_focused="true" android:state_pressed="true"/>
     <item android:drawable="@drawable/background_line_grey" android:state_focused="false" android:state_pressed="true"/>
     <item android:drawable="@drawable/background_line_grey" android:state_focused="true"/>
-
 </selector>

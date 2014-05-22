@@ -82,7 +82,7 @@ public class AsynImageLoader {
 			return;
 		}
 
-		if(null == url || "".equals(url.trim()))
+		if(null == url || "".equals(url.trim()) || !QHClientApplication.getInstance().canLoadImg)
 		{
 			imageView.setImageResource(resId);
 			return;
@@ -187,7 +187,7 @@ public class AsynImageLoader {
 		}
 
 		imageView.setScaleType(ScaleType.FIT_XY);
-		if(null == url || "".equals(url.trim()))
+		if(null == url || "".equals(url.trim())  || !QHClientApplication.getInstance().canLoadImg)
 		{
 			imageView.setImageResource(resId);
 			return;
@@ -326,10 +326,12 @@ public class AsynImageLoader {
 					Task task = taskQueue.remove(0);
 					if (task != null) {
 						// 将下载的图片添加到缓存
-						task.bitmap = PicUtil.getbitmapAndwrite(task.path); // the new method to test to storage the image to SD card.
-//						task.bitmap = PicUtil.getbitmap(task.path, task.roundedType);  this is the old method,
-
-						addCacheBitmap(task.bitmap, task.path);
+						if(QHClientApplication.getInstance().canLoadImg)
+						{
+							task.bitmap = PicUtil.getbitmapAndwrite(task.path); // the new method to test to storage the image to SD card.
+//							task.bitmap = PicUtil.getbitmap(task.path, task.roundedType);  this is the old method,
+							addCacheBitmap(task.bitmap, task.path);
+						}
 
 						if (handler != null) {
 							// 创建消息对象，并将完成的任务添加到消息对象中
