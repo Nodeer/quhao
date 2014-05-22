@@ -152,6 +152,7 @@ Signup.submitinfo = function(){
 				if(data.errorKey == "true"){
 					var successIcon = "<span style='margin-right:10px;' class='glyphicon glyphicon-ok'></span>"
 					$("#submitinfotips").html(successIcon+"成功！2个工作日内会联系你。").show();
+					setTimeout('location.reload()', 2000);
 				} else {
 					var warningIcon = "<span style='margin-right:10px;' class='glyphicon glyphicon-exclamation-sign'></span>"
 					$("#submitinfotips").html(warningIcon+data.errorText).show();
