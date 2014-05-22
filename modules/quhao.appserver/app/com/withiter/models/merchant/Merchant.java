@@ -342,6 +342,14 @@ public class Merchant extends MerchantEntityDef {
 		this.grade =  commentQ.average("grade");
 		this.averageCost =  commentQ.average("averageCost");
 		
+		// update mark count
+		MorphiaQuery q = Attention.q();
+		q.filter("mid", this.id()).filter("flag", true);
+		long count = q.count();
+		if(q.count() > 0){
+			this.markedCount = (int)count;
+		}
+		
 		this.save();
 	}
 	
