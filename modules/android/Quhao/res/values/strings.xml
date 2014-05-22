@@ -22,6 +22,7 @@
     <string name="kuaisutongdao">快速通道</string>
     <string name="meishifenlei">美食分类</string>
     <string name="dingwei">定位</string>
+    <string name="no_categorys_for_city">亲，此城市尚未开通哦！</string>
     <!-- 首页 -->
     
     <!-- 搜索页面 -->

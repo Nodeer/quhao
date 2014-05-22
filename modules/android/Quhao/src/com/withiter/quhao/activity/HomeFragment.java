@@ -34,6 +34,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,6 +76,8 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	private int mPosition;										// pager的位置,就是当前图片的索引号
 	private MyPagerAdapter mPagerAdapter;
 	private PullToRefreshView mPullToRefreshView;
+	
+	private LinearLayout noResultLayout;
 
 	private float xDistance, yDistance;
 	/** 记录按下的X坐标 **/
@@ -164,6 +167,8 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 
 		mPullToRefreshView.setOnHeaderRefreshListener(this);
 		mPullToRefreshView.setOnFooterRefreshListener(this);
+		
+		noResultLayout = (LinearLayout) contentView.findViewById(R.id.no_result_layout);
 
 		searchTextView = (Button) contentView.findViewById(R.id.edit_search);
 		searchTextView.setOnClickListener(new OnClickListener() {
@@ -217,7 +222,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 				}
 			}
 		});
-
+		
 		return contentView;
 	}
 
@@ -227,6 +232,8 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 
 			@Override
 			public void run() {
+				categorysGird.setVisibility(View.VISIBLE);
+				noResultLayout.setVisibility(View.GONE);
 				getTopMerchantsFromServerAndDisplay();
 				getCategoriesFromServerAndDisplay();
 				mPullToRefreshView.onHeaderRefreshComplete();
@@ -456,8 +463,11 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	public void onResume() {
 		super.onResume();
 		cityBtn.setText(QHClientApplication.getInstance().defaultCity.cityName);
+		categorysGird.setVisibility(View.VISIBLE);
+		noResultLayout.setVisibility(View.GONE);
 		getTopMerchantsFromServerAndDisplay();
 		getCategoriesFromServerAndDisplay();
+		
 	}
 
 	protected Handler unlockHandler = new Handler() {
@@ -556,6 +566,16 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 				categoryGridAdapter = new CategoryGridAdapter(categorys, getActivity());
 				categorysGird.setAdapter(categoryGridAdapter);
 				categoryGridAdapter.notifyDataSetChanged();
+				if(null != categorys && !categorys.isEmpty())
+				{
+					categorysGird.setVisibility(View.VISIBLE);
+					noResultLayout.setVisibility(View.GONE);
+				}
+				else
+				{
+					categorysGird.setVisibility(View.GONE);
+					noResultLayout.setVisibility(View.VISIBLE);
+				}
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 		}

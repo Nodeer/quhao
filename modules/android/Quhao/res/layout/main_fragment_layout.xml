@@ -47,7 +47,7 @@
         <!-- search button -->
 
     </RelativeLayout>
-
+	
     <com.withiter.quhao.view.refresh.PullToRefreshView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/main_pull_refresh_view"
@@ -187,7 +187,25 @@
                         android:numColumns="3"
                         android:stretchMode="columnWidth"
                         android:verticalSpacing="8dp" />
+                    <LinearLayout android:id="@+id/no_result_layout"
+					    android:orientation="vertical"
+					    android:layout_width="fill_parent" 
+					    android:layout_height="match_parent" 
+					    android:background="#ffffffff"
+					    android:gravity="center"
+					    android:visibility="gone">
+					    <ImageView android:id="@+id/bad_face"
+					        android:layout_width="wrap_content"
+					        android:layout_height="wrap_content"
+					        android:src="@drawable/bad_face"
+					        android:contentDescription="@string/empty"/>
+					    <TextView android:id="@+id/no_result_text"
+					        android:layout_width="wrap_content"
+					        android:layout_height="wrap_content"
+					        android:text="@string/no_categorys_for_city"/>
+				</LinearLayout>
                 </LinearLayout>
+                
             </LinearLayout>
         </ScrollView>
     </com.withiter.quhao.view.refresh.PullToRefreshView>
