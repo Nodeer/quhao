@@ -393,7 +393,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 			  scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 		  
 		  // 当Activity显示出来后，每三秒钟切换一次图片显示
-		  scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 1, 3,
+		  scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 3, 3,
 				  TimeUnit.SECONDS);
 		  
 //		  isFirstScheduled = true; 

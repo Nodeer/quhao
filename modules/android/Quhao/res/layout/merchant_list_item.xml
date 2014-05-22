@@ -15,6 +15,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:contentDescription="@string/empty"
+            android:background="@drawable/image_background"
             android:focusable="false"
             android:scaleType="fitXY"
             android:src="@drawable/no_logo" />
@@ -85,9 +86,15 @@
 	                android:textSize="13sp" />
 	             	是否可以取号 -->
             </LinearLayout>
+            <LinearLayout 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
             <LinearLayout
                 android:id="@+id/linearLayout3"
-                android:layout_width="fill_parent"
+                android:layout_width="0dip"
+                android:layout_weight="1.0"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
 
@@ -115,10 +122,12 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="fill_parent"
+                android:layout_width="0dip"
+                android:layout_weight="1.0"
                 android:layout_height="match_parent"
                 android:orientation="horizontal" >
 
+                <!-- 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -127,7 +136,7 @@
                     android:text="@string/distance"
                     android:textColor="@color/gray"
                     android:textSize="13sp" />
-
+				 -->
                 <TextView
                     android:id="@+id/distance"
                     android:layout_width="wrap_content"
@@ -138,6 +147,7 @@
                     android:text="@string/empty"
                     android:textColor="@color/gray"
                     android:textSize="13sp" />
+            </LinearLayout>
             </LinearLayout>
         </LinearLayout>
  </RelativeLayout>
