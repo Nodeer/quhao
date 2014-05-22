@@ -15,6 +15,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 
 public class AsynImageLoader {
 	private static final String TAG = "AsynImageLoader";
@@ -185,6 +186,7 @@ public class AsynImageLoader {
 			return;
 		}
 
+		imageView.setScaleType(ScaleType.FIT_XY);
 		if(null == url || "".equals(url.trim()))
 		{
 			imageView.setImageResource(resId);

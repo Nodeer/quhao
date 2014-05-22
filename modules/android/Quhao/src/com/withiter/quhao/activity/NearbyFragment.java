@@ -27,7 +27,6 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
-import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantNearByAdapter;
 import com.withiter.quhao.task.NearbyMerchantsTask;
@@ -88,6 +87,14 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		
+		if(contentView != null)
+		{
+			ViewGroup vg = (ViewGroup) contentView.getParent();
+			vg.removeView(contentView);
+			return contentView;
+		}
+		
 		this.group = container;
 		page = 1;
 		isFirstLoad = true;
@@ -132,7 +139,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 						stopLocation();// 销毁掉定位
 					}
 				}
-			}, 10000);// 设置超过12秒还没有定位到就停止定位
+			}, 60000);// 设置超过12秒还没有定位到就停止定位
 		}
 		contentView.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
 		contentView.findViewById(R.id.serverdata).setVisibility(View.GONE);
@@ -409,7 +416,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 			Toast.makeText(getActivity(), "亲，现在没有定位信息，不能查看哦。", Toast.LENGTH_LONG).show();
 			return;
 		}
-		String url = "getNearMerchants?userX=" + firstLocation.getLongitude() + "&userY=" + firstLocation.getLatitude() + "&cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode
+		String url = "getNearMerchants?userX=" + firstLocation.getLongitude() + "&userY=" + firstLocation.getLatitude() + "&cityCode=" + firstLocation.getCityCode()
 				+ "&page=" + page + "&maxDis=" + searchDistence;
 		final NearbyMerchantsTask task = new NearbyMerchantsTask(R.string.waitting, getActivity(), url);
 		task.execute(new Runnable() {

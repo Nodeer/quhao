@@ -25,7 +25,6 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
-import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantNoQueueAdapter;
 import com.withiter.quhao.task.QueryNoQueueMerchantsTask;
@@ -114,7 +113,7 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 						stopLocation();// 销毁掉定位
 					}
 				}
-			}, 10000);// 设置超过12秒还没有定位到就停止定位
+			}, 60000);// 设置超过12秒还没有定位到就停止定位
             
         }
 		
@@ -356,7 +355,12 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 	};
 	
 	private void queryNoQueueMerchants() {
-		String url = "getNearNoQueueMerchants?userX=" + firstLocation.getLongitude() + "&userY=" + firstLocation.getLatitude() + "&cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode + 
+		if(null == firstLocation)
+		{
+			Toast.makeText(this, "亲，现在没有定位信息，不能查看哦。", Toast.LENGTH_LONG).show();
+			return;
+		}
+		String url = "getNearNoQueueMerchants?userX=" + firstLocation.getLongitude() + "&userY=" + firstLocation.getLatitude() + "&cityCode=" + firstLocation.getCityCode() + 
 				"&page=" + page + "&maxDis=" + searchDistence;
 		final QueryNoQueueMerchantsTask task = new QueryNoQueueMerchantsTask(R.string.waitting, this, url);
 		task.execute(new Runnable() {

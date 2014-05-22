@@ -155,6 +155,8 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		youhuiLayout = (LinearLayout) info.findViewById(R.id.youhui_layout);
 		youhuiLayout.setOnClickListener(this);
 		youhuiView = (TextView) info.findViewById(R.id.youhui);
+		info.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
+		info.findViewById(R.id.serverdata).setVisibility(View.GONE);
 		initView();
 	}
 	
@@ -813,7 +815,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				Intent intent = new Intent(this, YouhuiListActivity.class);
 				intent.putExtra("merchantId", this.merchant.id);
-				
 				startActivity(intent);
 			}
 			else
@@ -849,7 +850,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				QuhaoLog.d("", "the commentContent : " + this.merchant.commentContent);
 				Intent intent = new Intent(this, MerchantDescActivity.class);
 				intent.putExtra("merchantDesc", this.merchant.description);
-				
 				startActivity(intent);
 			}
 			else
@@ -901,7 +901,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 								else
 								{
 									unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-									
 									openServiceHandler.obtainMessage(0, buf).sendToTarget();
 //									Toast.makeText(MerchantDetailActivity.this, R.string.committing_success, Toast.LENGTH_LONG).show();
 								}
@@ -1021,6 +1020,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				}
 				break;
 		default:
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;
 		}
 
@@ -1049,8 +1049,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	@Override
 	protected void onResume() {
 		backClicked = false;
-		info.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
-		info.findViewById(R.id.serverdata).setVisibility(View.GONE);
+		
 		initView();
 		super.onResume();
 	}

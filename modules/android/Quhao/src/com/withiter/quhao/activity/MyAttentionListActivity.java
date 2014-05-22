@@ -95,7 +95,7 @@ public class MyAttentionListActivity extends QuhaoBaseActivity implements OnHead
 						stopLocation();// 销毁掉定位
 					}
 				}
-			}, 10000);// 设置超过12秒还没有定位到就停止定位
+			}, 60000);// 设置超过12秒还没有定位到就停止定位
 		}
 		
 		initView();

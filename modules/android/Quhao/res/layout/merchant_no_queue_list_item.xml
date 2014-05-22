@@ -1,38 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/frameLayout1"
-    android:layout_width="fill_parent"
-    android:layout_height="110dip"
-    android:background="@drawable/list_selector" >
-
-    <RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="110dip"
-        android:orientation="vertical" >
+        android:layout_height="80dip"
+        android:paddingLeft="0dip"
+        android:layout_marginLeft="0dip"
+    	android:background="@drawable/list_selector">
+
+        <!-- 商家logo -->
 
         <ImageView
             android:id="@+id/img"
             android:layout_width="108dip"
-            android:layout_height="108dip"
+            android:layout_height="80dip"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:contentDescription="@string/empty"
+            android:background="@drawable/image_background"
             android:focusable="false"
             android:scaleType="fitXY"
-            android:padding="2dip"
             android:src="@drawable/no_logo" />
+        <!-- 商家logo -->
 
         <LinearLayout
             android:id="@+id/linearLayout2"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="80dip"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="10dip"
+            android:layout_centerHorizontal="false"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
             android:layout_toRightOf="@id/img"
             android:orientation="vertical"
-            android:paddingTop="10dip" >
+            android:paddingLeft="5dip"
+            android:paddingTop="2dip" >
 
-            <LinearLayout
+			<LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
@@ -52,7 +54,9 @@
 			<LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:paddingTop="3dip"
+                android:orientation="horizontal"
+                android:gravity="center_vertical" >
 
 			    <ImageView android:id="@+id/youhui"
 			        android:layout_width="20dip"
@@ -84,14 +88,20 @@
 	                android:textSize="13sp" />
 	             	是否可以取号 -->
             </LinearLayout>
-
+            <LinearLayout 
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
             <LinearLayout
                 android:id="@+id/linearLayout3"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="0dip"
+                android:layout_weight="1.0"
+                android:layout_height="fill_parent"
                 android:orientation="horizontal"
-                >
-			<!-- 
+                android:gravity="bottom" >
+
+                <!--
                 <ImageView
                     android:id="@+id/pingfen"
                     android:contentDescription="@string/empty"
@@ -99,44 +109,49 @@
                     android:layout_height="wrap_content"
                     android:focusable="false"
                     android:src="@drawable/star50" />
- 			-->
+                -->
+                <!-- 人均消费 -->
+
                 <TextView
                     android:id="@+id/merchantRenjun"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="6dip"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="@string/empty"
-                    android:textColor="#666666"
+                    android:textColor="@color/black"
                     android:textSize="13sp" />
+                <!-- 人均消费 -->
             </LinearLayout>
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="35dip"
-                android:orientation="horizontal"
-                >
 
+            <LinearLayout
+                android:layout_width="0dip"
+                android:layout_weight="1.0"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal" 
+                android:gravity="bottom">
+
+                <!-- 
                 <TextView
-                    android:contentDescription="@string/empty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:contentDescription="@string/empty"
                     android:focusable="false"
-                    android:text="距离：" />
-
+                    android:text="@string/distance"
+                    android:textColor="@color/gray"
+                    android:textSize="13sp" />
+				 -->
                 <TextView
                     android:id="@+id/distance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="6dip"
                     android:ellipsize="end"
+                    android:paddingLeft="6dip"
                     android:singleLine="true"
                     android:text="@string/empty"
-                    android:textColor="#666666"
+                    android:textColor="@color/gray"
                     android:textSize="13sp" />
             </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
-
-    </RelativeLayout>
-
-</FrameLayout>
+ </RelativeLayout>

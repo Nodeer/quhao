@@ -44,7 +44,6 @@ import com.withiter.quhao.adapter.MyPagerAdapter;
 import com.withiter.quhao.task.AllCategoriesTask;
 import com.withiter.quhao.task.TopMerchantsTask;
 import com.withiter.quhao.util.ActivityUtil;
-import com.withiter.quhao.util.ImageTask;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.AsynImageLoader;
 import com.withiter.quhao.util.tool.ParseJson;
@@ -58,7 +57,6 @@ import com.withiter.quhao.vo.TopMerchant;
 
 public class HomeFragment extends Fragment implements OnHeaderRefreshListener, OnFooterRefreshListener, OnClickListener {
 
-	private static String TAG = HomeFragment.class.getName();
 	private static final int UNLOCK_CLICK = 1000;
 
 	private Button searchTextView;
@@ -154,6 +152,13 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		if(contentView != null)
+		{
+			ViewGroup vg = (ViewGroup) contentView.getParent();
+			vg.removeView(contentView);
+			return contentView;
+		}
+		
 		contentView = inflater.inflate(R.layout.main_fragment_layout, container, false);
 		mPullToRefreshView = (PullToRefreshView) contentView.findViewById(R.id.main_pull_refresh_view);
 
@@ -393,7 +398,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 			  scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 		  
 		  // 当Activity显示出来后，每三秒钟切换一次图片显示
-		  scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 1, 3,
+		  scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 3, 3,
 				  TimeUnit.SECONDS);
 		  
 //		  isFirstScheduled = true; 
