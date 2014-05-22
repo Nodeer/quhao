@@ -42,11 +42,15 @@ $addCSS("backend.css", true)
           		开放取号
           	`}
           	</button>
+            <!-- 手动刷新 -->
+          	<button type="button" class="btn btn-primary" onclick="location.reload();">
+          	手动刷新排队
+          	</button>
           	<!-- 控制开放/关闭取号 -->
-	          <font style="margin-top: 0px;" id="paiduipageTip">
-	          </font>
-	          <!-- 控制开放/关闭取号 -->
+            <font style="margin-top: 0px;" id="paiduipageTip">
+            </font>
           </div>
+         
           <div style="margin-top: 10px;" class="panel panel-info" id="autoRefreshDiv">
 	  					<!-- Default panel contents -->
 						  <div class="panel-heading">排队实时情况</div>
