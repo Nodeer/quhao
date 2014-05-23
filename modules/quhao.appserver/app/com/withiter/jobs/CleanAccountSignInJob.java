@@ -16,7 +16,7 @@ import play.jobs.On;
 import play.jobs.OnApplicationStart;
 
 // the job will fire at 3AM everyday. reference: http://www.playframework.com/documentation/1.2.5/jobs
-@On("0 0 12 * * ?")
+@On("0 0 3 * * ?")
 
 public class CleanAccountSignInJob extends Job {
 
