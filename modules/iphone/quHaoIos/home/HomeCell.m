@@ -43,7 +43,7 @@
     
     _rjLabel=[[UILabel alloc]initWithFrame:CGRectZero];
     _rjLabel.backgroundColor=[UIColor clearColor];
-    _rjLabel.frame=CGRectMake(_titleLabel.frame.origin.x, _quhao.frame.origin.y+_quhao.frame.size.height, 80, 25);
+    _rjLabel.frame=CGRectMake(_titleLabel.frame.origin.x, _quhao.frame.origin.y+_quhao.frame.size.height, 110, 25);
     _rjLabel.textAlignment=NSTextAlignmentLeft;
     _rjLabel.font=[UIFont boldSystemFontOfSize:13];
     [self.contentView addSubview:_rjLabel];
