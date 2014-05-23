@@ -170,12 +170,12 @@
       NSString *response =[QuHaoUtil requestDb:str1];
       if([response isEqualToString:@""]){
           //异常处理
-          [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+          _HUD.labelText = @"服务器错误";
       }else{
           NSArray *jsonObjects=[QuHaoUtil analyseData:response];
           if(jsonObjects==nil){
               //解析错误
-              [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+              _HUD.labelText = @"服务器错误";
           }else{
               NSMutableArray *newMerc = [self addAfterInfo:jsonObjects];
               NSInteger count = [newMerc count];
