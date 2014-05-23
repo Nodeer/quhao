@@ -16,7 +16,7 @@ import play.jobs.On;
 import play.jobs.OnApplicationStart;
 
 // the job will fire at 3AM everyday. reference: http://www.playframework.com/documentation/1.2.5/jobs
-@On("0 3 0 * * ?")
+@On("0 0 12 * * ?")
 
 public class CleanAccountSignInJob extends Job {
 
@@ -32,9 +32,9 @@ public class CleanAccountSignInJob extends Job {
 		
 		// 检查置顶商家
 		long start1 = System.currentTimeMillis();
-		logger.info(CleanAccountSignInJob.class.getName() + " started.");
+		logger.info(CleanAccountSignInJob.class.getName() + " top merchant update started.");
 		TopMerchant.verifyAndupdateTops();
-		logger.info(CleanAccountSignInJob.class.getName() + " finished, elapsed time " + (System.currentTimeMillis() - start1) + "ms.");
+		logger.info(CleanAccountSignInJob.class.getName() + " top merchant update finished, elapsed time " + (System.currentTimeMillis() - start1) + "ms.");
 		
 		
 
