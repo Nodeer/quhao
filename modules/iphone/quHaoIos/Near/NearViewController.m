@@ -418,9 +418,15 @@
 {
     if(scrollView.contentOffset.y + (scrollView.frame.size.height) > scrollView.contentSize.height && !_isLoading &&(_state == PullRefreshNormal))
     {
-        _isLoading = YES;
-		[self setFootState:PullRefreshLoading];
-        [self loadMore];
+        if([Helper isConnectionAvailable]){
+            _isLoading = YES;
+            [self setFootState:PullRefreshLoading];
+            [self loadMore];
+        }else{
+            [self createHud];
+            _HUD.labelText = @"当前网络不可用";
+            [_HUD hide:YES];
+        }
     }
 }
 
