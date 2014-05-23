@@ -143,26 +143,19 @@
         //注销
         case 8:
         {
-            Helper *helper = [Helper new];
-            if ([Helper isCookie] == NO) {
-                [Helper ToastNotification:@"错误 您还没有登录,注销无效" andView:self.view andLoading:NO andIsBottom:NO];
-                return;
-            }
-            
-            [ASIHTTPRequest setSessionCookies:nil];
-            [ASIHTTPRequest clearSession];
-            helper.isLogin = NO;
-            [Helper saveCookie:NO];
-            
-            [self refresh];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"login" object:@"0"];
-            [Helper ToastNotification:@"注销成功" andView:self.view andLoading:NO andIsBottom:NO];
+            [self loginOut];
         }
             break;
         default:
             break;
     }
+}
+
+-(void)loginOut
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"确认要注销吗?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
+    [alert setTag: 99];
+    [alert show];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -296,6 +289,23 @@
     }else if ([alertView tag]==2 && buttonIndex == 1) {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"access_token" ];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wb_uid" ];
+    }else if ([alertView tag] == 99 && buttonIndex == 1) {
+        Helper *helper = [Helper new];
+        if ([Helper isCookie] == NO) {
+            [Helper ToastNotification:@"错误 您还没有登录,注销无效" andView:self.view andLoading:NO andIsBottom:NO];
+            return;
+        }
+        
+        [ASIHTTPRequest setSessionCookies:nil];
+        [ASIHTTPRequest clearSession];
+        helper.isLogin = NO;
+        [Helper saveCookie:NO];
+        
+        [self refresh];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"login" object:@"0"];
+        [Helper ToastNotification:@"注销成功" andView:self.view andLoading:NO andIsBottom:NO];
+        return;
     }
 
 }
