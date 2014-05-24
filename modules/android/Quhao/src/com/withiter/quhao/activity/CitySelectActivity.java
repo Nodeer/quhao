@@ -180,6 +180,8 @@ public class CitySelectActivity extends QuhaoBaseActivity implements AMapLocatio
 			SharedprefUtil.put(CitySelectActivity.this, QuhaoConstant.CITY_CODE, defaultCity.cityCode);
 			SharedprefUtil.put(CitySelectActivity.this, QuhaoConstant.CITY_NAME, defaultCity.cityName);
 			SharedprefUtil.put(CitySelectActivity.this, QuhaoConstant.CITY_PINYIN, defaultCity.cityPinyin);
+			Intent intent = new Intent(QuhaoConstant.ACTION_CITY_CHANGED);
+			sendBroadcast(intent);
 			CitySelectActivity.this.finish();
 		}
 	};
@@ -314,6 +316,8 @@ public class CitySelectActivity extends QuhaoBaseActivity implements AMapLocatio
 				SharedprefUtil.put(CitySelectActivity.this, QuhaoConstant.CITY_CODE, locateCity.cityCode);
 				SharedprefUtil.put(CitySelectActivity.this, QuhaoConstant.CITY_NAME, locateCity.cityName);
 				SharedprefUtil.put(CitySelectActivity.this, QuhaoConstant.CITY_PINYIN, locateCity.cityPinyin);
+				Intent intent2 = new Intent(QuhaoConstant.ACTION_CITY_CHANGED);
+				sendBroadcast(intent2);
 				CitySelectActivity.this.finish();
 			}
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);

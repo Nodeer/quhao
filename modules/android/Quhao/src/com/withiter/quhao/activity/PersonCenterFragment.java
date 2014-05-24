@@ -291,6 +291,11 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 			}
 			else
 			{
+				if (!ActivityUtil.isNetWorkAvailable(getActivity())) {
+					Toast.makeText(getActivity(), R.string.network_error_info, Toast.LENGTH_LONG).show();
+					return;
+				}
+				
 				String url = "queryByAccountId?accountId=" + accountId;
 				try {
 					String result = CommonHTTPRequest.get(url);

@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.CommentAccountAdapter;
+import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
@@ -177,6 +178,10 @@ public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItem
 				try {
 					Looper.prepare();
 					QuhaoLog.v(TAG, "query critiques from web service, the merchant id is : " + accountId);
+					if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+						Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_LONG);
+						return;
+					}
 					String buf = CommonHTTPRequest.get("getCommentsByAccountId?page=" + page + "&accountId=" + accountId);
 
 					if (StringUtils.isNull(buf) || "[]".equals(buf)) {

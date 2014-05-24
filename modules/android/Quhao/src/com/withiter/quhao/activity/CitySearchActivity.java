@@ -111,6 +111,8 @@ public class CitySearchActivity extends QuhaoBaseActivity {
 			SharedprefUtil.put(CitySearchActivity.this, QuhaoConstant.CITY_CODE, defaultCity.cityCode);
 			SharedprefUtil.put(CitySearchActivity.this, QuhaoConstant.CITY_NAME, defaultCity.cityName);
 			SharedprefUtil.put(CitySearchActivity.this, QuhaoConstant.CITY_PINYIN, defaultCity.cityPinyin);
+			Intent intent = new Intent(QuhaoConstant.ACTION_CITY_CHANGED);
+			sendBroadcast(intent);
 			CitySearchActivity.this.finish();
 		}
 	};

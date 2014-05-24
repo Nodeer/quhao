@@ -127,6 +127,8 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 				beforeYouLayout.setVisibility(View.VISIBLE);
 				beforeYouView.setText(reservation.beforeYou);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				selectSeatNoImgView.setEnabled(false);
+				selectSeatNoImgView.setCompoundDrawables(null, null, null, null);
 				
 				Builder dialog = new AlertDialog.Builder(GetNumberActivity.this);
 				
