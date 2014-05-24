@@ -1,7 +1,9 @@
 `import vo.account.MerchantAccountVO;
 `args MerchantAccountVO avo
 
-<form class="form-horizontal" role="form">
+
+<form class="form-horizontal" role="form" autocomplete="off">
+  <input id="fake_user_name" name="fake_user_name" style="position:absolute; top:-100px;" type="password" value="Safari Autofill Me">
   <input type="hidden" name="uid" id="uid" value="${avo.uid}" /> 
   
   <div style="display: none;" id="dangerAlert" class="alert alert-danger alert-dismissable">
@@ -20,7 +22,7 @@
     </div>
   </div>
   <div class="form-group">
-    <label for="oPwd" class="col-sm-4 control-label">原始密码：</label>
+    <label for="oPwd" class="col-sm-4 control-label">原密码：</label>
     <div class="col-sm-5">
       <input type="password" maxlength="12" class="form-control" autocomplete="off" placeholder="原始密码" name="oPwd" id="oPwd" value="">
     </div>
