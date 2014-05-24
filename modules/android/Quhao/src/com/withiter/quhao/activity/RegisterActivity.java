@@ -348,7 +348,7 @@ public class RegisterActivity extends QuhaoBaseActivity {
 
 						loginName = loginNameText.getText().toString().trim();
 						
-						if (StringUtils.isNull(loginName)) {
+						if (StringUtils.isNotNull(loginName)) {
 							if(validatePhoneNumber(loginName))
 							{
 								String url = "generateAuthCode?mobile=" + loginName + "&os=ANDROID";
