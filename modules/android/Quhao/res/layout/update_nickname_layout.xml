@@ -63,10 +63,9 @@
             android:padding="10.0dip" >
 
             <TextView
-                android:layout_width="0.0px"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="6.0dip"
-                android:layout_weight="1.0"
                 android:maxLines="2"
                 android:paddingRight="6.0dip"
                 android:text="@string/nick_name"
@@ -75,14 +74,38 @@
                 android:textSize="16.0sp" />
 
             <EditText android:id="@+id/nick_name" 
-                android:layout_width="180dip"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:duplicateParentState="true"
                 android:paddingRight="6.0dip"
+                android:singleLine="true"
                 android:hint="@string/input_nickname"
                 android:text="@string/empty"/>
             
+        </LinearLayout>
+        
+        <!-- current/history quhao, history jifen -->
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/list_item_border"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10.0dip" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6.0dip"
+                android:maxLines="2"
+                android:paddingRight="6.0dip"
+                android:text="昵称只能使用字母、数字、中文和下划线组成，且不能以下划线开头，长度为4-16个字符，中文为两个字符。"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="@color/gray"
+                android:textSize="12.0sp" />
+
         </LinearLayout>
 
     </LinearLayout>

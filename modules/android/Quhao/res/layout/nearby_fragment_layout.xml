@@ -22,6 +22,7 @@
 		    android:textAppearance="?android:textAppearanceMedium" />
 	
 	</LinearLayout>
+	<!-- 
 	<LinearLayout
         android:id="@+id/loadingbar"
         android:layout_below="@id/titleBar"
@@ -46,15 +47,14 @@
             android:layout_height="wrap_content"
             android:text="@string/loading"
             android:textColor="#ff000000" />
-    </LinearLayout>
+    </LinearLayout> -->
 	<LinearLayout android:id="@+id/serverdata"
 	    android:layout_below="@id/titleBar"
 	    android:layout_alignParentBottom="true"
 	    android:orientation="vertical"
 	    android:layout_width="fill_parent" 
 	    android:layout_height="match_parent" 
-	    android:background="#ffffffff"
-	    android:visibility="gone">
+	    android:background="#ffffffff">
 		<LinearLayout 
 		    android:orientation="vertical"
 		    android:layout_width="fill_parent" 

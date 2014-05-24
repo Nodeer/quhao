@@ -72,15 +72,38 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 		super.onRestart();
 	}
 
+	private Runnable locationRunnable = new Runnable() {
+		
+		@Override
+		public void run() {
+			if (location == null) {
+				Toast.makeText(MainTabActivity.this, "亲，定位失败，请检查网络状态！", Toast.LENGTH_SHORT).show();
+				stopLocation();// 销毁掉定位
+			}
+		}
+	};
+	
 	@Override
 	protected void onResume() {
 		super.onResume();
+		if (mAMapLocationManager == null) {
+			mAMapLocationManager = LocationManagerProxy.getInstance(this);
+			/*
+			 * mAMapLocManager.setGpsEnable(false);//
+			 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
+			 */
+			// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
+			mAMapLocationManager.requestLocationUpdates(LocationProviderProxy.AMapNetwork, 10000, 100, this);
+			locationHandler.postDelayed(locationRunnable, 60000);// 设置超过12秒还没有定位到就停止定位
+			
+		}
 	}
 
 	@Override
 	public void onPause() {
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
+			locationHandler.removeCallbacks(locationRunnable);
 		}
 		super.onPause();
 	}
@@ -95,6 +118,7 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
 			mAMapLocationManager.destory();
+			locationHandler.removeCallbacks(locationRunnable);
 		}
 		mAMapLocationManager = null;
 		super.onDestroy();
@@ -105,27 +129,6 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 	 * 初始化组件
 	 */
 	private void initView() {
-
-		if (mAMapLocationManager == null) {
-			mAMapLocationManager = LocationManagerProxy.getInstance(this);
-			/*
-			 * mAMapLocManager.setGpsEnable(false);//
-			 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
-			 */
-			// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
-			mAMapLocationManager.requestLocationUpdates(LocationProviderProxy.AMapNetwork, 10000, 100, this);
-			
-			locationHandler .postDelayed(new Runnable() {
-				
-				@Override
-				public void run() {
-					if (location == null) {
-						Toast.makeText(MainTabActivity.this, "亲，定位失败，请检查网络状态！", Toast.LENGTH_SHORT).show();
-						stopLocation();// 销毁掉定位
-					}
-				}
-			}, 60000);// 设置超过12秒还没有定位到就停止定位
-		}
 
 		// 实例化布局对象
 		inflater = LayoutInflater.from(this);
@@ -202,6 +205,7 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 			if (mAMapLocationManager != null) {
 				mAMapLocationManager.removeUpdates(this);
 				mAMapLocationManager.destory();
+				locationHandler.removeCallbacks(locationRunnable);
 			}
 			mAMapLocationManager = null;
 		}
@@ -212,6 +216,7 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
 			mAMapLocationManager.destory();
+			locationHandler.removeCallbacks(locationRunnable);
 		}
 		mAMapLocationManager = null;
 		super.finish();

@@ -1,6 +1,5 @@
 package com.withiter.quhao.activity;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import android.app.AlertDialog;
@@ -22,8 +21,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import cn.sharesdk.framework.Platform;
-import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 
@@ -69,7 +66,6 @@ public class MoreFragment extends Fragment implements OnClickListener{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// TODO add default view here
 		if (!ActivityUtil.isNetWorkAvailable(getActivity())) {
 			Builder dialog = new AlertDialog.Builder(getActivity());
 			dialog.setTitle("温馨提示").setMessage("Wifi/蜂窝网络未打开，或者网络情况不是很好哟").setPositiveButton("确定", null);
@@ -77,7 +73,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			
 		}
 		
-		ShareSDK.initSDK(getActivity());
+//		ShareSDK.initSDK(getActivity());
 	}
 	
 	@Override
@@ -109,6 +105,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 		loginStatusImg = (ImageView) contentView.findViewById(R.id.more_login_status_img);
 		loginStatusTxt = (TextView) contentView.findViewById(R.id.more_login_status_txt);
 		refreshLoginStatus();
+//		ShareSDK.initSDK(getActivity());
 		return contentView;		
 	}
 	
@@ -150,6 +147,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 	
 	@Override
 	public void onResume() {
+		ShareSDK.initSDK(this.getActivity());
 		refreshLoginStatus();
 		super.onResume();
 	}
@@ -226,7 +224,6 @@ public class MoreFragment extends Fragment implements OnClickListener{
 					}
 
 					if (avo.android > currentVersion) {
-						// TODO there is bug here
 						Dialog dialog = new AlertDialog.Builder(getActivity()).setTitle("软件更新").setMessage("软件有更新，建议更新到最新版本")
 						// 设置内容
 								.setPositiveButton("更新",// 设置确定按钮
@@ -344,7 +341,6 @@ public class MoreFragment extends Fragment implements OnClickListener{
 				}
 
 				if (avo.android > currentVersion) {
-					// TODO there is bug here
 					Dialog dialog = new AlertDialog.Builder(getActivity()).setTitle("软件更新").setMessage("软件有更新，建议更新到最新版本")
 					// 设置内容
 							.setPositiveButton("更新",// 设置确定按钮
@@ -425,46 +421,18 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			// 显示分享界面
 			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			/*
-			OnekeyShare oks = new OnekeyShare();
-			oks.setNotification(R.drawable.ic_launcher, "quhao");
-			oks.setTitle("nihao, share sdk quhao application");
-			oks.setTitleUrl("http://www.withiter.com");
-			oks.setText("welcome to share quhao application");
-			oks.setImageUrl("http://f1.sharesdk.cn/imgs/2014/02/26/owWpLZo_638x960.jpg");
-			oks.setUrl("http://www.withiter.com");
-			oks.setSilent(false);
-			oks.setCallback(new PlatformActionListener(){
-
-				@Override
-				public void onCancel(Platform arg0, int arg1) {
-					// TODO Auto-generated method stub
-					
-				}
-
-				@Override
-				public void onComplete(Platform arg0, int arg1,
-						HashMap<String, Object> arg2) {
-					
-				}
-
-				@Override
-				public void onError(Platform arg0, int arg1, Throwable arg2) {
-					
-				}
-				
-			});
-			oks.show(this);*/
+			showShare(false, null);
 			
+			/*
 			final OnekeyShare oks = new OnekeyShare();
 			oks.setNotification(R.drawable.ic_launcher, getResources().getString(R.string.app_name));
 //			oks.setAddress("12345678901");
-			oks.setTitle("取号啦");
-			oks.setTitleUrl("http://service.quhao.la/");
+//			oks.setTitle("取号啦");
+//			oks.setTitleUrl("http://service.quhao.la/");
 			oks.setText("取号啦--让你排队不用等！");
 //			oks.setImagePath(MainActivity.TEST_IMAGE);
 			oks.setImageUrl("http://www.quhao.la/public/images/home/site_iphone.png");
-			oks.setUrl("http://service.quhao.la/");
+//			oks.setUrl("http://service.quhao.la/");
 //			oks.setFilePath(MainActivity.TEST_IMAGE);
 //			oks.setComment(getResources().getString(R.string.share));
 //			oks.setSite(getResources().getString(R.string.app_name));
@@ -473,7 +441,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 //			oks.setVenueDescription("This is a beautiful place!");
 //			oks.setLatitude(23.056081f);
 //			oks.setLongitude(113.385708f);
-			oks.setSilent(false);
+			oks.setSilent(true);
 			oks.setCallback(new PlatformActionListener(){
 
 				@Override
@@ -509,6 +477,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 				
 			});
 			oks.show(getActivity());
+			*/
 //			oks.setapp
  
  
@@ -535,8 +504,63 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			break;
 
 		default:
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;
 		}
 
-	}	
+	}
+	
+	// 使用快捷分享完成分享（请务必仔细阅读位于SDK解压目录下Docs文件夹中OnekeyShare类的JavaDoc）
+		/**ShareSDK集成方法有两种</br>
+		 * 1、第一种是引用方式，例如引用onekeyshare项目，onekeyshare项目再引用mainlibs库</br>
+		 * 2、第二种是把onekeyshare和mainlibs集成到项目中，本例子就是用第二种方式</br>
+		 * 请看“ShareSDK 使用说明文档”，SDK下载目录中 </br>
+		 * 或者看网络集成文档 http://wiki.sharesdk.cn/Android_%E5%BF%AB%E9%80%9F%E9%9B%86%E6%88%90%E6%8C%87%E5%8D%97
+		 * 3、混淆时，把sample或者本例子的混淆代码copy过去，在proguard-project.txt文件中
+		 *
+		 *
+		 * 平台配置信息有三种方式：
+		 * 1、在我们后台配置各个微博平台的key
+		 * 2、在代码中配置各个微博平台的key，http://sharesdk.cn/androidDoc/cn/sharesdk/framework/ShareSDK.html
+		 * 3、在配置文件中配置，本例子里面的assets/ShareSDK.conf,
+		 */
+		private void showShare(boolean silent, String platform) {
+			final OnekeyShare oks = new OnekeyShare();
+			oks.setNotification(R.drawable.ic_launcher, getActivity().getString(R.string.app_name));
+			oks.setAddress("");
+			oks.setText("取号啦--让你排队不用等！\n@取号啦 \n www.quhao.la");
+//			oks.setImageUrl("http://www.quhao.la/public/images/home/site_iphone.png");
+			oks.setSilent(silent);
+			if (platform != null) {
+				oks.setPlatform(platform);
+			}
+
+			// 去除注释，可令编辑页面显示为Dialog模式
+//			oks.setDialogMode();
+
+			// 去除注释，在自动授权时可以禁用SSO方式
+//			oks.disableSSOWhenAuthorize();
+
+			// 去除注释，则快捷分享的操作结果将通过OneKeyShareCallback回调
+//			oks.setCallback(new OneKeyShareCallback());
+//			oks.setShareContentCustomizeCallback(new ShareContentCustomizeDemo());
+
+			// 去除注释，演示在九宫格设置自定义的图标
+//			Bitmap logo = BitmapFactory.decodeResource(menu.getResources(), R.drawable.ic_launcher);
+//			String label = menu.getResources().getString(R.string.app_name);
+//			OnClickListener listener = new OnClickListener() {
+//				public void onClick(View v) {
+//					String text = "Customer Logo -- ShareSDK " + ShareSDK.getSDKVersionName();
+//					Toast.makeText(menu.getContext(), text, Toast.LENGTH_SHORT).show();
+//					oks.finish();
+//				}
+//			};
+//			oks.setCustomerLogo(logo, label, listener);
+
+			// 去除注释，则快捷分享九宫格中将隐藏新浪微博和腾讯微博
+//			oks.addHiddenPlatform(SinaWeibo.NAME);
+//			oks.addHiddenPlatform(TencentWeibo.NAME);
+
+			oks.show(getActivity());
+		}
 }
