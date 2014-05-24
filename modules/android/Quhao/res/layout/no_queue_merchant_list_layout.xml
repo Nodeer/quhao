@@ -34,39 +34,13 @@
             android:textColor="@color/white"
             android:textStyle="bold" />
     </RelativeLayout>
-	<LinearLayout
-        android:id="@+id/loadingbar"
-        android:layout_below="@id/titleBar"
-        android:layout_alignParentBottom="true"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:background="#ffffffff"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="10dip">
-
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <View
-            android:layout_width="10dip"
-            android:layout_height="10dip" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/loading"
-            android:textColor="#ff000000" />
-    </LinearLayout>
 	<LinearLayout android:id="@+id/serverdata"
 	    android:layout_below="@id/titleBar"
 	    android:layout_alignParentBottom="true"
 	    android:orientation="vertical"
 	    android:layout_width="fill_parent" 
 	    android:layout_height="match_parent" 
-	    android:background="#ffffffff"
-	    android:visibility="gone">
+	    android:background="#ffffffff">
 		<LinearLayout 
 		    android:orientation="vertical"
 		    android:layout_width="fill_parent" 

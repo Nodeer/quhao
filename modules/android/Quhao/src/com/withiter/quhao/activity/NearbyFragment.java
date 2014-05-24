@@ -131,8 +131,8 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 			dialog.show();
 		}
 			
-		contentView.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
-		contentView.findViewById(R.id.serverdata).setVisibility(View.GONE);
+//		contentView.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
+//		contentView.findViewById(R.id.serverdata).setVisibility(View.GONE);
 		resultLayout.setVisibility(View.VISIBLE);
 		noResultLayout.setVisibility(View.GONE);
 		locationResult.setVisibility(View.GONE);
@@ -145,8 +145,8 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		public void run() {
 			if (firstLocation == null) {
 				Toast.makeText(getActivity(), "亲，定位失败，请检查网络状态！", Toast.LENGTH_SHORT).show();
-				contentView.findViewById(R.id.loadingbar).setVisibility(View.GONE);
-				contentView.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
+//				contentView.findViewById(R.id.loadingbar).setVisibility(View.GONE);
+//				contentView.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
 				resultLayout.setVisibility(View.GONE);
 				noResultLayout.setVisibility(View.VISIBLE);
 				noResultView.setText(R.string.location_failed);
@@ -252,8 +252,8 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 				nearByAdapter.notifyDataSetChanged();
 				// merchantsListView.setOnScrollListener(NearbyFragment.this);
 				merchantsListView.setOnItemClickListener(NearbyFragment.this);
-				contentView.findViewById(R.id.loadingbar).setVisibility(View.GONE);
-				contentView.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
+//				contentView.findViewById(R.id.loadingbar).setVisibility(View.GONE);
+//				contentView.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
 				if(null != merchantList && !merchantList.isEmpty())
 				{
 					resultLayout.setVisibility(View.VISIBLE);
@@ -517,8 +517,8 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 		switch (v.getId()) {
 		case R.id.location_result:
-			contentView.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
-			contentView.findViewById(R.id.serverdata).setVisibility(View.GONE);
+//			contentView.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
+//			contentView.findViewById(R.id.serverdata).setVisibility(View.GONE);
 			resultLayout.setVisibility(View.VISIBLE);
 			noResultLayout.setVisibility(View.GONE);
 			locationResult.setVisibility(View.GONE);

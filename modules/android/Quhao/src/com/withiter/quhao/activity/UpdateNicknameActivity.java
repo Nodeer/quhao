@@ -1,5 +1,8 @@
 package com.withiter.quhao.activity;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
@@ -13,6 +16,7 @@ import android.widget.Toast;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
+import com.withiter.quhao.task.CheckNicknameTask;
 import com.withiter.quhao.task.UpdateNicknameTask;
 import com.withiter.quhao.util.StringUtils;
 
@@ -61,6 +65,16 @@ public class UpdateNicknameActivity extends QuhaoBaseActivity {
 				nickname = nickNameText.getText().toString();
 				if(StringUtils.isNotNull(nickname.trim()))
 				{
+					boolean flag = checkNickName(nickname.trim());
+					if(!flag)
+					{
+						Toast.makeText(this, "昵称只能使用字母、数字、中文和下划线组成，且不能以下划线开头，长度为4-16个字符，中文为两个字符。", Toast.LENGTH_LONG).show();
+						unlockHandler.sendEmptyMessageAtTime(UNLOCK_CLICK, 1000);
+						return;
+					}
+					
+//					CheckNicknameTask checkTask = new CheckNicknameTask(R.string.waitting_for_commit, this, "");
+					
 					UpdateNicknameTask task = new UpdateNicknameTask(R.string.waitting_for_commit, this, "updateUserName?accoutId=" + QHClientApplication.getInstance().accountInfo.accountId + "&name=" + nickname);
 					task.execute(new Runnable() {
 						
@@ -105,6 +119,49 @@ public class UpdateNicknameActivity extends QuhaoBaseActivity {
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;
 		}
+	}
+
+	private boolean checkNickName(String nickName) {
+		
+		Pattern pat = Pattern.compile("^[\u4E00-\u9FA5A-Za-z0-9_]+$");
+		Matcher matcher = pat.matcher(nickName.trim());
+	 
+		Pattern zhCN = Pattern.compile("^[\u4e00-\u9fa5]$");
+	  
+		int count = 0;
+	  
+		if(matcher.matches())
+		{
+			String str = nickName.substring(0, 1);
+			if("_".equals(str))
+			{
+				return false;
+			}
+			else
+			{
+				 String[] ss = nickName.split("");
+				 
+				 for (int j = 0; j < ss.length; j++) {
+					 if(zhCN.matcher(ss[j]).matches())
+					 {
+						 count = count+2;
+					 }
+					 else
+					 {
+						 count = count+1;
+					 }
+				 }
+				 
+				 if(count<5 || count>17)
+				 {
+					 return false;
+				 }
+				 
+				 return true;
+			}
+		}
+	  
+		return false;
 	}
 
 	@Override

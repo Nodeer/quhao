@@ -22,7 +22,7 @@
     <string name="kuaisutongdao">快速通道</string>
     <string name="meishifenlei">美食分类</string>
     <string name="dingwei">定位</string>
-    <string name="no_categorys_for_city">亲，此城市尚未开通哦！</string>
+    <string name="no_categorys_for_city">亲，此城市尚未开通,或检查下网络状态。</string>
     <!-- 首页 -->
     
     <!-- 搜索页面 -->
@@ -177,8 +177,8 @@
 	<string name="share_cancel">分享取消</string>
 	<string name="more_setting_cleanpicture">清除本地缓存图片</string>
     <string name="more_setting_cleancache">清除本地缓存数据</string>
-    <string name="more_setting_showimage">2G/3G网络无图浏览(节省流量)</string>
-    <string name="sys_option">无图浏览:为节省流量,2G/3G网络状态下不加载图片,使用WIFI网络正常显示图片.</string>
+    <string name="more_setting_showimage">是否显示图片</string>
+    <string name="sys_option">无图浏览可以节省流量.</string>
     <string name="more_company_intro">聪明的排队让生活更有效率！</string>
     <string name="more_versioncode">软件版本：</string>
     <string name="super_detail_service_phone">客服电话：</string>

@@ -53,6 +53,8 @@ public class QuhaoConstant {
 	 */
 	public static String NEXT_CMD = "";
 	public static String IS_2G3G_READ = "com.withiter.settings.2g3g.read.img";
+	
+	public static String IS_LOAD_IMG = "com.withiter.settings.is.read.img";
 
 	public static String CITY_CODE = "cityCode";
 	

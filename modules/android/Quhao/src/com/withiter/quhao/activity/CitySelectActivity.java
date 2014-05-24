@@ -109,32 +109,18 @@ public class CitySelectActivity extends QuhaoBaseActivity implements AMapLocatio
 
 		searchEdit.setOnClickListener(this);
 
-		if (ActivityUtil.isNetWorkAvailable(this)) {
-			if (mAMapLocationManager == null) {
-				mAMapLocationManager = LocationManagerProxy.getInstance(this);
-				/*
-				 * mAMapLocManager.setGpsEnable(false);
-				 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
-				 */
-				// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
-				mAMapLocationManager.requestLocationUpdates(LocationProviderProxy.AMapNetwork, 10000, 100, this);
-				
-				locationHandler .postDelayed(new Runnable() {
-					
-					@Override
-					public void run() {
-						if (location == null) {
-							Toast.makeText(CitySelectActivity.this, "亲，定位失败，请检查网络状态！", Toast.LENGTH_SHORT).show();
-							stopLocation();// 销毁掉定位
-						}
-					}
-				}, 60000);// 设置超过12秒还没有定位到就停止定位
-			}
-		} else {
-			locateMsg.setText("网络未开启...");
-		}
 	}
 
+	private Runnable locationRunnable = new Runnable() {
+		
+		@Override
+		public void run() {
+			if (location == null) {
+				Toast.makeText(CitySelectActivity.this, "亲，定位失败，请检查网络状态！", Toast.LENGTH_SHORT).show();
+				stopLocation();// 销毁掉定位
+			}
+		}
+	};
 	/**
 	 * 销毁定位
 	 */
@@ -232,6 +218,21 @@ public class CitySelectActivity extends QuhaoBaseActivity implements AMapLocatio
 	@Override
 	protected void onResume() {
 		initView();
+		if (ActivityUtil.isNetWorkAvailable(this)) {
+			if (mAMapLocationManager == null) {
+				mAMapLocationManager = LocationManagerProxy.getInstance(this);
+				/*
+				 * mAMapLocManager.setGpsEnable(false);
+				 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
+				 */
+				// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
+				mAMapLocationManager.requestLocationUpdates(LocationProviderProxy.AMapNetwork, 10000, 100, this);
+				
+				locationHandler.postDelayed(locationRunnable, 60000);// 设置超过12秒还没有定位到就停止定位
+			}
+		} else {
+			locateMsg.setText("网络未开启...");
+		}
 		super.onResume();
 	};
 
@@ -410,6 +411,7 @@ public class CitySelectActivity extends QuhaoBaseActivity implements AMapLocatio
 	public void onPause() {
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
+			locationHandler.removeCallbacks(locationRunnable);
 		}
 		super.onPause();
 	}
@@ -424,6 +426,7 @@ public class CitySelectActivity extends QuhaoBaseActivity implements AMapLocatio
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
 			mAMapLocationManager.destory();
+			locationHandler.removeCallbacks(locationRunnable);
 		}
 		mAMapLocationManager = null;
 		super.onDestroy();
@@ -453,6 +456,7 @@ public class CitySelectActivity extends QuhaoBaseActivity implements AMapLocatio
 			if (mAMapLocationManager != null) {
 				mAMapLocationManager.removeUpdates(this);
 				mAMapLocationManager.destory();
+				locationHandler.removeCallbacks(locationRunnable);
 			}
 			mAMapLocationManager = null;
 			String cityName = location.getCity().replace("市", "");
@@ -462,6 +466,7 @@ public class CitySelectActivity extends QuhaoBaseActivity implements AMapLocatio
 			if (mAMapLocationManager != null) {
 				mAMapLocationManager.removeUpdates(this);
 				mAMapLocationManager.destory();
+				locationHandler.removeCallbacks(locationRunnable);
 			}
 			mAMapLocationManager = null;
 			locateMsg.setText("定位失败...");

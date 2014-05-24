@@ -118,6 +118,7 @@ public class QHClientApplication extends Application {
 	private void initServerConfig() {
 		try {
 
+			/*
 			String is2G3GRead = SharedprefUtil.get(this, QuhaoConstant.IS_2G3G_READ, "true");
 
 			if ("true".equals(is2G3GRead)) {
@@ -133,7 +134,13 @@ public class QHClientApplication extends Application {
 			} else {
 				this.canLoadImg = false;
 			}
-
+			*/
+			String canLoadImgStr = SharedprefUtil.get(this, QuhaoConstant.IS_LOAD_IMG, "false");
+			if("true".equals(canLoadImgStr))
+			{
+				this.canLoadImg = true;
+			}
+			
 			// 初始化城市
 			String cityCode = SharedprefUtil.get(this, QuhaoConstant.CITY_CODE, "021");
 			String cityName = SharedprefUtil.get(this, QuhaoConstant.CITY_NAME, "上海");

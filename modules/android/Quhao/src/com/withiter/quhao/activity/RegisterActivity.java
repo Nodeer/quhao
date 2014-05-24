@@ -264,51 +264,60 @@ public class RegisterActivity extends QuhaoBaseActivity {
 						}
 						
 						loginName = loginNameText.getText().toString().trim();
-						if (StringUtils.isNotNull(loginName) && validatePhoneNumber(loginName)) {
-							password = passwordText.getText().toString().trim();
-							password2 = password2Text.getText().toString().trim();
-							verifyCode = verifyCodeText.getText().toString().trim();
-							if (StringUtils.isNull(password)) {
-								progressDialogUtil.closeProgress();
-								Toast.makeText(RegisterActivity.this, "请输入密码。", Toast.LENGTH_LONG).show();
-								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-								return;
-							}
+						if (StringUtils.isNotNull(loginName)) {
+							if(validatePhoneNumber(loginName))
+							{
+								password = passwordText.getText().toString().trim();
+								password2 = password2Text.getText().toString().trim();
+								verifyCode = verifyCodeText.getText().toString().trim();
+								if (StringUtils.isNull(password)) {
+									progressDialogUtil.closeProgress();
+									Toast.makeText(RegisterActivity.this, "请输入密码。", Toast.LENGTH_LONG).show();
+									unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+									return;
+								}
 
-							if (StringUtils.isNull(password2)) {
-								progressDialogUtil.closeProgress();
-								Toast.makeText(RegisterActivity.this, "请输入确认密码。", Toast.LENGTH_LONG).show();
-								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-								return;
-							}
+								if (StringUtils.isNull(password2)) {
+									progressDialogUtil.closeProgress();
+									Toast.makeText(RegisterActivity.this, "请输入确认密码。", Toast.LENGTH_LONG).show();
+									unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+									return;
+								}
 
-							if (StringUtils.isNull(verifyCode)) {
-								progressDialogUtil.closeProgress();
-								Toast.makeText(RegisterActivity.this, "请输入验证码。", Toast.LENGTH_LONG).show();
-								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-								return;
-							}
+								if (StringUtils.isNull(verifyCode)) {
+									progressDialogUtil.closeProgress();
+									Toast.makeText(RegisterActivity.this, "请输入验证码。", Toast.LENGTH_LONG).show();
+									unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+									return;
+								}
 
-							if (!password.equals(password2)) {
-								progressDialogUtil.closeProgress();
-								Toast.makeText(RegisterActivity.this, "密码与确认密码必须一致。", Toast.LENGTH_LONG).show();
-								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-								return;
-							}
+								if (!password.equals(password2)) {
+									progressDialogUtil.closeProgress();
+									Toast.makeText(RegisterActivity.this, "密码与确认密码必须一致。", Toast.LENGTH_LONG).show();
+									unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+									return;
+								}
 
-							String url = "signupWithMobile?mobile=" + loginName + "&code=" + verifyCode + "&password=" + password + "&os=ANDROID";
-							QuhaoLog.d("cross", "signup password:" + password);
-							QuhaoLog.d("cross", "signup url is:" + url);
-							String buf = CommonHTTPRequest.get(url);
-							if (StringUtils.isNull(buf) || "[]".equals(buf)) {
-								progressDialogUtil.closeProgress();
-								Toast.makeText(RegisterActivity.this, "亲，注册失败了，请重新注册。", Toast.LENGTH_LONG).show();
-								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-								return;
-							}
+								String url = "signupWithMobile?mobile=" + loginName + "&code=" + verifyCode + "&password=" + password + "&os=ANDROID";
+								QuhaoLog.d("cross", "signup password:" + password);
+								QuhaoLog.d("cross", "signup url is:" + url);
+								String buf = CommonHTTPRequest.get(url);
+								if (StringUtils.isNull(buf) || "[]".equals(buf)) {
+									progressDialogUtil.closeProgress();
+									Toast.makeText(RegisterActivity.this, "亲，注册失败了，请重新注册。", Toast.LENGTH_LONG).show();
+									unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+									return;
+								}
 
-							signup = ParseJson.getSignup(buf);
-							signupUpdateHandler.obtainMessage(200, signup).sendToTarget();
+								signup = ParseJson.getSignup(buf);
+								signupUpdateHandler.obtainMessage(200, signup).sendToTarget();
+							}
+							else
+							{
+								progressDialogUtil.closeProgress();
+								Toast.makeText(RegisterActivity.this, "请填写正确手机号。", Toast.LENGTH_LONG).show();
+								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+							}
 
 						} else {
 							progressDialogUtil.closeProgress();
@@ -339,19 +348,29 @@ public class RegisterActivity extends QuhaoBaseActivity {
 
 						loginName = loginNameText.getText().toString().trim();
 						
-						if (StringUtils.isNull(loginName) || validatePhoneNumber(loginName)) {
-							String url = "generateAuthCode?mobile=" + loginName + "&os=ANDROID";
+						if (StringUtils.isNull(loginName)) {
+							if(validatePhoneNumber(loginName))
+							{
+								String url = "generateAuthCode?mobile=" + loginName + "&os=ANDROID";
 
-							String buf = CommonHTTPRequest.get(url);
-							if (StringUtils.isNull(buf) || "[]".equals(buf)) {
-								progressDialogUtil.closeProgress();
-								Toast.makeText(RegisterActivity.this, "发送验证码失败， 请重按验证码按钮。", Toast.LENGTH_LONG).show();
-								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-								return;
+								String buf = CommonHTTPRequest.get(url);
+								if (StringUtils.isNull(buf) || "[]".equals(buf)) {
+									progressDialogUtil.closeProgress();
+									Toast.makeText(RegisterActivity.this, "发送验证码失败， 请重按验证码按钮。", Toast.LENGTH_LONG).show();
+									unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+									return;
+								}
+
+								signup = ParseJson.getSignup(buf);
+								verifyUpdateHandler.obtainMessage(200, signup).sendToTarget();
 							}
-
-							signup = ParseJson.getSignup(buf);
-							verifyUpdateHandler.obtainMessage(200, signup).sendToTarget();
+							else
+							{
+								progressDialogUtil.closeProgress();
+								Toast.makeText(RegisterActivity.this, "请填写正确手机号。", Toast.LENGTH_LONG).show();
+								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+							}
+							
 
 						} else {
 							progressDialogUtil.closeProgress();

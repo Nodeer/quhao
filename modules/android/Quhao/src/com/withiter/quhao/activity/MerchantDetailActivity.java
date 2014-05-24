@@ -16,7 +16,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -477,6 +476,10 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						merchantPhone.setText(m.phone);
 						merchantBusinessTime.setText(m.openTime + "~" + m.closeTime);
 	
+						if(StringUtils.isNull(m.openTime) || StringUtils.isNull(m.closeTime))
+						{
+							merchantBusinessTime.setText("暂无");
+						}
 						merchantDesc.setText(m.description);
 						
 						openNumView.setText(String.valueOf(m.openNum));
