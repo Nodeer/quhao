@@ -40,9 +40,7 @@
 - (void)viewDidLoad
 {
     _merchartsArray = [[NSMutableArray alloc] initWithCapacity:20];
-    if([[Helper returnUserString:@"isLocation"] isEqualToString:@"0"]){
-        return;
-    }else{
+    if([[Helper returnUserString:@"isLocation"] isEqualToString:@"1"]){
         _latitude = [Helper returnUserString:@"latitude"];
         _longitude = [Helper returnUserString:@"longitude"];
     }
@@ -154,7 +152,7 @@
     {
         _isLoadOver = YES;
          _HUD.labelText = @"当前网络不可用";
-        [_HUD hide:YES];
+        [_HUD hide:YES afterDelay:0.5];
     }
 
 }

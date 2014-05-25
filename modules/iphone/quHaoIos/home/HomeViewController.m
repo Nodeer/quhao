@@ -108,10 +108,10 @@
         [self requestMenuData];
     });
     dispatch_group_notify(group, dispatch_get_main_queue(), ^{
-         if([_topIdArray count]!=0){
+        if([_topIdArray count]!=0){
              [self topSetOrReset];
-             [self createMiddleView];
         }
+        [self createMiddleView];
         [self menuSetOrReset];
         [self.view bringSubviewToFront:_HUD];
         [_HUD hide:YES];
@@ -223,6 +223,7 @@
             _isLoading = YES;
         });
     }else{
+        _isLoading = YES;
         [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
     }
 }
@@ -291,27 +292,23 @@
 
 -(void)wdgz:(id)sender
 {
-    if([Helper isConnectionAvailable]){
-        Helper *helper=[Helper new];
-        if (![Helper isCookie]) {
-            LoginView *loginView = [[LoginView alloc] init];
-            loginView._isPopupByNotice = YES;
-            helper.viewBeforeLogin = self;
-            helper.viewNameBeforeLogin = @"HomeViewController";
-            loginView.helper=helper;
-            loginView.hidesBottomBarWhenPushed=YES;
-            [self.navigationController pushViewController:loginView animated:YES];
-            return;
-        }else{
-            AttentionViewController *att = [[AttentionViewController alloc] init];
-            att.accountId = [Helper getUID];
-            att.latitude = [[Helper returnUserString:@"latitude"] doubleValue];
-            att.longitude = [[Helper returnUserString:@"longitude"] doubleValue];
-            att.hidesBottomBarWhenPushed=YES;
-            [self.navigationController pushViewController:att animated:YES];
-        }
+    Helper *helper=[Helper new];
+    if (![Helper isCookie]) {
+        LoginView *loginView = [[LoginView alloc] init];
+        loginView._isPopupByNotice = YES;
+        helper.viewBeforeLogin = self;
+        helper.viewNameBeforeLogin = @"HomeViewController";
+        loginView.helper=helper;
+        loginView.hidesBottomBarWhenPushed=YES;
+        [self.navigationController pushViewController:loginView animated:YES];
+        return;
     }else{
-        [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
+        AttentionViewController *att = [[AttentionViewController alloc] init];
+        att.accountId = [Helper getUID];
+        att.latitude = [[Helper returnUserString:@"latitude"] doubleValue];
+        att.longitude = [[Helper returnUserString:@"longitude"] doubleValue];
+        att.hidesBottomBarWhenPushed=YES;
+        [self.navigationController pushViewController:att animated:YES];
     }
 }
 
