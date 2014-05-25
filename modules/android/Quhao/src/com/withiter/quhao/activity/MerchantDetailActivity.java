@@ -473,6 +473,10 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						mName = m.name;
 						merchantName.setText(m.name);
 						merchantAddress.setText(m.address);
+						if(StringUtils.isNull(m.address))
+						{
+							merchantAddress.setText("暂无地址");
+						}
 						merchantPhone.setText(m.phone);
 						if (StringUtils.isNull(m.phone)) {
 							merchantPhone.setText("暂无");

@@ -17,7 +17,7 @@ public class UpdateNicknameTask extends BaseTask {
 //	private HashMap<String, String> mParams;
 	private String url;
 	
-	private String result;
+	public String result;
 
 	/**
 	 * 

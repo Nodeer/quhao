@@ -19,6 +19,8 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.task.CheckNicknameTask;
 import com.withiter.quhao.task.UpdateNicknameTask;
 import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.util.tool.ParseJson;
+import com.withiter.quhao.vo.SignupVO;
 
 public class UpdateNicknameActivity extends QuhaoBaseActivity {
 
@@ -73,17 +75,36 @@ public class UpdateNicknameActivity extends QuhaoBaseActivity {
 						return;
 					}
 					
-//					CheckNicknameTask checkTask = new CheckNicknameTask(R.string.waitting_for_commit, this, "");
-					
-					UpdateNicknameTask task = new UpdateNicknameTask(R.string.waitting_for_commit, this, "updateUserName?accoutId=" + QHClientApplication.getInstance().accountInfo.accountId + "&name=" + nickname);
+					final UpdateNicknameTask task = new UpdateNicknameTask(R.string.waitting_for_commit, this, "updateUserName?accoutId=" + QHClientApplication.getInstance().accountInfo.accountId + "&name=" + nickname);
 					task.execute(new Runnable() {
 						
 						@Override
 						public void run() {
 							
-							QHClientApplication.getInstance().accountInfo.nickName = nickname;
+							String result = task.result;
 							
-							UpdateNicknameActivity.this.finish();
+							SignupVO vo = ParseJson.getSignup(result);
+							
+							if(null != vo)
+							{
+								if ("1".equals(vo.errorKey)) {
+									QHClientApplication.getInstance().accountInfo.nickName = nickname;
+									unlockHandler.sendEmptyMessageAtTime(UNLOCK_CLICK, 1000);
+									UpdateNicknameActivity.this.finish();
+								}
+								else
+								{
+									Toast.makeText(UpdateNicknameActivity.this, vo.errorText, Toast.LENGTH_SHORT).show();
+									unlockHandler.sendEmptyMessageAtTime(UNLOCK_CLICK, 1000);
+								}
+								
+							}
+							else
+							{
+								Toast.makeText(UpdateNicknameActivity.this, R.string.nickname_update_failed, Toast.LENGTH_LONG).show();
+								unlockHandler.sendEmptyMessageAtTime(UNLOCK_CLICK, 1000);
+							}
+							
 						}
 					},new Runnable() {
 						
