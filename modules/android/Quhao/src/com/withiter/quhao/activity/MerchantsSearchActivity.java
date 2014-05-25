@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 
+import com.amap.api.location.AMapLocation;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantAdapter;
@@ -192,8 +193,17 @@ public class MerchantsSearchActivity extends QuhaoBaseActivity {
 					progressMerchants.closeProgress();
 
 				}
+				
 				String result = CommonHTTPRequest.get("search?name=" + MerchantsSearchActivity.this.editSearch.getText().toString().trim() + "&cityCode="
 						+ QHClientApplication.getInstance().defaultCity.cityCode);
+				
+				AMapLocation location = QHClientApplication.getInstance().location;
+				if (location != null) {
+					result = result + "&userX=" + location.getLongitude() + "&userY=" + location.getLatitude();
+				} else {
+					result = result + "&userX=0.000000&userY=0.000000";
+				}
+				
 				if (StringUtils.isNull(result) || "null".equals(result) || "[]".equals(result)) {
 					merchants = new ArrayList<Merchant>();
 					merchantsUpdateHandler.obtainMessage(200, merchants).sendToTarget();

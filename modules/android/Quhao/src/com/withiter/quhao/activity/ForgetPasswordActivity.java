@@ -182,8 +182,13 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 					try {
 						
 						loginName = loginNameText.getText().toString().trim();
-						if (StringUtils.isNotNull(loginName)
-								|| validatePhoneNumber(loginName)) {
+						if (StringUtils.isNotNull(loginName)) {
+							if (!validatePhoneNumber(loginName)) {
+								progressDialogUtil.closeProgress();
+								Toast.makeText(ForgetPasswordActivity.this, "请填写正确手机号。", Toast.LENGTH_LONG).show();
+								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+								return;
+							}
 							password = passwordText.getText().toString().trim();
 							password2 = password2Text.getText().toString().trim();
 							verifyCode = verifyCodeText.getText().toString().trim();
@@ -282,8 +287,13 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 					try {
 						
 						loginName = loginNameText.getText().toString().trim();
-						if (StringUtils.isNotNull(loginName)
-								|| validatePhoneNumber(loginName)) {
+						if (StringUtils.isNotNull(loginName)) {
+							if (!validatePhoneNumber(loginName)) {
+								progressDialogUtil.closeProgress();
+								Toast.makeText(ForgetPasswordActivity.this, "请填写正确手机号。", Toast.LENGTH_LONG).show();
+								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+								return;
+							}
 							String url = "getAuthCode?mobile=" + loginName;
 
 							String buf = CommonHTTPRequest.get(url);

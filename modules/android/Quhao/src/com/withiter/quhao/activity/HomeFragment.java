@@ -9,8 +9,10 @@ import java.util.concurrent.TimeUnit;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -48,6 +50,7 @@ import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.AsynImageLoader;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
+import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.view.refresh.PullToRefreshView;
 import com.withiter.quhao.view.refresh.PullToRefreshView.OnFooterRefreshListener;
 import com.withiter.quhao.view.refresh.PullToRefreshView.OnHeaderRefreshListener;
@@ -137,6 +140,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	@Override
 	public void onDestroyView() {
 		Log.e("wjzwjz", "HomeFragment onDestroyView");
+		getActivity().unregisterReceiver(cityChangeReceiver);
 		super.onDestroyView();
 	}
 
@@ -158,6 +162,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 		{
 			ViewGroup vg = (ViewGroup) contentView.getParent();
 			vg.removeView(contentView);
+			getActivity().registerReceiver(cityChangeReceiver, new IntentFilter(QuhaoConstant.ACTION_CITY_CHANGED));
 			return contentView;
 		}
 		
@@ -222,9 +227,33 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 			}
 		});
 		
+		cityBtn.setText(QHClientApplication.getInstance().defaultCity.cityName);
+		categorysGird.setVisibility(View.VISIBLE);
+		noResultLayout.setVisibility(View.GONE);
+		
+		getActivity().registerReceiver(cityChangeReceiver, new IntentFilter(QuhaoConstant.ACTION_CITY_CHANGED));
+		getTopMerchantsFromServerAndDisplay();
+		getCategoriesFromServerAndDisplay();
 		return contentView;
 	}
 
+	private BroadcastReceiver cityChangeReceiver = new BroadcastReceiver() {
+		
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			
+			String action = intent.getAction();
+			if(QuhaoConstant.ACTION_CITY_CHANGED.equals(action))
+			{
+				cityBtn.setText(QHClientApplication.getInstance().defaultCity.cityName);
+				getTopMerchantsFromServerAndDisplay();
+				getCategoriesFromServerAndDisplay();
+			}
+			
+			
+		}
+	};
+	
 	@Override
 	public void onHeaderRefresh(PullToRefreshView view) {
 		mPullToRefreshView.postDelayed(new Runnable() {
@@ -460,12 +489,8 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 
 	@Override
 	public void onResume() {
+		
 		super.onResume();
-		cityBtn.setText(QHClientApplication.getInstance().defaultCity.cityName);
-		categorysGird.setVisibility(View.VISIBLE);
-		noResultLayout.setVisibility(View.GONE);
-		getTopMerchantsFromServerAndDisplay();
-		getCategoriesFromServerAndDisplay();
 		
 	}
 

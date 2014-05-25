@@ -70,4 +70,6 @@ public class QuhaoConstant {
 	
 	public static String PERSON_IMAGE_FOLDER = "quhao/personimages/";
 	
+	public static String ACTION_CITY_CHANGED = "android.intent.action.quhao.city_changed";
+	
 }

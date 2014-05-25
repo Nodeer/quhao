@@ -352,6 +352,7 @@ public class ParseJson {
 		merchant.commentFuwu = commentFuwu;
 		merchant.commentContent = commentContent;
 		merchant.commentDate = commentDate;
+		
 		merchant.isAttention = isAttention;
 
 		return merchant;

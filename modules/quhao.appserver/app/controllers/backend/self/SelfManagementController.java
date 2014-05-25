@@ -63,8 +63,8 @@ public class SelfManagementController extends BaseController {
 	}
 
 	/*
-	 * 1) account information(included information:email or phone...) 
-	 * 2) Merchant information(included information:name, address...)
+	 * 1) account information(included information:email or phone...) 2)
+	 * Merchant information(included information:name, address...)
 	 */
 
 	/**
@@ -97,36 +97,37 @@ public class SelfManagementController extends BaseController {
 		String description = params.get("description");
 		String cityCode = params.get("cityCode");
 		String address = params.get("address");
-		
+
 		String x = params.get("x");
 		String y = params.get("y");
-		
+
 		String tel = params.get("tel");
 		String cateType = params.get("cateType");
 		String cateName = params.get("cateName");
-		
+
 		String cateType1 = params.get("cateType1");
 		String cateName1 = params.get("cateName1");
-		
+
 		String openTime = params.get("openTime");
 		String closeTime = params.get("closeTime");
 		String merchantImage = params.get("merchantImage");
 
 		String[] seatType = params.getAll("seatType");
 
-		if (StringUtils.isEmpty(mid)) {		// new merchant
+		if (StringUtils.isEmpty(mid)) { // new merchant
 			m = new Merchant();
 			m.save();
 			MerchantAccountRel rel = new MerchantAccountRel();
 			rel.mid = m.id();
 			rel.uid = uid;
 			rel.save();
-		} else {			
+		} else {
 			m = Merchant.findById(mid);
-			
-			// check rel exist, if yes -> operation is update. if no -> new MerchantAccountRel
+
+			// check rel exist, if yes -> operation is update. if no -> new
+			// MerchantAccountRel
 			MerchantAccountRel r = MerchantAccountRel.findByMid(mid);
-			if(r == null){
+			if (r == null) {
 				// new MerchantAccountRel
 				MerchantAccountRel rel = new MerchantAccountRel();
 				rel.mid = m.id();
@@ -134,25 +135,28 @@ public class SelfManagementController extends BaseController {
 				rel.save();
 			}
 		}
-		
+
 		if (!StringUtils.isEmpty(merchantName)) {
 			m.name = merchantName;
 		}
 		m.description = description;
 		m.cityCode = cityCode;
 		m.address = address;
-		
+
 		m.x = x;
 		m.y = y;
-		double[] d = {Double.parseDouble(y), Double.parseDouble(x)};
+		double[] d = { Double.parseDouble(y), Double.parseDouble(x) };
 		m.loc = d;
-		
+
 		m.telephone = tel.split(",");
 		m.cateType = cateType;
 		m.cateName = cateName;
-		if(!StringUtils.isEmpty(cateType1) && !StringUtils.isEmpty(cateName1)){
+		if (!StringUtils.isEmpty(cateType1) && !StringUtils.isEmpty(cateName1)) {
 			m.cateType1 = cateType1;
 			m.cateName1 = cateName1;
+		} else {
+			m.cateType1 = "";
+			m.cateName1 = "";
 		}
 		m.openTime = openTime;
 		m.closeTime = closeTime;
@@ -168,7 +172,7 @@ public class SelfManagementController extends BaseController {
 
 		Haoma haoma = Haoma.findByMerchantId(m.id());
 		Iterator it = haoma.haomaMap.keySet().iterator();
-		
+
 		// 循环老的排队信息，设置最新的桌位以及清除非开启的桌位类型对应信息
 		while (it.hasNext()) {
 			Integer key = (Integer) it.next();
@@ -181,10 +185,12 @@ public class SelfManagementController extends BaseController {
 				Paidui p = haoma.haomaMap.get(key);
 				p.reset();
 				haoma.haomaMap.put(key, p);
-				
-				// set the reservations status with this seatNumber to invalid(valid = false) 
-				// and the change Constants.ReservationStatus status to invalidByMerchantUpdate
-				Reservation.invalidByMerchantUpdate(key,m.id());
+
+				// set the reservations status with this seatNumber to
+				// invalid(valid = false)
+				// and the change Constants.ReservationStatus status to
+				// invalidByMerchantUpdate
+				Reservation.invalidByMerchantUpdate(key, m.id());
 			}
 		}
 
@@ -239,7 +245,6 @@ public class SelfManagementController extends BaseController {
 		renderJapid(haomaVO, bmivo);
 	}
 
-
 	/**
 	 * 进入个人信息管理
 	 */
@@ -250,7 +255,7 @@ public class SelfManagementController extends BaseController {
 
 		String mid = params.get("mid");
 		Merchant merchant = null;
-		if(!StringUtils.isEmpty(mid)){
+		if (!StringUtils.isEmpty(mid)) {
 			merchant = Merchant.findById(mid);
 		}
 		BackendMerchantInfoVO bmivo = BackendMerchantInfoVO.build(merchant, account);
@@ -269,7 +274,7 @@ public class SelfManagementController extends BaseController {
 		long lastMonthCancelCount = Reservation.lastMonthCancelCount(mid);
 		long lastThreeMonthsFinishCount = Reservation.lastThreeMonthsFinishCount(mid);
 		long lastThreeMonthsCancelCount = Reservation.lastThreeMonthsCancelCount(mid);
-		
+
 		StatisticsVO svo = new StatisticsVO();
 		svo.lastDayFinish = lastDayFinishCount;
 		svo.lastDayCancel = lastDayCancelCount;
@@ -288,65 +293,65 @@ public class SelfManagementController extends BaseController {
 	/**
 	 * 优惠管理
 	 */
-	public static void goYouhuiPage(){
+	public static void goYouhuiPage() {
 		String mid = params.get("mid");
-		
+
 		List<Youhui> youhuiList = Youhui.getAllEnabledYouhui(mid);
 		List<YouhuiVO> yvoList = new ArrayList<YouhuiVO>();
-		for(Youhui yh : youhuiList){
+		for (Youhui yh : youhuiList) {
 			yvoList.add(YouhuiVO.build(yh));
 		}
-		
+
 		String uid = Session.current().get(Constants.SESSION_USERNAME);
 		MerchantAccount account = MerchantAccount.findById(uid);
 		Merchant merchant = Merchant.findById(mid);
 		BackendMerchantInfoVO bmivo = BackendMerchantInfoVO.build(merchant, account);
 		renderJapid(yvoList, bmivo);
 	}
-	
+
 	/**
 	 * 添加优惠信息
 	 */
-	public static void saveYouhui(){
+	public static void saveYouhui() {
 		String mid = params.get("mid");
 		String title = params.get("title");
 		String content = params.get("content");
-		
+
 		logger.debug(mid);
 		logger.debug(title);
 		logger.debug(content);
-		
+
 		Youhui y = new Youhui();
 		y.mid = mid;
 		y.title = title;
 		y.content = content;
 		y.enable = true;
 		y.save();
-		
+
 		Merchant m = Merchant.findByMid(mid);
 		m.youhui = true;
 		m.save();
-		
+
 		renderJSON(true);
 	}
-	
+
 	/**
 	 * 取消优惠信息
 	 */
-	public static void disableYouhui(){
+	public static void disableYouhui() {
 		String mid = params.get("mid");
 		String yid = params.get("yid");
 
 		Youhui y = Youhui.findById(new ObjectId(yid));
 		y.enable = false;
 		y.save();
-		
+
 		Merchant m = Merchant.findByMid(mid);
 		m.updateYouhuiInfo();
-		
+
 		renderJSON(true);
 	}
-	
+
 	/**
 	 * refresh paidui table
 	 */
@@ -401,26 +406,28 @@ public class SelfManagementController extends BaseController {
 		int currentNumber = Integer.parseInt(cNumber);
 		int seatNumber = Integer.parseInt(sNumber);
 
-		Reservation r = Reservation.findReservationForHandle(seatNumber, currentNumber, mid);
-		if (r != null) {
-			boolean flag = Reservation.expire(r.id());
-			Haoma haoma = Haoma.findByMerchantId(mid);
-			haoma.updateSelf();
+		synchronized (SelfManagementController.class) {
+			Reservation r = Reservation.findReservationForHandle(seatNumber, currentNumber, mid);
+			if (r != null) {
+				boolean flag = Reservation.expire(r.id());
+				Haoma haoma = Haoma.findByMerchantId(mid);
+				haoma.updateSelf();
 
-			smsRemind(mid, seatNumber);
-			renderJSON(flag);
-		} else {
-			renderJSON(false);
+				smsRemind(mid, seatNumber);
+				renderJSON(flag);
+			} else {
+				renderJSON(false);
+			}
 		}
 	}
-	
-	private static void smsRemind(String mid, int seatNumber){
+
+	private static void smsRemind(String mid, int seatNumber) {
 		Reservation r = Reservation.findReservationForSMSRemind(mid, seatNumber, 4);
-		if(r == null){
+		if (r == null) {
 			return;
 		}
 		String aid = r.accountId;
-		if(aid == null){
+		if (aid == null) {
 			return;
 		}
 		Account account = Account.findById(aid);
@@ -453,16 +460,16 @@ public class SelfManagementController extends BaseController {
 		String tel = params.get("tel");
 		String seatN = params.get("seatNumber");
 		String mid = params.get("mid");
-		
+
 		ReservationVO rvo = new ReservationVO();
 		if (StringUtils.isEmpty(tel) || StringUtils.isEmpty(seatN) || StringUtils.isEmpty(mid)) {
 			rvo.tipKey = false;
 			rvo.tipValue = "NAHAO_FAILED";
 			renderJSON(rvo);
 		}
-		
+
 		Account account = Account.findByPhone(tel);
-		if(account  == null){
+		if (account == null) {
 			Account a = new Account();
 			a.phone = tel;
 			a.save();
@@ -534,20 +541,23 @@ public class SelfManagementController extends BaseController {
 			return gfsFile;
 		}
 	}
-	
+
 	/**
 	 * 改变商家状态（开放取号，关闭取号）
-	 * @param mid	商家id
-	 * @param online	在线状态（true->开放取号，false->关闭取号）
+	 * 
+	 * @param mid
+	 *            商家id
+	 * @param online
+	 *            在线状态（true->开放取号，false->关闭取号）
 	 */
-	public static void changeStatus(){
+	public static void changeStatus() {
 		String mid = params.get("mid");
 		String online = params.get("online");
-		
-		if(StringUtils.isEmpty(mid) || StringUtils.isEmpty(online)){
+
+		if (StringUtils.isEmpty(mid) || StringUtils.isEmpty(online)) {
 			renderJSON(false);
 		}
-		
+
 		boolean flag = Merchant.changeStatus(mid, Boolean.valueOf(online));
 		renderJSON(flag);
 	}

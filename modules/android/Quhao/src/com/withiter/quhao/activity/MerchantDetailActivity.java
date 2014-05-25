@@ -474,6 +474,9 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						merchantName.setText(m.name);
 						merchantAddress.setText(m.address);
 						merchantPhone.setText(m.phone);
+						if (StringUtils.isNull(m.phone)) {
+							merchantPhone.setText("暂无");
+						}
 						merchantBusinessTime.setText(m.openTime + "~" + m.closeTime);
 	
 						if(StringUtils.isNull(m.openTime) || StringUtils.isNull(m.closeTime))
