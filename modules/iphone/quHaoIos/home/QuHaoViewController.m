@@ -61,6 +61,7 @@
 #endif
     popView.indicatorStyle = UIScrollViewIndicatorStyleBlack;
     popView.hidden = YES;
+    popView.tag = 836913;
     [self.view addSubview:popView];
     
     if(reservation == nil){
@@ -273,6 +274,7 @@
         [UIView setAnimationCurve:UIViewAnimationCurveLinear];
         popView.frame = frame;
         [UIView commitAnimations];
+        [popView flashScrollIndicators];
     }
 }
 
