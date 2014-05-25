@@ -20,7 +20,7 @@ import com.withiter.models.account.Reservation;
  * 
  */
 public class Haoma extends HaomaEntityDef {
-	
+
 	private static Logger logger = LoggerFactory.getLogger(Haoma.class);
 
 	/**
@@ -50,7 +50,7 @@ public class Haoma extends HaomaEntityDef {
 	public void initPaidui() {
 		logger.debug("initPaidui, merchant id : " + this.merchantId);
 		Merchant m = Merchant.findByMid(this.merchantId);
-		if(m == null){
+		if (m == null) {
 			logger.error("Merchant does not find!");
 			return;
 		}
@@ -64,14 +64,14 @@ public class Haoma extends HaomaEntityDef {
 			this.haomaMap.put(Integer.parseInt(i), p);
 		}
 	}
-	
+
 	/**
 	 * 重置Paidui信息，将所有排队号码重置为0
 	 */
 	public void resetPaidui() {
 		logger.debug("merchant id : " + this.merchantId);
 		Merchant m = Merchant.findByMid(this.merchantId);
-		if(m == null){
+		if (m == null) {
 			logger.error("Merchant does not find!");
 		}
 		String[] seatType = m.seatType;
@@ -107,12 +107,12 @@ public class Haoma extends HaomaEntityDef {
 		haoma.updateSelf();
 
 		Reservation reservation = new Reservation();
-		
+
 		// 如果tel是空，说明是APP拿号。否则是现场手机拿号。
-		if(StringUtils.isEmpty(tel)){
+		if (StringUtils.isEmpty(tel)) {
 			reservation.accountId = accountId;
 		}
-		
+
 		reservation.merchantId = mid;
 		reservation.myNumber = paidui.maxNumber;
 		reservation.seatNumber = seatNumber;
@@ -121,10 +121,10 @@ public class Haoma extends HaomaEntityDef {
 		reservation.created = new Date();
 		reservation.modified = new Date();
 		reservation.save();
-		
+
 		return reservation;
 	}
-	
+
 	/**
 	 * 拿号（同步方法）
 	 * 
@@ -177,66 +177,73 @@ public class Haoma extends HaomaEntityDef {
 		haoma.save();
 		return haoma;
 	}
-	
-	public void updateSelf(){
-		Iterator ite = this.haomaMap.keySet().iterator();
-		while(ite.hasNext()){
-			Integer key = (Integer)ite.next();
-			Paidui p = this.haomaMap.get(key);
-			if(!p.enable){
-				continue;
+
+	public void updateSelf() {
+
+		synchronized (Haoma.class) {
+
+			Iterator ite = this.haomaMap.keySet().iterator();
+			while (ite.hasNext()) {
+				Integer key = (Integer) ite.next();
+				Paidui p = this.haomaMap.get(key);
+				if (!p.enable) {
+					continue;
+				}
+
+				// if maxNumber > 0 and currentNumber == 0, then set
+				// currentNumber to 1
+				if (p.maxNumber > 0 && p.currentNumber == 0) {
+					p.currentNumber = 1;
+					this.save();
+				}
+
+				// check current number is valid or not, if not valid: current
+				// number ++
+				// otherwise save current number.
+				Reservation r = Reservation.queryForCancel(merchantId, key, p.currentNumber);
+				while (r != null && !r.valid) {
+					p.currentNumber += 1;
+					this.save();
+					r = Reservation.queryForCancel(merchantId, key, p.currentNumber);
+				}
 			}
-			
-			// if maxNumber > 0 and currentNumber == 0, then set currentNumber to 1
-			if(p.maxNumber > 0 && p.currentNumber == 0 ){
-				p.currentNumber = 1;
-				this.save();
-			}
-			
-			// check current number is valid or not, if not valid: current number ++
-			// otherwise save current number.
-			Reservation r = Reservation.queryForCancel(merchantId, key, p.currentNumber);
-			while(r !=null && !r.valid){
-				p.currentNumber += 1;
-				this.save();
-				r = Reservation.queryForCancel(merchantId, key, p.currentNumber);
-			}
+
+			// 检查是否需要排队
+			this.check();
+
 		}
-		
-		// 检查是否需要排队
-		this.check();
 	}
-	
+
 	/**
 	 * 清除排队信息（初始化）
 	 */
-	public static void clearPaidui(){
+	public static void clearPaidui() {
 		MorphiaQuery q = Haoma.q();
 		long count = q.count();
 		List<Haoma> hList = new ArrayList<Haoma>();
-		
+
 		long time = 0;
-		
+
 		int countPerPage = 10;
-		if(count > 0){
-			if(count % 10 ==0){
+		if (count > 0) {
+			if (count % 10 == 0) {
 				time = count / 10;
 			} else {
-				time = count / 10 +1;
+				time = count / 10 + 1;
 			}
-			for(int i=0;i< time; i++){
-				hList = q.offset(i*countPerPage).limit(countPerPage).asList();
-				for(Haoma h : hList){
+			for (int i = 0; i < time; i++) {
+				hList = q.offset(i * countPerPage).limit(countPerPage).asList();
+				for (Haoma h : hList) {
 					h.resetPaidui();
 					h.save();
-					
+
 					// set Reservation valid=false
 					String mid = h.merchantId;
 					MorphiaQuery qq = Reservation.q();
 					qq.filter("merchantId", mid).filter("valid", true);
 					List<Reservation> rs = qq.asList();
-					if(rs !=null){
-						for(Reservation r : rs){
+					if (rs != null) {
+						for (Reservation r : rs) {
 							r.valid = false;
 							r.status = ReservationStatus.invalidByMerchantUpdate;
 							r.save();
@@ -246,20 +253,20 @@ public class Haoma extends HaomaEntityDef {
 			}
 		}
 	}
-	
-	public void check(){
+
+	public void check() {
 		Iterator it = this.haomaMap.keySet().iterator();
-		while(it.hasNext()){
+		while (it.hasNext()) {
 			Integer key = (Integer) it.next();
 			Paidui value = this.haomaMap.get(key);
-			if(!value.enable){
+			if (!value.enable) {
 				continue;
 			}
-			
+
 			// 不用排队条件：
 			// 1. currentNumber == 0
-			// 2. currentNumber > maxNumber 
-			if(value.currentNumber == 0 || value.currentNumber > value.maxNumber){
+			// 2. currentNumber > maxNumber
+			if (value.currentNumber == 0 || value.currentNumber > value.maxNumber) {
 				this.noNeedPaidui = true;
 				this.save();
 				logger.debug("haoma check : no paidui 1:" + this.noNeedPaidui);
@@ -270,7 +277,7 @@ public class Haoma extends HaomaEntityDef {
 				this.save();
 			}
 		}
-		
-		logger.debug("merchant id: "+this.merchantId+", no paidui: " + this.noNeedPaidui);
+
+		logger.debug("merchant id: " + this.merchantId + ", no paidui: " + this.noNeedPaidui);
 	}
 }

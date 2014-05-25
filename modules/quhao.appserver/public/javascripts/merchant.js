@@ -357,7 +357,7 @@ Merchant.contactus = function() {
 			+ "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">&times;</button>"
 			+ "<h4 class=\"modal-title\" id=\"about_title\">联系我们</h4>"
 			+ "</div>"
-			+ "<div class=\"modal-body\" id=\"about_body\">Email : support@quhao.la"
+			+ "<div class=\"modal-body\" id=\"about_body\">邮箱 : support@quhao.la<br/><br/>电话 : 021-52990657-8003"
 			+ "</div>"
 			+ "<div class=\"modal-footer\">"
 			+ "<button type=\"button\" class=\"btn btn-primary\" data-dismiss=\"modal\">关闭</button>"
@@ -676,7 +676,7 @@ Merchant.disableYouhui = function(mid, yid) {
 		dataType : "json",
 		data : {
 			"mid" : mid,
-			"yid" : yid,
+			"yid" : yid
 		},
 		success : function(data) {
 			console.log(data);
