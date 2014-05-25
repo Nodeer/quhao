@@ -56,6 +56,7 @@ public class OpinionActivity extends QuhaoBaseActivity {
 		btnOpinion = (Button) findViewById(R.id.btn_opinion);
 
 		opinionEdit = (EditText) findViewById(R.id.opinion_edit);
+		opinionEdit.requestFocus();
 		contactEdit = (EditText) findViewById(R.id.opinion_edit_contact);
 		btnOpinion.setOnClickListener(this);
 		btnBack.setOnClickListener(goBack(this,this.getClass().getName()));
