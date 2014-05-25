@@ -413,18 +413,40 @@ public class Reservation extends ReservationEntityDef {
 	}
 	
 	public static Reservation queryForCancel(String merchantId, int seatNumber, int currentNumber){
-		Merchant m = Merchant.findByMid(merchantId);
+//		Merchant m = Merchant.findByMid(merchantId);
+//		
+//		// 查询出商家更新信息的时间
+//		Date newestDate = m.modified;
+//		MorphiaQuery q = Reservation.q();
+//		
+//		q.filter("created >=", (new DateTime(newestDate).toDate()));
+//		q.filter("merchantId", merchantId).filter("seatNumber", seatNumber);
+//		q.filter("myNumber =", currentNumber);
+//		q.order("-created");
+//		
+//		return q.first();
 		
-		// 查询出商家更新信息的时间
-		Date newestDate = m.modified;
+		
 		MorphiaQuery q = Reservation.q();
+ 		Merchant m = Merchant.findByMid(merchantId);
+
+		Calendar c = Calendar.getInstance();
+		String openTime = m.openTime;
+		int openTimeHour = Integer.parseInt(openTime.split(":")[0]);
+		c.set(Calendar.AM_PM, Calendar.AM);
+		c.set(Calendar.HOUR, openTimeHour);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+ 		
+		q.filter("created >", (new DateTime(c.getTimeInMillis()).toDate()));
+ 		q.filter("merchantId", merchantId).filter("seatNumber", seatNumber);
+		q.filter("status !=","invalidByMerchantUpdate");
 		
-		q.filter("created >=", (new DateTime(newestDate).toDate()));
-		q.filter("merchantId", merchantId).filter("seatNumber", seatNumber);
-		q.filter("myNumber =", currentNumber);
+ 		q.filter("myNumber =", currentNumber);
+		q.order("myNumber").limit(1);
 		q.order("-created");
 		
-		return q.first();
+ 		return q.first();
 	}
 	
 	/**
