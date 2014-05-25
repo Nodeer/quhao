@@ -1,6 +1,5 @@
 package com.withiter.quhao.adapter;
 
-import java.text.NumberFormat;
 import java.util.List;
 
 import android.app.Activity;
@@ -14,21 +13,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.withiter.quhao.R;
+import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.AsynImageLoader;
 import com.withiter.quhao.vo.Merchant;
 
-public class MerchantNoQueueAdapter extends BaseAdapter {
+public class MerchantSearchAdapter extends BaseAdapter {
 
 	private ListView listView;
 	public List<Merchant> merchants;
-	private static String TAG = MerchantNoQueueAdapter.class.getName();
+	private static String TAG = MerchantSearchAdapter.class.getName();
 
-	public MerchantNoQueueAdapter(Activity activity, ListView listView, List<Merchant> merchants) {
+	public MerchantSearchAdapter(Activity activity, ListView listView, List<Merchant> merchants) {
 		super();
 		this.listView = listView;
 		this.merchants = merchants;
-
 	}
 
 	@Override
@@ -54,13 +53,14 @@ public class MerchantNoQueueAdapter extends BaseAdapter {
 			if (convertView == null) {
 				holder = new ViewHolder();
 				LayoutInflater inflator = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				convertView = inflator.inflate(R.layout.merchant_no_queue_list_item, null);
+				convertView = inflator.inflate(R.layout.merchant_search_list_item, null);
 				holder.img = (ImageView) convertView.findViewById(R.id.img);
 				holder.img.setAdjustViewBounds(true);
-				holder.distance = (TextView) convertView.findViewById(R.id.distance);
-				holder.merchantName = (TextView) convertView.findViewById(R.id.merchantName);
+				holder.content = (TextView) convertView.findViewById(R.id.merchantName);
+//				holder.distance = (TextView) convertView.findViewById(R.id.distance);
 				holder.youhui = (ImageView) convertView.findViewById(R.id.youhui);
 				holder.quhao = (ImageView) convertView.findViewById(R.id.quhao);
+//				holder.pinfenImage = (ImageView) convertView.findViewById(R.id.pingfen);
 				holder.merchantRenjun = (TextView) convertView.findViewById(R.id.merchantRenjun);
 			}
 			if (holder == null) {
@@ -69,7 +69,7 @@ public class MerchantNoQueueAdapter extends BaseAdapter {
 
 			String imageUrl = merchant.merchantImage;
 
-//			QuhaoLog.i(TAG, "merchant adapter's imageUrl : " + imageUrl);
+			QuhaoLog.i(TAG, "merchant adapter's imageUrl : " + imageUrl);
 
 //			holder.img.setTag(imageUrl + position);
 			
@@ -102,8 +102,9 @@ public class MerchantNoQueueAdapter extends BaseAdapter {
 				holder.img.setImageResource(R.drawable.no_logo);
 			}
 			*/
-			holder.merchantName.setTag("merchantName_" + position);
-			holder.merchantName.setText(merchant.name);
+			holder.content.setTag("content_" + position);
+			holder.content.setText(merchant.name);
+			
 			holder.youhui.setTag("youhui_" + position);
 			if(merchant.youhuiExist)
 			{
@@ -126,8 +127,9 @@ public class MerchantNoQueueAdapter extends BaseAdapter {
 			{
 				holder.quhao.setVisibility(View.GONE);
 			}
-			
+			/*
 			holder.distance.setTag("distance_" + position);
+			
 			if(merchant.distance != 0)
 			{
 				if(merchant.distance>1000)
@@ -149,14 +151,39 @@ public class MerchantNoQueueAdapter extends BaseAdapter {
 			{
 				holder.distance.setText("未定位");
 			}
-			
+			*/
+			/*
+			AMapLocation location = QHClientApplication.getInstance().location;
+			if(null != location && merchant.lat != 0 && merchant.lng != 0)
+			{
+				double distance = DistanceUtil.computeDistance(location.getLatitude(), location.getLongitude(), merchant.lat, merchant.lng);
+				if(distance>1000)
+				{
+					
+					NumberFormat nf = NumberFormat.getNumberInstance();
+			        nf.setMaximumFractionDigits(2);
+					holder.distance.setText(nf.format(distance/1000) + "千米");
+				}
+				else
+				{
+					holder.distance.setText(String.valueOf((int)distance) + "米");
+				}
+				
+//				holder.distance.setText(String.valueOf(DistanceUtil.computeDistance(lp.getLatitude(), lp.getLongitude(), merchant.lat, merchant.lng)));
+//				Log.e("wjzwjz distance : ", String.valueOf(DistanceUtil.computeDistance(lp.getLatitude(), lp.getLongitude(), merchant.lat, merchant.lng)));
+			}
+			else
+			{
+				holder.distance.setText("没有定位信息，暂时无法显示距离");
+			}
+			*/
 			/*
 			if (StringUtils.isNull(merchant.grade)) {
 				merchant.grade = "0.0";
 			} else {
 				merchant.grade = merchant.grade.replace("%", "");
 			}
-//			QuhaoLog.i(TAG, merchant.grade);
+			QuhaoLog.i(TAG, merchant.grade);
 			float score = Float.parseFloat(merchant.grade) / 100;
 			if (score == 0.0f) {
 				holder.pinfenImage.setImageResource(R.drawable.star00);
@@ -205,10 +232,11 @@ public class MerchantNoQueueAdapter extends BaseAdapter {
 
 	class ViewHolder {
 		ImageView img;
-		TextView merchantName;
+		TextView content;
 		ImageView youhui;
 		ImageView quhao;
+//		ImageView pinfenImage;
 		TextView merchantRenjun;
-		TextView distance;
+//		TextView distance;
 	}
 }

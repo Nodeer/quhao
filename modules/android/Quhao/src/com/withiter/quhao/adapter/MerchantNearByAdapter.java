@@ -135,7 +135,7 @@ public class MerchantNearByAdapter extends BaseAdapter {
 				{
 					
 					NumberFormat nf = NumberFormat.getNumberInstance();
-			        nf.setMaximumFractionDigits(2);
+			        nf.setMaximumFractionDigits(1);
 					holder.distance.setText(nf.format(merchant.distance/1000) + "km");
 				}
 				else

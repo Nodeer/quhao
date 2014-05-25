@@ -99,10 +99,10 @@
             <LinearLayout
                 android:id="@+id/linearLayout3"
                 android:layout_width="0dip"
-                android:layout_weight="1.0"
+                android:layout_weight="1.5"
                 android:layout_height="fill_parent"
                 android:orientation="horizontal"
-                android:gravity="bottom" >
+                android:gravity="bottom|left" >
 
                 <!--
                 <ImageView
@@ -132,7 +132,7 @@
                 android:layout_weight="1.0"
                 android:layout_height="fill_parent"
                 android:orientation="horizontal" 
-                android:gravity="bottom">
+                android:gravity="bottom|right">
 
                 <!-- 
                 <TextView

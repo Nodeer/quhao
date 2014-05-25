@@ -1,10 +1,12 @@
 package com.withiter.quhao.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Looper;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -70,6 +72,15 @@ public class OpinionActivity extends QuhaoBaseActivity {
 		}
 		isClick = true;
 
+		// 让软键盘消失
+		InputMethodManager m = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		if (m != null) {
+			if (m.isActive()) {
+				m.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
+			}
+
+		}
+		
 		progressDialogUtil = new ProgressDialogUtil(OpinionActivity.this, R.string.empty, R.string.committing, false);
 		progressDialogUtil.showProgress();
 		switch (v.getId()) {
