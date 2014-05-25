@@ -8,6 +8,7 @@ import java.util.List;
 import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 
+import play.Logger;
 import play.Play;
 import play.modules.morphia.Model.NoAutoTimestamp;
 import cn.bran.japid.util.StringUtils;
@@ -412,24 +413,17 @@ public class Reservation extends ReservationEntityDef {
 	}
 	
 	public static Reservation queryForCancel(String merchantId, int seatNumber, int currentNumber){
-		MorphiaQuery q = Reservation.q();
 		Merchant m = Merchant.findByMid(merchantId);
-
-		Calendar c = Calendar.getInstance();
-		String openTime = m.openTime;
-		int openTimeHour = Integer.parseInt(openTime.split(":")[0]);
-		c.set(Calendar.AM_PM, Calendar.AM);
-		c.set(Calendar.HOUR, openTimeHour);
-		c.set(Calendar.MINUTE, 0);
-		c.set(Calendar.SECOND, 0);
 		
-		q.filter("created >", (new DateTime(c.getTimeInMillis()).toDate()));
+		// 查询出商家更新信息的时间
+		Date newestDate = m.modified;
+		MorphiaQuery q = Reservation.q();
+		
+		q.filter("created >=", (new DateTime(newestDate).toDate()));
 		q.filter("merchantId", merchantId).filter("seatNumber", seatNumber);
-		
-		q.filter("status !=","invalidByMerchantUpdate");
-		
 		q.filter("myNumber =", currentNumber);
-		q.order("myNumber").limit(1);
+		q.order("-created");
+		
 		return q.first();
 	}
 	
@@ -442,6 +436,7 @@ public class Reservation extends ReservationEntityDef {
 		MorphiaQuery q = Reservation.q();
 		q.filter("merchantId", merchantId).filter("seatNumber", seatNumber);
 		q.filter("valid", true);
+		
 		Iterator it = q.iterator();
 		Reservation r = null;
 		while(it.hasNext()){
