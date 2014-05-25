@@ -68,6 +68,18 @@ $addCSS("backend.css", true)
 						  <div class="panel-heading">排队统计</div>
 						  <table class="table" >
 						  	<tr align="center">
+						  		<td colspan="2">${svo.today}
+						  		</td>
+						  	</tr>
+						    <tr align="center">
+							    <td>消费成功数</td>
+							    <td>取消排队数</td>
+						    </tr>
+						    <tr align="center"  style="border-bottom: 1px solid #ddd;">
+						    	<td>${svo.todayFinish}</td>
+							    <td>${svo.todayCancel}</td>
+						    </tr>
+						  	<tr align="center">
 						  		<td colspan="2">${svo.lastDay}
 						  		</td>
 						  	</tr>
@@ -103,6 +115,7 @@ $addCSS("backend.css", true)
 						    	<td>${svo.lastThreeMonthFinish}</td>
 							    <td>${svo.lastThreeMonthCancel}</td>
 						    </tr>
+						  	
 						  </table>
 						</div>
           				

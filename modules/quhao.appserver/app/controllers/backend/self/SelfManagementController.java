@@ -274,7 +274,9 @@ public class SelfManagementController extends BaseController {
 		long lastMonthCancelCount = Reservation.lastMonthCancelCount(mid);
 		long lastThreeMonthsFinishCount = Reservation.lastThreeMonthsFinishCount(mid);
 		long lastThreeMonthsCancelCount = Reservation.lastThreeMonthsCancelCount(mid);
-
+		long todayFinishCount = Reservation.todayFinishCount(mid);
+		long todayCancelCount = Reservation.todayCancelCount(mid);
+		
 		StatisticsVO svo = new StatisticsVO();
 		svo.lastDayFinish = lastDayFinishCount;
 		svo.lastDayCancel = lastDayCancelCount;
@@ -282,6 +284,8 @@ public class SelfManagementController extends BaseController {
 		svo.lastMonthCancel = lastMonthCancelCount;
 		svo.lastThreeMonthFinish = lastThreeMonthsFinishCount;
 		svo.lastThreeMonthCancel = lastThreeMonthsCancelCount;
+		svo.todayFinish = todayFinishCount;
+		svo.todayCancel = todayCancelCount;
 
 		String uid = Session.current().get(Constants.SESSION_USERNAME);
 		MerchantAccount account = MerchantAccount.findById(uid);

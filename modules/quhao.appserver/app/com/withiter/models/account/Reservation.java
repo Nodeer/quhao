@@ -448,6 +448,19 @@ public class Reservation extends ReservationEntityDef {
 	}
 
 	/**
+	 * 当天截止到当前时间所有Reservation
+	 * @param mid
+	 * @return
+	 */
+	private static MorphiaQuery todayCount(String mid) {
+		MorphiaQuery q = Reservation.q();
+		RemindDateUtils utils = new RemindDateUtils();
+		Date lastDayStart = utils.getLastDayStartTime();
+		q.filter("created >", lastDayStart).filter("merchantId", mid);
+		return q;
+	}
+	
+	/**
 	 * 前一天所有Reservation
 	 * @param mid
 	 * @return
@@ -532,6 +545,18 @@ public class Reservation extends ReservationEntityDef {
 	
 	public static long lastDayCancelCount(String mid) {
 		MorphiaQuery q = lastDayCount(mid);
+		q.filter("status", Constants.ReservationStatus.canceled);
+		return q.count();
+	}
+
+	public static long todayFinishCount(String mid) {
+		MorphiaQuery q = todayCount(mid);
+		q.filter("status", Constants.ReservationStatus.finished);
+		return q.count();
+	}
+
+	public static long todayCancelCount(String mid) {
+		MorphiaQuery q = todayCount(mid);
 		q.filter("status", Constants.ReservationStatus.canceled);
 		return q.count();
 	}

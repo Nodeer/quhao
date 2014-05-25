@@ -14,4 +14,8 @@ public class StatisticsVO {
 	public long lastThreeMonthFinish = 0l;
 	public long lastThreeMonthCancel = 0l;
 	
+	public String today = "今天（截止到当前时间）";
+	public long todayFinish = 0l;
+	public long todayCancel = 0l;
+	
 }
