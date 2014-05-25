@@ -53,7 +53,8 @@
     _mineView.delegate=self;
     _mineView.backgroundColor=[UIColor whiteColor];
     _mineView.indicatorStyle=UIScrollViewIndicatorStyleWhite;
-    [self.view addSubview:_mineView];
+    self.view = _mineView;
+
 #if IOS7_SDK_AVAILABLE
     if ([_mineView respondsToSelector:@selector(setSeparatorInset:)]) {
         [_mineView setSeparatorInset:UIEdgeInsetsZero];
@@ -82,15 +83,21 @@
     if (_userInfo==nil) {
         _userInfo= [UserInfo alloc];
     }
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self loadByLoginType];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [_mineView reloadData];
+    [self createHud];
+    if([Helper isConnectionAvailable]){
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [self loadByLoginType];
             
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_mineView reloadData];
+                [self.view bringSubviewToFront:_HUD];
+                [_HUD hide:YES];
+            });
         });
-    });
-    
+    }else{
+        _HUD.labelText = @"当前网络不可用";
+        [_HUD hide:YES afterDelay:1];
+    }
 }
 
 #pragma mark HUD
@@ -104,7 +111,7 @@
     _HUD = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:_HUD];
     _HUD.mode = MBProgressHUDModeIndeterminate;
-    _HUD.labelText = @"服务器错误，请稍后再试";
+    _HUD.labelText = @"正在加载";
     [_HUD show:YES];
     _HUD.delegate = self;
 }
@@ -321,9 +328,9 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([Helper isCookie] == NO) {
-        UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"请登录后查看信息" delegate:self cancelButtonTitle:@"返回" destructiveButtonTitle:nil otherButtonTitles:@"登录", nil];
-        [sheet showInView:[UIApplication sharedApplication].keyWindow];
-        
+//        UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"请登录后查看信息" delegate:self cancelButtonTitle:@"返回" destructiveButtonTitle:nil otherButtonTitles:@"登录", nil];
+//        [sheet showInView:[UIApplication sharedApplication].keyWindow];
+        [self login];
         return;
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -345,8 +352,7 @@
     UITapGestureRecognizer *tap = (UITapGestureRecognizer*)sender;
     UILabel *la=(UILabel *)tap.view;
     if ([Helper isCookie] == NO) {
-        UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"请登录后查看信息" delegate:self cancelButtonTitle:@"返回" destructiveButtonTitle:nil otherButtonTitles:@"登录", nil];
-        [sheet showInView:[UIApplication sharedApplication].keyWindow];
+        [self login];
         return;
     }
     if(_userInfo.isSignIn){
@@ -392,8 +398,7 @@
 -(void)onClickDp:(UITapGestureRecognizer *)sender
 {
     if ([Helper isCookie] == NO) {
-        UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"请登录后查看信息" delegate:self cancelButtonTitle:@"返回" destructiveButtonTitle:nil otherButtonTitles:@"登录", nil];
-        [sheet showInView:[UIApplication sharedApplication].keyWindow];
+        [self login];
         
         return;
     }
@@ -410,8 +415,7 @@
 -(void)onClickGz:(UITapGestureRecognizer *)sender
 {
     if ([Helper isCookie] == NO) {
-        UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"请登录后查看信息" delegate:self cancelButtonTitle:@"返回" destructiveButtonTitle:nil otherButtonTitles:@"登录", nil];
-        [sheet showInView:[UIApplication sharedApplication].keyWindow];
+        [self login];
         
         return;
     }
@@ -476,7 +480,7 @@
     
     if([response isEqualToString:@""]){
         //异常处理
-        [self createHud];
+        _HUD.labelText = @"网络异常,请稍后再试";
         //[Helper showHUD2:@"服务器错误，请稍后再试" andView:self.view andSize:130];
         //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"数据错误，请稍后再试" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
         //[alert show];
@@ -484,7 +488,7 @@
         NSArray *jsonObjects=[QuHaoUtil analyseData:response];
         if(jsonObjects==nil){
             //解析错误
-            [self createHud];
+            _HUD.labelText = @"网络异常,请稍后再试";
         }else{
             _userInfo.username = [jsonObjects valueForKey:@"nickname"];
             _userInfo.jifen = [[jsonObjects valueForKey:@"jifen"] intValue];
@@ -497,9 +501,17 @@
             _userInfo.isSignIn = [[jsonObjects valueForKey:@"isSignIn"] boolValue];
         }
     }
-    if(_HUD!=nil){
-        [_HUD hide:YES];
-    }
+}
+
+-(void)login
+{
+    LoginView *loginView = [[LoginView alloc] init];
+    loginView._isPopupByNotice = YES;
+    _helper.viewBeforeLogin = self;
+    _helper.viewNameBeforeLogin = @"MineViewController";
+    loginView.helper=_helper;
+    loginView.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:loginView animated:YES];
 }
 
 //登录事件
