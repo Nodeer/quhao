@@ -83,7 +83,6 @@
     if (_userInfo==nil) {
         _userInfo= [UserInfo alloc];
     }
-    [self createHud];
     if([Helper isConnectionAvailable]){
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [self loadByLoginType];
@@ -95,6 +94,7 @@
             });
         });
     }else{
+        [self createHud];
         _HUD.labelText = @"当前网络不可用";
         [_HUD hide:YES afterDelay:1];
     }
@@ -480,7 +480,7 @@
     
     if([response isEqualToString:@""]){
         //异常处理
-        _HUD.labelText = @"网络异常,请稍后再试";
+        //_HUD.labelText = @"网络异常,请稍后再试";
         //[Helper showHUD2:@"服务器错误，请稍后再试" andView:self.view andSize:130];
         //UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"数据错误，请稍后再试" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
         //[alert show];
@@ -488,7 +488,7 @@
         NSArray *jsonObjects=[QuHaoUtil analyseData:response];
         if(jsonObjects==nil){
             //解析错误
-            _HUD.labelText = @"网络异常,请稍后再试";
+            //_HUD.labelText = @"网络异常,请稍后再试";
         }else{
             _userInfo.username = [jsonObjects valueForKey:@"nickname"];
             _userInfo.jifen = [[jsonObjects valueForKey:@"jifen"] intValue];

@@ -92,6 +92,11 @@
     _categoryArray = [[NSMutableArray alloc] init];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshed:) name:Notification_TabClick object:nil];
 
+    locationManager = [[CLLocationManager alloc] init];
+    locationManager.delegate = self;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    locationManager.distanceFilter = 3000.0f;
+    
     if(![Helper isConnectionAvailable]){
         [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
         return;
@@ -123,6 +128,9 @@
     if(_scroller!=nil){
         [_scroller.animationTimer resumeTimerAfterTimeInterval:3];
     }
+    if([Helper isConnectionAvailable]){
+        [locationManager startUpdatingLocation];
+    }
 }
 
 -(void)locationService
@@ -131,10 +139,6 @@
                                                        || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined))
     {
         //定位功能可用，开始定位
-        locationManager = [[CLLocationManager alloc] init];
-        locationManager.delegate = self;
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-        locationManager.distanceFilter = 3000.0f;
         [locationManager startUpdatingLocation];
     }else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied){
         [locationManager stopUpdatingLocation];
