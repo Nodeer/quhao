@@ -154,6 +154,9 @@ public class SelfManagementController extends BaseController {
 		if (!StringUtils.isEmpty(cateType1) && !StringUtils.isEmpty(cateName1)) {
 			m.cateType1 = cateType1;
 			m.cateName1 = cateName1;
+		} else {
+			m.cateType1 = "";
+			m.cateName1 = "";
 		}
 		m.openTime = openTime;
 		m.closeTime = closeTime;
