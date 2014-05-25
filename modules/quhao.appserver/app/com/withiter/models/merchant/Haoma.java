@@ -181,6 +181,7 @@ public class Haoma extends HaomaEntityDef {
 	public void updateSelf() {
 
 		synchronized (Haoma.class) {
+			logger.debug("start to Haoma.updateSelf");
 
 			Iterator ite = this.haomaMap.keySet().iterator();
 			while (ite.hasNext()) {
@@ -201,6 +202,11 @@ public class Haoma extends HaomaEntityDef {
 				// number ++
 				// otherwise save current number.
 				Reservation r = Reservation.queryForCancel(merchantId, key, p.currentNumber);
+				if(r != null){
+					logger.debug("Reservation r = Reservation.queryForCancel(merchantId, key, p.currentNumber); - >" + "座位："+r.seatNumber+", r.myNumber:"+r.myNumber+", r.valid:"+r.valid);
+				} else {
+					logger.debug("Reservation r = Reservation.queryForCancel(merchantId, key, p.currentNumber); - > null");
+				}
 				while (r != null && !r.valid) {
 					p.currentNumber += 1;
 					this.save();

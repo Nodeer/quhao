@@ -380,4 +380,20 @@ public class RemindDateUtils {
 		}
 		return now;
 	}
+	
+	/**
+	 * 获得当天的开始时间，即2012-01-01 00:00:00
+	 * 
+	 * @return
+	 */
+	public Date getTodayStartTime() {
+		Calendar c = Calendar.getInstance();
+		Date now = null;
+		try {
+			now = longSdf.parse(shortSdf.format(c.getTime()) + " 00:00:00");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return now;
+	}
 }

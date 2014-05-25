@@ -98,11 +98,10 @@
                 android:orientation="horizontal">
             <LinearLayout
                 android:id="@+id/linearLayout3"
-                android:layout_width="0dip"
-                android:layout_weight="1.5"
+                android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:orientation="horizontal"
-                android:gravity="bottom|left" >
+                android:gravity="bottom" >
 
                 <!--
                 <ImageView
@@ -126,15 +125,15 @@
                     android:textSize="13sp" />
                 <!-- 人均消费 -->
             </LinearLayout>
-
+<!-- 
             <LinearLayout
                 android:layout_width="0dip"
                 android:layout_weight="1.0"
                 android:layout_height="fill_parent"
                 android:orientation="horizontal" 
-                android:gravity="bottom|right">
+                android:gravity="bottom">
 
-                <!-- 
+                
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -143,7 +142,7 @@
                     android:text="@string/distance"
                     android:textColor="@color/gray"
                     android:textSize="13sp" />
-				 -->
+				
                 <TextView
                     android:id="@+id/distance"
                     android:layout_width="wrap_content"
@@ -154,7 +153,7 @@
                     android:text="@string/empty"
                     android:textColor="@color/black"
                     android:textSize="13sp" />
-            </LinearLayout>
+            </LinearLayout> -->
             </LinearLayout>
         </LinearLayout>
  </RelativeLayout>

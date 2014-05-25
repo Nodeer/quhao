@@ -27,7 +27,7 @@ import android.widget.ListView;
 import com.amap.api.location.AMapLocation;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
-import com.withiter.quhao.adapter.MerchantAdapter;
+import com.withiter.quhao.adapter.MerchantSearchAdapter;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
@@ -39,7 +39,7 @@ public class MerchantsSearchActivity extends QuhaoBaseActivity {
 	private String LOGTAG = MerchantsSearchActivity.class.getName();
 	protected ListView merchantsListView;
 	private List<Merchant> merchants;
-	private MerchantAdapter merchantAdapter;
+	private MerchantSearchAdapter merchantAdapter;
 	private EditText editSearch;
 	private Button searchBtn;
 	private final int UNLOCK_CLICK = 1000;
@@ -108,7 +108,7 @@ public class MerchantsSearchActivity extends QuhaoBaseActivity {
 
 				// 默认isFirst是true.
 				if (isFirst) {
-					merchantAdapter = new MerchantAdapter(MerchantsSearchActivity.this, merchantsListView, merchants);
+					merchantAdapter = new MerchantSearchAdapter(MerchantsSearchActivity.this, merchantsListView, merchants);
 					merchantsListView.setAdapter(merchantAdapter);
 					isFirst = false;
 				} else {
