@@ -64,7 +64,11 @@
         return;
     }
     [self.view endEditing:YES];
-
+    if(![Helper isConnectionAvailable]){
+        [Helper ToastNotification:[NSString stringWithFormat:@"%@",@"当前网络不可用"] andView:self.view andLoading:NO andIsBottom:NO];
+        la.enabled = YES;
+        return;
+    }
     NSString *name =self.txt_Name.text;
     NSString *pwd = self.txt_Pwd.text;
     NSString *urlStr=[NSString stringWithFormat:@"%@%@",IP,@"/login"];
@@ -132,7 +136,7 @@
             //否则需要清空用户名于密码
             else
             {
-                [helper saveUserNameAndPwd:@"" andPwd:@""];
+                [helper saveUserNameAndPwd:self.txt_Name.text andPwd:@""];
             }
             //返回的处理
             

@@ -136,30 +136,40 @@
     if(self.accountField.text.length==0){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"请输入手机号码" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
         [alert show];
+        btn.enabled = YES;
         return;
     }
-    
-    NSString *urlStr=[NSString stringWithFormat:@"%@%@%@",IP,getAuthCode_url,self.accountField.text];
-    NSString *response =[QuHaoUtil requestDb:urlStr];
-    if([response isEqualToString:@""]){
-        //异常处理
-        [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
-    }else{
-        NSArray *jsonObjects=[QuHaoUtil analyseData:response];
-        if(jsonObjects==nil){
-            //解析错误
+    if([Helper isConnectionAvailable]){
+        NSString *urlStr=[NSString stringWithFormat:@"%@%@%@",IP,getAuthCode_url,self.accountField.text];
+        NSString *response =[QuHaoUtil requestDb:urlStr];
+        if([response isEqualToString:@""]){
+            //异常处理
             [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
         }else{
-            NSString * errorText=[jsonObjects valueForKey:@"errorText"];
-            
-            if(![errorText isEqualToString:@""]){
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: errorText delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
-                [alert show];
+            NSArray *jsonObjects=[QuHaoUtil analyseData:response];
+            if(jsonObjects==nil){
+                //解析错误
+                [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
             }else{
+                NSString * errorText=[jsonObjects valueForKey:@"errorText"];
                 
+                if(![errorText isEqualToString:@""]){
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: errorText delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+                    [alert show];
+                }else{
+                    
+                }
             }
         }
+    }else{
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.removeFromSuperViewOnHide =YES;
+        //hud.mode = MBProgressHUDModeText;
+        hud.labelText = NSLocalizedString(@"当前网络不可用", nil);
+        hud.minSize = CGSizeMake(132.f, 108.0f);
+        [hud hide:YES afterDelay:1];
     }
+    
     btn.enabled = YES;
 }
 @end

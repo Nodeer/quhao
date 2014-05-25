@@ -82,18 +82,19 @@
 -(void)loginOut:(id)sender
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"温馨提示" message:@"确认要退出吗?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
-    [alert setTag: 1];
+    [alert setTag: 99];
     [alert show];
 }
 
 //下载
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if ([alertView tag] == 1 && buttonIndex == 1) {
+    if ([alertView tag] == 99 && buttonIndex == 1) {
         [ASIHTTPRequest setSessionCookies:nil];
         [ASIHTTPRequest clearSession];
         [Helper saveCookie:NO];
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        [self.navigationController popViewControllerAnimated:YES];
+        return;
     }
 }
 

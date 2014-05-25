@@ -41,7 +41,7 @@
                 
             });
         }
-
+        
     }
     return self;
 }
@@ -84,13 +84,13 @@
     }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [self loadByLoginType];
-
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             [_mineView reloadData];
-
+            
         });
     });
-
+    
 }
 
 #pragma mark HUD
@@ -111,7 +111,7 @@
 
 - (void)loadByLoginType
 {
-  if(self.isLoginJustNow)
+    if(self.isLoginJustNow)
     {
         self.isLoginJustNow = NO;
         _helper.viewBeforeLogin = nil;
@@ -216,7 +216,7 @@
             self.egoImgView.userInteractionEnabled = YES;
             UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(uploadPortrait:)];
             [self.egoImgView addGestureRecognizer:singleTap];
-        
+            
             
             UILabel *_numberLabel = [Helper getCustomLabel:@"立即登录" font:17 rect:CGRectMake(egoImgView.frame.origin.x+egoImgView.frame.size.width+15,20, 220, 35)];
             _numberLabel.font = [UIFont systemFontOfSize:18];
@@ -288,21 +288,21 @@
             cell.imageView.image = [UIImage imageNamed:@"mine_dqqh"];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             [Helper arrowStyle:cell];
-
+            
         }else if ([indexPath row] == 3) {
             
             cell.textLabel.text = @"历史取号情况";
             cell.imageView.image = [UIImage imageNamed:@"mine_lsqh"];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             [Helper arrowStyle:cell];
-
+            
         }else if ([indexPath row] == 4) {
             
             cell.textLabel.text = @"积分消费情况";
             cell.imageView.image = [UIImage imageNamed:@"mine_jfsf"];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             [Helper arrowStyle:cell];
-
+            
         }
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
@@ -525,14 +525,14 @@
 //登录监听
 - (void)noticeUpdateHandler:(NSNotification *)notification
 {
-         UserInfo * temp = (UserInfo *)[notification object];
-         _userInfo.phone=temp.phone;
-         _userInfo.username=temp.username;
-         _userInfo.signIn=temp.signIn;
-         _userInfo.dianping=temp.dianping;
-         _userInfo.accountId=temp.accountId;
-         _userInfo.userImage=temp.userImage;
-         _userInfo.isSignIn=temp.isSignIn;
+    UserInfo * temp = (UserInfo *)[notification object];
+    _userInfo.phone=temp.phone;
+    _userInfo.username=temp.username;
+    _userInfo.signIn=temp.signIn;
+    _userInfo.dianping=temp.dianping;
+    _userInfo.accountId=temp.accountId;
+    _userInfo.userImage=temp.userImage;
+    _userInfo.isSignIn=temp.isSignIn;
 }
 
 #pragma mark - upload image
@@ -582,8 +582,8 @@
     if (picker.sourceType == UIImagePickerControllerSourceTypeCamera)
     {
         UIImageWriteToSavedPhotosAlbum(image, self,
-                               @selector(image:didFinishSavingWithError:contextInfo:),
-                                nil);
+                                       @selector(image:didFinishSavingWithError:contextInfo:),
+                                       nil);
     }else{
         [self saveImageData:image];
     }
