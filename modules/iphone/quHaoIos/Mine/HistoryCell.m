@@ -22,8 +22,20 @@
 
 -(void)initSubviews
 {
+    UIImage *image= [UIImage   imageNamed:@"arrow_right.png"];
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    CGRect frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
+    button.frame = frame;
+    [button setBackgroundImage:image forState:UIControlStateNormal];
+    button.backgroundColor= [UIColor clearColor];
+    
     self.egoImgView = [[EGOImageView alloc] initWithPlaceholderImage:[UIImage imageNamed:@"no_logo.png"]];
     self.egoImgView.frame = CGRectMake(5, 10, 105, 80);
+    UITapGestureRecognizer *Tap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imagePressed:)];
+    [Tap setNumberOfTapsRequired:1];
+    [Tap setNumberOfTouchesRequired:1];
+    self.egoImgView.userInteractionEnabled=YES;
+    [self.egoImgView addGestureRecognizer:Tap];
     [self.contentView addSubview:self.egoImgView];
     
     _titleLabel=[[UILabel alloc]initWithFrame:CGRectZero];
@@ -61,19 +73,49 @@
     }else{
         self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
     }
-    
+    self.egoImgView.id=self.reservationModel.merchantId;
     _titleLabel.text=self.reservationModel.name;
     
-    if (!self.reservationModel.isCommented) {
-        _pjLabel.text = @"待评价";
-        _pjLabel.textColor = [UIColor blackColor];
-    }else{
-        _pjLabel.text = @"已评价";
+    _pjLabel.font = [UIFont systemFontOfSize:15];
+    if([self.reservationModel.status isEqualToString:@"canceled"]){
+        _pjLabel.text = @"取消记录不能评价";
         _pjLabel.textColor = [UIColor grayColor];
+    }else{
+        if (!self.reservationModel.isCommented) {
+            _pjLabel.text = @"待评价";
+            _pjLabel.textColor = [UIColor blackColor];
+        }else{
+            _pjLabel.text = @"已评价";
+            _pjLabel.textColor = [UIColor grayColor];
+        }
     }
     
     _timeLabel.text=[Helper formatDate:self.reservationModel.created];
+    
+    if (![self.reservationModel.status isEqualToString:@"canceled"])
+    {
+        self.accessoryView = button;
+    }else{
+        self.accessoryView = nil;
+        self.accessoryType = UITableViewCellAccessoryNone;
+    }
 }
+
+- (void)imagePressed:(UITapGestureRecognizer *)sender
+{
+    UITapGestureRecognizer *tap = (UITapGestureRecognizer*)sender;
+    EGOImageView *image=(EGOImageView*)tap.view;
+    if(NULL == image.id || [image.id isEqualToString:@""]){
+        return;
+    }
+    
+    MerchartDetail *mDetail = [[MerchartDetail alloc] init];
+    mDetail.merchartID = image.id;
+    mDetail.tabBarItem.image = [UIImage imageNamed:@"detail"];
+    mDetail.hidesBottomBarWhenPushed=YES;
+    [self.viewController.navigationController pushViewController:mDetail animated:YES];
+}
+
 -(void)dealloc
 {
     self.egoImgView=nil;

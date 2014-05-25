@@ -10,6 +10,7 @@
 #import "MerchartModel.h"
 #import "MerchartDetail.h"
 #import "EGOImageView.h"
+#import "UIView+EventLink.h"
 @interface HistoryCell : UITableViewCell
 {
     UILabel *_titleLabel;
@@ -17,6 +18,7 @@
     UILabel *_timeLabel;
 
     Reservation *_reservationModel;
+    UIButton *button;
     
 }
 @property(nonatomic,strong) Reservation *reservationModel;

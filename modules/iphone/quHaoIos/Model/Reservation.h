@@ -22,5 +22,5 @@
 @property BOOL isCommented;
 @property int  beforeYou ;
 @property (nonatomic,strong) NSString *created;
-
+@property (nonatomic,strong) NSString *status;
 @end

@@ -128,7 +128,7 @@
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         NSInteger row = [indexPath row];
         Reservation *n = [_reservationArray objectAtIndex:row];
-        if (n)
+        if (n&&![n.status isEqualToString:@"canceled"])
         {
             [self pushHistoryDetail:n andNavController:self.navigationController];
         }
@@ -163,11 +163,10 @@
     if(cell==nil){
         cell=[[HistoryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentify];
     }
-    cell.reservationModel=_reservationArray[indexPath.row];
+    Reservation *n = _reservationArray[indexPath.row];
+    cell.reservationModel=n;
 
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     //[cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    [Helper arrowStyle:cell];
 
     return cell;
 }
@@ -204,7 +203,8 @@
                     model.id=[[jsonObjects objectAtIndex:i] objectForKey:@"id"];
                     model.isCommented=[[[jsonObjects objectAtIndex:i] objectForKey:@"isCommented"] boolValue];
                     model.imgUrl=[[jsonObjects objectAtIndex:i] objectForKey:@"merchantImage"];
-                    model.created=[[jsonObjects objectAtIndex:i] objectForKey:@"created"];
+                    model.created = [[jsonObjects objectAtIndex:i] objectForKey:@"created"];
+                    model.status = [[jsonObjects objectAtIndex:i] objectForKey:@"status"];
 
                     [_reservationArray addObject:model];
                 }

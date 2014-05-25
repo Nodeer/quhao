@@ -22,5 +22,6 @@
 @synthesize imgUrl;
 @synthesize isCommented;
 @synthesize created;
+@synthesize status;
 
 @end
