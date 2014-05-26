@@ -115,7 +115,6 @@ public class MerchantVO {
 		
 		try {
 			vo.merchantImage = URLDecoder.decode(m.merchantImage, "UTF-8");
-			logger.debug("vo.merchantImage"+vo.merchantImage);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}

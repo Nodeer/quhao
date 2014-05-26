@@ -54,10 +54,6 @@ public class MerchantController extends BaseController {
 	 * @param cityCode
 	 */
 	public static void allCategories(String cityCode) {
-		
-		logger.debug("adsfasdf");
-		System.out.println("adfasdf");
-		
 		List<Category> categories = Category.getAll();
 		List<CategoryVO> categoriesVO = new ArrayList<CategoryVO>();
 		for (Category c : categories) {
@@ -238,7 +234,7 @@ public class MerchantController extends BaseController {
 				for (Reservation r : reservations) {
 					Paidui paidui = haoma.haomaMap.get(r.seatNumber);
 					rvo = new ReservationVO();
-					int canclCount = (int) Reservation.findCountBetweenCurrentNoAndMyNumber(merchantId, paidui.currentNumber, r.myNumber, r.seatNumber);
+					int canclCount = (int) Reservation.findCountBetweenCurrentNoAndMyNumber(merchantId, paidui.currentNumber, r.myNumber, r.seatNumber, haoma.version);
 					rvo.beforeYou = r.myNumber - (paidui.currentNumber + canclCount);
 					rvo.currentNumber = paidui.currentNumber;
 					rvo.build(r);
@@ -336,7 +332,7 @@ public class MerchantController extends BaseController {
 
 				rvo = new ReservationVO();
 
-				int canclCount = (int) Reservation.findCountBetweenCurrentNoAndMyNumber(mid, paidui.currentNumber, r.myNumber, r.seatNumber);
+				int canclCount = (int) Reservation.findCountBetweenCurrentNoAndMyNumber(mid, paidui.currentNumber, r.myNumber, r.seatNumber, haoma.version);
 				rvo.beforeYou = r.myNumber - (paidui.currentNumber + canclCount);
 				rvo.currentNumber = paidui.currentNumber;
 
@@ -368,6 +364,7 @@ public class MerchantController extends BaseController {
 			ReservationVO rvo = new ReservationVO();
 			Reservation r = Reservation.reservationExist(accountId, mid, seatNumber);
 			Haoma haoma = Haoma.findByMerchantId(mid);
+			logger.debug("nahao haoma.version -> " + haoma.version);
 
 			// if r != null, means current user had been got a paidui ticket
 			if (r != null) {
@@ -395,12 +392,13 @@ public class MerchantController extends BaseController {
 			if (left >= getNumberJifen) {
 				// 拿号生成Reservation，并且最大号码增加1，reservation中我的号码是最大号码
 				Reservation reservation = Haoma.nahao(accountId, mid, seatNumber, null);
+				rvo.version = reservation.version;
 				Haoma haomaNew = Haoma.findByMerchantId(mid);
 				rvo.currentNumber = haomaNew.haomaMap.get(seatNumber).currentNumber;
-				int cancelCount = (int) Reservation.findCountBetweenCurrentNoAndMyNumber(mid, haomaNew.haomaMap.get(seatNumber).currentNumber, reservation.myNumber, seatNumber);
+				int cancelCount = (int) Reservation.findCountBetweenCurrentNoAndMyNumber(mid, haomaNew.haomaMap.get(seatNumber).currentNumber, reservation.myNumber, seatNumber, haomaNew.version);
 				rvo.beforeYou = reservation.myNumber - (haomaNew.haomaMap.get(seatNumber).currentNumber + cancelCount);
 
-				logger.debug("取号：reservation.myNumber: " + reservation.myNumber + ", rvo.currentNumber: " + rvo.currentNumber + ", cancelCount: " + cancelCount + ", rvo.beforeYou: " + rvo.beforeYou);
+				logger.debug("取号：reservation.myNumber: " + reservation.myNumber + ", rvo.currentNumber: " + rvo.currentNumber + ", cancelCount: " + cancelCount + ", rvo.beforeYou: " + rvo.beforeYou + ", rvo.version: " + rvo.version);
 
 				rvo.tipKey = true;
 				rvo.tipValue = "NAHAO_SUCCESS";
