@@ -75,7 +75,9 @@
                 [self.tableView reloadData];
                 [_HUD hide:YES];
             }else{
-                _HUD.labelText = @"暂无历史取号信息";
+                if(![_HUD.labelText isEqualToString:@"当前网络不可用"]){
+                    _HUD.labelText = @"暂无历史取号信息";
+                }
                 [self.tableView reloadData];
                 [_HUD hide:YES afterDelay:1];
             }
