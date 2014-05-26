@@ -368,10 +368,6 @@ public class MerchantController extends BaseController {
 			ReservationVO rvo = new ReservationVO();
 			Reservation r = Reservation.reservationExist(accountId, mid, seatNumber);
 			Haoma haoma = Haoma.findByMerchantId(mid);
-			if (haoma != null) {
-//				haoma.updateSelf();
-				haoma.check();
-			}
 
 			// if r != null, means current user had been got a paidui ticket
 			if (r != null) {

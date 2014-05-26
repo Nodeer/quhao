@@ -31,7 +31,6 @@ public class Haoma extends HaomaEntityDef {
 	 * @return
 	 */
 	public static Haoma findByMerchantId(String merchantId) {
-
 		MorphiaQuery q = Haoma.q();
 		q.filter("merchantId", merchantId);
 		if (q.first() != null) {
@@ -104,8 +103,7 @@ public class Haoma extends HaomaEntityDef {
 		paidui.enable = true;
 		paidui.maxNumber += 1;
 		haoma.save();
-		haoma.updateSelf();
-
+		haoma.updateSelfForNahao();
 		Reservation reservation = new Reservation();
 
 		// 如果tel是空，说明是APP拿号。否则是现场手机拿号。
@@ -217,6 +215,30 @@ public class Haoma extends HaomaEntityDef {
 			// 检查是否需要排队
 			this.check();
 
+		}
+	}
+	
+	public void updateSelfForNahao() {
+		synchronized (Haoma.class) {
+			Iterator ite = this.haomaMap.keySet().iterator();
+			while (ite.hasNext()) {
+				Integer key = (Integer) ite.next();
+				Paidui p = this.haomaMap.get(key);
+				if (!p.enable) {
+					continue;
+				}
+				
+				// if maxNumber > 0 and currentNumber == 0, then set
+				// currentNumber to 1
+				if (p.maxNumber > 0 && p.currentNumber == 0) {
+					p.currentNumber = 1;
+					this.save();
+				}
+			}
+			
+			// 检查是否需要排队
+			this.check();
+			
 		}
 	}
 

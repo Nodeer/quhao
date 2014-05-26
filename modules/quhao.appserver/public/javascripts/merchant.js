@@ -172,9 +172,9 @@ Merchant.validate = function() {
 	var cityCode = $("#cityCode").val();
 
 	// check if at least one checkbox is selected
-	var i = 1;
-	for (; i <= 20; i++) {
-		var obj = $("#seat" + i);
+	var ii = 1;
+	for (; ii <= 20; ii++) {
+		var obj = $("#seat" + ii);
 		if (obj.attr("checked") == "checked") {
 			break;
 		}
@@ -256,7 +256,9 @@ Merchant.validate = function() {
 		return false;
 	}
 
-	if (i == 21) {
+	console.log(ii+"=====");
+	
+	if (ii == 21) {
 		$("#tips").html("请至少选择一个桌位类型").show();
 		$("html,body").animate({
 					scrollTop : $("#body").offset().top
