@@ -1,6 +1,5 @@
 package com.withiter.quhao.activity;
 
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,7 +33,6 @@ import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SharedprefUtil;
 import com.withiter.quhao.vo.LoginInfo;
-import com.withiter.quhao.vo.ReservationVO;
 import com.withiter.quhao.vo.SignupVO;
 
 public class RegisterActivity extends QuhaoBaseActivity {

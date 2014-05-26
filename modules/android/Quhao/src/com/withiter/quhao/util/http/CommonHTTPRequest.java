@@ -62,6 +62,7 @@ public class CommonHTTPRequest {
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			result = "network_error";
 			return result;
 		}
 
@@ -107,6 +108,7 @@ public class CommonHTTPRequest {
 		catch(Exception e)
 		{
 			e.printStackTrace();
+			result = "network_error";
 			return result;
 		}
 
