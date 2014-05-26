@@ -482,7 +482,7 @@ public class SelfManagementController extends BaseController {
 		int seatNumber = Integer.parseInt(seatN);
 		Reservation reservation = Haoma.nahao(null, mid, seatNumber, tel);
 		Haoma haomaNew = Haoma.findByMerchantId(mid);
-		haomaNew.updateSelf();
+		//haomaNew.updateSelf();
 		rvo.currentNumber = haomaNew.haomaMap.get(seatNumber).currentNumber;
 		int cancelCount = (int) Reservation.findCountBetweenCurrentNoAndMyNumber(mid, haomaNew.haomaMap.get(seatNumber).currentNumber, reservation.myNumber, seatNumber);
 		rvo.beforeYou = reservation.myNumber - (haomaNew.haomaMap.get(seatNumber).currentNumber + cancelCount);

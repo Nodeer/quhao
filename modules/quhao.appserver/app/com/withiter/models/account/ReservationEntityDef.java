@@ -19,4 +19,5 @@ public abstract class ReservationEntityDef extends BaseModel {
 	public boolean valid;							// 是否合法
 	public Constants.ReservationStatus status;		// 状态
 	public boolean available = true;				// 逻辑删除标识
+	public long version = 0l;						// 和排队一致的version
 }
