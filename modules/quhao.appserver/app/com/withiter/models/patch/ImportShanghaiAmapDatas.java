@@ -49,14 +49,19 @@ public class ImportShanghaiAmapDatas extends OnetimePatch {
 		BufferedReader br = new BufferedReader(new FileReader(file), 1024 * 4);
 		String line = null;
 		Merchant m = null;
+		MorphiaQuery q = Merchant.q();
 		while ((line = br.readLine()) != null) {
-
 			// line: citycode:021|poiid:B0015581X1|name:小江西快餐店|address:青云路472|location:121.470596,31.262354|tel:021-66283877|type:餐饮服务;中餐厅;中餐厅
 			String[] s = line.split("\\|");
+			String poiid = s[1].split(":")[1];
+			if(q.filter("poiId", poiid).first() != null){
+				continue;
+			}
+			
 			m = new Merchant();
+			m.poiId = poiid;
 			m.cityCode = s[0].split(":")[1];
 			m.postcode = s[0].split(":")[1];
-			m.poiId = s[1].split(":")[1];
 			m.name = s[2].split(":")[1];
 			m.address = s[3].split(":")[1];
 			m.y = s[4].split(":")[1].split(",")[0];
