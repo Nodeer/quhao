@@ -105,6 +105,9 @@ public class Haoma extends HaomaEntityDef {
 		haoma.save();
 		haoma.updateSelfForNahao();
 		Reservation reservation = new Reservation();
+		
+		// 拿号时version和当前Haoma version一致
+		reservation.version = haoma.version;
 
 		// 如果tel是空，说明是APP拿号。否则是现场手机拿号。
 		if (StringUtils.isEmpty(tel)) {
@@ -177,10 +180,8 @@ public class Haoma extends HaomaEntityDef {
 	}
 
 	public void updateSelf() {
-
 		synchronized (Haoma.class) {
 			logger.debug("start to Haoma.updateSelf");
-
 			Iterator ite = this.haomaMap.keySet().iterator();
 			while (ite.hasNext()) {
 				Integer key = (Integer) ite.next();
@@ -199,16 +200,15 @@ public class Haoma extends HaomaEntityDef {
 				// check current number is valid or not, if not valid: current
 				// number ++
 				// otherwise save current number.
-				Reservation r = Reservation.queryForCancel(merchantId, key, p.currentNumber);
+				Reservation r = Reservation.queryForCancel(merchantId, key, p.currentNumber, this.version);
 				if(r != null){
 					logger.debug("Reservation r = Reservation.queryForCancel(merchantId, key, p.currentNumber); - >" + "座位："+r.seatNumber+", r.myNumber:"+r.myNumber+", r.valid:"+r.valid);
 				} else {
-					logger.debug("Reservation r = Reservation.queryForCancel(merchantId, key, p.currentNumber); - > null");
 				}
 				while (r != null && !r.valid) {
 					p.currentNumber += 1;
 					this.save();
-					r = Reservation.queryForCancel(merchantId, key, p.currentNumber);
+					r = Reservation.queryForCancel(merchantId, key, p.currentNumber, this.version);
 				}
 			}
 
@@ -235,10 +235,8 @@ public class Haoma extends HaomaEntityDef {
 					this.save();
 				}
 			}
-			
 			// 检查是否需要排队
 			this.check();
-			
 		}
 	}
 
@@ -262,6 +260,7 @@ public class Haoma extends HaomaEntityDef {
 			for (int i = 0; i < time; i++) {
 				hList = q.offset(i * countPerPage).limit(countPerPage).asList();
 				for (Haoma h : hList) {
+					h.version += 1;
 					h.resetPaidui();
 					h.save();
 
@@ -297,11 +296,9 @@ public class Haoma extends HaomaEntityDef {
 			if (value.currentNumber == 0 || value.currentNumber > value.maxNumber) {
 				this.noNeedPaidui = true;
 				this.save();
-				logger.debug("haoma check : no paidui 1:" + this.noNeedPaidui);
 				break;
 			} else {
 				this.noNeedPaidui = false;
-				logger.debug("haoma check : no paidui 2:" + this.noNeedPaidui);
 				this.save();
 			}
 		}

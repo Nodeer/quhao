@@ -171,6 +171,9 @@ public class SelfManagementController extends BaseController {
 		}
 
 		Haoma haoma = Haoma.findByMerchantId(m.id());
+		// version ++
+		haoma.version += 1;
+		
 		Iterator it = haoma.haomaMap.keySet().iterator();
 
 		// 循环老的排队信息，设置最新的桌位以及清除非开启的桌位类型对应信息
@@ -382,17 +385,19 @@ public class SelfManagementController extends BaseController {
 		}
 		int currentNumber = Integer.parseInt(cNumber);
 		int seatNumber = Integer.parseInt(sNumber);
-
-		Reservation r = Reservation.findReservationForHandle(seatNumber, currentNumber, mid);
-		if (r != null) {
-			boolean flag = Reservation.finish(r.id());
+		
+		synchronized (SelfManagementController.class) {
 			Haoma haoma = Haoma.findByMerchantId(mid);
-			haoma.updateSelf();
-
-			smsRemind(mid, seatNumber);
-			renderJSON(flag);
-		} else {
-			renderJSON(false);
+			Reservation r = Reservation.findReservationForHandle(seatNumber, currentNumber, mid, haoma.version);
+			if (r != null) {
+				boolean flag = Reservation.finish(r.id());
+				haoma.updateSelf();
+	
+				smsRemind(mid, seatNumber);
+				renderJSON(flag);
+			} else {
+				renderJSON(false);
+			}
 		}
 	}
 
@@ -411,10 +416,10 @@ public class SelfManagementController extends BaseController {
 		int seatNumber = Integer.parseInt(sNumber);
 
 		synchronized (SelfManagementController.class) {
-			Reservation r = Reservation.findReservationForHandle(seatNumber, currentNumber, mid);
+			Haoma haoma = Haoma.findByMerchantId(mid);
+			Reservation r = Reservation.findReservationForHandle(seatNumber, currentNumber, mid, haoma.version);
 			if (r != null) {
 				boolean flag = Reservation.expire(r.id());
-				Haoma haoma = Haoma.findByMerchantId(mid);
 				haoma.updateSelf();
 
 				smsRemind(mid, seatNumber);
@@ -484,7 +489,7 @@ public class SelfManagementController extends BaseController {
 		Haoma haomaNew = Haoma.findByMerchantId(mid);
 		//haomaNew.updateSelf();
 		rvo.currentNumber = haomaNew.haomaMap.get(seatNumber).currentNumber;
-		int cancelCount = (int) Reservation.findCountBetweenCurrentNoAndMyNumber(mid, haomaNew.haomaMap.get(seatNumber).currentNumber, reservation.myNumber, seatNumber);
+		int cancelCount = (int) Reservation.findCountBetweenCurrentNoAndMyNumber(mid, haomaNew.haomaMap.get(seatNumber).currentNumber, reservation.myNumber, seatNumber, haomaNew.version);
 		rvo.beforeYou = reservation.myNumber - (haomaNew.haomaMap.get(seatNumber).currentNumber + cancelCount);
 		rvo.tipKey = true;
 		rvo.tipValue = "NAHAO_SUCCESS";

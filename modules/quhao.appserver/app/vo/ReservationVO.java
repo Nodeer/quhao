@@ -18,6 +18,7 @@ public class ReservationVO {
 	public int seatNumber;
 	public int myNumber;
 	public int beforeYou;
+	public long version;
 	public int currentNumber;
 	public Constants.ReservationStatus status;
 	
