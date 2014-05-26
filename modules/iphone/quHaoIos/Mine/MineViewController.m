@@ -208,8 +208,12 @@
             }else{
                 if ([[Helper returnUserString:@"showImage"] boolValue])
                 {
-                    if ([Helper isCookie]&&[Helper isFileExist:@"userOrigin.jpg"]) {
-                        self.egoImgView.image = [Helper imageWithImageSimple:[UIImage imageWithContentsOfFile:[self userImagePath]] scaledToSize:CGSizeMake(100, 100)];
+                    if ([Helper isCookie]) {
+                        if([Helper returnUserString:_userInfo.accountId]!=nil){
+                            self.egoImgView.image = [Helper imageWithImageSimple:[UIImage imageWithContentsOfFile:[self userImagePath]] scaledToSize:CGSizeMake(100, 100)];
+                        }else{
+                            self.egoImgView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,_userInfo.userImage]];
+                        }
                     }else{
                         if(nil==_userInfo.userImage||[_userInfo.userImage isEqualToString:@""])
                         {
@@ -367,12 +371,12 @@
         NSString *response =[QuHaoUtil requestDb:urlStr];
         if([response isEqualToString:@""]){
             //异常处理
-            [Helper showHUD2:@"服务器错误，请稍后再试" andView:self.view andSize:130];
+            [Helper showHUD2:@"网络异常,请稍后再试" andView:self.view andSize:130];
         }else{
             NSDictionary *jsonObjects=[QuHaoUtil analyseDataToDic:response];
             if(jsonObjects==nil){
                 //解析错误
-                [Helper showHUD2:@"服务器错误，请稍后再试" andView:self.view andSize:130];
+                [Helper showHUD2:@"网络异常,请稍后再试" andView:self.view andSize:130];
             }else{
                 if(jsonObjects.count!=0){
                     int errorCode=[[jsonObjects valueForKey:@"errorCode"] intValue];
@@ -384,7 +388,7 @@
                         NSIndexPath *te=[NSIndexPath indexPathForRow:1 inSection:0];
                         [_mineView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:te,nil] withRowAnimation:UITableViewRowAnimationFade];
                     }else{
-                        [Helper showHUD2:@"服务器错误，请稍后再试" andView:self.view andSize:130];
+                        [Helper showHUD2:@"网络异常,请稍后再试" andView:self.view andSize:130];
                     }
                 }
             }
@@ -610,6 +614,9 @@
     NSString* fullPathToFile = [documentsDirectory stringByAppendingPathComponent:@"userOrigin.jpg"];
     [imageData writeToFile:fullPathToFile atomically:NO];
     
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:_userInfo.accountId forKey:@"userImageUrl"];
+    [defaults synchronize];
     [self upLoadSalesBigImage:fullPathToFile];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -618,7 +625,7 @@
 {
     if (error)
     {
-        [Helper showHUD2:@"服务器错误，请稍后再试" andView:self.view andSize:130];
+        [Helper showHUD2:@"网络异常,请稍后再试" andView:self.view andSize:130];
     }else{
         [self saveImageData:image];
     }
