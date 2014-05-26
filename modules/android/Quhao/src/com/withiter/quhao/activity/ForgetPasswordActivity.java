@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
+import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.encrypt.DesUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
@@ -85,17 +86,17 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				if (null == signup) {
-					Toast.makeText(ForgetPasswordActivity.this, "发送验证码失败， 请重按验证码按钮。", Toast.LENGTH_LONG).show();
+					Toast.makeText(ForgetPasswordActivity.this, "发送验证码失败， 请重按验证码按钮。", Toast.LENGTH_SHORT).show();
 				}
 				else
 				{
 					if("1".equals(signup.errorKey))
 					{
-						Toast.makeText(ForgetPasswordActivity.this, "发送验证码成功， 稍后请输入验证码，24小时有效。", Toast.LENGTH_LONG).show();
+						Toast.makeText(ForgetPasswordActivity.this, "发送验证码成功， 稍后请输入验证码，24小时有效。", Toast.LENGTH_SHORT).show();
 					}
 					else
 					{
-						Toast.makeText(ForgetPasswordActivity.this, signup.errorText, Toast.LENGTH_LONG).show();
+						Toast.makeText(ForgetPasswordActivity.this, signup.errorText, Toast.LENGTH_SHORT).show();
 					}
 				}
 				
@@ -112,13 +113,13 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				if (null == signup) {
-					Toast.makeText(ForgetPasswordActivity.this, "注册失败， 请重新注册。", Toast.LENGTH_LONG).show();
+					Toast.makeText(ForgetPasswordActivity.this, "注册失败， 请重新注册。", Toast.LENGTH_SHORT).show();
 				}
 				else
 				{
 					if("1".equals(signup.errorKey))
 					{
-						Toast.makeText(ForgetPasswordActivity.this, "注册成功。", Toast.LENGTH_LONG).show();
+						Toast.makeText(ForgetPasswordActivity.this, "注册成功。", Toast.LENGTH_SHORT).show();
 						SharedprefUtil.remove(ForgetPasswordActivity.this, QuhaoConstant.ACCOUNT_ID);
 						SharedprefUtil.remove(ForgetPasswordActivity.this, QuhaoConstant.IS_AUTO_LOGIN);
 //						SharedprefUtil.remove(ForgetPasswordActivity.this, QuhaoConstant.IS_LOGIN);
@@ -135,7 +136,7 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 					}
 					else
 					{
-						Toast.makeText(ForgetPasswordActivity.this, signup.errorText, Toast.LENGTH_LONG).show();
+						Toast.makeText(ForgetPasswordActivity.this, signup.errorText, Toast.LENGTH_SHORT).show();
 					}
 				}
 				
@@ -185,7 +186,7 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 						if (StringUtils.isNotNull(loginName)) {
 							if (!validatePhoneNumber(loginName)) {
 								progressDialogUtil.closeProgress();
-								Toast.makeText(ForgetPasswordActivity.this, "请填写正确手机号。", Toast.LENGTH_LONG).show();
+								Toast.makeText(ForgetPasswordActivity.this, "请填写正确手机号。", Toast.LENGTH_SHORT).show();
 								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 								return;
 							}
@@ -195,7 +196,7 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 							if(StringUtils.isNull(password))
 							{
 								progressDialogUtil.closeProgress();
-								Toast.makeText(ForgetPasswordActivity.this, "请输入密码。", Toast.LENGTH_LONG).show();
+								Toast.makeText(ForgetPasswordActivity.this, "请输入密码。", Toast.LENGTH_SHORT).show();
 								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
 										1000);
 								return;
@@ -204,7 +205,7 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 							if(StringUtils.isNull(password2))
 							{
 								progressDialogUtil.closeProgress();
-								Toast.makeText(ForgetPasswordActivity.this, "请输入确认密码。", Toast.LENGTH_LONG).show();
+								Toast.makeText(ForgetPasswordActivity.this, "请输入确认密码。", Toast.LENGTH_SHORT).show();
 								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
 										1000);
 								return;
@@ -213,7 +214,7 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 							if(StringUtils.isNull(verifyCode))
 							{
 								progressDialogUtil.closeProgress();
-								Toast.makeText(ForgetPasswordActivity.this, "请输入验证码。", Toast.LENGTH_LONG).show();
+								Toast.makeText(ForgetPasswordActivity.this, "请输入验证码。", Toast.LENGTH_SHORT).show();
 								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
 										1000);
 								return;
@@ -222,7 +223,7 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 							if(!password.equals(password2))
 							{
 								progressDialogUtil.closeProgress();
-								Toast.makeText(ForgetPasswordActivity.this, "密码与确认密码必须一致。", Toast.LENGTH_LONG).show();
+								Toast.makeText(ForgetPasswordActivity.this, "密码与确认密码必须一致。", Toast.LENGTH_SHORT).show();
 								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
 										1000);
 								return;
@@ -231,11 +232,18 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 							String url = "updatePassCode?mobile=" + loginName
 									+ "&code=" + verifyCode + "&password="+ password;
 
+							if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+								progressDialogUtil.closeProgress();
+								Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+								unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+								return;
+							}
+							
 							String buf = CommonHTTPRequest.get(url);
 							if(StringUtils.isNull(buf)||"[]".equals(buf))
 							{
 								progressDialogUtil.closeProgress();
-								Toast.makeText(ForgetPasswordActivity.this, "发送验证码失败， 请重按验证码按钮。", Toast.LENGTH_LONG).show();
+								Toast.makeText(ForgetPasswordActivity.this, "发送验证码失败， 请重按验证码按钮。", Toast.LENGTH_SHORT).show();
 								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
 										1000);
 								return;
@@ -248,14 +256,14 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 						else
 						{
 							progressDialogUtil.closeProgress();
-							Toast.makeText(ForgetPasswordActivity.this, "请填写手机号。", Toast.LENGTH_LONG).show();
+							Toast.makeText(ForgetPasswordActivity.this, "请填写手机号。", Toast.LENGTH_SHORT).show();
 							unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
 									1000);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
 						progressDialogUtil.closeProgress();
-						Toast.makeText(ForgetPasswordActivity.this, "发送验证码失败， 请重发", Toast.LENGTH_LONG).show();
+						Toast.makeText(ForgetPasswordActivity.this, "发送验证码失败， 请重发", Toast.LENGTH_SHORT).show();
 						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
 								1000);
 						
@@ -290,17 +298,24 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 						if (StringUtils.isNotNull(loginName)) {
 							if (!validatePhoneNumber(loginName)) {
 								progressDialogUtil.closeProgress();
-								Toast.makeText(ForgetPasswordActivity.this, "请填写正确手机号。", Toast.LENGTH_LONG).show();
+								Toast.makeText(ForgetPasswordActivity.this, "请填写正确手机号。", Toast.LENGTH_SHORT).show();
 								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 								return;
 							}
 							String url = "getAuthCode?mobile=" + loginName;
 
+							if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+								progressDialogUtil.closeProgress();
+								Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+								unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+								return;
+							}
+							
 							String buf = CommonHTTPRequest.get(url);
 							if(StringUtils.isNull(buf)||"[]".equals(buf))
 							{
 								progressDialogUtil.closeProgress();
-								Toast.makeText(ForgetPasswordActivity.this, "发送验证码失败， 请重按验证码按钮。", Toast.LENGTH_LONG).show();
+								Toast.makeText(ForgetPasswordActivity.this, "发送验证码失败， 请重按验证码按钮。", Toast.LENGTH_SHORT).show();
 								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
 										1000);
 								return;
@@ -313,14 +328,14 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 						else
 						{
 							progressDialogUtil.closeProgress();
-							Toast.makeText(ForgetPasswordActivity.this, "请填写手机号。", Toast.LENGTH_LONG).show();
+							Toast.makeText(ForgetPasswordActivity.this, "请填写手机号。", Toast.LENGTH_SHORT).show();
 							unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
 									1000);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
 						progressDialogUtil.closeProgress();
-						Toast.makeText(ForgetPasswordActivity.this, "发送验证码失败， 请重发", Toast.LENGTH_LONG).show();
+						Toast.makeText(ForgetPasswordActivity.this, "发送验证码失败， 请重发", Toast.LENGTH_SHORT).show();
 						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
 								1000);
 						

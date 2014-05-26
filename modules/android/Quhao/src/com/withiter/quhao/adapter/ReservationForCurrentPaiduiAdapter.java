@@ -22,12 +22,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.activity.MerchantDetailActivity;
 import com.withiter.quhao.activity.QuhaoCurrentStatesActivity;
 import com.withiter.quhao.exception.NoResultFromHTTPRequestException;
 import com.withiter.quhao.task.QueryYouhuiInReservationTask;
+import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.AsynImageLoader;
@@ -182,6 +184,11 @@ public class ReservationForCurrentPaiduiAdapter extends BaseAdapter {
 						if(cal.before(Calendar.getInstance()))
 						{
 							String url = "youhui?mid=" + mid;
+							if (!ActivityUtil.isNetWorkAvailable(activity)) {
+								Toast.makeText(activity, R.string.network_error_info, Toast.LENGTH_SHORT).show();
+								return;
+							}
+							
 							final QueryYouhuiInReservationTask task = new QueryYouhuiInReservationTask(R.string.waitting, activity, url);
 							task.execute(new Runnable() {
 								
@@ -210,6 +217,12 @@ public class ReservationForCurrentPaiduiAdapter extends BaseAdapter {
 														try {
 															String url = "";
 															url = "cancel?reservationId=" + reservationId;
+															
+															if (!ActivityUtil.isNetWorkAvailable(activity)) {
+																Toast.makeText(activity, R.string.network_error_info, Toast.LENGTH_SHORT).show();
+																progress.closeProgress();
+																return;
+															}
 															
 															String buf = CommonHTTPRequest.get(url);
 															if (StringUtils.isNull(buf) || "[]".equals(buf)) {
@@ -297,6 +310,11 @@ public class ReservationForCurrentPaiduiAdapter extends BaseAdapter {
 						progress = new ProgressDialogUtil(activity, R.string.empty, R.string.waitting, false);
 						progress.showProgress();
 						try {
+							if (!ActivityUtil.isNetWorkAvailable(activity)) {
+								Toast.makeText(activity, R.string.network_error_info, Toast.LENGTH_SHORT).show();
+								progress.closeProgress();
+								return;
+							}
 							String url = "";
 							url = "cancel?reservationId=" + reservationId;
 							

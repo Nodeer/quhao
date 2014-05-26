@@ -28,6 +28,7 @@ import android.widget.Toast;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.ReservationAdapter;
+import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
@@ -199,6 +200,12 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				Looper.prepare();
 				QuhaoLog.d(LOGTAG, "start to load paidui information from server side");
 				String accountId = QHClientApplication.getInstance().accountInfo.accountId;
+				if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+					Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+					unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+					progressDialogUtil.closeProgress();
+					return;
+				}
 				String buf = CommonHTTPRequest.get("getReservations?accountId=" + accountId + "&mid=" + merchantId);
 				if (StringUtils.isNull(buf) || "[]".equals(buf)) {
 					progressDialogUtil.closeProgress();
@@ -243,6 +250,12 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				progressSeatNos = new ProgressDialogUtil(MerchantDetailActivity.this, R.string.empty, R.string.querying, false);
 				progressSeatNos.showProgress();
 				QuhaoLog.v(LOGTAG, "get seat numbers data form server begin, the merchantId is : " + merchantId);
+				if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+					Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+					unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+					progressSeatNos.closeProgress();
+					return;
+				}
 				String buf = CommonHTTPRequest.get("quhao?id=" + merchantId);
 				QuhaoLog.v(LOGTAG, "get seat numbers data form server begin, buf is :" + buf);
 				// + GetNumberActivity.this.merchantId);
@@ -336,7 +349,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					
 				} else {
 					// TODO : 没有位置时， 该怎么做， 应该返回到列表页面， 在酒店详细信息页面应该判断
-//					Toast.makeText(MerchantDetailActivity.this, "此酒店没有座位，请选择其他酒店。", Toast.LENGTH_LONG).show();
+//					Toast.makeText(MerchantDetailActivity.this, "此酒店没有座位，请选择其他酒店。", Toast.LENGTH_SHORT).show();
 					paiduiConditionLayout.setVisibility(View.GONE);
 				}
 				
@@ -356,6 +369,11 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			try {
 				Looper.prepare();
 				QuhaoLog.v(LOGTAG, "get seat numbers data form server begin");
+				if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+					Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+					unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+					return;
+				}
 				String buf = CommonHTTPRequest.get("getCurrentNo?id=" + merchantId + "&seatNo=" + currentPaidui.seatNo); 
 				// + GetNumberActivity.this.merchantId);
 				if (StringUtils.isNull(buf)) {
@@ -400,6 +418,15 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				QuhaoLog.v(LOGTAG, "get merchant details form server begin");
 				String accountId = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.ACCOUNT_ID, "");
 				QuhaoLog.v(LOGTAG, "MerchantDetailActivity.this.merchantId : " + merchantId + ",account ID : " + accountId);
+				if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+					Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+					unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+					info.findViewById(R.id.loadingbar).setVisibility(View.GONE);
+					info.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
+					paiduiConditionLayoutHandler.sendEmptyMessage(200);
+					currentQuHaoLayoutHandler.sendEmptyMessage(200);
+					return;
+				}
 				String buf = CommonHTTPRequest.get("querytMerchantDetail?merchantId=" + merchantId + "&accountId=" + accountId + "&isLogined=" + String.valueOf(QHClientApplication.getInstance().isLogined));
 				if (StringUtils.isNull(buf)) {
 					//TODO: wjzwjz 系统异常时，怎么处理
@@ -700,7 +727,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				
 			} else {
 				// TODO : 没有位置时， 该怎么做， 应该返回到列表页面， 在酒店详细信息页面应该判断
-//				Toast.makeText(MerchantDetailActivity.this, "此酒店没有座位，请选择其他酒店。", Toast.LENGTH_LONG).show();
+//				Toast.makeText(MerchantDetailActivity.this, "此酒店没有座位，请选择其他酒店。", Toast.LENGTH_SHORT).show();
 				btnGetNumber.setVisibility(View.INVISIBLE);
 				paiduiConditionLayout.setVisibility(View.GONE);
 			}
@@ -761,7 +788,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				String buf = String.valueOf(msg.obj);
 				if (StringUtils.isNull(buf)) {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-					Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_LONG).show();
+					Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_SHORT).show();
 					if(merchant.isAttention)
 					{
 						btnAttention.setText(R.string.cancel_attention);
@@ -775,7 +802,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					if("success".equals(buf))
 					{
 						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-//						Toast.makeText(MerchantDetailActivity.this, R.string.committing_success, Toast.LENGTH_LONG).show();
+//						Toast.makeText(MerchantDetailActivity.this, R.string.committing_success, Toast.LENGTH_SHORT).show();
 						if(merchant.isAttention)
 						{
 							btnAttention.setText(R.string.attention);
@@ -790,7 +817,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					else
 					{
 						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-						Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_LONG).show();
+						Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_SHORT).show();
 						if(merchant.isAttention)
 						{
 							btnAttention.setText(R.string.cancel_attention);
@@ -850,7 +877,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			else
 			{
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-//				Toast.makeText(this, "对不起，暂无评论。", Toast.LENGTH_LONG).show();
+//				Toast.makeText(this, "对不起，暂无评论。", Toast.LENGTH_SHORT).show();
 			}
 			break;
 		case R.id.desc_layout:
@@ -865,7 +892,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			else
 			{
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-//				Toast.makeText(this, "对不起，暂无描述。", Toast.LENGTH_LONG).show();
+//				Toast.makeText(this, "对不起，暂无描述。", Toast.LENGTH_SHORT).show();
 			}
 			break;
 		case R.id.seatNo:
@@ -897,22 +924,28 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						
 						try {
 							QuhaoLog.v(LOGTAG, "commit open service, account id  : " + accountId + " , merchant ID : " + merchantId);
+							if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+								Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+								unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+								progressDialogUtil.closeProgress();
+								return;
+							}
 							String buf = CommonHTTPRequest.get("openService?mid=" + merchantId + "&accountId=" + accountId);
 							if (StringUtils.isNull(buf)) {
 								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-								Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_LONG).show();
+								Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_SHORT).show();
 								
 							} else {
 								if("error".equals(buf))
 								{
 									unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-									Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_LONG).show();
+									Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_SHORT).show();
 								}
 								else
 								{
 									unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 									openServiceHandler.obtainMessage(0, buf).sendToTarget();
-//									Toast.makeText(MerchantDetailActivity.this, R.string.committing_success, Toast.LENGTH_LONG).show();
+//									Toast.makeText(MerchantDetailActivity.this, R.string.committing_success, Toast.LENGTH_SHORT).show();
 								}
 								
 							}
@@ -920,7 +953,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 
 						} catch (Exception e) {
 							progressDialogUtil.closeProgress();
-							Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_LONG).show();
+							Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_SHORT).show();
 							unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 							e.printStackTrace();
 						} finally {
@@ -964,13 +997,19 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 							
 							try {
 								QuhaoLog.v(LOGTAG, "pay attention to merchant, account id  : " + accountId + " , merchant ID : " + merchantId + ",flag : " + flag);
+								if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+									Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+									unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+									progressDialogUtil.closeProgress();
+									return;
+								}
 								String buf = CommonHTTPRequest.get("updateAttention?mid=" + merchantId + "&accountId=" + accountId + "&flag=" + flag);
 								attentionHandler.obtainMessage(200, buf).sendToTarget();
 								
 
 							} catch (Exception e) {
 								progressDialogUtil.closeProgress();
-								Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_LONG).show();
+								Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_SHORT).show();
 								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 								e.printStackTrace();
 							} finally {
@@ -1008,7 +1047,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					Intent phoneIntent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + phoneNO));
 					startActivity(phoneIntent);
 				} else {
-					Toast.makeText(MerchantDetailActivity.this, "此商家还未添加联系方式", Toast.LENGTH_LONG).show();
+					Toast.makeText(MerchantDetailActivity.this, "此商家还未添加联系方式", Toast.LENGTH_SHORT).show();
 				}
 				break;
 			case R.id.btn_GetNumber:

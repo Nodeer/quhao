@@ -169,7 +169,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				if (loginInfo.msg.equals("fail")) {
 					QHClientApplication.getInstance().isLogined = false;
 //					SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "false");
-					Toast.makeText(PersonCenterActivity.this, "登陆失败", Toast.LENGTH_LONG).show();
+					Toast.makeText(PersonCenterActivity.this, "登陆失败", Toast.LENGTH_SHORT).show();
 					return;
 				}
 				if (loginInfo.msg.equals("success")) {
@@ -408,7 +408,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 					Map<String, Object> toastParams = new HashMap<String, Object>();
 					toastParams.put("activity", PersonCenterActivity.this);
 					toastParams.put("text", "签到失败");
-					toastParams.put("toastLength", Toast.LENGTH_LONG);
+					toastParams.put("toastLength", Toast.LENGTH_SHORT);
 					toastHandler.obtainMessage(1000, toastParams).sendToTarget();
 					return;
 				}
@@ -418,14 +418,14 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 					Map<String, Object> toastParams = new HashMap<String, Object>();
 					toastParams.put("activity", PersonCenterActivity.this);
 					toastParams.put("text", R.string.sign_in_success);
-					toastParams.put("toastLength", Toast.LENGTH_LONG);
+					toastParams.put("toastLength", Toast.LENGTH_SHORT);
 					toastHandler.obtainMessage(1000, toastParams).sendToTarget();
 					accountUpdateHandler.obtainMessage(200, account).sendToTarget();
 				}
 			}
 		} catch (Exception e) {
 			accountUpdateHandler.obtainMessage(200, null).sendToTarget();
-			Toast.makeText(PersonCenterActivity.this, "签到失败", Toast.LENGTH_LONG).show();
+			Toast.makeText(PersonCenterActivity.this, "签到失败", Toast.LENGTH_SHORT).show();
 			e.printStackTrace();
 		} finally {
 			
@@ -475,7 +475,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 			String accountId = SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "");
 			if (StringUtils.isNull(accountId)) {
 				QHClientApplication.getInstance().isLogined = false;
-				Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_SHORT).show();
 			}
 			else
 			{
@@ -484,7 +484,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 					String result = CommonHTTPRequest.post(url);
 					if(StringUtils.isNull(result)){
 						QHClientApplication.getInstance().isLogined = false;
-						Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_LONG).show();
+						Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_SHORT).show();
 					}
 					else
 					{
@@ -496,7 +496,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 						if (account.msg.equals("fail")) {
 //							SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
 							QHClientApplication.getInstance().isLogined = false;
-							Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_LONG).show();
+							Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_SHORT).show();
 						}
 						else if (account.msg.equals("success")) 
 						{
@@ -513,7 +513,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 						else
 						{
 							QHClientApplication.getInstance().isLogined = false;
-							Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_LONG).show();
+							Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_SHORT).show();
 						}
 					}
 					
@@ -521,7 +521,7 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 					e.printStackTrace();
 					QuhaoLog.e(TAG, e);
 					QHClientApplication.getInstance().isLogined = false;
-					Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_LONG).show();
+					Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_SHORT).show();
 					
 				}
 			}

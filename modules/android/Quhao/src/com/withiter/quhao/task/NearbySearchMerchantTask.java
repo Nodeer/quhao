@@ -75,7 +75,7 @@ public class NearbySearchMerchantTask extends BaseTask {
 
 	@Override
 	public void onStateError(JsonPack result) {
-//		Toast.makeText(mContext, result.getMsg(), Toast.LENGTH_LONG).show();
+//		Toast.makeText(mContext, result.getMsg(), Toast.LENGTH_SHORT).show();
 //		DialogUtil.showToast(mContext, result.getMsg());
 	}
 

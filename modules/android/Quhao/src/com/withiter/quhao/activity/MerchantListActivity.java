@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import com.amap.api.location.AMapLocation;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantAdapter;
+import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
@@ -160,6 +162,14 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 					url = url + "&userX=0.000000&userY=0.000000";
 				}
 				QuhaoLog.d(LOGTAG, "the request url is : " + url);
+				if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+					Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+					merchants = new ArrayList<Merchant>();
+					needToLoad = false;
+					merchantsUpdateHandler.obtainMessage(200, merchants).sendToTarget();
+					return;
+				}
+				
 				String buf = CommonHTTPRequest.get(url);
 				if (StringUtils.isNull(buf) || "[]".endsWith(buf)) {
 					if (null == merchants) {

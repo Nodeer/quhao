@@ -356,7 +356,7 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 	private void queryNoQueueMerchants() {
 		if(null == firstLocation)
 		{
-			Toast.makeText(this, "亲，现在没有定位信息，不能查看哦。", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "亲，现在没有定位信息，不能查看哦。", Toast.LENGTH_SHORT).show();
 			return;
 		}
 		String url = "getNearNoQueueMerchants?userX=" + firstLocation.getLongitude() + "&userY=" + firstLocation.getLatitude() + "&cityCode=" + firstLocation.getCityCode() + 

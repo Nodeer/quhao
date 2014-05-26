@@ -95,6 +95,9 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.e("wjzwjz", "NearByFragment onCreateView");
+		if (!ActivityUtil.isNetWorkAvailable(getActivity())) {
+			Toast.makeText(getActivity(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+		}
 		if(contentView != null)
 		{
 			ViewGroup vg = (ViewGroup) contentView.getParent();
@@ -125,14 +128,8 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 		initExpandView();
 
-		if (!ActivityUtil.isNetWorkAvailable(getActivity())) {
-			Builder dialog = new AlertDialog.Builder(getActivity());
-			dialog.setTitle("温馨提示").setMessage("Wifi/蜂窝网络未打开，或者网络情况不是很好哟").setPositiveButton("确定", null);
-			dialog.show();
-		}
-			
-//		contentView.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
-//		contentView.findViewById(R.id.serverdata).setVisibility(View.GONE);
+		contentView.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
+		contentView.findViewById(R.id.serverdata).setVisibility(View.GONE);
 		resultLayout.setVisibility(View.VISIBLE);
 		noResultLayout.setVisibility(View.GONE);
 		locationResult.setVisibility(View.GONE);
@@ -145,8 +142,8 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		public void run() {
 			if (firstLocation == null) {
 				Toast.makeText(getActivity(), "亲，定位失败，请检查网络状态！", Toast.LENGTH_SHORT).show();
-//				contentView.findViewById(R.id.loadingbar).setVisibility(View.GONE);
-//				contentView.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
+				contentView.findViewById(R.id.loadingbar).setVisibility(View.GONE);
+				contentView.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
 				resultLayout.setVisibility(View.GONE);
 				noResultLayout.setVisibility(View.VISIBLE);
 				noResultView.setText(R.string.location_failed);
@@ -252,8 +249,8 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 				nearByAdapter.notifyDataSetChanged();
 				// merchantsListView.setOnScrollListener(NearbyFragment.this);
 				merchantsListView.setOnItemClickListener(NearbyFragment.this);
-//				contentView.findViewById(R.id.loadingbar).setVisibility(View.GONE);
-//				contentView.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
+				contentView.findViewById(R.id.loadingbar).setVisibility(View.GONE);
+				contentView.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
 				if(null != merchantList && !merchantList.isEmpty())
 				{
 					resultLayout.setVisibility(View.VISIBLE);
@@ -448,12 +445,12 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 	private void queryNearbyMerchants() {
 		if(null == firstLocation)
 		{
-			Toast.makeText(getActivity(), "亲，现在没有定位信息，不能查看哦。", Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), "亲，现在没有定位信息，不能查看哦。", Toast.LENGTH_SHORT).show();
 			return;
 		}
 		String url = "getNearMerchants?userX=" + firstLocation.getLongitude() + "&userY=" + firstLocation.getLatitude() + "&cityCode=" + firstLocation.getCityCode()
 				+ "&page=" + page + "&maxDis=" + searchDistence;
-		final NearbyMerchantsTask task = new NearbyMerchantsTask(R.string.waitting, getActivity(), url);
+		final NearbyMerchantsTask task = new NearbyMerchantsTask(0, getActivity(), url);
 		task.execute(new Runnable() {
 
 			@Override
@@ -517,8 +514,8 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 		switch (v.getId()) {
 		case R.id.location_result:
-//			contentView.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
-//			contentView.findViewById(R.id.serverdata).setVisibility(View.GONE);
+			contentView.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
+			contentView.findViewById(R.id.serverdata).setVisibility(View.GONE);
 			resultLayout.setVisibility(View.VISIBLE);
 			noResultLayout.setVisibility(View.GONE);
 			locationResult.setVisibility(View.GONE);

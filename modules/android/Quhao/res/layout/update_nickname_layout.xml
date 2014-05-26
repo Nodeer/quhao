@@ -99,7 +99,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="6.0dip"
-                android:maxLines="2"
                 android:paddingRight="6.0dip"
                 android:text="昵称只能使用字母、数字、中文和下划线组成，且不能以下划线开头，长度为4-16个字符，中文为两个字符。"
                 android:textAppearance="?android:textAppearanceMedium"

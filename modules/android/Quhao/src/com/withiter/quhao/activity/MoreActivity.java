@@ -316,7 +316,7 @@ public class MoreActivity extends QuhaoBaseActivity {
 					Map<String, Object> toastParams = new HashMap<String, Object>();
 					toastParams.put("activity", MoreActivity.this);
 					toastParams.put("text", R.string.share_cancel);
-					toastParams.put("toastLength", Toast.LENGTH_LONG);
+					toastParams.put("toastLength", Toast.LENGTH_SHORT);
 					toastHandler.obtainMessage(1000, toastParams).sendToTarget();
 					
 				}
@@ -327,7 +327,7 @@ public class MoreActivity extends QuhaoBaseActivity {
 					Map<String, Object> toastParams = new HashMap<String, Object>();
 					toastParams.put("activity", MoreActivity.this);
 					toastParams.put("text", R.string.share_success);
-					toastParams.put("toastLength", Toast.LENGTH_LONG);
+					toastParams.put("toastLength", Toast.LENGTH_SHORT);
 					toastHandler.obtainMessage(1000, toastParams).sendToTarget();
 				}
 
@@ -336,7 +336,7 @@ public class MoreActivity extends QuhaoBaseActivity {
 					Map<String, Object> toastParams = new HashMap<String, Object>();
 					toastParams.put("activity", MoreActivity.this);
 					toastParams.put("text", R.string.share_error);
-					toastParams.put("toastLength", Toast.LENGTH_LONG);
+					toastParams.put("toastLength", Toast.LENGTH_SHORT);
 					toastHandler.obtainMessage(1000, toastParams).sendToTarget();
 				}
 

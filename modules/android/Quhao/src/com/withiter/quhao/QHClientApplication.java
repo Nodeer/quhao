@@ -218,7 +218,7 @@ public class QHClientApplication extends Application {
 					@Override
 					public void run() {
 
-						Toast.makeText(QHClientApplication.this, "自动登陆失败，请进入个人中心登陆", Toast.LENGTH_LONG).show();
+						Toast.makeText(QHClientApplication.this, "自动登陆失败，请进入个人中心登陆", Toast.LENGTH_SHORT).show();
 
 					}
 				});
@@ -239,7 +239,7 @@ public class QHClientApplication extends Application {
 					@Override
 					public void run() {
 
-						Toast.makeText(QHClientApplication.this, "自动登陆失败，请进入个人中心登陆", Toast.LENGTH_LONG).show();
+						Toast.makeText(QHClientApplication.this, "自动登陆失败，请进入个人中心登陆", Toast.LENGTH_SHORT).show();
 
 					}
 				});
@@ -267,7 +267,7 @@ public class QHClientApplication extends Application {
 				@Override
 				public void run() {
 
-					Toast.makeText(QHClientApplication.this, "自动登陆失败，请进入个人中心登陆", Toast.LENGTH_LONG).show();
+					Toast.makeText(QHClientApplication.this, "自动登陆失败，请进入个人中心登陆", Toast.LENGTH_SHORT).show();
 
 				}
 			});

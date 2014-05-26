@@ -1,5 +1,6 @@
 package com.withiter.quhao.activity;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,6 +24,7 @@ import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.task.LoginTask;
+import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.encrypt.DesUtils;
@@ -32,6 +34,7 @@ import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SharedprefUtil;
 import com.withiter.quhao.vo.LoginInfo;
+import com.withiter.quhao.vo.ReservationVO;
 import com.withiter.quhao.vo.SignupVO;
 
 public class RegisterActivity extends QuhaoBaseActivity {
@@ -111,12 +114,12 @@ public class RegisterActivity extends QuhaoBaseActivity {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				if (null == signup) {
-					Toast.makeText(RegisterActivity.this, "发送验证码失败， 请重按验证码按钮。", Toast.LENGTH_LONG).show();
+					Toast.makeText(RegisterActivity.this, "发送验证码失败， 请重按验证码按钮。", Toast.LENGTH_SHORT).show();
 				} else {
 					if ("1".equals(signup.errorKey)) {
-						Toast.makeText(RegisterActivity.this, "发送验证码成功， 稍后请输入验证码，24小时有效。", Toast.LENGTH_LONG).show();
+						Toast.makeText(RegisterActivity.this, "发送验证码成功， 稍后请输入验证码，24小时有效。", Toast.LENGTH_SHORT).show();
 					} else {
-						Toast.makeText(RegisterActivity.this, signup.errorText, Toast.LENGTH_LONG).show();
+						Toast.makeText(RegisterActivity.this, signup.errorText, Toast.LENGTH_SHORT).show();
 					}
 				}
 
@@ -132,10 +135,10 @@ public class RegisterActivity extends QuhaoBaseActivity {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				if (null == signup) {
-					Toast.makeText(RegisterActivity.this, "注册失败， 请重新注册。", Toast.LENGTH_LONG).show();
+					Toast.makeText(RegisterActivity.this, "注册失败， 请重新注册。", Toast.LENGTH_SHORT).show();
 				} else {
 					if ("1".equals(signup.errorKey)) {
-						Toast.makeText(RegisterActivity.this, "注册成功。", Toast.LENGTH_LONG).show();
+						Toast.makeText(RegisterActivity.this, "注册成功。", Toast.LENGTH_SHORT).show();
 						SharedprefUtil.remove(RegisterActivity.this, QuhaoConstant.ACCOUNT_ID);
 						SharedprefUtil.remove(RegisterActivity.this, QuhaoConstant.IS_AUTO_LOGIN);
 						// SharedprefUtil.remove(RegisterActivity.this,
@@ -166,7 +169,7 @@ public class RegisterActivity extends QuhaoBaseActivity {
 								SharedprefUtil.put(RegisterActivity.this, QuhaoConstant.IS_AUTO_LOGIN, "true");
 								if (account.msg.equals("fail")) {
 
-									Toast.makeText(RegisterActivity.this, "亲，网络不好哦，请重新登录！", Toast.LENGTH_LONG).show();
+									Toast.makeText(RegisterActivity.this, "亲，网络不好哦，请重新登录！", Toast.LENGTH_SHORT).show();
 									QHClientApplication.getInstance().accountInfo = null;
 									QHClientApplication.getInstance().isLogined = false;
 									RegisterActivity.this.finish();
@@ -213,7 +216,7 @@ public class RegisterActivity extends QuhaoBaseActivity {
 									@Override
 									public void run() {
 
-										Toast.makeText(RegisterActivity.this, "亲，网络不是很好哦", Toast.LENGTH_LONG).show();
+										Toast.makeText(RegisterActivity.this, "亲，网络不是很好哦", Toast.LENGTH_SHORT).show();
 										unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 									}
 								});
@@ -228,7 +231,7 @@ public class RegisterActivity extends QuhaoBaseActivity {
 //						startActivity(intent);
 //						RegisterActivity.this.finish();
 					} else {
-						Toast.makeText(RegisterActivity.this, signup.errorText, Toast.LENGTH_LONG).show();
+						Toast.makeText(RegisterActivity.this, signup.errorText, Toast.LENGTH_SHORT).show();
 					}
 				}
 
@@ -259,7 +262,7 @@ public class RegisterActivity extends QuhaoBaseActivity {
 						{
 							progressDialogUtil.closeProgress();
 							unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-							Toast.makeText(RegisterActivity.this, "请选择同意取号啦用户使用协议。", Toast.LENGTH_LONG).show();
+							Toast.makeText(RegisterActivity.this, "请选择同意取号啦用户使用协议。", Toast.LENGTH_SHORT).show();
 							return;
 						}
 						
@@ -272,28 +275,28 @@ public class RegisterActivity extends QuhaoBaseActivity {
 								verifyCode = verifyCodeText.getText().toString().trim();
 								if (StringUtils.isNull(password)) {
 									progressDialogUtil.closeProgress();
-									Toast.makeText(RegisterActivity.this, "请输入密码。", Toast.LENGTH_LONG).show();
+									Toast.makeText(RegisterActivity.this, "请输入密码。", Toast.LENGTH_SHORT).show();
 									unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 									return;
 								}
 
 								if (StringUtils.isNull(password2)) {
 									progressDialogUtil.closeProgress();
-									Toast.makeText(RegisterActivity.this, "请输入确认密码。", Toast.LENGTH_LONG).show();
+									Toast.makeText(RegisterActivity.this, "请输入确认密码。", Toast.LENGTH_SHORT).show();
 									unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 									return;
 								}
 
 								if (StringUtils.isNull(verifyCode)) {
 									progressDialogUtil.closeProgress();
-									Toast.makeText(RegisterActivity.this, "请输入验证码。", Toast.LENGTH_LONG).show();
+									Toast.makeText(RegisterActivity.this, "请输入验证码。", Toast.LENGTH_SHORT).show();
 									unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 									return;
 								}
 
 								if (!password.equals(password2)) {
 									progressDialogUtil.closeProgress();
-									Toast.makeText(RegisterActivity.this, "密码与确认密码必须一致。", Toast.LENGTH_LONG).show();
+									Toast.makeText(RegisterActivity.this, "密码与确认密码必须一致。", Toast.LENGTH_SHORT).show();
 									unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 									return;
 								}
@@ -301,10 +304,17 @@ public class RegisterActivity extends QuhaoBaseActivity {
 								String url = "signupWithMobile?mobile=" + loginName + "&code=" + verifyCode + "&password=" + password + "&os=ANDROID";
 								QuhaoLog.d("cross", "signup password:" + password);
 								QuhaoLog.d("cross", "signup url is:" + url);
+								if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+									progressDialogUtil.closeProgress();
+									Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+									unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+									return;
+								}
+								
 								String buf = CommonHTTPRequest.get(url);
 								if (StringUtils.isNull(buf) || "[]".equals(buf)) {
 									progressDialogUtil.closeProgress();
-									Toast.makeText(RegisterActivity.this, "亲，注册失败了，请重新注册。", Toast.LENGTH_LONG).show();
+									Toast.makeText(RegisterActivity.this, "亲，注册失败了，请重新注册。", Toast.LENGTH_SHORT).show();
 									unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 									return;
 								}
@@ -315,19 +325,19 @@ public class RegisterActivity extends QuhaoBaseActivity {
 							else
 							{
 								progressDialogUtil.closeProgress();
-								Toast.makeText(RegisterActivity.this, "请填写正确手机号。", Toast.LENGTH_LONG).show();
+								Toast.makeText(RegisterActivity.this, "请填写正确手机号。", Toast.LENGTH_SHORT).show();
 								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 							}
 
 						} else {
 							progressDialogUtil.closeProgress();
-							Toast.makeText(RegisterActivity.this, "请填写手机号。", Toast.LENGTH_LONG).show();
+							Toast.makeText(RegisterActivity.this, "请填写手机号。", Toast.LENGTH_SHORT).show();
 							unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
 						progressDialogUtil.closeProgress();
-						Toast.makeText(RegisterActivity.this, "亲，注册失败了，请重新注册。", Toast.LENGTH_LONG).show();
+						Toast.makeText(RegisterActivity.this, "亲，注册失败了，请重新注册。", Toast.LENGTH_SHORT).show();
 						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 
 					} finally {
@@ -353,10 +363,17 @@ public class RegisterActivity extends QuhaoBaseActivity {
 							{
 								String url = "generateAuthCode?mobile=" + loginName + "&os=ANDROID";
 
+								if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+									progressDialogUtil.closeProgress();
+									Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+									unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+									return;
+								}
+								
 								String buf = CommonHTTPRequest.get(url);
 								if (StringUtils.isNull(buf) || "[]".equals(buf)) {
 									progressDialogUtil.closeProgress();
-									Toast.makeText(RegisterActivity.this, "发送验证码失败， 请重按验证码按钮。", Toast.LENGTH_LONG).show();
+									Toast.makeText(RegisterActivity.this, "发送验证码失败， 请重按验证码按钮。", Toast.LENGTH_SHORT).show();
 									unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 									return;
 								}
@@ -367,20 +384,20 @@ public class RegisterActivity extends QuhaoBaseActivity {
 							else
 							{
 								progressDialogUtil.closeProgress();
-								Toast.makeText(RegisterActivity.this, "请填写正确手机号。", Toast.LENGTH_LONG).show();
+								Toast.makeText(RegisterActivity.this, "请填写正确手机号。", Toast.LENGTH_SHORT).show();
 								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 							}
 							
 
 						} else {
 							progressDialogUtil.closeProgress();
-							Toast.makeText(RegisterActivity.this, "请填写手机号。", Toast.LENGTH_LONG).show();
+							Toast.makeText(RegisterActivity.this, "请填写手机号。", Toast.LENGTH_SHORT).show();
 							unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
 						progressDialogUtil.closeProgress();
-						Toast.makeText(RegisterActivity.this, "发送验证码失败， 请重发", Toast.LENGTH_LONG).show();
+						Toast.makeText(RegisterActivity.this, "发送验证码失败， 请重发", Toast.LENGTH_SHORT).show();
 						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 
 					} finally {

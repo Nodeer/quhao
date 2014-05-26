@@ -121,25 +121,25 @@ public class SinaInfoActivity extends QuhaoBaseActivity {
 				request.transaction = String.valueOf(System.currentTimeMillis());
 				request.message = message;
 				mIweiboAPI.sendRequest(SinaInfoActivity.this, request);
-				Toast.makeText(SinaInfoActivity.this, "success", Toast.LENGTH_LONG).show();
+				Toast.makeText(SinaInfoActivity.this, "success", Toast.LENGTH_SHORT).show();
 				
 			}
 		}
 
 		@Override
 		public void onError(WeiboDialogError error) {
-			Toast.makeText(SinaInfoActivity.this, "Auth error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+			Toast.makeText(SinaInfoActivity.this, "Auth error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
 			Log.e("onError:", error.getMessage());
 		}
 
 		@Override
 		public void onCancel() {
-			Toast.makeText(SinaInfoActivity.this, "Auth cancel ", Toast.LENGTH_LONG).show();
+			Toast.makeText(SinaInfoActivity.this, "Auth cancel ", Toast.LENGTH_SHORT).show();
 		}
 		
 		@Override
 		public void onWeiboException(WeiboException exception) {
-			Toast.makeText(SinaInfoActivity.this, "Auth exception:" + exception.getMessage(), Toast.LENGTH_LONG).show();
+			Toast.makeText(SinaInfoActivity.this, "Auth exception:" + exception.getMessage(), Toast.LENGTH_SHORT).show();
 			Log.e("onWeiboException:", exception.getMessage());
 		}
 		

@@ -12,11 +12,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.ReservationForCurrentPaiduiAdapter;
 import com.withiter.quhao.exception.NoResultFromHTTPRequestException;
+import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
@@ -61,6 +63,12 @@ public class QuhaoCurrentStatesActivity extends QuhaoBaseActivity{
 					String url = "";
 					String accountId = QHClientApplication.getInstance().accountInfo.accountId;
 					url = "getCurrentMerchants?accountId=" + accountId;
+					
+					if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+						Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+						return;
+					}
 					
 					String buf = CommonHTTPRequest.get(url);
 					if (StringUtils.isNull(buf) || "[]".equals(buf)) {

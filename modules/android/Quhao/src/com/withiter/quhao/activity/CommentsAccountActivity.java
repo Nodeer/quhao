@@ -154,7 +154,7 @@ public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItem
 		if(!needToLoad)
 		{
 			commentsView.removeFooterView(moreView);
-			//Toast.makeText(CommentsAccountActivity.this, "the data load completely", Toast.LENGTH_LONG).show();
+			//Toast.makeText(CommentsAccountActivity.this, "the data load completely", Toast.LENGTH_SHORT).show();
 		}
 		// check hit the bottom of current loaded data
 //		if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount > 0 && needToLoad) {
@@ -179,7 +179,7 @@ public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItem
 					Looper.prepare();
 					QuhaoLog.v(TAG, "query critiques from web service, the merchant id is : " + accountId);
 					if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
-						Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_LONG);
+						Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
 						return;
 					}
 					String buf = CommonHTTPRequest.get("getCommentsByAccountId?page=" + page + "&accountId=" + accountId);
