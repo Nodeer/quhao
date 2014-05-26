@@ -14,6 +14,7 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
@@ -34,6 +35,7 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.withiter.quhao.R;
+import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
@@ -129,6 +131,11 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 			try {
 				Looper.prepare();
 				QuhaoLog.v(TAG, "get categorys data form server begin");
+				if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+					Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+					unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+					return;
+				}
 				String buf = CommonHTTPRequest.get("querytMerchantDetail?merchantId=" + MerchantLBSActivity.this.merchantId);
 				// + MerchantDetailActivity.this.merchantId);
 				if (StringUtils.isNull(buf) && "[]".equals(buf)) {
@@ -339,7 +346,7 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 
 	@Override
 	public void onInfoWindowClick(Marker marker) {
-//		Toast.makeText(this, "你点击了infoWindow窗口" + marker.getTitle(), Toast.LENGTH_LONG).show();
+//		Toast.makeText(this, "你点击了infoWindow窗口" + marker.getTitle(), Toast.LENGTH_SHORT).show();
 	}
 
 	@Override

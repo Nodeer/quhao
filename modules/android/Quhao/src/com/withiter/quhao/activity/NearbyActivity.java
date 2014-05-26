@@ -449,11 +449,11 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 				 */
 			} else {
 				needToLoad = false;
-				Toast.makeText(this, "No result", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "No result", Toast.LENGTH_SHORT).show();
 			}
 		} else {
 			needToLoad = false;
-			Toast.makeText(this, "No result", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "No result", Toast.LENGTH_SHORT).show();
 		}
 
 	}

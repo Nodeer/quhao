@@ -34,16 +34,17 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.CategoryGridAdapter;
 import com.withiter.quhao.adapter.MyPagerAdapter;
 import com.withiter.quhao.task.AllCategoriesTask;
+import com.withiter.quhao.task.JsonPack;
 import com.withiter.quhao.task.TopMerchantsTask;
 import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.StringUtils;
@@ -158,11 +159,27 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		
+		if (!ActivityUtil.isNetWorkAvailable(getActivity())) {
+			Toast.makeText(getActivity(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+		}
+		
 		if(contentView != null)
 		{
 			ViewGroup vg = (ViewGroup) contentView.getParent();
 			vg.removeView(contentView);
 			getActivity().registerReceiver(cityChangeReceiver, new IntentFilter(QuhaoConstant.ACTION_CITY_CHANGED));
+			
+			if(null == scheduledExecutorService) { 
+				  scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+				  
+				  // 当Activity显示出来后，每三秒钟切换一次图片显示
+				  scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 3, 3,
+						  TimeUnit.SECONDS);
+				  
+		//		  isFirstScheduled = true; 
+			  }
+			
 			return contentView;
 		}
 		
@@ -432,11 +449,11 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 		  if(null == scheduledExecutorService) { 
 			  scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 		  
-		  // 当Activity显示出来后，每三秒钟切换一次图片显示
-		  scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 3, 3,
-				  TimeUnit.SECONDS);
-		  
-//		  isFirstScheduled = true; 
+			  // 当Activity显示出来后，每三秒钟切换一次图片显示
+			  scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 3, 3,
+					  TimeUnit.SECONDS);
+			  
+	//		  isFirstScheduled = true; 
 		  }
 		 
 
@@ -482,9 +499,6 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (!ActivityUtil.isNetWorkAvailable(getActivity())) {
-			Toast.makeText(this.getActivity().getApplicationContext(), "Wifi/蜂窝网络未打开，或者网络情况不是很好哟", Toast.LENGTH_SHORT).show();
-		}
 	}
 
 	@Override
@@ -514,12 +528,12 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 
 			@Override
 			public void run() {
-				String result = task.result;
+				JsonPack result = task.result;
 				if (null == topMerchants) {
 					topMerchants = new ArrayList<TopMerchant>();
 				}
 				topMerchants.clear();
-				topMerchants.addAll(ParseJson.getTopMerchants(result));
+				topMerchants.addAll(ParseJson.getTopMerchants(result.getObj()));
 
 				// check the numbers of top merchant
 				int topMerchantCount = topMerchants.size();
@@ -540,12 +554,12 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 
 			@Override
 			public void run() {
-				String result = task.result;
+				JsonPack result = task.result;
 				if (null == topMerchants) {
 					topMerchants = new ArrayList<TopMerchant>();
 				}
 				topMerchants.clear();
-				topMerchants.addAll(ParseJson.getTopMerchants(result));
+				topMerchants.addAll(ParseJson.getTopMerchants(result.getObj()));
 
 				// check the numbers of top merchant
 				int topMerchantCount = topMerchants.size();

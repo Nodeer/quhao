@@ -28,6 +28,7 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.CreditAdapter;
 import com.withiter.quhao.adapter.CreditCostHolder;
 import com.withiter.quhao.task.DeleteCreditTask;
+import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
@@ -160,6 +161,11 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 		public void run() {
 			try {
 				Looper.prepare();
+				if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+					Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+					unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+					return;
+				}
 				String accountId = QHClientApplication.getInstance().accountInfo.accountId;
 				String buf = CommonHTTPRequest.get("getCreditCost?accountId=" + accountId);
 				if (StringUtils.isNull(buf) || "[]".equals(buf)) {
@@ -245,7 +251,7 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 							}
 							creditAdapter.credits = credits;
 							creditAdapter.notifyDataSetChanged();
-							Toast.makeText(CreditCostListActivity.this, R.string.delete_success, Toast.LENGTH_LONG).show();
+							Toast.makeText(CreditCostListActivity.this, R.string.delete_success, Toast.LENGTH_SHORT).show();
 						}
 						
 					},new Runnable() {
@@ -260,7 +266,7 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 							}
 							creditAdapter.credits = credits;
 							creditAdapter.notifyDataSetChanged();
-							Toast.makeText(CreditCostListActivity.this, R.string.delete_failed, Toast.LENGTH_LONG).show();
+							Toast.makeText(CreditCostListActivity.this, R.string.delete_failed, Toast.LENGTH_SHORT).show();
 							
 						}
 					});

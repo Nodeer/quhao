@@ -24,6 +24,7 @@ import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.task.LoginTask;
+import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.encrypt.DesUtils;
@@ -208,7 +209,7 @@ public class LoginActivity extends QuhaoBaseActivity {
 						@Override
 						public void run() {
 
-							Toast.makeText(LoginActivity.this, "亲，网络不是很好哦", Toast.LENGTH_LONG).show();
+							Toast.makeText(LoginActivity.this, "亲，网络不是很好哦", Toast.LENGTH_SHORT).show();
 							unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 						}
 					});
@@ -276,6 +277,11 @@ public class LoginActivity extends QuhaoBaseActivity {
 										Intent intent = new Intent();
 										intent.putExtra("merchantId", (String) transfortParams.get("merchantId"));
 										String accountId = QHClientApplication.getInstance().accountInfo.accountId;
+										if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+											Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+											unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+											return;
+										}
 										String buf = CommonHTTPRequest.get("getReservations?accountId=" + accountId + "&mid=" + transfortParams.get("merchantId"));
 										if (StringUtils.isNull(buf) || "[]".equals(buf)) {
 											unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -284,7 +290,7 @@ public class LoginActivity extends QuhaoBaseActivity {
 										} else {
 											List<ReservationVO> rvos = ParseJson.getReservations(buf);
 											if (null != rvos && !rvos.isEmpty()) {
-												Toast.makeText(LoginActivity.this, "已有该商家的排队号码！", Toast.LENGTH_LONG).show();
+												Toast.makeText(LoginActivity.this, "已有该商家的排队号码！", Toast.LENGTH_SHORT).show();
 												// LoginActivity.this.onBackPressed();
 											} else {
 												intent.setClass(LoginActivity.this, GetNumberActivity.class);
@@ -295,7 +301,7 @@ public class LoginActivity extends QuhaoBaseActivity {
 										LoginActivity.this.finish();
 									} catch (Exception e) {
 										unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-										Toast.makeText(LoginActivity.this, "网络异常，请稍候取号", Toast.LENGTH_LONG).show();
+										Toast.makeText(LoginActivity.this, "网络异常，请稍候取号", Toast.LENGTH_SHORT).show();
 										LoginActivity.this.onBackPressed();
 										LoginActivity.this.finish();
 									} finally {

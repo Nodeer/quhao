@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.YouhuiAdapter;
+import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
@@ -117,6 +118,12 @@ public class YouhuiListActivity extends QuhaoBaseActivity{
 				try {
 					Looper.prepare();
 					QuhaoLog.v(TAG, "query youhuis from web service, the merchant id is : " + merchantId);
+					if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+						Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+						updateYouhuisHandler.obtainMessage(200, null).sendToTarget();
+						return;
+					}
+					
 					String buf = CommonHTTPRequest.get("youhui?mid=" + merchantId);
 
 					if (StringUtils.isNull(buf) || "[]".equals(buf)) {

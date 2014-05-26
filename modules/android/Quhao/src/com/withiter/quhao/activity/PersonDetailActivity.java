@@ -386,7 +386,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 					startPhotoZoom(Uri.fromFile(tempFile));
 				} else {
 					Toast.makeText(this, "未找到存储卡，无法存储照片！",
-							Toast.LENGTH_LONG).show();
+							Toast.LENGTH_SHORT).show();
 				}
 
 				break;
@@ -649,7 +649,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 			String accountId = SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "");
 			if (StringUtils.isNull(accountId)) {
 				QHClientApplication.getInstance().isLogined = false;
-				Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_SHORT).show();
 			}
 			else
 			{
@@ -658,7 +658,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 					String result = CommonHTTPRequest.post(url);
 					if(StringUtils.isNull(result)){
 						QHClientApplication.getInstance().isLogined = false;
-						Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_LONG).show();
+						Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_SHORT).show();
 					}
 					else
 					{
@@ -670,7 +670,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 						if (account.msg.equals("fail")) {
 //							SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
 							QHClientApplication.getInstance().isLogined = false;
-							Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_LONG).show();
+							Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_SHORT).show();
 						}
 						else if (account.msg.equals("success")) 
 						{
@@ -687,7 +687,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 						else
 						{
 							QHClientApplication.getInstance().isLogined = false;
-							Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_LONG).show();
+							Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_SHORT).show();
 						}
 					}
 					
@@ -695,7 +695,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 					e.printStackTrace();
 					QuhaoLog.e(TAG, e);
 					QHClientApplication.getInstance().isLogined = false;
-					Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_LONG).show();
+					Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_SHORT).show();
 					
 				}
 			}

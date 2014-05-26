@@ -23,11 +23,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantSearchAdapter;
+import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
@@ -192,6 +194,13 @@ public class MerchantsSearchActivity extends QuhaoBaseActivity {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					progressMerchants.closeProgress();
 
+				}
+				
+				if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+					Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+					progressMerchants.closeProgress();
+					return;
 				}
 				
 				String result = CommonHTTPRequest.get("search?name=" + MerchantsSearchActivity.this.editSearch.getText().toString().trim() + "&cityCode="

@@ -14,6 +14,7 @@ import android.widget.RatingBar.OnRatingBarChangeListener;
 import android.widget.Toast;
 
 import com.withiter.quhao.R;
+import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
@@ -117,20 +118,27 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 						int grade = Math.round(gradeAvg);
 						if(StringUtils.isNull(comment))
 						{
-							Toast.makeText(CreateCommentActivity.this, "请填写评论", Toast.LENGTH_LONG).show();
+							Toast.makeText(CreateCommentActivity.this, "请填写评论", Toast.LENGTH_SHORT).show();
 							progressDialogUtil.closeProgress();
 							unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
 							return;
 						}
 					
+						if (!ActivityUtil.isNetWorkAvailable(CreateCommentActivity.this)) {
+							Toast.makeText(CreateCommentActivity.this, R.string.network_error_info, Toast.LENGTH_SHORT).show();
+							progressDialogUtil.closeProgress();
+							unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+							return;
+						}
+						
 						CommonHTTPRequest.get("updateComment?rid=" + rId + "&kouwei=" + kouwei + "&huanjing=" + huanjing + "&fuwu=" + fuwu + "&xingjiabi=" + xingjiabi + "&grade=" + grade + "&averageCost=" + averageCost +  "&content=" + comment);
 						progressDialogUtil.closeProgress();
 						unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
-						Toast.makeText(CreateCommentActivity.this, "评论成功", Toast.LENGTH_LONG).show();
+						Toast.makeText(CreateCommentActivity.this, "评论成功", Toast.LENGTH_SHORT).show();
 						CreateCommentActivity.this.finish();
 					} catch (Exception e) {
 						e.printStackTrace();
-						Toast.makeText(CreateCommentActivity.this, "网络异常", Toast.LENGTH_LONG).show();
+						Toast.makeText(CreateCommentActivity.this, "网络异常", Toast.LENGTH_SHORT).show();
 						progressDialogUtil.closeProgress();
 						unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
 						CreateCommentActivity.this.finish();

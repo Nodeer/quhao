@@ -143,7 +143,7 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnHea
 					Looper.prepare();
 					QuhaoLog.v(TAG, "query critiques from web service, the merchant id is : " + merchantId);
 					if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
-						Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_LONG).show();
+						Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
 						return;
 					}
 					String buf = CommonHTTPRequest.get("getCommentsByMid?page=" + page + "&mid=" + merchantId);

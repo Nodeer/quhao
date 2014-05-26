@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.withiter.quhao.R;
+import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
@@ -89,7 +90,7 @@ public class OpinionActivity extends QuhaoBaseActivity {
 			String curOpinion = opinionEdit.getText().toString();
 
 			if (curOpinion.equals(opinion)) {
-				Toast.makeText(this, "请不要重复提交", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "请不要重复提交", Toast.LENGTH_SHORT).show();
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				return;
@@ -114,12 +115,18 @@ public class OpinionActivity extends QuhaoBaseActivity {
 				Looper.prepare();
 				opinion = opinion.trim();
 				contact = contact.trim();
+				if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+					Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+					return;
+				}
+				
 				String buf = CommonHTTPRequest.get("createOpinion?opinion=" + opinion + "&contact=" + contact);
 				if (StringUtils.isNull(buf) || "[]".equals(buf)) {
-					Toast.makeText(OpinionActivity.this, "网络不好，请重新提交", Toast.LENGTH_LONG).show();
+					Toast.makeText(OpinionActivity.this, "网络不好，请重新提交", Toast.LENGTH_SHORT).show();
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else if ("success".equals(buf)) {
-					Toast.makeText(OpinionActivity.this, "提交成功，多谢您的意见", Toast.LENGTH_LONG).show();
+					Toast.makeText(OpinionActivity.this, "提交成功，多谢您的意见", Toast.LENGTH_SHORT).show();
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					OpinionActivity.this.finish();
 				}
@@ -127,7 +134,7 @@ public class OpinionActivity extends QuhaoBaseActivity {
 			} catch (Exception e) {
 
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				Toast.makeText(OpinionActivity.this, "网络不好，请重新提交", Toast.LENGTH_LONG).show();
+				Toast.makeText(OpinionActivity.this, "网络不好，请重新提交", Toast.LENGTH_SHORT).show();
 			} finally {
 				progressDialogUtil.closeProgress();
 				Looper.loop();

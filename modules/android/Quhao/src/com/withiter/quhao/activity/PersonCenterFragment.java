@@ -73,6 +73,10 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		
+		if (!ActivityUtil.isNetWorkAvailable(getActivity())) {
+			Toast.makeText(getActivity(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+		}
+		
 		if(contentView != null)
 		{
 			ViewGroup vg = (ViewGroup) contentView.getParent();
@@ -126,13 +130,6 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// TODO add default view here
-		if (!ActivityUtil.isNetWorkAvailable(getActivity())) {
-			Builder dialog = new AlertDialog.Builder(getActivity());
-			dialog.setTitle("温馨提示").setMessage("Wifi/蜂窝网络未打开，或者网络情况不是很好哟").setPositiveButton("确定", null);
-			dialog.show();
-			
-		}
 	}
 	
 	public void refreshUI() {
@@ -246,6 +243,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 	private void signIn() {
 		String accountId = SharedprefUtil.get(getActivity(), QuhaoConstant.ACCOUNT_ID, "");
 		try {
+			
 			String result = CommonHTTPRequest.get("signIn?accountId=" + accountId);
 			QuhaoLog.i(TAG, result);
 			if (StringUtils.isNull(result)) {
@@ -261,19 +259,19 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				if (loginInfo.msg.equals("fail")) {
 //							SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "false");
 					QHClientApplication.getInstance().isLogined = false;
-					Toast.makeText(getActivity(),"签到失败", Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(),"签到失败", Toast.LENGTH_SHORT).show();
 					return;
 				}
 				if (loginInfo.msg.equals("success")) {
 					
 					QHClientApplication.getInstance().isLogined = true;
-					Toast.makeText(getActivity(), R.string.sign_in_success, Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), R.string.sign_in_success, Toast.LENGTH_SHORT).show();
 					accountUpdateHandler.obtainMessage(200, account).sendToTarget();
 				}
 			}
 		} catch (Exception e) {
 			accountUpdateHandler.obtainMessage(200, null).sendToTarget();
-			Toast.makeText(getActivity(), "签到失败", Toast.LENGTH_LONG).show();
+			Toast.makeText(getActivity(), "签到失败", Toast.LENGTH_SHORT).show();
 			e.printStackTrace();
 		} finally {
 			
@@ -287,21 +285,16 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 			String accountId = SharedprefUtil.get(getActivity(), QuhaoConstant.ACCOUNT_ID, "");
 			if (StringUtils.isNull(accountId)) {
 				QHClientApplication.getInstance().isLogined = false;
-				Toast.makeText(getActivity(), "帐号超时，请重新登录", Toast.LENGTH_LONG).show();
+				Toast.makeText(getActivity(), "帐号超时，请重新登录", Toast.LENGTH_SHORT).show();
 			}
 			else
 			{
-				if (!ActivityUtil.isNetWorkAvailable(getActivity())) {
-					Toast.makeText(getActivity(), R.string.network_error_info, Toast.LENGTH_LONG).show();
-					return;
-				}
-				
 				String url = "queryByAccountId?accountId=" + accountId;
 				try {
 					String result = CommonHTTPRequest.get(url);
 					if(StringUtils.isNull(result)){
 						QHClientApplication.getInstance().isLogined = false;
-						Toast.makeText(getActivity(), "帐号超时，请重新登录", Toast.LENGTH_LONG).show();
+						Toast.makeText(getActivity(), "帐号超时，请重新登录", Toast.LENGTH_SHORT).show();
 					}
 					else
 					{
@@ -313,7 +306,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 						if (account.msg.equals("fail")) {
 //							SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
 							QHClientApplication.getInstance().isLogined = false;
-							Toast.makeText(getActivity(), "帐号超时，请重新登录", Toast.LENGTH_LONG).show();
+							Toast.makeText(getActivity(), "帐号超时，请重新登录", Toast.LENGTH_SHORT).show();
 						}
 						else if (account.msg.equals("success")) 
 						{
@@ -331,7 +324,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 						else
 						{
 							QHClientApplication.getInstance().isLogined = false;
-							Toast.makeText(getActivity(), "帐号超时，请重新登录", Toast.LENGTH_LONG).show();
+							Toast.makeText(getActivity(), "帐号超时，请重新登录", Toast.LENGTH_SHORT).show();
 						}
 					}
 					
@@ -339,7 +332,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 					e.printStackTrace();
 					QuhaoLog.e(TAG, e);
 					QHClientApplication.getInstance().isLogined = false;
-					Toast.makeText(getActivity(), "帐号超时，请重新登录", Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), "帐号超时，请重新登录", Toast.LENGTH_SHORT).show();
 					
 				}
 			}
@@ -385,7 +378,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				if (loginInfo.msg.equals("fail")) {
 					QHClientApplication.getInstance().isLogined = false;
 //					SharedprefUtil.put(PersonCenterActivity.this, QuhaoConstant.IS_LOGIN, "false");
-					Toast.makeText(getActivity(), "登陆失败", Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), "登陆失败", Toast.LENGTH_SHORT).show();
 					return;
 				}
 				if (loginInfo.msg.equals("success")) {

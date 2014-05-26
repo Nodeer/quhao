@@ -87,7 +87,7 @@ public class SettingsActivity extends QuhaoBaseActivity {
 			
 			SharedprefUtil.put(this, QuhaoConstant.IS_LOAD_IMG, isLoadImg);
 			progressDialogUtil.closeProgress();
-			Toast.makeText(SettingsActivity.this, "清除成功", Toast.LENGTH_LONG).show();
+			Toast.makeText(SettingsActivity.this, "清除成功", Toast.LENGTH_SHORT).show();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 
 			break;
@@ -140,9 +140,9 @@ public class SettingsActivity extends QuhaoBaseActivity {
 			progress.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			if (result) {
-				Toast.makeText(SettingsActivity.this, "清除成功", Toast.LENGTH_LONG).show();
+				Toast.makeText(SettingsActivity.this, "清除成功", Toast.LENGTH_SHORT).show();
 			} else {
-				Toast.makeText(SettingsActivity.this, "清除失败", Toast.LENGTH_LONG).show();
+				Toast.makeText(SettingsActivity.this, "清除失败", Toast.LENGTH_SHORT).show();
 			}
 		}
 	}

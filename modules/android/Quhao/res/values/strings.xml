@@ -16,7 +16,9 @@
     <string name="commit">提&#160;&#160;&#160;交</string>
     <string name="delete">删除</string>
     <string name="confirm_delete">确认删除</string>
-     
+    
+    <string name="not_yet_authorized">尚未授权</string>
+    
     <!-- 首页 -->
     <string name="search_merchants">搜索</string>
     <string name="kuaisutongdao">快速通道</string>

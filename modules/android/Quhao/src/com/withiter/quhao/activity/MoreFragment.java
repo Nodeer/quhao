@@ -1,5 +1,6 @@
 package com.withiter.quhao.activity;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import android.app.AlertDialog;
@@ -13,14 +14,18 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 
@@ -41,7 +46,9 @@ public class MoreFragment extends Fragment implements OnClickListener{
 	private LinearLayout moreShare;
 	private LinearLayout help;
 	private LinearLayout loginStatus;
-
+	private LinearLayout moreShareAuth;
+	private CheckedTextView ctvName;
+	private Platform sina;
 	private ImageView loginStatusImg;
 
 	private TextView loginStatusTxt;
@@ -66,18 +73,15 @@ public class MoreFragment extends Fragment implements OnClickListener{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (!ActivityUtil.isNetWorkAvailable(getActivity())) {
-			Builder dialog = new AlertDialog.Builder(getActivity());
-			dialog.setTitle("温馨提示").setMessage("Wifi/蜂窝网络未打开，或者网络情况不是很好哟").setPositiveButton("确定", null);
-			dialog.show();
-			
-		}
 		
 //		ShareSDK.initSDK(getActivity());
 	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+		if (!ActivityUtil.isNetWorkAvailable(getActivity())) {
+			Toast.makeText(getActivity(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+		}
 		if(contentView != null)
 		{
 			ViewGroup vg = (ViewGroup) contentView.getParent();
@@ -94,6 +98,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 		help = (LinearLayout) contentView.findViewById(R.id.more_help);
 		aboutUs = (LinearLayout) contentView.findViewById(R.id.more_aboutus);
 		loginStatus = (LinearLayout) contentView.findViewById(R.id.more_login_status);
+		moreShareAuth = (LinearLayout) contentView.findViewById(R.id.more_share_auth);
 		settings.setOnClickListener(this);
 		version.setOnClickListener(this);
 		opinion.setOnClickListener(this);
@@ -101,7 +106,10 @@ public class MoreFragment extends Fragment implements OnClickListener{
 		help.setOnClickListener(this);
 		aboutUs.setOnClickListener(this);
 		loginStatus.setOnClickListener(this);
-
+		moreShareAuth.setOnClickListener(this);
+		
+		ctvName = (CheckedTextView) contentView.findViewById(R.id.ctvName);
+		
 		loginStatusImg = (ImageView) contentView.findViewById(R.id.more_login_status_img);
 		loginStatusTxt = (TextView) contentView.findViewById(R.id.more_login_status_txt);
 		refreshLoginStatus();
@@ -145,9 +153,60 @@ public class MoreFragment extends Fragment implements OnClickListener{
 		}
 	};
 	
+	private String getName(Platform plat) {
+		if (plat == null) {
+			return "";
+		}
+
+		String name = plat.getName();
+		if (name == null) {
+			return "";
+		}
+
+		int resId = cn.sharesdk.framework.utils.R.getStringRes(getActivity(), plat.getName());
+		return getActivity().getString(resId);
+	}
+	
 	@Override
 	public void onResume() {
 		ShareSDK.initSDK(this.getActivity());
+		sina = ShareSDK.getPlatform(getActivity(), "SinaWeibo");
+		
+		ctvName.setChecked(sina.isValid());
+		if (sina.isValid()) {
+			String userName = sina.getDb().get("nickname");
+			if (userName == null || userName.length() <= 0
+					|| "null".equals(userName)) {
+				// 如果平台已经授权却没有拿到帐号名称，则自动获取用户资料，以获取名称
+				userName = getName(sina);
+				sina.setPlatformActionListener(new PlatformActionListener() {
+					
+					@Override
+					public void onError(Platform arg0, int arg1, Throwable arg2) {
+						Log.e("wjzwjz", "setPlatformActionListener onError");
+						
+					}
+					
+					@Override
+					public void onComplete(Platform arg0, int arg1, HashMap<String, Object> arg2) {
+						Log.e("wjzwjz", "setPlatformActionListener onComplete");
+						
+					}
+					
+					@Override
+					public void onCancel(Platform arg0, int arg1) {
+						Log.e("wjzwjz", "setPlatformActionListener onCancel");
+						
+					}
+				});
+				sina.showUser(null);
+			}
+			ctvName.setText(userName);
+		}
+		else {
+			ctvName.setText(R.string.not_yet_authorized);
+		}
+		
 		refreshLoginStatus();
 		super.onResume();
 	}
@@ -449,7 +508,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 					Map<String, Object> toastParams = new HashMap<String, Object>();
 					toastParams.put("activity", getActivity());
 					toastParams.put("text", R.string.share_cancel);
-					toastParams.put("toastLength", Toast.LENGTH_LONG);
+					toastParams.put("toastLength", Toast.LENGTH_SHORT);
 					toastHandler.obtainMessage(1000, toastParams).sendToTarget();
 					
 				}
@@ -460,7 +519,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 					Map<String, Object> toastParams = new HashMap<String, Object>();
 					toastParams.put("activity", getActivity());
 					toastParams.put("text", R.string.share_success);
-					toastParams.put("toastLength", Toast.LENGTH_LONG);
+					toastParams.put("toastLength", Toast.LENGTH_SHORT);
 					toastHandler.obtainMessage(1000, toastParams).sendToTarget();
 				}
 
@@ -469,7 +528,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 					Map<String, Object> toastParams = new HashMap<String, Object>();
 					toastParams.put("activity", getActivity());
 					toastParams.put("text", R.string.share_error);
-					toastParams.put("toastLength", Toast.LENGTH_LONG);
+					toastParams.put("toastLength", Toast.LENGTH_SHORT);
 					toastHandler.obtainMessage(1000, toastParams).sendToTarget();
 				}
 
@@ -484,7 +543,44 @@ public class MoreFragment extends Fragment implements OnClickListener{
 //			Intent intent4 = new Intent(getActivity(), SinaInfoActivity.class);
 //			startActivity(intent4);
 			break;
+		case R.id.more_share_auth:
+			progressDialogUtil.closeProgress();
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			if (sina == null) {
+				ctvName.setChecked(false);
+				ctvName.setText(R.string.not_yet_authorized);
+				return;
+			}
 
+			if (sina.isValid()) {
+				sina.removeAccount();
+				ctvName.setChecked(false);
+				ctvName.setText(R.string.not_yet_authorized);
+				return;
+			}
+
+			sina.setPlatformActionListener(new PlatformActionListener() {
+				
+				@Override
+				public void onError(Platform arg0, int arg1, Throwable arg2) {
+					Log.e("wjz", "on error 1");
+					
+				}
+				
+				@Override
+				public void onComplete(Platform arg0, int arg1, HashMap<String, Object> arg2) {
+					Log.e("wjz", "on complete 1");
+					
+				}
+				
+				@Override
+				public void onCancel(Platform arg0, int arg1) {
+					Log.e("wjz", "on cancel 1");
+					
+				}
+			});
+			sina.showUser(null);
+			break;
 		case R.id.more_login_status:// 分享给好友
 			// 显示分享界面
 			progressDialogUtil.closeProgress();

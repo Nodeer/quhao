@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
+import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.encrypt.DesUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
@@ -72,13 +73,13 @@ public class UpdatePasswordActivity extends QuhaoBaseActivity {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				if (null == signup) {
-					Toast.makeText(UpdatePasswordActivity.this, "亲，修改密码失败！", Toast.LENGTH_LONG).show();
+					Toast.makeText(UpdatePasswordActivity.this, "亲，修改密码失败！", Toast.LENGTH_SHORT).show();
 				}
 				else
 				{
 					if("1".equals(signup.errorKey))
 					{
-						Toast.makeText(UpdatePasswordActivity.this, "亲，修改密码成功！", Toast.LENGTH_LONG).show();
+						Toast.makeText(UpdatePasswordActivity.this, "亲，修改密码成功！", Toast.LENGTH_SHORT).show();
 						
 						String HexedPwd = new DesUtils().encrypt(newPassword);
 						SharedprefUtil.put(UpdatePasswordActivity.this, QuhaoConstant.PASSWORD, HexedPwd);
@@ -87,7 +88,7 @@ public class UpdatePasswordActivity extends QuhaoBaseActivity {
 					}
 					else
 					{
-						Toast.makeText(UpdatePasswordActivity.this, signup.errorText, Toast.LENGTH_LONG).show();
+						Toast.makeText(UpdatePasswordActivity.this, signup.errorText, Toast.LENGTH_SHORT).show();
 					}
 				}
 				
@@ -141,7 +142,7 @@ public class UpdatePasswordActivity extends QuhaoBaseActivity {
 							if(StringUtils.isNull(newPassword))
 							{
 								progressDialogUtil.closeProgress();
-								Toast.makeText(UpdatePasswordActivity.this, "请输入新密码。", Toast.LENGTH_LONG).show();
+								Toast.makeText(UpdatePasswordActivity.this, "请输入新密码。", Toast.LENGTH_SHORT).show();
 								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
 										1000);
 								return;
@@ -150,7 +151,7 @@ public class UpdatePasswordActivity extends QuhaoBaseActivity {
 							if(StringUtils.isNull(newPassword2))
 							{
 								progressDialogUtil.closeProgress();
-								Toast.makeText(UpdatePasswordActivity.this, "请输入确认新密码。", Toast.LENGTH_LONG).show();
+								Toast.makeText(UpdatePasswordActivity.this, "请输入确认新密码。", Toast.LENGTH_SHORT).show();
 								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
 										1000);
 								return;
@@ -160,7 +161,7 @@ public class UpdatePasswordActivity extends QuhaoBaseActivity {
 							if(currentPassword.equals(newPassword))
 							{
 								progressDialogUtil.closeProgress();
-								Toast.makeText(UpdatePasswordActivity.this, "新密码与旧密码必须不同。", Toast.LENGTH_LONG).show();
+								Toast.makeText(UpdatePasswordActivity.this, "新密码与旧密码必须不同。", Toast.LENGTH_SHORT).show();
 								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
 										1000);
 								return;
@@ -169,7 +170,7 @@ public class UpdatePasswordActivity extends QuhaoBaseActivity {
 							if(!newPassword.equals(newPassword2))
 							{
 								progressDialogUtil.closeProgress();
-								Toast.makeText(UpdatePasswordActivity.this, "新密码与确认新密码必须一致。", Toast.LENGTH_LONG).show();
+								Toast.makeText(UpdatePasswordActivity.this, "新密码与确认新密码必须一致。", Toast.LENGTH_SHORT).show();
 								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
 										1000);
 								return;
@@ -178,11 +179,18 @@ public class UpdatePasswordActivity extends QuhaoBaseActivity {
 							String url = "updatePassword?accoutId=" + accountInfo.accountId
 									+ "&newPassWord=" + newPassword + "&oldPass="+ currentPassword;
 
+							if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+								progressDialogUtil.closeProgress();
+								Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+								return;
+							}
+							
 							String buf = CommonHTTPRequest.get(url);
 							if(StringUtils.isNull(buf)||"[]".equals(buf))
 							{
 								progressDialogUtil.closeProgress();
-								Toast.makeText(UpdatePasswordActivity.this, "发送验证码失败， 请重按验证码按钮。", Toast.LENGTH_LONG).show();
+								Toast.makeText(UpdatePasswordActivity.this, "发送验证码失败， 请重按验证码按钮。", Toast.LENGTH_SHORT).show();
 								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
 										1000);
 								return;
@@ -195,14 +203,14 @@ public class UpdatePasswordActivity extends QuhaoBaseActivity {
 						else
 						{
 							progressDialogUtil.closeProgress();
-							Toast.makeText(UpdatePasswordActivity.this, "亲，请填写正确密码！", Toast.LENGTH_LONG).show();
+							Toast.makeText(UpdatePasswordActivity.this, "亲，请填写正确密码！", Toast.LENGTH_SHORT).show();
 							unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
 									1000);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
 						progressDialogUtil.closeProgress();
-						Toast.makeText(UpdatePasswordActivity.this, "发送验证码失败， 请重发", Toast.LENGTH_LONG).show();
+						Toast.makeText(UpdatePasswordActivity.this, "发送验证码失败， 请重发", Toast.LENGTH_SHORT).show();
 						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
 								1000);
 						

@@ -16,11 +16,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.ReservationForPaiduiAdapter;
 import com.withiter.quhao.exception.NoResultFromHTTPRequestException;
+import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
@@ -79,6 +81,13 @@ public class QuhaoStatesActivity extends QuhaoBaseActivity implements OnItemClic
 					}
 					if ("history".equals(queryCondition)) {
 						url = "getHistoryMerchants?accountId=" + accountId;
+					}
+					
+					if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+						Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+						reservations = new ArrayList<ReservationVO>();
+						reservationsUpdateHandler.obtainMessage(200, reservations).sendToTarget();
+						return;
 					}
 					
 					String buf = CommonHTTPRequest.get(url);

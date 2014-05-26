@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.withiter.quhao.R;
+import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
@@ -215,7 +216,7 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 					btnGetNo.setOnClickListener(GetNumberActivity.this);
 				} else {
 					// TODO : 没有位置时， 该怎么做， 应该返回到列表页面， 在酒店详细信息页面应该判断
-					Toast.makeText(GetNumberActivity.this, "此酒店没有座位了，请选择其他酒店。", Toast.LENGTH_LONG).show();
+					Toast.makeText(GetNumberActivity.this, "此酒店没有座位了，请选择其他酒店。", Toast.LENGTH_SHORT).show();
 					GetNumberActivity.this.finish();
 				}
 
@@ -235,16 +236,21 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 				Looper.prepare();
 				QuhaoLog.v(TAG, "get seat numbers data form server begin");
 				String accountId = SharedprefUtil.get(GetNumberActivity.this, QuhaoConstant.ACCOUNT_ID, "");
+				if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+					Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+					unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+					return;
+				}
 				String buf = CommonHTTPRequest.get("nahao?accountId=" + accountId + "&mid=" + merchantId + "&seatNumber=" + currentPaidui.seatNo);
 				// + GetNumberActivity.this.merchantId);
 				if (StringUtils.isNull(buf)) {
-					Toast.makeText(GetNumberActivity.this, "当前网络异常，请重新拿号。", Toast.LENGTH_LONG).show();
+					Toast.makeText(GetNumberActivity.this, "当前网络异常，请重新拿号。", Toast.LENGTH_SHORT).show();
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				} else {
 					// String currentNo = buf;
 					reservation = ParseJson.getReservation(buf);
 					if ("NO_MORE_JIFEN".equalsIgnoreCase(reservation.tipValue)) {
-						Toast.makeText(GetNumberActivity.this, "您没有更多的积分了..", Toast.LENGTH_LONG).show();
+						Toast.makeText(GetNumberActivity.this, "您没有更多的积分了..", Toast.LENGTH_SHORT).show();
 						GetNumberActivity.this.finish();
 						return;
 					}
@@ -254,7 +260,7 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 					}
 				}
 			} catch (Exception e) {
-				Toast.makeText(GetNumberActivity.this, "当前网络异常，请重新拿号。", Toast.LENGTH_LONG).show();
+				Toast.makeText(GetNumberActivity.this, "当前网络异常，请重新拿号。", Toast.LENGTH_SHORT).show();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				e.printStackTrace();
 			} finally {
@@ -275,6 +281,12 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 			try {
 				Looper.prepare();
 				QuhaoLog.v(TAG, "get seat numbers data form server begin");
+				if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+					Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+					unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+					return;
+				}
+				
 				String buf = CommonHTTPRequest.get("getCurrentNo?id=" + merchantId + "&seatNo=" + currentPaidui.seatNo); 
 				// + GetNumberActivity.this.merchantId);
 				if (StringUtils.isNull(buf)) {
@@ -316,6 +328,12 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 			try {
 				Looper.prepare();
 				QuhaoLog.v(TAG, "get seat numbers data form server begin, the merchantId is : " + merchantId);
+				if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+					Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+					unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+					return;
+				}
+				
 				String buf = CommonHTTPRequest.get("quhao?id=" + merchantId);
 				QuhaoLog.v(TAG, "get seat numbers data form server begin, buf is :" + buf);
 				// + GetNumberActivity.this.merchantId);

@@ -25,6 +25,7 @@ import com.withiter.quhao.adapter.ReservationForHistoryPaiduiAdapter;
 import com.withiter.quhao.adapter.ViewHolderHistoryPaidui;
 import com.withiter.quhao.exception.NoResultFromHTTPRequestException;
 import com.withiter.quhao.task.DeleteReservationsInHistoryPaiduiTask;
+import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
@@ -102,6 +103,13 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 					String url = "";
 					String accountId = QHClientApplication.getInstance().accountInfo.accountId;
 					url = "getHistoryMerchants?accountId=" + accountId;
+					
+					if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+						Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+						reservations = new ArrayList<ReservationVO>();
+						reservationsUpdateHandler.obtainMessage(200, reservations).sendToTarget();
+						return;
+					}
 					
 					String buf = CommonHTTPRequest.get(url);
 					if (StringUtils.isNull(buf) || "[]".equals(buf)) {
@@ -227,7 +235,7 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 						reservationForPaiduiAdapter.rvos = reservations;
 						reservationForPaiduiAdapter.notifyDataSetChanged();
 						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-						Toast.makeText(QuhaoHistoryStatesActivity.this, R.string.delete_success, Toast.LENGTH_LONG).show();
+						Toast.makeText(QuhaoHistoryStatesActivity.this, R.string.delete_success, Toast.LENGTH_SHORT).show();
 					}
 					
 				},new Runnable() {
@@ -242,7 +250,7 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 						}
 						reservationForPaiduiAdapter.rvos = reservations;
 						reservationForPaiduiAdapter.notifyDataSetChanged();
-						Toast.makeText(QuhaoHistoryStatesActivity.this, R.string.delete_failed, Toast.LENGTH_LONG).show();
+						Toast.makeText(QuhaoHistoryStatesActivity.this, R.string.delete_failed, Toast.LENGTH_SHORT).show();
 						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					}
 				});
@@ -367,9 +375,6 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 	protected void onDestroy() {
 		
 		super.onDestroy();
-		if (progressDialogUtil!=null) {
-			progressDialogUtil.closeProgress();
-		}
 	}
 
 }
