@@ -390,7 +390,7 @@ public class RemindDateUtils {
 		Calendar c = Calendar.getInstance();
 		Date now = null;
 		try {
-			now = longSdf.parse(shortSdf.format(c.getTime()) + " 00:00:00");
+			now = longSdf.parse(shortSdf.format(c.getTime()) + " 03:00:00");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

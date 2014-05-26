@@ -477,8 +477,8 @@ public class Reservation extends ReservationEntityDef {
 	private static MorphiaQuery todayCount(String mid) {
 		MorphiaQuery q = Reservation.q();
 		RemindDateUtils utils = new RemindDateUtils();
-		Date lastDayStart = utils.getLastDayStartTime();
-		q.filter("created >", lastDayStart).filter("merchantId", mid);
+		Date todayStart = utils.getTodayStartTime();
+		q.filter("created >", todayStart).filter("merchantId", mid);
 		return q;
 	}
 	
