@@ -437,7 +437,7 @@ public class Reservation extends ReservationEntityDef {
 		
 		
 		MorphiaQuery q = Reservation.q();
- 		Merchant m = Merchant.findByMid(merchantId);
+// 		Merchant m = Merchant.findByMid(merchantId);
  		
  		q.filter("version", version);
  		q.filter("merchantId", merchantId);
