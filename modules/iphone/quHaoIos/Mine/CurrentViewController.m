@@ -176,12 +176,12 @@
         
         if([response isEqualToString:@""]){
             //异常处理
-            [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+            _HUD.labelText = @"网络异常,请稍后再试";
         }else{
             NSArray *jsonObjects = [QuHaoUtil analyseData:response];
             if(jsonObjects == nil){
                 //解析错误
-                [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+                _HUD.labelText = @"网络异常,请稍后再试";
             }else{
                  NSMutableArray *newMerc = [self addAfterInfo:jsonObjects];
                 NSInteger count = [newMerc count];
@@ -198,7 +198,7 @@
     else
     {
         _isLoadOver = YES;
-        [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
+        _HUD.labelText = @"当前网络不可用";
     }
 }
 

@@ -74,12 +74,13 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(noticeUpdateHandler:) name:@"Notification_NoticeUpdate" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshed:) name:Notification_TabClick object:nil];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshed:) name:Notification_TabClick object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     //登录判断
+    [self.tabBarController setSelectedIndex:2];
     if (_userInfo==nil) {
         _userInfo= [UserInfo alloc];
     }

@@ -159,13 +159,13 @@
         NSString *response =[QuHaoUtil requestDb:str1];
         if([response isEqualToString:@""]){
             //异常处理
-            _HUD.labelText = @"服务器错误";
+            _HUD.labelText = @"网络异常,请稍后再试";
             [_HUD hide:YES];
         }else{
             NSArray *jsonObjects=[QuHaoUtil analyseData:response];
             if(jsonObjects==nil){
                 //解析错误
-                _HUD.labelText = @"服务器错误";
+                _HUD.labelText = @"网络异常,请稍后再试";
                 [_HUD hide:YES];
             }else{
                 Credit *model = nil;

@@ -189,12 +189,12 @@
         NSString *response =[QuHaoUtil requestDb:str1];
         if([response isEqualToString:@""]){
             //异常处理
-            [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+            _HUD.labelText = @"网络异常,请稍后再试";
         }else{
             NSArray *jsonObjects=[QuHaoUtil analyseData:response];
             if(jsonObjects==nil){
                 //解析错误
-                [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+                _HUD.labelText = @"网络异常,请稍后再试";
             }else{
                 for(int i=0; i < [jsonObjects count];i++ ){
                     Reservation *model=[[Reservation alloc]init];
@@ -213,7 +213,7 @@
     }//如果没有网络连接
     else
     {
-        [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
+        _HUD.labelText = @"当前网络不可用";
     }
 }
 
@@ -278,7 +278,7 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if([response isEqualToString:@""]){
                         //异常处理
-                        [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+                        [Helper showHUD2:@"网络异常,请稍后再试" andView:self.view andSize:100];
                     }else{
                         [_reservationArray removeObjectsAtIndexes:indicesOfItemsToDelete];
                         [self.tableView deleteRowsAtIndexPaths:selectedRows withRowAnimation:UITableViewRowAnimationTop];
@@ -302,7 +302,7 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     if([response isEqualToString:@""]){
                         //异常处理
-                        [Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
+                        [Helper showHUD2:@"网络异常,请稍后再试" andView:self.view andSize:100];
                     }else{
                         [_reservationArray removeAllObjects];
                         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationTop];
