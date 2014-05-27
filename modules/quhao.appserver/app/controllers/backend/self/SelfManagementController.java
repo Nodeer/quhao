@@ -175,38 +175,50 @@ public class SelfManagementController extends BaseController {
 		haoma.version += 1;
 		
 		Iterator it = haoma.haomaMap.keySet().iterator();
-
-		// 循环老的排队信息，设置最新的桌位以及清除非开启的桌位类型对应信息
-		while (it.hasNext()) {
+		// 清除所有老的排队的reservation
+		while(it.hasNext()){
 			Integer key = (Integer) it.next();
-			if (seatTypeSet.contains(key.toString())) {
-				haoma.haomaMap.get(key).enable = true;
-				seatTypeSet.remove(key.toString());
-			} else {
-				// reset Paidui object to original status
-				// currentNumber = 0; maxNumber = 0; enable = false; ...
-				Paidui p = haoma.haomaMap.get(key);
-				p.reset();
-				haoma.haomaMap.put(key, p);
-
 				// set the reservations status with this seatNumber to
 				// invalid(valid = false)
 				// and the change Constants.ReservationStatus status to
 				// invalidByMerchantUpdate
 				Reservation.invalidByMerchantUpdate(key, m.id());
-			}
 		}
+		
+		haoma.updatePaidui();
 
+		// 循环老的排队信息，设置最新的桌位以及清除非开启的桌位类型对应信息
+//		while (it.hasNext()) {
+//			Integer key = (Integer) it.next();
+//			if (seatTypeSet.contains(key.toString())) {
+//				haoma.haomaMap.get(key).enable = true;
+//				seatTypeSet.remove(key.toString());
+//			} else {
+//				// reset Paidui object to original status
+//				// currentNumber = 0; maxNumber = 0; enable = false; ...
+//				Paidui p = haoma.haomaMap.get(key);
+//				p.reset();
+//				haoma.haomaMap.put(key, p);
+//
+//				// set the reservations status with this seatNumber to
+//				// invalid(valid = false)
+//				// and the change Constants.ReservationStatus status to
+//				// invalidByMerchantUpdate
+//				Reservation.invalidByMerchantUpdate(key, m.id());
+//			}
+//		}
+
+		
 		// 老的桌位类型之外，都初始化。
-		if (seatTypeSet.size() != 0) {
-			Iterator ite = seatTypeSet.iterator();
-			Paidui p = null;
-			while (ite.hasNext()) {
-				p = new Paidui();
-				p.enable = true;
-				haoma.haomaMap.put(Integer.parseInt(ite.next().toString()), p);
-			}
-		}
+//		if (seatTypeSet.size() != 0) {
+//			Iterator ite = seatTypeSet.iterator();
+//			Paidui p = null;
+//			while (ite.hasNext()) {
+//				p = new Paidui();
+//				p.enable = true;
+//				haoma.haomaMap.put(Integer.parseInt(ite.next().toString()), p);
+//			}
+//		}
 		haoma.save();
 		haoma.check();
 

@@ -63,6 +63,28 @@ public class Haoma extends HaomaEntityDef {
 			this.haomaMap.put(Integer.parseInt(i), p);
 		}
 	}
+	
+	/**
+	 * 更新Paidui信息，enable=true;
+	 */
+	public void updatePaidui() {
+		logger.debug("updatePaidui, merchant id : " + this.merchantId);
+		Merchant m = Merchant.findByMid(this.merchantId);
+		if (m == null) {
+			logger.error("Merchant does not find!");
+			return;
+		}
+		String[] seatType = m.seatType;
+		Paidui p = null;
+		if (seatType == null) {
+			return;
+		}
+		for (String i : seatType) {
+			p = new Paidui();
+			p.enable = true;
+			this.haomaMap.put(Integer.parseInt(i), p);
+		}
+	}
 
 	/**
 	 * 重置Paidui信息，将所有排队号码重置为0
