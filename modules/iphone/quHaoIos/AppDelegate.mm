@@ -59,15 +59,13 @@
         [defaults setObject:@"1" forKey:@"showImage"];
         [defaults synchronize];
     }
-    NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
-
+    
+    if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_6_1) {
+        self.window.tintAdjustmentMode = UIViewTintAdjustmentModeNormal;
+    }
     return YES;
 }
-void uncaughtExceptionHandler(NSException*exception){
-    NSLog(@"CRASH: %@", exception);
-    NSLog(@"Stack Trace: %@",[exception callStackSymbols]);
-    // Internal error reporting
-}
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -104,15 +102,12 @@ void uncaughtExceptionHandler(NSException*exception){
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
 {
     NSInteger newTabIndex = self.tabBarController.selectedIndex;
-    if (newTabIndex != 1 && newTabIndex == m_lastTabIndex) {
+    if (newTabIndex == m_lastTabIndex) {
         [[NSNotificationCenter defaultCenter] postNotificationName:Notification_TabClick object:[NSString stringWithFormat:@"%ld",(long)newTabIndex]];
     }
     else
     {
         m_lastTabIndex = newTabIndex;
-    }
-    if(newTabIndex == 1){
-        [[NSNotificationCenter defaultCenter] postNotificationName:Notification_TabSingleClick object:[NSString stringWithFormat:@"%ld",(long)newTabIndex]];
     }
 }
 @end
