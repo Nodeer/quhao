@@ -413,9 +413,12 @@ Merchant.finish = function(seatNumber, currentNumber, mid) {
 				},
 				success : function(data) {
 					if (data == true) {
-						window.location.reload();
+						//window.location.reload();
+						// 改成异步刷新
+						refresh(mid);
+						
 					} else {
-						alert("操作失败");
+						alert("服务器维护中，马上就好。");
 					}
 				},
 				error : function() {
@@ -470,7 +473,9 @@ Merchant.expired = function(seatNumber, currentNumber, mid) {
 				},
 				success : function(data) {
 					if (data == true) {
-						window.location.reload();
+						// window.location.reload();
+						// 改成局部刷新
+						refresh(mid);
 					} else {
 						alert("服务器维护中，马上就好。");
 					}
@@ -594,6 +599,7 @@ Merchant.quhaoOnsite = function(seatNumber, mid, tel) {
 				$("#xianchangquhao_confirm_title")
 						.append("<font id=\"errorTelMsg\" color=\"red\" style=\"padding-left:20px;\">排队号已发送到手机，3秒后自动关闭此对话框</font>");
 				setTimeout('hideModal()', 3000);
+				refresh(mid);
 			} else {
 				$("#errorTelMsg").remove();
 				$("#xianchangquhao_confirm_title")
