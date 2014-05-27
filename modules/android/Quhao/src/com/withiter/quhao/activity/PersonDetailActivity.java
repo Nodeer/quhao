@@ -41,9 +41,7 @@ import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.domain.CityInfo;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
-import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.AsynImageLoader;
-import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SDTool;
@@ -436,12 +434,12 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 			try {
 				String accountId = SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "");
 				image = new File(Environment
-						.getExternalStorageDirectory() + "/" + QuhaoConstant.IMAGES_SD_URL+ "/" + accountId + "_" + 
+						.getExternalStorageDirectory() + "/" + QuhaoConstant.IMAGES_SD_URL+ "/" + accountId + "_" + System.currentTimeMillis() + "_" +
 						QuhaoConstant.PERSON_IMAGE_FILE_NAME);
 				File folder = image.getParentFile();
-				while (!folder.exists()) {
-					folder.mkdir();
-					folder = folder.getParentFile();
+				
+				if (!folder.exists()) {
+					folder.mkdirs();
 				}
 				
 				if (!image.exists()) {
@@ -498,7 +496,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
      * @return String result of Service response
      * @throws IOException
      */
-    public static String post(String url, Map<String, String> params, Map<String, File> files)
+    public String post(String url, Map<String, String> params, Map<String, File> files)
             throws IOException {
         String BOUNDARY = java.util.UUID.randomUUID().toString();
         String PREFIX = "--", LINEND = "\r\n";
@@ -520,6 +518,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 
         // 首先组拼文本类型的参数
         StringBuilder sb = new StringBuilder();
+        
         for (Map.Entry<String, String> entry : params.entrySet()) {
             sb.append(PREFIX);
             sb.append(BOUNDARY);
@@ -532,7 +531,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
             sb.append(LINEND);
         }
 
-
+        String fileName = "";
         DataOutputStream outStream = new DataOutputStream(conn.getOutputStream());
         outStream.write(sb.toString().getBytes());
         // 发送文件数据
@@ -544,11 +543,14 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
                 sb1.append(LINEND);
 //                sb1.append("Content-Disposition: form-data; name=\"" + file.getKey() + "\"; filename=\""
 //                        + file.getValue().getName() + "\"" + LINEND);
-                sb1.append("Content-Disposition: form-data; name=\"" + file.getKey() + "\"; filename=\"person.png\"" + LINEND);
+                sb1.append("Content-Disposition: form-data; name=\"" + file.getKey() + "\"; filename=\"" +file.getValue().getName() +"\"" + LINEND);
                 sb1.append("Content-Type: application/octet-stream; charset=" + CHARSET + LINEND);
                 sb1.append(LINEND);
                 outStream.write(sb1.toString().getBytes());
-
+                if(StringUtils.isNull(fileName))
+                {
+                	fileName = file.getValue().getName();
+                }
 
                 InputStream is = new FileInputStream(file.getValue());
                 byte[] buffer = new byte[1024];
@@ -576,6 +578,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
                 sb2.append((char) ch);
             }
         }
+        SharedprefUtil.put(PersonDetailActivity.this, "user_image", fileName);
         outStream.close();
         conn.disconnect();
         return sb2.toString();
@@ -588,6 +591,8 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 	}
 
 	private void setPersonDetail() {
+		
+		AccountInfo account = QHClientApplication.getInstance().accountInfo;
 		Bitmap bitmap = null;
 		// get cached image from SD card
 		if (SDTool.instance().SD_EXIST) {
@@ -596,9 +601,8 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 					QuhaoConstant.PERSON_IMAGE_FILE_NAME);
 			QuhaoLog.d(TAG, "f.exists():" + f.exists());
 			File folder = f.getParentFile();
-			while (!folder.exists()) {
-				folder.mkdir();
-				folder = folder.getParentFile();
+			if (!folder.exists()) {
+				folder.mkdirs();
 			}
 			
 			if(f.exists()){
@@ -608,8 +612,6 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 				}
 			}
 		}
-		
-		AccountInfo account = QHClientApplication.getInstance().accountInfo;
 		
 		if(bitmap == null)
 		{
@@ -641,66 +643,6 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 			currentJifenText.setText(0);
 		}
 		
-	}
-
-	private void queryAccountByAccountId() {
-		if(QHClientApplication.getInstance().isLogined)
-		{
-			String accountId = SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "");
-			if (StringUtils.isNull(accountId)) {
-				QHClientApplication.getInstance().isLogined = false;
-				Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_SHORT).show();
-			}
-			else
-			{
-				String url = "queryByAccountId?accountId=" + accountId;
-				try {
-					String result = CommonHTTPRequest.post(url);
-					if(StringUtils.isNull(result)){
-						QHClientApplication.getInstance().isLogined = false;
-						Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_SHORT).show();
-					}
-					else
-					{
-						LoginInfo loginInfo = ParseJson.getLoginInfo(result);
-						AccountInfo account = new AccountInfo();
-						account.build(loginInfo);
-						QuhaoLog.d(TAG, account.msg);
-
-						if (account.msg.equals("fail")) {
-//							SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
-							QHClientApplication.getInstance().isLogined = false;
-							Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_SHORT).show();
-						}
-						else if (account.msg.equals("success")) 
-						{
-							SharedprefUtil.put(this, QuhaoConstant.ACCOUNT_ID, loginInfo.accountId);
-							SharedprefUtil.put(this, QuhaoConstant.PHONE, loginInfo.phone);
-//							String encryptPassword = new DesUtils().decrypt(loginInfo.password);
-//							SharedprefUtil.put(this, QuhaoConstant.PASSWORD, loginInfo.password);
-							String isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_AUTO_LOGIN, "false");
-							SharedprefUtil.put(this, QuhaoConstant.IS_AUTO_LOGIN, isAutoLogin);
-							QHClientApplication.getInstance().accountInfo = account;
-							QHClientApplication.getInstance().phone = loginInfo.phone;
-							QHClientApplication.getInstance().isLogined = true;
-						}
-						else
-						{
-							QHClientApplication.getInstance().isLogined = false;
-							Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_SHORT).show();
-						}
-					}
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-					QuhaoLog.e(TAG, e);
-					QHClientApplication.getInstance().isLogined = false;
-					Toast.makeText(this, "帐号超时，请重新登录", Toast.LENGTH_SHORT).show();
-					
-				}
-			}
-			
-		}
 	}
 
 	@Override

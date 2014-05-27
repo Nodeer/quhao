@@ -55,9 +55,8 @@ public class ImageUtil {
 					android.os.Environment.getExternalStorageDirectory(),
 					QuhaoConstant.IMAGES_SD_URL);
 			File folder = cacheDir.getParentFile();
-			while (!folder.exists()) {
-				folder.mkdir();
-				folder = folder.getParentFile();
+			if (!folder.exists()) {
+				folder.mkdirs();
 			}
 		} else {
 			// 如没有存储卡，则在私有存储路径中开辟空间

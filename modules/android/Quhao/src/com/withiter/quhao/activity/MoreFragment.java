@@ -171,34 +171,16 @@ public class MoreFragment extends Fragment implements OnClickListener{
 	public void onResume() {
 		ShareSDK.initSDK(this.getActivity());
 		sina = ShareSDK.getPlatform(getActivity(), "SinaWeibo");
-		
+		sina.SSOSetting(true);
 		ctvName.setChecked(sina.isValid());
+		
 		if (sina.isValid()) {
 			String userName = sina.getDb().get("nickname");
 			if (userName == null || userName.length() <= 0
 					|| "null".equals(userName)) {
 				// 如果平台已经授权却没有拿到帐号名称，则自动获取用户资料，以获取名称
 				userName = getName(sina);
-				sina.setPlatformActionListener(new PlatformActionListener() {
-					
-					@Override
-					public void onError(Platform arg0, int arg1, Throwable arg2) {
-						Log.e("wjzwjz", "setPlatformActionListener onError");
-						
-					}
-					
-					@Override
-					public void onComplete(Platform arg0, int arg1, HashMap<String, Object> arg2) {
-						Log.e("wjzwjz", "setPlatformActionListener onComplete");
-						
-					}
-					
-					@Override
-					public void onCancel(Platform arg0, int arg1) {
-						Log.e("wjzwjz", "setPlatformActionListener onCancel");
-						
-					}
-				});
+				
 				sina.showUser(null);
 			}
 			ctvName.setText(userName);
@@ -569,7 +551,8 @@ public class MoreFragment extends Fragment implements OnClickListener{
 				
 				@Override
 				public void onComplete(Platform arg0, int arg1, HashMap<String, Object> arg2) {
-					Log.e("wjz", "on complete 1");
+					
+					sinaHandler.sendEmptyMessage(200);
 					
 				}
 				
@@ -605,6 +588,30 @@ public class MoreFragment extends Fragment implements OnClickListener{
 		}
 
 	}
+	
+	protected Handler sinaHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			if (msg.what == 200) {
+				ctvName.setChecked(sina.isValid());
+				if (sina.isValid()) {
+					
+					String userName = sina.getDb().get("nickname");
+					if (userName == null || userName.length() <= 0
+							|| "null".equals(userName)) {
+						// 如果平台已经授权却没有拿到帐号名称，则自动获取用户资料，以获取名称
+						userName = getName(sina);
+						
+						sina.showUser(null);
+					}
+					ctvName.setText(userName);
+				}
+				else {
+					ctvName.setText(R.string.not_yet_authorized);
+				}
+			}
+		}
+	};
+	
 	
 	// 使用快捷分享完成分享（请务必仔细阅读位于SDK解压目录下Docs文件夹中OnekeyShare类的JavaDoc）
 		/**ShareSDK集成方法有两种</br>

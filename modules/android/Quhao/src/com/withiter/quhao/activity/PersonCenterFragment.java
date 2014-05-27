@@ -73,10 +73,6 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		
-		if (!ActivityUtil.isNetWorkAvailable(getActivity())) {
-			Toast.makeText(getActivity(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
-		}
-		
 		if(contentView != null)
 		{
 			ViewGroup vg = (ViewGroup) contentView.getParent();
@@ -205,9 +201,8 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 						QuhaoConstant.IMAGES_SD_URL + "/" + fileName);
 				QuhaoLog.d(TAG, "f.exists():" + f.exists());
 				File folder = f.getParentFile();
-				while (!folder.exists()) {
-					folder.mkdir();
-					folder = folder.getParentFile();
+				if (!folder.exists()) {
+					folder.mkdirs();
 				}
 				
 				//TODO : 自己的数据库
@@ -280,6 +275,12 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 	}
 	
 	private void queryAccountByAccountId() {
+		
+		if (!ActivityUtil.isNetWorkAvailable(getActivity())) {
+			Toast.makeText(getActivity(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+			return;
+		}
+		
 		if(QHClientApplication.getInstance().isLogined)
 		{
 			String accountId = SharedprefUtil.get(getActivity(), QuhaoConstant.ACCOUNT_ID, "");
