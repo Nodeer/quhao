@@ -296,6 +296,9 @@ function refresh(mid) {
 				},
 				success : function(data) {
 					$("#autoRefreshDiv").html(data);
+					$("#paiduipageTip").html("刷新成功。").removeClass().addClass("text-success");
+					setTimeout('$("#paiduipageTip").html("")', 3000);
+					
 				},
 				error : function() {
 					alert("服务器维护中，马上就好。");
