@@ -63,7 +63,7 @@ $addJS("signup.js", true)
 					</div>
 					<div id="captcha" class="form-group">
 				 		<div class="">
-				 			<img style="float: left;" src="@{ApplicationController.captcha(randomID)}" />
+				 			<img style="float: left;cursor: pointer;" src="@{ApplicationController.captcha(randomID)}" onclick="$(this).attr('src','@{ApplicationController.captcha(randomID)}')" title="点击更换验证码"/>
 				 			<input style="width: 100px;" class="form-control" name="captchaCode" id="captchaCode" value="" placeholder="输入验证码" />
 				 			<input type="hidden" name="randomID" value="${randomID}" />
 				 		</div>
