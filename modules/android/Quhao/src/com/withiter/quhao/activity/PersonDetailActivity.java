@@ -7,8 +7,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -347,7 +349,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 								intentFromCapture.putExtra(
 										MediaStore.EXTRA_OUTPUT,
 										Uri.fromFile(new File(Environment
-												.getExternalStorageDirectory() + "/" + QuhaoConstant.IMAGES_SD_URL + "/" + SharedprefUtil.get(PersonDetailActivity.this, QuhaoConstant.ACCOUNT_ID, "") + "_" +
+												.getExternalStorageDirectory() + "/" + QuhaoConstant.IMAGES_SD_URL + "/" + SharedprefUtil.get(PersonDetailActivity.this, QuhaoConstant.ACCOUNT_ID, "") + "_" + System.currentTimeMillis() + "_" +
 												QuhaoConstant.PERSON_IMAGE_FILE_NAME)));
 							}
 
@@ -379,7 +381,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 			case CAMERA_REQUEST_CODE:
 				if (SDTool.hasSdcard()) {
 					File tempFile = new File(Environment
-							.getExternalStorageDirectory() + "/" + QuhaoConstant.IMAGES_SD_URL + "/" + SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "") + "_" +
+							.getExternalStorageDirectory() + "/" + QuhaoConstant.IMAGES_SD_URL + "/" + SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "") + "_" + System.currentTimeMillis() + "_" +
 							QuhaoConstant.PERSON_IMAGE_FILE_NAME);
 					startPhotoZoom(Uri.fromFile(tempFile));
 				} else {
@@ -578,7 +580,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
                 sb2.append((char) ch);
             }
         }
-        SharedprefUtil.put(PersonDetailActivity.this, "user_image", fileName);
+        SharedprefUtil.put(PersonDetailActivity.this, QuhaoConstant.USER_IMAGE, fileName);
         outStream.close();
         conn.disconnect();
         return sb2.toString();
@@ -593,24 +595,37 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 	private void setPersonDetail() {
 		
 		AccountInfo account = QHClientApplication.getInstance().accountInfo;
+		
 		Bitmap bitmap = null;
+		
 		// get cached image from SD card
-		if (SDTool.instance().SD_EXIST) {
-			File f = new File(Environment
-					.getExternalStorageDirectory() + "/" + QuhaoConstant.IMAGES_SD_URL + "/" + SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "") + "_" +
-					QuhaoConstant.PERSON_IMAGE_FILE_NAME);
-			QuhaoLog.d(TAG, "f.exists():" + f.exists());
-			File folder = f.getParentFile();
-			if (!folder.exists()) {
-				folder.mkdirs();
+		if (null != account && StringUtils.isNotNull(account.userImage) && SDTool.instance().SD_EXIST) {
+			String[] strs = account.userImage.split("fileName=");
+			if (strs != null && strs.length>1) {
+				
+				String fileName = account.userImage.split("fileName=")[1];
+				String localFileName = SharedprefUtil.get(this, QuhaoConstant.USER_IMAGE, "");
+				
+				if(localFileName.equals(fileName))
+				{
+					File f = new File(Environment.getExternalStorageDirectory() + "/" + 
+							QuhaoConstant.IMAGES_SD_URL + "/" + fileName);
+					QuhaoLog.d(TAG, "f.exists():" + f.exists());
+					File folder = f.getParentFile();
+					if (!folder.exists()) {
+						folder.mkdirs();
+					}
+					
+					if(f.exists()){
+						bitmap = BitmapFactory.decodeFile(f.getPath());
+						if (null != bitmap) {
+							personAvatar.setImageBitmap(bitmap);
+						}
+					}
+				}
+				
 			}
 			
-			if(f.exists()){
-				bitmap = BitmapFactory.decodeFile(f.getPath());
-				if (null != bitmap) {
-					personAvatar.setImageBitmap(bitmap);
-				}
-			}
 		}
 		
 		if(bitmap == null)

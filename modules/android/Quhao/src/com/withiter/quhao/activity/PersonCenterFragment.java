@@ -195,23 +195,30 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 		{
 			if (SDTool.instance().SD_EXIST) {
 				
-				String fileName = account.userImage.split("fileName=")[1];
-				
-				File f = new File(Environment.getExternalStorageDirectory() + "/" + 
-						QuhaoConstant.IMAGES_SD_URL + "/" + fileName);
-				QuhaoLog.d(TAG, "f.exists():" + f.exists());
-				File folder = f.getParentFile();
-				if (!folder.exists()) {
-					folder.mkdirs();
-				}
-				
-				//TODO : 自己的数据库
-				if(f.exists()){
-					bitmap = BitmapFactory.decodeFile(f.getPath());
-					if (null != bitmap) {
-						avatar.setImageBitmap(bitmap);
+				String[] strs = account.userImage.split("fileName=");
+				if(strs != null && strs.length>1)
+				{
+					String fileName = account.userImage.split("fileName=")[1];
+					String localFileName = SharedprefUtil.get(getActivity(), QuhaoConstant.USER_IMAGE, "");
+					if(localFileName.equals(fileName))
+					{
+						File f = new File(Environment.getExternalStorageDirectory() + "/" + 
+								QuhaoConstant.IMAGES_SD_URL + "/" + fileName);
+						QuhaoLog.d(TAG, "f.exists():" + f.exists());
+						File folder = f.getParentFile();
+						if (!folder.exists()) {
+							folder.mkdirs();
+						}
+						
+						if(f.exists()){
+							bitmap = BitmapFactory.decodeFile(f.getPath());
+							if (null != bitmap) {
+								avatar.setImageBitmap(bitmap);
+							}
+						}
 					}
 				}
+				
 			}
 		}
 		
