@@ -69,7 +69,7 @@ public class UploadController extends BaseController {
 		gfsFile.setContentType(ContentType.get(suffix));
 		gfsFile.put("ext", suffix);
 		gfsFile.put("accountId", aid);
-		gfsFile.setFilename(aid+"_"+fName);
+		gfsFile.setFilename(fName);
 		gfsFile.save();
 		return gfsFile;
 	}
