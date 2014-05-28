@@ -170,12 +170,12 @@
       NSString *response =[QuHaoUtil requestDb:str1];
       if([response isEqualToString:@""]){
           //异常处理
-          _HUD.labelText = @"服务器错误";
+          _HUD.labelText = @"网路异常,请稍后再试";
       }else{
           NSArray *jsonObjects=[QuHaoUtil analyseData:response];
           if(jsonObjects==nil){
               //解析错误
-              _HUD.labelText = @"服务器错误";
+              _HUD.labelText = @"网路异常,请稍后再试";
           }else{
               NSMutableArray *newMerc = [self addAfterInfo:jsonObjects];
               NSInteger count = [newMerc count];
@@ -198,14 +198,14 @@
   else
   {
       _isLoadOver = YES;
-      NSString *value = [Helper getCache:5 andID:1];
-      if (value&&[_merchartsArray count]==0) {
-          NSArray *jsonObjects=[QuHaoUtil analyseData:value];
-          [_merchartsArray addObjectsFromArray:[self addAfterInfo:jsonObjects]];
-          [self.tableView reloadData];
-      }else{
+//      NSString *value = [Helper getCache:5 andID:1];
+//      if (value&&[_merchartsArray count]==0) {
+//          NSArray *jsonObjects=[QuHaoUtil analyseData:value];
+//          [_merchartsArray addObjectsFromArray:[self addAfterInfo:jsonObjects]];
+//          [self.tableView reloadData];
+//      }else{
           _HUD.labelText = @"当前网络不可用";
-      }
+//      }
   }
 }
 

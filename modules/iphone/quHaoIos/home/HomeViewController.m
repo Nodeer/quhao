@@ -330,13 +330,13 @@
     NSString *response1 =[QuHaoUtil requestDb:url];
     if([response1 isEqualToString:@""]){
         //异常处理
-        _HUD.labelText = @"服务器错误";
+        _HUD.labelText = @"网路异常,请稍后再试";
         [_HUD hide:YES afterDelay:1];
     }else{
         NSArray *jsonObjects=[QuHaoUtil analyseData:response1];
         if(jsonObjects==nil){
             //解析错误
-            _HUD.labelText = @"服务器错误";
+            _HUD.labelText = @"网路异常,请稍后再试";
             [_HUD hide:YES afterDelay:1];
             return;
         }else{

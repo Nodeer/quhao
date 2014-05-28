@@ -162,7 +162,7 @@
     else
     {
         _HUD.labelText = @"当前网络不可用";
-        [_HUD hide:YES];
+        [_HUD hide:YES afterDelay:2];
     }
 }
 

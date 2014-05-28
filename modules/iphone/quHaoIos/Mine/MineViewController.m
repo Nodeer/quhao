@@ -48,6 +48,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     _mineView=[[UITableView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, kDeviceHeight) style:UITableViewStylePlain];
     _mineView.dataSource=self;
     _mineView.delegate=self;
@@ -208,8 +209,9 @@
             }else{
                 if ([[Helper returnUserString:@"showImage"] boolValue])
                 {
+                    NSString * str = [_userInfo.userImage substringFromIndex:22];
                     if ([Helper isCookie]) {
-                        if([Helper returnUserString:_userInfo.accountId]!=nil){
+                        if([Helper returnUserString:@"userImageUrl"]!=nil && [[Helper returnUserString:@"userImageUrl"] isEqualToString:str]){
                             self.egoImgView.image = [Helper imageWithImageSimple:[UIImage imageWithContentsOfFile:[self userImagePath]] scaledToSize:CGSizeMake(100, 100)];
                         }else{
                             self.egoImgView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,_userInfo.userImage]];
@@ -611,11 +613,12 @@
     NSData *imageData = UIImageJPEGRepresentation(image,1);
     NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString* documentsDirectory = [paths objectAtIndex:0];
-    NSString* fullPathToFile = [documentsDirectory stringByAppendingPathComponent:@"userOrigin.jpg"];
+    NSString *name = [NSString stringWithFormat:@"%@_%ld_person.png",_userInfo.accountId ,  (long)[[NSDate date] timeIntervalSince1970] ];
+    NSString* fullPathToFile = [documentsDirectory stringByAppendingPathComponent:name];
     [imageData writeToFile:fullPathToFile atomically:NO];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:_userInfo.accountId forKey:@"userImageUrl"];
+    [defaults setObject:name forKey:@"userImageUrl"];
     [defaults synchronize];
     [self upLoadSalesBigImage:fullPathToFile];
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -666,7 +669,8 @@
 
 - (NSString *)userImagePath
 {
-    return [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/userOrigin.jpg"];
+    NSString *str = [NSString stringWithFormat:@"%@%@",@"Documents/",[Helper returnUserString:@"userImageUrl"]];
+    return [NSHomeDirectory() stringByAppendingPathComponent:str];
 }
 #pragma mark - View lifecycle
 - (void)dealloc
