@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 
@@ -20,6 +21,7 @@ import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantAdapter;
 import com.withiter.quhao.task.MyAttentionListTask;
+import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.view.refresh.PullToRefreshView;
@@ -127,6 +129,11 @@ public class MyAttentionListActivity extends QuhaoBaseActivity implements OnHead
 
 	private void getMerchants() {
 
+		if (!ActivityUtil.isNetWorkAvailable(this)) {
+			Toast.makeText(this, R.string.network_error_info, Toast.LENGTH_SHORT).show();
+			return;
+		}
+		
 		firstLocation = QHClientApplication.getInstance().location;
 		String url = "app/marked?aid=" + QHClientApplication.getInstance().accountInfo.accountId;
 		if(firstLocation!=null)

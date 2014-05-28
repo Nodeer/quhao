@@ -597,13 +597,13 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		AccountInfo account = QHClientApplication.getInstance().accountInfo;
 		
 		Bitmap bitmap = null;
-		
+		String fileName = "";
 		// get cached image from SD card
 		if (null != account && StringUtils.isNotNull(account.userImage) && SDTool.instance().SD_EXIST) {
 			String[] strs = account.userImage.split("fileName=");
 			if (strs != null && strs.length>1) {
 				
-				String fileName = account.userImage.split("fileName=")[1];
+				fileName = account.userImage.split("fileName=")[1];
 				String localFileName = SharedprefUtil.get(this, QuhaoConstant.USER_IMAGE, "");
 				
 				if(localFileName.equals(fileName))
@@ -630,7 +630,12 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		
 		if(bitmap == null)
 		{
+			if(StringUtils.isNotNull(fileName))
+			{
+				SharedprefUtil.put(this, QuhaoConstant.USER_IMAGE, fileName);
+			}
 			AsynImageLoader.getInstance().showImageAsyn(personAvatar, 0,"" + account.userImage, R.drawable.person_avatar);
+			
 		}
 		
 		if(StringUtils.isNull(account.nickName))

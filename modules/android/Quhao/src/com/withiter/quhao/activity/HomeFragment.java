@@ -528,7 +528,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 
 			@Override
 			public void run() {
-				JsonPack result = task.result;
+				JsonPack result = task.jsonPack;
 				if (null == topMerchants) {
 					topMerchants = new ArrayList<TopMerchant>();
 				}
@@ -554,7 +554,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 
 			@Override
 			public void run() {
-				JsonPack result = task.result;
+				JsonPack result = task.jsonPack;
 				if (null == topMerchants) {
 					topMerchants = new ArrayList<TopMerchant>();
 				}

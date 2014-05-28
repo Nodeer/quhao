@@ -48,7 +48,7 @@ public class TopMerchantsTask extends BaseTask {
 	@Override
 	public void onStateFinish(JsonPack result) {
 		if(null != result){
-			this.result = result;
+			this.jsonPack = result;
 		}
 	}
 	

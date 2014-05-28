@@ -34,13 +34,39 @@
             android:textColor="@color/white"
             android:textStyle="bold" />
     </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/loadingbar"
+        android:layout_below="@id/titleBar"
+        android:layout_alignParentBottom="true"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffffff"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dip">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="12dip"
+            android:layout_height="12dip" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading"
+            android:textColor="#ff000000" />
+    </LinearLayout>
 	<LinearLayout android:id="@+id/serverdata"
 	    android:layout_below="@id/titleBar"
 	    android:layout_alignParentBottom="true"
 	    android:orientation="vertical"
 	    android:layout_width="fill_parent" 
 	    android:layout_height="match_parent" 
-	    android:background="#ffffffff">
+	    android:background="#ffffffff"
+	    android:visibility="gone">
 		<LinearLayout 
 		    android:orientation="vertical"
 		    android:layout_width="fill_parent" 
@@ -53,7 +79,7 @@
 		        android:layout_height="fill_parent"/>
 			
 		</LinearLayout>
-		<LinearLayout 
+		<LinearLayout android:id="@+id/result_layout"
 		    android:orientation="vertical"
 		    android:layout_width="fill_parent" 
 		    android:layout_height="match_parent" 
@@ -76,6 +102,28 @@
 		       	    android:scrollbarThumbVertical="@drawable/scrollbar"
 		       	    android:scrollbars="vertical" />
 			</com.withiter.quhao.view.refresh.PullToRefreshView>
+		</LinearLayout>
+		<LinearLayout android:id="@+id/no_result_layout"
+		    android:orientation="vertical"
+		    android:layout_width="fill_parent" 
+		    android:layout_height="match_parent" 
+		    android:background="#ffffffff"
+		    android:gravity="center"
+		    android:visibility="gone">
+		    <ImageView android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:src="@drawable/bad_face"
+		        android:contentDescription="@string/empty"/>
+		    <TextView android:id="@+id/no_result_text"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/empty"/>
+		    
+		    <TextView android:id="@+id/location_result"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/empty"
+		        android:textColor="@color/blue"/>
 		</LinearLayout>
     </LinearLayout>  
     

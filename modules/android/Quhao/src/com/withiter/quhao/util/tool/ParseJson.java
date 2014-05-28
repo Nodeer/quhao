@@ -36,8 +36,6 @@ public class ParseJson {
 
 	private static String TAG = ParseJson.class.getName();
 
-	// TODO need to optimize these methods
-
 	public static Collection<? extends Category> getCategorys(String buf) {
 		List<Category> categroys = new ArrayList<Category>();
 		if (null == buf || "".equals(buf)) {

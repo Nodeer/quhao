@@ -191,6 +191,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 		jifen.setText(account.jifen);
 
 		Bitmap bitmap = null;
+		String fileName = "";
 		if(StringUtils.isNotNull(account.userImage))
 		{
 			if (SDTool.instance().SD_EXIST) {
@@ -198,7 +199,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				String[] strs = account.userImage.split("fileName=");
 				if(strs != null && strs.length>1)
 				{
-					String fileName = account.userImage.split("fileName=")[1];
+					fileName = account.userImage.split("fileName=")[1];
 					String localFileName = SharedprefUtil.get(getActivity(), QuhaoConstant.USER_IMAGE, "");
 					if(localFileName.equals(fileName))
 					{
@@ -224,7 +225,12 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 		
 		if(null == bitmap)
 		{
-			AsynImageLoader.getInstance().showImageAsyn(avatar, 0, account.userImage, R.drawable.person_avatar);
+			if(StringUtils.isNotNull(fileName))
+			{
+				SharedprefUtil.put(getActivity(), QuhaoConstant.USER_IMAGE, fileName);
+				AsynImageLoader.getInstance().showImageAsyn(avatar, 0, account.userImage, R.drawable.person_avatar);
+			}
+			
 		}
 		
 		

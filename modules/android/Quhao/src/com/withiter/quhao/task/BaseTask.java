@@ -28,7 +28,7 @@ public abstract class BaseTask extends AsyncTask<Runnable, Void, JsonPack> {
 
 	protected Context mContext = null;
 	
-	public JsonPack result;
+	public JsonPack jsonPack;
 
 	// 显示进度提示
 	public BaseTask(int preDialogMessage, Context context) {
@@ -132,7 +132,7 @@ public abstract class BaseTask extends AsyncTask<Runnable, Void, JsonPack> {
 	@Override
 	protected void onPostExecute(JsonPack result) {
 		closeProgressDialog();
-		this.result = result;
+		this.jsonPack = result;
 		if (!this.isCancelled()) {
 			if (result.getRe() == 200) {
 				onStateFinish(result);

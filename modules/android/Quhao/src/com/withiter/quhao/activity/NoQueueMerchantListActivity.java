@@ -18,7 +18,9 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
@@ -27,6 +29,7 @@ import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantNoQueueAdapter;
+import com.withiter.quhao.task.JsonPack;
 import com.withiter.quhao.task.QueryNoQueueMerchantsTask;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
@@ -61,6 +64,11 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 
 	private PullToRefreshView mPullToRefreshView;
 	
+	private LinearLayout resultLayout;
+	private LinearLayout noResultLayout;
+	private TextView noResultView;
+	private TextView locationResult;
+	
 	private ExpandTabView expandTabView;
 	private ArrayList<View> mViewArray = new ArrayList<View>();
 	private ViewLeft viewLeft;
@@ -78,6 +86,13 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 		@Override
 		public void run() {
 			if (firstLocation == null) {
+				NoQueueMerchantListActivity.this.findViewById(R.id.loadingbar).setVisibility(View.GONE);
+				NoQueueMerchantListActivity.this.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
+				resultLayout.setVisibility(View.GONE);
+				noResultLayout.setVisibility(View.VISIBLE);
+				noResultView.setText(R.string.location_failed);
+				locationResult.setText(R.string.re_location);
+				locationResult.setVisibility(View.VISIBLE);
 				Toast.makeText(NoQueueMerchantListActivity.this, "亲，定位失败，请检查网络状态！", Toast.LENGTH_SHORT).show();
 				stopLocation();// 销毁掉定位
 			}
@@ -102,11 +117,21 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
 
+		resultLayout = (LinearLayout) this.findViewById(R.id.result_layout);
+		noResultLayout = (LinearLayout) this.findViewById(R.id.no_result_layout);
+		noResultView = (TextView) this.findViewById(R.id.no_result_text);
+		locationResult = (TextView) this.findViewById(R.id.location_result);
+		locationResult.setOnClickListener(this);
+		
 		mPullToRefreshView = (PullToRefreshView) this.findViewById(R.id.main_pull_refresh_view);
-		mPullToRefreshView.setEnableFooterView(true);
+		mPullToRefreshView.setEnableFooterView(false);
 		mPullToRefreshView.setOnHeaderRefreshListener(this);
 		mPullToRefreshView.setOnFooterRefreshListener(this);
-		
+		this.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
+		this.findViewById(R.id.serverdata).setVisibility(View.GONE);
+		resultLayout.setVisibility(View.VISIBLE);
+		noResultLayout.setVisibility(View.GONE);
+		locationResult.setVisibility(View.GONE);
 		initView();
 	}
 
@@ -215,6 +240,47 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 	@Override
 	public void onClick(View v) {
 
+		// 已经点过，直接返回
+		if (isClick) {
+			return;
+		}
+
+		// 设置已点击标志，避免快速重复点击
+		isClick = true;
+		// 解锁
+		
+
+		switch (v.getId()) {
+		case R.id.location_result:
+			this.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
+			this.findViewById(R.id.serverdata).setVisibility(View.GONE);
+			resultLayout.setVisibility(View.VISIBLE);
+			noResultLayout.setVisibility(View.GONE);
+			locationResult.setVisibility(View.GONE);
+			if (mAMapLocationManager == null) {
+				mAMapLocationManager = LocationManagerProxy.getInstance(this);
+				/*
+				 * mAMapLocManager.setGpsEnable(false);//
+				 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
+				 */
+				// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
+				mAMapLocationManager.requestLocationUpdates(LocationProviderProxy.AMapNetwork, 10000, 100, this);
+				locationHandler.removeCallbacks(locationRunnable);
+				locationHandler.postDelayed(locationRunnable, 60000);
+				
+			}
+			else
+			{
+				mAMapLocationManager.requestLocationUpdates(LocationProviderProxy.AMapNetwork, 10000, 100, this);
+				locationHandler.removeCallbacks(locationRunnable);
+				locationHandler.postDelayed(locationRunnable, 60000);
+			}
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			break;
+		default:
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			break;
+		}
 	}
 
 	@Override
@@ -336,6 +402,21 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 				}
 				merchantNoQueueAdapter.notifyDataSetChanged();
 //				merchantsListView.setOnScrollListener(NearbyFragment.this);
+				NoQueueMerchantListActivity.this.findViewById(R.id.loadingbar).setVisibility(View.GONE);
+				NoQueueMerchantListActivity.this.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
+				if(null != merchantList && !merchantList.isEmpty())
+				{
+					resultLayout.setVisibility(View.VISIBLE);
+					noResultLayout.setVisibility(View.GONE);
+				}
+				else
+				{
+					resultLayout.setVisibility(View.GONE);
+					noResultLayout.setVisibility(View.VISIBLE);
+					noResultView.setText(R.string.no_result);
+					locationResult.setVisibility(View.GONE);
+				}
+				
 				merchantsListView.setOnItemClickListener(NoQueueMerchantListActivity.this);
 				mPullToRefreshView.onHeaderRefreshComplete();
 				mPullToRefreshView.onFooterRefreshComplete();
@@ -354,21 +435,17 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 	};
 	
 	private void queryNoQueueMerchants() {
-		if(null == firstLocation)
-		{
-			Toast.makeText(this, "亲，现在没有定位信息，不能查看哦。", Toast.LENGTH_SHORT).show();
-			return;
-		}
+		
 		String url = "getNearNoQueueMerchants?userX=" + firstLocation.getLongitude() + "&userY=" + firstLocation.getLatitude() + "&cityCode=" + firstLocation.getCityCode() + 
 				"&page=" + page + "&maxDis=" + searchDistence;
-		final QueryNoQueueMerchantsTask task = new QueryNoQueueMerchantsTask(R.string.waitting, this, url);
+		final QueryNoQueueMerchantsTask task = new QueryNoQueueMerchantsTask(0, this, url);
 		task.execute(new Runnable() {
 			
 			@Override
 			public void run() {
 				
-				String result = task.result;
-				List<Merchant> tempList = ParseJson.getMerchants(result);
+				JsonPack result = task.jsonPack;
+				List<Merchant> tempList = ParseJson.getMerchants(result.getObj());
 				if (null == tempList || tempList.isEmpty() || tempList.size()<20) {
 					needToLoad = false;
 				}
