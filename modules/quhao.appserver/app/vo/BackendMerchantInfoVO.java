@@ -43,6 +43,8 @@ public class BackendMerchantInfoVO {
 	
 	public boolean merchantExist = false;
 	
+	public boolean editable = false;
+	
 	/**
 	 * add by CROSS 2013-9-27
 	 * eg: {2,4,6,8} 此商家有2人，4人，6人，8人桌

@@ -77,15 +77,23 @@ public class SelfManagementController extends BaseController {
 		List<MerchantAccountRel> relList = MerchantAccountRel.getMerchantAccountRelList(uid);
 		Merchant merchant = null;
 		long openRequestCount = 0;
+		boolean editable = false;
 		if (relList == null || relList.isEmpty()) {
 
 		} else {
 			MerchantAccountRel rel = relList.get(0);
 			String mid = rel.mid;
 			merchant = Merchant.findById(mid);
+			
+			// 检查是否能编辑
+			if(merchant != null){
+				Haoma haoma = Haoma.findByMerchantId(merchant.id());
+				editable = haoma.checkEditAble();
+			}
 			openRequestCount = Open.getNumberByMid(mid);
 		}
 		BackendMerchantInfoVO bmivo = BackendMerchantInfoVO.build(merchant, account, openRequestCount);
+		bmivo.editable = editable;
 		renderJapid(bmivo);
 	}
 
