@@ -6,12 +6,14 @@ public class Paidui implements Comparable<Paidui> {
 	public Integer canceled = 0;
 	public Integer expired = 0;
 	public Integer finished = 0;
+	public Integer maxNumber;
 	public boolean enable = false;
 
-	public Paidui(String seatNo, Integer currentNumber, Integer canceled,
+	public Paidui(String seatNo, Integer currentNumber, Integer maxNumber,Integer canceled,
 			Integer expired, Integer finished, boolean enable) {
 		this.seatNo = seatNo;
 		this.currentNumber = currentNumber;
+		this.maxNumber = maxNumber;
 		this.canceled = canceled;
 		this.expired = expired;
 		this.finished = finished;

@@ -11,7 +11,8 @@
         android:background="#ffffffff"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="10dip">
+        android:padding="10dip"
+        android:visibility="gone">
 
         <ProgressBar
             android:layout_width="wrap_content"
@@ -31,8 +32,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0.0dip"
-        android:orientation="vertical"
-        android:visibility="gone" >
+        android:orientation="vertical" >
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -304,17 +304,21 @@
         android:layout_height="90dip"
         android:orientation="vertical" 
         android:background="@drawable/dp"
-        android:visibility="gone"
+        
         >
 
         <LinearLayout
 	        android:layout_width="fill_parent"
-	        android:layout_height="30dip"
+	        android:layout_height="35dip"
 	        android:clickable="true"
 	        android:gravity="center_vertical"
-	        android:orientation="vertical" >
+	        android:orientation="horizontal" >
+            <LinearLayout android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical|left"
+                android:layout_weight="1.0">
 	        <TextView
-	            android:layout_width="fill_parent"
+	            android:layout_width="wrap_content"
 	            android:layout_height="fill_parent"
 	            android:gravity="center_vertical"
 	            android:paddingLeft="10.0dip"
@@ -324,6 +328,24 @@
 	            android:textAppearance="?android:textAppearanceMedium"
 	            android:textColor="#ff000000"
 	            android:textSize="16.0sp" />
+	        </LinearLayout>
+	        <LinearLayout android:layout_width="0dip"
+                android:layout_height="fill_parent"
+                android:gravity="center_vertical|right"
+                android:layout_weight="1.0"
+                android:paddingRight="10dip">
+	        <Button
+	            android:id="@+id/btn_refresh_paidui"
+	            android:layout_width="35dip"
+	            android:layout_height="25dip"
+	            android:text="刷新"
+	            android:gravity="center"
+	            android:textAppearance="?android:textAppearanceMediumInverse"
+	            android:textSize="11.0sp" 
+	            android:background="@drawable/button_background_blue"
+	            android:layout_gravity="right|center_vertical"
+	            />
+	        </LinearLayout>
 		</LinearLayout>
         <LinearLayout
 	        android:layout_width="fill_parent"
@@ -331,66 +353,17 @@
 	        android:clickable="true"
 	        android:gravity="center_vertical"
 	        android:orientation="vertical" >
-			<LinearLayout
-		        android:layout_width="fill_parent"
-		        android:layout_height="30dip"
-		        android:clickable="true"
-		        android:paddingLeft="10.0dip"
-		        android:gravity="center_vertical"
-		        android:orientation="horizontal" >
-		        <TextView
-		            android:layout_width="0.0px"
-		            android:layout_height="wrap_content"
-		            android:layout_weight="1.0"
-		            android:maxLines="2"
-		            android:text="@string/seat_number"
-		            android:textAppearance="?android:textAppearanceMedium"
-		            android:textColor="#ff000000"
-		            android:textSize="14.0sp" />
-		
-		        <TextView
-		            android:id="@+id/seatNo"
-		            android:drawableRight="@drawable/btn_expand_background"
-		            android:layout_width="0.0px"
-		            android:layout_height="wrap_content"
-		            android:layout_weight="1.0"
-		            android:maxLines="2"
-		            android:paddingLeft="6.0dip"
-		            android:text="@string/empty"
-		            android:gravity="center_vertical"
-		            android:textAppearance="?android:textAppearanceMedium"
-		            android:textColor="#ff000000"
-		            android:textSize="16.0sp" />
-			</LinearLayout>
-			<LinearLayout
-		        android:layout_width="fill_parent"
-		        android:layout_height="30dip"
-		        android:clickable="true"
-		        android:paddingLeft="10.0dip"
-		        android:gravity="center_vertical"
-		        android:orientation="horizontal">
-		        <TextView
-                    android:layout_width="0.0px"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
-                    android:maxLines="2"
-                    android:text="@string/next_number"
-                    android:textAppearance="?android:textAppearanceMedium"
-                    android:textColor="#ff000000"
-                    android:textSize="14.0sp" />
-
-                <TextView
-                    android:id="@+id/currentNumber"
-                    android:layout_width="0.0px"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
-                    android:maxLines="2"
-                    android:paddingLeft="6.0dip"
-                    android:text="@string/empty"
-                    android:textAppearance="?android:textAppearanceMedium"
-                    android:textColor="#ff000000"
-                    android:textSize="16.0sp" />
-			</LinearLayout>
+		        <ListView android:id="@+id/paidui_condition_list"
+		            android:layout_width="fill_parent"
+		       	    android:layout_height="fill_parent"
+		       	    android:layout_gravity="center_horizontal"
+		       	    android:cacheColorHint="@null"
+		       	    android:divider="@null"
+		       	    android:entries="@null"
+		       	    android:headerDividersEnabled="true"
+		       	    android:listSelector="@drawable/list_item_trans"
+		       	    android:scrollbarThumbVertical="@drawable/scrollbar"
+		       	    android:scrollbars="vertical" />
 	    </LinearLayout>
     </LinearLayout>
 	<LinearLayout
@@ -643,96 +616,6 @@
             android:clickable="true"
             android:gravity="center_vertical"
             android:orientation="vertical" >
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="vertical"
-                android:paddingLeft="10.0dip" >
-
-                <!-- 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/star45" 
-                    android:contentDescription="@string/empty"
-                    />
-                 -->
-				<LinearLayout
-			        android:layout_width="fill_parent"
-			        android:layout_height="wrap_content"
-			        android:orientation="horizontal">
-	                <TextView
-	                    android:id="@+id/comment_renjun"
-	                    android:paddingLeft="8dip"
-	                    android:layout_width="wrap_content"
-	                    android:layout_height="wrap_content"
-	                    android:text="@string/renjun"
-	                    android:textColor="#ff000000" />
-                </LinearLayout>
-                <LinearLayout
-			        android:layout_width="fill_parent"
-			        android:layout_height="wrap_content"
-			        android:baselineAligned="false"
-			        android:orientation="horizontal">
-	                <LinearLayout
-				        android:layout_width="0dip"
-				        android:layout_height="wrap_content"
-				        android:layout_weight="1.0">
-		                <TextView
-		                    android:id="@+id/comment_xingjiabi"
-		                    android:layout_width="wrap_content"
-		                    android:layout_height="wrap_content"
-		                    android:paddingLeft="8dip"
-		                    android:text="@string/xingjiabi"
-		                    android:textColor="#ff000000" />
-	                </LinearLayout>
-	                <LinearLayout
-				        android:layout_width="0dip"
-				        android:layout_height="wrap_content"
-				        android:layout_weight="1.0">
-		                <TextView
-		                    android:id="@+id/comment_kouwei"
-		                    android:layout_width="wrap_content"
-		                    android:layout_height="wrap_content"
-		                    android:paddingLeft="8dip"
-		                    android:text="@string/kouwei_4_space"
-		                    android:textColor="#ff000000" />
-		            </LinearLayout>
-	            </LinearLayout>
-	            <LinearLayout
-	                android:baselineAligned="false"
-			        android:layout_width="fill_parent"
-			        android:layout_height="wrap_content"
-			        android:orientation="horizontal">
-	                <LinearLayout
-				        android:layout_width="0dip"
-				        android:layout_height="wrap_content"
-				        android:layout_weight="1.0">
-		                <TextView
-		                    android:id="@+id/comment_huanjing"
-		                    android:layout_width="wrap_content"
-		                    android:layout_height="wrap_content"
-		                    android:paddingLeft="8dip"
-		                    android:text="@string/huanjing_4_space"
-		                    android:textColor="#ff000000" />
-		            </LinearLayout>
-		            <LinearLayout
-		                android:baselineAligned="false"
-				        android:layout_width="0dip"
-				        android:layout_height="wrap_content"
-				        android:layout_weight="1.0">
-		                <TextView
-		                    android:id="@+id/comment_fuwu"
-		                    android:layout_width="wrap_content"
-		                    android:layout_height="wrap_content"
-		                    android:paddingLeft="8dip"
-		                    android:text="@string/fuwu_4_space"
-		                    android:textColor="#ff000000" />
-		            </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
 
             <!-- comment content -->
             <LinearLayout

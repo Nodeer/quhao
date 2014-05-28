@@ -7,10 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -85,8 +83,15 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 	
 	private CityInfo cityInfo;
 
+	private String currentTime;
+	
+	private String newImageName;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
+		currentTime = String.valueOf(System.currentTimeMillis());
+		
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.person_detail_layout);
 		super.onCreate(savedInstanceState);
@@ -349,7 +354,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 								intentFromCapture.putExtra(
 										MediaStore.EXTRA_OUTPUT,
 										Uri.fromFile(new File(Environment
-												.getExternalStorageDirectory() + "/" + QuhaoConstant.IMAGES_SD_URL + "/" + SharedprefUtil.get(PersonDetailActivity.this, QuhaoConstant.ACCOUNT_ID, "") + "_" + System.currentTimeMillis() + "_" +
+												.getExternalStorageDirectory() + "/" + QuhaoConstant.IMAGES_SD_URL + "/" + SharedprefUtil.get(PersonDetailActivity.this, QuhaoConstant.ACCOUNT_ID, "") + "_" + currentTime + "_" +
 												QuhaoConstant.PERSON_IMAGE_FILE_NAME)));
 							}
 
@@ -381,7 +386,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 			case CAMERA_REQUEST_CODE:
 				if (SDTool.hasSdcard()) {
 					File tempFile = new File(Environment
-							.getExternalStorageDirectory() + "/" + QuhaoConstant.IMAGES_SD_URL + "/" + SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "") + "_" + System.currentTimeMillis() + "_" +
+							.getExternalStorageDirectory() + "/" + QuhaoConstant.IMAGES_SD_URL + "/" + SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "") + "_" + currentTime + "_" +
 							QuhaoConstant.PERSON_IMAGE_FILE_NAME);
 					startPhotoZoom(Uri.fromFile(tempFile));
 				} else {
@@ -415,8 +420,8 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		intent.putExtra("aspectX", 1);
 		intent.putExtra("aspectY", 1);
 		// outputX outputY 是裁剪图片宽高
-		intent.putExtra("outputX", 320);
-		intent.putExtra("outputY", 320);
+		intent.putExtra("outputX", 100);
+		intent.putExtra("outputY", 100);
 		intent.putExtra("return-data", true);
 		startActivityForResult(intent, 2);
 	}
@@ -430,64 +435,106 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		Bundle extras = data.getExtras();
 		if (extras != null) {
 			Bitmap photo = extras.getParcelable("data");
-			
+
 			FileOutputStream fos;
 			File image = null;
 			try {
-				String accountId = SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "");
-				image = new File(Environment
-						.getExternalStorageDirectory() + "/" + QuhaoConstant.IMAGES_SD_URL+ "/" + accountId + "_" + System.currentTimeMillis() + "_" +
-						QuhaoConstant.PERSON_IMAGE_FILE_NAME);
+				String accountId = SharedprefUtil.get(this,
+						QuhaoConstant.ACCOUNT_ID, "");
+				image = new File(Environment.getExternalStorageDirectory()
+						+ "/" + QuhaoConstant.IMAGES_SD_URL + "/" + accountId
+						+ "_" + currentTime + "_"
+						+ QuhaoConstant.PERSON_IMAGE_FILE_NAME);
 				File folder = image.getParentFile();
-				
+
 				if (!folder.exists()) {
 					folder.mkdirs();
 				}
-				
+
 				if (!image.exists()) {
 					image.createNewFile();
 				}
+				newImageName = image.getName();
 				fos = new FileOutputStream(image);
 				photo.compress(Bitmap.CompressFormat.PNG, 100, fos);
 				fos.flush();
 				fos.close();
 			} catch (FileNotFoundException e) {
-				
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
+
 			final Map<String, String> params = new HashMap<String, String>();
-			String accountId = SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "");
-            params.put("accountId", accountId);
-//            params.put("userImage", QuhaoConstant.PERSON_IMAGE_FILE_NAME);
+			String accountId = SharedprefUtil.get(this,
+					QuhaoConstant.ACCOUNT_ID, "");
+			params.put("accountId", accountId);
+			// params.put("userImage", QuhaoConstant.PERSON_IMAGE_FILE_NAME);
 
+			final Map<String, File> files = new HashMap<String, File>();
+			files.put("userImage", image);
+			Thread thead = new Thread(new Runnable() {
 
-            final Map<String, File> files = new HashMap<String, File>();
-            files.put("userImage", image);
-    	   Thread thead = new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				
-				try {
-					String request;
-					Looper.prepare();
-					request = post(QuhaoConstant.HTTP_URL+"updateUserImage", params, files);
-					Log.e("wjzwjz", "request : " + request);
-					
-				} catch (IOException e) {
-					e.printStackTrace();
+				@Override
+				public void run() {
+
+					try {
+						String request;
+						Looper.prepare();
+						request = post(QuhaoConstant.HTTP_URL
+								+ "updateUserImage", params, files);
+						
+						Log.e("wjzwjz", "request : " + request);
+						
+						if(!"error".equals(request))
+						{
+							SharedprefUtil.put(PersonDetailActivity.this, QuhaoConstant.USER_IMAGE, request);
+							updateNewImgHandler.sendEmptyMessage(200);
+						}
+
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
 				}
-				
-				
-			}
-			
-		});
-    	   thead.start();
+
+			});
+			thead.start();
 			personAvatar.setImageBitmap(photo);
+			
 		}
 	}
+	
+	private Handler updateNewImgHandler = new Handler()
+ {
+
+		@Override
+		public void handleMessage(Message msg) {
+
+			super.handleMessage(msg);
+			if (SDTool.instance().SD_EXIST
+					&& StringUtils.isNotNull(newImageName)) {
+				Bitmap bitmap = null;
+				File f = new File(Environment.getExternalStorageDirectory()
+						+ "/" + QuhaoConstant.IMAGES_SD_URL + "/"
+						+ newImageName);
+				QuhaoLog.d(TAG, "f.exists():" + f.exists());
+				File folder = f.getParentFile();
+				if (!folder.exists()) {
+					folder.mkdirs();
+				}
+
+				if (f.exists()) {
+					bitmap = BitmapFactory.decodeFile(f.getPath());
+					if (null != bitmap) {
+						personAvatar.setImageBitmap(bitmap);
+					}
+				}
+
+			}
+		}
+
+	};
 	
 	/**
      * 通过拼接的方式构造请求内容，实现参数传输以及文件传输
@@ -498,7 +545,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
      * @return String result of Service response
      * @throws IOException
      */
-    public String post(String url, Map<String, String> params, Map<String, File> files)
+    public static String post(String url, Map<String, String> params, Map<String, File> files)
             throws IOException {
         String BOUNDARY = java.util.UUID.randomUUID().toString();
         String PREFIX = "--", LINEND = "\r\n";
@@ -580,16 +627,20 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
                 sb2.append((char) ch);
             }
         }
-        SharedprefUtil.put(PersonDetailActivity.this, QuhaoConstant.USER_IMAGE, fileName);
+        
         outStream.close();
         conn.disconnect();
-        return sb2.toString();
+        if ("success".equals(sb2.toString())) {
+			return fileName;
+		}
+        return "error";
     }
 	
 	@Override
 	protected void onResume() {
-		setPersonDetail();
+		
 		super.onResume();
+		setPersonDetail();
 	}
 
 	private void setPersonDetail() {
@@ -621,6 +672,20 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 						if (null != bitmap) {
 							personAvatar.setImageBitmap(bitmap);
 						}
+					}
+				}
+				else
+				{
+					File f = new File(Environment.getExternalStorageDirectory() + "/" + 
+							QuhaoConstant.IMAGES_SD_URL + "/" + localFileName);
+					QuhaoLog.d(TAG, "f.exists():" + f.exists());
+					File folder = f.getParentFile();
+					if (!folder.exists()) {
+						folder.mkdirs();
+					}
+					
+					if(f.exists()){
+						f.delete();
 					}
 				}
 				

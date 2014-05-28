@@ -459,11 +459,12 @@ public class ParseJson {
 		Paidui paidu = null;
 
 		Integer currentNumber = obj.optInt("currentNumber");
+		Integer maxNumber = obj.optInt("maxNumber");
 		Integer canceled = obj.optInt("canceled");
 		Integer expired = obj.optInt("expired");
 		Integer finished = obj.optInt("finished");
 		boolean enable = obj.optBoolean("enable");
-		paidu = new Paidui(key, currentNumber, canceled, expired, finished, enable);
+		paidu = new Paidui(key, currentNumber, maxNumber,canceled, expired, finished, enable);
 
 		return paidu;
 	}

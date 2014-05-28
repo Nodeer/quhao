@@ -218,6 +218,20 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 							}
 						}
 					}
+					else
+					{
+						File f = new File(Environment.getExternalStorageDirectory() + "/" + 
+								QuhaoConstant.IMAGES_SD_URL + "/" + localFileName);
+						QuhaoLog.d(TAG, "f.exists():" + f.exists());
+						File folder = f.getParentFile();
+						if (!folder.exists()) {
+							folder.mkdirs();
+						}
+						
+						if(f.exists()){
+							f.delete();
+						}
+					}
 				}
 				
 			}

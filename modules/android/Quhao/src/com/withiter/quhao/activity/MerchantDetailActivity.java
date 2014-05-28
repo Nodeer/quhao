@@ -4,15 +4,11 @@ import java.util.Calendar;
 import java.util.List;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,6 +23,7 @@ import android.widget.Toast;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
+import com.withiter.quhao.adapter.PaiduiConditionAdapter;
 import com.withiter.quhao.adapter.ReservationAdapter;
 import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
@@ -37,11 +34,9 @@ import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SharedprefUtil;
-import com.withiter.quhao.view.SelectSeatNo;
 import com.withiter.quhao.vo.Haoma;
 import com.withiter.quhao.vo.Merchant;
 import com.withiter.quhao.vo.MerchantDetailVO;
-import com.withiter.quhao.vo.Paidui;
 import com.withiter.quhao.vo.ReservationVO;
 
 public class MerchantDetailActivity extends QuhaoBaseActivity {
@@ -80,14 +75,11 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	private List<ReservationVO> rvos;
 	
 	private LinearLayout paiduiConditionLayout;
-	private TextView seatNoView;
-	private TextView currentNumberView;
-	private SelectSeatNo selectSeatNo;
-	private String[] seatNos;
 	private Haoma haoma;
-	private int currentIndex = 0;
-	private Paidui currentPaidui;
-	private ProgressDialogUtil progressSeatNos;
+	
+	private PaiduiConditionAdapter paiduiAdapter;
+	
+	private ListView paiduiListView;
 	
 	public static boolean backClicked = false;
 
@@ -148,8 +140,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		reservationListView = (ListView) info.findViewById(R.id.reservationListView);
 
 		paiduiConditionLayout = (LinearLayout) info.findViewById(R.id.paidui_condition_layout);
-		seatNoView = (TextView) info.findViewById(R.id.seatNo);
-		currentNumberView = (TextView) info.findViewById(R.id.currentNumber);
+		paiduiListView = (ListView) info.findViewById(R.id.paidui_condition_list);
 		
 		//添加优惠信息栏
 		youhuiLayout = (LinearLayout) info.findViewById(R.id.youhui_layout);
@@ -157,7 +148,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		youhuiView = (TextView) info.findViewById(R.id.youhui);
 		info.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
 		info.findViewById(R.id.serverdata).setVisibility(View.GONE);
-		initView();
 	}
 	
 	private Handler paiduiConditionLayoutHandler = new Handler() {
@@ -185,100 +175,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 
 	};
 
-	/**
-	 * 根据帐号ID，和merchant ID 获取当前的号码， 如果用户已经取号， 则显示当前号码， 如果没有取号，则不显示
-	 */
-	private void getCurrentNo() {
-		Thread currentNoThread = new Thread(paiduiRunnable);
-		currentNoThread.start();
-	}
 
-	private Runnable paiduiRunnable = new Runnable() {
-		@Override
-		public void run() {
-			try {
-				Looper.prepare();
-				QuhaoLog.d(LOGTAG, "start to load paidui information from server side");
-				String accountId = QHClientApplication.getInstance().accountInfo.accountId;
-				if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
-					Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
-					unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
-					progressDialogUtil.closeProgress();
-					return;
-				}
-				String buf = CommonHTTPRequest.get("getReservations?accountId=" + accountId + "&mid=" + merchantId);
-				if (StringUtils.isNull(buf) || "[]".equals(buf)) {
-					progressDialogUtil.closeProgress();
-					paiduiConditionLayoutHandler.sendEmptyMessage(200);
-					currentQuHaoLayoutHandler.sendEmptyMessage(200);
-					Thread getSeatNosThread = new Thread(getSeatNosRunnable);
-					getSeatNosThread.start();
-				} else {
-					rvos = ParseJson.getReservations(buf);
-					reservationUpdateHandler.obtainMessage(200, rvos).sendToTarget();
-				}
-
-			} catch (Exception e) {
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				progressDialogUtil.closeProgress();
-				e.printStackTrace();
-			} finally {
-				
-				Looper.loop();
-			}
-		}
-	};
-
-	private void initView() {
-		if (isClick) {
-			return;
-		}
-		isClick = true;
-		
-		Thread merchantThread = new Thread(merchantDetailRunnable);
-		merchantThread.start();
-		
-	}
-
-	private Runnable getSeatNosRunnable = new Runnable() {
-		
-		@Override
-		public void run() {
-			try {
-				Looper.prepare();
-				progressDialogUtil.closeProgress();
-				progressSeatNos = new ProgressDialogUtil(MerchantDetailActivity.this, R.string.empty, R.string.querying, false);
-				progressSeatNos.showProgress();
-				QuhaoLog.v(LOGTAG, "get seat numbers data form server begin, the merchantId is : " + merchantId);
-				if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
-					Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
-					unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
-					progressSeatNos.closeProgress();
-					return;
-				}
-				String buf = CommonHTTPRequest.get("quhao?id=" + merchantId);
-				QuhaoLog.v(LOGTAG, "get seat numbers data form server begin, buf is :" + buf);
-				// + GetNumberActivity.this.merchantId);
-				if (StringUtils.isNull(buf)) {
-					paiduiConditionLayoutHandler.sendEmptyMessage(200);
-					progressSeatNos.closeProgress();
-					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				} else {
-					haoma = ParseJson.getHaoma(buf);
-					QuhaoLog.v(LOGTAG, "parse from json, haoma.paiduiList.size() is : " + haoma.paiduiList.size());
-					seatNosUpdateHandler.obtainMessage(200, haoma).sendToTarget();
-				}
-			} catch (Exception e) {
-				progressSeatNos.closeProgress();
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				e.printStackTrace();
-			} finally {
-				
-				Looper.loop();
-			}
-		}
-	};
-	
 	/**
 	 * 根据seat numbers 显示在界面上的handler
 	 */
@@ -289,123 +186,15 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				super.handleMessage(msg);
 				paiduiConditionLayout.setVisibility(View.VISIBLE);
 				if (null != haoma && null != haoma.paiduiList && haoma.paiduiList.size() > 0) {
+					//TODO:
 
-					seatNos = new String[haoma.paiduiList.size()];
-					for (int j = 0; j < haoma.paiduiList.size(); j++) {
-						seatNos[j] = haoma.paiduiList.get(j).seatNo;
-					}
-
-					if (null != currentPaidui) {
-						for (int i = 0; i < haoma.paiduiList.size(); i++) {
-							if (currentPaidui.seatNo.equals(haoma.paiduiList.get(i).seatNo)) {
-								currentIndex = i;
-								currentPaidui = haoma.paiduiList.get(i);
-								// currentNo = String
-								// .valueOf(currentPaidui.currentNumber);
-								break;
-							}
-						}
-					} else {
-						// currentIndex = 0;
-						QuhaoLog.v(LOGTAG, "currentIndex : " + currentIndex);
-						QuhaoLog.v(LOGTAG, "haoma.paiduiList.size : " + haoma.paiduiList.size());
-						currentPaidui = haoma.paiduiList.get(currentIndex);
-						// currentNo =
-						// String.valueOf(currentPaidui.currentNumber);
-					}
-
-					seatNoView.setText(currentPaidui.seatNo);
-					currentNumberView.setText(String.valueOf(currentPaidui.currentNumber));
-					seatNoView.setOnClickListener(MerchantDetailActivity.this);
-
-					seatNoView.addTextChangedListener(new TextWatcher() {
-						@Override
-						public void onTextChanged(CharSequence s, int start, int before, int count) {
-						}
-
-						@Override
-						public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-						}
-
-						@Override
-						public void afterTextChanged(Editable s) {
-							String str = String.valueOf(seatNoView.getText());
-
-							for (int j = 0; j < seatNos.length; j++) {
-								if (seatNos[j].equals(str)) {
-									currentIndex = j;
-									currentPaidui = haoma.paiduiList.get(currentIndex);
-									// currentNo = String
-									// .valueOf(currentPaidui.currentNumber);
-									Thread getCurrentNoThread = new Thread(getCurrentNoRunnable);
-									getCurrentNoThread.start();
-									// getSeatNos();
-									// currentNumberView.setText(String.valueOf(currentPaidui.currentNumber));
-								}
-							}
-
-						}
-					});
-					
 				} else {
 					// TODO : 没有位置时， 该怎么做， 应该返回到列表页面， 在酒店详细信息页面应该判断
 //					Toast.makeText(MerchantDetailActivity.this, "此酒店没有座位，请选择其他酒店。", Toast.LENGTH_SHORT).show();
 					paiduiConditionLayout.setVisibility(View.GONE);
 				}
 				
-				progressSeatNos.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			}
-		}
-	};
-	
-	/***
-	 * 获取merchant信息的线程
-	 */
-	private Runnable getCurrentNoRunnable = new Runnable() {
-
-		@Override
-		public void run() {
-			try {
-				Looper.prepare();
-				QuhaoLog.v(LOGTAG, "get seat numbers data form server begin");
-				if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
-					Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
-					unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
-					return;
-				}
-				String buf = CommonHTTPRequest.get("getCurrentNo?id=" + merchantId + "&seatNo=" + currentPaidui.seatNo); 
-				// + GetNumberActivity.this.merchantId);
-				if (StringUtils.isNull(buf)) {
-					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				} else {
-					// String currentNo = buf;
-					currentNoUpdateHandler.obtainMessage(200, buf).sendToTarget();
-				}
-			} catch (Exception e) {
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				e.printStackTrace();
-			}
-			finally
-			{
-				Looper.loop();
-			}
-		}
-	};
-	
-	/**
-	 * 根据merchant显示在界面上的handler
-	 */
-	private Handler currentNoUpdateHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			if (msg.what == 200) {
-				super.handleMessage(msg);
-
-				String currentNo = (String) msg.obj;
-				currentNumberView.setText(currentNo);
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-
 			}
 		}
 	};
@@ -444,6 +233,8 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				//TODO: wjzwjz 系统异常时，怎么处理
 				info.findViewById(R.id.loadingbar).setVisibility(View.GONE);
 				info.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
+				paiduiConditionLayoutHandler.sendEmptyMessage(200);
+				currentQuHaoLayoutHandler.sendEmptyMessage(200);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				e.printStackTrace();
 			} finally {
@@ -538,27 +329,10 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	
 						// comment layout
 						critiqueLayout = (LinearLayout) info.findViewById(R.id.critiqueLayout);
-						QuhaoLog.i(LOGTAG, m.commentAverageCost);
-						QuhaoLog.i(LOGTAG, m.commentContent);
-						QuhaoLog.i(LOGTAG, m.commentDate);
-						QuhaoLog.i(LOGTAG, m.commentFuwu);
-						QuhaoLog.i(LOGTAG, m.commentHuanjing);
-						QuhaoLog.i(LOGTAG, m.commentKouwei);
-						QuhaoLog.i(LOGTAG, m.commentXingjiabi);
 	
-						TextView commentRenjun = (TextView) critiqueLayout.findViewById(R.id.comment_renjun);
-						TextView commentFuwu = (TextView) critiqueLayout.findViewById(R.id.comment_fuwu);
-						TextView commentHuanjing = (TextView) critiqueLayout.findViewById(R.id.comment_huanjing);
-						TextView commentKouwei = (TextView) critiqueLayout.findViewById(R.id.comment_kouwei);
-						TextView commentXingjiabi = (TextView) critiqueLayout.findViewById(R.id.comment_xingjiabi);
 						TextView commentContent = (TextView) critiqueLayout.findViewById(R.id.comment_content);
 						TextView commentDate = (TextView) info.findViewById(R.id.comment_date);
 	
-						commentRenjun.setText(getString(R.string.renjun) + "  " +m.commentAverageCost);
-						commentFuwu.setText(getString(R.string.fuwu_4_space) + "  " + String.valueOf(m.commentFuwu));
-						commentHuanjing.setText(getString(R.string.huanjing_4_space) + "  " + String.valueOf(m.commentHuanjing));
-						commentKouwei.setText(getString(R.string.kouwei_4_space) + "  " + String.valueOf(m.commentKouwei));
-						commentXingjiabi.setText(getString(R.string.xingjiabi) + "  " + String.valueOf(m.commentXingjiabi));
 						commentContent.setText(m.commentContent);
 						commentDate.setText(m.commentDate);
 	
@@ -668,63 +442,8 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			haoma = merchantDetail.haoma;
 			if (null != haoma && null != haoma.paiduiList && haoma.paiduiList.size() > 0) {
 
-				seatNos = new String[haoma.paiduiList.size()];
-				for (int j = 0; j < haoma.paiduiList.size(); j++) {
-					seatNos[j] = haoma.paiduiList.get(j).seatNo;
-				}
-
-				if (null != currentPaidui) {
-					for (int i = 0; i < haoma.paiduiList.size(); i++) {
-						if (currentPaidui.seatNo.equals(haoma.paiduiList.get(i).seatNo)) {
-							currentIndex = i;
-							currentPaidui = haoma.paiduiList.get(i);
-							// currentNo = String
-							// .valueOf(currentPaidui.currentNumber);
-							break;
-						}
-					}
-				} else {
-					// currentIndex = 0;
-					QuhaoLog.v(LOGTAG, "currentIndex : " + currentIndex);
-					QuhaoLog.v(LOGTAG, "haoma.paiduiList.size : " + haoma.paiduiList.size());
-					currentPaidui = haoma.paiduiList.get(currentIndex);
-					// currentNo =
-					// String.valueOf(currentPaidui.currentNumber);
-				}
-
-				seatNoView.setText(currentPaidui.seatNo);
-				currentNumberView.setText(String.valueOf(currentPaidui.currentNumber));
-				seatNoView.setOnClickListener(MerchantDetailActivity.this);
-
-				seatNoView.addTextChangedListener(new TextWatcher() {
-					@Override
-					public void onTextChanged(CharSequence s, int start, int before, int count) {
-					}
-
-					@Override
-					public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-					}
-
-					@Override
-					public void afterTextChanged(Editable s) {
-						String str = String.valueOf(seatNoView.getText());
-
-						for (int j = 0; j < seatNos.length; j++) {
-							if (seatNos[j].equals(str)) {
-								currentIndex = j;
-								currentPaidui = haoma.paiduiList.get(currentIndex);
-								// currentNo = String
-								// .valueOf(currentPaidui.currentNumber);
-								Thread getCurrentNoThread = new Thread(getCurrentNoRunnable);
-								getCurrentNoThread.start();
-								// getSeatNos();
-								// currentNumberView.setText(String.valueOf(currentPaidui.currentNumber));
-							}
-						}
-
-					}
-				});
-				
+				paiduiAdapter = new PaiduiConditionAdapter(MerchantDetailActivity.this, paiduiListView, haoma.paiduiList);
+				paiduiAdapter.notifyDataSetChanged();
 			} else {
 				// TODO : 没有位置时， 该怎么做， 应该返回到列表页面， 在酒店详细信息页面应该判断
 //				Toast.makeText(MerchantDetailActivity.this, "此酒店没有座位，请选择其他酒店。", Toast.LENGTH_SHORT).show();
@@ -734,15 +453,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		}
 	};
 
-	private Handler updateMerchantImageHandler = new Handler(){
-		public void handleMessage(Message msg) {
-			if(msg.what == 0){
-				
-				merchantImg.setImageDrawable((Drawable) msg.obj);
-			}
-		};
-	};
-	
 	private Handler openServiceHandler = new Handler(){
 		public void handleMessage(Message msg) {
 			if(msg.what == 0){
@@ -750,34 +460,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				openNumView.setText(num);
 			}
 		};
-	};
-	
-	private Handler reservationUpdateHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			if (msg.what == 200) {
-				super.handleMessage(msg);
-				
-				currentQuHaoLayout.setVisibility(View.VISIBLE);
-				LinearLayout.LayoutParams reservationsParams = (LayoutParams) reservationListView.getLayoutParams();
-
-				// 设置自定义的layout
-
-				reservationListView.setLayoutParams(reservationsParams);
-				reservationListView.invalidate();
-
-				btnGetNumber.setVisibility(View.GONE);
-
-				reservationListView.setVisibility(View.VISIBLE);
-				reservationAdapter = new ReservationAdapter(MerchantDetailActivity.this, reservationListView, rvos);
-				reservationListView.setAdapter(reservationAdapter);
-				reservationAdapter.notifyDataSetChanged();
-				progressDialogUtil.closeProgress();
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			}
-
-		}
-
 	};
 	
 	private Handler attentionHandler = new Handler() {
@@ -860,7 +542,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			}
 			break;
 		case R.id.critiqueLayout:
-			if(StringUtils.isNotNull(this.merchant.commentContent))
+			if(StringUtils.isNotNull(this.merchant.commentContent) && !"暂无评论".equals(this.merchant.commentContent))
 			{
 				QuhaoLog.d("", "the commentContent : " + this.merchant.commentContent);
 				Intent intent = new Intent(this, CommentsMerchantActivity.class);
@@ -895,17 +577,8 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 //				Toast.makeText(this, "对不起，暂无描述。", Toast.LENGTH_SHORT).show();
 			}
 			break;
-		case R.id.seatNo:
-			String str = String.valueOf(seatNoView.getText());
-			for (int i = 0; i < seatNos.length; i++) {
-				if (str == seatNos[i]) {
-					currentIndex = i;
-					currentPaidui = haoma.paiduiList.get(currentIndex);
-					// currentNo = String.valueOf(currentPaidui.currentNumber);
-				}
-			}
-			selectSeatNo = new SelectSeatNo(MerchantDetailActivity.this, seatNos, currentIndex);
-			selectSeatNo.showAtLocation(MerchantDetailActivity.this.findViewById(R.id.root), Gravity.BOTTOM, 0, 0);
+		case R.id.btn_refresh_paidui:
+			
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;
 		case R.id.btn_open:
@@ -1087,10 +760,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		{
 			progressDialogUtil.closeProgress();
 		}
-		if(null != progressSeatNos)
-		{
-			progressSeatNos.closeProgress();
-		}
 		super.finish();
 		QuhaoLog.i(LOGTAG, LOGTAG + " finished");
 	}
@@ -1099,7 +768,8 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	protected void onResume() {
 		backClicked = false;
 		
-		initView();
+		Thread merchantThread = new Thread(merchantDetailRunnable);
+		merchantThread.start();
 		super.onResume();
 	}
 
@@ -1108,10 +778,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		if(null != progressDialogUtil)
 		{
 			progressDialogUtil.closeProgress();
-		}
-		if(null != progressSeatNos)
-		{
-			progressSeatNos.closeProgress();
 		}
 		super.onPause();
 		QuhaoLog.i(LOGTAG, LOGTAG + " on pause");
