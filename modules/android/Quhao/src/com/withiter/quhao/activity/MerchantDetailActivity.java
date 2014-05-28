@@ -1,7 +1,9 @@
 package com.withiter.quhao.activity;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -25,6 +27,8 @@ import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.PaiduiConditionAdapter;
 import com.withiter.quhao.adapter.ReservationAdapter;
+import com.withiter.quhao.task.GetPaiduiListTask;
+import com.withiter.quhao.task.JsonPack;
 import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
@@ -80,6 +84,8 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	private PaiduiConditionAdapter paiduiAdapter;
 	
 	private ListView paiduiListView;
+	
+	private Button refershPaiduiBtn;
 	
 	public static boolean backClicked = false;
 
@@ -142,6 +148,9 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		paiduiConditionLayout = (LinearLayout) info.findViewById(R.id.paidui_condition_layout);
 		paiduiListView = (ListView) info.findViewById(R.id.paidui_condition_list);
 		
+		refershPaiduiBtn = (Button) info.findViewById(R.id.btn_refresh_paidui);
+		refershPaiduiBtn.setOnClickListener(this);
+		
 		//添加优惠信息栏
 		youhuiLayout = (LinearLayout) info.findViewById(R.id.youhui_layout);
 		youhuiLayout.setOnClickListener(this);
@@ -175,30 +184,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 
 	};
 
-
-	/**
-	 * 根据seat numbers 显示在界面上的handler
-	 */
-	private Handler seatNosUpdateHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			if (msg.what == 200) {
-				super.handleMessage(msg);
-				paiduiConditionLayout.setVisibility(View.VISIBLE);
-				if (null != haoma && null != haoma.paiduiList && haoma.paiduiList.size() > 0) {
-					//TODO:
-
-				} else {
-					// TODO : 没有位置时， 该怎么做， 应该返回到列表页面， 在酒店详细信息页面应该判断
-//					Toast.makeText(MerchantDetailActivity.this, "此酒店没有座位，请选择其他酒店。", Toast.LENGTH_SHORT).show();
-					paiduiConditionLayout.setVisibility(View.GONE);
-				}
-				
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			}
-		}
-	};
-	
 	private Runnable merchantDetailRunnable = new Runnable() {
 		@Override
 		public void run() {
@@ -433,24 +418,51 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			}
 		}
 
-		private void handlerPaidui() {
-//			btnAttention.setVisibility(View.GONE);
-			currentQuHaoLayout.setVisibility(View.GONE);
-			
-			paiduiConditionLayout.setVisibility(View.VISIBLE);
-			
-			haoma = merchantDetail.haoma;
-			if (null != haoma && null != haoma.paiduiList && haoma.paiduiList.size() > 0) {
+	};
+	
+	protected void handlerPaidui() {
+//		btnAttention.setVisibility(View.GONE);
+		currentQuHaoLayout.setVisibility(View.GONE);
+		
+		paiduiConditionLayout.setVisibility(View.VISIBLE);
+		
+		haoma = merchantDetail.haoma;
+		if (null != haoma && null != haoma.paiduiList && haoma.paiduiList.size() > 0) {
 
-				paiduiAdapter = new PaiduiConditionAdapter(MerchantDetailActivity.this, paiduiListView, haoma.paiduiList);
-				paiduiAdapter.notifyDataSetChanged();
-			} else {
-				// TODO : 没有位置时， 该怎么做， 应该返回到列表页面， 在酒店详细信息页面应该判断
-//				Toast.makeText(MerchantDetailActivity.this, "此酒店没有座位，请选择其他酒店。", Toast.LENGTH_SHORT).show();
-				btnGetNumber.setVisibility(View.INVISIBLE);
-				paiduiConditionLayout.setVisibility(View.GONE);
+			
+			paiduiAdapter = new PaiduiConditionAdapter(MerchantDetailActivity.this, paiduiListView, haoma.paiduiList);
+			paiduiListView.setAdapter(paiduiAdapter);
+			
+			int totalHeight = 0;    
+	        for (int i = 0, len = paiduiAdapter.getCount(); i < len; i++) { //listAdapter.getCount()返回数据项的数目    
+	        View listItem = paiduiAdapter.getView(i, null, paiduiListView);    
+	        listItem.measure(0, 0); //计算子项View 的宽高    
+	        totalHeight += listItem.getMeasuredHeight(); //统计所有子项的总高度    
+	        }    
+	            
+	        android.view.ViewGroup.LayoutParams params = paiduiListView.getLayoutParams();   
+	        params.height = totalHeight + (paiduiListView.getDividerHeight() * (paiduiListView.getCount() - 1));    
+	        paiduiListView.setLayoutParams(params);   
+			paiduiAdapter.notifyDataSetChanged();
+		} else {
+			// TODO : 没有位置时， 该怎么做， 应该返回到列表页面， 在酒店详细信息页面应该判断
+//			Toast.makeText(MerchantDetailActivity.this, "此酒店没有座位，请选择其他酒店。", Toast.LENGTH_SHORT).show();
+			btnGetNumber.setVisibility(View.INVISIBLE);
+			paiduiConditionLayout.setVisibility(View.GONE);
+		}
+	}
+	
+	private Handler updatePaiduiListHandler = new Handler()
+	{
+
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			if(msg.what == 0){
+				handlerPaidui();
 			}
 		}
+		
 	};
 
 	private Handler openServiceHandler = new Handler(){
@@ -578,6 +590,38 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			}
 			break;
 		case R.id.btn_refresh_paidui:
+			if(null != merchant && StringUtils.isNotNull(merchant.id))
+			{
+				final GetPaiduiListTask task = new GetPaiduiListTask(R.string.waitting, this, "quhao?id=" + merchant.id);
+				task.execute(new Runnable() {
+					
+					@Override
+					public void run() {
+						
+						JsonPack jsonPack = task.jsonPack;
+						Haoma haomaTemp = ParseJson.getHaoma(jsonPack.getObj());
+						haoma = haomaTemp;
+						merchantDetail.haoma = haomaTemp;
+						
+						updatePaiduiListHandler.obtainMessage(0, null).sendToTarget();
+						
+					}
+				}, new Runnable() {
+					
+					@Override
+					public void run() {
+						
+						JsonPack jsonPack = task.jsonPack;
+						
+						Map<String, Object> toastParams = new HashMap<String, Object>();
+						toastParams.put("activity", MerchantDetailActivity.this);
+						toastParams.put("text", jsonPack.getMsg());
+						toastParams.put("toastLength", Toast.LENGTH_SHORT);
+						toastStringHandler.obtainMessage(1000, toastParams).sendToTarget();
+						
+					}
+				});
+			}
 			
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;

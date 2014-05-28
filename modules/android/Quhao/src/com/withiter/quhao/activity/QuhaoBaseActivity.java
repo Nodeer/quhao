@@ -51,6 +51,7 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 			}
 		}
 	};
+	
 	protected Handler toastHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what == UNLOCK_CLICK) {
@@ -62,6 +63,19 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 			}
 		}
 	};
+	
+	protected Handler toastStringHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			if (msg.what == UNLOCK_CLICK) {
+				
+				Map<String, Object> toastParams = (Map<String, Object>) msg.obj;
+//				Toast.makeText((Context)toastParams.get("activity"), toastParams.get("text"), );
+				
+				Toast.makeText((Context)toastParams.get("activity"), (String) toastParams.get("text"), Integer.parseInt(String.valueOf(toastParams.get("toastLength")))).show();
+			}
+		}
+	};
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
