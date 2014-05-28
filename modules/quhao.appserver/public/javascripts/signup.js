@@ -113,7 +113,8 @@ Signup.validateSubmitInfo = function(){
 		$("#submitinfotips").html(warningIcon+"请输入你的联系方式").show();
 		return false;
 	}
-	if(!Common.number(peopleContact)){
+	
+	if(!Common.tel(peopleContact) && !Common.mobile(peopleContact)){
 		$("#submitinfotips").html(warningIcon+"请输入正确的联系方式").show();
 		return false;
 	}

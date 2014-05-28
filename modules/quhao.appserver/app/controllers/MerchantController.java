@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import play.Play;
 import play.modules.morphia.Model.MorphiaQuery;
 import vo.CategoryVO;
+import vo.ErrorVO;
 import vo.HaomaVO;
 import vo.MerchantVO;
 import vo.ReservationVO;
@@ -495,6 +496,47 @@ public class MerchantController extends BaseController {
 
 		String type = params.get("type");
 		List<Merchant> merchantList = null;
+		
+		// 按钮触发，先联想，联想不到再坚持名称是否被使用
+		if(!StringUtils.isEmpty(type) && type.equalsIgnoreCase("thinkFirstThenCheck")){
+			if (!StringUtils.isEmpty(cityCode)) {
+				merchantList = Merchant.searchByName(name, cityCode);
+			} else {
+				merchantList = Merchant.searchByName(name);
+			}
+			
+			// 联想不到
+			if(merchantList == null || merchantList.isEmpty()){
+				MorphiaQuery q = Merchant.q();
+				q.filter("name", name);
+				ErrorVO evo = new ErrorVO();
+				if(q.count() == 0){
+					evo.key = "canCreate";
+				} else {
+					evo.key = "cantCreate";
+				}
+//				if (!StringUtils.isEmpty(cityCode)) {
+//					merchantList = Merchant.checkByName(name, cityCode);
+//				} else {
+//					merchantList = Merchant.checkByName(name);
+//				}
+				
+				renderJSON(evo);
+			} else { // 联想到了
+				List<MerchantVO> merchantVOList = null;
+				if (null != merchantList && !merchantList.isEmpty()) {
+					merchantVOList = new ArrayList<MerchantVO>();
+					for (Merchant m : merchantList) {
+						merchantVOList.add(MerchantVO.build(m));
+					}
+				}
+				renderJSON(merchantVOList);
+			}
+		}
+		
+		
+		
+		
 		// 自动联想
 		if (!StringUtils.isEmpty(type) && type.equals("think")) {
 			if (!StringUtils.isEmpty(cityCode)) {

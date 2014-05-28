@@ -3,92 +3,94 @@ Merchant = {};
 Merchant.ALL = null;
 
 Merchant.ajaxSearch = function(keyword, type) {
-
 	if (type == "check") {
 		url = "/check?type=check"
 	} else {
 		url = "/check?type=think"
 	}
-
 	$.ajax({
-		type : "GET",
-		url : url,
-		dataType : "JSON",
-		data : {
-			"name" : keyword
-		},
-		success : function(data) {
-			
-			console.log("type:"+type);
-			
-			if (type == "think") {
-				if (data != null && data.length > 0) {
-					var availableNames = [];
-					for (var i = 0; i < data.length; i++) {
-						var item = {};
-						item["label"] = data[i].name + ", " + data[i].address;
-						item["value"] = data[i].name;
-						item["key"] = data[i].id;
-						availableNames.push(item);
-					}
-					$("#merchantName").autocomplete({
-						minChars : 0,
-						source : availableNames,
-						delay: 1000,
-						select : function(event, ui) {
-							$.ajax({
-										type : "GET",
-										url : "/merchant",
-										dataType : "JSON",
-										data : {
-											"id" : ui.item.key
-										},
-										success : function(data) {
-											console.log(data);
-											console.log(data.id);
-											$("#mid").val(data.id);
-											$("#description")
-													.val(data.description);
+				type : "GET",
+				url : url,
+				dataType : "JSON",
+				data : {
+					"name" : keyword
+				},
+				success : function(data) {
 
-											// add merchant image here
-											$("#address").val(data.address);
-											$("#x").val(data.x);
-											$("#y").val(data.y);
-											
-											$("#tel").val(data.telephone);
-											$("#cityCode").val(data.cityCode);
-											Merchant.enableEdit();
-										},
-										error : function() {
-											alert("服务器维护中，马上就好。");
-										}
-									});
+					console.log("type:" + type);
+
+					if (type == "think") {
+						if (data != null && data.length > 0) {
+							var availableNames = [];
+							for (var i = 0; i < data.length; i++) {
+								var item = {};
+								item["label"] = data[i].name + ", "
+										+ data[i].address;
+								item["value"] = data[i].name;
+								item["key"] = data[i].id;
+								availableNames.push(item);
+							}
+							$("#merchantName").autocomplete({
+								minChars : 0,
+								source : availableNames,
+								delay : 1000,
+								select : function(event, ui) {
+									$.ajax({
+												type : "GET",
+												url : "/merchant",
+												dataType : "JSON",
+												data : {
+													"id" : ui.item.key
+												},
+												success : function(data) {
+													console.log(data);
+													console.log(data.id);
+													$("#mid").val(data.id);
+													$("#description")
+															.val(data.description);
+
+													// add merchant image here
+													$("#address")
+															.val(data.address);
+													$("#x").val(data.x);
+													$("#y").val(data.y);
+
+													$("#tel")
+															.val(data.telephone);
+													$("#cityCode")
+															.val(data.cityCode);
+													Merchant.enableEdit();
+												},
+												error : function() {
+													alert("服务器维护中，马上就好。");
+												}
+											});
+								}
+							});
 						}
-					});
-				} 
-			}
-			
-			if(type=="check"){ // 检查是否有同名商家
-					console.log(data);
-					if (data != null && data.length > 0) {
-						$("#tips").html("已经有同名的商家了，请换个名称").show();
-					} else {
-						$('#createMerchantDescription')
-								.html('没有搜索到相关记录，确定使用<font style=\"color:red;\">'
-										+ keyword + '</font>作为商家名称吗?');
-						$('#createMerchant').modal();
 					}
+
+					if (type == "check") { // 检查是否有同名商家
+						console.log(data);
+						if (data != null && data.length > 0) {
+							$("#tips").html("已经有同名的商家了，请换个名称").show();
+						} else {
+							$('#createMerchantDescription')
+									.html('没有搜索到相关记录，确定使用<font style=\"color:red;\">'
+											+ keyword + '</font>作为商家名称吗?');
+							$('#createMerchant').modal();
+						}
+					}
+				},
+				error : function() {
+					alert("服务器维护中，马上就好。");
 				}
-		},
-		error : function() {
-			alert("服务器维护中，马上就好。");
-		}
-	});
+			});
 }
 
 Merchant.findMerchant = function(mNameObj, e) {
 	// 回车触发联想
-	if(Quhao.getEntryKey(e) == 1){
+	if (Quhao.getEntryKey(e) == 1) {
 		var keyword = Quhao.trim($(mNameObj).val());
 		Merchant.ajaxSearch(keyword, 'think');
 	}
@@ -102,6 +104,151 @@ Merchant.search = function() {
 	}
 
 	Merchant.ajaxSearch(keyword, 'check');
+}
+
+Merchant.buttonCheck = function(){
+	var keyword = Quhao.trim($("#merchantName").val());
+	if (keyword == null || keyword == "") {
+		$("#tips").html("请输入商家名称或者相关关键字").show();
+		return;
+	}
+	var url = "/check?type=thinkFirstThenCheck"
+	$.ajax({
+				type : "GET",
+				url : url,
+				dataType : "JSON",
+				data : {
+					"name" : keyword
+				},
+				success : function(data) {
+					$("#buttonCheckResult").remove();
+				
+					var divModalFade = document.createElement("div");
+					$(divModalFade).addClass("modal fade").attr("id", "buttonCheckResult")
+							.attr("tabindex", "-1").attr("role", "dialog").attr(
+									"aria-labelledby", "myModalLabel").attr("aria-hidden",
+									"true");
+				
+					var divModalDialog = document.createElement("div");
+					$(divModalDialog).addClass("modal-dialog");
+				
+					var divModalContent = document.createElement("div");
+					$(divModalContent).addClass("modal-content");
+				
+					var divModalHeader = document.createElement("div");
+					$(divModalHeader).addClass("modal-header");
+					var btnClose = document.createElement("button");
+					$(btnClose).attr("type", "button").addClass("close").attr("data-dismiss",
+							"modal").attr("aria-hidden", "true").html("&times;");
+					var modalTitle = document.createElement("div");
+					$(modalTitle).addClass("modal-title").attr("id","buttonCheckResult_title");
+					$(modalTitle).html("检查结果");
+					divModalHeader.appendChild(btnClose);
+					divModalHeader.appendChild(modalTitle);
+				
+					var modalBody = document.createElement("div");
+					$(modalBody).addClass("modal-body").attr("id",
+							"buttonCheckResult_body");
+				
+					var modalFooter = document.createElement("div");
+					$(modalFooter).addClass("modal-footer");
+					var btnCancel = document.createElement("button");
+					$(btnCancel).attr("type", "button").addClass("btn btn-primary").attr(
+							"data-dismiss", "modal").text("取消");
+					var btnOK = document.createElement("button");
+					$(btnOK).attr("type", "button").addClass("btn btn-primary").text("确定");
+					modalFooter.appendChild(btnCancel);
+					modalFooter.appendChild(btnOK);
+				
+					divModalContent.appendChild(divModalHeader);
+					divModalContent.appendChild(modalBody);
+					divModalContent.appendChild(modalFooter);
+					divModalDialog.appendChild(divModalContent);
+					divModalFade.appendChild(divModalDialog);
+				
+					$("#body").append(divModalFade);
+				
+					// body content
+					var bodyContainer = document.createElement("div");
+					$(bodyContainer).addClass("form-group");
+				
+					var inputDiv = document.createElement("div");
+					$(inputDiv).addClass("col-sm-12");
+					
+					// 动态修改内容 start
+					// 可以创建
+					if(data != null && data.key=="canCreate"){
+						console.log("canCreate");
+						$(inputDiv).html("恭喜，可以用此名称创建,点击确定创建，点击取消重新输入。");
+						$(btnOK).bind("click", function() {
+							$("#buttonCheckResult").modal('hide');
+							Merchant.create();
+						});
+					}
+					// 不可以创建，已经存在此名称
+					if(data != null && data.key=="cantCreate"){
+						console.log("cantCreate");
+						$(inputDiv).html("此名称已经被占用，换个名称试试");
+						$(btnOK).bind("click", function() {
+							$("#buttonCheckResult").modal('hide');
+						});
+					}
+					// 联想到了，显示所有结果
+					if(data != null && data.length > 0){
+						var selectLabel = document.createElement("label");
+						$(modalTitle).html("匹配结果如下，请选择正确的选项");
+						
+						var select = document.createElement("select");
+						$(select).addClass("form-control").attr("id","buttonCheckResultSelect");
+						for (var i = 0; i < data.length; i++) {
+							var option = document.createElement("option");
+							$(option).val(data[i].id).addClass("form-control");
+							$(option).text("名称："+data[i].name + ", 地址：" + data[i].address);
+							select.appendChild(option);
+						}
+						inputDiv.appendChild(select);
+						$(btnOK).bind("click", function() {
+							$("#buttonCheckResult").modal('hide');
+							$.ajax({
+								type : "GET",
+								url : "/merchant",
+								dataType : "JSON",
+								data : {
+									"id" : $(select).val()
+								},
+								success : function(data) {
+									console.log(data);
+									console.log(data.id);
+									$("#mid").val(data.id);
+									$("#merchantName").val(data.name);
+									$("#description").val(data.description);
+
+									// add merchant image here
+									$("#address").val(data.address);
+									$("#x").val(data.x);
+									$("#y").val(data.y);
+
+									$("#tel").val(data.telephone);
+									$("#cityCode")
+											.val(data.cityCode);
+									Merchant.enableEdit();
+								},
+								error : function() {
+									alert("服务器维护中，马上就好。");
+								}
+							});
+						});
+					}
+					// 动态修改内容 end
+					bodyContainer.appendChild(inputDiv);
+				
+					$("#buttonCheckResult_body").html(bodyContainer);
+					$("#buttonCheckResult").modal();
+				},
+				error : function() {
+					alert("服务器维护中，马上就好。");
+				}
+			});
 }
 
 /**
@@ -256,8 +403,8 @@ Merchant.validate = function() {
 		return false;
 	}
 
-	console.log(ii+"=====");
-	
+	console.log(ii + "=====");
+
 	if (ii == 21) {
 		$("#tips").html("请至少选择一个桌位类型").show();
 		$("html,body").animate({
@@ -296,9 +443,10 @@ function refresh(mid) {
 				},
 				success : function(data) {
 					$("#autoRefreshDiv").html(data);
-					$("#paiduipageTip").html("刷新成功。").removeClass().addClass("text-success");
+					$("#paiduipageTip").html("刷新成功。").removeClass()
+							.addClass("text-success");
 					setTimeout('$("#paiduipageTip").html("")', 3000);
-					
+
 				},
 				error : function() {
 					alert("服务器维护中，马上就好。");
@@ -416,10 +564,10 @@ Merchant.finish = function(seatNumber, currentNumber, mid) {
 				},
 				success : function(data) {
 					if (data == true) {
-						//window.location.reload();
+						// window.location.reload();
 						// 改成异步刷新
 						refresh(mid);
-						
+
 					} else {
 						alert("服务器维护中，马上就好。");
 					}
@@ -645,7 +793,9 @@ Merchant.logout = function(aid) {
 
 /**
  * 添加优惠
- * @param {} mid
+ * 
+ * @param {}
+ *            mid
  */
 Merchant.saveYouhui = function(mid) {
 	if (Merchant.validateYouhui()) {
@@ -678,35 +828,38 @@ Merchant.saveYouhui = function(mid) {
 
 /**
  * 取消优惠
- * @param {} mid
+ * 
+ * @param {}
+ *            mid
  */
 Merchant.disableYouhui = function(mid, yid) {
 	$.ajax({
-		type : "POST",
-		url : "/b/w/disableYouhui",
-		dataType : "json",
-		data : {
-			"mid" : mid,
-			"yid" : yid
-		},
-		success : function(data) {
-			console.log(data);
-			if (data) {
-				$("#deleteErrorTip").html("删除优惠信息成功，3秒后刷新优惠列表！")
-						.removeClass().addClass("text-success")
-						.show();
-				setTimeout('location.reload()', 3000);
-			}
-		},
-		error : function() {
-			alert("服务器维护中，马上就好。");
-		}
-	});
+				type : "POST",
+				url : "/b/w/disableYouhui",
+				dataType : "json",
+				data : {
+					"mid" : mid,
+					"yid" : yid
+				},
+				success : function(data) {
+					console.log(data);
+					if (data) {
+						$("#deleteErrorTip").html("删除优惠信息成功，3秒后刷新优惠列表！")
+								.removeClass().addClass("text-success").show();
+						setTimeout('location.reload()', 3000);
+					}
+				},
+				error : function() {
+					alert("服务器维护中，马上就好。");
+				}
+			});
 }
 
 /**
  * 添加优惠表单检查
- * @param {} mid
+ * 
+ * @param {}
+ *            mid
  * @return {Boolean}
  */
 Merchant.validateYouhui = function(mid) {
@@ -727,37 +880,43 @@ Merchant.validateYouhui = function(mid) {
 
 /**
  * 关闭排队/开放排队
- * @param {} mid
- * @param {} online
+ * 
+ * @param {}
+ *            mid
+ * @param {}
+ *            online
  */
-Merchant.changeStatus = function(mid, online){
-	if(Common.isEmpty(mid) || Common.isEmpty(online)){
+Merchant.changeStatus = function(mid, online) {
+	if (Common.isEmpty(mid) || Common.isEmpty(online)) {
 		alert("请联系管理员");
 		return;
 	}
-	
+
 	$.ajax({
-		type : "POST",
-		url : "/b/w/changeStatus",
-		dataType : "json",
-		data : {
-			"mid" : mid,
-			"online" : online
-		},
-		success : function(data) {
-			console.log(data);
-			if (data) {
-				if(online == 'false'){
-					$("#paiduipageTip").html("关闭排队成功！注意：需要时可开放排队，3秒后刷新页面。").removeClass().addClass("text-danger");
-				} else {
-					$("#paiduipageTip").html("开放排队成功！3秒后刷新页面。").removeClass().addClass("text-success");
+				type : "POST",
+				url : "/b/w/changeStatus",
+				dataType : "json",
+				data : {
+					"mid" : mid,
+					"online" : online
+				},
+				success : function(data) {
+					console.log(data);
+					if (data) {
+						if (online == 'false') {
+							$("#paiduipageTip")
+									.html("关闭排队成功！注意：需要时可开放排队，3秒后刷新页面。")
+									.removeClass().addClass("text-danger");
+						} else {
+							$("#paiduipageTip").html("开放排队成功！3秒后刷新页面。")
+									.removeClass().addClass("text-success");
+						}
+						setTimeout('location.reload()', 3000);
+					}
+				},
+				error : function() {
+					alert("服务器维护中，马上就好。");
 				}
-				setTimeout('location.reload()', 3000);
-			}
-		},
-		error : function() {
-			alert("服务器维护中，马上就好。");
-		}
-	});
-	
+			});
+
 }
