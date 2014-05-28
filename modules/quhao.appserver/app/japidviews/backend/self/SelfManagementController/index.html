@@ -148,11 +148,18 @@ $addCSS("backend.css", true)
 	        <h4 class="modal-title" id="myModalLabel">更新商家信息</h4>
 	      </div>
 	      <div class="modal-body" id="updateMerchantDescription">
-	        更改桌位类型将清空当前排队号，请谨慎操作！确定要更新商家信息吗?
+	      	`if(bmivo.editable){
+	        	更改桌位类型将清空当前排队号，请谨慎操作！确定要更新商家信息吗?
+	        `} else {
+				由于当前有用户排队，目前无法编辑商家信息。推荐在营业时间结束或者没有人排队的情况下编辑信息。	        
+	        `}
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
-	        <button type="button" class="btn btn-primary" onclick="Merchant.enableEdit();">确定</button>
+	        `if(bmivo.editable){
+		        <button type="button" class="btn btn-primary" onclick="Merchant.enableEdit();">确定</button>
+	        `} else {
+	        `}
 	      </div>
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->

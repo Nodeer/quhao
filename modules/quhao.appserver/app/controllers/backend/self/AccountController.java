@@ -22,6 +22,7 @@ import com.withiter.models.account.Account;
 import com.withiter.models.account.CooperationRequest;
 import com.withiter.models.admin.MerchantAccount;
 import com.withiter.models.backendMerchant.MerchantAccountRel;
+import com.withiter.models.merchant.Haoma;
 import com.withiter.models.merchant.Merchant;
 
 import controllers.BaseController;

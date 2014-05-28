@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import cn.bran.japid.util.StringUtils;
 
+import com.withiter.common.Constants;
 import com.withiter.common.Constants.ReservationStatus;
 import com.withiter.models.account.Reservation;
 
@@ -326,5 +327,16 @@ public class Haoma extends HaomaEntityDef {
 		}
 
 		logger.debug("merchant id: " + this.merchantId + ", no paidui: " + this.noNeedPaidui);
+	}
+	
+	public boolean checkEditAble(){
+		boolean flag = false;
+		MorphiaQuery q = Reservation.q();
+		q.filter("version", this.version);
+		q.filter("valid", true).filter("status", Constants.ReservationStatus.active);
+		if(q.count() == 0){
+			flag = true;
+		}
+		return flag;
 	}
 }
