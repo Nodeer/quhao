@@ -172,11 +172,17 @@ public class SelfManagementController extends BaseController {
 		m.seatType = seatType;
 		m.save();
 
-		// 设置桌位类型
-		Set<String> seatTypeSet = new HashSet<String>();
-		for (String seatNoNeedToEnable : seatType) {
-			seatTypeSet.add(seatNoNeedToEnable);
+		logger.debug("merchant seatType------");
+		for(String s:m.seatType){
+			logger.debug("key1: "+s);
 		}
+		logger.debug("merchant seatType------");
+		
+		// 设置桌位类型
+//		Set<String> seatTypeSet = new HashSet<String>();
+//		for (String seatNoNeedToEnable : seatType) {
+//			seatTypeSet.add(seatNoNeedToEnable);
+//		}
 
 		Haoma haoma = Haoma.findByMerchantId(m.id());
 		// version ++
@@ -229,6 +235,14 @@ public class SelfManagementController extends BaseController {
 //		}
 		haoma.save();
 		haoma.check();
+		
+		Iterator it2 = haoma.haomaMap.keySet().iterator();
+		logger.debug("haoma seatType------");
+		while(it2.hasNext()){
+			logger.debug("key: "+it2.next());
+		}
+		logger.debug("haoma seatType------");
+		
 
 		// update the category counts
 		Category.updateCounts();

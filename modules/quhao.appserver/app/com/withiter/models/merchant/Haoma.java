@@ -76,6 +76,7 @@ public class Haoma extends HaomaEntityDef {
 			return;
 		}
 		String[] seatType = m.seatType;
+		this.haomaMap.clear();
 		Paidui p = null;
 		if (seatType == null) {
 			return;
