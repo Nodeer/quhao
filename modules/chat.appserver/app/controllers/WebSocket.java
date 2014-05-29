@@ -8,9 +8,12 @@ import static play.mvc.Http.WebSocketEvent.TextFrame;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.lang.StringUtils;
+
 import models.ChatRoom;
 import models.ChatRoomFactory;
 import play.Logger;
+import play.data.validation.Required;
 import play.libs.F.Either;
 import play.libs.F.EventStream;
 import play.libs.F.Promise;
@@ -28,7 +31,11 @@ public class WebSocket extends Controller {
 
 	public static class ChatRoomSocket extends WebSocketController {
 
-		public static void join(String user, String uid, String mid, String image) {
+		public static void join(@Required String user,@Required String uid,@Required String mid,@Required String image) {
+
+			if(validation.hasErrors()){
+				renderJSON(false);
+			}
 			
 			// Get chat room with mid
 			Map<String, ChatRoom> rooms = ChatRoomFactory.rooms();
