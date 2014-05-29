@@ -75,6 +75,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	private LinearLayout critiqueLayout;
 	private LinearLayout descLayout;
 	private ListView reservationListView;
+	private TextView reservationListEmpty;
 	private ReservationAdapter reservationAdapter;
 	private List<ReservationVO> rvos;
 	
@@ -84,6 +85,8 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	private PaiduiConditionAdapter paiduiAdapter;
 	
 	private ListView paiduiListView;
+	
+	private TextView paiduiListEmpty;
 	
 	private Button refershPaiduiBtn;
 	
@@ -144,9 +147,13 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 
 		currentQuHaoLayout = (LinearLayout) info.findViewById(R.id.currentQuHaoLayout);
 		reservationListView = (ListView) info.findViewById(R.id.reservationListView);
-
+		reservationListEmpty = (TextView) info.findViewById(R.id.reservation_list_empty);
+		reservationListView.setEmptyView(reservationListEmpty);
 		paiduiConditionLayout = (LinearLayout) info.findViewById(R.id.paidui_condition_layout);
 		paiduiListView = (ListView) info.findViewById(R.id.paidui_condition_list);
+		
+		paiduiListEmpty = (TextView) info.findViewById(R.id.paidui_list_empty);
+		paiduiListView.setEmptyView(paiduiListEmpty);
 		
 		refershPaiduiBtn = (Button) info.findViewById(R.id.btn_refresh_paidui);
 		refershPaiduiBtn.setOnClickListener(this);
@@ -197,13 +204,10 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
 					info.findViewById(R.id.loadingbar).setVisibility(View.GONE);
 					info.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
-					paiduiConditionLayoutHandler.sendEmptyMessage(200);
-					currentQuHaoLayoutHandler.sendEmptyMessage(200);
 					return;
 				}
 				String buf = CommonHTTPRequest.get("querytMerchantDetail?merchantId=" + merchantId + "&accountId=" + accountId + "&isLogined=" + String.valueOf(QHClientApplication.getInstance().isLogined));
 				if (StringUtils.isNull(buf)) {
-					//TODO: wjzwjz 系统异常时，怎么处理
 					info.findViewById(R.id.loadingbar).setVisibility(View.GONE);
 					info.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
 					paiduiConditionLayoutHandler.sendEmptyMessage(200);
@@ -336,6 +340,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						// check the merchant is enabled
 						if (m.enable) {
 							
+							btnOpen.setVisibility(View.GONE);
 							if(m.online)
 							{
 								Calendar cal = Calendar.getInstance();
@@ -369,15 +374,12 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 							btnOpen.setVisibility(View.GONE);
 							openNumView.setVisibility(View.GONE);
 							QuhaoLog.d(LOGTAG, "check login state on MerchantDetailActivity, isLogined : " + QHClientApplication.getInstance().isLogined);
-							if(!QHClientApplication.getInstance().isLogined)
-							{
-								handlerPaidui();
-							}
-							else
+							handlerPaidui();
+							if(QHClientApplication.getInstance().isLogined)
 							{
 								currentQuHaoLayout.setVisibility(View.VISIBLE);
 								
-								paiduiConditionLayout.setVisibility(View.GONE);								
+								reservationListView.setVisibility(View.VISIBLE);
 								rvos = merchantDetail.rvos;
 								if(null != rvos && !rvos.isEmpty())
 								{
@@ -390,17 +392,23 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 
 									btnGetNumber.setVisibility(View.GONE);
 
-									reservationListView.setVisibility(View.VISIBLE);
 									reservationAdapter = new ReservationAdapter(MerchantDetailActivity.this, reservationListView, rvos);
 									reservationListView.setAdapter(reservationAdapter);
 									reservationAdapter.notifyDataSetChanged();
+									reservationListView.getEmptyView().setVisibility(View.GONE);
 									unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 								}
 								else
 								{
-									handlerPaidui();
+									reservationListView.getEmptyView().setVisibility(View.VISIBLE);
 								}
 								
+							}
+							else
+							{
+								reservationListView.getEmptyView().setVisibility(View.GONE);
+								reservationListView.setVisibility(View.GONE);
+								currentQuHaoLayout.setVisibility(View.GONE);
 							}
 						} else {
 							btnGetNumber.setVisibility(View.GONE);
@@ -408,11 +416,28 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 							openNumView.setVisibility(View.VISIBLE);
 							paiduiConditionLayout.setVisibility(View.GONE);
 							currentQuHaoLayout.setVisibility(View.GONE);
-//							btnAttention.setVisibility(View.GONE);
 							
 						}
 
 					}
+					else
+					{
+						btnGetNumber.setVisibility(View.GONE);
+						btnOpen.setVisibility(View.GONE);
+						openNumView.setVisibility(View.GONE);
+						paiduiConditionLayout.setVisibility(View.GONE);
+						btnAttention.setVisibility(View.GONE);
+						currentQuHaoLayout.setVisibility(View.GONE);
+					}
+				}
+				else
+				{
+					btnGetNumber.setVisibility(View.GONE);
+					btnOpen.setVisibility(View.GONE);
+					openNumView.setVisibility(View.GONE);
+					paiduiConditionLayout.setVisibility(View.GONE);
+					btnAttention.setVisibility(View.GONE);
+					currentQuHaoLayout.setVisibility(View.GONE);
 				}
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
@@ -422,33 +447,35 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	
 	protected void handlerPaidui() {
 //		btnAttention.setVisibility(View.GONE);
-		currentQuHaoLayout.setVisibility(View.GONE);
+//		currentQuHaoLayout.setVisibility(View.GONE);
 		
 		paiduiConditionLayout.setVisibility(View.VISIBLE);
 		
 		haoma = merchantDetail.haoma;
 		if (null != haoma && null != haoma.paiduiList && haoma.paiduiList.size() > 0) {
 
-			
+			paiduiListView.getEmptyView().setVisibility(View.GONE);
 			paiduiAdapter = new PaiduiConditionAdapter(MerchantDetailActivity.this, paiduiListView, haoma.paiduiList);
 			paiduiListView.setAdapter(paiduiAdapter);
 			
 			int totalHeight = 0;    
 	        for (int i = 0, len = paiduiAdapter.getCount(); i < len; i++) { //listAdapter.getCount()返回数据项的数目    
-	        View listItem = paiduiAdapter.getView(i, null, paiduiListView);    
-	        listItem.measure(0, 0); //计算子项View 的宽高    
-	        totalHeight += listItem.getMeasuredHeight(); //统计所有子项的总高度    
-	        }    
+		        View listItem = paiduiAdapter.getView(i, null, paiduiListView);    
+		        listItem.measure(0, 0); //计算子项View 的宽高    
+		        totalHeight += listItem.getMeasuredHeight(); //统计所有子项的总高度    
+	        }
 	            
 	        android.view.ViewGroup.LayoutParams params = paiduiListView.getLayoutParams();   
 	        params.height = totalHeight + (paiduiListView.getDividerHeight() * (paiduiListView.getCount() - 1));    
-	        paiduiListView.setLayoutParams(params);   
+	        paiduiListView.setLayoutParams(params);
 			paiduiAdapter.notifyDataSetChanged();
+			
 		} else {
 			// TODO : 没有位置时， 该怎么做， 应该返回到列表页面， 在酒店详细信息页面应该判断
 //			Toast.makeText(MerchantDetailActivity.this, "此酒店没有座位，请选择其他酒店。", Toast.LENGTH_SHORT).show();
-			btnGetNumber.setVisibility(View.INVISIBLE);
-			paiduiConditionLayout.setVisibility(View.GONE);
+//			btnGetNumber.setVisibility(View.INVISIBLE);
+			paiduiConditionLayout.setVisibility(View.VISIBLE);
+			paiduiListView.getEmptyView().setVisibility(View.VISIBLE);
 		}
 	}
 	
@@ -769,8 +796,12 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				break;
 			case R.id.btn_GetNumber:
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				if (QHClientApplication.getInstance().isLogined && null != merchantDetail.haoma 
-						&& null != merchantDetail.haoma.paiduiList && !merchantDetail.haoma.paiduiList.isEmpty()) {
+				if (QHClientApplication.getInstance().isLogined) {
+					if (null == merchantDetail.haoma 
+						|| null == merchantDetail.haoma.paiduiList || merchantDetail.haoma.paiduiList.isEmpty()) {
+						Toast.makeText(this, "现在暂时不能取号哦。", Toast.LENGTH_SHORT).show();
+						return;
+					}
 					Intent intentGetNumber = new Intent();
 					intentGetNumber.putExtra("merchantId", merchantId);
 					intentGetNumber.putExtra("merchantName", mName);

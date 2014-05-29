@@ -68,10 +68,10 @@ public class PaiduiConditionAdapter extends BaseAdapter {
 			holder.seatNo.setText("座位人数：" + paidui.seatNo);
 			
 			holder.currentNo.setTag("currentNo_" + position);
-			holder.currentNo.setText("最大号码：" + paidui.currentNumber);
+			holder.currentNo.setText("最大号码：" + paidui.maxNumber);
 			
 			holder.maxNo.setTag("maxNo_" + position);
-			holder.maxNo.setText("下一号码：" + paidui.maxNumber);
+			holder.maxNo.setText("下一号码：" + paidui.currentNumber);
 			
 			convertView.setTag(holder);
 			return convertView;

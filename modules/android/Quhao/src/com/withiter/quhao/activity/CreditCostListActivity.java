@@ -160,6 +160,8 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 				if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
 					Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
 					unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+					findViewById(R.id.loadingbar).setVisibility(View.GONE);
+					findViewById(R.id.commentsLayout).setVisibility(View.VISIBLE);
 					return;
 				}
 				String accountId = QHClientApplication.getInstance().accountInfo.accountId;

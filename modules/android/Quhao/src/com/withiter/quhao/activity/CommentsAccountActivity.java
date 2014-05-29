@@ -180,6 +180,8 @@ public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItem
 					QuhaoLog.v(TAG, "query critiques from web service, the merchant id is : " + accountId);
 					if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
 						Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+						findViewById(R.id.loadingbar).setVisibility(View.GONE);
+						findViewById(R.id.commentsLayout).setVisibility(View.VISIBLE);
 						return;
 					}
 					String buf = CommonHTTPRequest.get("getCommentsByAccountId?page=" + page + "&accountId=" + accountId);

@@ -12,7 +12,7 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="10dip"
-        android:visibility="gone">
+        >
 
         <ProgressBar
             android:layout_width="wrap_content"
@@ -32,7 +32,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0.0dip"
-        android:orientation="vertical" >
+        android:orientation="vertical" 
+        android:visibility="gone">
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -296,8 +297,17 @@
             android:headerDividersEnabled="true"
             android:listSelector="@drawable/list_item_trans"
             android:scrollbarThumbVertical="@drawable/scrollbar"
-            android:scrollbars="vertical" />
-    </LinearLayout>
+            android:scrollbars="vertical" 
+            />
+			<TextView
+		        android:id="@+id/reservation_list_empty"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:padding="15dip"
+		        android:text="暂无"
+		        android:textSize="14sp"
+		        android:visibility="gone" />
+        </LinearLayout>
     
     <LinearLayout android:id="@+id/paidui_condition_layout"
         android:layout_width="fill_parent"
@@ -312,6 +322,7 @@
 	        android:layout_height="35dip"
 	        android:clickable="true"
 	        android:gravity="center_vertical"
+	        android:baselineAligned="false"
 	        android:orientation="horizontal" >
             <LinearLayout android:layout_width="0dip"
                 android:layout_height="fill_parent"
@@ -363,6 +374,14 @@
 		       	    android:headerDividersEnabled="true"
 		       	    android:scrollbars="none"
 		       	    android:listSelector="@drawable/list_item_trans" />
+		        <TextView
+			        android:id="@+id/paidui_list_empty"
+			        android:layout_width="fill_parent"
+			        android:layout_height="wrap_content"
+			        android:padding="15dip"
+			        android:text="暂无"
+			        android:textSize="14sp"
+			        android:visibility="gone" />
 	    </LinearLayout>
     </LinearLayout>
 	<LinearLayout
