@@ -130,10 +130,15 @@ public class SelectSeatNo extends PopupWindow implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		
-		
-		
-		TextView text = (TextView) mContext.findViewById(R.id.seatNo);
-		text.setText(seatNo);
+		switch(v.getId())
+		{
+		case R.id.cancel:
+			break;
+		case R.id.submit:
+			TextView text = (TextView) mContext.findViewById(R.id.seatNo);
+			text.setText(seatNo);
+			break;
+		}
 		
 		this.dismiss();
 	}

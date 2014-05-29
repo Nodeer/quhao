@@ -205,6 +205,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			return;
 		}
 		isClick = true;
+		
 		progressDialogUtil = new ProgressDialogUtil(getActivity(), R.string.empty, R.string.querying, false);
 		progressDialogUtil.showProgress();
 		switch (v.getId()) {
@@ -237,8 +238,13 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 		case R.id.more_version:// 版本检测
-			progressDialogUtil.closeProgress();
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			if(!ActivityUtil.isNetWorkAvailable(getActivity()))
+			{
+				Toast.makeText(getActivity(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				return;
+			}
 			
 			final int currentVersion = ActivityUtil.getVersionCode(getActivity());
 			String url = "app/appCode";
@@ -564,10 +570,14 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			});
 			sina.showUser(null);
 			break;
-		case R.id.more_login_status:// 分享给好友
-			// 显示分享界面
-			progressDialogUtil.closeProgress();
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+		case R.id.more_login_status:
+			if(!ActivityUtil.isNetWorkAvailable(getActivity()))
+			{
+				Toast.makeText(getActivity(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				return;
+			}
 			
 			// String loginStatus = SharedprefUtil.get(MoreActivity.this,
 			// QuhaoConstant.IS_LOGIN, "false");

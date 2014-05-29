@@ -39,6 +39,7 @@ import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.domain.CityInfo;
+import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.AsynImageLoader;
@@ -139,6 +140,12 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		// 设置已点击标志，避免快速重复点击
 		isClick = true;
 
+		if(!ActivityUtil.isNetWorkAvailable(getApplicationContext()))
+		{
+			Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+			unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+			return;
+		}
 		switch (v.getId()) {
 		case R.id.photoLayout:
 			
