@@ -61,6 +61,7 @@
     socket.onmessage = function(event) {
         var parts = /^([^:]+):([^:]+)(:(.*))?$/.exec(event.data);
         var p = event.data.split(":", 5);
+        console.log(event.data);
         if(p[0] == "message"){
         	var type = p[0];
         	var user = p[1];

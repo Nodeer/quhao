@@ -6,7 +6,7 @@
 $addJS("merchant.js", true)
 $addCSS("backend.css", true)
 `
-`set title:i18n("取号啦 - 消费统计管理")
+`set title:i18n("取号啦 - 优惠管理")
 
 `args List<YouhuiVO> youhuiList, BackendMerchantInfoVO bmivo
 
@@ -67,7 +67,7 @@ $addCSS("backend.css", true)
 			  		<td>
 					  <div class="form-group">
 					    <label for="youhuiTitle">优惠信息标题<span title="APP 用户第一眼看到的优惠标题（广告），越有吸引力的标题越好！" style="margin-left: 10px;" class="glyphicon glyphicon-info-sign"></span></label>
-					    <input type="text" class="form-control" id="youhuiTitle" placeholder="输入优惠信息标题，如：你敢消费，我敢买单" maxlength="100"/>
+					    <input type="text" class="form-control" id="youhuiTitle" placeholder="输入优惠信息标题，如：你敢消费，我敢买单" maxlength="50"/>
 					  </div>
 					  <div class="form-group">
 					    <label for="youhuiContent">优惠信息详细规则<span title="App 用户将使用如下优惠规则享受优惠，请认真核对优惠规则，由于规则不清晰引起的纠纷商家自行承担" style="margin-left: 10px;" class="glyphicon glyphicon-info-sign"></span></label>
