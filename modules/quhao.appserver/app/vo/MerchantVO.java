@@ -76,7 +76,6 @@ public class MerchantVO {
 	//取消号码时候弹出优惠提示的条件
 	public int checkTime;
 	
-	public boolean youhuiExist;
 	/**
 	 * @param m
 	 * @return
@@ -133,23 +132,11 @@ public class MerchantVO {
 		return vo;
 	}
 	
-	public static MerchantVO build(Merchant m, Comment c,boolean isAttention, boolean youhuiExist) {
-		MerchantVO vo = build(m, c,isAttention);
-		vo.youhuiExist = youhuiExist;
-		
-		return vo;
-	}
 	
 	public static MerchantVO build(Merchant m, Comment c,boolean isAttention) {
 		MerchantVO vo = build(m, c);
 		
 		vo.isAttention=isAttention;
-		return vo;
-	}
-	
-	public static MerchantVO build(Merchant m, Comment c,boolean isAttention, long num, boolean youhuiExist) {
-		MerchantVO vo = build(m, c, isAttention, num);
-		vo.youhuiExist = youhuiExist;
 		return vo;
 	}
 	

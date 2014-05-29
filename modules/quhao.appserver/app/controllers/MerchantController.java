@@ -203,15 +203,7 @@ public class MerchantController extends BaseController {
 
 		if (null != m) {
 
-			List<Youhui> youhuiList = Youhui.getAllEnabledYouhui(m.id());
-
-			boolean youhuiExist = false;
-
-			if (null != youhuiList && !youhuiList.isEmpty()) {
-				youhuiExist = true;
-			}
-
-			merchantDetails.put("merchant", MerchantVO.build(m, c, isAttention, openNum, youhuiExist));
+			merchantDetails.put("merchant", MerchantVO.build(m, c, isAttention, openNum));
 		}
 
 		if (null != m && m.enable && "false".equals(isLogined)) {
