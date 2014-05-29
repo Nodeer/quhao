@@ -588,10 +588,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				intent.putExtra("merchantName", this.merchant.name);
 				intent.putExtra("merchantId", this.merchant.id);
 				
-				if(null != rvos && rvos.size()>0)
-				{
-					intent.putExtra("rId", rvos.get(0).rId);
-				}
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				startActivity(intent);
 			}
@@ -785,7 +781,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			case R.id.merchantPhone:
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				// 取得输入的电话号码串
-				String phoneNO = merchantPhone.getText().toString();
+				String phoneNO = merchant.phone;
 				// 如果输入不为空创建打电话的Intent
 				if (StringUtils.isNotNull(phoneNO)) {
 					Intent phoneIntent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + phoneNO));
