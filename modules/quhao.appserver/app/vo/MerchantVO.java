@@ -1,11 +1,13 @@
 package vo;
 
 import java.io.UnsupportedEncodingException;
-
 import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cn.bran.japid.util.StringUtils;
 
@@ -13,11 +15,6 @@ import com.withiter.models.merchant.Comment;
 import com.withiter.models.merchant.Merchant;
 import com.withiter.models.merchant.Tese;
 import com.withiter.utils.DistanceUtils;
-
-import controllers.backend.self.SelfManagementController;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class MerchantVO {
 
@@ -122,42 +119,8 @@ public class MerchantVO {
 		return vo;
 	}
 	
-	public static MerchantVO build(Merchant m, Comment c, int checkTime) {
-		MerchantVO vo = new MerchantVO();
-		vo.id = m.id();
-		vo.address = m.address;
-		vo.averageCost = m.averageCost;
-		vo.cateType = m.cateType;
-		vo.closeTime = m.closeTime;
-		vo.description = m.description;
-		vo.enable = m.enable;
-		vo.online = m.online;
-		vo.youhui = m.youhui;
-		vo.fuwu = m.fuwu;
-		vo.grade = m.grade;
-		vo.huanjing = m.huanjing;
-		vo.joinedDate = m.joinedDate;
-		vo.kouwei = m.kouwei;
-		vo.markedCount = m.markedCount;
-		vo.name = m.name;
-		vo.nickName = m.nickName;
-		vo.openTime = m.openTime;
-		vo.tags = m.tags;
-		vo.telephone = m.telephone;
-		vo.teses = m.teses;
-		vo.xingjiabi = m.xingjiabi;
-		vo.x = m.x;
-		vo.y = m.y;
-		vo.seatType = m.seatType;
-		
-		vo.cityCode = m.cityCode;
-		
-		try {
-			vo.merchantImage = URLDecoder.decode(m.merchantImage, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public static MerchantVO build(Merchant m, Comment c) {
+		MerchantVO vo = build(m);
 		
 		vo.commentAverageCost = c.averageCost;
 		vo.commentContent = StringUtils.isEmpty(c.content) ? "暂无评论" : c.content;
@@ -166,117 +129,34 @@ public class MerchantVO {
 		vo.commentHuanjing = c.huanjing;
 		vo.commentKouwei = c.kouwei;
 		vo.commentXingjiabi = c.xingjiabi;
-		vo.checkTime = checkTime;
 		
 		return vo;
 	}
 	
-	public static MerchantVO build(Merchant m, Comment c, int checkTime,boolean youhuiExist) {
-		MerchantVO vo = build(m, c, checkTime);
+	public static MerchantVO build(Merchant m, Comment c,boolean isAttention, boolean youhuiExist) {
+		MerchantVO vo = build(m, c,isAttention);
 		vo.youhuiExist = youhuiExist;
 		
 		return vo;
 	}
 	
 	public static MerchantVO build(Merchant m, Comment c,boolean isAttention) {
-		MerchantVO vo = new MerchantVO();
-		vo.id = m.id();
-		vo.address = m.address;
-		vo.averageCost = m.averageCost;
-		vo.cateType = m.cateType;
-		vo.closeTime = m.closeTime;
-		vo.description = m.description;
-		vo.enable = m.enable;
-		vo.online = m.online;
-		vo.youhui = m.youhui;
-		vo.fuwu = m.fuwu;
-		vo.grade = m.grade;
-		vo.huanjing = m.huanjing;
-		vo.joinedDate = m.joinedDate;
-		vo.kouwei = m.kouwei;
-		vo.markedCount = m.markedCount;
-		vo.name = m.name;
-		vo.nickName = m.nickName;
-		vo.openTime = m.openTime;
-		vo.tags = m.tags;
-		vo.telephone = m.telephone;
-		vo.teses = m.teses;
-		vo.xingjiabi = m.xingjiabi;
-		vo.x = m.x;
-		vo.y = m.y;
-		vo.seatType = m.seatType;
-		
-		try {
-			vo.merchantImage = URLDecoder.decode(m.merchantImage, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		vo.commentAverageCost = c.averageCost;
-		vo.commentContent = StringUtils.isEmpty(c.content) ? "暂无评论" : c.content;
-		vo.commentDate = StringUtils.isEmpty(c.content) ? "" : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(c.modified);
-		vo.commentFuwu = c.fuwu;
-		vo.commentHuanjing = c.huanjing;
-		vo.commentKouwei = c.kouwei;
-		vo.commentXingjiabi = c.xingjiabi;
+		MerchantVO vo = build(m, c);
 		
 		vo.isAttention=isAttention;
 		return vo;
 	}
 	
-	public static MerchantVO build(Merchant m, Comment c,boolean isAttention, long num, int checkTime,boolean youhuiExist) {
-		MerchantVO vo = build(m, c, isAttention, num, checkTime);
+	public static MerchantVO build(Merchant m, Comment c,boolean isAttention, long num, boolean youhuiExist) {
+		MerchantVO vo = build(m, c, isAttention, num);
 		vo.youhuiExist = youhuiExist;
 		return vo;
 	}
 	
-	public static MerchantVO build(Merchant m, Comment c,boolean isAttention, long num, int checkTime) {
-		MerchantVO vo = new MerchantVO();
-		vo.id = m.id();
-		vo.address = m.address;
-		vo.averageCost = m.averageCost;
-		vo.cateType = m.cateType;
-		vo.closeTime = m.closeTime;
-		vo.description = m.description;
-		vo.enable = m.enable;
-		vo.online = m.online;
-		vo.youhui = m.youhui;
-		vo.fuwu = m.fuwu;
-		vo.grade = m.grade;
-		vo.huanjing = m.huanjing;
-		vo.joinedDate = m.joinedDate;
-		vo.kouwei = m.kouwei;
-		vo.markedCount = m.markedCount;
-		vo.name = m.name;
-		vo.nickName = m.nickName;
-		vo.openTime = m.openTime;
-		vo.tags = m.tags;
-		vo.telephone = m.telephone;
-		vo.teses = m.teses;
-		vo.xingjiabi = m.xingjiabi;
-		vo.x = m.x;
-		vo.y = m.y;
-		vo.seatType = m.seatType;
+	public static MerchantVO build(Merchant m, Comment c,boolean isAttention, long num) {
+		MerchantVO vo = build(m, c, isAttention);
 		
-		try {
-			vo.merchantImage = URLDecoder.decode(m.merchantImage, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		vo.commentAverageCost = c.averageCost;
-		vo.commentContent = StringUtils.isEmpty(c.content) ? "暂无评论" : c.content;
-		vo.commentDate = StringUtils.isEmpty(c.content) ? "" : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(c.modified);
-		vo.commentFuwu = c.fuwu;
-		vo.commentHuanjing = c.huanjing;
-		vo.commentKouwei = c.kouwei;
-		vo.commentXingjiabi = c.xingjiabi;
-		
-		vo.isAttention=isAttention;
 		vo.openNum = num;
-		vo.checkTime = checkTime;
 		return vo;
 	}
 	
@@ -294,43 +174,11 @@ public class MerchantVO {
 	 * @return
 	 */
 	public static MerchantVO build(Merchant m, double userX, double userY) {
-		MerchantVO vo = new MerchantVO();
-		vo.id = m.id();
-		vo.address = m.address;
-		vo.averageCost = m.averageCost;
-		vo.cateType = m.cateType;
-		vo.closeTime = m.closeTime;
-		vo.description = m.description;
-		vo.enable = m.enable;
-		vo.online = m.online;
-		vo.youhui = m.youhui;
-		vo.fuwu = m.fuwu;
-		vo.grade = m.grade;
-		vo.huanjing = m.huanjing;
-		vo.joinedDate = m.joinedDate;
-		vo.kouwei = m.kouwei;
-		vo.markedCount = m.markedCount;
-		vo.name = m.name;
-		vo.nickName = m.nickName;
-		vo.openTime = m.openTime;
-		vo.tags = m.tags;
-		vo.telephone = m.telephone;
-		vo.teses = m.teses;
-		vo.xingjiabi = m.xingjiabi;
-		vo.x = m.x;
-		vo.y = m.y;
-		vo.seatType = m.seatType;
-		vo.cityCode = m.cityCode;
+		MerchantVO vo = build(m);
 		if(userX != 0 && userY != 0){
 			vo.distance = DistanceUtils.GetDistance(Double.parseDouble(m.y), Double.parseDouble(m.x), userX, userY);
 		}else{
 			vo.distance = -1;
-		}
-		try {
-			vo.merchantImage = URLDecoder.decode(m.merchantImage, "UTF-8");
-			logger.debug("vo.merchantImage"+vo.merchantImage);
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
 		}
 		
 		return vo;

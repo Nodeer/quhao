@@ -139,8 +139,7 @@ public class MerchantController extends BaseController {
 			c = new Comment();
 			c.mid = id;
 		}
-		int checkTime = Integer.parseInt(Play.configuration.getProperty("cancelNumber.checkTime"));
-		renderJSON(MerchantVO.build(m, c, checkTime));
+		renderJSON(MerchantVO.build(m, c));
 	}
 
 	/**
@@ -203,7 +202,6 @@ public class MerchantController extends BaseController {
 		}
 
 		if (null != m) {
-			int checkTime = Integer.parseInt(Play.configuration.getProperty("cancelNumber.checkTime"));
 
 			List<Youhui> youhuiList = Youhui.getAllEnabledYouhui(m.id());
 
@@ -213,7 +211,7 @@ public class MerchantController extends BaseController {
 				youhuiExist = true;
 			}
 
-			merchantDetails.put("merchant", MerchantVO.build(m, c, isAttention, openNum, checkTime, youhuiExist));
+			merchantDetails.put("merchant", MerchantVO.build(m, c, isAttention, openNum, youhuiExist));
 		}
 
 		if (null != m && m.enable && "false".equals(isLogined)) {
@@ -338,8 +336,6 @@ public class MerchantController extends BaseController {
 				rvo.currentNumber = paidui.currentNumber;
 
 				// 添加检查优惠时间
-				int checkTime = Integer.parseInt(Play.configuration.getProperty("cancelNumber.checkTime"));
-				rvo.promptYouhuiTime = checkTime;
 				rvo.build(r);
 				rvos.add(rvo);
 			}

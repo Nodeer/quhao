@@ -454,10 +454,6 @@ public class AccountController extends BaseController {
 				}
 			}
 			
-			
-			// 添加检查优惠时间
-			int checkTime = Integer.parseInt(Play.configuration.getProperty("cancelNumber.checkTime"));
-			reservationVO.promptYouhuiTime = checkTime;
 			try {
 				reservationVO.merchantImage = URLDecoder.decode(merchant.merchantImage, "UTF-8");
 			} catch (UnsupportedEncodingException e) {
