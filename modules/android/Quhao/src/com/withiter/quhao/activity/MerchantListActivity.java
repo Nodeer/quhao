@@ -253,7 +253,8 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 
 				// merchantsListView.setSelectionFromTop(0, 0);// 滑动到第一项
 				MerchantListActivity.this.merchants = new ArrayList<Merchant>();
-				getMerchants();
+				Thread merchantsThread = new Thread(merchantsRunnable);
+				merchantsThread.start();
 			}
 		}, 1000);
 
