@@ -7,9 +7,16 @@ import play.libs.F.*;
 
 public class ChatRoom {
     
+	public String mid;
+	
+	public ChatRoom(String mid) {
+		super();
+		this.mid = mid;
+	}
+	
     // ~~~~~~~~~ Let's chat! 
     
-    final ArchivedEventStream<ChatRoom.Event> chatEvents = new ArchivedEventStream<ChatRoom.Event>(100);
+	final ArchivedEventStream<ChatRoom.Event> chatEvents = new ArchivedEventStream<ChatRoom.Event>(50);
     
     /**
      * For WebSocket, when a user join the room we return a continuous event stream
@@ -104,13 +111,13 @@ public class ChatRoom {
     
     // ~~~~~~~~~ Chat room factory
 
-    static ChatRoom instance = null;
-    public static ChatRoom get() {
-        if(instance == null) {
-            instance = new ChatRoom();
-        }
-        return instance;
-    }
+//    static ChatRoom instance = null;
+//    public static ChatRoom get() {
+//        if(instance == null) {
+//            instance = new ChatRoom();
+//        }
+//        return instance;
+//    }
     
 }
 

@@ -1,35 +1,60 @@
 package controllers;
 
-import play.*;
-import play.mvc.*;
-import play.libs.*;
-import play.libs.F.*;
-import play.mvc.Http.*;
+import static play.libs.F.Matcher.ClassOf;
+import static play.libs.F.Matcher.Equals;
+import static play.mvc.Http.WebSocketEvent.SocketClosed;
+import static play.mvc.Http.WebSocketEvent.TextFrame;
 
-import static play.libs.F.*;
-import static play.libs.F.Matcher.*;
-import static play.mvc.Http.WebSocketEvent.*;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-import java.util.*;
-
-import models.*;
+import models.ChatRoom;
+import models.ChatRoomFactory;
+import play.Logger;
+import play.libs.F.Either;
+import play.libs.F.EventStream;
+import play.libs.F.Promise;
+import play.mvc.Controller;
+import play.mvc.Http.WebSocketClose;
+import play.mvc.Http.WebSocketEvent;
+import play.mvc.WebSocketController;
 
 public class WebSocket extends Controller {
 
+	
 	public static void room(String user) {
 		render(user);
 	}
 
 	public static class ChatRoomSocket extends WebSocketController {
 
-		public static void join(String user) {
-			ChatRoom room = ChatRoom.get();
+		public static void join(String user, String uid, String mid, String image) {
+			
+			// Get chat room with mid
+			Map<String, ChatRoom> rooms = ChatRoomFactory.rooms();
+			
+			ChatRoom room = null;
+			if(rooms.get(mid) == null){
+				room = new ChatRoom(mid);
+				rooms.put(mid, room);
+			} else {
+				room = rooms.get(mid);
+			}
+			
+			
+//			ChatRoom room = ChatRoom.get();
 
 			// Socket connected, join the chat room
 			EventStream<ChatRoom.Event> roomMessagesStream = room.join(user);
 
+			System.out.println("current rooms size is : " + rooms.size());
+			System.out.println("current room mid is : " + room.mid);
+			System.out.println("mid : "+mid);
+			System.out.println("uid :"+uid);
+			System.out.println("image :"+image);
 			// Loop while the socket is open
 			while (inbound.isOpen()) {
+				
 
 				// Wait for an event (either something coming on the inbound
 				// socket channel, or ChatRoom messages)
@@ -54,7 +79,8 @@ public class WebSocket extends Controller {
 
 				// Case: New message on the chat room
 				for (ChatRoom.Message message : ClassOf(ChatRoom.Message.class).match(e._2)) {
-					outbound.send("message:%s:%s", message.user, message.text);
+					System.out.printf("send message:%s:%s:%s:%s", message.user, uid, image, message.text);
+					outbound.send("message:%s:%s:%s:%s", message.user, uid, image, message.text);
 				}
 
 				// Case: Someone left the room

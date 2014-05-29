@@ -1,7 +1,7 @@
 #{extends 'main.html' /}
 #{set title:'Chat room' /}
 
-<h1>WebSocket — You are now chatting as ${user} <a href="@{Application.index()}">Leave the chat room</a></h1> 
+<h1>WebSocket — 欢迎你, ${user} <a href="@{Application.index()}">退出聊天室</a></h1> 
 
 <div id="thread">
     <script type="text/html" id="message_tmpl">
@@ -49,7 +49,7 @@
 
     // Create a socket
     var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket;
-    var socket = new WS('@@{WebSocket.ChatRoomSocket.join(user)}')
+    var socket = new WS("@@{WebSocket.ChatRoomSocket.join(user,'uid1', 'mid1', 'image1')}")
     
     // Display a message
     var display = function(event) {
@@ -59,15 +59,36 @@
     
     // Message received on the socket
     socket.onmessage = function(event) {
-    	
-    	console.log("event.data:"+event.data);
-    	
-        var parts = /^([^:]+):([^:]+)(:(.*))?$/.exec(event.data)
-        display({
-            type: parts[1],
-            user: parts[2],
-            text: parts[4]
-        })
+        var parts = /^([^:]+):([^:]+)(:(.*))?$/.exec(event.data);
+        var p = event.data.split(":", 5);
+        if(p[0] == "message"){
+        	var type = p[0];
+        	var user = p[1];
+        	var uid = p[2];
+        	var image = p[3];
+        	var message = p[4];
+        	
+        	console.log("type:"+type);
+        	console.log("user:"+user);
+        	console.log("uid:"+uid);
+        	console.log("image:"+image);
+        	console.log("message:"+message);
+        	console.log("===========");
+        	
+        	display({
+                type: type,
+                user: user,
+                text: message
+            })
+        }else{
+	        display({
+	            type: parts[1],
+	            user: parts[2],
+	            text: parts[4]
+	        });
+        }
+        		
+        		
     }
     
     $('#send').click(function(e) {
