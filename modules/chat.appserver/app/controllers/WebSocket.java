@@ -52,7 +52,7 @@ public class WebSocket extends Controller {
 //			ChatRoom room = ChatRoom.get();
 
 			// Socket connected, join the chat room
-			EventStream<ChatRoom.Event> roomMessagesStream = room.join(user);
+			EventStream<ChatRoom.Event> roomMessagesStream = room.join(user, uid, image);
 
 			System.out.println("current rooms size is : " + rooms.size());
 			System.out.println("current room mid is : " + room.mid);
@@ -69,7 +69,7 @@ public class WebSocket extends Controller {
 
 				// Case: User typed 'quit'
 				for (String userMessage : TextFrame.and(Equals("quit")).match(e._1)) {
-					room.leave(user);
+					room.leave(user, uid, image);
 					outbound.send("quit:ok");
 					disconnect();
 				}
@@ -77,7 +77,7 @@ public class WebSocket extends Controller {
 				// Case: TextEvent received on the socket
 				for (String userMessage : TextFrame.match(e._1)) {
 					System.out.printf("get message:%s:%s\r\n", user, userMessage);
-					room.say(user, userMessage);
+					room.say(user, uid, image, userMessage);
 				}
 
 				// Case: Someone joined the room
@@ -87,7 +87,8 @@ public class WebSocket extends Controller {
 
 				// Case: New message on the chat room
 				for (ChatRoom.Message message : ClassOf(ChatRoom.Message.class).match(e._2)) {
-					System.out.printf("send message:%s:%s:%s:%s\r\n", message.user, uid, image, message.text);
+					System.out.printf("send message:%s:%s:%s:%s", message.user, uid, image, message.text);
+					System.out.println();
 					outbound.send("message:%s:%s:%s:%s", message.user, uid, image, message.text);
 				}
 
@@ -98,7 +99,7 @@ public class WebSocket extends Controller {
 
 				// Case: The socket has been closed
 				for (WebSocketClose closed : SocketClosed.match(e._1)) {
-					room.leave(user);
+					room.leave(user, uid, image);
 					disconnect();
 				}
 			}

@@ -22,26 +22,26 @@ public class ChatRoom {
      * For WebSocket, when a user join the room we return a continuous event stream
      * of ChatEvent
      */
-    public EventStream<ChatRoom.Event> join(String user) {
-        chatEvents.publish(new Join(user));
+    public EventStream<ChatRoom.Event> join(String user, String uid, String image) {
+        chatEvents.publish(new Join(user, uid, image));
         return chatEvents.eventStream();
     }
     
     /**
      * A user leave the room
      */
-    public void leave(String user) {
-        chatEvents.publish(new Leave(user));
+    public void leave(String user, String uid, String image) {
+        chatEvents.publish(new Leave(user, uid, image));
     }
     
     /**
      * A user say something on the room
      */
-    public void say(String user, String text) {
+    public void say(String user,String uid, String image, String text) {
         if(text == null || text.trim().equals("")) {
             return;
         }
-        chatEvents.publish(new Message(user, text));
+        chatEvents.publish(new Message(user, uid, image, text));
     }
     
     /**
@@ -77,10 +77,14 @@ public class ChatRoom {
     public static class Join extends Event {
         
         final public String user;
+        final public String uid;
+        final public String image;
         
-        public Join(String user) {
+        public Join(String user,String uid, String image) {
             super("join");
             this.user = user;
+            this.uid = uid;
+            this.image = image;
         }
         
     }
@@ -88,10 +92,14 @@ public class ChatRoom {
     public static class Leave extends Event {
         
         final public String user;
+        final public String uid;
+        final public String image;
         
-        public Leave(String user) {
+        public Leave(String user,String uid, String image) {
             super("leave");
             this.user = user;
+            this.uid = uid;
+            this.image = image;
         }
         
     }
@@ -99,11 +107,15 @@ public class ChatRoom {
     public static class Message extends Event {
         
         final public String user;
+        final public String uid;
+        final public String image;
         final public String text;
         
-        public Message(String user, String text) {
+        public Message(String user,String uid, String image, String text) {
             super("message");
             this.user = user;
+            this.uid = uid;
+            this.image = image;
             this.text = text;
         }
         
