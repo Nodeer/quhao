@@ -1,5 +1,7 @@
 package controllers;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -723,7 +725,12 @@ public class MerchantController extends BaseController {
 			m.distance = resultContainer.getDouble("dis");
 			m.averageCost = Float.parseFloat(resultContainer.get("averageCost").toString());
 			m.name = resultContainer.getString("name");
-			m.merchantImage = resultContainer.getString("merchantImage");
+			try {
+				m.merchantImage = URLDecoder.decode(resultContainer.getString("merchantImage"), "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			
 			m.grade = Float.parseFloat(resultContainer.get("grade").toString());
 			m.enable = resultContainer.getBoolean("enable");
 
