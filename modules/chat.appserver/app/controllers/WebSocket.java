@@ -76,7 +76,7 @@ public class WebSocket extends Controller {
 
 				// Case: TextEvent received on the socket
 				for (String userMessage : TextFrame.match(e._1)) {
-					System.out.printf("get message:%s:%s\r\n", user, userMessage);
+					System.out.printf("get message:%s:%s:%s\r\n", user, uid, userMessage);
 					room.say(user, uid, image, userMessage);
 				}
 
@@ -89,7 +89,7 @@ public class WebSocket extends Controller {
 				for (ChatRoom.Message message : ClassOf(ChatRoom.Message.class).match(e._2)) {
 					System.out.printf("send message:%s:%s:%s:%s", message.user, uid, image, message.text);
 					System.out.println();
-					outbound.send("message:%s:%s:%s:%s", message.user, uid, image, message.text);
+					outbound.send("message:%s:%s:%s:%s", message.user, message.uid, message.image, message.text);
 				}
 
 				// Case: Someone left the room
