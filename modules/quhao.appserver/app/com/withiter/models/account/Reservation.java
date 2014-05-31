@@ -522,7 +522,11 @@ public class Reservation extends ReservationEntityDef {
 		RemindDateUtils utils = new RemindDateUtils();
 		Date lastMonthStart = utils.getLastMonthStartTime();
 		Date lastMonthEnd = utils.getLastMonthEndTime();
+		Logger.debug("lastMonthStart : start date -> %s", lastMonthStart);
+		Logger.debug("lastMonthEnd : end date -> %s", lastMonthEnd);
 		q.filter("created >", lastMonthStart).filter("created <", lastMonthEnd).filter("merchantId", mid);
+		Logger.debug("merchantId -> %s", mid);
+		Logger.debug("last month reservation count -> %s", q.count());
 		return q;
 	}
 	

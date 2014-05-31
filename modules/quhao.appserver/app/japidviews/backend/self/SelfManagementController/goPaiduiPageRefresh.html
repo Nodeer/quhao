@@ -9,9 +9,11 @@
 <table class="table" >
    <tr align="center">
     <td>人桌</td>
+    <!-- 
     <td>已取消排队数</td>
     <td>已过期排队数</td>
     <td>消费成功数</td>
+     -->
     <td>当前最大排队号码</td>
     <td>即将处理号码</td>
     <td>消费操作</td>
@@ -20,18 +22,20 @@
    </tr>
    `for(PaiduiVO paiduiVO : haomaVO.paiduiVOList){
    	<tr align="center">
-   		<td><button type="button" class="btn btn-info col-md-6" style="float: none; width: 50px;">${paiduiVO.numberOfSeat}</button></td>
+   		<td><button type="button" class="btn btn-info col-md-6" style="float: none; width: 80px;">${paiduiVO.numberOfSeat}</button></td>
+   		<!-- 
    		<td><button type="button" class="btn btn-info col-md-6" style="float: none; width: 50px;">${paiduiVO.canceled}</button></td>
    		<td><button type="button" class="btn btn-info col-md-6" style="float: none; width: 50px;">${paiduiVO.expired}</button></td>
    		<td><button type="button" class="btn btn-info col-md-6" style="float: none; width: 50px;">${paiduiVO.finished}</button></td>
-   		<td><button type="button" class="btn btn-warning col-md-6" style="float: none; width: 50px;">${paiduiVO.maxNumber}</button></td>
-   		<td><button type="button" class="btn btn-danger col-md-6" style="float: none; width: 50px;">${paiduiVO.currentNumber}</button></td>
-   		<td><button type="button" class="btn btn-primary col-md-6" style="float: none; width: 50px;" 
+   		 -->
+   		<td><button type="button" class="btn btn-warning col-md-6" style="float: none; width: 80px;">${paiduiVO.maxNumber}</button></td>
+   		<td><button type="button" class="btn btn-danger col-md-6" style="float: none; width: 80px;">${paiduiVO.currentNumber}</button></td>
+   		<td><button type="button" class="btn btn-primary col-md-6" style="float: none; width: 80px;" 
    		`if(paiduiVO.currentNumber == 0 || paiduiVO.currentNumber > paiduiVO.maxNumber){
    			disabled="disabled"
    		`}
    		onclick="Merchant.finishConfirm('${paiduiVO.numberOfSeat}','${paiduiVO.currentNumber}','${haomaVO.merchantId}');">消费</button></td>
-   		<td><button type="button" class="btn btn-primary col-md-6" style="float: none; width: 50px;" 
+   		<td><button type="button" class="btn btn-primary col-md-6" style="float: none; width: 80px;" 
    		`if(paiduiVO.currentNumber == 0 || paiduiVO.currentNumber > paiduiVO.maxNumber){
    			disabled="disabled"
    		`}
