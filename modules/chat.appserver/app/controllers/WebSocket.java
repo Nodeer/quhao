@@ -89,7 +89,7 @@ public class WebSocket extends Controller {
 					
 //					Logger.debug("send message -> %s:%s:%s:%s", message.user, uid, image, message.text);
 					
-					outbound.send("message:%s:%s:%s:%s:%s",message.timestamp, message.user, message.uid, message.image, message.text);
+					outbound.send("message:%s:%s:%s:%s", message.user, message.uid, message.image, message.text);
 				}
 
 				// Case: Someone left the room
