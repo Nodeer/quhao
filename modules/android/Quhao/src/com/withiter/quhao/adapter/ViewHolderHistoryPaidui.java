@@ -11,8 +11,6 @@ public class ViewHolderHistoryPaidui {
 		public TextView merchantAddress;
 		public TextView myNumber;
 		public TextView seatNo;
-		public TextView beforeYou;
-		public TextView currentNumber;
 		public Button commentBtn;
 		public TextView isComment;
 		public CheckBox cb;

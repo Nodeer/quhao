@@ -287,6 +287,10 @@ public class AsynImageLoader {
 							imageView.setImageBitmap(bitmap);
 
 						}
+						else
+						{
+							imageView.setImageResource(resId);
+						}
 					} else {
 						imageView.setImageBitmap(bitmap);
 					}

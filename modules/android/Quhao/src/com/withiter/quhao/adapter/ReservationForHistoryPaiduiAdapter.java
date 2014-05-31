@@ -69,8 +69,6 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 				holder.merchantAddress = (TextView) convertView.findViewById(R.id.merchantAddress);
 				holder.myNumber = (TextView) convertView.findViewById(R.id.myNumber);
 				holder.seatNo = (TextView) convertView.findViewById(R.id.seatNo);
-				holder.beforeYou = (TextView) convertView.findViewById(R.id.beforeYou);
-				holder.currentNumber = (TextView) convertView.findViewById(R.id.currentNumber);
 				holder.commentBtn = (Button) convertView.findViewById(R.id.btn_comment);
 				holder.isComment = (TextView) convertView.findViewById(R.id.is_comment);
 				holder.cb = (CheckBox) convertView.findViewById(R.id.item_cb);
@@ -99,36 +97,6 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 			String merchantImg = rvo.merchantImage;
 			AsynImageLoader.getInstance().showImageAsyn(holder.merchantImg,position, merchantImg, R.drawable.no_logo);
 			// get image from memory/SDCard/URL stream
-			/*
-			holder.merchantImg.setTag(merchantImg + position);
-			Drawable cachedImage = null;
-			if (null != merchantImg && !"".equals(merchantImg)) {
-				cachedImage = asyncImageLoader.loadDrawable(merchantImg, position, new ImageCallback() {
-
-					@Override
-					public void imageLoaded(Drawable imageDrawable, String imageUrl, int position) {
-						ImageView imageViewByTag = (ImageView) listView.findViewWithTag(imageUrl + position);
-						if (null != imageViewByTag && null != imageDrawable) {
-							imageViewByTag.setImageDrawable(imageDrawable);
-							imageViewByTag.invalidate();
-							imageDrawable.setCallback(null);
-							imageDrawable = null;
-						}
-
-					}
-				});
-
-			}
-			// // 设置图片给imageView 对象
-			if (null != cachedImage) {
-				holder.merchantImg.setImageDrawable(cachedImage);
-				holder.merchantImg.invalidate();
-				cachedImage.setCallback(null);
-				cachedImage = null;
-			} else {
-				holder.merchantImg.setImageResource(R.drawable.no_logo);
-			}
-			*/
 			holder.merchantImg.setOnClickListener(new OnClickListener() {
 				
 				@Override
@@ -138,7 +106,6 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 					progress.showProgress();
 					Intent intent = new Intent(activity, MerchantDetailActivity.class);
 					intent.putExtra("merchantId", merchantId);
-					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 					activity.startActivity(intent);
 					progress.closeProgress();
 					activity.overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
@@ -154,10 +121,6 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 			holder.myNumber.setText(rvo.myNumber);
 			holder.seatNo.setTag("seatNo_" + position);
 			holder.seatNo.setText(rvo.seatNumber);
-			holder.beforeYou.setTag("beforeYou_" + position);
-			holder.beforeYou.setText(rvo.beforeYou);
-			holder.currentNumber.setTag("currentNumber_" + position);
-			holder.currentNumber.setText(rvo.currentNumber);
 			
 			if(rvo.isCommented)
 			{
@@ -166,30 +129,49 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 			}
 			else
 			{
-				holder.isComment.setVisibility(View.GONE);
-				holder.commentBtn.setVisibility(View.VISIBLE);
-				final String reservationId = rvo.rId;
-				holder.commentBtn.setOnClickListener(new OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
+				holder.isComment.setVisibility(View.VISIBLE);
+				holder.commentBtn.setVisibility(View.GONE);
+				String status = rvo.status;
+				if ("canceled".equals(status)) {
+					holder.isComment.setText("取消记录不能评价");
+				}
+				else if("expired".equals(status))
+				{
+					holder.isComment.setText("过期记录不能评价");
+				}
+				else if("finished".equals(status))
+				{
+					holder.isComment.setVisibility(View.GONE);
+					holder.commentBtn.setVisibility(View.VISIBLE);
+					final String reservationId = rvo.rId;
+					holder.commentBtn.setOnClickListener(new OnClickListener() {
+						
+						@Override
+						public void onClick(View v) {
 
-						progress = new ProgressDialogUtil(activity, R.string.empty, R.string.waitting, false);
-						progress.showProgress();
-						try {
-							Intent intent = new Intent();
-							intent.putExtra("rId", reservationId);
-							intent.setClass(activity, CreateCommentActivity.class);
-							activity.startActivity(intent);
-							activity.overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-						} catch (Exception e) {
-							e.printStackTrace();
-						} finally {
-							progress.closeProgress();
+							progress = new ProgressDialogUtil(activity, R.string.empty, R.string.waitting, false);
+							progress.showProgress();
+							try {
+								Intent intent = new Intent();
+								intent.putExtra("rId", reservationId);
+								intent.setClass(activity, CreateCommentActivity.class);
+								activity.startActivity(intent);
+								activity.overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+							} catch (Exception e) {
+								e.printStackTrace();
+							} finally {
+								progress.closeProgress();
+							}
+						
 						}
-					
-					}
-				});
+					});
+				}
+				else
+				{
+					holder.isComment.setVisibility(View.GONE);
+					holder.commentBtn.setVisibility(View.GONE);
+				}
+				
 			}
 			
 			convertView.setTag(holder);
