@@ -8,7 +8,7 @@ import play.libs.F.*;
 public class ChatRoom {
     
 	public String mid;
-	public int limit = 5;
+	public int limit = 15;
 	
 	public ChatRoom(String mid) {
 		super();
