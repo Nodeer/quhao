@@ -8,15 +8,21 @@ import play.libs.F.*;
 public class ChatRoom {
     
 	public String mid;
+	public int limit = 50;
 	
 	public ChatRoom(String mid) {
 		super();
 		this.mid = mid;
 	}
+	public ChatRoom(String mid, int limit) {
+		super();
+		this.mid = mid;
+		this.limit = limit;
+	}
 	
     // ~~~~~~~~~ Let's chat! 
     
-	final ArchivedEventStream<ChatRoom.Event> chatEvents = new ArchivedEventStream<ChatRoom.Event>(50);
+	public ArchivedEventStream<ChatRoom.Event> chatEvents = new ArchivedEventStream<ChatRoom.Event>(limit);
     
     /**
      * For WebSocket, when a user join the room we return a continuous event stream
@@ -44,24 +50,7 @@ public class ChatRoom {
         chatEvents.publish(new Message(user, uid, image, text));
     }
     
-    /**
-     * For long polling, as we are sometimes disconnected, we need to pass 
-     * the last event seen id, to be sure to not miss any message
-     */
-    public Promise<List<IndexedEvent<ChatRoom.Event>>> nextMessages(long lastReceived) {
-        return chatEvents.nextEvents(lastReceived);
-    }
-    
-    /**
-     * For active refresh, we need to retrieve the whole message archive at
-     * each refresh
-     */
-    public List<ChatRoom.Event> archive() {
-        return chatEvents.archive();
-    }
-    
     // ~~~~~~~~~ Chat room events
-
     public static abstract class Event {
         
         final public String type;
@@ -120,16 +109,5 @@ public class ChatRoom {
         }
         
     }
-    
-    // ~~~~~~~~~ Chat room factory
-
-//    static ChatRoom instance = null;
-//    public static ChatRoom get() {
-//        if(instance == null) {
-//            instance = new ChatRoom();
-//        }
-//        return instance;
-//    }
-    
 }
 

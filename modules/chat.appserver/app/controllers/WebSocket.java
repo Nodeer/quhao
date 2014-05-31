@@ -14,6 +14,7 @@ import models.ChatRoom;
 import models.ChatRoomFactory;
 import play.Logger;
 import play.data.validation.Required;
+import play.libs.F.ArchivedEventStream;
 import play.libs.F.Either;
 import play.libs.F.EventStream;
 import play.libs.F.Promise;
@@ -48,25 +49,19 @@ public class WebSocket extends Controller {
 				room = rooms.get(mid);
 			}
 			
-			
-//			ChatRoom room = ChatRoom.get();
-
 			// Socket connected, join the chat room
 			EventStream<ChatRoom.Event> roomMessagesStream = room.join(user, uid, image);
 
-			System.out.println("current rooms size is : " + rooms.size());
-			System.out.println("current room mid is : " + room.mid);
-			System.out.println("mid : "+mid);
-			System.out.println("uid :"+uid);
-			System.out.println("image :"+image);
+			Logger.debug("current rooms size is : %d", rooms.size());
+			Logger.debug("current room mid is : %s", room.mid);
+			Logger.debug("user %s joined.", uid);
+			
 			// Loop while the socket is open
 			while (inbound.isOpen()) {
-				
-
 				// Wait for an event (either something coming on the inbound
 				// socket channel, or ChatRoom messages)
 				Either<WebSocketEvent, ChatRoom.Event> e = await(Promise.waitEither(inbound.nextEvent(), roomMessagesStream.nextEvent()));
-
+				
 				// Case: User typed 'quit'
 				for (String userMessage : TextFrame.and(Equals("quit")).match(e._1)) {
 					room.leave(user, uid, image);
@@ -76,24 +71,30 @@ public class WebSocket extends Controller {
 
 				// Case: TextEvent received on the socket
 				for (String userMessage : TextFrame.match(e._1)) {
-					System.out.printf("get message:%s:%s:%s\r\n", user, uid, userMessage);
+//					System.out.printf("get message:%s:%s:%s\r\n", user, uid, userMessage);
+					Logger.debug("get message -> %s:%s:%s:%s", user, uid, image, userMessage);
 					room.say(user, uid, image, userMessage);
 				}
-
+ 
 				// Case: Someone joined the room
 				for (ChatRoom.Join joined : ClassOf(ChatRoom.Join.class).match(e._2)) {
+					Logger.debug("join:%s", joined.user);
 					outbound.send("join:%s", joined.user);
 				}
 
 				// Case: New message on the chat room
 				for (ChatRoom.Message message : ClassOf(ChatRoom.Message.class).match(e._2)) {
-					System.out.printf("send message:%s:%s:%s:%s", message.user, uid, image, message.text);
-					System.out.println();
-					outbound.send("message:%s:%s:%s:%s", message.user, message.uid, message.image, message.text);
+//					System.out.printf("send message:%s:%s:%s:%s", message.user, uid, image, message.text);
+//					System.out.println();
+					
+//					Logger.debug("send message -> %s:%s:%s:%s", message.user, uid, image, message.text);
+					
+					outbound.send("message:%s:%s:%s:%s:%s",message.timestamp, message.user, message.uid, message.image, message.text);
 				}
 
 				// Case: Someone left the room
 				for (ChatRoom.Leave left : ClassOf(ChatRoom.Leave.class).match(e._2)) {
+					Logger.debug("leave:%s", left.user);
 					outbound.send("leave:%s", left.user);
 				}
 

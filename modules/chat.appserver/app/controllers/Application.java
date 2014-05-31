@@ -20,13 +20,6 @@ public class Application extends Controller {
             index();
         }
         
-        // Dispatch to the demonstration        
-        if(demo.equals("refresh")) {
-            Refresh.index(user);
-        }
-        if(demo.equals("longpolling")) {
-            LongPolling.room(user);
-        }
         if(demo.equals("websocket")) {
             WebSocket.room(user);
         }        

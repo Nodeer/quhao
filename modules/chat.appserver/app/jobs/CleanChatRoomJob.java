@@ -7,7 +7,7 @@ import play.jobs.Job;
 import play.jobs.On;
 
 //每天2:00AM开始job
-@On("0 0 2 * * ?")
+@On("0 31 16 * * ?")
 public class CleanChatRoomJob extends Job {
 
 	@Override
@@ -16,6 +16,7 @@ public class CleanChatRoomJob extends Job {
 		Logger.info("current chat rooms size is : " + ChatRoomFactory.rooms().size());
 		long start = System.currentTimeMillis();
 		ChatRoomFactory.rooms().clear();
+		Logger.info("after job, chat rooms size is : " + ChatRoomFactory.rooms().size());
 		Logger.info("finished, elapsed time " + (System.currentTimeMillis() - start) + "ms.");
 	}
 }
