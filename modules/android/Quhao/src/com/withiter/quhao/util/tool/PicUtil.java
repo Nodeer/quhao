@@ -12,19 +12,25 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.Bitmap.Config;
-import android.graphics.PorterDuff.Mode;
 import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -189,13 +195,25 @@ public class PicUtil {
 		OutputStream os = null;
 		try {
 			// 显示网络上的图片
-			URL myFileUrl = new URL(imageUri);
-			conn = (HttpURLConnection) myFileUrl
-					.openConnection();
-			conn.setDoInput(true);
-			conn.connect();
-
-			is = conn.getInputStream();
+			HttpClient client = new DefaultHttpClient();
+			HttpGet get = new HttpGet(imageUri);
+			HttpResponse response;
+			response = client.execute(get);
+			HttpEntity entity = response.getEntity();
+			
+			long length = entity.getContentLength();
+			is = entity.getContent();
+			
+//			URL myFileUrl = new URL(imageUri);
+//			
+//			conn = (HttpURLConnection) myFileUrl
+//					.openConnection();
+//			conn.setRequestMethod("POST");
+//			conn.setDoInput(true);
+//			conn.connect();
+//			int code = conn.getResponseCode();
+//			Log.e("wjzwjz code = ", String.valueOf(code));
+//			is = conn.getInputStream();
 			//TODO:wjzwjz file name problem --- cacheFile
 			File cacheFile = FileUtil.getCacheFile(imageUri);
 			if(null != cacheFile)
@@ -222,6 +240,8 @@ public class PicUtil {
 
 		} catch (IOException e) {
 			e.printStackTrace();
+			return null;
+			
 		}
 		finally
 		{

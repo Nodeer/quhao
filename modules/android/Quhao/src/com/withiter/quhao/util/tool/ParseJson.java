@@ -171,7 +171,6 @@ public class ParseJson {
 		if (obj.has("merchantImage")) {
 			imgUrl = obj.optString("merchantImage");
 		}
-		// TODO:
 		if (QuhaoConstant.test) {
 			if (null != imgUrl && !"".equals(imgUrl)) {
 				// imgUrl =
@@ -190,7 +189,7 @@ public class ParseJson {
 		}
 		if (StringUtils.isNotNull(imgUrl) && !imgUrl.contains("=")) {
 			try {
-				imgUrl = URLDecoder.decode(obj.getString("merchantImage"), "UTF-8");
+				imgUrl = URLDecoder.decode(imgUrl, "UTF-8");
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
@@ -303,9 +302,9 @@ public class ParseJson {
 			enable = obj.optBoolean("enable");
 		}
 		
-		boolean youhuiExist = false;
-		if (obj.has("youhuiExist")) {
-			youhuiExist = obj.optBoolean("youhuiExist");
+		boolean youhui = false;
+		if (obj.has("youhui")) {
+			youhui = obj.optBoolean("youhui");
 		}
 		
 		String joinedDate = "";
@@ -331,7 +330,7 @@ public class ParseJson {
 		}
 		
 		merchant = new Merchant(id, imgUrl, name, address, phone, cateType, grade, averageCost, tags, kouwei, huanjing, fuwu, xingjiabi, teses, nickName, description, openTime, closeTime,
-				marketCount, enable, joinedDate, lat, lng, distance,youhuiExist,online);
+				marketCount, enable, joinedDate, lat, lng, distance,youhui,online);
 
 		merchant.openNum = openNum;
 		
@@ -541,9 +540,12 @@ public class ParseJson {
 		}
 		
 		String created = DateUtils.formatDate(obj.optString("created"), "yyyy-MM-dd HH:mm:ss");
+		
+		String status = obj.optString("status");
 		rvo = new ReservationVO(rId, accountId, merchantId, seatNumber, myNumber, beforeYou, currentNumber, valid, tipKey, tipValue, merchantName, merchantAddress, isCommented, merchantImage,created);
 		int promptYouhuiTime = obj.optInt("promptYouhuiTime");
 		rvo.promptYouhuiTime = promptYouhuiTime;
+		rvo.status = status;
 		return rvo;
 	}
 
