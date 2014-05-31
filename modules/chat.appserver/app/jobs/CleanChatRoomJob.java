@@ -7,7 +7,7 @@ import play.jobs.Job;
 import play.jobs.On;
 
 //每天2:00AM开始job
-@On("0 31 16 * * ?")
+@On("0 50 16 * * ?")
 public class CleanChatRoomJob extends Job {
 
 	@Override
