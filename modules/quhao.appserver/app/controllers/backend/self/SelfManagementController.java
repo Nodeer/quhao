@@ -62,11 +62,6 @@ public class SelfManagementController extends BaseController {
 		}
 	}
 
-	/*
-	 * 1) account information(included information:email or phone...) 2)
-	 * Merchant information(included information:name, address...)
-	 */
-
 	/**
 	 * 登录成功，通过uid查询出当前account的对应的merchant信息
 	 * 
@@ -79,7 +74,6 @@ public class SelfManagementController extends BaseController {
 		long openRequestCount = 0;
 		boolean editable = false;
 		if (relList == null || relList.isEmpty()) {
-
 		} else {
 			MerchantAccountRel rel = relList.get(0);
 			String mid = rel.mid;
@@ -98,30 +92,22 @@ public class SelfManagementController extends BaseController {
 	}
 
 	public static void editMerchant(String uid, String mid) {
-
 		Merchant m = null;
-
 		String merchantName = params.get("merchantName");
 		String description = params.get("description");
 		String cityCode = params.get("cityCode");
 		String address = params.get("address");
-
 		String x = params.get("x");
 		String y = params.get("y");
-
 		String tel = params.get("tel");
 		String cateType = params.get("cateType");
 		String cateName = params.get("cateName");
-
 		String cateType1 = params.get("cateType1");
 		String cateName1 = params.get("cateName1");
-
 		String openTime = params.get("openTime");
 		String closeTime = params.get("closeTime");
 		String merchantImage = params.get("merchantImage");
-
 		String[] seatType = params.getAll("seatType");
-
 		if (StringUtils.isEmpty(mid)) { // new merchant
 			m = new Merchant();
 			m.save();
@@ -132,8 +118,7 @@ public class SelfManagementController extends BaseController {
 		} else {
 			m = Merchant.findById(mid);
 
-			// check rel exist, if yes -> operation is update. if no -> new
-			// MerchantAccountRel
+			// check rel exist, if yes -> operation is update. if no -> new MerchantAccountRel
 			MerchantAccountRel r = MerchantAccountRel.findByMid(mid);
 			if (r == null) {
 				// new MerchantAccountRel
@@ -150,12 +135,10 @@ public class SelfManagementController extends BaseController {
 		m.description = description;
 		m.cityCode = cityCode;
 		m.address = address;
-
 		m.x = x;
 		m.y = y;
 		double[] d = { Double.parseDouble(y), Double.parseDouble(x) };
 		m.loc = d;
-
 		m.telephone = tel.split(",");
 		m.cateType = cateType;
 		m.cateName = cateName;
@@ -178,61 +161,21 @@ public class SelfManagementController extends BaseController {
 		}
 		logger.debug("merchant seatType------");
 		
-		// 设置桌位类型
-//		Set<String> seatTypeSet = new HashSet<String>();
-//		for (String seatNoNeedToEnable : seatType) {
-//			seatTypeSet.add(seatNoNeedToEnable);
-//		}
-
 		Haoma haoma = Haoma.findByMerchantId(m.id());
 		// version ++
 		haoma.version += 1;
-		
 		Iterator it = haoma.haomaMap.keySet().iterator();
+
 		// 清除所有老的排队的reservation
 		while(it.hasNext()){
 			Integer key = (Integer) it.next();
-				// set the reservations status with this seatNumber to
-				// invalid(valid = false)
-				// and the change Constants.ReservationStatus status to
-				// invalidByMerchantUpdate
-				Reservation.invalidByMerchantUpdate(key, m.id());
+			// set the reservations status with this seatNumber to
+			// invalid(valid = false)
+			// and the change Constants.ReservationStatus status to
+			// invalidByMerchantUpdate
+			Reservation.invalidByMerchantUpdate(key, m.id());
 		}
-		
 		haoma.updatePaidui();
-
-		// 循环老的排队信息，设置最新的桌位以及清除非开启的桌位类型对应信息
-//		while (it.hasNext()) {
-//			Integer key = (Integer) it.next();
-//			if (seatTypeSet.contains(key.toString())) {
-//				haoma.haomaMap.get(key).enable = true;
-//				seatTypeSet.remove(key.toString());
-//			} else {
-//				// reset Paidui object to original status
-//				// currentNumber = 0; maxNumber = 0; enable = false; ...
-//				Paidui p = haoma.haomaMap.get(key);
-//				p.reset();
-//				haoma.haomaMap.put(key, p);
-//
-//				// set the reservations status with this seatNumber to
-//				// invalid(valid = false)
-//				// and the change Constants.ReservationStatus status to
-//				// invalidByMerchantUpdate
-//				Reservation.invalidByMerchantUpdate(key, m.id());
-//			}
-//		}
-
-		
-		// 老的桌位类型之外，都初始化。
-//		if (seatTypeSet.size() != 0) {
-//			Iterator ite = seatTypeSet.iterator();
-//			Paidui p = null;
-//			while (ite.hasNext()) {
-//				p = new Paidui();
-//				p.enable = true;
-//				haoma.haomaMap.put(Integer.parseInt(ite.next().toString()), p);
-//			}
-//		}
 		haoma.save();
 		haoma.check();
 		
@@ -243,10 +186,10 @@ public class SelfManagementController extends BaseController {
 		}
 		logger.debug("haoma seatType------");
 		
-
 		// update the category counts
 		Category.updateCounts();
 
+		// 更新商家图片
 		if (!StringUtils.isEmpty(merchantImage)) {
 			GridFSInputFile file = uploadFirst(merchantImage, m.id());
 			if (file != null) {
@@ -263,22 +206,21 @@ public class SelfManagementController extends BaseController {
 				m.save();
 			}
 		}
-
 		index(uid);
 	}
 
+	/**
+	 * 进入排队管理页面
+	 */
 	public static void goPaiduiPage() {
 		String mid = params.get("mid");
 		Haoma haoma = Haoma.findByMerchantId(mid);
 		haoma.updateSelf();
-
 		HaomaVO haomaVO = HaomaVO.build(haoma);
-
 		String uid = Session.current().get(Constants.SESSION_USERNAME);
 		MerchantAccount account = MerchantAccount.findById(uid);
 		Merchant merchant = Merchant.findById(mid);
 		BackendMerchantInfoVO bmivo = BackendMerchantInfoVO.build(merchant, account);
-
 		renderJapid(haomaVO, bmivo);
 	}
 
@@ -289,14 +231,12 @@ public class SelfManagementController extends BaseController {
 		String aid = params.get("aid");
 		MerchantAccount account = MerchantAccount.findById(aid);
 		MerchantAccountVO avo = MerchantAccountVO.build(account);
-
 		String mid = params.get("mid");
 		Merchant merchant = null;
 		if (!StringUtils.isEmpty(mid)) {
 			merchant = Merchant.findById(mid);
 		}
 		BackendMerchantInfoVO bmivo = BackendMerchantInfoVO.build(merchant, account);
-
 		renderJapid(avo, bmivo);
 	}
 
@@ -358,10 +298,6 @@ public class SelfManagementController extends BaseController {
 		String title = params.get("title");
 		String content = params.get("content");
 
-		logger.debug(mid);
-		logger.debug(title);
-		logger.debug(content);
-
 		Youhui y = new Youhui();
 		y.mid = mid;
 		y.title = title;
@@ -372,7 +308,6 @@ public class SelfManagementController extends BaseController {
 		Merchant m = Merchant.findByMid(mid);
 		m.youhui = true;
 		m.save();
-
 		renderJSON(true);
 	}
 
@@ -389,7 +324,6 @@ public class SelfManagementController extends BaseController {
 
 		Merchant m = Merchant.findByMid(mid);
 		m.updateYouhuiInfo();
-
 		renderJSON(true);
 	}
 
@@ -399,9 +333,7 @@ public class SelfManagementController extends BaseController {
 	public static void paiduiPageAutoRefresh() {
 		String mid = params.get("mid");
 		Haoma haoma = Haoma.findByMerchantId(mid);
-
 		haoma.updateSelf();
-
 		HaomaVO haomaVO = HaomaVO.build(haoma);
 		renderJapidWith("japidviews.backend.self.SelfManagementController.goPaiduiPageRefresh", haomaVO);
 	}
@@ -426,7 +358,6 @@ public class SelfManagementController extends BaseController {
 			if (r != null) {
 				boolean flag = Reservation.finish(r.id());
 				haoma.updateSelf();
-	
 				smsRemind(mid, seatNumber);
 				renderJSON(flag);
 			} else {
@@ -521,7 +452,7 @@ public class SelfManagementController extends BaseController {
 		int seatNumber = Integer.parseInt(seatN);
 		Reservation reservation = Haoma.nahao(null, mid, seatNumber, tel);
 		Haoma haomaNew = Haoma.findByMerchantId(mid);
-		//haomaNew.updateSelf();
+
 		rvo.currentNumber = haomaNew.haomaMap.get(seatNumber).currentNumber;
 		int cancelCount = (int) Reservation.findCountBetweenCurrentNoAndMyNumber(mid, haomaNew.haomaMap.get(seatNumber).currentNumber, reservation.myNumber, seatNumber, haomaNew.version);
 		rvo.beforeYou = reservation.myNumber - (haomaNew.haomaMap.get(seatNumber).currentNumber + cancelCount);
@@ -560,10 +491,15 @@ public class SelfManagementController extends BaseController {
 			e.printStackTrace();
 			logger.error(ExceptionUtil.getTrace(e));
 		}
-
 		renderJSON(rvo);
 	}
 
+	/**
+	 * 上传图片
+	 * @param param request 参数
+	 * @param mid 商家id
+	 * @return
+	 */
 	private static GridFSInputFile uploadFirst(String param, String mid) {
 		GridFSInputFile gfsFile = null;
 		File[] files = params.get(param, File[].class);
@@ -596,11 +532,9 @@ public class SelfManagementController extends BaseController {
 	public static void changeStatus() {
 		String mid = params.get("mid");
 		String online = params.get("online");
-
 		if (StringUtils.isEmpty(mid) || StringUtils.isEmpty(online)) {
 			renderJSON(false);
 		}
-
 		boolean flag = Merchant.changeStatus(mid, Boolean.valueOf(online));
 		renderJSON(flag);
 	}

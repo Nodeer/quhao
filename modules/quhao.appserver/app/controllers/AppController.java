@@ -3,15 +3,24 @@ package controllers;
 import java.io.File;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import play.Play;
+import play.libs.Codec;
 import play.modules.morphia.Model.MorphiaQuery;
+import play.mvc.Before;
 import vo.AppVersionVO;
 import cn.bran.japid.util.StringUtils;
 
+import com.withiter.common.Constants;
 import com.withiter.models.appconfig.AppConfig;
 
 public class AppController extends BaseController {
-	
+
+	/**
+	 * 显示app version信息
+	 */
 	public static void appCode(){
 		String android = null;
 		String ios = null;
@@ -44,12 +53,14 @@ public class AppController extends BaseController {
 		renderJSON(avo);
 	}
 	
+	/**
+	 * app 下载请求
+	 */
 	public static void down(){
 		String type = params.get("t");
 		if(StringUtils.isEmpty(type)){
 			return;
 		}
-		
 		if("android".equals(type)){
 			String dir = Play.configuration.getProperty("merchants.path");
 			File f = new File(dir+"/benbangcai.csv");

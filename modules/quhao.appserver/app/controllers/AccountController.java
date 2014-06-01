@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.httpclient.HttpException;
 import org.bson.types.ObjectId;
@@ -17,9 +18,9 @@ import org.slf4j.LoggerFactory;
 
 import play.Play;
 import play.libs.Codec;
-import play.libs.Images;
 import play.modules.morphia.Model.MorphiaQuery;
 import play.modules.morphia.Model.MorphiaUpdateOperations;
+import play.mvc.Before;
 import vo.ReservationVO;
 import vo.UserAgreementVO;
 import vo.account.CreditVO;
@@ -27,7 +28,6 @@ import vo.account.LoginVO;
 import vo.account.SignupVO;
 
 import com.google.code.morphia.query.UpdateResults;
-import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSInputFile;
 import com.withiter.common.Constants;
 import com.withiter.common.Constants.CreditStatus;
@@ -35,7 +35,6 @@ import com.withiter.common.sms.business.SMSBusiness;
 import com.withiter.models.account.Account;
 import com.withiter.models.account.Credit;
 import com.withiter.models.account.Reservation;
-import com.withiter.models.merchant.Attention;
 import com.withiter.models.merchant.Comment;
 import com.withiter.models.merchant.Haoma;
 import com.withiter.models.merchant.Merchant;
@@ -45,6 +44,27 @@ public class AccountController extends BaseController {
 
 	private static Logger logger = LoggerFactory.getLogger(controllers.AccountController.class);
 	private static String USER_IMAGE = "UserImage";
+
+	/**
+	 * Interception any caller on this controller, will first invoke this method
+	 */
+	@Before
+	static void checkAuthentification() {
+		Map headers = request.headers;
+		Iterator it = headers.keySet().iterator();
+		while(it.hasNext()){
+			String key = (String) it.next();
+			logger.debug(key+", " +headers.get(key));
+		}
+		
+		if(headers.containsKey("user-agent")){
+			if(!(request.headers.get("user-agent").values.contains("QuhaoAndroid") || request.headers.get("user-agent").values.contains("QuhaoIOS"))){
+				renderJSON("请使用Android/iOS APP访问。");
+			}
+		} else {
+			renderJSON("请使用Android/iOS APP访问。");
+		}
+	}
 
 	/**
 	 * 手机号注册生成随即6位数字验证码
@@ -276,10 +296,6 @@ public class AccountController extends BaseController {
 		} else {
 			renderHtml("success");
 		}
-	}
-
-	public static void enable() {
-
 	}
 
 	/**

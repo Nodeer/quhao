@@ -100,7 +100,6 @@ public class UploadController extends BaseController {
 	
 	public static GridFSDBFile findBinary(String fileName) throws IOException {
 		GridFS gfs = new GridFS(MorphiaQuery.ds().getDB(), MERCHANT_IMAGE);
-//		GridFSDBFile file = gfs.find(ObjectId.massageToObjectId(fileName));
 		GridFSDBFile file = gfs.findOne(fileName);
 		return file;
 	}

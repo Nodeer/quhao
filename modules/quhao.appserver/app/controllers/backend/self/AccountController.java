@@ -6,11 +6,14 @@ import java.util.List;
 import notifiers.MailsController;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import play.Play;
 import play.cache.Cache;
 import play.data.validation.Required;
 import play.libs.Codec;
+import play.mvc.Before;
 import play.mvc.Scope.Session;
 import vo.MerchantVO;
 import vo.account.CommonVO;
@@ -35,6 +38,20 @@ import controllers.BaseController;
  */
 //@With(Secure.class)
 public class AccountController extends BaseController {
+	
+	private static Logger logger = LoggerFactory.getLogger(AccountController.class);
+	
+	/**
+	 * Interception any caller on this controller, will first invoke this method
+	 */
+	@Before(only={"logout","updatePwd"})
+	static void checkAuthentification() {
+		if (!session.contains(Constants.SESSION_USERNAME)) {
+			logger.debug("no session is found in Constants.SESSION_USERNAME");
+			String randomID = Codec.UUID();
+			renderJapidWith("japidviews.LandingController.business", randomID);
+		}
+	}
 
 	/**
 	 * merchant login function
@@ -53,14 +70,12 @@ public class AccountController extends BaseController {
 			// update account last login datews
 			account.lastLogin = new Date();
 			account.save();
-			
 			avo = MerchantAccountVO.build(account);
 			avo.error = "";
 
 			// add merchant list into account view object
 			List<Merchant> mList = MerchantAccountRel.getMerchantByUid(avo.uid);
 			if (mList == null || mList.isEmpty()) {
-
 			} else {
 				for (Merchant m : mList) {
 					// 更新商家评价信息
@@ -70,7 +85,6 @@ public class AccountController extends BaseController {
 			}
 			session.put(Constants.SESSION_USERNAME, account.id());
 			Session.current().put(account.id(), account.id());
-			
 			renderJSON(avo);
 		}
 	}
@@ -109,6 +123,7 @@ public class AccountController extends BaseController {
 	/**
 	 * validate the old password
 	 */
+	
 	public static void updatePwd() {
 		String uid = params.get("uid");
 		String oPwd = params.get("oPwd");
@@ -141,7 +156,11 @@ public class AccountController extends BaseController {
 		renderJSON(cvo);
 	}
 	
-	// 商家提交合作信息
+	/**
+	 * 商家提交合作信息
+	 * @param captchaCode 验证码
+	 * @param randomID 随机数
+	 */
 	public static void submitinfo(@Required(message="请输入验证码") String captchaCode, String randomID){
 		String companyName = params.get("companyName");
 		String peopleName = params.get("peopleName");
@@ -173,6 +192,9 @@ public class AccountController extends BaseController {
 		renderJSON(svo);
 	}
 	
+	/**
+	 * 忘记密码
+	 */
 	public static void forget(){
 		String email = params.get("resetEmail");
 		CommonVO cvo = new CommonVO();
@@ -198,7 +220,6 @@ public class AccountController extends BaseController {
 				+ "&oid=" + ma.id();
 		String content= "点击下面链接重置您的密码：<br/><br/>"
 				+ "<a href='"+url+"'>"+url+"</a><br/>"+"如无法点击，请将链接拷贝到浏览器地址栏中直接访问.";
-				
 		MailsController.sendTo(subject, content, ma.email);
 		
 		cvo.success = true;
@@ -207,6 +228,9 @@ public class AccountController extends BaseController {
 		renderJSON(cvo);
 	}
 	
+	/**
+	 * 跳转至重置密码页面
+	 */
 	public static void reset(){
 		String oid = params.get("oid");
 		String hid = params.get("hid");
@@ -218,6 +242,9 @@ public class AccountController extends BaseController {
 		}
 	}
 	
+	/**
+	 * 重设密码
+	 */
 	public static void resetPassword(){
 		String oid = params.get("oid");
 		String hid = params.get("hid");

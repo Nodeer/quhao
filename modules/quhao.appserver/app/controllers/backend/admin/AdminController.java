@@ -79,7 +79,6 @@ public class AdminController extends BaseController {
 		}
 		
 		session.put(Constants.ADMIN_SESSION_USERNAME, email);
-		
 		home();
 	}
 	
@@ -100,13 +99,11 @@ public class AdminController extends BaseController {
 		validation.required(email).message("请输入Email");
 		validation.required(password).message("请输入Password");
 		
-		
 		validation.email(email).message("请输入正确格式的Email");
 		validation.minSize(password, 6).message("密码长度为6-20");
 		validation.maxSize(password, 20).message("密码长度为6-20");
 		
 		AdminVO avo = new AdminVO();
-		
 		if(validation.hasErrors()){
 			avo.error = validation.errors().get(0).toString();
 			avo.result = validation.errors().get(0).toString();
@@ -132,10 +129,8 @@ public class AdminController extends BaseController {
 				+ "&oid=" + a.id();
 		
 		MailsController.sendTo(a.email, url);
-		
 		avo.error = "";
 		avo.result = "生成成功<br/>email:" + a.email + "<br/>password:" + password;
-		
 		renderJSON(avo);
 	}
 	
@@ -195,13 +190,10 @@ public class AdminController extends BaseController {
 		String mid = params.get("mid");
 		String starttime = params.get("starttime");
 		String endtime = params.get("endtime");
-		
 		if(StringUtils.isEmpty(mid) || StringUtils.isEmpty(starttime) || StringUtils.isEmpty(endtime)){
 			renderJSON("商家ID/开始时间/结束时间 不能为空");
 		}
-		
 		String image = params.get("image");
-		
 		Merchant m = Merchant.findByMid(mid);
 		if(m == null){
 			renderJSON("没有找到对应的商家ID");
@@ -221,11 +213,9 @@ public class AdminController extends BaseController {
 			}
 			
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			logger.error(ExceptionUtil.getTrace(e));
 		}
-		
 		t.save();
 		
 		if(!StringUtils.isEmpty(image)){
@@ -242,7 +232,6 @@ public class AdminController extends BaseController {
 			}
 		}
 		renderJSON(true);
-		
 	}
 	
 	/**
@@ -253,10 +242,6 @@ public class AdminController extends BaseController {
 	 */
 	private static GridFSInputFile uploadFirst(String param, String tmid) {
 		GridFSInputFile gfsFile = null;
-		
-		logger.debug(""+params.get(param, File[].class));
-		logger.debug(params.get(param, File[].class).length+"");
-		
 		File[] files = params.get(param, File[].class);
 		for (File file : files) {
 			try {
@@ -294,8 +279,6 @@ public class AdminController extends BaseController {
 	 */
 	public static void requesthandle(){
 		String rid = params.get("rid");
-		logger.debug(rid);
-		
 		boolean flag = CooperationRequest.markHandled(rid);
 		if(flag){
 			renderJSON(true);
@@ -321,6 +304,9 @@ public class AdminController extends BaseController {
 		index();
 	}
 	
+	/**
+	 * App 配置管理页面
+	 */
 	public static void app(){
 		List<AppConfig> configs = AppConfig.allConfig();
 		AppConfig android = null;
@@ -347,6 +333,9 @@ public class AdminController extends BaseController {
 		renderJapid(acvos);
 	}
 	
+	/**
+	 * 更新App版本信息
+	 */
 	public static void updateversion(){
 		String id = params.get("id");
 		String version = params.get("version");

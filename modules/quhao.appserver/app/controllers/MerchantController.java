@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import play.Play;
 import play.modules.morphia.Model.MorphiaQuery;
+import play.mvc.Before;
 import vo.CategoryVO;
 import vo.ErrorVO;
 import vo.HaomaVO;
@@ -51,6 +52,27 @@ public class MerchantController extends BaseController {
 	private static Logger logger = LoggerFactory.getLogger(MerchantController.class);
 	private static int NEAR_MERCHANT_PAGE_ITEMS_NUMBER = 20;
 
+	/**
+	 * Interception any caller on this controller, will first invoke this method
+	 */
+	@Before
+	static void checkAuthentification() {
+		Map headers = request.headers;
+		Iterator it = headers.keySet().iterator();
+		while(it.hasNext()){
+			String key = (String) it.next();
+			logger.debug(key+", " +headers.get(key));
+		}
+		
+		if(headers.containsKey("user-agent")){
+			if(!(request.headers.get("user-agent").values.contains("QuhaoAndroid") || request.headers.get("user-agent").values.contains("QuhaoIOS"))){
+				renderJSON("请使用Android/iOS APP访问。");
+			}
+		} else {
+			renderJSON("请使用Android/iOS APP访问。");
+		}
+	}
+	
 	/**
 	 * 根据城市代码，返回所有分类
 	 * 
@@ -200,18 +222,14 @@ public class MerchantController extends BaseController {
 			} else {
 				isAttention = attention.flag;
 			}
-
 		}
 
 		if (null != m) {
-
 			merchantDetails.put("merchant", MerchantVO.build(m, c, isAttention, openNum));
 		}
 
 		if (null != m && m.enable && "false".equals(isLogined)) {
 			Haoma haoma = Haoma.findByMerchantId(m.id());
-			// haoma.updateSelf();
-
 			HaomaVO haomaVO = HaomaVO.build(haoma);
 			merchantDetails.put("haomaVO", haomaVO);
 		}
@@ -235,7 +253,6 @@ public class MerchantController extends BaseController {
 				}
 				merchantDetails.put("rvos", rvos);
 			}
-
 		}
 		renderJSON(merchantDetails);
 	}
@@ -296,12 +313,9 @@ public class MerchantController extends BaseController {
 					if (null != haoma.haomaMap.get(key)) {
 						renderJSON(haoma.haomaMap.get(key).currentNumber);
 					}
-
 				}
 			}
 		}
-
-		// renderJSON(vo);
 	}
 
 	/**
@@ -322,9 +336,7 @@ public class MerchantController extends BaseController {
 		if (null != reservations && reservations.size() > 0) {
 			for (Reservation r : reservations) {
 				Paidui paidui = haoma.haomaMap.get(r.seatNumber);
-
 				rvo = new ReservationVO();
-
 				int canclCount = (int) Reservation.findCountBetweenCurrentNoAndMyNumber(mid, paidui.currentNumber, r.myNumber, r.seatNumber, haoma.version);
 				rvo.beforeYou = r.myNumber - (paidui.currentNumber + canclCount);
 				rvo.currentNumber = paidui.currentNumber;
@@ -334,7 +346,6 @@ public class MerchantController extends BaseController {
 				rvos.add(rvo);
 			}
 		}
-
 		renderJSON(rvos);
 	}
 
@@ -460,16 +471,11 @@ public class MerchantController extends BaseController {
 		} else {
 			merchantList = Merchant.findByName(name);
 		}
-
-		logger.debug("search result size: " + merchantList.size());
-
 		List<MerchantVO> merchantVOList = null;
 		if (null != merchantList && !merchantList.isEmpty()) {
 			merchantVOList = new ArrayList<MerchantVO>();
 			for (Merchant m : merchantList) {
-
 				merchantVOList.add(MerchantVO.build(m));
-
 			}
 		}
 		renderJSON(merchantVOList);
@@ -505,12 +511,6 @@ public class MerchantController extends BaseController {
 				} else {
 					evo.key = "cantCreate";
 				}
-//				if (!StringUtils.isEmpty(cityCode)) {
-//					merchantList = Merchant.checkByName(name, cityCode);
-//				} else {
-//					merchantList = Merchant.checkByName(name);
-//				}
-				
 				renderJSON(evo);
 			} else { // 联想到了
 				List<MerchantVO> merchantVOList = null;
@@ -523,9 +523,6 @@ public class MerchantController extends BaseController {
 				renderJSON(merchantVOList);
 			}
 		}
-		
-		
-		
 		
 		// 自动联想
 		if (!StringUtils.isEmpty(type) && type.equals("think")) {
@@ -541,9 +538,6 @@ public class MerchantController extends BaseController {
 				merchantList = Merchant.checkByName(name);
 			}
 		}
-
-		logger.debug("search result size: " + merchantList.size());
-
 		List<MerchantVO> merchantVOList = null;
 		if (null != merchantList && !merchantList.isEmpty()) {
 			merchantVOList = new ArrayList<MerchantVO>();

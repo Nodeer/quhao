@@ -5,11 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import notifiers.MailsController;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import play.Play;
 import play.modules.morphia.Model.MorphiaQuery;
 
 import com.withiter.common.Constants.CreditStatus;
@@ -21,184 +16,173 @@ import com.withiter.models.merchant.Comment;
 import com.withiter.models.merchant.Haoma;
 
 public class TestController extends BaseController {
-	
-	private static void newTestAccount(){
-		
+
+	private static void newTestAccount() {
+
 		MorphiaQuery q = Account.q();
 		q.filter("nickname", "quhaotest");
-		if(q.first() != null){
+		if (q.first() != null) {
 			return;
 		}
-		
+
 		Account a = null;
-		for(int i=0; i< 10000; i++){
+		for (int i = 0; i < 10000; i++) {
 			a = new Account();
-			a.phone = 10000000000l+(long)i + "";
+			a.phone = 10000000000l + (long) i + "";
 			a.enable = true;
 			a.jifen = 500;
 			a.nickname = "quhaotest";
 			a.save();
 		}
 	}
-	
+
 	/**
 	 * 删除reservation，haoma，credit
 	 */
-	private static void clear(){
+	private static void clear() {
 		String mid = "5367accb0cf2c147bc369a16";
 		MorphiaQuery q = Reservation.q();
 		q.filter("merchantId", mid);
 		q.delete();
-		
+
 		MorphiaQuery qq = Haoma.q();
 		qq.filter("merchantId", mid);
 		qq.delete();
-		
+
 		MorphiaQuery qqq = Credit.q();
 		qqq.filter("merchantId", mid);
 		qqq.delete();
 	}
-	
-	public static void quhaoConcurrentTest(){
-		
+
+	public static void quhaoConcurrentTest() {
+
 		clear();
 		newTestAccount();
-		
+
 		final String mid = "5367accb0cf2c147bc369a16";
 		final int seatType = 2;
-		
+
 		MorphiaQuery q = Account.q();
 		final List<Account> list = q.filter("nickname", "quhaotest").asList();
 		final List<String> results = new ArrayList<String>();
-			Thread t = new Thread(){
-				@Override
-				public void run() {
-					for(int j = 0; j < 100; j++){
-						String url = "/nahao?accountId="+list.get(j).id()+"&mid="+mid+"&seatNumber="+seatType;
-						String result = CommonHTTPRequest.get(url);
-						results.add(result);
-					}
-					super.run();
+		Thread t = new Thread() {
+			@Override
+			public void run() {
+				for (int j = 0; j < 100; j++) {
+					String url = "/nahao?accountId=" + list.get(j).id() + "&mid=" + mid + "&seatNumber=" + seatType;
+					String result = CommonHTTPRequest.get(url);
+					results.add(result);
 				}
-			};
-			Thread t1 = new Thread(){
-				@Override
-				public void run() {
-					for(int j = 100; j < 200; j++){
-						String url = "/nahao?accountId="+list.get(j).id()+"&mid="+mid+"&seatNumber="+seatType;
-						String result = CommonHTTPRequest.get(url);
-						results.add(result);
-					}
-					super.run();
-				}
-			};
-			Thread t2 = new Thread(){
-				@Override
-				public void run() {
-					for(int j = 200; j < 300; j++){
-						String url = "/nahao?accountId="+list.get(j).id()+"&mid="+mid+"&seatNumber="+seatType;
-						String result = CommonHTTPRequest.get(url);
-						results.add(result);
-					}
-					super.run();
-				}
-			};
-			Thread t3 = new Thread(){
-				@Override
-				public void run() {
-					for(int j = 300; j < 400; j++){
-						String url = "/nahao?accountId="+list.get(j).id()+"&mid="+mid+"&seatNumber="+seatType;
-						String result = CommonHTTPRequest.post(url);
-						results.add(result);
-					}
-					super.run();
-				}
-			};
-			Thread t4 = new Thread(){
-				@Override
-				public void run() {
-					for(int j = 400; j < 500; j++){
-						String url = "/nahao?accountId="+list.get(j).id()+"&mid="+mid+"&seatNumber="+seatType;
-						String result = CommonHTTPRequest.get(url);
-						results.add(result);
-					}
-					super.run();
-				}
-			};
-			
-			t.start();
-			t1.start();
-			t2.start();
-			t3.start();
-			t4.start();
-			
-			try {
-				t.join();
-				t1.join();
-				t2.join();
-				t3.join();
-				t4.join();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				super.run();
 			}
-			
-			renderJSON(results);
-		
+		};
+		Thread t1 = new Thread() {
+			@Override
+			public void run() {
+				for (int j = 100; j < 200; j++) {
+					String url = "/nahao?accountId=" + list.get(j).id() + "&mid=" + mid + "&seatNumber=" + seatType;
+					String result = CommonHTTPRequest.get(url);
+					results.add(result);
+				}
+				super.run();
+			}
+		};
+		Thread t2 = new Thread() {
+			@Override
+			public void run() {
+				for (int j = 200; j < 300; j++) {
+					String url = "/nahao?accountId=" + list.get(j).id() + "&mid=" + mid + "&seatNumber=" + seatType;
+					String result = CommonHTTPRequest.get(url);
+					results.add(result);
+				}
+				super.run();
+			}
+		};
+		Thread t3 = new Thread() {
+			@Override
+			public void run() {
+				for (int j = 300; j < 400; j++) {
+					String url = "/nahao?accountId=" + list.get(j).id() + "&mid=" + mid + "&seatNumber=" + seatType;
+					String result = CommonHTTPRequest.post(url);
+					results.add(result);
+				}
+				super.run();
+			}
+		};
+		Thread t4 = new Thread() {
+			@Override
+			public void run() {
+				for (int j = 400; j < 500; j++) {
+					String url = "/nahao?accountId=" + list.get(j).id() + "&mid=" + mid + "&seatNumber=" + seatType;
+					String result = CommonHTTPRequest.get(url);
+					results.add(result);
+				}
+				super.run();
+			}
+		};
+
+		t.start();
+		t1.start();
+		t2.start();
+		t3.start();
+		t4.start();
+
+		try {
+			t.join();
+			t1.join();
+			t2.join();
+			t3.join();
+			t4.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		renderJSON(results);
+
 	}
-	
-	public static void mailtest(){
+
+	public static void mailtest() {
 		MailsController.sendTo("mag_lee@126.com");
 	}
-	
-	public static void list(){
+
+	public static void list() {
 		renderJapid();
 	}
-	
-	public static void poi021(){
+
+	public static void poi021() {
 		renderJapid();
 	}
-	public static void poi020(){
+
+	public static void poi020() {
 		renderJapid();
 	}
-	public static void poi010(){
+
+	public static void poi010() {
 		renderJapid();
 	}
-	public static void poi0755(){
+
+	public static void poi0755() {
 		renderJapid();
 	}
-	public static void m020(){
+
+	public static void m020() {
 		renderJapid();
 	}
-	public static void m021(){
+
+	public static void m021() {
 		renderJapid();
 	}
-	public static void m010(){
+
+	public static void m010() {
 		renderJapid();
 	}
-	public static void m0755(){
+
+	public static void m0755() {
 		renderJapid();
 	}
 
 	public static void main(String[] args) {
-
-		try {
-			String str = "{    \"status\":\"OK\",    \"result\":{        \"location\":{            \"lng\":121.371053,            \"lat\":31.187143        },        \"precise\":1,        \"confidence\":80,        \"level\":\"\u9053\u8def\"    }}";
-			JSONObject a = new JSONObject(str);
-
-			System.out.println(a.optString("lng"));
-			System.out.println(a); // {"c":"d","a":"b"}
-			System.out.println(a.get("status")); // d
-			System.out.println(a.get("result")); // d
-			System.out.println(new JSONObject(a.get("result").toString())
-					.get("location")); // d
-			JSONObject xyJSON = new JSONObject(new JSONObject(a.get("result")
-					.toString()).get("location").toString());
-			System.out.println(xyJSON.get("lng"));
-			System.out.println(xyJSON.get("lat"));
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public static void insertTestCommectsData() {
