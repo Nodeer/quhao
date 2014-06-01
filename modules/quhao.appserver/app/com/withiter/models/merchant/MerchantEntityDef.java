@@ -59,6 +59,9 @@ public abstract class MerchantEntityDef extends BaseModel {
 	public Date joinedDate = new Date();					// 导入数据库时间 
 	public String[] seatType;								// 桌位类型 eg: {2,4,6,8} 此商家有2人，4人，6人，8人桌
 	
+	public String dianpingFen = "0";						// 显示大众点评评分 0 表示不显示
+	public String dianpingLink = "";						// 大众点评商家链接
+	
 	public String gTelephone(){
 		StringBuilder sb = new StringBuilder();
 		String tels = "";

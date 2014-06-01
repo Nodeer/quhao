@@ -46,6 +46,8 @@ public class MerchantVO {
 	public boolean online = false;
 	public boolean youhui = false;
 	public Date joinedDate = new Date();
+	public String dianpingFen = "0";
+	public String dianpingLink = "";
 	
 	/**
 	 * add by CROSS 2013-9-27
@@ -108,6 +110,8 @@ public class MerchantVO {
 		vo.y = m.y;
 		vo.seatType = m.seatType;
 		vo.cityCode = m.cityCode;
+		vo.dianpingFen = m.dianpingFen;
+		vo.dianpingLink = m.dianpingLink;
 		
 		try {
 			vo.merchantImage = URLDecoder.decode(m.merchantImage, "UTF-8");

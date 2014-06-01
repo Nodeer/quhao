@@ -58,7 +58,7 @@
 	<div class="form-group">
 		<label for="address" class="col-sm-3 control-label">商家ID：</label>
 		<div class="col-xs-7">
-			<input class="form-control" disabled="disabled" value="${bmivo.mid}" placeHolder="联系方式" />
+			<input class="form-control" disabled="disabled" value="${bmivo.mid}" placeHolder="商家唯一ID" />
 	    </div>
 	</div>
 	`}
@@ -71,13 +71,29 @@
 	</div>
 	
 	<div class="form-group">
+		<label for="cateType" class="col-sm-3 control-label">大众点评评分：</label>
+		<div class="col-xs-3">
+			<select disabled="disabled" class="form-control" id="dianpingFen" name="dianpingFen" value="${bmivo.dianpingFen}">
+				<option class="form-control" value="0">不显示到APP</option>
+				<option class="form-control" value="3.0">3.0</option>
+				<option class="form-control" value="3.5">3.5</option>
+				<option class="form-control" value="4.0">4.0</option>
+				<option class="form-control" value="4.5">4.5</option>
+				<option class="form-control" value="5.0">5.0</option>
+			</select>
+	    </div>
+		<div class="col-xs-4">
+			<input class="form-control" disabled="disabled" id="dianpingLink" name="dianpingLink" value="${bmivo.dianpingLink}" placeHolder="输入大众点评链接" />
+	    </div>
+	</div>
+	
+	<div class="form-group">
 		<label for="merchantImage" class="col-sm-3 control-label">上传图片（100*60）：</label>
 	    <div class="col-xs-7">
 	    	<input type="file" id="merchantImage" name="merchantImage" disabled="disabled" />
 		    <p class="help-block" style="color: red;">注意：上传的图片将作为展示在APP客户端的商家Logo</p>
 	    </div>
 	</div>
-
 	
 	<div class="form-group">
 		<label for="" class="col-sm-3 control-label">展示图片：</label>
@@ -87,7 +103,6 @@
 			`}
 	    </div>
 	</div>
-
 
 	<div class="form-group">
 		<label for="cityCode" class="col-sm-3 control-label">商家所在城市：</label>
@@ -226,6 +241,8 @@
 		$("#closeTime").val("${bmivo.closeTime}");
 		$("#description").val("${bmivo.description}");
 		$("#cityCode").val("${bmivo.cityCode}");
+		$("#dianpingFen").val("${bmivo.dianpingFen}");
+		$("#dianpingLink").val("${bmivo.dianpingLink}");
 	</script>
 `}
 

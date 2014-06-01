@@ -33,6 +33,10 @@ public class BackendMerchantInfoVO {
 	public String description;
 	public String openTime;
 	public String closeTime;	
+
+	public String dianpingFen;
+	public String dianpingLink;
+	
 	public int markedCount;
 	public Date joinedDate = new Date();
 	public boolean enable = false;
@@ -42,7 +46,6 @@ public class BackendMerchantInfoVO {
 	public String y;
 	
 	public boolean merchantExist = false;
-	
 	public boolean editable = false;
 	
 	/**
@@ -116,6 +119,9 @@ public class BackendMerchantInfoVO {
 			vo.seatType = m.seatType;
 			vo.cityCode = m.cityCode;
 			vo.openRequestCount = openRequestCount;
+			
+			vo.dianpingFen = m.dianpingFen;
+			vo.dianpingLink = m.dianpingLink;
 			
 			String imageStorePath = Play.configuration.getProperty("image.store.path");
 			// generate merchant image list

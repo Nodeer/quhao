@@ -255,7 +255,6 @@ Merchant.buttonCheck = function(){
  * reset the merchant infomation form
  */
 Merchant.reset = function() {
-
 	$("#description").val("");
 	$("#merchantImage").val("");
 	$("#address").val("");
@@ -264,10 +263,14 @@ Merchant.reset = function() {
 	$("#cateType1").val("");
 	$("#openTime").val("");
 	$("#closeTime").val("");
+	$("#dianpingFen").val("");
+	$("#dianpingLink").val("");
 }
 
 Merchant.enableEdit = function() {
 	$("#description").removeAttr("disabled");
+	$("#dianpingFen").removeAttr("disabled");
+	$("#dianpingLink").removeAttr("disabled");
 	$("#cityCode").removeAttr("disabled");
 	$("#address").removeAttr("disabled");
 	$("#merchantImage").removeAttr("disabled");
@@ -283,6 +286,8 @@ Merchant.enableEdit = function() {
 
 Merchant.create = function() {
 	$("#description").removeAttr("disabled");
+	$("#dianpingFen").removeAttr("disabled");
+	$("#dianpingLink").removeAttr("disabled");
 	$("#cityCode").removeAttr("disabled");
 	$("#address").removeAttr("disabled");
 	$("#merchantImage").removeAttr("disabled");

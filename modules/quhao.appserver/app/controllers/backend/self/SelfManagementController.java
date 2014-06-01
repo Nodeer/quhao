@@ -108,6 +108,8 @@ public class SelfManagementController extends BaseController {
 		String closeTime = params.get("closeTime");
 		String merchantImage = params.get("merchantImage");
 		String[] seatType = params.getAll("seatType");
+		String dianpingFen = params.get("dianpingFen");
+		String dianpingLink = params.get("dianpingLink");
 		if (StringUtils.isEmpty(mid)) { // new merchant
 			m = new Merchant();
 			m.save();
@@ -153,6 +155,8 @@ public class SelfManagementController extends BaseController {
 		m.closeTime = closeTime;
 		m.enable = true;
 		m.seatType = seatType;
+		m.dianpingFen = dianpingFen;
+		m.dianpingLink = dianpingLink;
 		m.save();
 
 		logger.debug("merchant seatType------");

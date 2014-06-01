@@ -27,6 +27,7 @@ import vo.TopMerchantVO;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.CommandResult;
+import com.withiter.common.Constants;
 import com.withiter.common.Constants.CreditStatus;
 import com.withiter.models.account.Account;
 import com.withiter.models.account.Credit;
@@ -57,6 +58,10 @@ public class MerchantController extends BaseController {
 	 */
 	@Before
 	static void checkAuthentification() {
+		if(session.contains(Constants.SESSION_USERNAME)){
+			return;
+		}
+		
 		Map headers = request.headers;
 		Iterator it = headers.keySet().iterator();
 		while(it.hasNext()){
