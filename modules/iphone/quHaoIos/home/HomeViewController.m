@@ -328,16 +328,26 @@
     //处理topMerchant
     NSString *url = [NSString stringWithFormat:@"%@%@%d&cityCode=%@",IP,getTopMerchants,topSize,_cityCode];
     NSString *response1 =[QuHaoUtil requestDb:url];
+    [_topUrlArray removeAllObjects];
+    [_topIdArray removeAllObjects];
     if([response1 isEqualToString:@""]){
         //异常处理
         _HUD.labelText = @"网路异常,请稍后再试";
         [_HUD hide:YES afterDelay:1];
+        for(int j=0; j < 6;j++ ){
+            [_topIdArray addObject:@""];
+            [_topUrlArray addObject:@""];
+        }
     }else{
         NSArray *jsonObjects=[QuHaoUtil analyseData:response1];
         if(jsonObjects==nil){
             //解析错误
             _HUD.labelText = @"网路异常,请稍后再试";
             [_HUD hide:YES afterDelay:1];
+            for(int j=0; j < 6;j++ ){
+                [_topIdArray addObject:@""];
+                [_topUrlArray addObject:@""];
+            }
             return;
         }else{
             for(int i=0; i < [jsonObjects count];i++ ){
@@ -372,6 +382,7 @@
             //[Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
             return;
         }else{
+            [_categoryArray removeAllObjects];
             Category *c = nil;
             for(int i=0; i < [jsonObjects count]; ){
                 c = [[Category alloc] init];

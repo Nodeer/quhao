@@ -80,7 +80,7 @@
         locationManager = [[CLLocationManager alloc] init];
         locationManager.delegate = self;
         locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-        locationManager.distanceFilter = 100.0f;
+        locationManager.distanceFilter = kCLDistanceFilterNone;
         [locationManager startUpdatingLocation];
     }else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied){
         [locationManager stopUpdatingLocation];
@@ -413,10 +413,10 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
     CLLocation *currLocation = [locations lastObject];
-    NSTimeInterval howRecent = [currLocation.timestamp timeIntervalSinceNow];
-    if(howRecent < -10 || currLocation.horizontalAccuracy > 500) {
-        return;
-    }
+//    NSTimeInterval howRecent = [currLocation.timestamp timeIntervalSinceNow];
+//    if(howRecent < -10 || currLocation.horizontalAccuracy > 500) {
+//        return;
+//    }
     CLLocationCoordinate2D myCoOrdinate;
     if (![WGS84TOGCJ02 isLocationOutOfChina:[currLocation coordinate]]) {
         //转换后的coord
@@ -430,7 +430,7 @@
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     _longitude = [NSString stringWithFormat:@"%lf",myCoOrdinate.longitude];
     _latitude = [NSString stringWithFormat:@"%lf",myCoOrdinate.latitude];
-    [locationManager stopUpdatingLocation];
+    //[locationManager stopUpdatingLocation];
     CLLocation *location = [[CLLocation alloc] initWithLatitude:myCoOrdinate.latitude longitude:myCoOrdinate.longitude];
     [geocoder reverseGeocodeLocation:location completionHandler:^(NSArray *placemarks, NSError *error)
      {
