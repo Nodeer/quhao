@@ -279,6 +279,11 @@
 			android:screenOrientation="portrait"  />
 		<!-- city search page -->
 		
+		<!-- merchant chat room page -->
+		<activity android:name="com.withiter.quhao.activity.MerchantChatRoomsActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
+			android:screenOrientation="portrait"  />
+		<!-- merchant chat room page -->
+		
 		<!-- merchant chat page -->
 		<activity android:name="com.withiter.quhao.activity.MerchantChatActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
 			android:screenOrientation="portrait"  />

@@ -159,130 +159,18 @@ public class ReservationForCurrentPaiduiAdapter extends BaseAdapter {
 			holder.currentNumber.setText(rvo.currentNumber);
 			
 			final String reservationId = rvo.rId;
-			final String createDate = rvo.created;
-			final int promptYouhuiTime = rvo.promptYouhuiTime;
-			final String mid = rvo.merchantId;
 			holder.cancelBtn.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
 					
-					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-					Date created = null;
-					try {
-						created = format.parse(createDate);
-					} catch (ParseException e1) {
-						created = null;
+					if (!ActivityUtil.isNetWorkAvailable(activity)) {
+						Toast.makeText(activity, R.string.network_error_info, Toast.LENGTH_SHORT).show();
+						return;
 					}
 					
-					if(created != null)
-					{
-						Calendar cal = Calendar.getInstance();
-						cal.setTime(created);
-						cal.add(Calendar.MINUTE, promptYouhuiTime);
-						
-						if(cal.before(Calendar.getInstance()))
-						{
-							String url = "youhui?mid=" + mid;
-							if (!ActivityUtil.isNetWorkAvailable(activity)) {
-								Toast.makeText(activity, R.string.network_error_info, Toast.LENGTH_SHORT).show();
-								return;
-							}
-							
-							final QueryYouhuiInReservationTask task = new QueryYouhuiInReservationTask(R.string.waitting, activity, url);
-							task.execute(new Runnable() {
-								
-								@Override
-								public void run() {
-									String result = task.result;
-									
-									YouhuiVO youhui = ParseJson.getYouhui(result);
-									if(null != youhui)
-									{
-										AlertDialog.Builder builder = new Builder(activity);
-										builder.setTitle(youhui.title);
-										builder.setMessage("您有优惠：" + youhui.content + ",确定要取消该号码吗？");
-										builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-											@Override
-											public void onClick(DialogInterface dialog, int which) {
-												dialog.dismiss();
-												Thread thread = new Thread(new Runnable()
-												{
-	
-													@Override
-													public void run() {
-														Looper.prepare();
-														progress = new ProgressDialogUtil(activity, R.string.empty, R.string.waitting, false);
-														progress.showProgress();
-														try {
-															String url = "";
-															url = "cancel?reservationId=" + reservationId;
-															
-															if (!ActivityUtil.isNetWorkAvailable(activity)) {
-																Toast.makeText(activity, R.string.network_error_info, Toast.LENGTH_SHORT).show();
-																progress.closeProgress();
-																return;
-															}
-															
-															String buf = CommonHTTPRequest.get(url);
-															if (StringUtils.isNull(buf) || "[]".equals(buf)) {
-																throw new NoResultFromHTTPRequestException();
-														 	} else {
-														 		if("true".equals(buf.trim()))
-														 		{
-																	activity.initData();
-														 		}
-														 		else
-														 		{
-																	activity.initData();
-														 		}
-															}
-	
-														} catch (Exception e) {
-															e.printStackTrace();
-														} finally {
-															progress.closeProgress();
-															Looper.loop();
-														}
-													
-												}});
-												thread.start();
-											}});
-											builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-												
-												@Override
-												public void onClick(DialogInterface dialog, int which) {
-													dialog.dismiss();
-												}
-											});
-											builder.create().show();
-									}
-									else
-									{
-										cancelListener(reservationId);
-									}
-									
-								}
-							},new Runnable() {
-								
-								@Override
-								public void run() {
-									
-									cancelListener(reservationId);
-									
-								}
-							});
-						}
-						else
-						{
-							cancelListener(reservationId);
-						}
-					}
-					else
-					{
-						cancelListener(reservationId);
-						
-					}
+					cancelListener(reservationId);
+
 				}
 					
 			});

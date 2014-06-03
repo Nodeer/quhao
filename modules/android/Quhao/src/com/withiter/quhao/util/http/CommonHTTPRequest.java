@@ -62,7 +62,7 @@ public class CommonHTTPRequest {
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			result = "network_error";
+			result = "";
 			return result;
 		}
 
@@ -72,8 +72,7 @@ public class CommonHTTPRequest {
 	/**
 	 * A HTTP request(GET) with given URL
 	 * 
-	 * @param strUrl
-	 *            the URL you want to request
+	 * @param strUrl the URL you want to request
 	 * @return
 	 */
 	public static String get(String url) throws ClientProtocolException, IOException {
@@ -108,7 +107,7 @@ public class CommonHTTPRequest {
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			result = "network_error";
+			result = "";
 			return result;
 		}
 

@@ -7,6 +7,7 @@ import java.util.Hashtable;
 import java.util.List;
 
 import com.withiter.quhao.QHClientApplication;
+import com.withiter.quhao.util.StringUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -198,6 +199,7 @@ public class AsynImageLoader {
 
 		if (bitmap == null) {
 			imageView.setImageResource(resId);
+			return;
 		} else {
 			if (itemWidth > 0) {
 				int width = bitmap.getWidth();// 获取真实宽高
@@ -217,30 +219,32 @@ public class AsynImageLoader {
 
 	public Bitmap loadImageAsyn(String path, String roundedType,
 			ImageCallback callback, int itemWidth) {
+		
+		Bitmap bitmap = null;
 		// 判断缓存中是否已经存在该图片
 		if (bitmapRefs.containsKey(path)) {
 			// 取出软引用
 			BtimapRef rf = bitmapRefs.get(path);
 			// 通过软引用，获取图片
-			Bitmap bitmap = rf.get();
+			bitmap = rf.get();
 			// 如果该图片已经被释放，则将该path对应的键从Map中移除掉
 			if (bitmap == null) {
 				bitmapRefs.remove(path);
 			} else {
 				// 如果图片未被释放，直接返回该图片
 				Log.i(TAG, "return image in cache" + path);
-				return bitmap;
+//				return bitmap;
 			}
 		}
 		else if(FileUtil.exists4ImageUrl(path))
 		{
-			Bitmap bitmap = FileUtil.getImageBitmap(path);
+			bitmap = FileUtil.getImageBitmap(path);
 			if(null != bitmap)
 			{
-				return bitmap;
+//				return bitmap;
 			}
 		}
-		else {
+		if(bitmap == null && StringUtils.isNotNull(path)) {
 			// 如果缓存中不常在该图片，则创建图片下载任务
 			Task task = new Task();
 			task.path = path;

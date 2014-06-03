@@ -690,7 +690,11 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 //			Builder dialog = new AlertDialog.Builder(getActivity());
 //			dialog.setTitle("温馨提示").setMessage("亲，暂未开放，敬请期待。").setPositiveButton("确定", null);
 //			dialog.show();
-			Intent login1 = new Intent(getActivity(), NoQueueMerchantListActivity.class);
+//			Intent login1 = new Intent(getActivity(), NoQueueMerchantListActivity.class);
+//			login1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//			startActivity(login1);
+			
+			Intent login1 = new Intent(getActivity(), MerchantChatRoomsActivity.class);
 			login1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			startActivity(login1);
 			break;

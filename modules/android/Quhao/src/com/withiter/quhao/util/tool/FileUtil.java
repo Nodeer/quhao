@@ -106,17 +106,18 @@ public class FileUtil {
 	}
 	
 	public static Bitmap getImageBitmap(String path) {
+		Bitmap bitmap = null;
 		if (!exists4ImageUrl(path))
 			return null;
 		try {
-			Bitmap bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getCanonicalPath() + "/"
+			bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getCanonicalPath() + "/"
 					+ QuhaoConstant.IMAGES_SD_URL + "/" + getFileName(path));
 			
-			return bitmap;
 		} catch (Exception ex) {
 			ex.printStackTrace();
+			bitmap = null;
 		}
-		return null;
+		return bitmap;
 	}
 
 	public static File getCacheFile(String imageUri) {
@@ -142,6 +143,7 @@ public class FileUtil {
 		} catch (IOException e) {
 			e.printStackTrace();
 			Log.e(TAG, "getCacheFileError:" + e.getMessage());
+			return cacheFile;
 		}
 
 		return cacheFile;

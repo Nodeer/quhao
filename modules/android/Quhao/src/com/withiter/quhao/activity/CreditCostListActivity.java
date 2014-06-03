@@ -125,20 +125,24 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
 						Log.e(TAG, "onclick : " + position);
-						// 取得ViewHolder对象，这样就省去了通过层层的findViewById去实例化我们需要的cb实例的步骤
-						CreditCostHolder holder = (CreditCostHolder) view.getTag();
-						
-						// 改变CheckBox的状态
-						holder.cb.toggle();
-						// 将CheckBox的选中状况记录下来
-						// 调整选定条目
-						if (holder.cb.isChecked() == true) {
-							credits.get(position).isChecked = "true";
-//								checkNum++;
-						} else {
-							credits.get(position).isChecked = "true";
-//								checkNum--;
+						if(null!=creditAdapter && "true".equals(creditAdapter.isShowDelete))
+						{
+							// 取得ViewHolder对象，这样就省去了通过层层的findViewById去实例化我们需要的cb实例的步骤
+							CreditCostHolder holder = (CreditCostHolder) view.getTag();
+							
+							// 改变CheckBox的状态
+							holder.cb.toggle();
+							// 将CheckBox的选中状况记录下来
+							// 调整选定条目
+							if (holder.cb.isChecked() == true) {
+								credits.get(position).isChecked = "true";
+//									checkNum++;
+							} else {
+								credits.get(position).isChecked = "true";
+//									checkNum--;
+							}
 						}
+						
 					}
 					
 				});

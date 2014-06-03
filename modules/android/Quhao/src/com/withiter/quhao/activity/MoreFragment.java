@@ -541,9 +541,26 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			}
 
 			if (sina.isValid()) {
-				sina.removeAccount();
-				ctvName.setChecked(false);
-				ctvName.setText(R.string.not_yet_authorized);
+				
+				Dialog dialog = new AlertDialog.Builder(getActivity()).setMessage("亲，确定要取消授权吗？")
+				// 设置内容
+				.setPositiveButton("是",// 设置确定按钮
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								dialog.dismiss();
+								sina.removeAccount();
+								ctvName.setChecked(false);
+								ctvName.setText(R.string.not_yet_authorized);
+							}
+						}).setNegativeButton("否", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						// 点击"取消"按钮之后退出程序
+						dialog.dismiss();
+					}
+				}).create();// 创建
+				// 显示对话框
+				dialog.show();	
 				return;
 			}
 

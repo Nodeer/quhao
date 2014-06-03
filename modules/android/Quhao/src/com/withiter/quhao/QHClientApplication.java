@@ -21,8 +21,6 @@ import android.widget.Toast;
 import com.amap.api.location.AMapLocation;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.domain.CityInfo;
-import com.withiter.quhao.util.ActivityUtil;
-//import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.encrypt.DesUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;

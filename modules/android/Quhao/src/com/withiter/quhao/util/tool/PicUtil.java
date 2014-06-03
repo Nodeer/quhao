@@ -190,7 +190,6 @@ public class PicUtil {
 	 */
 	public static Bitmap getbitmapAndwrite(String imageUri) {
 		Bitmap bitmap = null;
-		HttpURLConnection conn = null;
 		InputStream is = null;
 		OutputStream os = null;
 		try {
@@ -263,11 +262,6 @@ public class PicUtil {
 				}
 			}
 			
-			
-			if(null != conn)
-			{
-				conn.disconnect();
-			}
 		}
 		return bitmap;
 	}
