@@ -5,16 +5,15 @@ import static play.libs.F.Matcher.Equals;
 import static play.mvc.Http.WebSocketEvent.SocketClosed;
 import static play.mvc.Http.WebSocketEvent.TextFrame;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.apache.commons.lang.StringUtils;
+import java.util.UUID;
 
 import models.ChatRoom;
 import models.ChatRoomFactory;
 import play.Logger;
 import play.data.validation.Required;
-import play.libs.F.ArchivedEventStream;
 import play.libs.F.Either;
 import play.libs.F.EventStream;
 import play.libs.F.Promise;
@@ -32,11 +31,15 @@ public class WebSocket extends Controller {
 
 	public static class ChatRoomSocket extends WebSocketController {
 
+		static long i = 0;
+		
 		public static void join(@Required String user,@Required String uid,@Required String mid,@Required String image) {
 
 			if(validation.hasErrors()){
 				renderJSON(false);
 			}
+			
+			Logger.debug("conneted times : %d", i++);
 			
 			// Get chat room with mid
 			Map<String, ChatRoom> rooms = ChatRoomFactory.rooms();
@@ -54,7 +57,8 @@ public class WebSocket extends Controller {
 
 			Logger.debug("current rooms size is : %d", rooms.size());
 			Logger.debug("current room mid is : %s", room.mid);
-			Logger.debug("user %s joined.", uid);
+			Logger.debug("uid %s joined.", uid);
+			Logger.debug("user name is %s", user);
 			
 			// Loop while the socket is open
 			while (inbound.isOpen()) {
@@ -71,24 +75,17 @@ public class WebSocket extends Controller {
 
 				// Case: TextEvent received on the socket
 				for (String userMessage : TextFrame.match(e._1)) {
-//					System.out.printf("get message:%s:%s:%s\r\n", user, uid, userMessage);
 					Logger.debug("get message -> %s:%s:%s:%s", user, uid, image, userMessage);
 					room.say(user, uid, image, userMessage);
 				}
  
 				// Case: Someone joined the room
 				for (ChatRoom.Join joined : ClassOf(ChatRoom.Join.class).match(e._2)) {
-					Logger.debug("join:%s", joined.user);
 					outbound.send("join:%s", joined.user);
 				}
 
 				// Case: New message on the chat room
 				for (ChatRoom.Message message : ClassOf(ChatRoom.Message.class).match(e._2)) {
-//					System.out.printf("send message:%s:%s:%s:%s", message.user, uid, image, message.text);
-//					System.out.println();
-					
-//					Logger.debug("send message -> %s:%s:%s:%s", message.user, uid, image, message.text);
-					
 					outbound.send("message:%s:%s:%s:%s", message.user, message.uid, message.image, message.text);
 				}
 

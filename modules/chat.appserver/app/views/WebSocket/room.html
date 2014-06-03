@@ -1,10 +1,12 @@
-#{extends 'main.html' /}
+#{extends 'main.html' /} 
 #{set title:'Chat room' /}
 
-<h1>WebSocket — 欢迎你, ${user} <a href="@{Application.index()}">退出聊天室</a></h1> 
+<h1>
+	WebSocket — 欢迎你, ${user} <a href="@{Application.index()}">退出聊天室</a>
+</h1>
 
 <div id="thread">
-    <script type="text/html" id="message_tmpl">
+	<script type="text/html" id="message_tmpl">
         <% if(event.type == 'message') { %>
             <div class="message <%= event.user == '${user}' ? 'you' : '' %>">
                 <h2><%= event.user %></h2>
@@ -41,70 +43,59 @@
 </div>
 
 <div id="newMessage">
-    <input type="text" id="message" autocomplete="off">
-    <input type="submit" value="send" id="send">
+	<input type="text" id="message" autocomplete="off">
+	<input type="submit" value="send" id="send">
 </div>
 
-<script type="text/javascript">
 
-    // Create a socket
-    var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket;
-    var socket = new WS("@@{WebSocket.ChatRoomSocket.join(user,'uid1', 'mid1', 'image1')}")
-    
-    // Display a message
-    var display = function(event) {
-        $('#thread').append(tmpl('message_tmpl', {event: event}));
-        $('#thread').scrollTo('max')
-    }
-    
-    
-    // Message received on the socket
-    socket.onmessage = function(event) {
-    	
-        var parts = /^([^:]+):([^:]+)(:(.*))?$/.exec(event.data);
-        var p = event.data.split(":");
-        console.log(event.data);
-        if(p[0] == "message"){
-        	var type = p[0];
-        	var user = p[1];
-        	var uid = p[2];
-        	var image = p[3];
-        	var message = p[4];
-        	
-        	console.log("type:"+type);
-        	console.log("user:"+user);
-        	console.log("uid:"+uid);
-        	console.log("image:"+image);
-        	console.log("message:"+message);
-        	console.log("===========");
-        	
-        	display({
-                type: type,
-                user: user,
-                text: message
-            })
-        }else{
-	        display({
-	            type: parts[1],
-	            user: parts[2],
-	            text: parts[4]
-	        });
-        }
-        		
-        		
-    }
-    
-    $('#send').click(function(e) {
-        var message = $('#message').val()
-        $('#message').val('')
-        socket.send(message)
-    });
-    
-    $('#message').keypress(function(e) {
-        if(e.charCode == 13 || e.keyCode == 13) {
-            $('#send').click()
-            e.preventDefault()
-        }
-    })
-    
+
+<script type="text/javascript">
+	// Create a socket
+	var WS = window['MozWebSocket'] ? MozWebSocket : WebSocket;
+
+	var socket = new WS("@@{WebSocket.ChatRoomSocket.join(user,'uid', 'midtest', 'image1')}");
+	
+	// Display a message
+	var display = function(event) {
+	    $('#thread').append(tmpl('message_tmpl', {event: event}));
+	    $('#thread').scrollTo('max');
+	};
+
+	// Message received on the socket
+	socket.onmessage = function(event) {
+		var parts = /^([^:]+):([^:]+)(:(.*))?$/.exec(event.data);
+		var p = event.data.split(":");
+		if(p[0] == "message"){
+			var type = p[0];
+			var user = p[1];
+			var uid = p[2];
+			var image = p[3];
+			var message = p[4];
+			
+			display({
+		        type: type,
+		        user: user,
+		        text: message
+		    })
+		}else{
+		    display({
+		        type: parts[1],
+		        user: parts[2],
+		        text: parts[4]
+		    });
+		}
+	};
+
+	$('#send').click(function(e) {
+	    var message = $('#message').val();
+	    $('#message').val('');
+	    socket.send(message);
+	});
+	
+	$('#message').keypress(function(e) {
+	    if(e.charCode == 13 || e.keyCode == 13) {
+	        $('#send').click();
+	        e.preventDefault();
+	    }
+	})
 </script>
