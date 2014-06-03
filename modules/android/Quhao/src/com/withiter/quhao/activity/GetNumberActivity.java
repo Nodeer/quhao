@@ -72,7 +72,7 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 		setContentView(R.layout.get_number);
 		super.onCreate(savedInstanceState);
 
-		progress = new ProgressDialogUtil(this, R.string.empty, R.string.querying, false);
+		progress = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
 		merchantId = getIntent().getStringExtra("merchantId");
 
 		// 设置回退

@@ -56,7 +56,6 @@ public class CommentAccountAdapter extends BaseAdapter {
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				convertView = inflator.inflate(R.layout.comment_account_list_item,
 						null);
-				holder.nickName = (TextView) convertView.findViewById(R.id.nickName);
 				holder.modified = (TextView) convertView.findViewById(R.id.modified);
 				holder.merchantName = (TextView) convertView.findViewById(R.id.merchantName);
 //				holder.merchantAddress = (TextView) convertView.findViewById(R.id.merchantAddress);
@@ -84,11 +83,6 @@ public class CommentAccountAdapter extends BaseAdapter {
 				holder = (ViewHolder) convertView.getTag();
 			}
 
-			holder.nickName.setText(comment.nickName);
-			if(StringUtils.isNull(comment.nickName))
-			{
-				holder.nickName.setText("匿名");
-			}
 			holder.modified.setText(comment.modified);
 			holder.merchantName.setText(comment.merchantName);
 //			holder.merchantAddress.setText(comment.merchantAddress);
@@ -131,7 +125,7 @@ public class CommentAccountAdapter extends BaseAdapter {
 	}
 
 	class ViewHolder {
-		TextView nickName;
+//		TextView nickName;
 		TextView merchantName;
 //		TextView merchantAddress;
 //		TextView xingjiabi;

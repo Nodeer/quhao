@@ -139,6 +139,26 @@
 		            android:gravity="center"
 		            android:layout_gravity="center"/>
                 
+                <TextView
+                	android:layout_width="wrap_content"
+		            android:layout_height="35dip"
+		            android:text="@string/null_2_space"
+		            android:textSize="11.0sp" 
+		            android:paddingRight="10dip"/>
+                
+                <Button
+		            android:id="@+id/btn_share"
+		            android:layout_width="wrap_content"
+		            android:layout_height="35dip"
+		            android:text="@string/share"
+		            android:textAppearance="?android:textAppearanceMediumInverse"
+		            android:textColor="#64bae9"
+		            android:textSize="11.0sp" 
+		            android:background="@android:color/transparent"
+		            android:paddingRight="10dip"
+		            android:layout_gravity="right|center_vertical"
+		            />
+
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/tex2_lay3"

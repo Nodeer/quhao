@@ -70,12 +70,13 @@
                 android:layout_height="100dip"
                 android:orientation="vertical"
                 android:layout_alignParentLeft="true"
-                android:padding="8.0dip" >
+                android:padding="8.0dip"
+                android:gravity="center" >
 
                 <ImageView
                     android:id="@+id/avatar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="92dip"
+                    android:layout_height="92dip"
                     android:contentDescription="@string/avatar"
                     android:src="@drawable/person_avatar" />
             </LinearLayout>
