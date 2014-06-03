@@ -262,7 +262,7 @@ public class AsynImageLoader {
 		}
 
 		// 缓存中没有图片则返回null
-		return null;
+		return bitmap;
 	}
 
 	/**

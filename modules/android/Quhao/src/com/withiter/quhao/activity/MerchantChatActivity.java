@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.drafts.Draft;
 import org.java_websocket.drafts.Draft_10;
 import org.java_websocket.handshake.ServerHandshake;
 
@@ -112,7 +111,7 @@ public class MerchantChatActivity extends QuhaoBaseActivity {
         headers.put("image", image);
         headers.put("mid", mid);
         headers.put("user", user);
-        mWebSocketClient = new WebSocketClient(uri, new Draft_10(), null) {
+        mWebSocketClient = new WebSocketClient(uri, new Draft_10(), headers) {
             @Override
             public void onOpen(ServerHandshake serverHandshake) {
                 Log.e("Websocket", "Opened");

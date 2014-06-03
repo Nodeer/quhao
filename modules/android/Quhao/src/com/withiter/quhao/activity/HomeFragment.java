@@ -34,10 +34,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.Toast;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
@@ -50,7 +50,6 @@ import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.AsynImageLoader;
 import com.withiter.quhao.util.tool.ParseJson;
-import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.view.refresh.PullToRefreshView;
 import com.withiter.quhao.view.refresh.PullToRefreshView.OnFooterRefreshListener;
@@ -69,8 +68,6 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	private TextView cityBtn;
 	private List<TopMerchant> topMerchants;
 	private List<Category> categorys = null;
-	protected ProgressDialogUtil progressCategory;
-	protected ProgressDialogUtil progressTopMerchant;
 	private boolean isClick;
 	private TextView homeAdTitle;								// 广告简单介绍
 	private MyViewPager mViewPager;
