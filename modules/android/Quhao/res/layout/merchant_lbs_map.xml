@@ -26,6 +26,20 @@
 			android:layout_centerInParent="true"
 			android:text="name"
 			android:textColor="#ff000000"/>
+		
+		<Button
+            android:id="@+id/guide_route"
+            android:layout_width="wrap_content"
+            android:layout_height="35dip"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/guide_route"
+            android:textAppearance="?android:textAppearanceMediumInverse"
+            android:textColor="@color/white"
+            android:textSize="15.0sp" 
+            android:background="@android:color/transparent"
+            android:paddingRight="10dp"
+            />
 	
 	</RelativeLayout>
     <LinearLayout android:orientation="vertical"

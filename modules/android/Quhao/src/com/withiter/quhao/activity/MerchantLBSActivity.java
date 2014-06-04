@@ -1,11 +1,9 @@
 package com.withiter.quhao.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.MotionEvent;
@@ -14,7 +12,6 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
@@ -35,28 +32,19 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
 import com.withiter.quhao.R;
-import com.withiter.quhao.util.ActivityUtil;
-import com.withiter.quhao.util.QuhaoLog;
+import com.withiter.quhao.data.MerchantData;
 import com.withiter.quhao.util.StringUtils;
-import com.withiter.quhao.util.http.CommonHTTPRequest;
-import com.withiter.quhao.util.tool.ParseJson;
-import com.withiter.quhao.vo.Merchant;
-import com.withiter.quhao.vo.MerchantDetailVO;
 
 public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerClickListener, OnMapLoadedListener, 
 	OnInfoWindowClickListener, InfoWindowAdapter,LocationSource, AMapLocationListener {
 
-	private static final String TAG = MerchantLBSActivity.class.getName();
-
 	private Button btnBack;
 
+	private Button btnGuideRoute;
+	
 	private TextView merchantNameView;
 
-	private String merchantName;
-
-	private String merchantId;
-
-	private Merchant merchant;
+	private MerchantData merchant;
 
 	private MapView mMapView;
 
@@ -74,16 +62,21 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.merchant_lbs_map);
 
-		this.merchantName = this.getIntent().getStringExtra("merchantName");
-		this.merchantId = this.getIntent().getStringExtra("merchantId");
+//		this.merchantName = this.getIntent().getStringExtra("merchantName");
+//		this.merchantId = this.getIntent().getStringExtra("merchantId");
 
+		merchant = getIntent().getParcelableExtra("merchant");
+		
 		merchantNameView = (TextView) findViewById(R.id.name);
-		merchantNameView.setText(merchantName);
-		if(StringUtils.isNotNull(merchantName) && merchantName.length()>10)
+		merchantNameView.setText(merchant.getName());
+		if(StringUtils.isNotNull(merchant.getName()) && merchant.getName().length()>10)
 		{
-			merchantNameView.setText(merchantName.substring(0, 10) + "...");
+			merchantNameView.setText(merchant.getName().substring(0, 10) + "...");
 		}
 
+		btnGuideRoute = (Button) this.findViewById(R.id.guide_route);
+		btnGuideRoute.setOnClickListener(this);
+		
 		mMapView = (MapView) findViewById(R.id.mapView);
 		mMapView.onCreate(savedInstanceState);
 		// markerText = (TextView) findViewById(R.id.mark_listenter_text);
@@ -118,106 +111,29 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 			mAMap.setMyLocationRotateAngle(180);
 			mAMap.setLocationSource(this);// 设置定位监听
 			mAMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
-			mAMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
-			CameraUpdate update = CameraUpdateFactory.zoomBy(7);
-			mAMap.moveCamera(update);
+//			mAMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
+		}
+		
+		if(null!=merchant)
+		{
+			merchantNameView.setText(merchant.getName());
+			if(StringUtils.isNotNull(merchant.getName()) && merchant.getName().length()>10)
+			{
+				merchantNameView.setText(merchant.getName().substring(0, 10) + "...");
+			}
+			LatLng latLng = new LatLng(merchant.getLat(), merchant.getLng());
+			MarkerOptions options = new MarkerOptions();
+			options.position(latLng).title(merchant.getName()).snippet(merchant.getAddress()).icon(BitmapDescriptorFactory.fromResource(R.drawable.menu_nearby_img)).perspective(true);
+
+			mAMap.addMarker(options);
+			update = CameraUpdateFactory.newLatLngZoom(latLng,15);
+
+			if (null != update) {
+				mAMap.moveCamera(update);
+			}
 		}
 
-		Thread initLocation = new Thread(getLocationRunnable);
-		initLocation.start();
 	}
-
-	private Runnable getLocationRunnable = new Runnable() {
-		@Override
-		public void run() {
-			try {
-				Looper.prepare();
-				QuhaoLog.v(TAG, "get categorys data form server begin");
-				if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
-					Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
-					unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
-					return;
-				}
-				String buf = CommonHTTPRequest.get("querytMerchantDetail?merchantId=" + MerchantLBSActivity.this.merchantId);
-				// + MerchantDetailActivity.this.merchantId);
-				if (StringUtils.isNull(buf) && "[]".equals(buf)) {
-				} else {
-
-					MerchantDetailVO merchantDetail = ParseJson.getMerchantDetail(buf);
-					merchant = merchantDetail.merchant;
-					
-					// merchant.lat = 31.678109;
-					// merchant.lng = 31.678109;
-					// List<ReservationVO> rvos =
-					// ParseJson.getReservations(buf);
-					// locations = new ArrayList<MerchantLocation>();
-					// MerchantLocation location = new
-					// MerchantLocation("51e563feae4d165869fda38c", "name111",
-					// 31.678109, 31.678109, "address11");
-					// MerchantLocation location2 = new
-					// MerchantLocation("51e563feae4d165869fda382", "name222",
-					// 31.678109, 50.678109, "address22");
-					// locations.add(location);
-					// locations.add(location2);
-					getLocationUpdateHandler.obtainMessage(200, merchant).sendToTarget();
-				}
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				Looper.loop();
-			}
-		}
-	};
-
-	private Handler getLocationUpdateHandler = new Handler() {
-
-		@Override
-		public void handleMessage(Message msg) {
-			if (msg.what == 200) {
-				super.handleMessage(msg);
-
-				if(null!=merchant)
-				{
-					merchantNameView.setText(merchant.name);
-					if(StringUtils.isNotNull(merchant.name) && merchant.name.length()>10)
-					{
-						merchantNameView.setText(merchant.name.substring(0, 10) + "...");
-					}
-					LatLng latLng = new LatLng(merchant.lat, merchant.lng);
-					MarkerOptions options = new MarkerOptions();
-					options.position(latLng).title(merchant.name).snippet(merchant.address).icon(BitmapDescriptorFactory.fromResource(R.drawable.menu_nearby_img)).perspective(true);
-
-					mAMap.addMarker(options);
-					update = CameraUpdateFactory.newLatLngZoom(latLng,15);
-
-					if (null != update) {
-						mAMap.moveCamera(update);
-					}
-				}
-				
-
-				/*
-				 * MerchantLocation location = null; for (int i = 0; i <
-				 * locations.size(); i++) { location = locations.get(i); LatLng
-				 * latLng = new LatLng(location.lat, location.lng);
-				 * MarkerOptions options = new MarkerOptions();
-				 * options.position(
-				 * latLng).title(location.name).snippet(location.address)
-				 * .icon(BitmapDescriptorFactory
-				 * .fromResource(R.drawable.menu_merchant_nearby
-				 * )).perspective(true);
-				 * 
-				 * mAMap.addMarker(options); if(!latLngs.contains(latLng)) {
-				 * latLngs.add(latLng); } if (i==0) { update =
-				 * CameraUpdateFactory.changeLatLng(latLng); } }
-				 */
-
-			}
-
-		}
-
-	};
 
 	@Override
 	public void finish() {
@@ -250,6 +166,29 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 	@Override
 	public void onClick(View v) {
 
+		if (isClick) {
+			return;
+		}
+		
+		isClick = true;
+		
+		switch(v.getId())
+		{
+			case R.id.guide_route:
+				unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+				Intent intent = new Intent();
+				
+				Bundle mBundle = new Bundle();
+				mBundle.putParcelable("merchant", merchant);
+				intent.putExtras(mBundle);
+				
+				intent.setClass(this, MerchantRouteActivity.class);
+				startActivity(intent);
+				break;
+			default:
+				unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+				break;
+		}
 	}
 
 	@Override
@@ -353,25 +292,21 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 
 	@Override
 	public void onLocationChanged(Location location) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void onProviderEnabled(String provider) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void onProviderDisabled(String provider) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -381,6 +316,7 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 			mListener.onLocationChanged(aLocation);// 显示系统小蓝点
 			float bearing = mAMap.getCameraPosition().bearing;
 			mAMap.setMyLocationRotateAngle(bearing);// 设置小蓝点旋转角度
+			
 		}
 	}
 

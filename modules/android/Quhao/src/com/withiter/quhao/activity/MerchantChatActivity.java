@@ -178,7 +178,7 @@ public class MerchantChatActivity extends QuhaoBaseActivity {
                     }
                 });
             }
-
+            
             @Override
             public void onClose(int i, String s, boolean b) {
                 Log.e("Websocket", "Closed " + s);

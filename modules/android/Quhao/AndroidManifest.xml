@@ -194,10 +194,15 @@
 			android:screenOrientation="portrait" />
 		<!-- user agreement page -->
 
-		<!-- get number page -->
+		<!-- merchant location map page -->
 		<activity android:name="com.withiter.quhao.activity.MerchantLBSActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
 			android:screenOrientation="portrait"  />
-		<!-- get number page -->
+		<!-- merchant location map page -->
+		
+		<!-- merchant location route map page -->
+		<activity android:name="com.withiter.quhao.activity.MerchantRouteActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
+			android:screenOrientation="portrait"  />
+		<!-- merchant location route map page -->
 
 		<!-- comments page -->
 		<activity android:name="com.withiter.quhao.activity.CommentsMerchantActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"

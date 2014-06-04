@@ -241,4 +241,9 @@
 	<!-- nearby fragment begin -->
 	<string name="location_failed">亲，定位失败，请检查网络设置或者重新定位。</string>
 	<!-- nearby fragment end -->
+	
+	<!-- MerchantLBSActivity begin -->
+	<string name="guide_route">导航</string>
+	<!-- MerchantLBSActivity begin -->
+	
 </resources>

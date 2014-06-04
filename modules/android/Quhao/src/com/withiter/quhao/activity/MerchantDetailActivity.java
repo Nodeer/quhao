@@ -29,6 +29,7 @@ import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.PaiduiConditionAdapter;
 import com.withiter.quhao.adapter.ReservationAdapter;
+import com.withiter.quhao.data.MerchantData;
 import com.withiter.quhao.task.GetPaiduiListTask;
 import com.withiter.quhao.task.JsonPack;
 import com.withiter.quhao.util.ActivityUtil;
@@ -781,8 +782,19 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			case R.id.mapLayout:
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				Intent intent = new Intent(MerchantDetailActivity.this, MerchantLBSActivity.class);
-				intent.putExtra("merchantId", merchantId);
-				intent.putExtra("merchantName", merchant.name);
+				
+				MerchantData data = new MerchantData();
+				data.setId(merchant.id);
+				data.setMerchantImage(merchant.merchantImage);
+				data.setName(merchant.name);
+				data.setAddress(merchant.address);
+				data.setLat(merchant.lat);
+				data.setLng(merchant.lng);
+				
+				Bundle mBundle = new Bundle();
+				mBundle.putParcelable("merchant", data);
+				intent.putExtras(mBundle);
+				
 				startActivity(intent);
 				break;
 			case R.id.merchantPhone:

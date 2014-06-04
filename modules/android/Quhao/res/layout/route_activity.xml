@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFF"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:background="@drawable/common_top_bar_bg_blue3"
+        android:gravity="center_vertical"
+        android:paddingBottom="5dip"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
+        android:paddingTop="5dip" >
+
+        <!-- back button -->
+        <Button
+            android:id="@+id/back_btn"
+            android:layout_width="50dip"
+            android:layout_height="fill_parent"
+            android:background="@null"
+            android:drawableLeft="@drawable/arrow_left"
+            android:gravity="center|center_vertical"
+            android:textColor="#ff000000"
+            android:textSize="18.0sp"  />
+        <!-- back button -->
+
+        <TextView android:id="@+id/route_search"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:singleLine="true"
+            android:gravity="center"
+            android:text="@string/empty"
+            android:maxLength="26"
+            android:textSize="16.0sp"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="#ff000000" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/btn_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="48.0dip"
+        android:baselineAligned="false"
+        android:layout_marginLeft="10.0dip"
+        android:layout_marginRight="6.0dip"
+        android:layout_marginTop="6.0dip"
+        android:orientation="horizontal"
+        android:paddingBottom="10.0dip" >
+
+        <Button
+            android:id="@+id/imagebtn_roadsearch_tab_transit"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0"
+            android:background="@drawable/mode_transit" />
+
+        <Button
+            android:id="@+id/imagebtn_roadsearch_tab_driving"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0"
+            android:background="@drawable/mode_driving" />
+
+        <Button
+            android:id="@+id/imagebtn_roadsearch_tab_walk"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.0"
+            android:background="@drawable/mode_walk" />
+
+    </LinearLayout>
+
+    <com.amap.api.maps.MapView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
