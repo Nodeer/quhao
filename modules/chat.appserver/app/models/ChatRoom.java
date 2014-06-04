@@ -9,7 +9,7 @@ public class ChatRoom {
 	
 	public String mid;
 	public int limit = 15;
-	public static volatile int socketNumber = 0;
+	public volatile int socketNumber = 0;
 
 	public ChatRoom(String mid) {
 		super();
