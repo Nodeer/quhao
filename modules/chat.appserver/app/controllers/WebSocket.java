@@ -47,7 +47,7 @@ public class WebSocket extends Controller {
 				room = rooms.get(mid);
 			}
 			
-			Logger.debug("This server rooms counts are : %d.", rooms.size());
+			Logger.debug("This server rooms counts are : %d. current room id is %s.", rooms.size(), room.mid);
 			
 			if(room.socketNumber >= Integer.parseInt(roomUserLimit)){
 				return;
