@@ -5,14 +5,12 @@ import static play.libs.F.Matcher.Equals;
 import static play.mvc.Http.WebSocketEvent.SocketClosed;
 import static play.mvc.Http.WebSocketEvent.TextFrame;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.Map;
-import java.util.UUID;
 
 import models.ChatRoom;
 import models.ChatRoomFactory;
 import play.Logger;
+import play.Play;
 import play.data.validation.Required;
 import play.libs.F.Either;
 import play.libs.F.EventStream;
@@ -30,16 +28,13 @@ public class WebSocket extends Controller {
 	}
 
 	public static class ChatRoomSocket extends WebSocketController {
+		private static String roomUserLimit = Play.configuration.getProperty("room.user.limit");
 
-		static long i = 0;
-		
 		public static void join(@Required String user,@Required String uid,@Required String mid,@Required String image) {
 
 			if(validation.hasErrors()){
 				renderJSON(false);
 			}
-			
-			Logger.debug("conneted times : %d", i++);
 			
 			// Get chat room with mid
 			Map<String, ChatRoom> rooms = ChatRoomFactory.rooms();
@@ -52,14 +47,15 @@ public class WebSocket extends Controller {
 				room = rooms.get(mid);
 			}
 			
+			Logger.debug("This server rooms counts are : %d.", rooms.size());
+			
+			if(room.socketNumber >= Integer.parseInt(roomUserLimit)){
+				return;
+			}
+			
 			// Socket connected, join the chat room
 			EventStream<ChatRoom.Event> roomMessagesStream = room.join(user, uid, image);
 
-			Logger.debug("current rooms size is : %d", rooms.size());
-			Logger.debug("current room mid is : %s", room.mid);
-			Logger.debug("uid %s joined.", uid);
-			Logger.debug("user name is %s", user);
-			
 			// Loop while the socket is open
 			while (inbound.isOpen()) {
 				// Wait for an event (either something coming on the inbound
@@ -75,7 +71,7 @@ public class WebSocket extends Controller {
 
 				// Case: TextEvent received on the socket
 				for (String userMessage : TextFrame.match(e._1)) {
-					Logger.debug("get message -> %s:%s:%s:%s", user, uid, image, userMessage);
+					Logger.debug("Got message -> %s:%s:%s:%s", user, uid, image, userMessage);
 					room.say(user, uid, image, userMessage);
 				}
  
@@ -91,7 +87,7 @@ public class WebSocket extends Controller {
 
 				// Case: Someone left the room
 				for (ChatRoom.Leave left : ClassOf(ChatRoom.Leave.class).match(e._2)) {
-					Logger.debug("leave:%s", left.user);
+//					Logger.debug("leave:%s", left.user);
 					outbound.send("leave:%s", left.user);
 				}
 
@@ -100,7 +96,7 @@ public class WebSocket extends Controller {
 					room.leave(user, uid, image);
 					disconnect();
 				}
-			}
+			} 
 		}
 	}
 }
