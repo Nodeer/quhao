@@ -36,7 +36,7 @@
         [self.contentView addSubview:_timeBtn];
         
         // 2、创建头像
-        _iconView = [[EGOImageView alloc] init];
+        _iconView = [[EGOImageView alloc] initWithPlaceholderImage:[UIImage imageNamed:@"icon02.jpg"]];
         [self.contentView addSubview:_iconView];
         
         // 3、创建内容
@@ -71,6 +71,10 @@
     _iconView.frame = _messageFrame.iconF;
     
     // 3、设置内容
+//    NSString *expressionPlistPath = [[NSBundle mainBundle]pathForResource:@"expression" ofType:@"plist"];
+//    NSDictionary *expressionDic   = [[NSDictionary alloc]initWithContentsOfFile:expressionPlistPath];
+//    NSString *o_text = [Helper transformString:message.content emojiDic:expressionDic];
+    
     [_contentBtn setTitle:message.content forState:UIControlStateNormal];
     _contentBtn.contentEdgeInsets = UIEdgeInsetsMake(kContentTop, kContentLeft, kContentBottom, kContentRight);
     _contentBtn.frame = _messageFrame.contentF;

@@ -12,8 +12,8 @@
 typedef enum {
     
     MessageTypeMe = 0, // 自己发的
-    MessageTypeOther = 1 //别人发得
-    
+    MessageTypeOther = 1,//别人发得
+    MessageTypeuser = 2 
 } MessageType;
 
 @interface Message : NSObject

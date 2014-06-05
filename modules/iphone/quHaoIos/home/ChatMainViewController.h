@@ -11,23 +11,40 @@
 #import "Message.h"
 #import "MessageCell.h"
 #import "SRWebSocket.h"
-@interface ChatMainViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, SRWebSocketDelegate>
+#import "MessageInputView.h"
+#import "MessageManagerFaceView.h"
+#import "Helper.h"
+typedef NS_ENUM(NSInteger,ZBMessageViewState) {
+    ZBMessageViewStateShowFace,
+    ZBMessageViewStateShowShare,
+    ZBMessageViewStateShowNone,
+};
+
+@interface ChatMainViewController : UIViewController<MessageInputViewDelegate,MessageManagerFaceViewDelegate,UITableViewDataSource, UITableViewDelegate, SRWebSocketDelegate>
 {
     NSMutableArray  *_allMessagesFrame;
     SRWebSocket *_webSocket;
     BOOL _isFirst;
-    UIView * _footview;
     long _lastDate;
+    double animationDuration;
+    CGRect keyboardRect;
 }
+
 @property (strong, nonatomic)  UITableView *tableView;
-@property (strong, nonatomic)  UITextField *messageField;
-@property (strong, nonatomic)  UIButton *speakBtn;
 @property (strong, nonatomic)  NSString *uid;
 @property (strong, nonatomic)  NSString *user;
 @property (strong, nonatomic)  NSString *image;
 @property (strong, nonatomic)  NSString *mid;
-@property(assign,nonatomic)CGRect originalFrame;
+@property (strong, nonatomic)  NSString *mname;
+@property (nonatomic,strong) MessageInputView *messageToolView;
 
-- (void)voiceBtnClick:(UIButton *)sender;
+@property (nonatomic,strong) MessageManagerFaceView *faceView;
+
+
+@property (nonatomic,assign) CGFloat previousTextViewContentHeight;
+
+- (void)sendMessage:(NSString *)message;
+
+- (void)messageViewAnimationWithMessageRect:(CGRect)rect  withMessageInputViewRect:(CGRect)inputViewRect andDuration:(double)duration andState:(ZBMessageViewState)state;
 
 @end

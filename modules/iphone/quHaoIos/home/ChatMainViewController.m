@@ -28,6 +28,15 @@
     [self.navigationController  popViewControllerAnimated:YES];
 }
 
+- (void)dealloc{
+    self.messageToolView = nil;
+    self.faceView = nil;
+    
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardDidChangeFrameNotification object:nil];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -37,81 +46,13 @@
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
     
     self.navigationItem.leftBarButtonItem = backButtonItem;
-    self.tableView=[[UITableView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, kDeviceHeight-108) style:UITableViewStylePlain];
-    self.tableView.dataSource=self;
-    self.tableView.delegate=self;
-    //self.tableView.backgroundColor=[UIColor whiteColor];
-    //self.tableView.indicatorStyle=UIScrollViewIndicatorStyleWhite;
+    [self initilzer];
     
-#if IOS7_SDK_AVAILABLE
-    if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
-        [self.tableView setSeparatorInset:UIEdgeInsetsZero];
-    }
-    self.edgesForExtendedLayout = UIRectEdgeNone;
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    self.navigationController.navigationBar.translucent = NO;
-    self.tabBarController.tabBar.translucent = NO;
-    self.extendedLayoutIncludesOpaqueBars = NO;
-#endif
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.allowsSelection = NO;
-    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"chat_bg_default.jpg"]];
-    [self.view addSubview:self.tableView];
-    self.view.backgroundColor = [UIColor whiteColor];
-    //NSArray *array = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"messages" ofType:@"plist"]];
-    
+    animationDuration = 0.25;
+    [self setup];
+    self.view.backgroundColor = [UIColor colorWithRed:248.0f/255 green:248.0f/255 blue:255.0f/255 alpha:1.0];
     _allMessagesFrame = [NSMutableArray array];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    
-    _footview = [[UIView alloc] init];
-    _footview.frame = CGRectMake(0, kDeviceHeight-108, kDeviceWidth, 44);
-    self.originalFrame = CGRectMake(0, kDeviceHeight-108, kDeviceWidth, 44);
-    _originalFrame = _footview.frame;
-    UIImageView * imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"toolbar_bottom_bar"]];
-    imageView.frame = CGRectMake(0, 0, kDeviceWidth, 44);
-    [_footview addSubview:imageView];
-    
-    UIButton * volumnBtn = [[UIButton alloc] initWithFrame:CGRectMake(14, 5, 34, 34)];
-    [volumnBtn setBackgroundImage:[UIImage imageNamed:@"chat_bottom_voice_nor"] forState:UIControlStateNormal];
-    [volumnBtn setBackgroundImage:[UIImage imageNamed:@"chat_bottom_voice_press"] forState:UIControlStateHighlighted];
-    [volumnBtn addTarget:self action:@selector(voiceBtnClick:) forControlEvents:UIControlEventTouchDown];
-    [_footview addSubview:volumnBtn];
-    
-    UIButton * smileBtn = [[UIButton alloc] initWithFrame:CGRectMake(222, 7, 34, 34)];
-    [smileBtn setBackgroundImage:[UIImage imageNamed:@"chat_bottom_smile_nor"] forState:UIControlStateNormal];
-    //[smileBtn setBackgroundImage:[UIImage imageNamed:@"chat_bottom_voice_press"] forState:UIControlStateHighlighted];
-    //[smileBtn addTarget:self action:@selector(emojeBtnClick:) forControlEvents:UIControlEventTouchDown];
-    [_footview addSubview:smileBtn];
-    
-//    UIButton * addBtn = [[UIButton alloc] initWithFrame:CGRectMake(264, 7, 34, 34)];
-//    [addBtn setBackgroundImage:[UIImage imageNamed:@"chat_bottom_up_nor"] forState:UIControlStateNormal];
-//    //[addBtn setBackgroundImage:[UIImage imageNamed:@"chat_bottom_voice_press"] forState:UIControlStateHighlighted];
-//    [_footview addSubview:addBtn];
-    
-    _messageField = [[UITextField alloc] initWithFrame:CGRectMake(56, 7, 146, 30)];
-    [_messageField setBackground:[UIImage imageNamed:@"chat_bottom_textfield"]];
-    _messageField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 0)];
-    _messageField.leftViewMode = UITextFieldViewModeAlways;
-    _messageField.delegate = self;
-    _messageField.placeholder = @""; //默认显示的字
-    _messageField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    _messageField.font = [UIFont fontWithName:@"Arial" size:16.0];//设置字体名字和字体大小
-    _messageField.autocorrectionType = UITextAutocorrectionTypeNo;//设置是否启动自动提醒更正功能
-    _messageField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    _messageField.returnKeyType = UIReturnKeySend;  //键盘返回类型
-    _messageField.keyboardType = UIKeyboardTypeDefault;//键盘显示类型
-    _messageField.delegate = self;
-    [_footview addSubview:_messageField];
-    
-    _speakBtn = [[UIButton alloc] initWithFrame:CGRectMake(56, 6, 146, 32)];
-    [_speakBtn setBackgroundImage:[UIImage imageNamed:@"chat_bottom_voice_nor"] forState:UIControlStateNormal];
-    //[syBtn setBackgroundImage:[UIImage imageNamed:@"chat_bottom_voice_press"] forState:UIControlStateHighlighted];
-    [_speakBtn setHidden:YES];
-    [_footview addSubview:_speakBtn];
-    [self.view addSubview:_footview];
 }
 
 - (void)_reconnect;
@@ -121,11 +62,11 @@
     if(self.image == nil || [self.image isEqualToString:@""]){
         self.image = @"user_chat";
     }
-    NSString *str = [NSString stringWithFormat:@"ws://www.quhao.la:9000/websocket/room/socket?user=%@&uid=%@&image=%@&mid=%@",self.user,self.uid,self.image,self.mid];
+    NSString *str = [NSString stringWithFormat:@"ws://www.quhao.la:9000/websocket/room/socket?user=%@&uid=%@&image=%@&mid=%@",[self.user stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],self.uid,self.image,self.mid];
     _webSocket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
     _webSocket.delegate = self;
     
-    self.title = @"聊天室";
+    self.title = [NSString stringWithFormat:@"%@-%@",self.mname,@"聊天室"];
     [_webSocket open];
     
 }
@@ -134,6 +75,56 @@
 {
     [super viewWillAppear:animated];
     [self _reconnect];
+    [[NSNotificationCenter defaultCenter]addObserver:self
+                                            selector:@selector(keyboardWillShow:)
+                                                name:UIKeyboardWillShowNotification
+                                              object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self
+                                            selector:@selector(keyboardWillHide:)
+                                                name:UIKeyboardWillHideNotification
+                                              object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self
+                                            selector:@selector(keyboardChange:)
+                                                name:UIKeyboardDidChangeFrameNotification
+                                              object:nil];
+}
+
+//点击屏幕空白处去掉键盘
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    UITouch *touch = [touches anyObject];
+    if([touch.view isKindOfClass:[MessageTextView class]]||[touch.view isKindOfClass:[MessageInputView class]]){
+        return;
+    }
+    [self.messageToolView.messageInputTextView resignFirstResponder];
+    [self messageViewAnimationWithMessageRect:CGRectZero
+                     withMessageInputViewRect:self.messageToolView.frame
+                                  andDuration:animationDuration
+                                     andState:ZBMessageViewStateShowNone];
+}
+
+#pragma mark -keyboard
+- (void)keyboardWillHide:(NSNotification *)notification{
+    
+    keyboardRect = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    animationDuration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
+}
+
+- (void)keyboardWillShow:(NSNotification *)notification{
+    keyboardRect = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    animationDuration= [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+}
+
+- (void)keyboardChange:(NSNotification *)notification{
+    if ([[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].origin.y<CGRectGetHeight(self.view.frame)) {
+        [self messageViewAnimationWithMessageRect:[[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue]
+                         withMessageInputViewRect:self.messageToolView.frame
+                                      andDuration:0.25
+                                         andState:ZBMessageViewStateShowNone];
+    }
 }
 
 - (void)reconnect:(id)sender;
@@ -151,7 +142,7 @@
 {
     //NSLog(@":( Websocket Failed With Error %@", error);
     //self.title = @"Connection Failed! (see logs)";
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"网络异常,请稍后再试" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"房间人数已满,请稍后再试" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
     [alert show];
     _webSocket = nil;
 }
@@ -179,20 +170,20 @@
 {
     //NSLog(@"WebSocket closed");
     //self.title = @"Connection Closed! (see logs)";
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.removeFromSuperViewOnHide =YES;
+    //hud.mode = MBProgressHUDModeText;
+    hud.labelText = NSLocalizedString(@"链接超时,请重新进入", nil);
+    hud.minSize = CGSizeMake(132.f, 108.0f);
+    [hud hide:YES afterDelay:1.5];
+
     _webSocket = nil;
-}
-
-
-//点击屏幕空白处去掉键盘
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    [self.view endEditing:YES];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
 	[super viewDidDisappear:animated];
-    
+    [_allMessagesFrame removeAllObjects];
     _webSocket.delegate = nil;
     [_webSocket close];
     _webSocket = nil;
@@ -201,141 +192,18 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    long count = [_allMessagesFrame count]/2;
+    [_allMessagesFrame removeObjectsInRange:NSMakeRange(0,count)];
+    [self.tableView reloadData];
+    //[_allMessagesFrame removeAllObjects];
 }
 
-#pragma mark - 键盘处理
-#pragma mark 键盘即将显示
-//- (void)keyBoardWillShow:(NSNotification *)note{
-//    
-//    CGRect rect = [note.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-//    CGFloat ty = - rect.size.height;
-//    [UIView animateWithDuration:[note.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue] animations:^{
-//        self.view.transform = CGAffineTransformMakeTranslation(0, ty);
-//    }];
-//    
-//}
-//#pragma mark 键盘即将退出
-//- (void)keyBoardWillHide:(NSNotification *)note{
-//    
-//    [UIView animateWithDuration:[note.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue] animations:^{
-//        self.view.transform = CGAffineTransformIdentity;
-//    }];
-//}
-
--(void)setOriginalFrame:(CGRect)originalFrame
-{
-    _footview.frame = CGRectMake(0, CGRectGetMinY(originalFrame), 320, CGRectGetHeight(originalFrame));
-}
-
-- (void)keyBoardWillShow:(NSNotification*)notification{
-    CGRect _keyboardRect = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    //NSLog(@"%f-%f-%f-%f",_keyboardRect.origin.y,_keyboardRect.size.height,[self getHeighOfWindow]-CGRectGetMaxY(self.frame),CGRectGetMinY(self.frame));
-    
-    //如果self在键盘之下 才做偏移
-    if ([self convertYToWindow:CGRectGetMaxY(self.originalFrame)]>=_keyboardRect.origin.y)
-    {
-        //没有偏移 就说明键盘没出来，使用动画
-        if (_footview.frame.origin.y== self.originalFrame.origin.y) {
-            [UIView animateWithDuration:0.3
-                                  delay:0
-                                options:UIViewAnimationOptionCurveEaseInOut
-                             animations:^{
-                                 self.tableView.transform = CGAffineTransformMakeTranslation(0, -_keyboardRect.size.height);
-                             } completion:nil];
-            
-            [UIView animateWithDuration:0.3
-                                  delay:0
-                                options:UIViewAnimationOptionCurveEaseInOut
-                             animations:^{
-                                 _footview.transform = CGAffineTransformMakeTranslation(0, -_keyboardRect.size.height);
-                             } completion:nil];
-        }
-        else
-        {
-            _footview.transform = CGAffineTransformMakeTranslation(0, -_keyboardRect.size.height);
-            self.tableView.transform = CGAffineTransformMakeTranslation(0, -_keyboardRect.size.height);
-        }
-    }
-    else
-    {
-        
-    }
-    
-}
-
-- (void)keyBoardWillHide:(NSNotification*)notification{
-    
-    
-    [UIView animateWithDuration:0.3
-                          delay:0
-                        options:UIViewAnimationOptionCurveEaseInOut
-                     animations:^{
-                         _footview.transform = CGAffineTransformMakeTranslation(0, 0);
-                     } completion:nil];
-    
-    [UIView animateWithDuration:0.3
-                          delay:0
-                        options:UIViewAnimationOptionCurveEaseInOut
-                     animations:^{
-                         self.tableView.transform = CGAffineTransformMakeTranslation(0, 0);
-                     } completion:nil];
-}
-
--(float)getHeighOfWindow
-{
-    return kDeviceHeight;
-}
-
-#pragma  mark ConvertPoint
-//将坐标点y 在window和superview转化  方便和键盘的坐标比对
--(float)convertYFromWindow:(float)Y
-{
-    CGPoint o = [self.view.superview.window convertPoint:CGPointMake(0, Y) toView:_footview.superview];
-    return o.y;
-    
-}
-
--(float)convertYToWindow:(float)Y
-{
-    CGPoint o = [_footview.superview convertPoint:CGPointMake(0, Y) toView:self.view.superview.window];
-    return o.y;
-    
-}
-
-#pragma mark - 文本框代理方法
-#pragma mark 点击textField键盘的回车按钮
-- (BOOL)textFieldShouldReturn:(UITextField *)textField{
-    NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
-    NSTimeInterval now = [dat timeIntervalSince1970]*1;
-    long currentDate = (long)now;
-    if(currentDate - _lastDate<3){
-        [Helper ToastNotification:@"亲,发送频率太高,请稍后再发" andView:self.view andLoading:NO andIsBottom:NO];
-
-        return NO;
-    }
+- (void)sendMessage:(NSString *)inputText{
     _isFirst = NO;
-    // 1、增加数据源
-    if([Helper isConnectionAvailable]){
-        NSString *content = textField.text;
-        [_webSocket send:content];
-        // 2、刷新表格
-        [self.tableView reloadData];
-        // 3、滚动至当前行
-        if(_allMessagesFrame.count>0){
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_allMessagesFrame.count - 1 inSection:0];
-            [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-        }
-        // 4、清空文本框内容
-        _messageField.text = nil;
-        NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
-        NSTimeInterval last = [dat timeIntervalSince1970]*1;
-        _lastDate = (long)last;
-    }else{
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"当前网络不可用" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
-        [alert show];
-    }
-    return YES;
+    [_webSocket send:inputText];
+    // 2、刷新表格
+    [self.tableView reloadData];
+    [self scrollTableView];
 }
 
 - (void)addMessageWithContent:(NSString *)content img:(NSString *)image withUid:(NSString *)uidFormSever{
@@ -373,7 +241,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"MessageCell";
     MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (cell == nil) {
@@ -391,42 +259,254 @@
     return [_allMessagesFrame[indexPath.row] cellHeight];
 }
 
-#pragma mark - 代理方法
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
-    [self.view endEditing:YES];
+- (void)setup
+{
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectMake(0.0f,0.0f,kDeviceWidth, self.messageToolView.frame.origin.y-64) style:UITableViewStylePlain];
+    [self.view addSubview:self.tableView];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.allowsSelection = NO;
+    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"chat_bg_default.jpg"]];
+    [self.view sendSubviewToBack:self.tableView];
+//#if IOS7_SDK_AVAILABLE
+//    if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+//        [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+//    }
+//    self.edgesForExtendedLayout = UIRectEdgeNone;
+//    self.automaticallyAdjustsScrollViewInsets = NO;
+//    self.navigationController.navigationBar.translucent = NO;
+//    self.tabBarController.tabBar.translucent = NO;
+//    self.extendedLayoutIncludesOpaqueBars = NO;
+//#endif
+    
 }
 
-//-(void)emojeBtnClick:(UIButton *)sender {
-//    if (_messageField.hidden) { //输入框隐藏，按住说话按钮显示
-//        _messageField.hidden = NO;
-//        _speakBtn.hidden = YES;
-//        [sender setBackgroundImage:[UIImage imageNamed:@"chat_bottom_smile_nor"] forState:UIControlStateNormal];
-//        [sender setBackgroundImage:[UIImage imageNamed:@"chat_bottom_voice_press.png"] forState:UIControlStateHighlighted];
-//        [_messageField becomeFirstResponder];
-//    }else{ //输入框处于显示状态，按住说话按钮处于隐藏状态
-//        _messageField.hidden = YES;
-//        _speakBtn.hidden = NO;
-//        [sender setBackgroundImage:[UIImage imageNamed:@"chat_bottom_smile_nor"] forState:UIControlStateNormal];
-//        [sender setBackgroundImage:[UIImage imageNamed:@"chat_bottom_keyboard_press.png"] forState:UIControlStateHighlighted];
-//        [_messageField resignFirstResponder];
-//    }
-//}
 
-#pragma mark - 语音按钮点击
-- (void)voiceBtnClick:(UIButton *)sender {
-    if (_messageField.hidden) { //输入框隐藏，按住说话按钮显示
-        _messageField.hidden = NO;
-        _speakBtn.hidden = YES;
-        [sender setBackgroundImage:[UIImage imageNamed:@"chat_bottom_voice_nor.png"] forState:UIControlStateNormal];
-        [sender setBackgroundImage:[UIImage imageNamed:@"chat_bottom_voice_press.png"] forState:UIControlStateHighlighted];
-        [_messageField becomeFirstResponder];
-    }else{ //输入框处于显示状态，按住说话按钮处于隐藏状态
-        _messageField.hidden = YES;
-        _speakBtn.hidden = NO;
-        [sender setBackgroundImage:[UIImage imageNamed:@"chat_bottom_keyboard_nor.png"] forState:UIControlStateNormal];
-        [sender setBackgroundImage:[UIImage imageNamed:@"chat_bottom_keyboard_press.png"] forState:UIControlStateHighlighted];
-        [_messageField resignFirstResponder];
+- (void)messageViewAnimationWithMessageRect:(CGRect)rect  withMessageInputViewRect:(CGRect)inputViewRect andDuration:(double)duration andState:(ZBMessageViewState)state{
+    
+    [UIView animateWithDuration:duration animations:^{
+        self.messageToolView.frame = CGRectMake(0.0f,CGRectGetHeight(self.view.frame)-CGRectGetHeight(rect)-CGRectGetHeight(inputViewRect),CGRectGetWidth(self.view.frame),CGRectGetHeight(inputViewRect));
+        
+        switch (state) {
+            case ZBMessageViewStateShowFace:
+            {
+                self.faceView.frame = CGRectMake(0.0f,CGRectGetHeight(self.view.frame)-CGRectGetHeight(rect),CGRectGetWidth(self.view.frame),CGRectGetHeight(rect));
+                
+            }
+                break;
+            case ZBMessageViewStateShowNone:
+            {
+                self.faceView.frame = CGRectMake(0.0f,CGRectGetHeight(self.view.frame),CGRectGetWidth(self.view.frame),CGRectGetHeight(self.faceView.frame));
+            }
+                break;
+            case ZBMessageViewStateShowShare:
+            {
+                
+                self.faceView.frame = CGRectMake(0.0f,CGRectGetHeight(self.view.frame),CGRectGetWidth(self.view.frame),CGRectGetHeight(self.faceView.frame));
+            }
+                break;
+                
+            default:
+                break;
+        }
+        self.tableView.frame = CGRectMake(0.0f,0.0f,kDeviceWidth,self.messageToolView.frame.origin.y);
+        [self scrollTableView];
+
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
+
+-(void)scrollTableView
+{
+    if (_allMessagesFrame.count>0)
+    {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_allMessagesFrame.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+}
+
+- (void)initilzer{
+    
+    CGFloat inputViewHeight;
+    
+    if ([[[UIDevice currentDevice]systemVersion]floatValue]>=7) {
+        inputViewHeight = 45.0f;
+    }
+    else{
+        inputViewHeight = 40.0f;
+    }
+    self.messageToolView = [[MessageInputView alloc]initWithFrame:CGRectMake(0.0f,
+                                                                               self.view.frame.size.height - inputViewHeight,self.view.frame.size.width,inputViewHeight)];
+    self.messageToolView.delegate = self;
+    [self.view addSubview:self.messageToolView];
+    
+    [self shareFaceView];
+    
+}
+
+- (void)shareFaceView{
+    
+    if (!self.faceView)
+    {
+        self.faceView = [[MessageManagerFaceView alloc]initWithFrame:CGRectMake(0.0f,
+                                                                                  CGRectGetHeight(self.view.frame), CGRectGetWidth(self.view.frame), 196)];
+        self.faceView.delegate = self;
+        [self.view addSubview:self.faceView];
+        
+    }
+}
+
+- (void)didSendFaceAction:(BOOL)sendFace{
+    if (sendFace) {
+        [self messageViewAnimationWithMessageRect:self.faceView.frame
+                         withMessageInputViewRect:self.messageToolView.frame
+                                      andDuration:animationDuration
+                                         andState:ZBMessageViewStateShowFace];
+    }
+    else{
+        [self messageViewAnimationWithMessageRect:keyboardRect
+                         withMessageInputViewRect:self.messageToolView.frame
+                                      andDuration:animationDuration
+                                         andState:ZBMessageViewStateShowNone];
+    }
+}
+
+/*
+ * 点击输入框代理方法
+ */
+- (void)inputTextViewWillBeginEditing:(MessageTextView *)messageInputTextView{
+    
+}
+
+- (void)inputTextViewDidBeginEditing:(MessageTextView *)messageInputTextView
+{
+    [self messageViewAnimationWithMessageRect:keyboardRect
+                     withMessageInputViewRect:self.messageToolView.frame
+                                  andDuration:animationDuration
+                                     andState:ZBMessageViewStateShowNone];
+    
+    if (!self.previousTextViewContentHeight)
+    {
+        self.previousTextViewContentHeight = messageInputTextView.contentSize.height;
+    }
+}
+- (CGFloat)getTextViewContentH:(UITextView *)textView {
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) {
+        return ceilf([textView sizeThatFits:textView.frame.size].height);
+    } else {
+        return textView.contentSize.height;
+    }
+}
+
+- (void)inputTextViewDidChange:(MessageTextView *)messageInputTextView
+{
+    if (!self.previousTextViewContentHeight)
+    {
+        self.previousTextViewContentHeight = messageInputTextView.contentSize.height;
+    }
+    CGFloat maxHeight = [MessageInputView maxHeight];
+    CGFloat contentH = [self getTextViewContentH:messageInputTextView];
+    
+    BOOL isShrinking = contentH < self.previousTextViewContentHeight;
+    CGFloat changeInHeight = contentH - _previousTextViewContentHeight;
+    
+    if (!isShrinking && (self.previousTextViewContentHeight == maxHeight || messageInputTextView.text.length == 0)) {
+        changeInHeight = 0;
+    }
+    else {
+        changeInHeight = MIN(changeInHeight, maxHeight - self.previousTextViewContentHeight);
+    }
+    
+    if(changeInHeight != 0.0f) {
+        
+        [UIView animateWithDuration:0.01f
+                         animations:^{
+                             
+                             if(isShrinking) {
+                                 if ([[[UIDevice currentDevice] systemVersion] floatValue] < 7.0) {
+                                     self.previousTextViewContentHeight = MIN(contentH, maxHeight);
+                                 }
+                                 // if shrinking the view, animate text view frame BEFORE input view frame
+                                 [self.messageToolView adjustTextViewHeightBy:changeInHeight];
+                             }
+                             
+                             CGRect inputViewFrame = self.messageToolView.frame;
+                             self.messageToolView.frame = CGRectMake(0.0f,
+                                                                     inputViewFrame.origin.y - changeInHeight,
+                                                                     inputViewFrame.size.width,
+                                                                     inputViewFrame.size.height + changeInHeight);
+                             
+                             if(!isShrinking) {
+                                 if ([[[UIDevice currentDevice] systemVersion] floatValue] < 7.0) {
+                                     self.previousTextViewContentHeight = MIN(contentH, maxHeight);
+                                 }
+                                 // growing the view, animate the text view frame AFTER input view frame
+                                 [self.messageToolView adjustTextViewHeightBy:changeInHeight];
+                             }
+                             self.tableView.frame = CGRectMake(0.0f,0.0f,kDeviceWidth,self.messageToolView.frame.origin.y);
+                             [self scrollTableView];
+                         }
+                         completion:^(BOOL finished) {
+                             
+                         }];
+        
+        self.previousTextViewContentHeight = MIN(contentH, maxHeight);
+    }
+    
+    if (self.previousTextViewContentHeight == maxHeight) {
+        double delayInSeconds = 0.01;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime,
+                       dispatch_get_main_queue(),
+                       ^(void) {
+                           CGPoint bottomOffset = CGPointMake(0.0f, contentH - messageInputTextView.bounds.size.height);
+                           [messageInputTextView setContentOffset:bottomOffset animated:YES];
+                       });
+    }
+}
+/*
+ * 发送信息
+ */
+- (void)didSendTextAction:(MessageTextView *)messageInputTextView{
+    
+    [self sendMessage:messageInputTextView.text];
+    
+    [messageInputTextView setText:nil];
+    [self inputTextViewDidChange:messageInputTextView];
+}
+
+#pragma end
+
+#pragma mark - ZBMessageFaceViewDelegate
+- (void)SendTheFaceStr:(NSString *)str
+{
+    if ([str isEqualToString:@"发送"]) {
+        if (self.messageToolView.messageInputTextView.text.length>0) {
+            NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
+            NSTimeInterval now = [dat timeIntervalSince1970]*1;
+            long currentDate = (long)now;
+            if(currentDate - _lastDate<3){
+                [Helper ToastNotification:@"亲,发送频率太高,请稍后再发" andView:self.view andLoading:NO andIsBottom:NO];
+                return;
+            }
+            // 1、增加数据源
+            if([Helper isConnectionAvailable]){
+                [self sendMessage:self.messageToolView.messageInputTextView.text];
+                [self.messageToolView.messageInputTextView setText:nil];
+                [self inputTextViewDidChange:self.messageToolView.messageInputTextView];
+                NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
+                NSTimeInterval last = [dat timeIntervalSince1970]*1;
+                _lastDate = (long)last;
+            }else{
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"当前网络不可用" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+                [alert show];
+            }
+        }
+    }else{
+        self.messageToolView.messageInputTextView.text = [self.messageToolView.messageInputTextView.text stringByAppendingString:str];
+        [self inputTextViewDidChange:self.messageToolView.messageInputTextView];
     }
 }
 @end
