@@ -33,7 +33,10 @@ public class ReservationVO {
 	 * 检查优惠时间
 	 */
 	public boolean youhui;
-
+	/**
+	 * 大众点评评分
+	 */
+	public String dianpingFen;
 	public void build(Reservation r){
 		this.id = r.id();
 		this.accountId = r.accountId;

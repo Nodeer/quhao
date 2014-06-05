@@ -453,7 +453,8 @@ public class AccountController extends BaseController {
 			merchant = Merchant.findById(reservation.merchantId);
 			reservationVO.merchantName = merchant.name;
 			reservationVO.merchantAddress = merchant.address;
-			
+			reservationVO.dianpingFen = merchant.dianpingFen;
+
 			Haoma haoma = Haoma.findByMerchantId(reservation.merchantId);
 			// HaomaVO vo = HaomaVO.build(haoma);
 			if(null != haoma && null != haoma.haomaMap && !haoma.haomaMap.isEmpty())
