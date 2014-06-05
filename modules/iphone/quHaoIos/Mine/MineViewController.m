@@ -204,26 +204,14 @@
             //self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
             self.egoImgView.frame = CGRectMake(10, 10, 110, 110);
             [cell.contentView addSubview:self.egoImgView];
-            if ([Helper isCookie] == NO || _userInfo == nil){
+            if (![[Helper returnUserString:@"showImage"] boolValue] || _userInfo == nil){
                 self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
             }else{
-                if ([[Helper returnUserString:@"showImage"] boolValue])
+                if(nil==_userInfo.userImage||[_userInfo.userImage isEqualToString:@""])
                 {
-                    NSString * str = [_userInfo.userImage substringFromIndex:22];
-                    if ([Helper isCookie]) {
-                        if([Helper returnUserString:@"userImageUrl"]!=nil && [[Helper returnUserString:@"userImageUrl"] isEqualToString:str]){
-                            self.egoImgView.image = [Helper imageWithImageSimple:[UIImage imageWithContentsOfFile:[self userImagePath]] scaledToSize:CGSizeMake(100, 100)];
-                        }else{
-                            self.egoImgView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,_userInfo.userImage]];
-                        }
-                    }else{
-                        if(nil==_userInfo.userImage||[_userInfo.userImage isEqualToString:@""])
-                        {
-                            self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
-                        }else{
-                            self.egoImgView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,_userInfo.userImage]];
-                        }
-                    }
+                    self.egoImgView.image = [UIImage imageNamed:@"no_logo.png"];
+                }else{
+                    self.egoImgView.imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,_userInfo.userImage]];
                 }
             }
             
@@ -506,6 +494,11 @@
             _userInfo.accountId = [jsonObjects valueForKey:@"accountId"];
             _userInfo.userImage = [jsonObjects valueForKey:@"userImage"];
             _userInfo.isSignIn = [[jsonObjects valueForKey:@"isSignIn"] boolValue];
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            [defaults setObject:_userInfo.userImage forKey:@"userImageUrlServer"];
+            [defaults setObject:_userInfo.username forKey:@"nickName"];
+            [defaults synchronize];
+
         }
     }
 }
@@ -618,7 +611,7 @@
     [imageData writeToFile:fullPathToFile atomically:NO];
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:name forKey:@"userImageUrl"];
+    [defaults setObject:_userInfo.userImage forKey:@"userImageUrlServer"];
     [defaults synchronize];
     [self upLoadSalesBigImage:fullPathToFile];
     [self dismissViewControllerAnimated:YES completion:nil];

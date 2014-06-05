@@ -34,8 +34,8 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
-    [_merchartsArray removeAllObjects];
     [self createHud];
+    [_merchartsArray removeAllObjects];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [self requestData];
         dispatch_async(dispatch_get_main_queue(), ^{
