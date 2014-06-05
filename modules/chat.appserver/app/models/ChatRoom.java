@@ -1,5 +1,6 @@
 package models;
 
+import models.chat.MerchantPort;
 import play.Logger;
 import play.libs.F.ArchivedEventStream;
 import play.libs.F.EventStream;
@@ -46,7 +47,13 @@ public class ChatRoom {
 		Logger.debug("current room mid is : %s, uid is %s, nickname is %s, leaved. user counts are %d.", this.mid, uid, user, socketNumber);
 		if (socketNumber == 0) {
 			ChatRoomFactory.rooms().remove(this.mid);
-			Logger.debug("room id is : %s, and remove room from ChatRoomFactory.", this.mid);
+			MerchantPort mp = MerchantPort.findByMid(this.mid);
+			if(mp != null){
+				mp.delete();
+				Logger.info("MerchantPort (mid:%s, port:%d) deleted.", mp.mid, mp.port);
+				
+			}
+			Logger.info("room id is : %s, and remove room from ChatRoomFactory.", this.mid);
 		}
 	}
 

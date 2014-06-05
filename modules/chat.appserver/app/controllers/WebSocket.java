@@ -9,6 +9,7 @@ import java.util.Map;
 
 import models.ChatRoom;
 import models.ChatRoomFactory;
+import models.chat.MerchantPort;
 import play.Logger;
 import play.Play;
 import play.data.validation.Required;
@@ -22,7 +23,6 @@ import play.mvc.WebSocketController;
 
 public class WebSocket extends Controller {
 
-	
 	public static void room(String user) {
 		render(user);
 	}
@@ -30,28 +30,34 @@ public class WebSocket extends Controller {
 	public static class ChatRoomSocket extends WebSocketController {
 		private static String roomUserLimit = Play.configuration.getProperty("room.user.limit");
 
-		public static void join(@Required String user,@Required String uid,@Required String mid,@Required String image) {
+		public static void join(@Required String user, @Required String uid, @Required String mid, @Required String image) {
 
-			if(validation.hasErrors()){
+			if (validation.hasErrors()) {
 				renderJSON(false);
 			}
-			
+
 			// Get chat room with mid
 			Map<String, ChatRoom> rooms = ChatRoomFactory.rooms();
-			
+
 			ChatRoom room = null;
-			if(rooms.get(mid) == null){
+			if (rooms.get(mid) == null) {
 				room = new ChatRoom(mid);
 				rooms.put(mid, room);
+				// 创建MerchantPort对象
+				MerchantPort mp = new MerchantPort();
+				mp.port = Long.parseLong(Play.configuration.get("http.port").toString());
+				mp.mid = mid;
+				mp.save();
+				Logger.info("MerchantPort(mid:%s, port:%d) created", mp.mid,mp.port);
 			} else {
 				room = rooms.get(mid);
 			}
-			
+
 			Logger.info("This server rooms counts are : %d. current room id is %s.", rooms.size(), room.mid);
-			if(room.socketNumber >= Integer.parseInt(roomUserLimit)){
+			if (room.socketNumber >= Integer.parseInt(roomUserLimit)) {
 				return;
 			}
-			
+
 			// Socket connected, join the chat room
 			EventStream<ChatRoom.Event> roomMessagesStream = room.join(user, uid, image);
 
@@ -60,7 +66,7 @@ public class WebSocket extends Controller {
 				// Wait for an event (either something coming on the inbound
 				// socket channel, or ChatRoom messages)
 				Either<WebSocketEvent, ChatRoom.Event> e = await(Promise.waitEither(inbound.nextEvent(), roomMessagesStream.nextEvent()));
-				
+
 				// Case: User typed 'quit'
 				for (String userMessage : TextFrame.and(Equals("quit")).match(e._1)) {
 					room.leave(user, uid, image);
@@ -73,7 +79,7 @@ public class WebSocket extends Controller {
 					Logger.debug("Got message -> %s:%s:%s:%s", user, uid, image, userMessage);
 					room.say(user, uid, image, userMessage);
 				}
- 
+
 				// Case: Someone joined the room
 				for (ChatRoom.Join joined : ClassOf(ChatRoom.Join.class).match(e._2)) {
 					outbound.send("join:%s", joined.user);
@@ -86,7 +92,7 @@ public class WebSocket extends Controller {
 
 				// Case: Someone left the room
 				for (ChatRoom.Leave left : ClassOf(ChatRoom.Leave.class).match(e._2)) {
-//					Logger.debug("leave:%s", left.user);
+					// Logger.debug("leave:%s", left.user);
 					outbound.send("leave:%s", left.user);
 				}
 
@@ -95,7 +101,7 @@ public class WebSocket extends Controller {
 					room.leave(user, uid, image);
 					disconnect();
 				}
-			} 
+			}
 		}
 	}
 }
