@@ -15,4 +15,14 @@ public class MerchantPort extends MerchantPortEntigy {
 		q.filter("mid", mid);
 		return q.first();
 	}
+
+	/**
+	 * 删除当前port（即当前chat server）的所有MerchantPort
+	 * @param port
+	 */
+	public static void deleteAllMerhcnatPortByPort(String port) {
+		MorphiaQuery q = MerchantPort.q();
+		q.filter("port", Long.parseLong(port));
+		q.delete();
+	}
 }
