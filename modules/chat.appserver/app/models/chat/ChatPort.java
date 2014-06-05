@@ -12,7 +12,7 @@ public class ChatPort extends ChatPortEntity {
 	 */
 	public static ChatPort findByPort(String port) {
 		MorphiaQuery q = ChatPort.q();
-		q.filter("port", port);
+		q.filter("port", Long.parseLong(port));
 		return q.first();
 	}
 }
