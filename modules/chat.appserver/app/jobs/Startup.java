@@ -4,7 +4,9 @@ import models.chat.ChatPort;
 import play.Logger;
 import play.Play;
 import play.jobs.Job;
+import play.jobs.OnApplicationStart;
 
+@OnApplicationStart
 public class Startup extends Job {
 
 	@Override
