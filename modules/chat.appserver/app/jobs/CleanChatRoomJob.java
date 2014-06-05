@@ -1,17 +1,24 @@
 package jobs;
 
 
+import java.util.Enumeration;
+import java.util.Iterator;
+
 import models.ChatRoomFactory;
 import play.Logger;
 import play.jobs.Job;
-import play.jobs.On;
+import play.jobs.OnApplicationStart;
 
 //每天2:00AM开始job
-@On("0 0 2 * * ?")
+//@On("0 0 2 * * ?")
+@OnApplicationStart
 public class CleanChatRoomJob extends Job {
 
 	@Override
 	public void doJob() throws Exception {
+		
+		Logger.debug("%s", play.Play.configuration.get("http.port"));
+		
 		Logger.info("start to clean chat rooms map");
 		Logger.info("current chat rooms size is : " + ChatRoomFactory.rooms().size());
 		long start = System.currentTimeMillis();

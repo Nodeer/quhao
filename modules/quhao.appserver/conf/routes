@@ -48,6 +48,10 @@ GET		/admin/app							backend.admin.AdminController.app
 POST	/admin/updateversion				backend.admin.AdminController.updateversion
 
 
+# Chat entry
+GET		/chat								ChatEntryController.redirect
+
+
 # Category
 GET		/allCategories						MerchantController.allCategories
 
