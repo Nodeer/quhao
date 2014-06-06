@@ -15,4 +15,14 @@ public class ChatPort extends ChatPortEntity {
 		q.filter("port", Long.parseLong(port));
 		return q.first();
 	}
+
+	/**
+	 * 更新此port对应的房间数
+	 * @param port
+	 */
+	public static void updateRoomCount(int roomCount, long port) {
+		ChatPort cp = findByPort(String.valueOf(port));
+		cp.rooms = roomCount;
+		cp.save();
+	}
 }
