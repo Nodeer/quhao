@@ -37,6 +37,7 @@ public class ReservationVO {
 	 * 大众点评评分
 	 */
 	public String dianpingFen;
+	public float averageCost;
 	public void build(Reservation r){
 		this.id = r.id();
 		this.accountId = r.accountId;
