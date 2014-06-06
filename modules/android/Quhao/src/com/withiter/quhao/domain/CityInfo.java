@@ -4,7 +4,7 @@ package com.withiter.quhao.domain;
  * 
  * 城市信息
  * 
- * @author Jazze
+ * @author Wang Jie Ze
  * 
  */
 public class CityInfo implements Comparable<CityInfo> {

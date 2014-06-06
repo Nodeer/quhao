@@ -83,7 +83,7 @@ public class MerchantChatRoomAdapter extends BaseAdapter {
 			holder.merchantAddress.setText(rvo.merchantAddress);
 			
 			final String mid = rvo.merchantId;
-			
+			final String merchantName = rvo.merchantName;
 			holder.layout.setOnClickListener(new OnClickListener() {
 				
 				@Override
@@ -100,6 +100,7 @@ public class MerchantChatRoomAdapter extends BaseAdapter {
 					intent.putExtra("image", image);
 					intent.putExtra("mid", mid);
 					intent.putExtra("user", QHClientApplication.getInstance().accountInfo.nickName);
+					intent.putExtra("merchantName", merchantName);
 					intent.setClass(activity, MerchantChatActivity.class);
 					activity.startActivity(intent);
 					activity.overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left); 

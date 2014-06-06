@@ -7,10 +7,10 @@ public class ChatVO {
 	public String name;
 	public String userId;
 	public String userImage;
-	public String msg;
+	public CharSequence msg;
 	public String msgFrom;
 	
-	public ChatVO(String type,String name,String userId,String userImage,String msg,String msgFrom)
+	public ChatVO(String type,String name,String userId,String userImage,CharSequence msg,String msgFrom)
 	{
 		this.type = type;
 		this.name = name;

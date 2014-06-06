@@ -8,8 +8,8 @@ import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 
 /**
- * 我的帖子、回复、收藏
- * @author Administrator
+ * 
+ * @author Wang Jie Ze
  *
  */
 public class CheckNicknameTask extends BaseTask {

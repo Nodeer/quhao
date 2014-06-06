@@ -9,9 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.withiter.quhao.R;
@@ -63,46 +61,16 @@ public class MerchantChatAdapter extends BaseAdapter {
 					case 0:
 						convertView = inflator.inflate(R.layout.chatting_item_msg_text_left, null);
 						left = new ViewHolderLeft();
-						left.joinLayout = (LinearLayout) convertView.findViewById(R.id.join_layout);
-						left.chatLayout = (RelativeLayout) convertView.findViewById(R.id.chat_layout);
 						left.userImage = (ImageView) convertView.findViewById(R.id.iv_userhead);
-						left.userName = (TextView) convertView.findViewById(R.id.tv_username);
 						left.content = (TextView) convertView.findViewById(R.id.tv_chatcontent);
-						left.joinName = (TextView) convertView.findViewById(R.id.tv_join);
-						
-						left.userName.setTag("userName_" + position);
-						left.userName.setText(chat.name);
-						
-						left.joinLayout.setTag("join_layout_" + position);
-						left.chatLayout.setTag("chat_layout_" + position);
-						left.userName.setTag("userName_" + position);
 						left.content.setTag("content_" + position);
+//						SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(activity, chat.msg);
+//						left.content.setText(spannableString);
+						left.content.setText(chat.msg);
 						
-						if ("join".equals(chat.type) || "leave".equals(chat.type)) 
+						if(StringUtils.isNotNull(chat.userImage) && chat.userImage.contains(QuhaoConstant.HTTP_URL))
 						{
-							left.joinLayout.setVisibility(View.VISIBLE);
-							left.chatLayout.setVisibility(View.GONE);
-							if("join".equals(chat.type))
-							{
-								left.joinName.setText(chat.name + "加入了");
-							}
-							else
-							{
-								left.joinName.setText(chat.name + "离开了");
-							}
-							
-						}
-						else
-						{
-							left.joinLayout.setVisibility(View.GONE);
-							left.chatLayout.setVisibility(View.VISIBLE);
-							if(StringUtils.isNotNull(chat.userImage) && chat.userImage.contains(QuhaoConstant.HTTP_URL))
-							{
-								AsynImageLoader.getInstance().showImageAsyn(left.userImage, position, chat.userImage, R.drawable.person_avatar);
-							}
-							
-							left.userName.setText(chat.name);
-							left.content.setText(chat.msg);
+							AsynImageLoader.getInstance().showImageAsyn(left.userImage, position, chat.userImage, R.drawable.person_avatar);
 						}
 						
 						convertView.setTag(left);
@@ -111,58 +79,21 @@ public class MerchantChatAdapter extends BaseAdapter {
 					case 1:
 						convertView = inflator.inflate(R.layout.chatting_item_msg_text_right, null);
 						right = new ViewHolderRight();
-						right.joinLayout = (LinearLayout) convertView.findViewById(R.id.join_layout);
-						right.chatLayout = (RelativeLayout) convertView.findViewById(R.id.chat_layout);
 						right.userImage = (ImageView) convertView.findViewById(R.id.iv_userhead);
-						right.userName = (TextView) convertView.findViewById(R.id.tv_username);
 						right.content = (TextView) convertView.findViewById(R.id.tv_chatcontent);
-						right.joinName = (TextView) convertView.findViewById(R.id.tv_join);
-						
-						right.userName.setTag("userName_" + position);
-						right.userName.setText(chat.name);
-						
-						right.joinLayout.setTag("join_layout_" + position);
-						right.chatLayout.setTag("chat_layout_" + position);
-						right.userName.setTag("userName_" + position);
 						right.content.setTag("content_" + position);
+//						SpannableString spannableString1 = FaceConversionUtil.getInstace().getExpressionString(activity, chat.msg);
+//						right.content.setText(spannableString1);
+						right.content.setText(chat.msg);
 						
-						if ("join".equals(chat.type) || "leave".equals(chat.type)) 
+						if(StringUtils.isNotNull(chat.userImage) && chat.userImage.contains(QuhaoConstant.HTTP_URL))
 						{
-							right.joinLayout.setVisibility(View.VISIBLE);
-							right.chatLayout.setVisibility(View.GONE);
-							if("join".equals(chat.type))
-							{
-								right.joinName.setText(chat.name + "加入了");
-							}
-							else
-							{
-								right.joinName.setText(chat.name + "离开了");
-							}
-							
-						}
-						else
-						{
-							right.joinLayout.setVisibility(View.GONE);
-							right.chatLayout.setVisibility(View.VISIBLE);
-							if(StringUtils.isNotNull(chat.userImage) && chat.userImage.contains(QuhaoConstant.HTTP_URL))
-							{
-								AsynImageLoader.getInstance().showImageAsyn(right.userImage, position, chat.userImage, R.id.person_avatar);
-							}
-							right.userName.setText(chat.name);
-							right.content.setText(chat.msg);
+							AsynImageLoader.getInstance().showImageAsyn(right.userImage, position, chat.userImage, R.id.person_avatar);
 						}
 						
 						convertView.setTag(right);
 						break;
 				}
-//				if("server".equals(chat.msgFrom))
-//				{
-//					convertView = inflator.inflate(R.layout.chatting_item_msg_text_left, null);
-//				}
-//				else
-//				{
-//					convertView = inflator.inflate(R.layout.chatting_item_msg_text_right, null);
-//				}
 				
 			}else
 			{
@@ -171,88 +102,32 @@ public class MerchantChatAdapter extends BaseAdapter {
 					case 0:
 						left = (ViewHolderLeft) convertView.getTag();
 						
-						left.userName.setTag("userName_" + position);
-						left.userName.setText(chat.name);
-						
-						left.joinLayout.setTag("join_layout_" + position);
-						left.chatLayout.setTag("chat_layout_" + position);
-						left.userName.setTag("userName_" + position);
+						if(StringUtils.isNotNull(chat.userImage) && chat.userImage.contains(QuhaoConstant.HTTP_URL))
+						{
+							AsynImageLoader.getInstance().showImageAsyn(left.userImage, position, chat.userImage, R.id.person_avatar);
+						}
 						left.content.setTag("content_" + position);
-						
-						if ("join".equals(chat.type) || "leave".equals(chat.type)) 
-						{
-							left.joinLayout.setVisibility(View.VISIBLE);
-							left.chatLayout.setVisibility(View.GONE);
-							if("join".equals(chat.type))
-							{
-								left.joinName.setText(chat.name + "加入了");
-							}
-							else
-							{
-								left.joinName.setText(chat.name + "离开了");
-							}
-							
-						}
-						else
-						{
-							left.joinLayout.setVisibility(View.GONE);
-							left.chatLayout.setVisibility(View.VISIBLE);
-//							AsynImageLoader.getInstance().showImageAsyn(left.userImage, position, chat.userImage, R.id.person_avatar);
-							if(StringUtils.isNotNull(chat.userImage) && chat.userImage.contains(QuhaoConstant.HTTP_URL))
-							{
-								AsynImageLoader.getInstance().showImageAsyn(left.userImage, position, chat.userImage, R.id.person_avatar);
-							}
-							left.userName.setText(chat.name);
-							left.content.setText(chat.msg);
-						}
-						
-//						convertView.setTag(left);
+//						SpannableString spannableString2 = FaceConversionUtil.getInstace().getExpressionString(activity, chat.msg);
+//						left.content.setText(spannableString2);
+						left.content.setText(chat.msg);
 						
 						break;
 					case 1:
 						right = (ViewHolderRight) convertView.getTag();
-						right.userName.setTag("userName_" + position);
-						right.userName.setText(chat.name);
 						
-						right.joinLayout.setTag("join_layout_" + position);
-						right.chatLayout.setTag("chat_layout_" + position);
-						right.userName.setTag("userName_" + position);
 						right.content.setTag("content_" + position);
+//						SpannableString spannableString3 = FaceConversionUtil.getInstace().getExpressionString(activity, chat.msg);
+//						right.content.setText(spannableString3);
+						right.content.setText(chat.msg);
 						
-						if ("join".equals(chat.type) || "leave".equals(chat.type)) 
+						if(StringUtils.isNotNull(chat.userImage) && chat.userImage.contains(QuhaoConstant.HTTP_URL))
 						{
-							right.joinLayout.setVisibility(View.VISIBLE);
-							right.chatLayout.setVisibility(View.GONE);
-							if("join".equals(chat.type))
-							{
-								right.joinName.setText(chat.name + "加入了");
-							}
-							else
-							{
-								right.joinName.setText(chat.name + "离开了");
-							}
-							
-						}
-						else
-						{
-							right.joinLayout.setVisibility(View.GONE);
-							right.chatLayout.setVisibility(View.VISIBLE);
-//							AsynImageLoader.getInstance().showImageAsyn(right.userImage, position, chat.userImage, R.id.person_avatar);
-							if(StringUtils.isNotNull(chat.userImage) && chat.userImage.contains(QuhaoConstant.HTTP_URL))
-							{
-								AsynImageLoader.getInstance().showImageAsyn(right.userImage, position, chat.userImage, R.id.person_avatar);
-							}
-							right.userName.setText(chat.name);
-							right.content.setText(chat.msg);
+							AsynImageLoader.getInstance().showImageAsyn(right.userImage, position, chat.userImage, R.id.person_avatar);
 						}
 						
-//						convertView.setTag(right);
 						break;
 				}
 			}
-//			if (holder == null) {
-//				
-//			}
 
 			return convertView;
 		}
@@ -275,21 +150,13 @@ public class MerchantChatAdapter extends BaseAdapter {
 	}
 	
 	class ViewHolderLeft {
-		LinearLayout joinLayout;
-		RelativeLayout chatLayout;
 		ImageView userImage;
 		TextView content;
-		TextView userName;
-		TextView joinName;
 	}
 	
 	class ViewHolderRight {
-		LinearLayout joinLayout;
-		RelativeLayout chatLayout;
 		ImageView userImage;
 		TextView content;
-		TextView userName;
-		TextView joinName;
 	}
 	
 }

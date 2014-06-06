@@ -69,6 +69,8 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 	 */
 	private Button cancelBtn;
 	
+	private int clickNum;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -90,6 +92,12 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 		
 		deleteLayout = (LinearLayout) this.findViewById(R.id.deleteMenuLayout);
 		deleteLayout.setVisibility(View.GONE);
+		deleteLayout.setVisibility(View.GONE);
+		QuhaoHistoryStatesActivity.this.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
+		QuhaoHistoryStatesActivity.this.findViewById(R.id.serverdata).setVisibility(View.GONE);
+		reservations = new ArrayList<ReservationVO>();
+		
+		initData();
 //		initData();
 	}
 
@@ -186,6 +194,7 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 	@Override
 	public void onClick(View v) {
 
+		Log.e(TAG, "onclick before : " + isClick + " , clickNum : " + (++clickNum));
 		if(isClick)
 		{
 			return;
@@ -193,6 +202,7 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 		
 		isClick = true;
 		
+		Log.e(TAG, "onclick after : " + isClick);
 		switch(v.getId())
 		{
 		case R.id.btn_delete:
@@ -238,7 +248,7 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 						}
 						reservationForPaiduiAdapter.rvos = reservations;
 						reservationForPaiduiAdapter.notifyDataSetChanged();
-						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 500);
 						Toast.makeText(QuhaoHistoryStatesActivity.this, R.string.delete_success, Toast.LENGTH_SHORT).show();
 					}
 					
@@ -255,7 +265,7 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 						reservationForPaiduiAdapter.rvos = reservations;
 						reservationForPaiduiAdapter.notifyDataSetChanged();
 						Toast.makeText(QuhaoHistoryStatesActivity.this, R.string.delete_failed, Toast.LENGTH_SHORT).show();
-						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 500);
 					}
 				});
 				
@@ -268,7 +278,7 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 				deleteLayout.setVisibility(View.VISIBLE);
 				reservationForPaiduiAdapter.isShowDelete = "true";
 				reservationForPaiduiAdapter.notifyDataSetChanged();
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 500);
 			}
 			
 			break;
@@ -291,7 +301,7 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 				}
 				
 			}
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 500);
 			break;
 		case R.id.bt_deselectall:
 			if(null!=reservationForPaiduiAdapter && "true".equals(reservationForPaiduiAdapter.isShowDelete))
@@ -319,7 +329,7 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 				}
 				
 			}
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 500);
 			break;
 		case R.id.bt_cancel:
 			if(null!=reservationForPaiduiAdapter && "true".equals(reservationForPaiduiAdapter.isShowDelete))
@@ -342,10 +352,10 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 				}
 				
 			}
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 500);
 			break;
 		default:
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 500);
 			break;
 		}
 	}
@@ -358,11 +368,6 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 	@Override
 	protected void onResume() {
 		backClicked = false;
-		deleteLayout.setVisibility(View.GONE);
-		QuhaoHistoryStatesActivity.this.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
-		QuhaoHistoryStatesActivity.this.findViewById(R.id.serverdata).setVisibility(View.GONE);
-		reservations = new ArrayList<ReservationVO>();
-		initData();
 		super.onResume();
 	}
 
