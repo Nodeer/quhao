@@ -38,7 +38,7 @@ public class CommentVO {
 		commentVO.accountId = comment.accountId;
 		commentVO.nickName = comment.nickName;
 		commentVO.mid = comment.mid;
-		commentVO.averageCost = comment.averageCost;
+		commentVO.averageCost = String.valueOf(comment.averageCost);
 		commentVO.xingjiabi = comment.xingjiabi;
 		commentVO.kouwei = comment.kouwei;
 		commentVO.huanjing = comment.huanjing;

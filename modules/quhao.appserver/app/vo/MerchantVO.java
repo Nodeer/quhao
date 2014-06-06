@@ -125,7 +125,7 @@ public class MerchantVO {
 	public static MerchantVO build(Merchant m, Comment c) {
 		MerchantVO vo = build(m);
 		
-		vo.commentAverageCost = c.averageCost;
+		vo.commentAverageCost = String.valueOf(c.averageCost);
 		vo.commentContent = StringUtils.isEmpty(c.content) ? "暂无评论" : c.content;
 		vo.commentDate = StringUtils.isEmpty(c.content) ? "" : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(c.modified);
 		vo.commentFuwu = c.fuwu;

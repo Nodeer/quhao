@@ -192,7 +192,7 @@ public class TestController extends BaseController {
 		comment.accountId = "5291bc7378a34c9ba73d1a3f";
 		comment.nickName = "jazze";
 		comment.mid = "5291bd8478a34c9ba73d1a40";
-		comment.averageCost = "50";
+		comment.averageCost = 50;
 		comment.xingjiabi = 2;
 		comment.kouwei = 3;
 		comment.fuwu = 5;
@@ -206,7 +206,7 @@ public class TestController extends BaseController {
 		comment1.accountId = "5291bc7378a34c9ba73d1a3f";
 		comment1.nickName = "jazze";
 		comment1.mid = "5291ac9978a30fc8b8e54d9d";
-		comment1.averageCost = "50";
+		comment1.averageCost = 50;
 		comment1.xingjiabi = 5;
 		comment1.kouwei = 4;
 		comment1.fuwu = 5;
@@ -221,7 +221,7 @@ public class TestController extends BaseController {
 			comment3.accountId = "5291bc7378a34c9ba73d1a3f";
 			comment3.nickName = "jazze";
 			comment3.mid = "5291bd8478a34c9ba73d1a40";
-			comment3.averageCost = "50";
+			comment3.averageCost = 50;
 			comment3.xingjiabi = 5;
 			comment3.kouwei = 4;
 			comment3.fuwu = 5;

@@ -67,7 +67,7 @@ public class AccountController extends BaseController {
 		} else {
 			MerchantAccount account = MerchantAccount.findByEmail(email);
 			
-			// update account last login datews
+			// update account last login date
 			account.lastLogin = new Date();
 			account.save();
 			avo = MerchantAccountVO.build(account);

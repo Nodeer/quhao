@@ -15,7 +15,7 @@ public abstract class CommentEntityDef extends BaseModel {
 	public String mid;
 	
 	public String rid;
-	public String averageCost ;
+	public int averageCost ;
 	public int xingjiabi = 0;
 	public int kouwei = 0;
 	public int huanjing = 0;
