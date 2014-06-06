@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import notifiers.MailsController;
+import play.Logger;
 import play.modules.morphia.Model.MorphiaQuery;
 
 import com.withiter.common.Constants.CreditStatus;
@@ -14,6 +15,7 @@ import com.withiter.models.account.Credit;
 import com.withiter.models.account.Reservation;
 import com.withiter.models.merchant.Comment;
 import com.withiter.models.merchant.Haoma;
+import com.withiter.utils.ExceptionUtil;
 
 public class TestController extends BaseController {
 
@@ -134,8 +136,8 @@ public class TestController extends BaseController {
 			t3.join();
 			t4.join();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Logger.debug("QuhaoException: %s", ExceptionUtil.getTrace(e));
 		}
 
 		renderJSON(results);

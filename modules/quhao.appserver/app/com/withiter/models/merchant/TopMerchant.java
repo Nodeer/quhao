@@ -167,7 +167,6 @@ public class TopMerchant extends TopMerchantEntityDef {
 		MorphiaQuery q1 = TopMerchant.q();
 		Date now = new Date();
 		q1.filter("start <", now).filter("end >", now);
-		System.out.println(q1.count());
 		MorphiaUpdateOperations oo = TopMerchant.o();
 		oo.set("enable", true);
 		oo.update(q1);

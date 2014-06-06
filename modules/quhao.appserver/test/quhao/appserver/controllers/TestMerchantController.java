@@ -21,6 +21,8 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 
+import play.Logger;
+
 import com.mongodb.DB;
 import com.mongodb.DBAddress;
 import com.mongodb.DBCollection;
@@ -28,21 +30,22 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
 import com.withiter.common.httprequest.CommonHTTPRequest;
+import com.withiter.utils.ExceptionUtil;
 import com.withiter.utils.StringUtils;
 
 /**
  * @author user
- *
+ * 
  */
-public class TestMerchantController {//extends FunctionalTest{
+public class TestMerchantController {// extends FunctionalTest{
 	public static void main(String[] args) {
-		
+
 		DBAddress addr = null;
 		try {
 			addr = new DBAddress("localhost", "quhao-dev-db");
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Logger.debug("QuhaoException: %s", ExceptionUtil.getTrace(e));
 		}
 		DB db = Mongo.connect(addr);
 		DBCollection col = db.getCollection("Account");
@@ -52,19 +55,18 @@ public class TestMerchantController {//extends FunctionalTest{
 		while (cursor.hasNext()) {
 			DBObject account = cursor.next();
 			String phone = account.get("phone").toString();
-			System.out.println(phone);
-			if(phone.equals("18817261072")){
+			if (phone.equals("18817261072")) {
 				String aid = account.get("_id").toString();
 				testPhone = aid;
-				if(accounts.size() == 5){
+				if (accounts.size() == 5) {
 					break;
 				} else {
 					continue;
 				}
 			}
 			int jifen = Integer.parseInt(account.get("jifen").toString());
-			if(jifen > 0){
-				if(accounts.size() == 5){
+			if (jifen > 0) {
+				if (accounts.size() == 5) {
 					continue;
 				}
 				String aid = account.get("_id").toString();
@@ -72,100 +74,19 @@ public class TestMerchantController {//extends FunctionalTest{
 			}
 		}
 		accounts.add(testPhone);
-		System.out.println(accounts.size());
-		
-//		MorphiaQuery q = Account.q();
-//		q.filter("enable", true).filter("jifen > ", 0);
-//		if(q.count() >  6){
-//			accounts = (List<Account>) q.limit(6);
-//		} else {
-//			accounts = q.asList();
-//		}
-		
-//		MorphiaQuery qMerchant = Merchant.q();
-//		qMerchant.filter("name", "望湘园").limit(1); // hard code for test
-//		Merchant m = qMerchant.first();
 		String merchantId = "52e3c726036431505d9a9e20";
 		int seatNo = 13; // hard code for test
-		
-		for(int i = 0; i < accounts.size(); i++){
+
+		for (int i = 0; i < accounts.size(); i++) {
 			String accountId = accounts.get(i);
-			
+
 			String buf = get("/nahao?accountId=" + accountId + "&mid=" + merchantId + "&seatNumber=" + seatNo);
-			System.out.println(buf);
 			if (StringUtils.isEmpty(buf)) {
 			} else {
 			}
 		}
 	}
 
-//	@Before
-//	public void setUp() {
-////	    Fixtures.deleteDatabase();
-//	    Fixtures.loadModels("/quhao/appserver/controllers/merchant.yml");
-//	}
-	
-	/**
-	 * Test method for {@link controllers.MerchantController#nahao(java.lang.String, java.lang.String, int)}.
-	 */
-//	@Test
-//	public void testNahao() {
-//		
-////		Response response = GET("/");
-////        assertIsOk(response);
-////        assertContentType("text/html", response);
-////        assertCharset(play.Play.defaultWebEncoding, response);
-//        
-//        
-//        
-//        MorphiaQuery q = Account.q();
-////        System.out.println(q.count());
-//		q.filter("enable", true).filter("jifen > ", 0);
-//		List<Account> accounts = null;
-//		if(q.count() >  6){
-//			accounts = q.limit(6).asList();
-//		} else {
-//			accounts = q.asList();
-//		}
-//		
-////		MorphiaQuery qMerchant = Merchant.q();
-////		System.out.println(qMerchant.count());
-////		qMerchant.criteria("name").equal("望湘园"); // hard code for test
-////		qMerchant.limit(1);
-////		System.out.println(qMerchant.count());
-////		Merchant m = qMerchant.first();
-//		String merchantId = "52e3c726036431505d9a9e20";
-//		String seatNo = "1"; // hard code for test
-//		
-//		for(int i = 0; i < accounts.size(); i++){
-//			Account account =  accounts.get(i);
-//			System.out.println(account.phone);
-//			String accountId = account.id();
-//			System.out.println(accountId);
-//			
-////			Map<String, String> args = new HashMap<String, String>();
-////			args.put("accountId", accountId);
-////			args.put("mid", merchantId);
-////			args.put("seatNumber", seatNo);
-////			args.put("user-agent", "QuhaoAndroid");
-////			
-//			
-////			Response response = POST("/nahao", args);
-//			Request r = newRequest();
-//			Http.Header header = new Http.Header("user-agent", "QuhaoAndroid");
-//			r.headers.put("user-agent", header);
-//			Response response = GET(r,"/nahao?accountId=" + accountId + "&mid=" + merchantId + "&seatNumber=" + seatNo);
-//			assertStatus(200, response);
-//			String buf = response.toString();
-////			String buf = CommonHTTPRequest.get("nahao?accountId=" + accountId + "&mid=" + merchantId + "&seatNumber=" + seatNo);
-//			System.out.println(buf);
-//			if (StringUtils.isEmpty(buf)) {
-//			} else {
-//			}
-//		}
-//		
-//	}
-	
 	/**
 	 * A HTTP request(GET) with given URL
 	 * 
@@ -178,16 +99,17 @@ public class TestMerchantController {//extends FunctionalTest{
 		String httpUrl = "http://localhost:9081" + url;
 		System.out.println(httpUrl);
 		try {
-//			httpUrl = encodeURL(httpUrl);
 			HttpGet request = new HttpGet(httpUrl);
 			request.setHeader("user-agent", "QuhaoAndroid");
 
 			HttpParams httpParameters = new BasicHttpParams();
-			// Set the timeout in milliseconds until a connection is established.
+			// Set the timeout in milliseconds until a connection is
+			// established.
 			int timeoutConnection = 10 * 1000;
 			HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
 
-			// Set the default socket timeout in milliseconds which is the timeout
+			// Set the default socket timeout in milliseconds which is the
+			// timeout
 			// for waiting for data.
 			int timeoutSocket = 10 * 1000;
 			HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
@@ -198,21 +120,20 @@ public class TestMerchantController {//extends FunctionalTest{
 				result = EntityUtils.toString(response.getEntity());
 			}
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Logger.debug("QuhaoException: %s", ExceptionUtil.getTrace(e));
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Logger.debug("QuhaoException: %s", ExceptionUtil.getTrace(e));
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Logger.debug("QuhaoException: %s", ExceptionUtil.getTrace(e));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Logger.debug("QuhaoException: %s", ExceptionUtil.getTrace(e));
 		}
 
 		return result;
 	}
-
 
 }

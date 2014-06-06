@@ -193,14 +193,14 @@ public class SMSBusiness {
 				new NameValuePair("smsText", "您在quhao.com注册的网站动态密码是：123456") };
 		post.setRequestBody(data);
 		client.executeMethod(post);
-		Header[] headers = post.getResponseHeaders();
-		int statusCode = post.getStatusCode();
-		System.out.println("statusCode:" + statusCode);
-		for (Header h : headers) {
-			System.out.println(h.toString());
-		}
-		String result = new String(post.getResponseBodyAsString().getBytes("gbk"));
-		System.out.println(result);
+//		Header[] headers = post.getResponseHeaders();
+//		int statusCode = post.getStatusCode();
+//		System.out.println("statusCode:" + statusCode);
+//		for (Header h : headers) {
+//			System.out.println(h.toString());
+//		}
+//		String result = new String(post.getResponseBodyAsString().getBytes("gbk"));
+//		System.out.println(result);
 
 		post.releaseConnection();
 	}

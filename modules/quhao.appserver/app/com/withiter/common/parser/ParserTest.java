@@ -214,7 +214,7 @@ public class ParserTest {
 	 * @throws IOException
 	 */
 	private static void parseListChild(String url) throws IOException {
-		System.out.println("child url: " + url);
+//		System.out.println("child url: " + url);
 		Connection conn = Jsoup.connect(url);
 		conn.timeout(0);
 		Document doc = conn.get();
@@ -224,7 +224,7 @@ public class ParserTest {
 		doc = Jsoup.parse(docHtml);
 
 		Elements es = doc.select("li[class=clearfix place-item]");
-		System.out.println("es size: " + es.size());
+//		System.out.println("es size: " + es.size());
 
 		for (Element e : es) {
 			Merchant m = new Merchant();
@@ -233,7 +233,7 @@ public class ParserTest {
 			Elements imageDiv = e.select("div[class=photo]");
 			Elements imageNode = imageDiv.select("img");
 			String src = imageNode.attr("src");
-			System.out.println("src:" + src);
+//			System.out.println("src:" + src);
 
 			Elements titleDiv = e.select("div[class=clearfix]");
 			m.name = titleDiv.text();
