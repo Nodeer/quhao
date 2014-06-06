@@ -25,10 +25,7 @@ public class ChatPort extends ChatPortEntity {
 	public static ChatPort findOne() {
 		long limit = Long.parseLong(Play.configuration.get("chatserver.room.limit").toString());
 		MorphiaQuery q = ChatPort.q();
-		
-		//TODO debug only, remove
-		q.filter("rooms <", 3);
-//		q.filter("rooms <", limit);
+		q.filter("rooms <", limit);
 		return q.first();
 	}
 }
