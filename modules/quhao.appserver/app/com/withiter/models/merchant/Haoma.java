@@ -151,16 +151,10 @@ public class Haoma extends HaomaEntityDef {
 	}
 
 	/**
-	 * 拿号（同步方法）
-	 * 
-	 * @param accountId
-	 *            用户id
-	 * @param mid
-	 *            商家id
-	 * @param seatNumber
-	 *            座位数
-	 * @return Reservation
+	 * 现场拿号失败，返回（同步方法）
+	 * @param reservation
 	 */
+	@Deprecated
 	public synchronized static void nahaoRollback(Reservation reservation) {
 		Haoma haoma = Haoma.findByMerchantId(reservation.merchantId);
 		Paidui paidui = haoma.haomaMap.get(reservation.seatNumber);
@@ -326,7 +320,6 @@ public class Haoma extends HaomaEntityDef {
 				this.save();
 			}
 		}
-
 		logger.debug("merchant id: " + this.merchantId + ", no paidui: " + this.noNeedPaidui);
 	}
 	

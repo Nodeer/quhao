@@ -46,29 +46,9 @@ public class Reservation extends ReservationEntityDef {
 	 * @param index 第index个reservation
 	 * @return Reservation
 	 */
-	public static Reservation findReservationForSMSRemind(String merchantId, int seatNumber, int index){
+	public static Reservation findReservationForSMSRemind(String merchantId, int seatNumber, int index, long version){
 		MorphiaQuery q = Reservation.q();
-		Merchant m = Merchant.findByMid(merchantId);
-
-		Calendar c = Calendar.getInstance();
-		String openTime = m.openTime;
-		int openTimeHour = Integer.parseInt(openTime.split(":")[0]);
-		c.set(Calendar.AM_PM, Calendar.AM);
-		c.set(Calendar.HOUR, openTimeHour);
-		c.set(Calendar.MINUTE, 0);
-		c.set(Calendar.SECOND, 0);
-		
-		Calendar c2 = Calendar.getInstance();
-		String closeTime = m.closeTime;
-		int closeTimeHour = Integer.parseInt(closeTime.split(":")[0]);
-		c.set(Calendar.AM_PM, Calendar.AM);
-		c.set(Calendar.HOUR, closeTimeHour);
-		c.set(Calendar.MINUTE, 0);
-		c.set(Calendar.SECOND, 0);
-		
-		// query latest one day's reservation
-		q.filter("created >", c.getTime());
-		q.filter("created <", c2.getTime());
+		q.filter("version", version);
 		q.filter("merchantId", merchantId).filter("seatNumber", seatNumber);
 		q.filter("valid", true);
 		
@@ -360,16 +340,18 @@ public class Reservation extends ReservationEntityDef {
 	 * @return
 	 */
 	public static long findCountBetweenCurrentNoAndMyNumber(String mid, int currentNo, int myNumber, int seatNumber, long version) {
-		MorphiaQuery q1 = Reservation.q();
-		q1.filter("version", version);
-		Reservation rese = q1.filter("seatNumber", seatNumber).filter("myNumber =" , currentNo).order("-created").first();
 		
+		// TODO remove below code, test first
+//		MorphiaQuery q1 = Reservation.q();
+//		q1.filter("version", version);
+//		Reservation rese = q1.filter("seatNumber", seatNumber).filter("myNumber =" , currentNo).order("-created").first();
+
 		MorphiaQuery q = Reservation.q();
 		q.filter("version", version);
 		q.filter("seatNumber", seatNumber).filter("merchantId", mid).filter("status", "canceled").filter("myNumber <" , myNumber).filter("myNumber >" , currentNo);
-		if(rese != null){
-			q.filter("created >=", rese.created);
-		}
+//		if(rese != null){
+//			q.filter("created >=", rese.created);
+//		}
 		return q.count();
 	}
 
@@ -384,7 +366,6 @@ public class Reservation extends ReservationEntityDef {
 	public static Reservation findReservationForHandle(int seatNumber, int currentNumber, String mid, long version) {
 		MorphiaQuery q = Reservation.q();
 		q.filter("version", version);
-//		q.filter("created >", (new DateTime(System.currentTimeMillis() - 1000l * 60 * 60 * 24).toDate()));
 		q.filter("merchantId", mid).filter("status", "active");
 		q.filter("seatNumber", seatNumber).filter("myNumber", currentNumber);
 		return q.first();
@@ -423,46 +404,11 @@ public class Reservation extends ReservationEntityDef {
 	}
 	
 	public static Reservation queryForCancel(String merchantId, int seatNumber, int currentNumber, long version){
-//		Merchant m = Merchant.findByMid(merchantId);
-//		
-//		// 查询出商家更新信息的时间
-//		Date newestDate = m.modified;
-//		MorphiaQuery q = Reservation.q();
-//		
-//		q.filter("created >=", (new DateTime(newestDate).toDate()));
-//		q.filter("merchantId", merchantId).filter("seatNumber", seatNumber);
-//		q.filter("myNumber =", currentNumber);
-//		q.order("-created");
-//		
-//		return q.first();
-		
-		
 		MorphiaQuery q = Reservation.q();
-// 		Merchant m = Merchant.findByMid(merchantId);
- 		
  		q.filter("version", version);
  		q.filter("merchantId", merchantId);
-// 		q.filter("status !=","invalidByMerchantUpdate");
  		q.filter("seatNumber", seatNumber);
  		q.filter("myNumber =", currentNumber);
- 		
-
-//		Calendar c = Calendar.getInstance();
-//		String openTime = m.openTime;
-//		int openTimeHour = Integer.parseInt(openTime.split(":")[0]);
-//		c.set(Calendar.AM_PM, Calendar.AM);
-//		c.set(Calendar.HOUR, openTimeHour);
-//		c.set(Calendar.MINUTE, 0);
-//		c.set(Calendar.SECOND, 0);
-// 		
-//		q.filter("created >", (new DateTime(c.getTimeInMillis()).toDate()));
-// 		q.filter("merchantId", merchantId).filter("seatNumber", seatNumber);
-//		q.filter("status !=","invalidByMerchantUpdate");
-//		
-// 		q.filter("myNumber =", currentNumber);
-//		q.order("myNumber").limit(1);
-//		q.order("-created");
-		
  		return q.first();
 	}
 	

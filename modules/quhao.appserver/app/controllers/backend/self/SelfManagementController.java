@@ -362,7 +362,7 @@ public class SelfManagementController extends BaseController {
 			if (r != null) {
 				boolean flag = Reservation.finish(r.id());
 				haoma.updateSelf();
-				smsRemind(mid, seatNumber);
+				smsRemind(mid, seatNumber, haoma.version);
 				renderJSON(flag);
 			} else {
 				renderJSON(false);
@@ -390,8 +390,7 @@ public class SelfManagementController extends BaseController {
 			if (r != null) {
 				boolean flag = Reservation.expire(r.id());
 				haoma.updateSelf();
-
-				smsRemind(mid, seatNumber);
+				smsRemind(mid, seatNumber, haoma.version);
 				renderJSON(flag);
 			} else {
 				renderJSON(false);
@@ -399,8 +398,8 @@ public class SelfManagementController extends BaseController {
 		}
 	}
 
-	private static void smsRemind(String mid, int seatNumber) {
-		Reservation r = Reservation.findReservationForSMSRemind(mid, seatNumber, 4);
+	private static void smsRemind(String mid, int seatNumber, long version) {
+		Reservation r = Reservation.findReservationForSMSRemind(mid, seatNumber, 4, version);
 		if (r == null) {
 			return;
 		}
@@ -435,73 +434,75 @@ public class SelfManagementController extends BaseController {
 	 * 现场输入手机号取号
 	 */
 	public static void quhaoOnsite() {
-		String tel = params.get("tel");
-		String seatN = params.get("seatNumber");
-		String mid = params.get("mid");
-
-		ReservationVO rvo = new ReservationVO();
-		if (StringUtils.isEmpty(tel) || StringUtils.isEmpty(seatN) || StringUtils.isEmpty(mid)) {
-			rvo.tipKey = false;
-			rvo.tipValue = "NAHAO_FAILED";
+		synchronized (SelfManagementController.class) {
+			String tel = params.get("tel");
+			String seatN = params.get("seatNumber");
+			String mid = params.get("mid");
+			
+			ReservationVO rvo = new ReservationVO();
+			if (StringUtils.isEmpty(tel) || StringUtils.isEmpty(seatN) || StringUtils.isEmpty(mid)) {
+				rvo.tipKey = false;
+				rvo.tipValue = "NAHAO_FAILED";
+				renderJSON(rvo);
+			}
+			
+			Account account = Account.findByPhone(tel);
+			if (account == null) {
+				Account a = new Account();
+				a.phone = tel;
+				a.save();
+			}
+			
+			int seatNumber = Integer.parseInt(seatN);
+			Reservation reservation = Haoma.nahao(null, mid, seatNumber, tel);
+			Haoma haomaNew = Haoma.findByMerchantId(mid);
+			
+			rvo.currentNumber = haomaNew.haomaMap.get(seatNumber).currentNumber;
+			int cancelCount = (int) Reservation.findCountBetweenCurrentNoAndMyNumber(mid, haomaNew.haomaMap.get(seatNumber).currentNumber, reservation.myNumber, seatNumber, haomaNew.version);
+			rvo.beforeYou = reservation.myNumber - (haomaNew.haomaMap.get(seatNumber).currentNumber + cancelCount);
+			rvo.tipKey = true;
+			rvo.tipValue = "NAHAO_SUCCESS";
+			rvo.build(reservation);
+			
+			// send message
+			String paiduihaoTip = Play.configuration.getProperty("service.sms.paiduihao");
+			String qianmianTip = Play.configuration.getProperty("service.sms.qianmian");
+			String apptuijian = Play.configuration.getProperty("service.sms.apptuijian");
+			String apptuijian1 = Play.configuration.getProperty("service.sms.apptuijian1");
+			String content = "";
+			if(rvo.beforeYou <= 5){
+				content = paiduihaoTip + reservation.myNumber + qianmianTip + rvo.beforeYou + apptuijian1;
+			} else {
+				content = paiduihaoTip + reservation.myNumber + qianmianTip + rvo.beforeYou + apptuijian;
+			}
+			try {
+				int i = SMSBusiness.sendSMS(tel, content);
+				int j = 0;
+				while (i < 0) {
+					i = SMSBusiness.sendSMS(tel, content);
+					j++;
+					if (j == 3) {
+//						Haoma.nahaoRollback(reservation);
+						rvo.tipValue = "发送短信失败，请重新发送";
+						rvo.tipKey = false;
+						break;
+					}
+				}
+			} catch (HttpException e) {
+//				Haoma.nahaoRollback(reservation);
+				rvo.tipValue = "发送短信失败，请重新发送";
+				rvo.tipKey = false;
+				e.printStackTrace();
+				logger.error(ExceptionUtil.getTrace(e));
+			} catch (IOException e) {
+//				Haoma.nahaoRollback(reservation);
+				rvo.tipValue = "发送短信失败，请重新发送";
+				rvo.tipKey = false;
+				e.printStackTrace();
+				logger.error(ExceptionUtil.getTrace(e));
+			}
 			renderJSON(rvo);
 		}
-
-		Account account = Account.findByPhone(tel);
-		if (account == null) {
-			Account a = new Account();
-			a.phone = tel;
-			a.save();
-		}
-
-		int seatNumber = Integer.parseInt(seatN);
-		Reservation reservation = Haoma.nahao(null, mid, seatNumber, tel);
-		Haoma haomaNew = Haoma.findByMerchantId(mid);
-
-		rvo.currentNumber = haomaNew.haomaMap.get(seatNumber).currentNumber;
-		int cancelCount = (int) Reservation.findCountBetweenCurrentNoAndMyNumber(mid, haomaNew.haomaMap.get(seatNumber).currentNumber, reservation.myNumber, seatNumber, haomaNew.version);
-		rvo.beforeYou = reservation.myNumber - (haomaNew.haomaMap.get(seatNumber).currentNumber + cancelCount);
-		rvo.tipKey = true;
-		rvo.tipValue = "NAHAO_SUCCESS";
-		rvo.build(reservation);
-
-		// send message
-		String paiduihaoTip = Play.configuration.getProperty("service.sms.paiduihao");
-		String qianmianTip = Play.configuration.getProperty("service.sms.qianmian");
-		String apptuijian = Play.configuration.getProperty("service.sms.apptuijian");
-		String apptuijian1 = Play.configuration.getProperty("service.sms.apptuijian1");
-		String content = "";
-		if(rvo.beforeYou <= 5){
-			content = paiduihaoTip + reservation.myNumber + qianmianTip + rvo.beforeYou + apptuijian1;
-		} else {
-			content = paiduihaoTip + reservation.myNumber + qianmianTip + rvo.beforeYou + apptuijian;
-		}
-		try {
-			int i = SMSBusiness.sendSMS(tel, content);
-			int j = 0;
-			while (i < 0) {
-				i = SMSBusiness.sendSMS(tel, content);
-				j++;
-				if (j == 3) {
-					Haoma.nahaoRollback(reservation);
-					rvo.tipValue = "发送短信失败，请重新发送";
-					rvo.tipKey = false;
-					break;
-				}
-			}
-		} catch (HttpException e) {
-			Haoma.nahaoRollback(reservation);
-			rvo.tipValue = "发送短信失败，请重新发送";
-			rvo.tipKey = false;
-			e.printStackTrace();
-			logger.error(ExceptionUtil.getTrace(e));
-		} catch (IOException e) {
-			Haoma.nahaoRollback(reservation);
-			rvo.tipValue = "发送短信失败，请重新发送";
-			rvo.tipKey = false;
-			e.printStackTrace();
-			logger.error(ExceptionUtil.getTrace(e));
-		}
-		renderJSON(rvo);
 	}
 
 	/**
