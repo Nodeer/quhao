@@ -468,7 +468,13 @@ public class SelfManagementController extends BaseController {
 		String paiduihaoTip = Play.configuration.getProperty("service.sms.paiduihao");
 		String qianmianTip = Play.configuration.getProperty("service.sms.qianmian");
 		String apptuijian = Play.configuration.getProperty("service.sms.apptuijian");
-		String content = paiduihaoTip + reservation.myNumber + qianmianTip + rvo.beforeYou + apptuijian;
+		String apptuijian1 = Play.configuration.getProperty("service.sms.apptuijian1");
+		String content = "";
+		if(rvo.beforeYou <= 5){
+			content = paiduihaoTip + reservation.myNumber + qianmianTip + rvo.beforeYou + apptuijian1;
+		} else {
+			content = paiduihaoTip + reservation.myNumber + qianmianTip + rvo.beforeYou + apptuijian;
+		}
 		try {
 			int i = SMSBusiness.sendSMS(tel, content);
 			int j = 0;

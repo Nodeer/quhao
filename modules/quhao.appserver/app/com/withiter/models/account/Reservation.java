@@ -209,11 +209,11 @@ public class Reservation extends ReservationEntityDef {
 	 */
 	@OnUpdate
 	private void updateHaoma() {
-		String mid = this.merchantId;
-		int myNumber = this.myNumber;
-		int seatNumber = this.seatNumber;
-		Haoma haoma = Haoma.findByMerchantId(mid);
-		Haoma.updateByXmethod(haoma, mid, myNumber, seatNumber, this.status);
+//		String mid = this.merchantId;
+//		int myNumber = this.myNumber;
+//		int seatNumber = this.seatNumber;
+//		Haoma haoma = Haoma.findByMerchantId(mid);
+//		Haoma.updateByXmethod(haoma, mid, myNumber, seatNumber, this.status);
 		pushToClient();
 	}
 
@@ -275,6 +275,7 @@ public class Reservation extends ReservationEntityDef {
 			r.save();
 
 			String accountId = r.accountId;
+			// 手机号产生的reservation
 			if(accountId == null){
 				return true;
 			}

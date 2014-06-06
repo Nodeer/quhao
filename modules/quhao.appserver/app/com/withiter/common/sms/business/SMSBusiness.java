@@ -16,26 +16,11 @@ import play.Play;
 
 public class SMSBusiness {
 
-	private static boolean useProxy = false;
 	private static Logger logger = LoggerFactory.getLogger(SMSBusiness.class);
 	private static final String UID = Play.configuration.getProperty("service.sms.uid");
 	private static final String KEY = Play.configuration.getProperty("service.sms.key");
 
 	private static final String AUTH_CODE_FOR_SIGNUP = Play.configuration.getProperty("service.sms.authCodeForSignup");
-
-	public static boolean isUseProxy() {
-		return useProxy;
-	}
-
-	public static void setUseProxy(boolean useProxy) {
-		SMSBusiness.useProxy = useProxy;
-	}
-
-	private static void initProxy() {
-		System.getProperties().setProperty("proxySet", "true");
-		System.getProperties().setProperty("http.proxyHost", "www-proxy.ericsson.se");
-		System.getProperties().setProperty("http.proxyPort", "8080");
-	}
 
 	/**
 	 * Send SMS.
@@ -59,15 +44,6 @@ public class SMSBusiness {
 	 */
 	public static int sendSMS(String mobileNumber, String content) throws HttpException, IOException {
 		logger.info(SMSBusiness.class.getName() + "sendSMS, mobileNumber is : " + mobileNumber + ", content is : " + content);
-		String userHome = System.getProperty("user.home");
-		if (userHome.contains("eacfgjl")) {
-			useProxy = true;
-		}
-
-		if (useProxy) {
-			initProxy();
-		}
-
 		HttpClient client = new HttpClient();
 		client.getHttpConnectionManager().getParams().setConnectionTimeout(5000);
 		PostMethod post = new PostMethod("http://utf8.sms.webchinese.cn");
@@ -102,15 +78,6 @@ public class SMSBusiness {
 	 */
 	public static int sendSMS(List<String> mobileNumbers, String content) throws HttpException, IOException {
 		logger.info(SMSBusiness.class.getName() + "sendSMS, mobileNumber is : " + mobileNumbers + ", content is : " + content);
-		String userHome = System.getProperty("user.home");
-		if (userHome.contains("eacfgjl")) {
-			useProxy = true;
-		}
-
-		if (useProxy) {
-			initProxy();
-		}
-
 		HttpClient client = new HttpClient();
 		PostMethod post = new PostMethod("http://utf8.sms.webchinese.cn");
 		post.addRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf8");// 在头文件中设置转码
@@ -141,14 +108,6 @@ public class SMSBusiness {
 	 */
 	public static int sendAuthCodeForSignup(String mobileNumber) throws HttpException, IOException {
 		logger.info(SMSBusiness.class.getName() + "sendSMS, mobileNumber is : " + mobileNumber);
-		String userHome = System.getProperty("user.home");
-		if (userHome.contains("eacfgjl")) {
-			useProxy = true;
-		}
-
-		if (useProxy) {
-			initProxy();
-		}
 		Random r = new Random();
 		int x = r.nextInt(999999);
 		while (x < 100000) {
@@ -176,16 +135,6 @@ public class SMSBusiness {
 	 * @throws HttpException
 	 */
 	public static void main(String[] args) throws HttpException, IOException {
-
-		String userHome = System.getProperty("user.home");
-		if (userHome.contains("eacfgjl")) {
-			useProxy = true;
-		}
-
-		if (useProxy) {
-			initProxy();
-		}
-
 		HttpClient client = new HttpClient();
 		PostMethod post = new PostMethod("http://gbk.sms.webchinese.cn");
 		post.addRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=gbk");// 在头文件中设置转码
@@ -193,15 +142,6 @@ public class SMSBusiness {
 				new NameValuePair("smsText", "您在quhao.com注册的网站动态密码是：123456") };
 		post.setRequestBody(data);
 		client.executeMethod(post);
-//		Header[] headers = post.getResponseHeaders();
-//		int statusCode = post.getStatusCode();
-//		System.out.println("statusCode:" + statusCode);
-//		for (Header h : headers) {
-//			System.out.println(h.toString());
-//		}
-//		String result = new String(post.getResponseBodyAsString().getBytes("gbk"));
-//		System.out.println(result);
-
 		post.releaseConnection();
 	}
 }
