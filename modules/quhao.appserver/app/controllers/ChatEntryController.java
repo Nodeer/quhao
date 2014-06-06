@@ -11,7 +11,7 @@ public class ChatEntryController extends BaseController {
 
 	public static void redirect(@Required String mid){
 		if(validation.hasErrors()){
-			renderJSON(new ErrorVO("false","mid is null"));
+			renderJSON(false);
 		}
 		// 1st, 判断MerchantPort是否存在
 		MerchantPort mp = MerchantPort.findByMid(mid);
@@ -29,7 +29,7 @@ public class ChatEntryController extends BaseController {
 		
 		// 3th, 没有少于20的port了，无法分配聊天
 		Logger.error("No more avaliable port!!!");
-		renderJSON(new ErrorVO("false","no more port"));
+		renderJSON(false);
 		
 	}
 }
