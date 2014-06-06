@@ -238,10 +238,11 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 		case R.id.more_version:// 版本检测
+			progressDialogUtil.closeProgress();
 			if(!ActivityUtil.isNetWorkAvailable(getActivity()))
 			{
 				Toast.makeText(getActivity(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
-				progressDialogUtil.closeProgress();
+				
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				return;
 			}
@@ -260,6 +261,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 						Builder dialog = new AlertDialog.Builder(getActivity());
 						dialog.setTitle("温馨提示").setMessage("网络情况不是很好哟").setPositiveButton("确定", null);
 						dialog.show();
+						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 						return;
 					}
 
@@ -267,10 +269,12 @@ public class MoreFragment extends Fragment implements OnClickListener{
 						Builder dialog = new AlertDialog.Builder(getActivity());
 						dialog.setTitle("温馨提示").setMessage("APP已经是最新版").setPositiveButton("确定", null);
 						dialog.show();
+						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 						return;
 					}
 
 					if (avo.android > currentVersion) {
+						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 						Dialog dialog = new AlertDialog.Builder(getActivity()).setTitle("软件更新").setMessage("软件有更新，建议更新到最新版本")
 						// 设置内容
 								.setPositiveButton("更新",// 设置确定按钮

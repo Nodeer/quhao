@@ -156,12 +156,12 @@ public class FaceRelativeLayout extends RelativeLayout implements
 	 * 初始化控件
 	 */
 	private void Init_View() {
-		vp_face = (ViewPager) findViewById(R.id.vp_contains);
+//		vp_face = (ViewPager) findViewById(R.id.vp_contains);
 		et_sendmessage = (EditText) findViewById(R.id.et_sendmessage);
-		layout_point = (LinearLayout) findViewById(R.id.iv_image);
+//		layout_point = (LinearLayout) findViewById(R.id.iv_image);
 		et_sendmessage.setOnClickListener(this);
 		findViewById(R.id.btn_face).setOnClickListener(this);
-		view = findViewById(R.id.ll_facechoose);
+//		view = findViewById(R.id.ll_facechoose);
 
 	}
 

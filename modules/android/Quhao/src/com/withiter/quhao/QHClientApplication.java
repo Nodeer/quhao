@@ -21,7 +21,6 @@ import android.widget.Toast;
 import com.amap.api.location.AMapLocation;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.domain.CityInfo;
-import com.withiter.quhao.util.FaceConversionUtil;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.encrypt.DesUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
@@ -104,6 +103,7 @@ public class QHClientApplication extends Application {
 		});
 		accountThread.start();
 		
+		/*
 		Thread facesThread = new Thread(new Runnable() {
 
 			@Override
@@ -112,7 +112,7 @@ public class QHClientApplication extends Application {
 			}
 		});
 		facesThread.start();
-		
+		*/
 		initSDCardConfig();
 		super.onCreate();
 	}

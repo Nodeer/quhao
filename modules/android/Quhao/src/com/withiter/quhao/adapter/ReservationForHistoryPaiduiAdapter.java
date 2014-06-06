@@ -126,6 +126,7 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 			{
 				holder.isComment.setVisibility(View.VISIBLE);
 				holder.commentBtn.setVisibility(View.GONE);
+				holder.isComment.setText("已评价");
 			}
 			else
 			{
