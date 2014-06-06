@@ -623,7 +623,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		case R.id.btn_refresh_paidui:
 			if(null != merchant && StringUtils.isNotNull(merchant.id))
 			{
-				final GetPaiduiListTask task = new GetPaiduiListTask(R.string.waitting, this, "quhao?id=" + merchant.id);
+				final GetPaiduiListTask task = new GetPaiduiListTask(0, this, "quhao?id=" + merchant.id);
 				task.execute(new Runnable() {
 					
 					@Override
@@ -814,7 +814,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				if (QHClientApplication.getInstance().isLogined) {
 					if (null == merchantDetail.haoma 
 						|| null == merchantDetail.haoma.paiduiList || merchantDetail.haoma.paiduiList.isEmpty()) {
-						Toast.makeText(this, "现在暂时不能取号哦。", Toast.LENGTH_SHORT).show();
+						Toast.makeText(this, "商家原因，暂时无法取号。", Toast.LENGTH_SHORT).show();
 						return;
 					}
 					Intent intentGetNumber = new Intent();

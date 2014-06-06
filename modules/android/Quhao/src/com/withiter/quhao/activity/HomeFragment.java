@@ -692,7 +692,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 //			startActivity(login1);
 			
 			Intent login1 = new Intent(getActivity(), MerchantChatRoomsActivity.class);
-			login1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+//			login1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			startActivity(login1);
 			break;
 		default:

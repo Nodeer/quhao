@@ -372,9 +372,6 @@ public class MerchantChatActivity extends FragmentActivity implements EmojiconGr
 
 	@Override
 	protected void onResume() {
-		if (mWebSocketClient != null && mWebSocketClient.getConnection() != null && !mWebSocketClient.getConnection().isConnecting()) {
-			mWebSocketClient.connect();
-		}
 		
 		backClicked = false;
 		super.onResume();
@@ -383,13 +380,22 @@ public class MerchantChatActivity extends FragmentActivity implements EmojiconGr
 	@Override
 	public void onPause() {
 		super.onPause();
-		if (mWebSocketClient != null && mWebSocketClient.getConnection() != null && mWebSocketClient.getConnection().isConnecting()) {
-			mWebSocketClient.close();
-		}
+		
 		QuhaoLog.i(LOGTAG, LOGTAG + " on pause");
 		if (backClicked) {
 			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 		}
+	}
+	
+	@Override
+	protected void onDestroy() {
+
+		if (mWebSocketClient != null) {
+			mWebSocketClient.close();
+			
+		}
+		mWebSocketClient = null;
+		super.onDestroy();
 	}
 	
 	@Override
@@ -439,6 +445,11 @@ public class MerchantChatActivity extends FragmentActivity implements EmojiconGr
 					}
 					showFaceHandler.sendEmptyMessageDelayed(1000, 500);
 					
+				}
+				break;
+			case R.id.et_sendmessage:
+				if (faceFragment != null && faceFragment.getVisibility() == View.VISIBLE) {
+					faceFragment.setVisibility(View.GONE);
 				}
 				break;
 			case R.id.back_btn:
@@ -512,6 +523,18 @@ public class MerchantChatActivity extends FragmentActivity implements EmojiconGr
 			faceBtn.getLocationInWindow(l);
 			int left = l[0], top = l[1], bottom = top + faceBtn.getHeight(), right = left
                     + faceBtn.getWidth();
+			if (event.getX() > left && event.getX() < right
+                    && event.getY() > top && event.getY() < bottom) {
+                // 点击EditText的事件，忽略它。
+                return false;
+            }
+		}
+    	
+    	if ( mBtnSend != null) {
+			int[] l = {0,0};
+			mBtnSend.getLocationInWindow(l);
+			int left = l[0], top = l[1], bottom = top + mBtnSend.getHeight(), right = left
+                    + mBtnSend.getWidth();
 			if (event.getX() > left && event.getX() < right
                     && event.getY() > top && event.getY() < bottom) {
                 // 点击EditText的事件，忽略它。

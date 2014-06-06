@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
@@ -96,10 +97,14 @@ public class MerchantChatRoomAdapter extends BaseAdapter {
 					{
 						image = "/" + image.substring(QuhaoConstant.HTTP_URL.length());
 					}
+					if (QHClientApplication.getInstance().accountInfo == null) {
+						Toast.makeText(activity, "亲，登录过期了哦", Toast.LENGTH_SHORT).show();
+						return;
+					}
 					intent.putExtra("uid", QHClientApplication.getInstance().accountInfo.accountId);
 					intent.putExtra("image", image);
 					intent.putExtra("mid", mid);
-					intent.putExtra("user", QHClientApplication.getInstance().accountInfo.nickName);
+					intent.putExtra("user", QHClientApplication.getInstance().accountInfo.phone);
 					intent.putExtra("merchantName", merchantName);
 					intent.setClass(activity, MerchantChatActivity.class);
 					activity.startActivity(intent);

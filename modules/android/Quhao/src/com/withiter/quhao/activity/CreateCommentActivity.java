@@ -31,6 +31,8 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 	
 	private RatingBar xingjiabiRatingBar;
 	
+	private RatingBar gradeRatingbar;
+	
 	private EditText commentEdit;
 	
 	private EditText avgCostEdit;
@@ -44,6 +46,8 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 	private int fuwu;
 	
 	private int xingjiabi;
+	
+	private int grade;
 	
 	private String comment;
 	
@@ -66,6 +70,8 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 		fuwuRatingBar.setOnRatingBarChangeListener(this);
 		huanjingRatingBar.setOnRatingBarChangeListener(this);
 		xingjiabiRatingBar.setOnRatingBarChangeListener(this);
+		gradeRatingbar = (RatingBar) this.findViewById(R.id.grade_ratingbar);
+		gradeRatingbar.setOnRatingBarChangeListener(this);
 		avgCostEdit = (EditText) this.findViewById(R.id.avg_cost_edit);
 		commentEdit = (EditText) this.findViewById(R.id.comment_edit);
 		
@@ -114,8 +120,9 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 						huanjing = (int) huanjingRatingBar.getRating();
 						fuwu = (int) fuwuRatingBar.getRating();
 						xingjiabi = (int) xingjiabiRatingBar.getRating();
-						float gradeAvg = (kouwei + huanjing + fuwu + xingjiabi)/4;
-						int grade = Math.round(gradeAvg);
+						grade = (int) gradeRatingbar.getRating();
+//						float gradeAvg = (kouwei + huanjing + fuwu + xingjiabi)/4;
+//						int grade = Math.round(gradeAvg);
 						if(StringUtils.isNull(comment))
 						{
 							Toast.makeText(CreateCommentActivity.this, "请填写评论", Toast.LENGTH_SHORT).show();
@@ -131,7 +138,7 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 							return;
 						}
 						
-						CommonHTTPRequest.get("updateComment?rid=" + rId + "&kouwei=" + kouwei + "&huanjing=" + huanjing + "&fuwu=" + fuwu + "&xingjiabi=" + xingjiabi + "&grade=" + grade + "&averageCost=" + averageCost +  "&content=" + comment);
+						CommonHTTPRequest.get("updateComment?rid=" + rId + "&kouwei=" + kouwei + "&huanjing=" + huanjing + "&fuwu=" + fuwu + "&xingjiabi=" + xingjiabi + "&grade=" + grade + "&cost=" + averageCost +  "&content=" + comment);
 						progressDialogUtil.closeProgress();
 						unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
 						Toast.makeText(CreateCommentActivity.this, "评论成功", Toast.LENGTH_SHORT).show();
@@ -186,6 +193,10 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 			break;
 			case R.id.xingjiabi_ratingbar:
 				xingjiabiRatingBar.setRating(rating);
+				unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+			break;
+			case R.id.grade_ratingbar:
+				gradeRatingbar.setRating(rating);
 				unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
 			break;
 			default:

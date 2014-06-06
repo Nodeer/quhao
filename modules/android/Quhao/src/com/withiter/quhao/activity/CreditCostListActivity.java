@@ -283,7 +283,7 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 					creditAdapter.isShowDelete = "true";
 					creditAdapter.notifyDataSetChanged();
 					// 解锁
-					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 10);
 				}
 				
 				break;
@@ -306,7 +306,7 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 					}
 					
 				}
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 10);
 				break;
 			case R.id.bt_deselectall:
 				if(null!=creditAdapter && "true".equals(creditAdapter.isShowDelete))
@@ -334,7 +334,7 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 					}
 					
 				}
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 10);
 				break;
 			case R.id.bt_cancel:
 				if(null!=creditAdapter && "true".equals(creditAdapter.isShowDelete))
@@ -357,10 +357,10 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 					}
 					
 				}
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 10);
 				break;
 			default:
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 10);
 				break;
 		}
 

@@ -245,7 +245,7 @@ public class MerchantController extends BaseController {
 			HaomaVO haomaVO = HaomaVO.build(haoma);
 			merchantDetails.put("haomaVO", haomaVO);
 			ReservationVO rvo = null;
-			List<Reservation> reservations = Reservation.getReservationsByMerchantIdAndAccountId(accountId, merchantId);
+			List<Reservation> reservations = Reservation.getReservationsByMerchantIdAndAccountId(accountId, merchantId,haoma.version);
 			if (null != reservations && reservations.size() > 0) {
 				for (Reservation r : reservations) {
 					Paidui paidui = haoma.haomaMap.get(r.seatNumber);
@@ -337,7 +337,7 @@ public class MerchantController extends BaseController {
 		haoma.updateSelf();
 
 		ReservationVO rvo = null;
-		List<Reservation> reservations = Reservation.getReservationsByMerchantIdAndAccountId(accountId, mid);
+		List<Reservation> reservations = Reservation.getReservationsByMerchantIdAndAccountId(accountId, mid,haoma.version);
 		if (null != reservations && reservations.size() > 0) {
 			for (Reservation r : reservations) {
 				Paidui paidui = haoma.haomaMap.get(r.seatNumber);

@@ -345,9 +345,9 @@ public class Reservation extends ReservationEntityDef {
 	 *            merchant id
 	 * @return the reservations
 	 */
-	public static List<Reservation> getReservationsByMerchantIdAndAccountId(String accountId, String mid) {
+	public static List<Reservation> getReservationsByMerchantIdAndAccountId(String accountId, String mid,long version) {
 		MorphiaQuery q = Reservation.q();
-		q.filter("accountId", accountId).filter("merchantId", mid).filter("valid", true);
+		q.filter("accountId", accountId).filter("merchantId", mid).filter("valid", true).filter("version", version);
 		return q.asList();
 	}
 

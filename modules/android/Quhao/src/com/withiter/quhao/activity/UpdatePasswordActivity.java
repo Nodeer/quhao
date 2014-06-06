@@ -53,6 +53,8 @@ public class UpdatePasswordActivity extends QuhaoBaseActivity {
 		super.onCreate(savedInstanceState);
 
 		currentPasswordText = (EditText) this.findViewById(R.id.current_password);
+		currentPasswordText.setFocusableInTouchMode(true);
+		currentPasswordText.requestFocus();
 		newPasswordText = (EditText) this.findViewById(R.id.new_pass);
 		newPassword2Text = (EditText) this.findViewById(R.id.new_pass2);
 		submitBtn = (Button) this.findViewById(R.id.submit);
@@ -143,6 +145,15 @@ public class UpdatePasswordActivity extends QuhaoBaseActivity {
 							{
 								progressDialogUtil.closeProgress();
 								Toast.makeText(UpdatePasswordActivity.this, "请输入新密码。", Toast.LENGTH_SHORT).show();
+								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
+										1000);
+								return;
+							}
+							
+							if(StringUtils.isNotNull(newPassword) && newPassword.length()<6)
+							{
+								progressDialogUtil.closeProgress();
+								Toast.makeText(UpdatePasswordActivity.this, "密码至少大于6个字符。", Toast.LENGTH_SHORT).show();
 								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK,
 										1000);
 								return;

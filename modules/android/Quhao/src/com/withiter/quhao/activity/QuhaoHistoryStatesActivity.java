@@ -97,7 +97,6 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 		QuhaoHistoryStatesActivity.this.findViewById(R.id.serverdata).setVisibility(View.GONE);
 		reservations = new ArrayList<ReservationVO>();
 		
-		initData();
 //		initData();
 	}
 
@@ -248,7 +247,7 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 						}
 						reservationForPaiduiAdapter.rvos = reservations;
 						reservationForPaiduiAdapter.notifyDataSetChanged();
-						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 500);
+						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 10);
 						Toast.makeText(QuhaoHistoryStatesActivity.this, R.string.delete_success, Toast.LENGTH_SHORT).show();
 					}
 					
@@ -265,7 +264,7 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 						reservationForPaiduiAdapter.rvos = reservations;
 						reservationForPaiduiAdapter.notifyDataSetChanged();
 						Toast.makeText(QuhaoHistoryStatesActivity.this, R.string.delete_failed, Toast.LENGTH_SHORT).show();
-						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 500);
+						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 10);
 					}
 				});
 				
@@ -278,7 +277,7 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 				deleteLayout.setVisibility(View.VISIBLE);
 				reservationForPaiduiAdapter.isShowDelete = "true";
 				reservationForPaiduiAdapter.notifyDataSetChanged();
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 500);
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 10);
 			}
 			
 			break;
@@ -301,7 +300,7 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 				}
 				
 			}
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 500);
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 10);
 			break;
 		case R.id.bt_deselectall:
 			if(null!=reservationForPaiduiAdapter && "true".equals(reservationForPaiduiAdapter.isShowDelete))
@@ -329,7 +328,7 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 				}
 				
 			}
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 500);
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 10);
 			break;
 		case R.id.bt_cancel:
 			if(null!=reservationForPaiduiAdapter && "true".equals(reservationForPaiduiAdapter.isShowDelete))
@@ -352,10 +351,10 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 				}
 				
 			}
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 500);
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 10);
 			break;
 		default:
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 500);
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 10);
 			break;
 		}
 	}
@@ -368,6 +367,9 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 	@Override
 	protected void onResume() {
 		backClicked = false;
+		QuhaoHistoryStatesActivity.this.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
+		QuhaoHistoryStatesActivity.this.findViewById(R.id.serverdata).setVisibility(View.GONE);
+		initData();
 		super.onResume();
 	}
 
