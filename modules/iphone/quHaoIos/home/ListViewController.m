@@ -222,6 +222,8 @@
         model.enable = [[[objects objectAtIndex:i] objectForKey:@"enable"] boolValue];
         model.distance = [[objects objectAtIndex:i] objectForKey:@"distance"];
         model.youhui = [[[objects objectAtIndex:i] objectForKey:@"youhui"] boolValue];
+        model.dianpingFen = [[[objects objectAtIndex:i] objectForKey:@"dianpingFen"] floatValue];
+
         [news addObject:model];
     }
     

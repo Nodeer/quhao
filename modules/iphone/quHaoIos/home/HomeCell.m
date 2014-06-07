@@ -41,6 +41,12 @@
     _quhao.frame = CGRectMake(_youhui.frame.origin.x+_youhui.frame.size.width+5, _youhui.frame.origin.y, 15, 15);
     [self.contentView addSubview:_quhao];
     
+    _dzdpLabel=[[UILabel alloc]initWithFrame:CGRectZero];
+    _dzdpLabel.backgroundColor=[UIColor clearColor];
+    _dzdpLabel.textAlignment=NSTextAlignmentLeft;
+    _dzdpLabel.font=[UIFont boldSystemFontOfSize:13];
+    [self.contentView addSubview:_dzdpLabel];
+    
     _rjLabel=[[UILabel alloc]initWithFrame:CGRectZero];
     _rjLabel.backgroundColor=[UIColor clearColor];
     _rjLabel.frame=CGRectMake(_titleLabel.frame.origin.x, _quhao.frame.origin.y+_quhao.frame.size.height, 110, 25);
@@ -80,7 +86,12 @@
         _youhui.hidden = YES;
         _quhao.frame = CGRectMake(_titleLabel.frame.origin.x, _titleLabel.frame.origin.y+_titleLabel.frame.size.height+15, 15, 15);
     }
-    
+    _dzdpLabel.frame=CGRectMake(_quhao.frame.origin.x+_quhao.frame.size.width+15, _quhao.frame.origin.y-5, 190, 25);
+    if (self.merchartModel.dianpingFen!=0){
+        _dzdpLabel.text = [NSString stringWithFormat:@"%@%.1f",@"大众点评评分 ",self.merchartModel.dianpingFen];
+    }else{
+        _dzdpLabel.text = @"";
+    }
     if(self.merchartModel.id != nil && self.merchartModel.enable){
         _quhao.hidden = NO;
     }else{

@@ -28,6 +28,7 @@ typedef NS_ENUM(NSInteger,ZBMessageViewState) {
     long _lastDate;
     double animationDuration;
     CGRect keyboardRect;
+    BOOL _iskeyUp;
 }
 
 @property (strong, nonatomic)  UITableView *tableView;
@@ -36,6 +37,7 @@ typedef NS_ENUM(NSInteger,ZBMessageViewState) {
 @property (strong, nonatomic)  NSString *image;
 @property (strong, nonatomic)  NSString *mid;
 @property (strong, nonatomic)  NSString *mname;
+@property (strong, nonatomic)  NSString *port;
 @property (nonatomic,strong) MessageInputView *messageToolView;
 
 @property (nonatomic,strong) MessageManagerFaceView *faceView;

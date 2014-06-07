@@ -85,6 +85,12 @@
     });
 }
 
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [_reservationArray removeAllObjects];
+    [self.tableView reloadData];
+}
+
 - (void)hudWasHidden:(MBProgressHUD *)hud {
     [_HUD removeFromSuperview];
 	_HUD = nil;

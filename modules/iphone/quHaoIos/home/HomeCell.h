@@ -19,6 +19,7 @@
     UILabel *_rjLabel;
     MerchartModel *_merchartModel;
     UIImageView *_youhui;
+    UILabel *_dzdpLabel;
 }
 
 @property(nonatomic,strong) MerchartModel *merchartModel;

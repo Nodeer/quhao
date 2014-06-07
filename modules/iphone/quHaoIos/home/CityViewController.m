@@ -221,10 +221,10 @@
     [self performSelector:@selector(removeView)];
 }
 
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
-{
-    self.isSearch = NO;
-}
+//- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+//{
+//    self.isSearch = YES;
+//}
 
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
@@ -250,7 +250,7 @@
     {
         key = [keys objectAtIndex: i];
         value = [cities objectForKey: key];
-        if ([key hasPrefix:[_searchBar.text lowercaseString]])
+        if ([key hasPrefix:[_searchBar.text uppercaseString]])
         {
             for (j=0; j<[value count]; j++) {
                 [tempArray addObject:[[value objectAtIndex:j] objectForKey:@"name"]];

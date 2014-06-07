@@ -41,6 +41,7 @@
 {
     [super viewDidLoad];
     _isFirst = YES;
+    _iskeyUp = NO;
     UIButton *backButton=[Helper getBackBtn:@"back"];
     [backButton addTarget:self action:@selector(clickToHome:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *backButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
@@ -62,7 +63,7 @@
     if(self.image == nil || [self.image isEqualToString:@""]){
         self.image = @"user_chat";
     }
-    NSString *str = [NSString stringWithFormat:@"ws://www.quhao.la:9000/websocket/room/socket?user=%@&uid=%@&image=%@&mid=%@",[self.user stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],self.uid,self.image,self.mid];
+    NSString *str = [NSString stringWithFormat:@"ws://www.quhao.la:%@/websocket/room/socket?user=%@&uid=%@&image=%@&mid=%@",self.port,[self.user stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],self.uid,self.image,self.mid];
     _webSocket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
     _webSocket.delegate = self;
     
@@ -95,7 +96,7 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     UITouch *touch = [touches anyObject];
-    if([touch.view isKindOfClass:[MessageTextView class]]||[touch.view isKindOfClass:[MessageInputView class]]){
+    if([touch.view isKindOfClass:[MessageTextView class]]||[touch.view isKindOfClass:[MessageInputView class]]||!_iskeyUp){
         return;
     }
     [self.messageToolView.messageInputTextView resignFirstResponder];
@@ -103,6 +104,7 @@
                      withMessageInputViewRect:self.messageToolView.frame
                                   andDuration:animationDuration
                                      andState:ZBMessageViewStateShowNone];
+    _iskeyUp = NO;
 }
 
 #pragma mark -keyboard
@@ -110,12 +112,13 @@
     
     keyboardRect = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     animationDuration = [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    
+    _iskeyUp = NO;
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification{
     keyboardRect = [[notification.userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     animationDuration= [[notification.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    _iskeyUp = YES;
 }
 
 - (void)keyboardChange:(NSNotification *)notification{
@@ -292,7 +295,6 @@
             case ZBMessageViewStateShowFace:
             {
                 self.faceView.frame = CGRectMake(0.0f,CGRectGetHeight(self.view.frame)-CGRectGetHeight(rect),CGRectGetWidth(self.view.frame),CGRectGetHeight(rect));
-                
             }
                 break;
             case ZBMessageViewStateShowNone:
@@ -300,16 +302,11 @@
                 self.faceView.frame = CGRectMake(0.0f,CGRectGetHeight(self.view.frame),CGRectGetWidth(self.view.frame),CGRectGetHeight(self.faceView.frame));
             }
                 break;
-            case ZBMessageViewStateShowShare:
-            {
-                
-                self.faceView.frame = CGRectMake(0.0f,CGRectGetHeight(self.view.frame),CGRectGetWidth(self.view.frame),CGRectGetHeight(self.faceView.frame));
-            }
-                break;
                 
             default:
                 break;
         }
+        _iskeyUp = YES;
         self.tableView.frame = CGRectMake(0.0f,0.0f,kDeviceWidth,self.messageToolView.frame.origin.y);
         [self scrollTableView];
 
@@ -470,11 +467,26 @@
  * 发送信息
  */
 - (void)didSendTextAction:(MessageTextView *)messageInputTextView{
-    
-    [self sendMessage:messageInputTextView.text];
-    
-    [messageInputTextView setText:nil];
-    [self inputTextViewDidChange:messageInputTextView];
+    NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
+    NSTimeInterval now = [dat timeIntervalSince1970]*1;
+    long currentDate = (long)now;
+    if(currentDate - _lastDate<3){
+        [Helper ToastNotification:@"亲,发送频率太高,请稍后再发" andView:self.view andLoading:NO andIsBottom:NO];
+        return;
+    }
+    // 1、增加数据源
+    if([Helper isConnectionAvailable]){
+        [self sendMessage:messageInputTextView.text];
+        
+        [messageInputTextView setText:nil];
+        [self inputTextViewDidChange:messageInputTextView];
+        NSDate* dat = [NSDate dateWithTimeIntervalSinceNow:0];
+        NSTimeInterval last = [dat timeIntervalSince1970]*1;
+        _lastDate = (long)last;
+    }else{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"当前网络不可用" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
+        [alert show];
+    }
 }
 
 #pragma end

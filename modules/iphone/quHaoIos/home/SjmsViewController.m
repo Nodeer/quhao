@@ -35,6 +35,14 @@
     
     self.view.backgroundColor  = [ UIColor whiteColor];
     
+#if IOS7_SDK_AVAILABLE
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.navigationController.navigationBar.translucent = NO;
+    self.tabBarController.tabBar.translucent = NO;
+    self.extendedLayoutIncludesOpaqueBars = NO;
+#endif
+    
     UILabel *contextLabel = [[UILabel alloc] initWithFrame:CGRectMake( 10, 15, kDeviceWidth-20, kDeviceHeight )];
     contextLabel.backgroundColor = [UIColor clearColor];
     contextLabel.numberOfLines = 0;

@@ -50,6 +50,12 @@
     });
 }
 
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [_merchartsArray removeAllObjects];
+    [self.tableView reloadData];
+}
+
 - (void)hudWasHidden:(MBProgressHUD *)hud
 {
     [_HUD removeFromSuperview];
@@ -179,6 +185,8 @@
         model.enable = [[[objects objectAtIndex:i] objectForKey:@"enable"] boolValue];
         model.distance = [[objects objectAtIndex:i] objectForKey:@"distance"];
         model.youhui = [[[objects objectAtIndex:i] objectForKey:@"youhui"] boolValue];
+        model.dianpingFen = [[[objects objectAtIndex:i] objectForKey:@"dianpingFen"] floatValue];
+
         [_merchartsArray addObject:model];
     }
 }
