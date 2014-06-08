@@ -16,6 +16,7 @@ import com.withiter.common.ContentType;
 public class UploadController extends BaseController {
 	private static String MERCHANT_IMAGE = "MerchantImage";
 	private static String USER_IMAGE = "UserImage";
+	private static String ACTIVITY_IMAGE = "ActivityImage";
 
 	@SuppressWarnings("unused")
 	private static GridFSInputFile uploadFirst(String param) {
@@ -75,6 +76,25 @@ public class UploadController extends BaseController {
 	}
 	
 	/**
+	 * Save file for activity
+	 * @param file
+	 * @return
+	 * @throws IOException
+	 */
+	public static GridFSInputFile saveBinaryForActivity(File file, String activityId) throws IOException {
+		GridFS gfs = new GridFS(MorphiaQuery.ds().getDB(),ACTIVITY_IMAGE);
+		GridFSInputFile gfsFile = gfs.createFile(file);
+		String fName = file.getName();
+		String suffix = fName.replaceFirst("^.*\\.", ".");
+		gfsFile.setContentType(ContentType.get(suffix));
+		gfsFile.put("ext", suffix);
+		gfsFile.put("activityId", activityId);
+		gfsFile.setFilename(fName);
+		gfsFile.save();
+		return gfsFile;
+	}
+	
+	/**
 	 * find file by file name
 	 * @param fileName
 	 */
@@ -111,12 +131,27 @@ public class UploadController extends BaseController {
 	}
 	
 	/**
-	 * find file by file name
+	 * find file by file name for mobile user
 	 * @param fileName
 	 * @param type
 	 */
 	public static void findImage(String fileName) {
 		GridFSDBFile gfsFile = findOne(fileName, USER_IMAGE);
+		if (gfsFile.getContentType() == null) {
+			response.contentType = "";
+		} else {
+			response.contentType = gfsFile.getContentType();
+		}
+		renderBinary(gfsFile.getInputStream(), gfsFile.getFilename());
+	}
+	
+	/**
+	 * find file by file name for activity
+	 * @param fileName
+	 * @param type
+	 */
+	public static void findImageForActivity(String fileName) {
+		GridFSDBFile gfsFile = findOne(fileName, ACTIVITY_IMAGE);
 		if (gfsFile.getContentType() == null) {
 			response.contentType = "";
 		} else {

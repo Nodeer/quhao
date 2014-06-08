@@ -1,0 +1,62 @@
+`import static press.Plugin.*;
+`import com.withiter.models.activity.Activity;
+`extends admin_layout
+`set title "取号啦 - 活动管理"
+
+$addJS("admin.js",true)
+
+`args List<Activity> list
+
+
+`set contents
+
+	<form enctype="multipart/form-data" class="form-inline" role="form" style="margin:10px;" action="/admin/addActivity" method="post">
+	  <div class="form-group">
+	    <input type="text" class="form-control" name="mid" id="midsearch" placeholder="输入商家ID" />
+	  </div>
+	  <div class="form-group">
+	    <input type="text" class="form-control" name="start" id="start" placeholder="开始时间" />
+	  </div>
+	  <div class="form-group">
+	    <input type="text" class="form-control" name="end" id="end" placeholder="结束时间" />
+	  </div>
+	  <div class="form-group">
+	    <input type="file" class="form-control" name="image" id="image" />
+	  </div>
+	  <div class="form-group">
+	    选择活动图片（320*120）
+	  </div>
+	  <button type="submit" class="btn btn-default">发布活动</button>
+	</form>
+
+   <div class="container-fluid">
+   	<table class="table table-striped" style="text-align:center;">
+   		<thead>
+   			<tr>
+   				<th>商家ID</th>
+   				<th>活动ID</th>
+   				<th>活动图片</th>
+   				<th>开始时间</th>
+   				<th>结束时间</th>
+   			</tr>
+   		</thead>
+   		<tbody>
+   			`for(Activity activity : list){
+		   		<tr>
+		   			<td style="vertical-align: middle;">${activity.mid}</td>
+		   			<td style="vertical-align: middle;">${activity.id()}</td>
+		   			<td style="vertical-align: middle;">${activity.image}</td>
+		   			<td style="vertical-align: middle;">${activity.start}</td>
+		   			<td style="vertical-align: middle;">${activity.end}</td>
+		   		</tr>
+   			`}
+   		</tbody>
+	</table>
+   	</div>
+   <script type="text/javascript">
+   		$("#activity").css("color","#fff");
+   </script>
+   	
+`
+
+

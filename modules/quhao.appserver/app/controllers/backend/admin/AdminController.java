@@ -1,6 +1,9 @@
 package controllers.backend.admin;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -10,8 +13,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
 import notifiers.MailsController;
 
+import org.apache.commons.io.FileUtils;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +35,7 @@ import cn.bran.japid.util.StringUtils;
 import com.mongodb.gridfs.GridFSInputFile;
 import com.withiter.common.Constants;
 import com.withiter.models.account.CooperationRequest;
+import com.withiter.models.activity.Activity;
 import com.withiter.models.admin.MerchantAccount;
 import com.withiter.models.appconfig.AppConfig;
 import com.withiter.models.merchant.Merchant;
@@ -163,9 +170,58 @@ public class AdminController extends BaseController {
 		MorphiaQuery q = TopMerchant.q();
 		q.filter("enable", true);
 		List<TopMerchant> tops = q.asList();
-		logger.debug("the size of top merchant is %s", tops.size());
+		logger.debug("the size of top merchant is : " + tops.size());
 		renderJapid(tops);
-		
+	}
+	
+	/**
+	 * 跳转到活动页面
+	 */
+	public static void activity(){
+		MorphiaQuery q = Activity.q();
+		q.filter("enable", true);
+		List<Activity> as = q.asList();
+		logger.debug("The size of activity is : " + as.size());
+		renderJapid(as);
+	}
+	
+	/**
+	 * 添加活动
+	 */
+	public static void addActivity(@Required String mid, @Required String start, @Required String end, @Required String image){
+		if(validation.hasErrors()){
+			renderJSON(validation.errors());
+		}
+		Merchant m = Merchant.findByMid(mid);
+		if(m == null){
+			renderJSON("没有找到对应的商家ID");
+		}
+		if(!m.enable){
+			renderJSON("此商家还没有开通取号啦服务不能发布活动");
+		}
+		Activity a = new Activity();
+		a.mid = mid;
+		a.enable = true;
+		try {
+			a.start = DateFormat.getDateInstance().parse(start);
+			a.end = DateFormat.getDateInstance().parse(end);
+		} catch (ParseException e1) {
+			e1.printStackTrace();
+			logger.error(ExceptionUtil.getTrace(e1));
+		}
+		a.save();
+		GridFSInputFile file = uploadForActivity(image, a.id());
+		if (file != null) {
+			try {
+				String imageStorePath = Play.configuration.getProperty("imageActivity.store.path");
+				a.image = URLEncoder.encode(imageStorePath + file.getFilename(), "UTF-8");
+				a.save();
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+				logger.error(ExceptionUtil.getTrace(e));
+			}
+		}
+		activity();
 	}
 	
 	/**
@@ -248,6 +304,34 @@ public class AdminController extends BaseController {
 				File desFile = Play.getFile("public/upload/" + file.getName());
 				Images.resize(file, desFile, 320, 120);
 				gfsFile = UploadController.saveBinary(desFile, tmid);
+				desFile.delete();
+				break;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		if (gfsFile == null) {
+			return null;
+		} else {
+			return gfsFile;
+		}
+	}
+	
+	/**
+	 * 上传活动图片
+	 * @param param
+	 * @param mid
+	 * @return
+	 */
+	private static GridFSInputFile uploadForActivity(String param, String activityId) {
+		GridFSInputFile gfsFile = null;
+		File[] files = params.get(param, File[].class);
+		for (File file : files) {
+			try {
+				File desFile = Play.getFile("public/upload/" + file.getName());
+				FileUtils.copyFile(file, desFile);
+//				Images.resize(file, desFile, 320, 120);
+				gfsFile = UploadController.saveBinaryForActivity(desFile, activityId);
 				desFile.delete();
 				break;
 			} catch (IOException e) {
