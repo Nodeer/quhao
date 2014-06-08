@@ -30,8 +30,7 @@
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.delegate=self;
     self.tableView.dataSource=self;
-    self.tableView.indicatorStyle=UIScrollViewIndicatorStyleWhite;
-
+    //self.tableView.indicatorStyle=UIScrollViewIndicatorStyleWhite;
     [self.view addSubview:self.tableView];
     
     return self;
@@ -81,7 +80,13 @@
     //_allCount = 0;
     //_isLoadOver = NO;
     //[_merchartsArray removeAllObjects];
-    [self locationService];
+    if ([Helper isConnectionAvailable]){
+        [self locationService];
+    }else{
+        [self createHud];
+        _HUD.labelText = @"当前网络不可用";
+        [_HUD hide:YES afterDelay:1];
+    }
 }
 
 -(void)locationService
@@ -152,7 +157,7 @@
     {
         _isLoadOver = YES;
          _HUD.labelText = @"当前网络不可用";
-        [_HUD hide:YES afterDelay:0.5];
+        [_HUD hide:YES afterDelay:1];
     }
 
 }
@@ -314,6 +319,7 @@
 }
 
 - (void)changeDis:(id)sender {
+    _isLoading = NO;
     if (_showList == 1) {//如果下拉框已显示，什么都不做
         return;
     }else {
