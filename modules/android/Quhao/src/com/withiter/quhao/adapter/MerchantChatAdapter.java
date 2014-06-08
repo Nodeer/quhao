@@ -88,7 +88,7 @@ public class MerchantChatAdapter extends BaseAdapter {
 						
 						if(StringUtils.isNotNull(chat.userImage) && chat.userImage.contains(QuhaoConstant.HTTP_URL))
 						{
-							AsynImageLoader.getInstance().showImageAsyn(right.userImage, position, chat.userImage, R.id.person_avatar);
+							AsynImageLoader.getInstance().showImageAsyn(right.userImage, position, chat.userImage, R.drawable.person_avatar);
 						}
 						
 						convertView.setTag(right);
@@ -104,7 +104,7 @@ public class MerchantChatAdapter extends BaseAdapter {
 						
 						if(StringUtils.isNotNull(chat.userImage) && chat.userImage.contains(QuhaoConstant.HTTP_URL))
 						{
-							AsynImageLoader.getInstance().showImageAsyn(left.userImage, position, chat.userImage, R.id.person_avatar);
+							AsynImageLoader.getInstance().showImageAsyn(left.userImage, position, chat.userImage, R.drawable.person_avatar);
 						}
 						left.content.setTag("content_" + position);
 //						SpannableString spannableString2 = FaceConversionUtil.getInstace().getExpressionString(activity, chat.msg);
@@ -122,7 +122,7 @@ public class MerchantChatAdapter extends BaseAdapter {
 						
 						if(StringUtils.isNotNull(chat.userImage) && chat.userImage.contains(QuhaoConstant.HTTP_URL))
 						{
-							AsynImageLoader.getInstance().showImageAsyn(right.userImage, position, chat.userImage, R.id.person_avatar);
+							AsynImageLoader.getInstance().showImageAsyn(right.userImage, position, chat.userImage, R.drawable.person_avatar);
 						}
 						
 						break;

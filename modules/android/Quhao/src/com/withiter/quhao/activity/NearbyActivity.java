@@ -38,7 +38,6 @@ import com.amap.api.services.poisearch.PoiSearch.OnPoiSearchListener;
 import com.amap.api.services.poisearch.PoiSearch.SearchBound;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantNearByAdapter;
-import com.withiter.quhao.task.NearbyMerchantsTask;
 import com.withiter.quhao.task.NearbySearchMerchantTask;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.view.expandtab.ExpandTabView;
@@ -73,9 +72,9 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 	
 	private int searchDistence;
 	
-	private String[] distanceItems;
+	private List<String> distanceItems;
 	
-	private String[] distanceItemsValue;
+	private List<String> distanceItemsValue;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -213,8 +212,21 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 		if(searchDistence == 0)
 		{
 			searchDistence = 1000;
-			distanceItems = new String[] { "100米", "200米", "3000米", "4000米", "50000米" };//显示字段
-			distanceItemsValue = new String[] { "100", "200", "3000", "4000", "50000" };//显示字段
+//			distanceItems = new String[] { "100米", "200米", "3000米", "4000米", "50000米" };//显示字段
+			distanceItems = new ArrayList<String>();
+			distanceItems.add("100米");
+			distanceItems.add("200米");
+			distanceItems.add("3000米");
+			distanceItems.add("4000米");
+			distanceItems.add("5000米");
+			
+			distanceItemsValue = new ArrayList<String>();
+			distanceItemsValue.add("100");
+			distanceItemsValue.add("200");
+			distanceItemsValue.add("3000");
+			distanceItemsValue.add("4000");
+			distanceItemsValue.add("5000");
+//			distanceItemsValue = new String[] { "100", "200", "3000", "4000", "50000" };//显示字段
 		}
 		
 		expandTabView = (ExpandTabView) this.findViewById(R.id.expandtab_view);
@@ -242,10 +254,10 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 			expandTabView.setTitle(showText, position);
 		}
 		
-		for (int i = 0; i < distanceItems.length; i++) {
-			if(showText.equals(distanceItems[i]))
+		for (int i = 0; i < distanceItems.size(); i++) {
+			if(showText.equals(distanceItems.get(i)))
 			{
-				searchDistence = Integer.valueOf(distanceItemsValue[i]); 
+				searchDistence = Integer.valueOf(distanceItemsValue.get(i)); 
 				break;
 			}
 		}

@@ -39,32 +39,96 @@
     </RelativeLayout>
     <!-- Merchant List page's title, eg, 本帮菜 -->
 
+	<LinearLayout
+        android:id="@+id/loadingbar"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffffff"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dip"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="12dip"
+            android:layout_height="12dip" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading"
+            android:textColor="#ff000000" />
+    </LinearLayout>
     <LinearLayout
-        android:id="@+id/merchantsLayout"
+        android:id="@+id/serverdata"
         android:layout_width="fill_parent"
         android:layout_height="0dip"
-        android:layout_weight="1.0" >
+        android:layout_weight="1.0" 
+        android:orientation="vertical">
 
-        <com.withiter.quhao.view.refresh.PullToRefreshView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/main_pull_refresh_view"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="@android:color/white" >
-
-            <ListView
-                android:id="@+id/merchantsListView"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center_horizontal"
-                android:cacheColorHint="@null"
-                android:divider="@null"
-                android:entries="@null"
-                android:headerDividersEnabled="true"
-                android:listSelector="@drawable/list_item_trans"
-                android:scrollbarThumbVertical="@drawable/scrollbar"
-                android:scrollbars="vertical" />
-        </com.withiter.quhao.view.refresh.PullToRefreshView>
+        <LinearLayout 
+		    android:orientation="vertical"
+		    android:layout_width="fill_parent" 
+		    android:layout_height="50dip" 
+		    android:background="#ffffffff">
+	
+			<com.withiter.quhao.view.expandtab.ExpandTabView 
+			    android:id="@+id/expandtab_view"
+		        android:layout_width="fill_parent"
+		        android:layout_height="fill_parent">
+		    </com.withiter.quhao.view.expandtab.ExpandTabView>
+			
+		</LinearLayout>
+		<LinearLayout android:id="@+id/result_layout"
+		    android:orientation="vertical"
+		    android:layout_width="fill_parent" 
+		    android:layout_height="match_parent" 
+		    android:background="#ffffffff">
+			<com.withiter.quhao.view.refresh.PullToRefreshView xmlns:android="http://schemas.android.com/apk/res/android" 
+		  	    android:id="@+id/main_pull_refresh_view"
+			    android:layout_width="fill_parent"
+			    android:layout_height="fill_parent"
+			    android:background="@android:color/white">
+		       	<ListView
+		       	    android:id="@+id/merchantsListView"
+		       	    android:layout_width="fill_parent"
+		       	    android:layout_height="fill_parent"
+		       	    android:layout_gravity="center_horizontal"
+		       	    android:cacheColorHint="@null"
+		       	    android:divider="@null"
+		       	    android:entries="@null"
+		       	    android:headerDividersEnabled="true"
+		       	    android:listSelector="@drawable/list_item_trans"
+		       	    android:scrollbarThumbVertical="@drawable/scrollbar"
+		       	    android:scrollbars="vertical" />
+			</com.withiter.quhao.view.refresh.PullToRefreshView>
+		</LinearLayout>
+		<LinearLayout android:id="@+id/no_result_layout"
+		    android:orientation="vertical"
+		    android:layout_width="fill_parent" 
+		    android:layout_height="match_parent" 
+		    android:background="#ffffffff"
+		    android:gravity="center"
+		    android:visibility="gone">
+		    <ImageView android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:src="@drawable/bad_face"
+		        android:contentDescription="@string/empty"/>
+		    <TextView android:id="@+id/no_result_text"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/empty"/>
+		    
+		    <TextView android:id="@+id/location_result"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/empty"
+		        android:textColor="@color/blue"/>
+		</LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

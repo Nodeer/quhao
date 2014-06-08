@@ -39,9 +39,11 @@ import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.domain.CityInfo;
+import com.withiter.quhao.exception.NoResultFromHTTPRequestException;
 import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.AsynImageLoader;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
@@ -290,14 +292,27 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 			}
 			break;
 		case R.id.logout_btn:
-			progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
-			progressDialogUtil.showProgress();
 			if (QHClientApplication.getInstance().isLogined) {
-				progressDialogUtil.closeProgress();
-				logoutHandler.obtainMessage(200, null).sendToTarget();
+				
+				AlertDialog.Builder builder = new Builder(this);
+				builder.setTitle("温馨提示");
+				builder.setMessage("您确定要退出吗？");
+				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+						logoutHandler.obtainMessage(200, null).sendToTarget();
+					}});
+				builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+				builder.create().show();
 				
 			} else {
-				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				Builder builder = new AlertDialog.Builder(this);
 				builder.setTitle("温馨提示");
@@ -498,6 +513,14 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 							SharedprefUtil.put(PersonDetailActivity.this, QuhaoConstant.USER_IMAGE, request);
 							updateNewImgHandler.sendEmptyMessage(200);
 						}
+						else
+						{
+							Map<String, Object> toastParams = new HashMap<String, Object>();
+							toastParams.put("activity", PersonDetailActivity.this);
+							toastParams.put("text", "上传失败，请检查网络设置.");
+							toastParams.put("toastLength", Toast.LENGTH_SHORT);
+							toastStringHandler.obtainMessage(1000, toastParams).sendToTarget();
+						}
 
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -567,6 +590,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
         conn.setDoOutput(true);// 允许输出
         conn.setUseCaches(false); // 不允许使用缓存
         conn.setRequestMethod("POST");
+        conn.setRequestProperty("user-agent", "QuhaoAndroid");
         conn.setRequestProperty("connection", "keep-alive");
         conn.setRequestProperty("Charsert", "UTF-8");
         conn.setRequestProperty("Content-Type", MULTIPART_FROM_DATA + ";boundary=" + BOUNDARY);

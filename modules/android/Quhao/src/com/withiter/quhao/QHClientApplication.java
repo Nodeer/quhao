@@ -71,6 +71,10 @@ public class QHClientApplication extends Application {
 	 * 默认城市
 	 */
 	public CityInfo defaultCity;
+	
+	public long time1;
+	
+	public long time2;
 
 	/**
 	 * 当前位置信息

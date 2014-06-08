@@ -17,6 +17,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -72,6 +73,8 @@ public class MerchantChatActivity extends FragmentActivity implements EmojiconGr
 	
 	private String merchantName;
 	
+	private String port;
+	
 	private TextView merchantNameView;
 	
 	protected Button btnBack;
@@ -80,6 +83,10 @@ public class MerchantChatActivity extends FragmentActivity implements EmojiconGr
 
 	// 网络是否可用
 	protected static boolean networkOK = false;
+	
+	private long firstTime;
+	
+	private long secondTime;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +123,7 @@ public class MerchantChatActivity extends FragmentActivity implements EmojiconGr
 		image = getIntent().getStringExtra("image");
 		mid = getIntent().getStringExtra("mid");
 		user = getIntent().getStringExtra("user");
+		port = getIntent().getStringExtra("port");
 		merchantName = getIntent().getStringExtra("merchantName");
 		merchantNameView.setText(merchantName);
 		connectWebSocket();
@@ -136,7 +144,7 @@ public class MerchantChatActivity extends FragmentActivity implements EmojiconGr
         	String userName = URLEncoder.encode(user,"UTF-8");
         	String imageUrl =URLEncoder.encode(image,"UTF-8");
         	
-            String url = "ws://www.quhao.la:9000/websocket/room/socket?uid=" + uid + "&image=" + imageUrl + "&mid=" + mid + "&user=" + userName;
+            String url = "ws://www.quhao.la:"+port+"/websocket/room/socket?uid=" + uid + "&image=" + imageUrl + "&mid=" + mid + "&user=" + userName;
 //            url = "ws://192.168.2.112:9000/websocket/room/socket?uid=uid1&image=image1&mid=mid1&user=" + userName;
 //            url = "wss://www.quhao.la:9000/websocket/room/socket?uid=uid1&image=image1&mid=mid1&user=%E5%91%B5%E5%91%B5";
 //            url = "http://192.168.2.112:9000/websocket/room/socket?uid=uid1&image=image1&mid=mid1&user=\"%\"E5\"%\"91\"%\"B5\"%\"E5\"%\"91\"%\"B5";
@@ -404,13 +412,26 @@ public class MerchantChatActivity extends FragmentActivity implements EmojiconGr
 		switch(v.getId())
 		{
 			case R.id.btn_send: 
+				
+				
 				if(StringUtils.isNull(chatMsgEdit.getText().toString().trim()))
 				{
 					Toast.makeText(this, "亲，请填写发送内容！", Toast.LENGTH_SHORT).show();
 					return;
 				}
+				
+				long currentTime = System.currentTimeMillis();
+				
+				if ((currentTime-firstTime)<=2000) {
+					Toast toast = Toast.makeText(this, "亲，发送频率太高，请稍后再发", Toast.LENGTH_SHORT);
+					toast.setGravity(Gravity.CENTER, 0, 0);
+					toast.show();
+					return;
+				}
+				
 				if (mWebSocketClient.getConnection().isOpen()) {
 					mWebSocketClient.send(chatMsgEdit.getText().toString());
+					firstTime = currentTime;
 					chatMsgEdit.setText("");
 				}
 				else
@@ -450,6 +471,7 @@ public class MerchantChatActivity extends FragmentActivity implements EmojiconGr
 			case R.id.et_sendmessage:
 				if (faceFragment != null && faceFragment.getVisibility() == View.VISIBLE) {
 					faceFragment.setVisibility(View.GONE);
+					faceBtn.setImageResource(R.drawable.ib_face);
 				}
 				break;
 			case R.id.back_btn:

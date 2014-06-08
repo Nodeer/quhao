@@ -1,5 +1,8 @@
 package com.withiter.quhao.view.expandtab;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -13,8 +16,8 @@ import com.withiter.quhao.R;
 public class ViewLeft extends RelativeLayout implements ViewBaseAction{
 
 	private ListView mListView;
-	private String[] items = new String[] { "item1", "item2", "item3", "item4", "item5", "item6" };//显示字段
-	private String[] itemsVaule = new String[] { "1", "2", "3", "4", "5", "6" };//隐藏id
+	private List<String> items = new ArrayList<String>();// { "item1", "item2", "item3", "item4", "item5", "item6" };//显示字段
+	private List<String> itemsVaule = new ArrayList<String>();// { "1", "2", "3", "4", "5", "6" };//隐藏id
 	private OnSelectListener mOnSelectListener;
 	private TextAdapter adapter;
 	private String mDistance;
@@ -30,7 +33,7 @@ public class ViewLeft extends RelativeLayout implements ViewBaseAction{
 		init(context);
 	}
 	
-	public ViewLeft(Context context,String[] items,String[] itemsValue,String mDistence) {
+	public ViewLeft(Context context,List<String> items,List<String> itemsValue,String mDistence) {
 		super(context);
 		this.items = items;
 		this.itemsVaule = itemsValue;
@@ -57,10 +60,10 @@ public class ViewLeft extends RelativeLayout implements ViewBaseAction{
 		adapter = new TextAdapter(context, items, R.drawable.choose_item_right, R.drawable.choose_eara_item_selector);
 		adapter.setTextSize(17);
 		if (mDistance != null) {
-			for (int i = 0; i < itemsVaule.length; i++) {
-				if (itemsVaule[i].equals(mDistance)) {
+			for (int i = 0; i < itemsVaule.size(); i++) {
+				if (itemsVaule.get(i).equals(mDistance)) {
 					adapter.setSelectedPositionNoNotify(i);
-					showText = items[i];
+					showText = items.get(i);
 					break;
 				}
 			}
@@ -72,8 +75,8 @@ public class ViewLeft extends RelativeLayout implements ViewBaseAction{
 			public void onItemClick(View view, int position) {
 
 				if (mOnSelectListener != null) {
-					showText = items[position];
-					mOnSelectListener.getValue(itemsVaule[position], items[position]);
+					showText = items.get(position);
+					mOnSelectListener.getValue(itemsVaule.get(position), items.get(position));
 				}
 			}
 		});

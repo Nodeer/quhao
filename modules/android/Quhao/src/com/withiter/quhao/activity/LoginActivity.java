@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.view.MotionEvent;
@@ -60,8 +61,6 @@ public class LoginActivity extends QuhaoBaseActivity {
 		setContentView(R.layout.login_layout);
 		super.onCreate(savedInstanceState);
 
-		// TODO : There is a issue here
-
 		activityName = getIntent().getStringExtra("activityName");
 		if (StringUtils.isNotNull(activityName)) {
 			if (MerchantDetailActivity.class.getName().equals(activityName)) {
@@ -103,8 +102,8 @@ public class LoginActivity extends QuhaoBaseActivity {
 	public void onClick(View v) {
 		// 隐藏软键盘
 
-		InputMethodManager m = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		if (m != null) {
+//		InputMethodManager m = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//		if (m != null) {
 			// if(this.getCurrentFocus()!=null &&
 			// this.getCurrentFocus().getWindowToken() != null)
 			// {
@@ -115,11 +114,11 @@ public class LoginActivity extends QuhaoBaseActivity {
 			// R.id.login
 			// m.hideSoftInputFromWindow(passwordText.getWindowToken(), 0);
 			// m.hideSoftInputFromWindow(loginNameText.getWindowToken(), 0);
-			if (m.isActive()) {
-				m.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
-			}
+//			if (m.isActive()) {
+//				m.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
+//			}
 
-		}
+//		}
 
 		// getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		// 已经点过，直接返回
@@ -216,12 +215,16 @@ public class LoginActivity extends QuhaoBaseActivity {
 					
 				}
 			});
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;
 		case R.id.back_btn:
 			// Intent intent = new Intent();
 			// intent.setClass(this, PersonCenterActivity.class);
 			// startActivity(intent);
+			onBackPressed();
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1);
 			this.finish();
+			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 			break;
 		case R.id.forgetPassword:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -229,6 +232,7 @@ public class LoginActivity extends QuhaoBaseActivity {
 			startActivity(intent1);
 			System.gc();
 			finish();
+			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 			break;
 		default:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -327,4 +331,63 @@ public class LoginActivity extends QuhaoBaseActivity {
 	public boolean onTouch(View v, MotionEvent event) {
 		return false;
 	}
+	
+	@Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+        	
+            // 获得当前得到焦点的View，一般情况下就是EditText（特殊情况就是轨迹求或者实体案件会移动焦点）
+            View v = getCurrentFocus();
+
+            if (isShouldHideInput(v, ev)) {
+                hideSoftInput(v.getWindowToken());
+                loginNameText.clearFocus();
+                passwordText.clearFocus();
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    /**
+     * 根据EditText所在坐标和用户点击的坐标相对比，来判断是否隐藏键盘，因为当用户点击EditText时没必要隐藏
+     * 
+     * @param v
+     * @param event
+     * @return
+     */
+    private boolean isShouldHideInput(View v, MotionEvent event) {
+    	
+        if (v != null && (v instanceof EditText)) {
+            int[] l = { 0, 0 };
+            v.getLocationInWindow(l);
+            int left = l[0], top = l[1], bottom = top + v.getHeight(), right = left
+                    + v.getWidth();
+            if (event.getX() > left && event.getX() < right
+                    && event.getY() > top && event.getY() < bottom) {
+                // 点击EditText的事件，忽略它。
+                return false;
+            } else {
+                return true;
+            }
+        }
+        // 如果焦点不是EditText则忽略，这个发生在视图刚绘制完，第一个焦点不在EditView上，和用户用轨迹球选择其他的焦点
+        return false;
+    }
+
+    /**
+     * 多种隐藏软件盘方法的其中一种
+     * 
+     * @param token
+     */
+    private void hideSoftInput(IBinder token) {
+        if (token != null) {
+            InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            im.hideSoftInputFromWindow(token,
+                    InputMethodManager.HIDE_NOT_ALWAYS);
+            
+//            if(im.isActive()){
+//            	im.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
+//			}
+        }
+    }
 }

@@ -413,7 +413,6 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 					nickName.setText(loginInfo.nickName);
 					mobile.setText(loginInfo.phone);
 
-					// TODO add jifen from backend
 					jifen.setText(loginInfo.jifen);
 
 					if ("true".equals(loginInfo.isSignIn)) {
@@ -548,6 +547,10 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 		case R.id.dianpingLayout:
 			if (QHClientApplication.getInstance().isLogined) {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				
+				if ("0".equals(QHClientApplication.getInstance().accountInfo.dianping)) {
+					return;
+				}
 				
 				Intent intentComment = new Intent();
 				intentComment.putExtra("accountId", QHClientApplication.getInstance().accountInfo.accountId);

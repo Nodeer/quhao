@@ -128,7 +128,7 @@ public class MerchantNoQueueAdapter extends BaseAdapter {
 			}
 			
 			holder.distance.setTag("distance_" + position);
-			if(merchant.distance != 0)
+			if(merchant.distance > 0)
 			{
 				if(merchant.distance>1000)
 				{

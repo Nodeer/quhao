@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -27,6 +28,7 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
+import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantNoQueueAdapter;
 import com.withiter.quhao.task.JsonPack;
@@ -75,9 +77,9 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 	
 	private int searchDistence;
 	
-	private String[] distanceItems;
+	private List<String> distanceItems;
 	
-	private String[] distanceItemsValue;
+	private List<String> distanceItemsValue;
 	
 	private LocationManagerProxy mAMapLocationManager = null;
 	private Handler locationHandler = new Handler();
@@ -172,9 +174,23 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 		if(searchDistence == 0)
 		{
 			searchDistence = 3;
-			distanceItems = new String[] { "1千米", "3千米", "5千米", "10千米", "全城" };// 显示字段
-			distanceItemsValue = new String[] { "1", "3", "5", "10", "-1" };// 显示字段
+//			distanceItems = new String[] { "1千米", "3千米", "5千米", "10千米", "全城" };// 显示字段
+//			distanceItemsValue = new String[] { "1", "3", "5", "10", "-1" };// 显示字段
 		}
+		
+		distanceItems = new ArrayList<String>();
+		distanceItems.add("1千米");
+		distanceItems.add("3千米");
+		distanceItems.add("5千米");
+		distanceItems.add("10千米");
+		distanceItems.add("全城");
+		
+		distanceItemsValue = new ArrayList<String>();
+		distanceItemsValue.add("1");
+		distanceItemsValue.add("3");
+		distanceItemsValue.add("5");
+		distanceItemsValue.add("10");
+		distanceItemsValue.add("-1");
 		
 		expandTabView = (ExpandTabView) this.findViewById(R.id.expandtab_view);
 		viewLeft = new ViewLeft(this,distanceItems,distanceItemsValue,String.valueOf(searchDistence));
@@ -203,10 +219,10 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 			expandTabView.setTitle(showText, position);
 		}
 		
-		for (int i = 0; i < distanceItems.length; i++) {
-			if(showText.equals(distanceItems[i]))
+		for (int i = 0; i < distanceItems.size(); i++) {
+			if(showText.equals(distanceItems.get(i)))
 			{
-				searchDistence = Integer.valueOf(distanceItemsValue[i]); 
+				searchDistence = Integer.valueOf(distanceItemsValue.get(i)); 
 				break;
 			}
 		}
@@ -257,24 +273,50 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 			resultLayout.setVisibility(View.VISIBLE);
 			noResultLayout.setVisibility(View.GONE);
 			locationResult.setVisibility(View.GONE);
-			if (mAMapLocationManager == null) {
-				mAMapLocationManager = LocationManagerProxy.getInstance(this);
-				/*
-				 * mAMapLocManager.setGpsEnable(false);//
-				 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
-				 */
-				// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
-				mAMapLocationManager.requestLocationUpdates(LocationProviderProxy.AMapNetwork, 10000, 100, this);
-				locationHandler.removeCallbacks(locationRunnable);
-				locationHandler.postDelayed(locationRunnable, 60000);
-				
-			}
-			else
-			{
-				mAMapLocationManager.requestLocationUpdates(LocationProviderProxy.AMapNetwork, 10000, 100, this);
-				locationHandler.removeCallbacks(locationRunnable);
-				locationHandler.postDelayed(locationRunnable, 60000);
-			}
+			Thread requestLocation = new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					Looper.prepare();
+					try {
+						if (mAMapLocationManager == null) {
+
+							mAMapLocationManager = LocationManagerProxy
+									.getInstance(NoQueueMerchantListActivity.this);
+							/*
+							 * mAMapLocManager.setGpsEnable(false);//
+							 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
+							 */
+							// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
+							mAMapLocationManager.requestLocationUpdates(
+									LocationProviderProxy.AMapNetwork, 10000, 100,
+									NoQueueMerchantListActivity.this);
+							locationHandler.removeCallbacks(locationRunnable);
+							locationHandler.postDelayed(locationRunnable, 60000);// 设置超过12秒还没有定位到就停止定位
+						} else {
+							/*
+							 * mAMapLocManager.setGpsEnable(false);//
+							 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
+							 */
+							// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
+							mAMapLocationManager.requestLocationUpdates(
+									LocationProviderProxy.AMapNetwork, 10000, 100,
+									NoQueueMerchantListActivity.this);
+							locationHandler.removeCallbacks(locationRunnable);
+							locationHandler.postDelayed(locationRunnable, 60000);// 设置超过12秒还没有定位到就停止定位
+
+						}
+
+					} catch (Exception e) {
+						Log.e("wjzwjz", e.getMessage());
+					}
+					finally
+					{
+						Looper.loop();
+					}
+				}
+			});
+			requestLocation.start();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;
 		default:
@@ -292,19 +334,65 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 	protected void onResume() {
 		backClicked = false;
 		super.onResume();
-		if (mAMapLocationManager == null) {  
-            mAMapLocationManager = LocationManagerProxy.getInstance(this);  
-            /* 
-             * mAMapLocManager.setGpsEnable(false);// 
-             * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true 
-             */  
-            // Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效  
-            mAMapLocationManager.requestLocationUpdates(  
-                    LocationProviderProxy.AMapNetwork, 10000, 100, this);
-            
-            locationHandler.postDelayed(locationRunnable , 60000);// 设置超过12秒还没有定位到就停止定位
-            
-        }
+//		if (mAMapLocationManager == null) {  
+//            mAMapLocationManager = LocationManagerProxy.getInstance(this);  
+//            /* 
+//             * mAMapLocManager.setGpsEnable(false);// 
+//             * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true 
+//             */  
+//            // Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效  
+//            mAMapLocationManager.requestLocationUpdates(  
+//                    LocationProviderProxy.AMapNetwork, 10000, 100, this);
+//            
+//            locationHandler.postDelayed(locationRunnable , 60000);// 设置超过12秒还没有定位到就停止定位
+//            
+//        }
+		
+		Thread requestLocation = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				Looper.prepare();
+				try {
+					if (mAMapLocationManager == null) {
+
+						mAMapLocationManager = LocationManagerProxy
+								.getInstance(NoQueueMerchantListActivity.this);
+						/*
+						 * mAMapLocManager.setGpsEnable(false);//
+						 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
+						 */
+						// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
+						mAMapLocationManager.requestLocationUpdates(
+								LocationProviderProxy.AMapNetwork, 10000, 100,
+								NoQueueMerchantListActivity.this);
+						locationHandler.removeCallbacks(locationRunnable);
+						locationHandler.postDelayed(locationRunnable, 60000);// 设置超过12秒还没有定位到就停止定位
+					} else {
+						/*
+						 * mAMapLocManager.setGpsEnable(false);//
+						 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
+						 */
+						// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
+						mAMapLocationManager.requestLocationUpdates(
+								LocationProviderProxy.AMapNetwork, 10000, 100,
+								NoQueueMerchantListActivity.this);
+						locationHandler.removeCallbacks(locationRunnable);
+						locationHandler.postDelayed(locationRunnable, 60000);// 设置超过12秒还没有定位到就停止定位
+
+					}
+
+				} catch (Exception e) {
+					Log.e("wjzwjz", e.getMessage());
+				}
+				finally
+				{
+					Looper.loop();
+				}
+			}
+		});
+		requestLocation.start();
+		
 	}
 
 	@Override
@@ -472,6 +560,7 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 	public void onLocationChanged(AMapLocation location) {
 
 		if (null != location) {
+			QHClientApplication.getInstance().location = location;
 			if(!isFirstLocation)
 			{
 				isFirstLocation = true;

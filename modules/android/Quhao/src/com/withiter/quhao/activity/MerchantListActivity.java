@@ -13,21 +13,25 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantAdapter;
+import com.withiter.quhao.data.CategoryData;
 import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
+import com.withiter.quhao.view.expandtab.ExpandTabView;
+import com.withiter.quhao.view.expandtab.ViewLeft;
+import com.withiter.quhao.view.expandtab.ViewRight;
 import com.withiter.quhao.view.refresh.PullToRefreshView;
 import com.withiter.quhao.view.refresh.PullToRefreshView.OnFooterRefreshListener;
 import com.withiter.quhao.view.refresh.PullToRefreshView.OnHeaderRefreshListener;
@@ -47,14 +51,32 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 	private int page;
 	private String categoryType;
 	private String cateName;
-	private String categoryCount;
 	private TextView categoryTypeTitle;
 	private boolean isFirst = true;
 	private boolean needToLoad = true;
 	public static boolean backClicked = false;
 
 	private PullToRefreshView mPullToRefreshView;
-
+	
+	private ExpandTabView expandTabView; 
+	
+	private ArrayList<View> mViewArray = new ArrayList<View>();
+	private ViewLeft viewLeft;
+	
+	private ArrayList<CategoryData> categorys;
+	
+	private List<String> categoryTypes;
+	
+	private List<String> categoryNames;
+	
+	private ViewRight viewRight;
+	
+	private List<String> sortByValues;
+	
+	private List<String> sortByItems;
+	
+	private String defaultSortBy;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -68,11 +90,16 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 		this.categoryType = getIntent().getStringExtra("categoryType");
 		this.cateName = getIntent().getStringExtra("cateName");
 
+		this.categorys = getIntent().getParcelableArrayListExtra("categorys");
+		
 		this.categoryTypeTitle = (TextView) findViewById(R.id.categoryTypeTitle);
 		this.categoryTypeTitle.setText(cateName);
 
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
 
+		this.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
+		this.findViewById(R.id.serverdata).setVisibility(View.GONE);
+		
 		mPullToRefreshView = (PullToRefreshView) this.findViewById(R.id.main_pull_refresh_view);
 		mPullToRefreshView.setOnHeaderRefreshListener(this);
 		mPullToRefreshView.setOnFooterRefreshListener(this);
@@ -102,6 +129,9 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 				}
 
 				merchantAdapter.notifyDataSetChanged();
+				findViewById(R.id.loadingbar).setVisibility(View.GONE);
+				findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
+				
 				mPullToRefreshView.onHeaderRefreshComplete();
 				mPullToRefreshView.onFooterRefreshComplete();
 				if (!needToLoad) {
@@ -109,6 +139,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 				} else {
 					mPullToRefreshView.setEnableFooterView(true);
 				}
+				
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 
@@ -133,7 +164,111 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 		merchantsListView.setNextFocusDownId(R.id.merchantsListView);
 		merchantsListView.setVisibility(View.GONE);
 		merchantsListView.setOnItemClickListener(merchantItemClickListener);
+		
+		initExpandView();
+		
 		getMerchants();
+	}
+
+	private void initExpandView() {
+
+		categoryNames = new ArrayList<String>();
+		categoryTypes = new ArrayList<String>();
+		if (categorys!=null && !categorys.isEmpty()) {
+			for (int i = 0; i < categorys.size(); i++) {
+				categoryNames.add(categorys.get(i).getCateName());
+				categoryTypes.add(categorys.get(i).getCategoryType());
+			}
+		}
+		
+		if (StringUtils.isNull(categoryType)) {
+			categoryType = "benbangcai";
+		}
+		
+		expandTabView = (ExpandTabView) this.findViewById(R.id.expandtab_view);
+		viewLeft = new ViewLeft(this, categoryNames, categoryTypes, categoryType);
+
+		sortByItems = new ArrayList<String>();
+		sortByItems.add("默认排序");
+		sortByItems.add("距离最近");
+		sortByItems.add("按人气排序");
+		sortByItems.add("按总体评价排序");
+		sortByItems.add("按口味排序");
+		sortByItems.add("按环境排序");
+		sortByItems.add("按服务排序");
+		sortByItems.add("费用从低到高");
+		sortByItems.add("费用从高到低");
+		
+		sortByValues = new ArrayList<String>();
+		sortByValues.add("-1");
+		sortByValues.add("1");
+		sortByValues.add("2");
+		sortByValues.add("3");
+		sortByValues.add("4");
+		sortByValues.add("5");
+		sortByValues.add("6");
+		sortByValues.add("7");
+		sortByValues.add("8");
+		
+		if (StringUtils.isNull(defaultSortBy)) {
+			defaultSortBy = "-1";
+		}
+		viewRight = new ViewRight(this, sortByItems, sortByValues, defaultSortBy);
+		
+		
+		mViewArray = new ArrayList<View>();
+		mViewArray.add(viewLeft);
+		mViewArray.add(viewRight);
+		
+		ArrayList<String> mTextArray = new ArrayList<String>();
+		mTextArray.add("口味");
+		mTextArray.add("排序");
+		expandTabView.setValue(mTextArray, mViewArray);
+		expandTabView.setTitle(viewLeft.getShowText(), 0);
+		expandTabView.setTitle(viewRight.getShowText(), 1);
+
+		viewLeft.setOnSelectListener(new ViewLeft.OnSelectListener() {
+			@Override
+			public void getValue(String distance, String showText) {
+				onRefresh(viewLeft, showText);
+			}
+		});
+		
+		viewRight.setOnSelectListener(new ViewRight.OnSelectListener() {
+			@Override
+			public void getValue(String distance, String showText) {
+				onRefresh(viewRight, showText);
+			}
+		});
+	}
+	
+	private void onRefresh(View view, String showText) {
+		
+		expandTabView.onPressBack();
+		int position = getPositon(view);
+		if (position >= 0 && !expandTabView.getTitle(position).equals(showText)) {
+			expandTabView.setTitle(showText, position);
+		}
+		Toast.makeText(this, showText, Toast.LENGTH_SHORT).show();
+
+	}
+	
+	@Override
+	public void onBackPressed() {
+		
+		if (!expandTabView.onPressBack()) {
+			finish();
+		}
+		
+	}
+	
+	private int getPositon(View tView) {
+		for (int i = 0; i < mViewArray.size(); i++) {
+			if (mViewArray.get(i) == tView) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	private void getMerchants() {

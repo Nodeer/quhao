@@ -43,6 +43,7 @@ import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.CategoryGridAdapter;
 import com.withiter.quhao.adapter.MyPagerAdapter;
+import com.withiter.quhao.data.CategoryData;
 import com.withiter.quhao.task.AllCategoriesTask;
 import com.withiter.quhao.task.JsonPack;
 import com.withiter.quhao.task.TopMerchantsTask;
@@ -581,14 +582,38 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			Category category = categorys.get(position);
 //			QuhaoLog.d(TAG, "the category is : " + category.categoryType + ", the count is : " + category.count);
+//			Intent intent = new Intent();
+//			intent.putExtra("categoryType", category.categoryType);
+//			intent.putExtra("cateName", category.cateName);
+//			intent.putExtra("categoryCount", String.valueOf(category.count));
+//			intent.setClass(getActivity(), MerchantListActivity.class);
+//			startActivity(intent);
+			
 			Intent intent = new Intent();
 			intent.putExtra("categoryType", category.categoryType);
 			intent.putExtra("cateName", category.cateName);
 			intent.putExtra("categoryCount", String.valueOf(category.count));
-
+			
+			ArrayList<CategoryData> categoryDatas = new ArrayList<CategoryData>();
+			if (categorys != null && !categorys.isEmpty()) {
+				CategoryData data = null;
+				
+				for (int i = 0; i < categorys.size(); i++) {
+					data = new CategoryData();
+					data.setCount(categorys.get(i).count);
+					data.setCategoryType(categorys.get(i).categoryType);
+					data.setCateName(categorys.get(i).cateName);
+					categoryDatas.add(data);
+				}
+			}
+			
+			Bundle mBundle = new Bundle();
+			mBundle.putParcelableArrayList("categorys", categoryDatas);
+			intent.putExtras(mBundle);
+			
 			intent.setClass(getActivity(), MerchantListActivity.class);
-
 			startActivity(intent);
+			
 			getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 		}
 	};

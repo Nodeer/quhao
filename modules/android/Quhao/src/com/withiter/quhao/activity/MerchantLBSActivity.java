@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,6 +33,7 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.MyLocationStyle;
+import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.data.MerchantData;
 import com.withiter.quhao.util.StringUtils;
@@ -62,9 +65,11 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.merchant_lbs_map);
 
+		
 //		this.merchantName = this.getIntent().getStringExtra("merchantName");
 //		this.merchantId = this.getIntent().getStringExtra("merchantId");
-
+		long time1 = System.currentTimeMillis();
+		Log.e("wjzwjz", "quhaoclient : " + (time1-QHClientApplication.getInstance().time1));
 		merchant = getIntent().getParcelableExtra("merchant");
 		
 		merchantNameView = (TextView) findViewById(R.id.name);
@@ -76,7 +81,8 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 
 		btnGuideRoute = (Button) this.findViewById(R.id.guide_route);
 		btnGuideRoute.setOnClickListener(this);
-		
+		long time2 = System.currentTimeMillis();
+		Log.e("wjzwjz", "time2-time1:" + (time2-time1));
 		mMapView = (MapView) findViewById(R.id.mapView);
 		mMapView.onCreate(savedInstanceState);
 		// markerText = (TextView) findViewById(R.id.mark_listenter_text);
@@ -92,7 +98,7 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 				MerchantLBSActivity.this.finish();
 			}
 		});
-
+		long time3 = System.currentTimeMillis();
 		if (mAMap == null) {
 			mAMap = mMapView.getMap();
 			mAMap.setOnMapLoadedListener(this);// 设置amap加载成功事件监听器
@@ -113,7 +119,8 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 			mAMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
 //			mAMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
 		}
-		
+		long time4 = System.currentTimeMillis();
+		Log.e("wjzwjz", "time4-time3 : " + (time4-time3));
 		if(null!=merchant)
 		{
 			merchantNameView.setText(merchant.getName());
@@ -132,6 +139,8 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 				mAMap.moveCamera(update);
 			}
 		}
+		long time5 = System.currentTimeMillis();
+		Log.e("wjzwjz", "time5-time4:" + (time5-time4));
 
 	}
 
@@ -313,6 +322,7 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 	@Override
 	public void onLocationChanged(AMapLocation aLocation) {
 		if (mListener != null && aLocation != null) {
+			QHClientApplication.getInstance().location = aLocation;
 			mListener.onLocationChanged(aLocation);// 显示系统小蓝点
 			float bearing = mAMap.getCameraPosition().bearing;
 			mAMap.setMyLocationRotateAngle(bearing);// 设置小蓝点旋转角度
@@ -323,17 +333,58 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 	@Override
 	public void activate(OnLocationChangedListener listener) {
 		mListener = listener;
-		if (mAMapLocationManager == null) {
-			mAMapLocationManager = LocationManagerProxy.getInstance(this);
-			/*
-			 * mAMapLocManager.setGpsEnable(false);
-			 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true Location
-			 * API定位采用GPS和网络混合定位方式
-			 * ，第一个参数是定位provider，第二个参数时间最短是5000毫秒，第三个参数距离间隔单位是米，第四个参数是定位监听者
-			 */
-			mAMapLocationManager.requestLocationUpdates(
-					LocationProviderProxy.AMapNetwork, 10000, 100, this);
-		}
+//		if (mAMapLocationManager == null) {
+//			mAMapLocationManager = LocationManagerProxy.getInstance(this);
+//			/*
+//			 * mAMapLocManager.setGpsEnable(false);
+//			 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true Location
+//			 * API定位采用GPS和网络混合定位方式
+//			 * ，第一个参数是定位provider，第二个参数时间最短是5000毫秒，第三个参数距离间隔单位是米，第四个参数是定位监听者
+//			 */
+//			mAMapLocationManager.requestLocationUpdates(
+//					LocationProviderProxy.AMapNetwork, 10000, 100, this);
+//		}
+		
+		Thread requestLocation = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				Looper.prepare();
+				try {
+					if (mAMapLocationManager == null) {
+
+						mAMapLocationManager = LocationManagerProxy
+								.getInstance(MerchantLBSActivity.this);
+						/*
+						 * mAMapLocManager.setGpsEnable(false);//
+						 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
+						 */
+						// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
+						mAMapLocationManager.requestLocationUpdates(
+								LocationProviderProxy.AMapNetwork, 10000, 100,
+								MerchantLBSActivity.this);
+					} else {
+						/*
+						 * mAMapLocManager.setGpsEnable(false);//
+						 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
+						 */
+						// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
+						mAMapLocationManager.requestLocationUpdates(
+								LocationProviderProxy.AMapNetwork, 10000, 100,
+								MerchantLBSActivity.this);
+
+					}
+
+				} catch (Exception e) {
+					Log.e("wjzwjz", e.getMessage());
+				}
+				finally
+				{
+					Looper.loop();
+				}
+			}
+		});
+		requestLocation.start();
 	}
 
 	@Override

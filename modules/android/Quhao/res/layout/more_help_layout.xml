@@ -76,7 +76,6 @@
             android:cacheColorHint="@null"
             android:divider="@null"
             android:entries="@null"
-            
             android:listSelector="@drawable/list_item_trans"
             android:scrollbarThumbVertical="@drawable/scrollbar"
             android:scrollbars="vertical" />

@@ -781,6 +781,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			break;
 			case R.id.mapLayout:
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				QHClientApplication.getInstance().time1 = System.currentTimeMillis();
 				Intent intent = new Intent(MerchantDetailActivity.this, MerchantLBSActivity.class);
 				
 				MerchantData data = new MerchantData();

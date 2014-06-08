@@ -19,6 +19,8 @@ import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.activity.MerchantChatActivity;
 import com.withiter.quhao.activity.MerchantChatRoomsActivity;
+import com.withiter.quhao.task.GetChatPortTask;
+import com.withiter.quhao.task.JsonPack;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.AsynImageLoader;
 import com.withiter.quhao.util.tool.QuhaoConstant;
@@ -90,25 +92,47 @@ public class MerchantChatRoomAdapter extends BaseAdapter {
 				@Override
 				public void onClick(View arg0) {
 					
-					Intent intent = new Intent();
-					//uid=uid1&image=image1&mid=mid1&user=11
-					String image = QHClientApplication.getInstance().accountInfo.userImage;
-					if(StringUtils.isNotNull(image) && image.contains(QuhaoConstant.HTTP_URL))
-					{
-						image = "/" + image.substring(QuhaoConstant.HTTP_URL.length());
-					}
-					if (QHClientApplication.getInstance().accountInfo == null) {
-						Toast.makeText(activity, "亲，登录过期了哦", Toast.LENGTH_SHORT).show();
-						return;
-					}
-					intent.putExtra("uid", QHClientApplication.getInstance().accountInfo.accountId);
-					intent.putExtra("image", image);
-					intent.putExtra("mid", mid);
-					intent.putExtra("user", QHClientApplication.getInstance().accountInfo.phone);
-					intent.putExtra("merchantName", merchantName);
-					intent.setClass(activity, MerchantChatActivity.class);
-					activity.startActivity(intent);
-					activity.overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left); 
+					
+					final GetChatPortTask task = new GetChatPortTask(R.string.waitting, activity, "chat?mid=" +mid);
+					task.execute(new Runnable() {
+						
+						@Override
+						public void run() {
+							JsonPack jsonPack = task.jsonPack;
+							String port = jsonPack.getObj();
+							if ("false".equals(port)) {
+								Toast.makeText(activity, "亲，房间人数已满，请稍后再来。", Toast.LENGTH_SHORT).show();
+								return;
+							}
+							Intent intent = new Intent();
+							//uid=uid1&image=image1&mid=mid1&user=11
+							String image = QHClientApplication.getInstance().accountInfo.userImage;
+							if(StringUtils.isNotNull(image) && image.contains(QuhaoConstant.HTTP_URL))
+							{
+								image = "/" + image.substring(QuhaoConstant.HTTP_URL.length());
+							}
+							if (QHClientApplication.getInstance().accountInfo == null) {
+								Toast.makeText(activity, "亲，账号登录过期了哦", Toast.LENGTH_SHORT).show();
+								return;
+							}
+							intent.putExtra("uid", QHClientApplication.getInstance().accountInfo.accountId);
+							intent.putExtra("image", image);
+							intent.putExtra("mid", mid);
+							intent.putExtra("user", QHClientApplication.getInstance().accountInfo.phone);
+							intent.putExtra("merchantName", merchantName);
+							intent.putExtra("port", port);
+							intent.setClass(activity, MerchantChatActivity.class);
+							activity.startActivity(intent);
+							activity.overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left); 
+						}
+					},new Runnable() {
+						
+						@Override
+						public void run() {
+							Toast.makeText(activity, "亲，房间人数已满，请稍后再来。", Toast.LENGTH_SHORT).show();
+							return;
+						}
+					});
 					
 				}
 			});

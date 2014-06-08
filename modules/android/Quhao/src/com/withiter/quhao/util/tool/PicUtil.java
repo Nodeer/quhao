@@ -11,12 +11,16 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -194,8 +198,25 @@ public class PicUtil {
 		OutputStream os = null;
 		try {
 			// 显示网络上的图片
-			HttpClient client = new DefaultHttpClient();
-			HttpGet get = new HttpGet(imageUri);
+//			HttpClient client = new DefaultHttpClient();
+			String url = imageUri;
+			String[] strs = imageUri.split("fileName=");
+			if (null != strs && strs.length>1) {
+				url = strs[0] + "fileName=" + URLEncoder.encode(strs[1],"UTF-8");
+			}
+			HttpGet get = new HttpGet(url);
+			get.setHeader("user-agent", "QuhaoAndroid");
+			HttpParams httpParameters = new BasicHttpParams();
+			// Set the timeout in milliseconds until a connection is established.
+			int timeoutConnection = 60 * 1000;
+			HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+
+			// Set the default socket timeout in milliseconds which is the timeout
+			// for waiting for data.
+			int timeoutSocket = 60 * 1000;
+			HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
+
+			HttpClient client = new DefaultHttpClient(httpParameters);
 			HttpResponse response;
 			response = client.execute(get);
 			HttpEntity entity = response.getEntity();

@@ -42,12 +42,12 @@ public class CommonHTTPRequest {
 			
 			HttpParams httpParameters = new BasicHttpParams();
 			// Set the timeout in milliseconds until a connection is established.
-			int timeoutConnection = 10 * 1000;
+			int timeoutConnection = 60 * 1000;
 			HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
 
 			// Set the default socket timeout in milliseconds which is the timeout
 			// for waiting for data.
-			int timeoutSocket = 10 * 1000;
+			int timeoutSocket = 60 * 1000;
 			HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
 
 			HttpClient httpClient = new DefaultHttpClient(httpParameters);
@@ -88,12 +88,12 @@ public class CommonHTTPRequest {
 
 			HttpParams httpParameters = new BasicHttpParams();
 			// Set the timeout in milliseconds until a connection is established.
-			int timeoutConnection = 10 * 1000;
+			int timeoutConnection = 60 * 1000;
 			HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
 
 			// Set the default socket timeout in milliseconds which is the timeout
 			// for waiting for data.
-			int timeoutSocket = 10 * 1000;
+			int timeoutSocket = 60 * 1000;
 			HttpConnectionParams.setSoTimeout(httpParameters, timeoutSocket);
 
 			HttpClient httpClient = new DefaultHttpClient(httpParameters);

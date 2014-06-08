@@ -207,37 +207,34 @@ public class MoreFragment extends Fragment implements OnClickListener{
 		isClick = true;
 		
 		progressDialogUtil = new ProgressDialogUtil(getActivity(), R.string.empty, R.string.querying, false);
-		progressDialogUtil.showProgress();
+		
 		switch (v.getId()) {
 		case R.id.more_settings:// 系统设置
-			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			Intent intent = new Intent(getActivity(), SettingsActivity.class);
 			startActivity(intent);
 			getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 		case R.id.more_aboutus:// 关于我们
-			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			Intent intent1 = new Intent(getActivity(), AboutUsActivity.class);
 			startActivity(intent1);
 			getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 		case R.id.more_opinion:// 反馈
-			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			Intent intent2 = new Intent(getActivity(), OpinionActivity.class);
 			startActivity(intent2);
 			getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 		case R.id.more_help:// 帮助
-			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			Intent intent3 = new Intent(getActivity(), HelpActivity.class);
 			startActivity(intent3);
 			getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 		case R.id.more_version:// 版本检测
+			progressDialogUtil.showProgress();
 			progressDialogUtil.closeProgress();
 			if(!ActivityUtil.isNetWorkAvailable(getActivity()))
 			{
@@ -285,63 +282,6 @@ public class MoreFragment extends Fragment implements OnClickListener{
 												Uri uri = Uri.parse("http://www.quhao.la/");
 												Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 												startActivity(intent);
-												/*
-												final ProgressDialog pBar = new ProgressDialog(getActivity());
-												pBar.setTitle("正在下载");
-												pBar.setMessage("请稍候...");
-												pBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-
-												// downFile();
-												pBar.show();
-												new Thread() {
-													public void run() {
-														HttpClient client = new DefaultHttpClient();
-														HttpGet get = new HttpGet(QuhaoConstant.HTTP_URL + "app/down?t=android");
-														HttpResponse response;
-														try {
-															response = client.execute(get);
-															HttpEntity entity = response.getEntity();
-															long length = entity.getContentLength();
-															InputStream is = entity.getContent();
-															FileOutputStream fileOutputStream = null;
-															if (is != null) {
-																File file = new File(Environment.getExternalStorageDirectory(), "quhaola-v" + avo.android + ".apk");
-																fileOutputStream = new FileOutputStream(file);
-																byte[] buf = new byte[1024];
-																int ch = -1;
-																int count = 0;
-																while ((ch = is.read(buf)) != -1) {
-																	fileOutputStream.write(buf, 0, ch);
-																	count += ch;
-																	if (length > 0) {
-																	}
-																}
-															}
-															fileOutputStream.flush();
-															if (fileOutputStream != null) {
-																fileOutputStream.close();
-															}
-															pBar.dismiss();
-//															down();
-															
-															Intent intent = new Intent(Intent.ACTION_VIEW);  
-														    intent.setDataAndType(Uri.fromFile(new File(Environment  
-														            .getExternalStorageDirectory(), "quhaola-v" + avo.android + ".apk")),  
-														            "application/vnd.android.package-archive");  
-														    startActivity(intent);  
-															
-														} catch (ClientProtocolException e) {
-															e.printStackTrace();
-														} catch (IOException e) {
-															e.printStackTrace();
-														}
-														catch (Exception e)
-														{
-															e.printStackTrace();
-														}
-													}
-												}.start();
-												*/
 
 											}
 										}).setNegativeButton("暂不更新", new DialogInterface.OnClickListener() {
@@ -366,177 +306,14 @@ public class MoreFragment extends Fragment implements OnClickListener{
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				}
 			});
-			/*
-			try {
-				String result = CommonHTTPRequest.get(url);
-				if (StringUtils.isNull(result)) {
-					Builder dialog = new AlertDialog.Builder(getActivity());
-					dialog.setTitle("温馨提示").setMessage("网络情况不是很好哟").setPositiveButton("确定", null);
-					dialog.show();
-					return;
-				}
-
-				final AppVersionVO avo = ParseJson.convertToAppVersionVO(result);
-				if (avo == null) {
-					Builder dialog = new AlertDialog.Builder(getActivity());
-					dialog.setTitle("温馨提示").setMessage("网络情况不是很好哟").setPositiveButton("确定", null);
-					dialog.show();
-					return;
-				}
-
-				if (avo.android == currentVersion) {
-					Builder dialog = new AlertDialog.Builder(getActivity());
-					dialog.setTitle("温馨提示").setMessage("APP已经是最新版").setPositiveButton("确定", null);
-					dialog.show();
-					return;
-				}
-
-				if (avo.android > currentVersion) {
-					Dialog dialog = new AlertDialog.Builder(getActivity()).setTitle("软件更新").setMessage("软件有更新，建议更新到最新版本")
-					// 设置内容
-							.setPositiveButton("更新",// 设置确定按钮
-									new DialogInterface.OnClickListener() {
-										@Override
-										public void onClick(DialogInterface dialog, int which) {
-											ProgressDialog pBar = new ProgressDialog(getActivity());
-											pBar.setTitle("正在下载");
-											pBar.setMessage("请稍候...");
-											pBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-
-											// downFile();
-											pBar.show();
-											new Thread() {
-												public void run() {
-													HttpClient client = new DefaultHttpClient();
-													HttpGet get = new HttpGet("app/down?t=android");
-													HttpResponse response;
-													try {
-														response = client.execute(get);
-														HttpEntity entity = response.getEntity();
-														long length = entity.getContentLength();
-														InputStream is = entity.getContent();
-														FileOutputStream fileOutputStream = null;
-														if (is != null) {
-															File file = new File(Environment.getExternalStorageDirectory(), "quhaola-v" + avo.android + ".apk");
-															fileOutputStream = new FileOutputStream(file);
-															byte[] buf = new byte[1024];
-															int ch = -1;
-															int count = 0;
-															while ((ch = is.read(buf)) != -1) {
-																fileOutputStream.write(buf, 0, ch);
-																count += ch;
-																if (length > 0) {
-																}
-															}
-														}
-														fileOutputStream.flush();
-														if (fileOutputStream != null) {
-															fileOutputStream.close();
-														}
-
-//														down();
-														
-														Intent intent = new Intent(Intent.ACTION_VIEW);  
-													    intent.setDataAndType(Uri.fromFile(new File(Environment  
-													            .getExternalStorageDirectory(), "quhaola-v" + avo.android + ".apk")),  
-													            "application/vnd.android.package-archive");  
-													    startActivity(intent);  
-														
-													} catch (ClientProtocolException e) {
-														e.printStackTrace();
-													} catch (IOException e) {
-														e.printStackTrace();
-													}
-												}
-											}.start();
-
-										}
-									}).setNegativeButton("暂不更新", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int whichButton) {
-									// 点击"取消"按钮之后退出程序
-									getActivity().finish();
-								}
-							}).create();// 创建
-					// 显示对话框
-					dialog.show();
-				}
-
-			} catch (ClientProtocolException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			 */
 			break;
 		case R.id.more_share:// 分享给好友
 			// 显示分享界面
-			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			showShare(false, null);
 			
-			/*
-			final OnekeyShare oks = new OnekeyShare();
-			oks.setNotification(R.drawable.ic_launcher, getResources().getString(R.string.app_name));
-//			oks.setAddress("12345678901");
-//			oks.setTitle("取号啦");
-//			oks.setTitleUrl("http://service.quhao.la/");
-			oks.setText("取号啦--让你排队不用等！");
-//			oks.setImagePath(MainActivity.TEST_IMAGE);
-			oks.setImageUrl("http://www.quhao.la/public/images/home/site_iphone.png");
-//			oks.setUrl("http://service.quhao.la/");
-//			oks.setFilePath(MainActivity.TEST_IMAGE);
-//			oks.setComment(getResources().getString(R.string.share));
-//			oks.setSite(getResources().getString(R.string.app_name));
-//			oks.setSiteUrl("http://sharesdk.cn");
-//			oks.setVenueName("ShareSDK");
-//			oks.setVenueDescription("This is a beautiful place!");
-//			oks.setLatitude(23.056081f);
-//			oks.setLongitude(113.385708f);
-			oks.setSilent(true);
-			oks.setCallback(new PlatformActionListener(){
-
-				@Override
-				public void onCancel(Platform arg0, int arg1) {
-					Map<String, Object> toastParams = new HashMap<String, Object>();
-					toastParams.put("activity", getActivity());
-					toastParams.put("text", R.string.share_cancel);
-					toastParams.put("toastLength", Toast.LENGTH_SHORT);
-					toastHandler.obtainMessage(1000, toastParams).sendToTarget();
-					
-				}
-
-				@Override
-				public void onComplete(Platform arg0, int arg1,
-						HashMap<String, Object> arg2) {
-					Map<String, Object> toastParams = new HashMap<String, Object>();
-					toastParams.put("activity", getActivity());
-					toastParams.put("text", R.string.share_success);
-					toastParams.put("toastLength", Toast.LENGTH_SHORT);
-					toastHandler.obtainMessage(1000, toastParams).sendToTarget();
-				}
-
-				@Override
-				public void onError(Platform arg0, int arg1, Throwable arg2) {
-					Map<String, Object> toastParams = new HashMap<String, Object>();
-					toastParams.put("activity", getActivity());
-					toastParams.put("text", R.string.share_error);
-					toastParams.put("toastLength", Toast.LENGTH_SHORT);
-					toastHandler.obtainMessage(1000, toastParams).sendToTarget();
-				}
-
-				
-				
-			});
-			oks.show(getActivity());
-			*/
-//			oks.setapp
- 
- 
-//			Intent intent4 = new Intent(getActivity(), SinaInfoActivity.class);
-//			startActivity(intent4);
 			break;
 		case R.id.more_share_auth:
-			progressDialogUtil.closeProgress();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			if (sina == null) {
 				ctvName.setChecked(false);
@@ -592,10 +369,10 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			sina.showUser(null);
 			break;
 		case R.id.more_login_status:
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			if(!ActivityUtil.isNetWorkAvailable(getActivity()))
 			{
 				Toast.makeText(getActivity(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
-				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				return;
 			}
