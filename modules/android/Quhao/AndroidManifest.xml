@@ -57,23 +57,6 @@
 		<meta-data android:name="com.amap.api.v2.apikey" android:value="9e01e3340b4c35140eaa1a334c2a20c3" />
 		
 		<meta-data android:name="com.amap.api.v2.apikey" android:value="5eddb655591aaf39b0ccbb8106e8d95d" />-->
-		<!-- 渠道商编号 -->
-		<meta-data android:name="BaiduMobAd_CHANNEL" android:value="google" />
-
-		<!-- 是否开启错误日志统计，默认为false -->
-		<meta-data android:name="BaiduMobAd_EXCEPTION_LOG" android:value="true" />
-		<!-- 日志发送策略，可选值：APP_START、ONCE_A_DAY、SET_TIME_INTERVAL，默认为APP_START -->
-		<meta-data android:name="BaiduMobAd_SEND_STRATEGY" android:value="APP_START" />
-		<!-- 日志发送策略 为SET_TIME_INTERVAL时，需设定时间间隔(取消下行注释)。取值为1-24的整数，默认为1 -->
-		<meta-data android:name="BaiduMobAd_TIME_INTERVAL" android:value="24" />
-		<!-- 日志仅在wifi网络下发送，默认为false -->
-		<meta-data android:name="BaiduMobAd_ONLY_WIFI" android:value="false" />
-		<!-- 是否获取基站位置信息 -->
-		<meta-data android:name="BaiduMobAd_CELL_LOCATION" android:value="true" />
-
-
-		<service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote">
-		</service>
 		<!-- startup page -->
 		<activity android:screenOrientation="portrait" android:name="com.withiter.quhao.activity.LaunchActivity" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:label="@string/app_name">
 			<intent-filter>
