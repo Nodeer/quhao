@@ -32,9 +32,10 @@ import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.AsynImageLoader;
+import com.withiter.quhao.util.tool.FileUtil;
+import com.withiter.quhao.util.tool.ImageUtil;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.QuhaoConstant;
-import com.withiter.quhao.util.tool.SDTool;
 import com.withiter.quhao.util.tool.SharedprefUtil;
 import com.withiter.quhao.vo.LoginInfo;
 
@@ -194,7 +195,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 		String fileName = "";
 		if(StringUtils.isNotNull(account.userImage))
 		{
-			if (SDTool.instance().SD_EXIST) {
+			if (FileUtil.hasSdcard()) {
 				
 				String[] strs = account.userImage.split("fileName=");
 				if(strs != null && strs.length>1)
@@ -212,7 +213,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 						}
 						
 						if(f.exists()){
-							bitmap = BitmapFactory.decodeFile(f.getPath());
+							bitmap = ImageUtil.decodeFile(f.getPath(),-1,128*128);
 							if (null != bitmap) {
 								avatar.setImageBitmap(bitmap);
 							}

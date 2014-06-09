@@ -71,6 +71,7 @@
                 android:contentDescription="@null"
                 android:duplicateParentState="true"
                 android:paddingRight="6.0dip"
+                android:scaleType="fitXY"
                 android:src="@drawable/person_avatar" />
             
             <ImageView

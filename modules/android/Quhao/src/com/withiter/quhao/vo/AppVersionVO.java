@@ -2,10 +2,10 @@ package com.withiter.quhao.vo;
 
 public class AppVersionVO {
 
-	public int android = 0;
-	public int ios = 0;
+	public String android;
+	public String ios;
 
-	public AppVersionVO(int android, int ios) {
+	public AppVersionVO(String android, String ios) {
 		super();
 		this.android = android;
 		this.ios = ios;

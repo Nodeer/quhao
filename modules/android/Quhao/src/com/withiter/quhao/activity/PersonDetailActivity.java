@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +18,6 @@ import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -39,15 +39,14 @@ import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.domain.CityInfo;
-import com.withiter.quhao.exception.NoResultFromHTTPRequestException;
 import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
-import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.AsynImageLoader;
+import com.withiter.quhao.util.tool.FileUtil;
+import com.withiter.quhao.util.tool.ImageUtil;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
-import com.withiter.quhao.util.tool.SDTool;
 import com.withiter.quhao.util.tool.SharedprefUtil;
 import com.withiter.quhao.vo.LoginInfo;
 
@@ -152,6 +151,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		case R.id.photoLayout:
 			
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			currentTime = String.valueOf(System.currentTimeMillis());
 			showChooseDialog();
 //			this.finish();
 			break;
@@ -292,6 +292,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 			}
 			break;
 		case R.id.logout_btn:
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			if (QHClientApplication.getInstance().isLogined) {
 				
 				AlertDialog.Builder builder = new Builder(this);
@@ -371,7 +372,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 							Intent intentFromCapture = new Intent(
 									MediaStore.ACTION_IMAGE_CAPTURE);
 							// 判断存储卡是否可以用，可用进行存储
-							if (SDTool.hasSdcard()) {
+							if (FileUtil.hasSdcard()) {
 
 								intentFromCapture.putExtra(
 										MediaStore.EXTRA_OUTPUT,
@@ -406,7 +407,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 				startPhotoZoom(data.getData());
 				break;
 			case CAMERA_REQUEST_CODE:
-				if (SDTool.hasSdcard()) {
+				if (FileUtil.hasSdcard()) {
 					File tempFile = new File(Environment
 							.getExternalStorageDirectory() + "/" + QuhaoConstant.IMAGES_SD_URL + "/" + SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "") + "_" + currentTime + "_" +
 							QuhaoConstant.PERSON_IMAGE_FILE_NAME);
@@ -454,6 +455,11 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 	 * @param picdata
 	 */
 	private void getImageToView(Intent data) {
+		if(progressDialogUtil == null)
+		{
+			progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
+		}
+		progressDialogUtil.showProgress();
 		Bundle extras = data.getExtras();
 		if (extras != null) {
 			Bitmap photo = extras.getParcelable("data");
@@ -476,14 +482,15 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 				if (!image.exists()) {
 					image.createNewFile();
 				}
-				newImageName = image.getName();
+//				newImageName = image.getName();
 				fos = new FileOutputStream(image);
 				photo.compress(Bitmap.CompressFormat.PNG, 100, fos);
 				fos.flush();
 				fos.close();
 			} catch (FileNotFoundException e) {
-
+				progressDialogUtil.closeProgress();
 			} catch (IOException e) {
+				progressDialogUtil.closeProgress();
 				e.printStackTrace();
 			}
 
@@ -501,20 +508,30 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 				public void run() {
 
 					try {
-						String request;
+						String request= "";
 						Looper.prepare();
-						request = post(QuhaoConstant.HTTP_URL
-								+ "updateUserImage", params, files);
+						request = post(QuhaoConstant.HTTP_URL + "updateUserImage", params, files);
 						
 						Log.e("wjzwjz", "request : " + request);
 						
 						if(!"error".equals(request))
 						{
 							SharedprefUtil.put(PersonDetailActivity.this, QuhaoConstant.USER_IMAGE, request);
+							String userImage = QHClientApplication.getInstance().accountInfo.userImage; 
+							if (StringUtils.isNotNull(userImage) && userImage.indexOf("fileName")>0) {
+								String[] strs = userImage.split("fileName=");
+								if (null != strs && strs.length>1) {
+									userImage = strs[0] + "fileName=" + URLEncoder.encode(request,"UTF-8");
+									QHClientApplication.getInstance().accountInfo.userImage = userImage;
+								}
+							}
+							newImageName = request;
 							updateNewImgHandler.sendEmptyMessage(200);
+							
 						}
 						else
 						{
+							progressDialogUtil.closeProgress();
 							Map<String, Object> toastParams = new HashMap<String, Object>();
 							toastParams.put("activity", PersonDetailActivity.this);
 							toastParams.put("text", "上传失败，请检查网络设置.");
@@ -524,6 +541,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 
 					} catch (IOException e) {
 						e.printStackTrace();
+						progressDialogUtil.closeProgress();
 					}
 
 				}
@@ -542,7 +560,8 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		public void handleMessage(Message msg) {
 
 			super.handleMessage(msg);
-			if (SDTool.instance().SD_EXIST
+			progressDialogUtil.closeProgress();
+			if (FileUtil.hasSdcard()
 					&& StringUtils.isNotNull(newImageName)) {
 				Bitmap bitmap = null;
 				File f = new File(Environment.getExternalStorageDirectory()
@@ -555,7 +574,8 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 				}
 
 				if (f.exists()) {
-					bitmap = BitmapFactory.decodeFile(f.getPath());
+					
+					bitmap = ImageUtil.decodeFile(f.getPath(),-1,128*128);
 					if (null != bitmap) {
 						personAvatar.setImageBitmap(bitmap);
 					}
@@ -577,94 +597,123 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
      */
     public static String post(String url, Map<String, String> params, Map<String, File> files)
             throws IOException {
-        String BOUNDARY = java.util.UUID.randomUUID().toString();
-        String PREFIX = "--", LINEND = "\r\n";
-        String MULTIPART_FROM_DATA = "multipart/form-data";
-        String CHARSET = "UTF-8";
+    	InputStream is = null;
+    	InputStream in = null;
+    	DataOutputStream outStream = null;
+    	HttpURLConnection conn = null;
+    	try
+    	{
+    		String BOUNDARY = java.util.UUID.randomUUID().toString();
+            String PREFIX = "--", LINEND = "\r\n";
+            String MULTIPART_FROM_DATA = "multipart/form-data";
+            String CHARSET = "UTF-8";
 
 
-        URL uri = new URL(url);
-        HttpURLConnection conn = (HttpURLConnection) uri.openConnection();
-        conn.setReadTimeout(10 * 1000); // 缓存的最长时间
-        conn.setDoInput(true);// 允许输入
-        conn.setDoOutput(true);// 允许输出
-        conn.setUseCaches(false); // 不允许使用缓存
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty("user-agent", "QuhaoAndroid");
-        conn.setRequestProperty("connection", "keep-alive");
-        conn.setRequestProperty("Charsert", "UTF-8");
-        conn.setRequestProperty("Content-Type", MULTIPART_FROM_DATA + ";boundary=" + BOUNDARY);
+            URL uri = new URL(url);
+            conn = (HttpURLConnection) uri.openConnection();
+            conn.setReadTimeout(10 * 1000); // 缓存的最长时间
+            conn.setDoInput(true);// 允许输入
+            conn.setDoOutput(true);// 允许输出
+            conn.setUseCaches(false); // 不允许使用缓存
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("user-agent", "QuhaoAndroid");
+            conn.setRequestProperty("connection", "keep-alive");
+            conn.setRequestProperty("Charsert", "UTF-8");
+            conn.setRequestProperty("Content-Type", MULTIPART_FROM_DATA + ";boundary=" + BOUNDARY);
 
 
-        // 首先组拼文本类型的参数
-        StringBuilder sb = new StringBuilder();
-        
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            sb.append(PREFIX);
-            sb.append(BOUNDARY);
-            sb.append(LINEND);
-            sb.append("Content-Disposition: form-data; name=\"" + entry.getKey() + "\"" + LINEND);
-            sb.append("Content-Type: text/plain; charset=" + CHARSET + LINEND);
-            sb.append("Content-Transfer-Encoding: 8bit" + LINEND);
-            sb.append(LINEND);
-            sb.append(entry.getValue());
-            sb.append(LINEND);
-        }
-
-        String fileName = "";
-        DataOutputStream outStream = new DataOutputStream(conn.getOutputStream());
-        outStream.write(sb.toString().getBytes());
-        // 发送文件数据
-        if (files != null)
-            for (Map.Entry<String, File> file : files.entrySet()) {
-                StringBuilder sb1 = new StringBuilder();
-                sb1.append(PREFIX);
-                sb1.append(BOUNDARY);
-                sb1.append(LINEND);
-//                sb1.append("Content-Disposition: form-data; name=\"" + file.getKey() + "\"; filename=\""
-//                        + file.getValue().getName() + "\"" + LINEND);
-                sb1.append("Content-Disposition: form-data; name=\"" + file.getKey() + "\"; filename=\"" +file.getValue().getName() +"\"" + LINEND);
-                sb1.append("Content-Type: application/octet-stream; charset=" + CHARSET + LINEND);
-                sb1.append(LINEND);
-                outStream.write(sb1.toString().getBytes());
-                if(StringUtils.isNull(fileName))
-                {
-                	fileName = file.getValue().getName();
-                }
-
-                InputStream is = new FileInputStream(file.getValue());
-                byte[] buffer = new byte[1024];
-                int len = 0;
-                while ((len = is.read(buffer)) != -1) {
-                    outStream.write(buffer, 0, len);
-                }
-
-                is.close();
-                outStream.write(LINEND.getBytes());
+            // 首先组拼文本类型的参数
+            StringBuilder sb = new StringBuilder();
+            
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                sb.append(PREFIX);
+                sb.append(BOUNDARY);
+                sb.append(LINEND);
+                sb.append("Content-Disposition: form-data; name=\"" + entry.getKey() + "\"" + LINEND);
+                sb.append("Content-Type: text/plain; charset=" + CHARSET + LINEND);
+                sb.append("Content-Transfer-Encoding: 8bit" + LINEND);
+                sb.append(LINEND);
+                sb.append(entry.getValue());
+                sb.append(LINEND);
             }
 
+            String fileName = "";
+            outStream = new DataOutputStream(conn.getOutputStream());
+            outStream.write(sb.toString().getBytes());
+            // 发送文件数据
+            if (files != null)
+                for (Map.Entry<String, File> file : files.entrySet()) {
+                    StringBuilder sb1 = new StringBuilder();
+                    sb1.append(PREFIX);
+                    sb1.append(BOUNDARY);
+                    sb1.append(LINEND);
+//                    sb1.append("Content-Disposition: form-data; name=\"" + file.getKey() + "\"; filename=\""
+//                            + file.getValue().getName() + "\"" + LINEND);
+                    sb1.append("Content-Disposition: form-data; name=\"" + file.getKey() + "\"; filename=\"" +file.getValue().getName() +"\"" + LINEND);
+                    sb1.append("Content-Type: application/octet-stream; charset=" + CHARSET + LINEND);
+                    sb1.append(LINEND);
+                    outStream.write(sb1.toString().getBytes());
+                    if(StringUtils.isNull(fileName))
+                    {
+                    	fileName = file.getValue().getName();
+                    }
 
-        // 请求结束标志
-        byte[] end_data = (PREFIX + BOUNDARY + PREFIX + LINEND).getBytes();
-        outStream.write(end_data);
-        outStream.flush();
-        // 得到响应码
-        int res = conn.getResponseCode();
-        InputStream in = conn.getInputStream();
-        StringBuilder sb2 = new StringBuilder();
-        if (res == 200) {
-            int ch;
-            while ((ch = in.read()) != -1) {
-                sb2.append((char) ch);
+                    is = new FileInputStream(file.getValue());
+                    byte[] buffer = new byte[1024];
+                    int len = 0;
+                    while ((len = is.read(buffer)) != -1) {
+                        outStream.write(buffer, 0, len);
+                    }
+
+                    is.close();
+                    outStream.write(LINEND.getBytes());
+                }
+
+
+            // 请求结束标志
+            byte[] end_data = (PREFIX + BOUNDARY + PREFIX + LINEND).getBytes();
+            outStream.write(end_data);
+            outStream.flush();
+            // 得到响应码
+            int res = conn.getResponseCode();
+            in = conn.getInputStream();
+            StringBuilder sb2 = new StringBuilder();
+            if (res == 200) {
+                int ch;
+                while ((ch = in.read()) != -1) {
+                    sb2.append((char) ch);
+                }
             }
-        }
-        
-        outStream.close();
-        conn.disconnect();
-        if ("success".equals(sb2.toString())) {
-			return fileName;
-		}
-        return "error";
+            
+            outStream.close();
+            conn.disconnect();
+            if ("success".equals(sb2.toString())) {
+    			return fileName;
+    		}
+            return "error";
+    	}catch(IOException e)
+    	{
+    		return "error";
+    	}
+    	finally
+    	{
+    		if (is!=null) {
+				is.close();
+			}
+    		
+    		if (in!=null) {
+    			in.close();
+			}
+    		
+    		if (outStream!=null) {
+    			outStream.close();
+			}
+    		
+    		if (conn!=null) {
+    			conn.disconnect();
+			}
+    	}
+         
     }
 	
 	@Override
@@ -681,7 +730,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		Bitmap bitmap = null;
 		String fileName = "";
 		// get cached image from SD card
-		if (null != account && StringUtils.isNotNull(account.userImage) && SDTool.instance().SD_EXIST) {
+		if (null != account && StringUtils.isNotNull(account.userImage) && FileUtil.hasSdcard()) {
 			String[] strs = account.userImage.split("fileName=");
 			if (strs != null && strs.length>1) {
 				
@@ -699,7 +748,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 					}
 					
 					if(f.exists()){
-						bitmap = BitmapFactory.decodeFile(f.getPath());
+						bitmap = ImageUtil.decodeFile(f.getPath(),-1,128*128);
 						if (null != bitmap) {
 							personAvatar.setImageBitmap(bitmap);
 						}
@@ -756,7 +805,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		currentJifenText.setText(account.jifen);
 		if(StringUtils.isNull(account.jifen))
 		{
-			currentJifenText.setText(0);
+			currentJifenText.setText("0");
 		}
 		
 	}

@@ -172,14 +172,14 @@ public class MoreActivity extends QuhaoBaseActivity {
 					return;
 				}
 
-				if (avo.android == currentVersion) {
-					Builder dialog = new AlertDialog.Builder(MoreActivity.this);
-					dialog.setTitle("温馨提示").setMessage("APP已经是最新版").setPositiveButton("确定", null);
-					dialog.show();
-					return;
-				}
+//				if (avo.android == currentVersion) {
+//					Builder dialog = new AlertDialog.Builder(MoreActivity.this);
+//					dialog.setTitle("温馨提示").setMessage("APP已经是最新版").setPositiveButton("确定", null);
+//					dialog.show();
+//					return;
+//				}
 
-				if (avo.android > currentVersion) {
+//				if (avo.android > currentVersion) {
 					// TODO there is bug here
 					Dialog dialog = new AlertDialog.Builder(MoreActivity.this).setTitle("软件更新").setMessage("软件有更新，建议更新到最新版本")
 					// 设置内容
@@ -248,7 +248,7 @@ public class MoreActivity extends QuhaoBaseActivity {
 							}).create();// 创建
 					// 显示对话框
 					dialog.show();
-				}
+//				}
 
 			} catch (ClientProtocolException e) {
 				e.printStackTrace();

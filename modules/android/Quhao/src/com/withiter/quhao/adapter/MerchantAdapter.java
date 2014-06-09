@@ -10,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.withiter.quhao.R;
@@ -63,6 +65,9 @@ public class MerchantAdapter extends BaseAdapter {
 				holder.quhao = (ImageView) convertView.findViewById(R.id.quhao);
 //				holder.pinfenImage = (ImageView) convertView.findViewById(R.id.pingfen);
 				holder.merchantRenjun = (TextView) convertView.findViewById(R.id.merchantRenjun);
+				holder.dianpingLayout = (LinearLayout) convertView.findViewById(R.id.dianping_layout);
+				holder.dazhongdianping = (TextView) convertView.findViewById(R.id.dazhongdianping);
+				holder.youhuiLayout = (RelativeLayout) convertView.findViewById(R.id.youhui_layout);
 			}
 			if (holder == null) {
 				holder = (ViewHolder) convertView.getTag();
@@ -109,11 +114,13 @@ public class MerchantAdapter extends BaseAdapter {
 			holder.youhui.setTag("youhui_" + position);
 			if(merchant.youhuiExist)
 			{
+				holder.youhuiLayout.setVisibility(View.VISIBLE);
 				holder.youhui.setVisibility(View.VISIBLE);
 				holder.youhui.setImageResource(R.drawable.ic_youhui);
 			}
 			else
 			{
+				holder.youhuiLayout.setVisibility(View.GONE);
 				holder.youhui.setVisibility(View.GONE);
 			}
 			
@@ -151,6 +158,15 @@ public class MerchantAdapter extends BaseAdapter {
 			else
 			{
 				holder.distance.setText("未定位");
+			}
+			
+			if ("0".equals(merchant.dianpingFen)) {
+				holder.dianpingLayout.setVisibility(View.INVISIBLE);
+			}
+			else
+			{
+				holder.dianpingLayout.setVisibility(View.VISIBLE);
+				holder.dazhongdianping.setText(merchant.dianpingFen);
 			}
 			
 			/*
@@ -238,6 +254,9 @@ public class MerchantAdapter extends BaseAdapter {
 		ImageView quhao;
 //		ImageView pinfenImage;
 		TextView merchantRenjun;
+		TextView dazhongdianping;
 		TextView distance;
+		LinearLayout dianpingLayout;
+		RelativeLayout youhuiLayout;
 	}
 }

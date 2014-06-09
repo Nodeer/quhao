@@ -1,12 +1,8 @@
 package com.withiter.quhao.vo;
 
-import java.io.Serializable;
 
-public class Merchant implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7382528714008315975L;
+public class Merchant{
+
 	public String id;
 	public String merchantImage = "";
 	public String name;
@@ -56,6 +52,10 @@ public class Merchant implements Serializable {
 	public String commentContent;
 	public String commentDate;
 	public boolean youhuiExist;
+	
+	public String dianpingFen = "0";						// 显示大众点评评分 0 表示不显示
+	public String dianpingLink = "";						// 大众点评商家链接
+	
 	/** latest one comment **/
 
 	public Merchant(String id, String merchantImage, String name, String address,

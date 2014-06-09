@@ -11,7 +11,7 @@
         android:background="#ffffffff"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="10dip"
+        android:padding="10dip" android:visibility="gone"
         >
 
         <ProgressBar
@@ -32,8 +32,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0.0dip"
-        android:orientation="vertical" 
-        android:visibility="gone">
+        android:orientation="vertical" >
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -108,13 +107,6 @@
 		            android:layout_gravity="right|center_vertical"
 		            />
 
-                <TextView
-                	android:layout_width="wrap_content"
-		            android:layout_height="35dip"
-		            android:text="@string/null_2_space"
-		            android:textSize="11.0sp" 
-		            android:paddingRight="10dip"/>
-                
                 <Button
 		            android:id="@+id/btn_open"
 		            android:layout_width="wrap_content"
@@ -145,6 +137,19 @@
 		            android:text="@string/null_2_space"
 		            android:textSize="11.0sp" 
 		            android:paddingRight="10dip"/>
+                
+                <Button
+		            android:id="@+id/btn_chat"
+		            android:layout_width="wrap_content"
+		            android:layout_height="35dip"
+		            android:text="@string/chat_chat"
+		            android:textAppearance="?android:textAppearanceMediumInverse"
+		            android:textColor="#64bae9"
+		            android:textSize="11.0sp" 
+		            android:background="@android:color/transparent"
+		            android:paddingRight="10dip"
+		            android:layout_gravity="right|center_vertical"
+		            />
                 
                 <Button
 		            android:id="@+id/btn_share"

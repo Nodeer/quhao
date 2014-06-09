@@ -30,6 +30,7 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.PaiduiConditionAdapter;
 import com.withiter.quhao.adapter.ReservationAdapter;
 import com.withiter.quhao.data.MerchantData;
+import com.withiter.quhao.task.GetChatPortTask;
 import com.withiter.quhao.task.GetPaiduiListTask;
 import com.withiter.quhao.task.JsonPack;
 import com.withiter.quhao.util.ActivityUtil;
@@ -101,6 +102,8 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	
 	private Button btnShare;
 	
+	private Button btnChat;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -139,6 +142,9 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		
 		btnShare = (Button) info.findViewById(R.id.btn_share);
 		btnShare.setOnClickListener(this);
+		
+		btnChat = (Button) info.findViewById(R.id.btn_chat);
+		btnChat.setOnClickListener(this);
 		
 		this.merchantPhone.setClickable(true);
 		this.merchantPhone.setOnClickListener(this);
@@ -835,6 +841,70 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			case R.id.btn_share:
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				showShare(false, null);
+				break;
+			case R.id.btn_chat:
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				if (QHClientApplication.getInstance().isLogined) {
+					
+					if (null != merchantDetail && merchantDetail.merchant != null && !merchantDetail.merchant.enable) {
+						Toast.makeText(this, "亲，该商家还没有开通。", Toast.LENGTH_SHORT).show();
+						return;
+					}
+					
+					if (null == merchantDetail.rvos || merchantDetail.rvos.isEmpty()) {
+						Toast.makeText(this, "亲，请取个号码再聊天吧。", Toast.LENGTH_SHORT).show();
+						return;
+					}
+
+					final GetChatPortTask task = new GetChatPortTask(R.string.waitting, this, "chat?mid=" +merchantDetail.merchant.id);
+					task.execute(new Runnable() {
+						
+						@Override
+						public void run() {
+							JsonPack jsonPack = task.jsonPack;
+							String port = jsonPack.getObj();
+							if ("false".equals(port)) {
+								Toast.makeText(MerchantDetailActivity.this, "亲，房间人数已满，请稍后再来。", Toast.LENGTH_SHORT).show();
+								return;
+							}
+							Intent intentChat = new Intent();
+							//uid=uid1&image=image1&mid=mid1&user=11
+							String image = QHClientApplication.getInstance().accountInfo.userImage;
+							if(StringUtils.isNotNull(image) && image.contains(QuhaoConstant.HTTP_URL))
+							{
+								image = "/" + image.substring(QuhaoConstant.HTTP_URL.length());
+							}
+							if (QHClientApplication.getInstance().accountInfo == null) {
+								Toast.makeText(MerchantDetailActivity.this, "亲，账号登录过期了哦", Toast.LENGTH_SHORT).show();
+								return;
+							}
+							intentChat.putExtra("uid", QHClientApplication.getInstance().accountInfo.accountId);
+							intentChat.putExtra("image", image);
+							intentChat.putExtra("mid", merchantDetail.merchant.id);
+							intentChat.putExtra("user", QHClientApplication.getInstance().accountInfo.phone);
+							intentChat.putExtra("merchantName", merchantDetail.merchant.name);
+							intentChat.putExtra("port", port);
+							intentChat.setClass(MerchantDetailActivity.this, MerchantChatActivity.class);
+							startActivity(intentChat);
+							overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left); 
+						}
+					},new Runnable() {
+						
+						@Override
+						public void run() {
+							Toast.makeText(MerchantDetailActivity.this, "亲，房间人数已满，请稍后再来。", Toast.LENGTH_SHORT).show();
+							return;
+						}
+					});
+		
+				} else {
+					Intent intentChat = new Intent(MerchantDetailActivity.this, LoginActivity.class);
+					intentChat.putExtra("activityName", MerchantDetailActivity.class.getName());
+					intentChat.putExtra("merchantId", MerchantDetailActivity.this.merchantId);
+					intentChat.putExtra("notGetNumber", "true");
+					intentChat.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivity(intentChat);
+				}
 				break;
 		default:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);

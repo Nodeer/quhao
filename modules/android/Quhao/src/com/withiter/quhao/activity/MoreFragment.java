@@ -244,7 +244,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 				return;
 			}
 			
-			final int currentVersion = ActivityUtil.getVersionCode(getActivity());
+			final String currentVersion = ActivityUtil.getVersionName(getActivity());
 			String url = "app/appCode";
 			final MoreVersionCheckTask task = new MoreVersionCheckTask(R.string.waitting, getActivity(), url);
 			task.execute(new Runnable() {
@@ -262,7 +262,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 						return;
 					}
 
-					if (avo.android == currentVersion) {
+					if (currentVersion.equals(avo.android)) {
 						Builder dialog = new AlertDialog.Builder(getActivity());
 						dialog.setTitle("温馨提示").setMessage("APP已经是最新版").setPositiveButton("确定", null);
 						dialog.show();
@@ -270,7 +270,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 						return;
 					}
 
-					if (avo.android > currentVersion) {
+					if (currentVersion.compareTo(avo.android) < 0) {
 						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 						Dialog dialog = new AlertDialog.Builder(getActivity()).setTitle("软件更新").setMessage("软件有更新，建议更新到最新版本")
 						// 设置内容
@@ -380,7 +380,24 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			// String loginStatus = SharedprefUtil.get(MoreActivity.this,
 			// QuhaoConstant.IS_LOGIN, "false");
 			if (QHClientApplication.getInstance().isLogined) {
-				loginHandler.obtainMessage(200, loginStatus).sendToTarget();
+				AlertDialog.Builder builder = new Builder(getActivity());
+				builder.setTitle("温馨提示");
+				builder.setMessage("您确定要退出吗？");
+				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+						loginHandler.obtainMessage(200, loginStatus).sendToTarget();
+					}});
+				builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+				builder.create().show();
+				
 			} else {
 				Intent intent5 = new Intent(getActivity(), LoginActivity.class);
 				intent5.putExtra("activityName", this.getClass().getName());

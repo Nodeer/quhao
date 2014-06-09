@@ -110,8 +110,8 @@ public class FileUtil {
 		if (!exists4ImageUrl(path))
 			return null;
 		try {
-			bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getCanonicalPath() + "/"
-					+ QuhaoConstant.IMAGES_SD_URL + "/" + getFileName(path));
+			bitmap = ImageUtil.decodeFile(Environment.getExternalStorageDirectory().getCanonicalPath() + "/"
+					+ QuhaoConstant.IMAGES_SD_URL + "/" + getFileName(path), -1, 128*128);
 			
 		} catch (Exception ex) {
 			ex.printStackTrace();

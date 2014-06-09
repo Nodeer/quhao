@@ -53,7 +53,7 @@ public class ImageUtil {
 
 	private ImageUtil() {
 		// 判断SD卡是否存在
-		if (SDTool.instance().SD_EXIST) {
+		if (FileUtil.hasSdcard()) {
 			// 在sd卡上建立图片存放空间
 			cacheDir = new File(Environment.getExternalStorageDirectory(),
 					QuhaoConstant.IMAGES_SD_URL);
@@ -63,6 +63,48 @@ public class ImageUtil {
 		}
 	}
 
+	public static int computeSampleSize(BitmapFactory.Options options,
+	        int minSideLength, int maxNumOfPixels) {
+	    int initialSize = computeInitialSampleSize(options, minSideLength,maxNumOfPixels);
+
+	    int roundedSize;
+	    if (initialSize <= 8 ) {
+	        roundedSize = 1;
+	        while (roundedSize < initialSize) {
+	            roundedSize <<= 1;
+	        }
+	    } else {
+	        roundedSize = (initialSize + 7) / 8 * 8;
+	    }
+
+	    return roundedSize;
+	}
+
+	private static int computeInitialSampleSize(BitmapFactory.Options options,int minSideLength, int maxNumOfPixels) {
+	    double w = options.outWidth;
+	    double h = options.outHeight;
+
+	    int lowerBound = (maxNumOfPixels == -1) ? 1 :
+	            (int) Math.ceil(Math.sqrt(w * h / maxNumOfPixels));
+	    int upperBound = (minSideLength == -1) ? 128 :
+	            (int) Math.min(Math.floor(w / minSideLength),
+	            Math.floor(h / minSideLength));
+
+	    if (upperBound < lowerBound) {
+	        // return the larger one when there is no overlapping zone.
+	        return lowerBound;
+	    }
+
+	    if ((maxNumOfPixels == -1) &&
+	            (minSideLength == -1)) {
+	        return 1;
+	    } else if (minSideLength == -1) {
+	        return lowerBound;
+	    } else {
+	        return upperBound;
+	    }
+	}
+	
 	public File getFile(String imageUrl) {
 		String fileName = imageUrl.split("\\?fileName=")[1];
 		File file = new File(cacheDir, fileName);
@@ -120,7 +162,7 @@ public class ImageUtil {
 		/**
 		 * 遍历所有的然后删除
 		 */
-		if (SDTool.instance().SD_EXIST && cacheDir.exists()) {
+		if (FileUtil.hasSdcard() && cacheDir.exists()) {
 			File files[] = cacheDir.listFiles();
 			if (files != null) {
 				for (File f : files) {
@@ -268,6 +310,25 @@ public class ImageUtil {
 			}
 		}
 
+		return bitmap;
+	}
+
+	public static Bitmap decodeFile(String path, int  minSideLength, int maxNumOfPixels) {
+		Bitmap bitmap = null;
+		try
+		{
+			BitmapFactory.Options opts = new BitmapFactory.Options();
+			opts.inJustDecodeBounds = true;
+			BitmapFactory.decodeFile(path,opts);
+			opts.inSampleSize = computeSampleSize(opts, minSideLength, maxNumOfPixels);
+			opts.inJustDecodeBounds = false;
+			bitmap = BitmapFactory.decodeFile(path, opts); 
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+		
 		return bitmap;
 	}
 }

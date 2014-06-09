@@ -323,16 +323,30 @@ public class ParseJson {
 			online = obj.optBoolean("online");
 		}
 		
-		
+		merchant = new Merchant(id, imgUrl, name, address, phone, cateType, grade, averageCost, tags, kouwei, huanjing, fuwu, xingjiabi, teses, nickName, description, openTime, closeTime,
+				marketCount, enable, joinedDate, lat, lng, distance,youhui,online);
+
 		Integer openNum = 0;
 		if (obj.has("openNum")) {
 			openNum = obj.optInt("openNum");
 		}
 		
-		merchant = new Merchant(id, imgUrl, name, address, phone, cateType, grade, averageCost, tags, kouwei, huanjing, fuwu, xingjiabi, teses, nickName, description, openTime, closeTime,
-				marketCount, enable, joinedDate, lat, lng, distance,youhui,online);
-
 		merchant.openNum = openNum;
+		
+		String dianpingFen = "";
+		if (obj.has("dianpingFen")) {
+			dianpingFen = obj.optString("dianpingFen");
+		}
+		
+		merchant.dianpingFen = dianpingFen;
+		
+		String dianpingLink = "";
+		if (obj.has("dianpingLink")) {
+			dianpingLink = obj.optString("dianpingLink");
+		}
+		
+		merchant.dianpingLink = dianpingLink;
+		
 		
 		String commentAverageCost = obj.optString("commentAverageCost");
 		int commentXingjiabi = obj.optInt("commentXingjiabi");
@@ -708,8 +722,8 @@ public class ParseJson {
 	public static AppVersionVO convertToAppVersionVO(String result) {
 		try {
 			JSONObject json = new JSONObject(result);
-			int android = json.optInt("android");
-			int ios = json.optInt("ios");
+			String android = json.optString("android");
+			String ios = json.optString("ios");
 			AppVersionVO avo = new AppVersionVO(android, ios);
 			return avo;
 		} catch (JSONException e) {

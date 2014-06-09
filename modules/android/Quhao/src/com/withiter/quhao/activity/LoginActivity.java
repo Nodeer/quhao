@@ -259,67 +259,61 @@ public class LoginActivity extends QuhaoBaseActivity {
 				loginResult.setText("登陆成功");
 				QuhaoLog.d(TAG, "login call back to " + activityName);
 
-				if (StringUtils.isNotNull(activityName) && !MerchantDetailActivity.class.getName().equals(activityName)) {
-					
+				if(StringUtils.isNull(activityName) || !MerchantDetailActivity.class.getName().equals(activityName))
+				{
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					finish();
 				} else {
-					
-					if (MerchantDetailActivity.class.getName().equals(activityName)) {
-						if("true".equals(transfortParams.get("notGetNumber")))
-						{
-							finish();
-						}
-						else
-						{
-							Thread thread = new Thread(new Runnable() {
-
-								@Override
-								public void run() {
-									try {
-										Looper.prepare();
-										Intent intent = new Intent();
-										intent.putExtra("merchantId", (String) transfortParams.get("merchantId"));
-										String accountId = QHClientApplication.getInstance().accountInfo.accountId;
-										if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
-											Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
-											unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
-											return;
-										}
-										String buf = CommonHTTPRequest.get("getReservations?accountId=" + accountId + "&mid=" + transfortParams.get("merchantId"));
-										if (StringUtils.isNull(buf) || "[]".equals(buf)) {
-											unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-											intent.setClass(LoginActivity.this, GetNumberActivity.class);
-											startActivity(intent);
-										} else {
-											List<ReservationVO> rvos = ParseJson.getReservations(buf);
-											if (null != rvos && !rvos.isEmpty()) {
-												Toast.makeText(LoginActivity.this, "已有该商家的排队号码！", Toast.LENGTH_SHORT).show();
-												// LoginActivity.this.onBackPressed();
-											} else {
-												intent.setClass(LoginActivity.this, GetNumberActivity.class);
-												startActivity(intent);
-											}
-										}
-										unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-										LoginActivity.this.finish();
-									} catch (Exception e) {
-										unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-										Toast.makeText(LoginActivity.this, "网络异常，请稍候取号", Toast.LENGTH_SHORT).show();
-										LoginActivity.this.onBackPressed();
-										LoginActivity.this.finish();
-									} finally {
-										Looper.loop();
-									}
-
-								}
-							});
-							thread.start();
-						}
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+					if("true".equals(transfortParams.get("notGetNumber")))
+					{
+						finish();
 					}
 					else
 					{
-						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+						Thread thread = new Thread(new Runnable() {
+
+							@Override
+							public void run() {
+								try {
+									Looper.prepare();
+									Intent intent = new Intent();
+									intent.putExtra("merchantId", (String) transfortParams.get("merchantId"));
+									String accountId = QHClientApplication.getInstance().accountInfo.accountId;
+									if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+										Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+										unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+										return;
+									}
+									String buf = CommonHTTPRequest.get("getReservations?accountId=" + accountId + "&mid=" + transfortParams.get("merchantId"));
+									if (StringUtils.isNull(buf) || "[]".equals(buf)) {
+										unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+										intent.setClass(LoginActivity.this, GetNumberActivity.class);
+										startActivity(intent);
+									} else {
+										List<ReservationVO> rvos = ParseJson.getReservations(buf);
+										if (null != rvos && !rvos.isEmpty()) {
+											Toast.makeText(LoginActivity.this, "已有该商家的排队号码！", Toast.LENGTH_SHORT).show();
+											// LoginActivity.this.onBackPressed();
+										} else {
+											intent.setClass(LoginActivity.this, GetNumberActivity.class);
+											startActivity(intent);
+										}
+									}
+									unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+									LoginActivity.this.finish();
+								} catch (Exception e) {
+									unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+									Toast.makeText(LoginActivity.this, "网络异常，请稍候取号", Toast.LENGTH_SHORT).show();
+									LoginActivity.this.onBackPressed();
+									LoginActivity.this.finish();
+								} finally {
+									Looper.loop();
+								}
+
+							}
+						});
+						thread.start();
 					}
 				}
 

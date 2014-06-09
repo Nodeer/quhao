@@ -249,7 +249,8 @@ public class PicUtil {
 				}
 
 				// 从本地加载图片
-				bitmap = BitmapFactory.decodeFile(cacheFile.getCanonicalPath());
+				bitmap = ImageUtil.decodeFile(cacheFile.getCanonicalPath(), -1, 128*128);
+//				bitmap = BitmapFactory.decodeFile(cacheFile.getCanonicalPath());
 			}
 			else
 			{
