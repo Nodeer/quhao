@@ -3,6 +3,7 @@ package com.withiter.models.merchant;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -390,6 +391,9 @@ public class Merchant extends MerchantEntityDef {
 		return true;
 	}
 
+	/**
+	 * 更新优惠状态
+	 */
 	public void updateYouhuiInfo() {
 		MorphiaQuery q = Youhui.q();
 		q.filter("mid", this.id()).filter("enable", true);
@@ -399,5 +403,22 @@ public class Merchant extends MerchantEntityDef {
 			this.youhui = false;
 		}
 		this.save();
+	}
+	
+	public static Merchant findOneTuijian(String cityCode){
+		MorphiaQuery q = Merchant.q();
+		// 开通取号啦排队服务商家 & 在线商家
+		q.filter("enable", true).filter("online", true).filter("cityCode", cityCode);
+		
+		// 在营业时间内的商家
+//		Calendar now = Calendar.getInstance();
+//		q.filter("openTime <", now.get(Calendar.HOUR_OF_DAY)+":00");
+//		q.filter("closeTime >", now.get(Calendar.HOUR_OF_DAY)+":00");
+		long count = q.count();
+		Logger.debug("All tuijian merchant's size : %d", count);
+		int offsets = (int) (Math.random() * count);
+		Logger.debug("随机获取的offset: %d", offsets);
+		q.offset(offsets);
+		return q.first();
 	}
 }

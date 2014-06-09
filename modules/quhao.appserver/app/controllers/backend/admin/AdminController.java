@@ -201,6 +201,7 @@ public class AdminController extends BaseController {
 		}
 		Activity a = new Activity();
 		a.mid = mid;
+		a.cityCode = m.cityCode;
 		a.enable = true;
 		try {
 			a.start = DateFormat.getDateInstance().parse(start);

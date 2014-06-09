@@ -1,24 +1,21 @@
 package controllers;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import play.modules.morphia.Model.MorphiaQuery;
 import play.mvc.Before;
-import vo.ActivityVO;
+import vo.MerchantVO;
 import cn.bran.japid.util.StringUtils;
 
 import com.withiter.common.Constants;
-import com.withiter.models.activity.Activity;
+import com.withiter.models.merchant.Merchant;
 
-public class ActivityController extends BaseController {
+public class TuijianController extends BaseController {
 	
-	private static Logger logger = LoggerFactory.getLogger(ActivityController.class);
+	private static Logger logger = LoggerFactory.getLogger(TuijianController.class);
 
 	/**
 	 * Interception any caller on this controller, will first invoke this method
@@ -46,20 +43,21 @@ public class ActivityController extends BaseController {
 	}
 	
 	/**
-	 * 返回所在城市的优惠活动
+	 * 选择困难症，推荐一个商家
 	 */
-	public static void activity(){
+	public static void tuijian(){
 		String cityCode = params.get("cityCode");
+		String userX = params.get("userX");
+		String userY = params.get("userY");
 		if(StringUtils.isEmpty(cityCode)){
 			cityCode = "021";
 		}
 		
-		List<Activity> as = Activity.activityByCityCode(cityCode);
-		logger.debug("The size of activity is : " + as.size());
-		List<ActivityVO> vos = new ArrayList<ActivityVO>();
-		for(Activity a : as){
-			vos.add(new ActivityVO().build(a));
+		Merchant m = Merchant.findOneTuijian(cityCode);
+		if(StringUtils.isEmpty(userX) || StringUtils.isEmpty(userY)){
+			renderJSON(MerchantVO.build(m));
+		} else {
+			renderJSON(MerchantVO.build(m, Double.valueOf(userX), Double.valueOf(userY)));
 		}
-		renderJSON(vos);
 	}
 }

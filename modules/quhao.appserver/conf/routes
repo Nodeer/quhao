@@ -19,6 +19,7 @@ GET     /                     		  		LandingController.index
 
 # Routes for Android & IOS clients
 GET		/app/marked							AttentionController.marked
+GET		/app/tuijian						TuijianController.tuijian
 GET		/app/activity						ActivityController.activity
 GET		/app/{action}						AppController.{action}
 
