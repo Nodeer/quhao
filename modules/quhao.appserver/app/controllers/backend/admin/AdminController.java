@@ -9,6 +9,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -204,8 +205,9 @@ public class AdminController extends BaseController {
 		a.cityCode = m.cityCode;
 		a.enable = true;
 		try {
-			a.start = DateFormat.getDateInstance().parse(start);
-			a.end = DateFormat.getDateInstance().parse(end);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			a.start = sdf.parse(start);
+			a.end = sdf.parse(end);
 		} catch (ParseException e1) {
 			e1.printStackTrace();
 			logger.error(ExceptionUtil.getTrace(e1));
@@ -260,8 +262,9 @@ public class AdminController extends BaseController {
 		}
 		TopMerchant t = TopMerchant.build(m);
 		try {
-			t.start = DateFormat.getDateInstance().parse(starttime);
-			t.end = DateFormat.getDateInstance().parse(endtime);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			t.start = sdf.parse(starttime);
+			t.end = sdf.parse(endtime);
 			Date now = new Date();
 			if(t.start.after(now)){
 				t.enable = false;
