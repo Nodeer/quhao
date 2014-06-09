@@ -80,7 +80,7 @@ public class AdminController extends BaseController {
 		}
 
 		validation.equals(email, "admin@quhao.la").message("请输入正确的Email");
-		validation.equals(password, "Group@withiter").message("请输入正确的Password");
+		validation.equals(password, "quhaola@123").message("请输入正确的Password");
 		
 		if(validation.hasErrors()){
 			renderHtml(validation.errors().get(0));
