@@ -235,6 +235,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 					Intent intent = new Intent();
 					intent.setClass(getActivity(), CitySelectActivity.class);
 					startActivity(intent);
+					getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 				default:
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					break;
@@ -330,6 +331,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 				views.add(image);
 
 				if (StringUtils.isNotNull(topMerchants.get(num).merchantImage)) {
+					image.setImageResource(R.drawable.no_logo);
 					AsynImageLoader.getInstance().showImageAsyn(image, 0, topMerchants.get(num).merchantImage, R.drawable.no_logo);
 				} else {
 					image.setImageResource(R.drawable.no_logo);

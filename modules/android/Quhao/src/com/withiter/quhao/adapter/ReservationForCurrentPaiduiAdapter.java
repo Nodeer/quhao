@@ -1,9 +1,5 @@
 package com.withiter.quhao.adapter;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -12,7 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Looper;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,15 +23,12 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.activity.MerchantDetailActivity;
 import com.withiter.quhao.activity.QuhaoCurrentStatesActivity;
 import com.withiter.quhao.exception.NoResultFromHTTPRequestException;
-import com.withiter.quhao.task.QueryYouhuiInReservationTask;
 import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.AsynImageLoader;
-import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.vo.ReservationVO;
-import com.withiter.quhao.vo.YouhuiVO;
 
 public class ReservationForCurrentPaiduiAdapter extends BaseAdapter {
 
@@ -97,6 +89,7 @@ public class ReservationForCurrentPaiduiAdapter extends BaseAdapter {
 			}
 			
 			String merchantImg = rvo.merchantImage;
+			holder.merchantImg.setImageResource(R.drawable.no_logo);
 			// get image from memory/SDCard/URL stream
 			AsynImageLoader.getInstance().showImageAsyn(holder.merchantImg,position, merchantImg, R.drawable.no_logo);
 			/*

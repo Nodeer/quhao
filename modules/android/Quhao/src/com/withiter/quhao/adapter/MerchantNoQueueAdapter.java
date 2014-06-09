@@ -72,7 +72,7 @@ public class MerchantNoQueueAdapter extends BaseAdapter {
 //			QuhaoLog.i(TAG, "merchant adapter's imageUrl : " + imageUrl);
 
 //			holder.img.setTag(imageUrl + position);
-			
+			holder.img.setImageResource(R.drawable.no_logo);
 			AsynImageLoader.getInstance().showImageAsyn(holder.img, position,imageUrl, R.drawable.no_logo);
 			/*
 			if (null != imageUrl && !"".equals(imageUrl)) {

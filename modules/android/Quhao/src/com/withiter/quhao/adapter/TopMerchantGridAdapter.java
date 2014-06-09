@@ -7,11 +7,8 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.QuhaoLog;
@@ -88,6 +85,7 @@ public class TopMerchantGridAdapter extends BaseAdapter {
 				holder.img.setImageResource(R.drawable.no_logo);
 			}else
 			{
+				holder.img.setImageResource(R.drawable.no_logo);
 				AsynImageLoader.getInstance().showImageAsyn(holder.img, position,topMerchant.merchantImage, R.drawable.no_logo);
 			}
 			holder.img.setScaleType(ImageView.ScaleType.FIT_XY);

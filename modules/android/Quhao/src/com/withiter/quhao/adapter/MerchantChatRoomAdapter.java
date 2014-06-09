@@ -72,12 +72,8 @@ public class MerchantChatRoomAdapter extends BaseAdapter {
 				holder = (ViewHolder) convertView.getTag();
 			}
 			
-			// if merchant has no image, set no_logo as default
-			if(StringUtils.isNull(rvo.merchantImage)){
-				holder.merchantImg.setImageResource(R.drawable.no_logo);
-			}
-			
 			String merchantImg = rvo.merchantImage;
+			holder.merchantImg.setImageResource(R.drawable.no_logo);
 			// get image from memory/SDCard/URL stream
 			AsynImageLoader.getInstance().showImageAsyn(holder.merchantImg,position, merchantImg, R.drawable.no_logo);
 			holder.merchantName.setTag("merchantNamer_" + position);

@@ -268,9 +268,9 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						if(StringUtils.isNull(m.merchantImage)){
 							merchantImg.setImageResource(R.drawable.no_logo);
 						}
-						
+						merchantImg.setImageResource(R.drawable.person_avatar);
 						// get image from memory/SDCard/URL stream
-						AsynImageLoader.getInstance().showImageAsyn(merchantImg, 0,merchant.merchantImage, R.drawable.no_logo);
+						AsynImageLoader.getInstance().showImageAsyn(merchantImg, 0,merchant.merchantImage, R.drawable.person_avatar);
 						/*
 						new Thread(new Runnable() {
 							@Override

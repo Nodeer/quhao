@@ -67,7 +67,7 @@ public class MerchantChatAdapter extends BaseAdapter {
 //						SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(activity, chat.msg);
 //						left.content.setText(spannableString);
 						left.content.setText(chat.msg);
-						
+						left.userImage.setImageResource(R.drawable.no_logo);
 						if(StringUtils.isNotNull(chat.userImage) && chat.userImage.contains(QuhaoConstant.HTTP_URL))
 						{
 							AsynImageLoader.getInstance().showImageAsyn(left.userImage, position, chat.userImage, R.drawable.person_avatar);
@@ -85,7 +85,7 @@ public class MerchantChatAdapter extends BaseAdapter {
 //						SpannableString spannableString1 = FaceConversionUtil.getInstace().getExpressionString(activity, chat.msg);
 //						right.content.setText(spannableString1);
 						right.content.setText(chat.msg);
-						
+						right.userImage.setImageResource(R.drawable.no_logo);
 						if(StringUtils.isNotNull(chat.userImage) && chat.userImage.contains(QuhaoConstant.HTTP_URL))
 						{
 							AsynImageLoader.getInstance().showImageAsyn(right.userImage, position, chat.userImage, R.drawable.person_avatar);
@@ -101,7 +101,7 @@ public class MerchantChatAdapter extends BaseAdapter {
 				{
 					case 0:
 						left = (ViewHolderLeft) convertView.getTag();
-						
+						left.userImage.setImageResource(R.drawable.no_logo);
 						if(StringUtils.isNotNull(chat.userImage) && chat.userImage.contains(QuhaoConstant.HTTP_URL))
 						{
 							AsynImageLoader.getInstance().showImageAsyn(left.userImage, position, chat.userImage, R.drawable.person_avatar);
@@ -119,7 +119,7 @@ public class MerchantChatAdapter extends BaseAdapter {
 //						SpannableString spannableString3 = FaceConversionUtil.getInstace().getExpressionString(activity, chat.msg);
 //						right.content.setText(spannableString3);
 						right.content.setText(chat.msg);
-						
+						right.userImage.setImageResource(R.drawable.no_logo);
 						if(StringUtils.isNotNull(chat.userImage) && chat.userImage.contains(QuhaoConstant.HTTP_URL))
 						{
 							AsynImageLoader.getInstance().showImageAsyn(right.userImage, position, chat.userImage, R.drawable.person_avatar);
