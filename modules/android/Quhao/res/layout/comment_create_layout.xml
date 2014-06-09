@@ -52,9 +52,10 @@
 	    android:background="#ffffffff"
 	    android:gravity="center"
 	    android:orientation="vertical" >
-
+		
 	    <LinearLayout android:layout_width="fill_parent" 
 	        android:layout_height="wrap_content" android:layout_gravity="center_vertical" android:orientation="horizontal">
+	        <View android:layout_width="0dip" android:layout_height="0dip" android:focusable="true" android:focusableInTouchMode="true" />
 		    <TextView android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:layout_marginLeft="5dip"

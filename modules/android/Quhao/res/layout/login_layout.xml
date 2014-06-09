@@ -75,7 +75,7 @@
 	                android:layout_height="wrap_content"
 	                android:textSize="17sp"
 	                android:text="@string/radioPhone" />
-	
+				<View android:layout_width="0dip" android:layout_height="0dip" android:focusable="true" android:focusableInTouchMode="true" />
 	            <EditText
 	                android:id="@+id/login_name"
 	                android:layout_width="fill_parent"
