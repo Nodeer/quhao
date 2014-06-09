@@ -232,7 +232,7 @@ public class LoginActivity extends QuhaoBaseActivity {
 			startActivity(intent1);
 			System.gc();
 			finish();
-			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+//			overridePendingTransition(R.anim.out_to_right, R.anim.out_to_left);
 			break;
 		default:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);

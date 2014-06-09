@@ -162,6 +162,7 @@ public class MerchantsSearchActivity extends QuhaoBaseActivity {
 				isClick = true;
 				editSearch.clearFocus();
 
+				
 				// 让软键盘消失
 				InputMethodManager m = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 				if (m != null) {
