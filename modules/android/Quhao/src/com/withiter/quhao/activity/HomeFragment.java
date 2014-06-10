@@ -195,7 +195,6 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity(), MerchantsSearchActivity.class);
 				startActivity(intent);
-				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			}
 		});
 
@@ -235,7 +234,6 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 					Intent intent = new Intent();
 					intent.setClass(getActivity(), CitySelectActivity.class);
 					startActivity(intent);
-					getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 				default:
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					break;
@@ -372,7 +370,6 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 							intent.putExtra("merchantId", mid);
 							intent.setClass(getActivity(), MerchantDetailActivity.class);
 							startActivity(intent);
-							getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 
 						}
 					}
@@ -616,7 +613,6 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 			intent.setClass(getActivity(), MerchantListActivity.class);
 			startActivity(intent);
 			
-			getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 		}
 	};
 

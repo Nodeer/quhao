@@ -376,10 +376,6 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 	@Override
 	protected void onPause() {
 		super.onPause();
-		Log.i(TAG, "backClicked: " + backClicked);
-		if (backClicked) {
-			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
-		}
 	}
 
 	@Override

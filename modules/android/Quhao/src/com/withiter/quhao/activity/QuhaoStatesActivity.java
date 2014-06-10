@@ -148,10 +148,6 @@ public class QuhaoStatesActivity extends QuhaoBaseActivity implements OnItemClic
 	@Override
 	protected void onPause() {
 		super.onPause();
-		Log.i(TAG, "backClicked: " + backClicked);
-		if (backClicked) {
-			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
-		}
 	}
 
 	@Override
@@ -182,14 +178,12 @@ public class QuhaoStatesActivity extends QuhaoBaseActivity implements OnItemClic
 			intent.putExtra("merchantId", reservation.merchantId);
 			intent.setClass(QuhaoStatesActivity.this, MerchantDetailActivity.class);
 			startActivity(intent);
-			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 		} else if ("history".equals(queryCondition)) {
 			ReservationVO reservation = reservations.get(position);
 			Intent intent = new Intent();
 			intent.putExtra("rId", reservation.rId);
 			intent.setClass(QuhaoStatesActivity.this, CreateCommentActivity.class);
 			startActivity(intent);
-			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			
 		}
 		

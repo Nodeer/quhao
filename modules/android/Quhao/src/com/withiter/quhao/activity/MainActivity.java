@@ -140,7 +140,6 @@ public class MainActivity extends QuhaoBaseActivity {
 			intent.putExtra("merchantId", mid);
 			intent.setClass(MainActivity.this, MerchantDetailActivity.class);
 			startActivity(intent);
-			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 		}
 	};
 
@@ -157,7 +156,6 @@ public class MainActivity extends QuhaoBaseActivity {
 			intent.setClass(MainActivity.this, MerchantListActivity.class);
 
 			startActivity(intent);
-			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 		}
 	};
 

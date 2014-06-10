@@ -479,7 +479,6 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				Intent intent1 = new Intent(getActivity(), PersonDetailActivity.class);
 				intent1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(intent1);
-				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 				
 			} else {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -487,7 +486,6 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				login1.putExtra("activityName", this.getClass().getName());
 				login1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(login1);
-				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			}
 			break;
 		case R.id.register:
@@ -544,7 +542,6 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				login2.putExtra("activityName", this.getClass().getName());
 				login2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(login2);
-				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			}
 			break;
 		case R.id.dianpingLayout:
@@ -559,7 +556,6 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				intentComment.putExtra("accountId", QHClientApplication.getInstance().accountInfo.accountId);
 				intentComment.setClass(getActivity(), CommentsAccountActivity.class);
 				startActivity(intentComment);
-				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 				
 			} else {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -567,7 +563,6 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				login3.putExtra("activityName", this.getClass().getName());
 				login3.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(login3);
-				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			}
 			break;
 		case R.id.my_attention_layout:
@@ -578,7 +573,6 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				intentAttention.putExtra("accountId", QHClientApplication.getInstance().accountInfo.accountId);
 				intentAttention.setClass(getActivity(), MyAttentionListActivity.class);
 				startActivity(intentAttention);
-				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 				
 			} else {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -586,7 +580,6 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				login3.putExtra("activityName", this.getClass().getName());
 				login3.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(login3);
-				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			}
 			break;
 		case R.id.current_paidui_layout:
@@ -597,14 +590,12 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				intentCurrent.putExtra("queryCondition", "current");
 				intentCurrent.setClass(getActivity(), QuhaoCurrentStatesActivity.class);
 				startActivity(intentCurrent);
-				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			} else {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				Intent login4 = new Intent(getActivity(), LoginActivity.class);
 				login4.putExtra("activityName", this.getClass().getName());
 				login4.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(login4);
-				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			}
 			break;
 		case R.id.history_paidui_layout:
@@ -614,14 +605,12 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				intentHistory.putExtra("queryCondition", "history");
 				intentHistory.setClass(getActivity(), QuhaoHistoryStatesActivity.class);
 				startActivity(intentHistory);
-				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			} else {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				Intent login4 = new Intent(getActivity(), LoginActivity.class);
 				login4.putExtra("activityName", this.getClass().getName());
 				login4.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(login4);
-				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			}
 			break;
 		case R.id.credit_cost_layout:
@@ -630,14 +619,12 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				Intent intentCredit = new Intent();
 				intentCredit.setClass(getActivity(), CreditCostListActivity.class);
 				startActivity(intentCredit);
-				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			} else {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				Intent login5 = new Intent(getActivity(), LoginActivity.class);
 				login5.putExtra("activityName", this.getClass().getName());
 				login5.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 				startActivity(login5);
-				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 				
 //				Builder dialog = new AlertDialog.Builder(this);
 //				dialog.setTitle("温馨提示").setMessage("请先登录").setPositiveButton("确定", null);

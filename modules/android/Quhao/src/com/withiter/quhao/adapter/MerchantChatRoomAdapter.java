@@ -119,7 +119,6 @@ public class MerchantChatRoomAdapter extends BaseAdapter {
 							intent.putExtra("port", port);
 							intent.setClass(activity, MerchantChatActivity.class);
 							activity.startActivity(intent);
-							activity.overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left); 
 						}
 					},new Runnable() {
 						

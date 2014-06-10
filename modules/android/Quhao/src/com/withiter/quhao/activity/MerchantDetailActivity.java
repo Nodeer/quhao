@@ -886,7 +886,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 							intentChat.putExtra("port", port);
 							intentChat.setClass(MerchantDetailActivity.this, MerchantChatActivity.class);
 							startActivity(intentChat);
-							overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left); 
 						}
 					},new Runnable() {
 						
@@ -946,10 +945,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			progressDialogUtil.closeProgress();
 		}
 		super.onPause();
-		QuhaoLog.i(LOGTAG, LOGTAG + " on pause");
-		if (backClicked) {
-			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
-		}
 	}
 	
 	@Override

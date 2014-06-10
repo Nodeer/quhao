@@ -133,7 +133,6 @@ public class MerchantsSearchActivity extends QuhaoBaseActivity {
 			intent.putExtra("merchantId", merchant.id);
 			intent.setClass(MerchantsSearchActivity.this, MerchantDetailActivity.class);
 			startActivity(intent);
-			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 		}
 	};
 
@@ -146,10 +145,6 @@ public class MerchantsSearchActivity extends QuhaoBaseActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		Log.i(LOGTAG, "backClicked: " + backClicked);
-		if (backClicked) {
-			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
-		}
 	}
 
 	private OnClickListener goSearchMerchantsListener(MerchantsSearchActivity merchantsSearchActivity) {

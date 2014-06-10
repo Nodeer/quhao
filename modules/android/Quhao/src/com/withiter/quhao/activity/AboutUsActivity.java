@@ -32,7 +32,6 @@ public class AboutUsActivity extends QuhaoBaseActivity {
 		super.onPause();
 		QuhaoLog.i(LOGTAG, LOGTAG + " on pause");
 		if (backClicked) {
-			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
 		}
 	}
 	

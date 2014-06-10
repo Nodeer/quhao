@@ -155,7 +155,6 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 			intent.putExtra("merchantId", merchant.id);
 			intent.setClass(MerchantListActivity.this, MerchantDetailActivity.class);
 			startActivity(intent);
-			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 		}
 	};
 
@@ -357,10 +356,6 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 	@Override
 	public void onPause() {
 		super.onPause();
-		QuhaoLog.i(LOGTAG, LOGTAG + " on pause");
-		if (backClicked) {
-			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
-		}
 	}
 
 	@Override

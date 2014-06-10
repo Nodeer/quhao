@@ -213,25 +213,21 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			Intent intent = new Intent(getActivity(), SettingsActivity.class);
 			startActivity(intent);
-			getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 		case R.id.more_aboutus:// 关于我们
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			Intent intent1 = new Intent(getActivity(), AboutUsActivity.class);
 			startActivity(intent1);
-			getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 		case R.id.more_opinion:// 反馈
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			Intent intent2 = new Intent(getActivity(), OpinionActivity.class);
 			startActivity(intent2);
-			getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 		case R.id.more_help:// 帮助
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			Intent intent3 = new Intent(getActivity(), HelpActivity.class);
 			startActivity(intent3);
-			getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			break;
 		case R.id.more_version:// 版本检测
 			progressDialogUtil.showProgress();
@@ -403,7 +399,6 @@ public class MoreFragment extends Fragment implements OnClickListener{
 				intent5.putExtra("activityName", this.getClass().getName());
 				intent5.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent5);
-				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			}
 			break;
 

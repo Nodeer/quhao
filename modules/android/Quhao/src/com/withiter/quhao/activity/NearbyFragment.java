@@ -401,7 +401,6 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 				intent.setClass(getActivity(), MerchantDetailActivity.class);
 				intent.putExtra("merchantId", merchantList.get(position).id);
 				getActivity().startActivity(intent);
-				getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 
 			} else {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);

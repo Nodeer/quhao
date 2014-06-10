@@ -165,7 +165,6 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 				Intent updateNickname = new Intent();
 				updateNickname.setClass(this, UpdateNicknameActivity.class);
 				startActivity(updateNickname);
-				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 				
 			} else {
 				progressDialogUtil.closeProgress();
@@ -218,7 +217,6 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 				Intent creditCost = new Intent();
 				creditCost.setClass(this, CreditCostListActivity.class);
 				startActivity(creditCost);
-				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			} else {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -243,7 +241,6 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 				Intent jifenInstruction = new Intent();
 				jifenInstruction.setClass(this, JifenInstructionActivity.class);
 				startActivity(jifenInstruction);
-				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			} else {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -269,7 +266,6 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 				Intent updatePassword = new Intent();// TODO : wjzwjz
 				updatePassword.setClass(this, UpdatePasswordActivity.class);
 				startActivity(updatePassword);
-				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			} 
 			else 
 			{

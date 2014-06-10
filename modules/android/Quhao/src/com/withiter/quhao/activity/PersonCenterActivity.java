@@ -281,7 +281,6 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				intentComment.putExtra("accountId", QHClientApplication.getInstance().accountInfo.accountId);
 				intentComment.setClass(this, CommentsAccountActivity.class);
 				startActivity(intentComment);
-				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 				
 			} else {
 				progressDialogUtil.closeProgress();
@@ -309,7 +308,6 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				intentCurrent.putExtra("queryCondition", "current");
 				intentCurrent.setClass(this, QuhaoCurrentStatesActivity.class);
 				startActivity(intentCurrent);
-				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			} else {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -335,7 +333,6 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				intentHistory.putExtra("queryCondition", "history");
 				intentHistory.setClass(this, QuhaoHistoryStatesActivity.class);
 				startActivity(intentHistory);
-				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			} else {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -360,7 +357,6 @@ public class PersonCenterActivity extends QuhaoBaseActivity {
 				Intent intentCredit = new Intent();
 				intentCredit.setClass(this, CreditCostListActivity.class);
 				startActivity(intentCredit);
-				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			} else {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);

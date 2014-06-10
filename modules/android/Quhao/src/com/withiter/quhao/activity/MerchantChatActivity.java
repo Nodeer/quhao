@@ -389,10 +389,6 @@ public class MerchantChatActivity extends FragmentActivity implements EmojiconGr
 	public void onPause() {
 		super.onPause();
 		
-		QuhaoLog.i(LOGTAG, LOGTAG + " on pause");
-		if (backClicked) {
-			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
-		}
 	}
 	
 	@Override

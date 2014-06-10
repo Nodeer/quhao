@@ -262,7 +262,6 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 			public void onClick(View v) {
 				Intent intent = new Intent(activity, MerchantsSearchActivity.class);
 				startActivity(intent);
-				overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 			}
 		};
 		return clickListener;

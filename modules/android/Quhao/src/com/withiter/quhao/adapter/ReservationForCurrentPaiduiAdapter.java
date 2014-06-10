@@ -134,7 +134,6 @@ public class ReservationForCurrentPaiduiAdapter extends BaseAdapter {
 					intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 					activity.startActivity(intent);
 					progress.closeProgress();
-					activity.overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 				}
 			});
 			holder.merchantName.setTag("merchantNamer_" + position);

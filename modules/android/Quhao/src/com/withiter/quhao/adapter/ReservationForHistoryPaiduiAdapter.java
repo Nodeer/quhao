@@ -109,7 +109,6 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 					intent.putExtra("merchantId", merchantId);
 					activity.startActivity(intent);
 					progress.closeProgress();
-					activity.overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 				}
 			});
 			
@@ -158,7 +157,6 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 								intent.putExtra("rId", reservationId);
 								intent.setClass(activity, CreateCommentActivity.class);
 								activity.startActivity(intent);
-								activity.overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 							} catch (Exception e) {
 								e.printStackTrace();
 							} finally {

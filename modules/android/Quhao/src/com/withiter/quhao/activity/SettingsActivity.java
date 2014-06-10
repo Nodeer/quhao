@@ -167,9 +167,6 @@ public class SettingsActivity extends QuhaoBaseActivity {
 	@Override
 	public void onPause() {
 		super.onPause();
-		if (backClicked) {
-			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
-		}
 	}
 
 }

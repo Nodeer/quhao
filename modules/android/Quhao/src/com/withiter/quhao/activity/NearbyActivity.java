@@ -838,8 +838,6 @@ public class NearbyActivity extends QuhaoBaseActivity implements
 						intent.setClass(NearbyActivity.this, MerchantDetailActivity.class);
 						intent.putExtra("merchantId", buf);
 						NearbyActivity.this.startActivity(intent);
-						overridePendingTransition(R.anim.in_from_right,
-								R.anim.out_to_left);
 						
 					}
 				},new Runnable() {

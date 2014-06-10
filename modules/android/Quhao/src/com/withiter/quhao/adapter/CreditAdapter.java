@@ -149,7 +149,6 @@ public class CreditAdapter extends BaseAdapter {
 						intent.putExtra("merchantId", merchantId);
 						intent.setClass(activity, MerchantDetailActivity.class);
 						activity.startActivity(intent);
-						activity.overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 					}
 					else
 					{

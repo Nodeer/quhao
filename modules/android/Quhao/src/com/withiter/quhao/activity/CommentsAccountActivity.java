@@ -264,7 +264,6 @@ public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItem
 		intent.putExtra("merchantId", comment.mid);
 		intent.setClass(CommentsAccountActivity.this, MerchantDetailActivity.class);
 		startActivity(intent);
-		overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 	}
 
 	@Override

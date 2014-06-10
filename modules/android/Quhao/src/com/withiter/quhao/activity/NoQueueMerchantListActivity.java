@@ -156,7 +156,6 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 			intent.putExtra("merchantId", merchant.id);
 			intent.setClass(NoQueueMerchantListActivity.this, MerchantDetailActivity.class);
 			startActivity(intent);
-			overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
 		}
 	};
 
@@ -432,9 +431,6 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 			mAMapLocationManager.removeUpdates(this);
 			locationHandler.removeCallbacks(locationRunnable);
 		}
-		if (backClicked) {
-			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
-		}
 	}
 	
 	@Override
@@ -607,8 +603,6 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 				intent.setClass(this, MerchantDetailActivity.class);
 				intent.putExtra("merchantId", merchantList.get(position).id);
 				startActivity(intent);
-				overridePendingTransition(R.anim.in_from_right,
-						R.anim.out_to_left);
 				
 			} else {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);

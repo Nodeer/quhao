@@ -48,10 +48,6 @@ public class ShareDialogActivity extends QuhaoBaseActivity implements OnItemClic
 	@Override
 	public void onPause() {
 		super.onPause();
-		QuhaoLog.i(LOGTAG, LOGTAG + " on pause");
-		if (backClicked) {
-			overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
-		}
 	}
 
 	@Override
@@ -104,8 +100,6 @@ public class ShareDialogActivity extends QuhaoBaseActivity implements OnItemClic
 		}
 
 		startActivity(intent);
-		// 仿Iphone切换效果
-		overridePendingTransition(R.anim.zoomin, R.anim.zoomout);
 		ShareDialogActivity.this.finish();
 	}
 
