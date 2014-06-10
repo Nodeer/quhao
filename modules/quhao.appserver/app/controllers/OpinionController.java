@@ -45,7 +45,7 @@ public class OpinionController extends BaseController {
 		Opinion opinionTO = new Opinion();
 		opinionTO.contact = contact;
 		opinionTO.opinion = opinion;
-		opinionTO.create();
+		opinionTO.save();
 		renderJSON("success");
 	}
 }
