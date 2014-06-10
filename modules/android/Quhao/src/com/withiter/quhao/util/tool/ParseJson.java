@@ -16,6 +16,7 @@ import com.withiter.quhao.util.DateUtils;
 import com.withiter.quhao.util.ExceptionUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.vo.ActivityVO;
 import com.withiter.quhao.vo.AppVersionVO;
 import com.withiter.quhao.vo.Category;
 import com.withiter.quhao.vo.Comment;
@@ -867,4 +868,82 @@ public class ParseJson {
 		
 		return vo;
 	}
+
+	public static List<ActivityVO> getActivities(String buf) {
+
+		List<ActivityVO> activities = new ArrayList<ActivityVO>();
+		if (StringUtils.isNull(buf)) {
+			return activities;
+		}
+
+		try {
+			JSONArray array = new JSONArray(buf);
+			for (int i = 0; i < array.length(); i++) {
+				JSONObject obj = array.getJSONObject(i);
+				ActivityVO activity = coventActivity(obj);
+				if (null != activity) {
+					activities.add(activity);
+				}
+
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		return activities;
+	}
+	
+	public static ActivityVO getActivity(String buf) {
+		ActivityVO activity = null;
+		if (null == buf || "".equals(buf)) {
+			return activity;
+		}
+
+		try {
+			JSONObject obj = new JSONObject(buf);
+			activity = coventActivity(obj);
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		return activity;
+	}
+	
+	private static ActivityVO coventActivity(JSONObject obj) throws JSONException {
+		ActivityVO activity = null;
+		String activityId = obj.optString("activityId");
+		
+		String mid = obj.optString("mid");
+		
+		String cityCode = obj.optString("cityCode");
+
+		boolean enable = obj.optBoolean("enable");
+
+		String image = obj.optString("image");
+		
+		if (QuhaoConstant.test) {
+			if (null != image && !"".equals(image)) {
+				image = QuhaoConstant.HTTP_URL + obj.optString("image").substring(1);
+			}
+		} else {
+			if (null != image && !"".equals(image)) {
+				image = QuhaoConstant.HTTP_URL + obj.optString("image").substring(1);
+			}
+		}
+		if (StringUtils.isNotNull(image) && !image.contains("=")) {
+			try {
+				image = URLDecoder.decode(obj.getString("image"), "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
+
+		String start = DateUtils.formatDate(obj.optString("start"), "yyyy-MM-dd HH:mm:ss");
+		String end = DateUtils.formatDate(obj.optString("end"), "yyyy-MM-dd HH:mm:ss");
+		activity = new ActivityVO(activityId, mid, cityCode, image,start,end,enable);
+
+		return activity;
+	}
+	
 }

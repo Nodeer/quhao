@@ -32,7 +32,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
@@ -41,10 +40,11 @@ import android.widget.Toast;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
-import com.withiter.quhao.adapter.CategoryGridAdapter;
+import com.withiter.quhao.adapter.ActivityAdapter;
 import com.withiter.quhao.adapter.MyPagerAdapter;
 import com.withiter.quhao.data.CategoryData;
 import com.withiter.quhao.task.AllCategoriesTask;
+import com.withiter.quhao.task.GetActivitiesTask;
 import com.withiter.quhao.task.JsonPack;
 import com.withiter.quhao.task.TopMerchantsTask;
 import com.withiter.quhao.util.ActivityUtil;
@@ -52,10 +52,12 @@ import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.AsynImageLoader;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.QuhaoConstant;
+import com.withiter.quhao.view.InnerListView;
 import com.withiter.quhao.view.refresh.PullToRefreshView;
 import com.withiter.quhao.view.refresh.PullToRefreshView.OnFooterRefreshListener;
 import com.withiter.quhao.view.refresh.PullToRefreshView.OnHeaderRefreshListener;
 import com.withiter.quhao.view.viewpager.MyViewPager;
+import com.withiter.quhao.vo.ActivityVO;
 import com.withiter.quhao.vo.Category;
 import com.withiter.quhao.vo.TopMerchant;
 
@@ -64,8 +66,6 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	private static final int UNLOCK_CLICK = 1000;
 
 	private Button searchTextView;
-	private GridView categorysGird;
-	private CategoryGridAdapter categoryGridAdapter;
 	private TextView cityBtn;
 	private List<TopMerchant> topMerchants;
 	private List<Category> categorys = null;
@@ -93,6 +93,12 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	private View contentView;
 	private ImageView myAttentions;
 	private ImageView noSequenceMerchants;
+	
+	private InnerListView activityListView;
+	
+	private List<ActivityVO> activityList;
+	
+	private ActivityAdapter activityAdapter;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -215,10 +221,25 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 		// top merchant function
 		topMerchants = new ArrayList<TopMerchant>();
 
+		
+		activityListView = (InnerListView) contentView.findViewById(R.id.activity_list_view);
+		
 		// all categories
 		categorys = new ArrayList<Category>();
-		categorysGird = (GridView) contentView.findViewById(R.id.categorys);
-		categorysGird.setOnItemClickListener(categorysClickListener);
+//		categorysGird = (GridView) contentView.findViewById(R.id.categorys);
+//		categorysGird.setOnItemClickListener(categorysClickListener);
+		activityListView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				ActivityVO vo = activityList.get(position);
+				Intent intent = new Intent();
+				intent.putExtra("merchantId", vo.mid);
+				intent.setClass(getActivity(), MerchantDetailActivity.class);
+				startActivity(intent);
+				
+			}
+		});
 
 		// 城市选择按钮
 		cityBtn = (TextView) contentView.findViewById(R.id.city);
@@ -242,12 +263,14 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 		});
 		
 		cityBtn.setText(QHClientApplication.getInstance().defaultCity.cityName);
-		categorysGird.setVisibility(View.VISIBLE);
+//		categorysGird.setVisibility(View.VISIBLE);
+		activityListView.setVisibility(View.VISIBLE);
 		noResultLayout.setVisibility(View.GONE);
 		
 		getActivity().registerReceiver(cityChangeReceiver, new IntentFilter(QuhaoConstant.ACTION_CITY_CHANGED));
 		getTopMerchantsFromServerAndDisplay();
 		getCategoriesFromServerAndDisplay();
+		getActivities();
 		return contentView;
 	}
 
@@ -261,6 +284,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 			{
 				cityBtn.setText(QHClientApplication.getInstance().defaultCity.cityName);
 				getTopMerchantsFromServerAndDisplay();
+				getActivities();
 				getCategoriesFromServerAndDisplay();
 			}
 			
@@ -274,10 +298,12 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 
 			@Override
 			public void run() {
-				categorysGird.setVisibility(View.VISIBLE);
+//				categorysGird.setVisibility(View.VISIBLE);
+				activityListView.setVisibility(View.VISIBLE);
 				noResultLayout.setVisibility(View.GONE);
 				getTopMerchantsFromServerAndDisplay();
 				getCategoriesFromServerAndDisplay();
+				getActivities();
 				mPullToRefreshView.onHeaderRefreshComplete();
 				// mPullToRefreshView.onHeaderRefreshComplete();
 			}
@@ -616,6 +642,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 		}
 	};
 
+	/*
 	private Handler categorysUpdateHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -638,7 +665,63 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 			}
 		}
 	};
+	*/
+	
+	private Handler activitiesUpdateHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.what == 200) {
+				super.handleMessage(msg);
+				activityAdapter = new ActivityAdapter(getActivity(),activityListView,activityList);
+				activityListView.setAdapter(activityAdapter);
+				activityAdapter.notifyDataSetChanged();
+				if(null != activityList && !activityList.isEmpty())
+				{
+					activityListView.setVisibility(View.VISIBLE);
+					noResultLayout.setVisibility(View.GONE);
+				}
+				else
+				{
+					activityListView.setVisibility(View.GONE);
+					noResultLayout.setVisibility(View.VISIBLE);
+				}
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			}
+		}
+	};
 
+	/**
+	 * get all categories from server and display them
+	 */
+	public void getActivities() {
+
+		final GetActivitiesTask task = new GetActivitiesTask(0, getActivity(), "app/activity?cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode);
+		task.execute(new Runnable() {
+
+			@Override
+			public void run() {
+				JsonPack result = task.jsonPack;
+				if (null == activityList) {
+					activityList = new ArrayList<ActivityVO>();
+				}
+				activityList.clear();
+				activityList.addAll(ParseJson.getActivities(result.getObj()));
+				activitiesUpdateHandler.obtainMessage(200, categorys).sendToTarget();
+
+			}
+		}, new Runnable() {
+
+			@Override
+			public void run() {
+				if (null == activityList) {
+					activityList = new ArrayList<ActivityVO>();
+				}
+				activitiesUpdateHandler.obtainMessage(200, categorys).sendToTarget();
+			}
+		});
+
+	}
+	
 	/**
 	 * get all categories from server and display them
 	 */
@@ -655,7 +738,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 				}
 				categorys.clear();
 				categorys.addAll(ParseJson.getCategorys(result));
-				categorysUpdateHandler.obtainMessage(200, categorys).sendToTarget();
+//				categorysUpdateHandler.obtainMessage(200, categorys).sendToTarget();
 
 			}
 		}, new Runnable() {
@@ -668,7 +751,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 				}
 				categorys.clear();
 				categorys.addAll(ParseJson.getCategorys(result));
-				categorysUpdateHandler.obtainMessage(200, categorys).sendToTarget();
+//				categorysUpdateHandler.obtainMessage(200, categorys).sendToTarget();
 			}
 		});
 
