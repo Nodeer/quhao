@@ -128,8 +128,10 @@ GET		/help								HelpController.help
 # Patch
 *		/p/{action}							Patches.{action}
 GET		/p        							Patches.index
+
 # opinion
 GET		/createOpinion						OpinionController.createOpinion
+GET		/feedbackHandle						OpinionController.feedbackHandle
 
 # backend management
 *		/b/w								backend.self.SelfManagementController.index

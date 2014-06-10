@@ -6,9 +6,12 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import play.data.validation.Required;
 import play.mvc.Before;
 
 import com.withiter.models.opinion.Opinion;
+
+import controllers.backend.admin.AdminController;
 
 public class OpinionController extends BaseController {
 	private static Logger logger = LoggerFactory.getLogger(controllers.OpinionController.class);
@@ -47,5 +50,13 @@ public class OpinionController extends BaseController {
 		opinionTO.opinion = opinion;
 		opinionTO.save();
 		renderJSON("success");
+	}
+	
+	public static void feedbackHandle(@Required String oid){
+		if(validation.hasErrors()){
+			renderJSON(validation.errors().get(0));
+		}
+		Opinion.handle(oid);
+		AdminController.feedback(1);
 	}
 }
