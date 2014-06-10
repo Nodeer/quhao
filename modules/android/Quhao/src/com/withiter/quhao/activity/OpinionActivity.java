@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.ActivityUtil;
-import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
@@ -28,12 +27,10 @@ public class OpinionActivity extends QuhaoBaseActivity {
 	private String contact;
 
 	public static boolean backClicked = false;
-	private String LOGTAG = OpinionActivity.class.getName();
 
 	@Override
 	public void finish() {
 		super.finish();
-		QuhaoLog.i(LOGTAG, LOGTAG + " finished");
 	}
 
 	@Override
@@ -74,16 +71,16 @@ public class OpinionActivity extends QuhaoBaseActivity {
 		switch (v.getId()) {
 		case R.id.btn_opinion:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			String curOpinion = opinionEdit.getText().toString();
+			opinion = opinionEdit.getText().toString().trim();
 
-			if (curOpinion.equals(opinion)) {
-				Toast.makeText(this, "请不要重复提交", Toast.LENGTH_SHORT).show();
+			if(StringUtils.isNull(opinion))
+			{
+				Toast.makeText(this, "亲，写点东西吧。", Toast.LENGTH_SHORT).show();
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				return;
 			}
-
-			opinion = curOpinion;
+			
 			contact = contactEdit.getText().toString();
 
 			Thread thread = new Thread(opinionRunnable);

@@ -1,9 +1,9 @@
 package com.withiter.quhao.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.Looper;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -18,12 +18,12 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.task.CreateCommentTask;
 import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.StringUtils;
-import com.withiter.quhao.util.http.CommonHTTPRequest;
-import com.withiter.quhao.util.tool.ProgressDialogUtil;
 
 public class CreateCommentActivity extends QuhaoBaseActivity implements OnRatingBarChangeListener{
 
 	private Button submit;
+	
+	private Button opinion;
 	
 	private RatingBar kouweiRatingBar;
 	
@@ -78,6 +78,9 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 		commentEdit = (EditText) this.findViewById(R.id.comment_edit);
 		
 		submit.setOnClickListener(this);
+		
+		opinion = (Button) this.findViewById(R.id.opinion_button);
+		opinion.setOnClickListener(this);
 	}
 
 	@Override
@@ -99,9 +102,16 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 			grade = (int) gradeRatingbar.getRating();
 //			float gradeAvg = (kouwei + huanjing + fuwu + xingjiabi)/4;
 //			int grade = Math.round(gradeAvg);
-			if(StringUtils.isNull(comment))
+			if(kouwei == 0|| huanjing == 0|| fuwu == 0|| xingjiabi == 0|| grade == 0)
 			{
-				Toast.makeText(CreateCommentActivity.this, "请填写评论", Toast.LENGTH_SHORT).show();
+				Toast.makeText(CreateCommentActivity.this, "亲，评分都要选哦。", Toast.LENGTH_SHORT).show();
+				unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+				return;
+			}
+			
+			if(StringUtils.isNull(averageCost))
+			{
+				Toast.makeText(CreateCommentActivity.this, "亲，请填写人均消费。", Toast.LENGTH_SHORT).show();
 				unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
 				return;
 			}
@@ -116,7 +126,6 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 				
 				@Override
 				public void run() {
-					
 					unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
 					Toast.makeText(CreateCommentActivity.this, "评论成功", Toast.LENGTH_SHORT).show();
 					CreateCommentActivity.this.finish();
@@ -133,6 +142,16 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 				}
 			});
 			
+			break;
+			
+		case R.id.opinion_button:
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			Intent intent = new Intent();
+			intent.setClass(this, OpinionActivity.class);
+			startActivity(intent);
+			break;
+		default:
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;
 		}
 
