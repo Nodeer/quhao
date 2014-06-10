@@ -431,4 +431,16 @@ public class AdminController extends BaseController {
 		AppConfig.update(id, version, erweimalink);
 		app();
 	}
+	
+	/**
+	 * 处理反馈
+	 * @param oid
+	 */
+	public static void feedbackHandle(@Required String oid){
+		if(validation.hasErrors()){
+			renderJSON(validation.errors().get(0));
+		}
+		Opinion.handle(oid);
+		AdminController.feedback(1);
+	}
 }

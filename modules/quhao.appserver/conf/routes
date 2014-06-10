@@ -131,7 +131,7 @@ GET		/p        							Patches.index
 
 # opinion
 GET		/createOpinion						OpinionController.createOpinion
-GET		/feedbackHandle						OpinionController.feedbackHandle
+GET		/feedbackHandle						AdminController.feedbackHandle
 
 # backend management
 *		/b/w								backend.self.SelfManagementController.index

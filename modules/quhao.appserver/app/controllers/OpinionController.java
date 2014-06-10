@@ -51,12 +51,4 @@ public class OpinionController extends BaseController {
 		opinionTO.save();
 		renderJSON("success");
 	}
-	
-	public static void feedbackHandle(@Required String oid){
-		if(validation.hasErrors()){
-			renderJSON(validation.errors().get(0));
-		}
-		Opinion.handle(oid);
-		AdminController.feedback(1);
-	}
 }
