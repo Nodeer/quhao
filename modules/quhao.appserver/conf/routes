@@ -66,6 +66,7 @@ GET		/pStatus							ReservationController.paiduiStatusForApp
 GET		/youhui								YouhuiController.youhui
 
 # Merchant
+GET		/quhaoEntry							MerchantController.quhaoEntry
 GET		/nextPage							MerchantController.nextPage
 GET		/merchantByCategory					MerchantController.merchantByCategory
 GET		/merchant							MerchantController.merchant

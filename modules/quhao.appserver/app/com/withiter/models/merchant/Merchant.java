@@ -63,6 +63,20 @@ public class Merchant extends MerchantEntityDef {
 	}
 
 	/**
+	 * 取号排队按钮，下一页
+	 * 
+	 * @param page the page number
+	 * @param cityCode the city code
+	 * @return
+	 */
+	public static List<Merchant> nextPage(int page, String cityCode) {
+		MorphiaQuery q = Merchant.q();
+		q.filter("cityCode", cityCode);
+		q = sortBy(q, "-enable");
+		return paginate(q, page);
+	}
+	
+	/**
 	 * get next page merchants
 	 * 
 	 * @param cateType the type of category

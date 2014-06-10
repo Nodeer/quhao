@@ -79,6 +79,30 @@ public class MerchantController extends BaseController {
 	}
 	
 	/**
+	 * APP 取号排队按钮入口
+	 */
+	public static void quhaoEntry(){
+		String cityCode = params.get("cityCode");
+		String pageStr = params.get("page");
+		if(StringUtils.isEmpty(cityCode)){
+			cityCode = "021";
+		}
+		int page = 1;
+		if (!StringUtils.isEmpty(pageStr)) {
+			page = Integer.parseInt(pageStr);
+			if (page < 1) {
+				page = 1;
+			}
+		}
+		List<Merchant> list = Merchant.nextPage(page, cityCode);
+		List<MerchantVO> merchantVOList = new ArrayList<MerchantVO>();
+		for (Merchant m : list) {
+			merchantVOList.add(MerchantVO.build(m));
+		}
+		renderJSON(merchantVOList);
+	}
+	
+	/**
 	 * 根据城市代码，返回所有分类
 	 * 
 	 * @param cityCode
@@ -140,7 +164,6 @@ public class MerchantController extends BaseController {
 	 * @param sortBy
 	 *            排序
 	 */
-
 	public static void nextPage(int page, String cateType, String sortBy, String cityCode, double userX, double userY) {
 		page = (page == 0) ? 1 : page;
 		if (StringUtils.isEmpty(sortBy)) {
