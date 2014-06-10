@@ -28,8 +28,8 @@
     [super viewDidLoad];
 #if IOS7_SDK_AVAILABLE
     UINavigationBar *navBar = [UINavigationBar appearance];
-    [navBar setBackgroundColor:UIColorFromRGB(0x91d3f5)];
-    [navBar setBarTintColor:UIColorFromRGB(0x91d3f5)];
+    [navBar setBackgroundColor:UIColorFromRGB(0xacc52c)];
+    [navBar setBarTintColor:UIColorFromRGB(0xacc52c)];
     self.tabBarController.tabBar.translucent = NO;
     navBar.tintColor = [UIColor whiteColor];
     [navBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:

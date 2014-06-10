@@ -76,11 +76,14 @@
 #define getYouHui_url @"/youhui"
 #define getProtocol_url @"/protocol"
 #define getUserAgreement @"/getUserAgreement"
+#define getchat_url @"/chat"
+#define getActivity_url @"/app/activity"
+#define getTuiJian_url  @"/app/tuijian"
 #define loadNext20Tip @"更多 . . ."
 #define loadingTip @"正在加载 . . ."
 #define AppID @"867985717"
 
-#define AppVersion @"1.1.2"
+#define AppVersion @"1.1.3"
 #define SearchKey @"60d9c5881dbe8dddd3de33aaacac0cbe"
 
 //com.sina.weibo
@@ -92,3 +95,5 @@
 #define GET_UID_URL     @"https://api.weibo.com/2/account/get_uid.json"
 #define WEIBO_UPDATE    @"https://api.weibo.com/2/statuses/update.json"//发送文字微博
 
+//weixin
+#define wxAppKey        @"wx2f47a9cac8342400"

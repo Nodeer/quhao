@@ -27,6 +27,7 @@
 {
     _cityButton = [[UIButton alloc] initWithFrame:CGRectMake( 0, 0, 40, 25 )];
     _cityButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0f];
+    [_cityButton setTitleColor:UIColorFromRGB(0xcb3f40) forState:UIControlStateNormal];
     [_cityButton setTitle: @"上海" forState: UIControlStateNormal];
     [_cityButton addTarget:self action:@selector(openCitySearchView:) forControlEvents:UIControlEventTouchUpInside];
     _cityButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
@@ -46,7 +47,7 @@
     if(_cityCode == nil){
         _cityCode = @"021";
     }
-    UIButton *chooseButton=[Helper getBackBtn:@"chooseArrow" title:@"" rect:CGRectMake( 0, 0, 11, 9 )];
+    UIButton *chooseButton=[Helper getBackBtn:@"chooseArrow" title:@"" rect:CGRectMake( 0, 0, 16, 10 )];
     [chooseButton addTarget:self action:@selector(openCitySearchView:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *chooseButtonItem = [[UIBarButtonItem alloc] initWithCustomView:chooseButton];
     UIBarButtonItem *spaceButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
@@ -58,7 +59,7 @@
     //添加搜索的按钮
     UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 30, 30)];
     [btn addTarget:self action:@selector(clickSearch:) forControlEvents:UIControlEventTouchUpInside];
-    [btn setImage:[UIImage imageNamed:@"searchWhite"] forState:UIControlStateNormal];
+    [btn setImage:[UIImage imageNamed:@"search"] forState:UIControlStateNormal];
     UIBarButtonItem *btnSearch = [[UIBarButtonItem alloc]initWithCustomView:btn];
     self.navigationItem.rightBarButtonItem = btnSearch;
 }
@@ -69,7 +70,6 @@
     _isLoading = YES;
     _menuView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, kDeviceWidth, kDeviceHeight-108)];
     _menuView.backgroundColor = [UIColor whiteColor];
-    _menuView.contentSize = CGSizeMake(kDeviceWidth, kDeviceHeight);
     self.view = _menuView;
     if (_menuView) {
         _menuView.scrollEnabled = YES;
@@ -81,17 +81,17 @@
     self.view.backgroundColor=[UIColor whiteColor];
     //适配iOS7uinavigationbar遮挡tableView的问题
 #if IOS7_SDK_AVAILABLE
-        self.edgesForExtendedLayout = UIRectEdgeNone;
-        self.automaticallyAdjustsScrollViewInsets = NO;
-        self.navigationController.navigationBar.translucent = NO;
-        self.tabBarController.tabBar.translucent = NO;
-        self.extendedLayoutIncludesOpaqueBars = NO;
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.navigationController.navigationBar.translucent = NO;
+    self.tabBarController.tabBar.translucent = NO;
+    self.extendedLayoutIncludesOpaqueBars = NO;
 #endif
     _topIdArray= [[NSMutableArray alloc] init];
     _topUrlArray= [[NSMutableArray alloc] init];
-    _categoryArray = [[NSMutableArray alloc] init];
+    _activityArray = [[NSMutableArray alloc] init];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshed:) name:Notification_TabClick object:nil];
-
+    
     locationManager = [[CLLocationManager alloc] init];
     locationManager.delegate = self;
     locationManager.desiredAccuracy = kCLLocationAccuracyBest;
@@ -114,7 +114,7 @@
     });
     dispatch_group_notify(group, dispatch_get_main_queue(), ^{
         if([_topIdArray count]!=0){
-             [self topSetOrReset];
+            [self topSetOrReset];
         }
         [self createMiddleView];
         [self menuSetOrReset];
@@ -143,7 +143,7 @@
     }else if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied){
         [locationManager stopUpdatingLocation];
         [Helper saveDafaultData:@"0" withName:@"isLocation"];
-
+        
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message: @"请在系统设置中开启定位服务" delegate:self cancelButtonTitle:@"好的" otherButtonTitles:nil, nil];
         [alert show];
     }
@@ -200,8 +200,8 @@
     if([Helper isConnectionAvailable]){
         [self createHud];
         [_scroller.animationTimer invalidate];
-        [_categoryArray removeAllObjects];
-        [_topIdArray removeAllObjects];             
+        [_activityArray removeAllObjects];
+        [_topIdArray removeAllObjects];
         [_topUrlArray removeAllObjects];
         dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         dispatch_group_t group = dispatch_group_create();
@@ -238,7 +238,7 @@
 //    layout.itemSize = CGSizeMake(120, 50);
 //    layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
 //    layout.minimumInteritemSpacing = 10;
-//    
+//
 //    UICollectionView *myCollectionView=[[UICollectionView alloc] initWithFrame:CGRectMake(10, 125, kDeviceWidth-20, 45) collectionViewLayout:layout];
 //    [myCollectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"collection"];
 //    myCollectionView.backgroundColor=[UIColor whiteColor];
@@ -246,7 +246,7 @@
 //    myCollectionView.dataSource=self;
 //    [self.view addSubview:myCollectionView];
 //    _middleBtn = @[@"middle1.jpg",@"middle2.jpg"];
-//    
+//
 //}
 //
 //#pragma mark - collection数据源代理
@@ -259,7 +259,7 @@
 //{
 //    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"collection" forIndexPath:indexPath];
 //    cell.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:_middleBtn[indexPath.row]]];
-//    
+//
 //    return cell;
 //}
 //
@@ -270,28 +270,82 @@
 
 -(void)createMiddleView
 {
-    UILabel *cateLabel = [[UICustomLabel alloc] initWithFrame:CGRectMake(5,120, 80, 20)];
-    cateLabel.text = @"快速通道";
-    cateLabel.font = [UIFont systemFontOfSize:14];
-    cateLabel.textColor = [UIColor redColor];
-    [self.view addSubview:cateLabel];
-
     
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-    btn.frame = CGRectMake(30 , 145, 115  , 40);
-    btn.backgroundColor =  UIColorFromRGB(0x91d3f5);
-    [btn setTitleColor:[UIColor whiteColor ]forState:UIControlStateNormal];
-    [btn setTitle:@"我的关注" forState:UIControlStateNormal];
-    [btn addTarget:self action:@selector(wdgz:) forControlEvents:UIControlEventTouchDown];
+    btn.frame = CGRectMake(10 , 115, 145  , 55);
+    btn.backgroundColor =  [UIColor clearColor];
+    [btn setBackgroundImage:[UIImage imageNamed:@"qhpd"] forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(qhpd:) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:btn];
     
     UIButton *zbbpdbtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    zbbpdbtn.frame = CGRectMake(185 , 145, 115  , 40);
-    zbbpdbtn.backgroundColor =  UIColorFromRGB(0x91d3f5);
-    [zbbpdbtn setTitleColor:[UIColor whiteColor ]forState:UIControlStateNormal];
-    [zbbpdbtn setTitle:@"周边不排队" forState:UIControlStateNormal];
+    zbbpdbtn.frame = CGRectMake(kDeviceWidth-155 , 115, 145  , 55);
+    zbbpdbtn.backgroundColor =  [UIColor clearColor];
+    [zbbpdbtn setBackgroundImage:[UIImage imageNamed:@"msjc"] forState:UIControlStateNormal];
     [zbbpdbtn addTarget:self action:@selector(zbpd:) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:zbbpdbtn];
+    
+    UIButton *qhpdBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    qhpdBtn.frame = CGRectMake(10 , 178, 145  , 55);
+    qhpdBtn.backgroundColor =  [UIColor clearColor];
+    [qhpdBtn setBackgroundImage:[UIImage imageNamed:@"llt"] forState:UIControlStateNormal];
+    [qhpdBtn addTarget:self action:@selector(zbpd:) forControlEvents:UIControlEventTouchDown];
+    [self.view addSubview:qhpdBtn];
+    
+    UIButton *wdgzdbtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    wdgzdbtn.frame = CGRectMake(kDeviceWidth-155 , 178, 145  , 55);
+    wdgzdbtn.backgroundColor =  [UIColor clearColor];
+    [wdgzdbtn setBackgroundImage:[UIImage imageNamed:@"wdgz"] forState:UIControlStateNormal];
+    [wdgzdbtn addTarget:self action:@selector(wdgz:) forControlEvents:UIControlEventTouchDown];
+    [self.view addSubview:wdgzdbtn];
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"xzkn"]];
+    imageView.frame = CGRectMake(10 , wdgzdbtn.frame.origin.y+wdgzdbtn.frame.size.height+8, kDeviceWidth-20  , 78);
+    UITapGestureRecognizer *Tap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(xzkn:)];
+    [Tap setNumberOfTapsRequired:1];
+    [Tap setNumberOfTouchesRequired:1];
+    imageView.userInteractionEnabled=YES;
+    [imageView addGestureRecognizer:Tap];
+    [self.view addSubview:imageView];
+}
+
+-(void)xzkn:(id)sender
+{
+    if([Helper isConnectionAvailable]){
+        NSString *url = [NSString stringWithFormat:@"%@%@?cityCode=%@",IP,getTuiJian_url,_cityCode];
+        NSString *response1 = [QuHaoUtil requestDb:url];
+        if([response1 isEqualToString:@""]){
+            [Helper showHUD2:@"网络异常,请稍后再试" andView:self.view andSize:100];
+            return;
+        }else{
+            NSDictionary *jsonObjects=[QuHaoUtil analyseDataToDic:response1];
+            if(jsonObjects==nil){
+                //解析错误
+                [Helper showHUD2:@"网络异常,请稍后再试" andView:self.view andSize:100];
+                return;
+            }else{
+                MerchartDetail *mDetail = [[MerchartDetail alloc] init];
+                mDetail.merchartID = [jsonObjects  objectForKey:@"id"];
+                mDetail.distance = [jsonObjects objectForKey:@"distance"];
+                mDetail.hidesBottomBarWhenPushed=YES;
+                [self.navigationController pushViewController:mDetail animated:YES];
+            }
+        }
+    }else{
+        _isLoading = YES;
+        [Helper showHUD2:@"当前网络不可用" andView:self.view andSize:100];
+    }
+}
+
+-(void)qhpd:(id)sender
+{
+    ListViewController *home = [[ListViewController alloc] init];
+    home.cateType = @"";
+    home.cityCode = _cityCode;
+    home.latitude = [[Helper returnUserString:@"latitude"] doubleValue];
+    home.longitude = [[Helper returnUserString:@"longitude"] doubleValue];
+    home.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:home animated:YES];
 }
 
 -(void)wdgz:(id)sender
@@ -358,10 +412,10 @@
                 [_topIdArray addObject:@""];
                 [_topUrlArray addObject:@""];
             }
-//            if([jsonObjects count] == 0){
-//                [_topIdArray addObject:@""];
-//                [_topUrlArray addObject:@""];
-//            }
+            //            if([jsonObjects count] == 0){
+            //                [_topIdArray addObject:@""];
+            //                [_topUrlArray addObject:@""];
+            //            }
         }
     }
 }
@@ -369,7 +423,7 @@
 -(void)requestMenuData
 {
     //加载category
-    NSString *url = [NSString stringWithFormat:@"%@%@?cityCode=%@",IP,allCategories_url,_cityCode];
+    NSString *url = [NSString stringWithFormat:@"%@%@?cityCode=%@&userX=%f&userY=%f",IP,getActivity_url,_cityCode,_latitude,_longitude];
     NSString *response1 = [QuHaoUtil requestDb:url];
     if([response1 isEqualToString:@""]){
         //异常处理
@@ -382,16 +436,13 @@
             //[Helper showHUD2:@"服务器错误" andView:self.view andSize:100];
             return;
         }else{
-            [_categoryArray removeAllObjects];
-            Category *c = nil;
+            [_activityArray removeAllObjects];
+            Activity *c = nil;
             for(int i=0; i < [jsonObjects count]; ){
-                c = [[Category alloc] init];
-                c.cateType = [[jsonObjects objectAtIndex:i] objectForKey:@"cateType"];
-                c.cateName = [[jsonObjects objectAtIndex:i] objectForKey:@"cateName"];
-                //c.count = [[jsonObjects objectAtIndex:i] objectForKey:@"count"];
-                //NSString *lableText = [[[c.cateName stringByAppendingString:@"("] stringByAppendingString:[c.count description]] stringByAppendingString:@")"];
-                c.text = c.cateName;
-                [_categoryArray insertObject:c atIndex:i];
+                c = [[Activity alloc] init];
+                c.mid = [[jsonObjects objectAtIndex:i] objectForKey:@"mid"];
+                c.image = [[jsonObjects objectAtIndex:i] objectForKey:@"image"];
+                [_activityArray insertObject:c atIndex:i];
                 
                 i++;
             }
@@ -400,36 +451,29 @@
 }
 
 -(void)menuSetOrReset {
-    [self resetWithColumns:3 marginSize:10 gutterSize:35 rowHeight:15];
-    [self populateMenu];
-}
-
--(void)populateMenu {
-    UIControl *menuItem = nil;
-    if([_categoryArray count] != 0){
-        for (Category *cate in _categoryArray) {
-            if(menuItem == nil){
-                UILabel *cateLabel = [[UICustomLabel alloc] initWithFrame:CGRectMake(5,190, 80, 20)];
-                cateLabel.text = @"美食分类";
-                cateLabel.font = [UIFont systemFontOfSize:14];
-                cateLabel.textColor = [UIColor redColor];
-                [self.view addSubview:cateLabel];
-            }
-            menuItem = [self createMenuItem:cate];
-            [self.view addSubview:menuItem];
-        }
-    }else{
-        UILabel *cateLabel = [[UICustomLabel alloc] initWithFrame:CGRectMake(5,190, 80, 20)];
-        cateLabel.text = @"美食分类";
-        cateLabel.font = [UIFont systemFontOfSize:14];
-        cateLabel.textColor = [UIColor redColor];
-        [self.view addSubview:cateLabel];
+    if([_activityArray count] != 0){
+        UIImageView *hd = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"yhhd"]];
+        hd.frame = CGRectMake(0 , 320, kDeviceWidth  , 38);
+        [self.view addSubview:hd];
         
-        UILabel *noLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,270, kDeviceWidth, 30)];
-        noLabel.textAlignment = NSTextAlignmentCenter;
-        noLabel.font = [UIFont systemFontOfSize:14];
-        noLabel.text = @"该城市暂未开通,请切换其他城市试试";
-        [self.view addSubview:noLabel];
+        float height = 360;
+        Activity *ac = nil;
+        for(int i=0;i<[_activityArray count];i++){
+            ac = [_activityArray objectAtIndex:i];
+            EGOImageView * imgView = [[EGOImageView alloc] init];
+            imgView.imageURL =[NSURL URLWithString:[NSString stringWithFormat:@"%@%@",IP,[ac.image    stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding ]]];
+            [imgView setFrame:CGRectMake(10, height ,kDeviceWidth -20 , 100)];
+            imgView.tag = i;
+            imgView.id = ac.mid;
+            UITapGestureRecognizer *Tap =[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onClickUIImage:)];
+            [Tap setNumberOfTapsRequired:1];
+            [Tap setNumberOfTouchesRequired:1];
+            imgView.userInteractionEnabled=YES;
+            [imgView addGestureRecognizer:Tap];
+            [self.view addSubview:imgView];
+            height += 110;
+        }
+        _menuView.contentSize = CGSizeMake(kDeviceWidth, height);
     }
 }
 
@@ -442,60 +486,11 @@
     [self.navigationController pushViewController:sView animated:YES];
 }
 
--(void)resetWithColumns:(int)col marginSize:(CGFloat)margin gutterSize:(CGFloat)gutter rowHeight:(CGFloat)height{  
-    if (_menuView) {
-        _columns = col;
-        _marginSize = margin;
-        _gutterSize = gutter;
-        _rowHeight = height;
-        _xOffset = gutter;
-        _yOffset = gutter+185;
-        _columnInc = 0;
-    }
-}
-
--(UIControl *) createMenuItem :(Category *)cate{
-    CGFloat adjustedMargin = (_marginSize * (_columns - 1) / _columns);
-    CGFloat menuWidth = (_menuView.frame.size.width - (_gutterSize * 2));
-    CGFloat itemWidth = (menuWidth / _columns) - adjustedMargin;
-    CGRect itemFrame = CGRectMake(_xOffset, _yOffset, itemWidth, _rowHeight);
-    UIControl *item = [[UIControl alloc] initWithFrame:itemFrame];
-    _columnInc++;
-    if (_columnInc >= _columns) {
-        _columnInc = 0;
-        _yOffset = _yOffset + _rowHeight + _marginSize;
-        _xOffset = _gutterSize;
-    } else {
-        _xOffset = _xOffset + _marginSize + itemWidth;
-        _menuView.contentSize = CGSizeMake(_menuView.contentSize.width, _yOffset + _marginSize + _rowHeight);
-    }
-    //item.backgroundColor = [UIColor redColor];
-    CGRect parentFrame = item.frame;
-    CGFloat margin = 0.0;
-    
-    CGRect titleFrame = CGRectMake(margin,0, parentFrame.size.width, 15);
-    UICustomLabel *titleLabel = [[UICustomLabel alloc] initWithFrame:titleFrame];
-    titleLabel.text = cate.text;
-    titleLabel.cateType = cate.cateType;
-    titleLabel.textAlignment = NSTextAlignmentLeft;
-    titleLabel.backgroundColor = [UIColor whiteColor];
-    titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:14];
-    //titleLabel.adjustsFontSizeToFitWidth = YES;
-    titleLabel.contentMode = UIViewContentModeScaleAspectFit;
-    titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleRightMargin;
-    UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickCateLable:)];
-    titleLabel.userInteractionEnabled=YES;
-    
-    [titleLabel addGestureRecognizer:tapGesture];
-    [item addSubview:titleLabel];
-    return item;
-}
-
 -(void)topSetOrReset
 {
     _scroller=[[EScrollerView alloc] initWithFrameRect:CGRectMake(0, 0, kDeviceWidth, 105)
-                                                          ImageArray:_topUrlArray
-                                                          TitleArray:_topIdArray];
+                                            ImageArray:_topUrlArray
+                                            TitleArray:_topIdArray];
     _scroller.delegate=self;
     [self.view addSubview:_scroller];
 }
@@ -509,7 +504,11 @@
 {
     UITapGestureRecognizer *tap = (UITapGestureRecognizer*)sender;
     EGOImageView *image=(EGOImageView*)tap.view;
-    [self pushMerchartDetail:image.cateType andNavController:self.navigationController];
+    MerchartDetail *mDetail = [[MerchartDetail alloc] init];
+    mDetail.merchartID = image.id;
+    mDetail.tabBarItem.image = [UIImage imageNamed:@"detail"];
+    mDetail.hidesBottomBarWhenPushed=YES;
+    [self.navigationController pushViewController:mDetail animated:YES];
 }
 
 -(void)onClickTopImage:(NSString *)mid
@@ -568,10 +567,10 @@
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
     CLLocation *currLocation = [locations lastObject];
-//    NSTimeInterval howRecent = [currLocation.timestamp timeIntervalSinceNow];
-//    if(howRecent < -10 || currLocation.horizontalAccuracy > 100) {
-//        return;
-//    }
+    //    NSTimeInterval howRecent = [currLocation.timestamp timeIntervalSinceNow];
+    //    if(howRecent < -10 || currLocation.horizontalAccuracy > 100) {
+    //        return;
+    //    }
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     CLLocationCoordinate2D myCoOrdinate;
     if (![WGS84TOGCJ02 isLocationOutOfChina:[currLocation coordinate]]) {
@@ -623,7 +622,7 @@
                  }
                  if(![isLocation isEqualToString:@"1"]){
                      [_cityButton setTitle:city forState:UIControlStateNormal];
-                      _cityCode = tempCityCode;
+                     _cityCode = tempCityCode;
                  }
                  NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
                  [defaults setObject:@"1" forKey:@"isLocation"];
@@ -708,10 +707,10 @@
 - (void)viewDidUnload
 {
     _menuView = nil;
-    [_categoryArray removeAllObjects];
+    [_activityArray removeAllObjects];
     [_topIdArray removeAllObjects];
     [_topUrlArray removeAllObjects];
-
+    
     [super viewDidUnload];
 }
 

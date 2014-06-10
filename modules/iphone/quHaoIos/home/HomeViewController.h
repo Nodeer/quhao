@@ -11,7 +11,7 @@
 #import "ASIHTTPRequest.h"
 #import "Helper.h"
 #import "ListViewController.h"
-#import "Category.h"
+#import "Activity.h"
 #import "UICustomLabel.h"
 #import "SearchView.h"
 #import "CityViewController.h"
@@ -21,7 +21,7 @@
 #import "WGS84TOGCJ02.h"
 @interface HomeViewController : UIViewController<CityViewDelegate,EScrollerViewDelegate,CLLocationManagerDelegate,MBProgressHUDDelegate>
 {
-    NSMutableArray *_categoryArray;
+    NSMutableArray *_activityArray;
     NSMutableArray *_topUrlArray;
     NSMutableArray *_topIdArray;
     NSArray *_middleBtn;
@@ -50,11 +50,8 @@
 //@property (nonatomic, strong) iCarousel *carousel;
 -(void)requestTopData;
 -(void)requestMenuData;
-//创建catogory
--(UIControl *) createMenuItem:(Category *)cate;
 -(void)menuSetOrReset;
 -(void)topSetOrReset;
--(void)populateMenu;
 -(void)loadNavigationItem;
 -(void)clickSearch:(id)sender;
 -(void)onClickUIImage:(UITapGestureRecognizer *)sender;

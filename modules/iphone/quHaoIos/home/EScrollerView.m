@@ -52,7 +52,7 @@
             
             if (![[Helper returnUserString:@"showImage"] boolValue]||[imgURL isEqualToString:@""])
             {
-                imgView.image = [UIImage imageNamed:@"no_logo.png"];
+                imgView.image = [UIImage imageNamed:@"top"];
             }
             else
             {

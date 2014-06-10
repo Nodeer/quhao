@@ -35,6 +35,14 @@
         [self.tableView setSeparatorInset:UIEdgeInsetsZero];
     }
 #endif
+    UIImage *backImage = [UIImage imageNamed:@"category"];
+     UIButton *_button = [UIButton buttonWithType:UIButtonTypeCustom];
+    _button.frame = CGRectMake(0, 0, kDeviceWidth, 25);
+    [_button setBackgroundImage:backImage forState:UIControlStateNormal];
+    _button.titleLabel.font = [UIFont boldSystemFontOfSize:13.0f];
+    [_button setTitle:@"3千米" forState:UIControlStateNormal];
+    [_button addTarget:self action:@selector(changeDis:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_button];
     
     _isLoadOver = NO;
     [self createHud];
@@ -81,7 +89,7 @@
     
     UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 30, 30)];
     [btn addTarget:self action:@selector(clickSearch:) forControlEvents:UIControlEventTouchUpInside];
-    [btn setImage:[UIImage imageNamed:@"searchWhite"] forState:UIControlStateNormal];
+    [btn setImage:[UIImage imageNamed:@"search"] forState:UIControlStateNormal];
     UIBarButtonItem *btnSearch = [[UIBarButtonItem alloc]initWithCustomView:btn];
     self.navigationItem.rightBarButtonItem = btnSearch;
 }
