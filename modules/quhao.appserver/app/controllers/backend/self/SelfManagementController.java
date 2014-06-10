@@ -506,7 +506,7 @@ public class SelfManagementController extends BaseController {
 	}
 
 	/**
-	 * 上传图片
+	 * 更新商家信息，上传图片
 	 * @param param request 参数
 	 * @param mid 商家id
 	 * @return
@@ -517,7 +517,7 @@ public class SelfManagementController extends BaseController {
 		for (File file : files) {
 			try {
 				File desFile = Play.getFile("public/upload/" + file.getName());
-				Images.resize(file, desFile, 100, 60);
+				Images.resize(file, desFile, 147, 126);
 				gfsFile = UploadController.saveBinary(desFile, mid);
 				desFile.delete();
 				break;
