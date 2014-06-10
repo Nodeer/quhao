@@ -54,6 +54,9 @@ public class TuijianController extends BaseController {
 		}
 		
 		Merchant m = Merchant.findOneTuijian(cityCode);
+		if(m == null){
+			renderJSON("");
+		}
 		if(StringUtils.isEmpty(userX) || StringUtils.isEmpty(userY)){
 			renderJSON(MerchantVO.build(m));
 		} else {
