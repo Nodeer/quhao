@@ -4,5 +4,5 @@
     <item android:state_selected="true" android:drawable="@drawable/arrow_down_white" />
     <item android:state_pressed="true" android:drawable="@drawable/arrow_down_white" />
     <item android:state_focused="true" android:drawable="@drawable/arrow_down_white" />
-    <item android:drawable="@drawable/arrow_down_black" />
+    <item android:drawable="@drawable/arrow_down_red" />
 </selector>

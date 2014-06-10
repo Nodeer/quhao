@@ -14,7 +14,6 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
@@ -51,7 +50,7 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 	/**
 	 * Tab选项卡的文字
 	 */
-	private String menuTextViews[] = { "主页", "周边美食", "我的", "更多" };
+//	private String menuTextViews[] = { "主页", "周边美食", "我的", "更多" };
 	private LocationManagerProxy mAMapLocationManager;
 	private Handler locationHandler = new Handler();
 	private AMapLocation location;
@@ -217,6 +216,7 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 		for (int i = 0; i < fragments.length; i++) {
 			// 为每一个Tab按钮设置图标、文字和内容
 			TabSpec tabSpec = mTabHost.newTabSpec(menuTags[i]).setIndicator(getTabItemView(i));
+			
 			mTabHost.addTab(tabSpec, fragments[i], null);
 		}
 
@@ -248,8 +248,8 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 		imgView.setImageResource(menuImgs[i]);
 
 		// 初始化menu文字
-		TextView textView = (TextView) view.findViewById(R.id.textview);
-		textView.setText(menuTextViews[i]);
+//		TextView textView = (TextView) view.findViewById(R.id.textview);
+//		textView.setText(menuTextViews[i]);
 		return view;
 	}
 

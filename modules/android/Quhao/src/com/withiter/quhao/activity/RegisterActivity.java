@@ -11,6 +11,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -20,6 +21,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.ShareSDK;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
@@ -50,7 +53,6 @@ public class RegisterActivity extends QuhaoBaseActivity {
 	private String verifyCode;
 	private String password;
 	private String password2;
-	private TextView regResult;
 	private SignupVO signup;
 	
 	private boolean userAgreementFlag = true;
@@ -58,6 +60,8 @@ public class RegisterActivity extends QuhaoBaseActivity {
 	private ImageView userAgreementCheckBox;
 	
 	private TextView userAgreementText;
+	
+	private String firstAccountId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +75,6 @@ public class RegisterActivity extends QuhaoBaseActivity {
 		password2Text = (EditText) this.findViewById(R.id.edit_pass_2);
 		verifyCodeBtn = (Button) this.findViewById(R.id.verify_code_button);
 		registerBtn = (Button) this.findViewById(R.id.register_btn);
-		regResult = (TextView) this.findViewById(R.id.register_result);
 		backBtn = (Button) this.findViewById(R.id.back_btn);
 		userAgreementCheckBox = (ImageView) this.findViewById(R.id.agreement_check_box);
 		
@@ -102,7 +105,11 @@ public class RegisterActivity extends QuhaoBaseActivity {
 			loginNameText.setText(phone);
 		}
 
+		firstAccountId = SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "");
+		
 		loginNameText.setFocusableInTouchMode(true);
+		
+		ShareSDK.initSDK(this);
 	}
 
 	private Handler verifyUpdateHandler = new Handler() {
@@ -126,6 +133,25 @@ public class RegisterActivity extends QuhaoBaseActivity {
 		}
 	};
 
+	@Override
+	protected void onResume() {
+		ShareSDK.initSDK(this);
+		super.onResume();
+		
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+//		ShareSDK.stopSDK(this);
+	}
+	
+	@Override
+	protected void onDestroy() {
+		ShareSDK.stopSDK(this);
+		super.onDestroy();
+	}
+	
 	private Handler signupUpdateHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -197,6 +223,20 @@ public class RegisterActivity extends QuhaoBaseActivity {
 //									editor.commit();
 									SharedprefUtil.put(RegisterActivity.this, QuhaoConstant.PASSWORD, HexedPwd);
 
+									if (!firstAccountId.equals(loginInfo.accountId)) {
+										try
+										{
+											Platform sina = ShareSDK.getPlatform(RegisterActivity.this, "SinaWeibo");
+											if (sina != null && sina.isValid()) {
+												sina.removeAccount();
+											}
+										}catch (Exception e) {
+											e.printStackTrace();
+											Log.e("", "cancel sina failed");
+										}
+										
+									}
+									
 									// login state will store in QHClientApplication
 									QHClientApplication.getInstance().accountInfo = account;
 									QHClientApplication.getInstance().isLogined = true;

@@ -114,13 +114,13 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				if (null == signup) {
-					Toast.makeText(ForgetPasswordActivity.this, "注册失败， 请重新注册。", Toast.LENGTH_SHORT).show();
+					Toast.makeText(ForgetPasswordActivity.this, "亲，连接失败。", Toast.LENGTH_SHORT).show();
 				}
 				else
 				{
 					if("1".equals(signup.errorKey))
 					{
-						Toast.makeText(ForgetPasswordActivity.this, "注册成功。", Toast.LENGTH_SHORT).show();
+						Toast.makeText(ForgetPasswordActivity.this, "亲，成功了。", Toast.LENGTH_SHORT).show();
 						SharedprefUtil.remove(ForgetPasswordActivity.this, QuhaoConstant.ACCOUNT_ID);
 						SharedprefUtil.remove(ForgetPasswordActivity.this, QuhaoConstant.IS_AUTO_LOGIN);
 //						SharedprefUtil.remove(ForgetPasswordActivity.this, QuhaoConstant.IS_LOGIN);

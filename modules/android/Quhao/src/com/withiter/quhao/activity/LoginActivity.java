@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -20,6 +21,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.ShareSDK;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
@@ -54,6 +58,8 @@ public class LoginActivity extends QuhaoBaseActivity {
 	private String activityName;
 
 	private Map<String, Object> transfortParams = new HashMap<String, Object>();
+	
+	private String firstAccountId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +67,7 @@ public class LoginActivity extends QuhaoBaseActivity {
 		setContentView(R.layout.login_layout);
 		super.onCreate(savedInstanceState);
 
+		firstAccountId = SharedprefUtil.get(this, QuhaoConstant.ACCOUNT_ID, "");
 		activityName = getIntent().getStringExtra("activityName");
 		if (StringUtils.isNotNull(activityName)) {
 			if (MerchantDetailActivity.class.getName().equals(activityName)) {
@@ -96,8 +103,29 @@ public class LoginActivity extends QuhaoBaseActivity {
 		btnBack.setOnClickListener(this);
 		btnLogin.setOnClickListener(this);
 		forgetPasswordBtn.setOnClickListener(this);
+		
+		ShareSDK.initSDK(this);
 	}
 
+	
+	@Override
+	protected void onResume() {
+		ShareSDK.initSDK(this);
+		super.onResume();
+		
+	}
+	
+	@Override
+	protected void onDestroy() {
+		ShareSDK.stopSDK(this);
+		super.onDestroy();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+//		ShareSDK.stopSDK(this);
+	}
 	@Override
 	public void onClick(View v) {
 		// 隐藏软键盘
@@ -189,7 +217,19 @@ public class LoginActivity extends QuhaoBaseActivity {
 						// login state will store in QHClientApplication
 						QHClientApplication.getInstance().accountInfo = account;
 						QHClientApplication.getInstance().isLogined = true;
-
+						if (!firstAccountId.equals(loginInfo.accountId)) {
+							try
+							{
+								Platform sina = ShareSDK.getPlatform(LoginActivity.this, "SinaWeibo");
+								if (sina != null && sina.isValid()) {
+									sina.removeAccount();
+								}
+							}catch (Exception e) {
+								e.printStackTrace();
+								Log.e(TAG, "cancel sina failed");
+							}
+							
+						}
 						loginUpdateHandler.obtainMessage(200, account).sendToTarget();
 						return;
 					}

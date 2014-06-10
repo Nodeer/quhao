@@ -2,19 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center"
-    android:orientation="vertical" >
+    android:gravity="center" >
 
     <ImageView
         android:id="@+id/imageview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:focusable="false"
-        android:padding="3dp"
         android:contentDescription="@string/empty" 
-        android:src="@drawable/home_text_1"
         />
-
+	<!-- 
     <TextView
         android:id="@+id/textview"       
         android:layout_width="wrap_content"
@@ -23,5 +20,5 @@
         android:textSize="12sp"
         android:textColor="@layout/menu_text_color"
         />
-
+ -->
 </LinearLayout>

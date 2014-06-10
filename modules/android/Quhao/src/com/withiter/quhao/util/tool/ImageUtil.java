@@ -317,12 +317,14 @@ public class ImageUtil {
 		Bitmap bitmap = null;
 		try
 		{
+			long time1 = System.currentTimeMillis();
 			BitmapFactory.Options opts = new BitmapFactory.Options();
 			opts.inJustDecodeBounds = true;
 			BitmapFactory.decodeFile(path,opts);
 			opts.inSampleSize = computeSampleSize(opts, minSideLength, maxNumOfPixels);
 			opts.inJustDecodeBounds = false;
 			bitmap = BitmapFactory.decodeFile(path, opts); 
+			Log.e("wjzwjz decodeFile time : ", "" + (System.currentTimeMillis()-time1));
 		}catch(Exception e)
 		{
 			e.printStackTrace();
