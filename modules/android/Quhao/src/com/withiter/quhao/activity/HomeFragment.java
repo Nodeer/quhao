@@ -35,6 +35,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,7 +53,6 @@ import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.AsynImageLoader;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.QuhaoConstant;
-import com.withiter.quhao.view.InnerListView;
 import com.withiter.quhao.view.refresh.PullToRefreshView;
 import com.withiter.quhao.view.refresh.PullToRefreshView.OnFooterRefreshListener;
 import com.withiter.quhao.view.refresh.PullToRefreshView.OnHeaderRefreshListener;
@@ -93,8 +93,11 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	private View contentView;
 	private ImageView myAttentions;
 	private ImageView noSequenceMerchants;
+	private ImageView merchantChatView;
+	private ImageView getNumberView;
+	private ImageView chooseHardView;
 	
-	private InnerListView activityListView;
+	private ListView activityListView;
 	
 	private List<ActivityVO> activityList;
 	
@@ -206,9 +209,14 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 
 		myAttentions = (ImageView) contentView.findViewById(R.id.my_attention);
 		noSequenceMerchants = (ImageView) contentView.findViewById(R.id.no_sequence_merchants);
-
+		merchantChatView = (ImageView) contentView.findViewById(R.id.btn_chat_room);
+		getNumberView = (ImageView) contentView.findViewById(R.id.btn_get_number);
+		chooseHardView = (ImageView) contentView.findViewById(R.id.btn_choose_hard);
 		myAttentions.setOnClickListener(this);
 		noSequenceMerchants.setOnClickListener(this);
+		merchantChatView.setOnClickListener(this);
+		getNumberView.setOnClickListener(this);
+		chooseHardView.setOnClickListener(this);
 
 		mViewPager = (MyViewPager) contentView.findViewById(R.id.home_view_pager);
 
@@ -222,7 +230,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 		topMerchants = new ArrayList<TopMerchant>();
 
 		
-		activityListView = (InnerListView) contentView.findViewById(R.id.activity_list_view);
+		activityListView = (ListView) contentView.findViewById(R.id.activity_list_view);
 		
 		// all categories
 		categorys = new ArrayList<Category>();
@@ -287,7 +295,6 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 				getActivities();
 				getCategoriesFromServerAndDisplay();
 			}
-			
 			
 		}
 	};
@@ -642,30 +649,30 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 		}
 	};
 
-	/*
+	
 	private Handler categorysUpdateHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
-				categoryGridAdapter = new CategoryGridAdapter(categorys, getActivity());
-				categorysGird.setAdapter(categoryGridAdapter);
-				categoryGridAdapter.notifyDataSetChanged();
-				if(null != categorys && !categorys.isEmpty())
-				{
-					categorysGird.setVisibility(View.VISIBLE);
-					noResultLayout.setVisibility(View.GONE);
-				}
-				else
-				{
-					categorysGird.setVisibility(View.GONE);
-					noResultLayout.setVisibility(View.VISIBLE);
-				}
+//				categoryGridAdapter = new CategoryGridAdapter(categorys, getActivity());
+//				categorysGird.setAdapter(categoryGridAdapter);
+//				categoryGridAdapter.notifyDataSetChanged();
+//				if(null != categorys && !categorys.isEmpty())
+//				{
+//					categorysGird.setVisibility(View.VISIBLE);
+//					noResultLayout.setVisibility(View.GONE);
+//				}
+//				else
+//				{
+//					categorysGird.setVisibility(View.GONE);
+//					noResultLayout.setVisibility(View.VISIBLE);
+//				}
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 		}
 	};
-	*/
+	
 	
 	private Handler activitiesUpdateHandler = new Handler() {
 		@Override
@@ -738,7 +745,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 				}
 				categorys.clear();
 				categorys.addAll(ParseJson.getCategorys(result));
-//				categorysUpdateHandler.obtainMessage(200, categorys).sendToTarget();
+				categorysUpdateHandler.obtainMessage(200, categorys).sendToTarget();
 
 			}
 		}, new Runnable() {
@@ -751,7 +758,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 				}
 				categorys.clear();
 				categorys.addAll(ParseJson.getCategorys(result));
-//				categorysUpdateHandler.obtainMessage(200, categorys).sendToTarget();
+				categorysUpdateHandler.obtainMessage(200, categorys).sendToTarget();
 			}
 		});
 
@@ -773,14 +780,13 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 
 		switch (v.getId()) {
 		case R.id.my_attention:
-
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			if (QHClientApplication.getInstance().isLogined) {
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				Intent attention = new Intent();
 				attention.setClass(getActivity(), MyAttentionListActivity.class);
 				startActivity(attention);
 			} else {
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				
 				Intent login1 = new Intent(getActivity(), LoginActivity.class);
 				login1.putExtra("activityName", this.getClass().getName());
 				login1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -801,7 +807,69 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 ////			login1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 //			startActivity(login1);
 			break;
+		case R.id.btn_get_number:
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			if (QHClientApplication.getInstance().isLogined) {
+				
+				if (categorys != null && !categorys.isEmpty()) {
+					Intent intent = new Intent();
+					ArrayList<CategoryData> categoryDatas = new ArrayList<CategoryData>();
+					intent.putExtra("categoryType", categorys.get(0).categoryType);
+					intent.putExtra("cateName", categorys.get(0).cateName);
+					intent.putExtra("categoryCount", String.valueOf(categorys.get(0).count));
+					CategoryData data = null;
+					
+					for (int i = 0; i < categorys.size(); i++) {
+						data = new CategoryData();
+						data.setCount(categorys.get(i).count);
+						data.setCategoryType(categorys.get(i).categoryType);
+						data.setCateName(categorys.get(i).cateName);
+						categoryDatas.add(data);
+					}
+					
+					Bundle mBundle = new Bundle();
+					mBundle.putParcelableArrayList("categorys", categoryDatas);
+					intent.putExtras(mBundle);
+					
+					intent.setClass(getActivity(), MerchantListActivity.class);
+					startActivity(intent);
+				}
+				
+				
+			} else {
+				
+				Intent login3 = new Intent(getActivity(), LoginActivity.class);
+				login3.putExtra("activityName", this.getClass().getName());
+				login3.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				startActivity(login3);
+			}
+
+			break;case R.id.btn_chat_room:
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				if (QHClientApplication.getInstance().isLogined) {
+					Intent attention = new Intent();
+					attention.setClass(getActivity(), MerchantChatRoomsActivity.class);
+					startActivity(attention);
+				} else {
+					
+					Intent login2 = new Intent(getActivity(), LoginActivity.class);
+					login2.putExtra("activityName", this.getClass().getName());
+					login2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+					startActivity(login2);
+				}
+
+				break;
+			case R.id.btn_choose_hard:
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				//TODO:
+				Intent chooseHardIntent = new Intent(getActivity(), LoginActivity.class);
+				chooseHardIntent.putExtra("activityName", this.getClass().getName());
+				chooseHardIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				startActivity(chooseHardIntent);
+
+				break;
 		default:
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;
 		}
 

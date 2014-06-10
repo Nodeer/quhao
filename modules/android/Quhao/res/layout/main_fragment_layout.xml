@@ -61,6 +61,7 @@
             android:id="@+id/scrollViewLayout"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
+            android:fillViewport="true"
             android:layout_alignParentBottom="true" >
 
             <LinearLayout
@@ -122,7 +123,7 @@
                             <ImageView
                                 android:id="@+id/btn_get_number"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="70dp"
                                 android:contentDescription="@string/empty"
                                 android:src="@drawable/home_get_number" />
                         </LinearLayout>
@@ -137,7 +138,7 @@
                             <ImageView
                                 android:id="@+id/no_sequence_merchants"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="70dp"
                                 android:contentDescription="@string/empty"
                                 android:src="@drawable/no_sequence_merchant" />
                         </LinearLayout>
@@ -160,7 +161,7 @@
                             <ImageView
                                 android:id="@+id/btn_chat_room"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="70dp"
                                 android:contentDescription="@string/empty"
                                 android:src="@drawable/home_chat_room" />
                         </LinearLayout>
@@ -175,7 +176,7 @@
                             <ImageView
                                 android:id="@+id/my_attention"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="70dp"
                                 android:contentDescription="@string/empty"
                                 android:src="@drawable/my_attention" />
                         </LinearLayout>
@@ -189,7 +190,7 @@
                         <ImageView
                             android:id="@+id/btn_choose_hard"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="80dp"
                             android:contentDescription="@string/empty"
                             android:src="@drawable/home_choose_hard" />
                     </LinearLayout>
@@ -199,10 +200,14 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:baselineAligned="false"
-                    android:gravity="center_vertical"
+                    android:gravity="center"
                     android:orientation="vertical"
                     android:paddingTop="5dp" >
-
+					<ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:contentDescription="@string/empty"
+                        android:src="@drawable/home_youhui_title" />
 					<!-- 
                     <com.withiter.quhao.view.MyGridView
                         android:id="@+id/categorys"
@@ -218,12 +223,11 @@
                         android:stretchMode="columnWidth"
                         android:verticalSpacing="8dp" />
                          -->
-
-                    <com.withiter.quhao.view.InnerListView
+					
+                    <ListView
 			       	    android:id="@+id/activity_list_view"
 			       	    android:layout_width="fill_parent"
-			       	    android:layout_height="fill_parent"
-			       	    android:background="@color/red"
+			       	    android:layout_height="wrap_content"
 			       	    android:layout_gravity="center_horizontal"
 			       	    android:cacheColorHint="@null"
 			       	    android:divider="@null"
@@ -254,6 +258,6 @@
                 
             </LinearLayout>
         </ScrollView>
-   <!-- --> </com.withiter.quhao.view.refresh.PullToRefreshView> 
+   <!--  --> </com.withiter.quhao.view.refresh.PullToRefreshView>
 
 </RelativeLayout>
