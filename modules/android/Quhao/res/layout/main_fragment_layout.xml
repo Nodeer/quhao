@@ -26,16 +26,16 @@
             android:gravity="center|center_vertical"
             android:singleLine="true"
             android:textAlignment="viewEnd"
-            android:textColor="@color/red"
+            android:textColor="@color/jiuhong"
             android:textStyle="bold"
             android:textIsSelectable="false"
-            android:textSize="19.0sp" />
+            android:textSize="20.0sp" />
 
         <!-- search button -->
         <Button
             android:id="@+id/edit_search"
-            android:layout_width="wrap_content"
-            android:layout_height="35dip"
+            android:layout_width="32dp"
+            android:layout_height="25dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
