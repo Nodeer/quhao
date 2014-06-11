@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -104,6 +103,10 @@ public class QuhaoCurrentStatesActivity extends QuhaoBaseActivity{
 				reservationForPaiduiAdapter = new ReservationForCurrentPaiduiAdapter(QuhaoCurrentStatesActivity.this, paiduiListView, reservations);
 				paiduiListView.setAdapter(reservationForPaiduiAdapter);
 				reservationForPaiduiAdapter.notifyDataSetChanged();
+				
+				if (null == reservations ||reservations.isEmpty()) {
+					Toast.makeText(QuhaoCurrentStatesActivity.this, R.string.no_result_found, Toast.LENGTH_SHORT).show();
+				}
 				
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}

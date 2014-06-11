@@ -122,7 +122,9 @@ public class QuhaoStatesActivity extends QuhaoBaseActivity implements OnItemClic
 				reservationForPaiduiAdapter = new ReservationForPaiduiAdapter(QuhaoStatesActivity.this, paiduiListView, reservations);
 				paiduiListView.setAdapter(reservationForPaiduiAdapter);
 				reservationForPaiduiAdapter.notifyDataSetChanged();
-				
+				if (null == reservations ||reservations.isEmpty()) {
+					Toast.makeText(QuhaoStatesActivity.this, R.string.no_result_found, Toast.LENGTH_SHORT).show();
+				}
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 		}

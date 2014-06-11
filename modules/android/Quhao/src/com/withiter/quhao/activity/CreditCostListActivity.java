@@ -118,6 +118,10 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 					creditAdapter.credits = credits;
 				}
 				
+				if (null == credits ||credits.isEmpty()) {
+					Toast.makeText(CreditCostListActivity.this, R.string.no_result_found, Toast.LENGTH_SHORT).show();
+				}
+				
 				creditAdapter.notifyDataSetChanged();
 				creditsListView.setOnItemClickListener(new OnItemClickListener() {
 

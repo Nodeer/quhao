@@ -118,6 +118,10 @@ public class MerchantsSearchActivity extends QuhaoBaseActivity {
 					merchantAdapter.merchants = merchants;
 				}
 
+				if (null == merchants ||merchants.isEmpty()) {
+					Toast.makeText(MerchantsSearchActivity.this, R.string.no_result_found, Toast.LENGTH_SHORT).show();
+				}
+				
 				merchantAdapter.notifyDataSetChanged();
 				merchantsListView.setOnItemClickListener(merchantItemClickListener);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);

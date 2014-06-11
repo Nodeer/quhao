@@ -12,9 +12,9 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.withiter.quhao.QHClientApplication;
@@ -22,7 +22,6 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantAdapter;
 import com.withiter.quhao.task.MyAttentionListTask;
 import com.withiter.quhao.util.ActivityUtil;
-import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.view.refresh.PullToRefreshView;
 import com.withiter.quhao.view.refresh.PullToRefreshView.OnFooterRefreshListener;
@@ -94,6 +93,11 @@ public class MyAttentionListActivity extends QuhaoBaseActivity implements OnHead
 				}
 
 				merchantAdapter.notifyDataSetChanged();
+				
+				if (null == merchants ||merchants.isEmpty()) {
+					Toast.makeText(MyAttentionListActivity.this, R.string.no_result_found, Toast.LENGTH_SHORT).show();
+				}
+				
 				mPullToRefreshView.onHeaderRefreshComplete();
 				mPullToRefreshView.onFooterRefreshComplete();
 				if (!needToLoad) 

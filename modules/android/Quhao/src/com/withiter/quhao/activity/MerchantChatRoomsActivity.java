@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
@@ -77,6 +78,11 @@ public class MerchantChatRoomsActivity extends QuhaoBaseActivity implements OnHe
 				merchantChatRoomAdapter.notifyDataSetChanged();
 				mPullToRefreshView.onHeaderRefreshComplete();
 				mPullToRefreshView.onFooterRefreshComplete();
+				
+				if (null == rvos ||rvos.isEmpty()) {
+					Toast.makeText(MerchantChatRoomsActivity.this, R.string.no_result_found, Toast.LENGTH_SHORT).show();
+				}
+				
 				if (!needToLoad) {
 					mPullToRefreshView.setEnableFooterView(false);
 				} else {
