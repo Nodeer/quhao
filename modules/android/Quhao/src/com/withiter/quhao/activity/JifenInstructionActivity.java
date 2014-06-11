@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.HelpAdapter;
@@ -87,6 +88,11 @@ public class JifenInstructionActivity extends QuhaoBaseActivity {
 				} else {
 					helpAdapter.helpList = helpList;
 				}
+				
+				if (null == helpList ||helpList.isEmpty()) {
+					Toast.makeText(JifenInstructionActivity.this, R.string.no_result_found, Toast.LENGTH_SHORT).show();
+				}
+				
 				helpAdapter.notifyDataSetChanged();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}

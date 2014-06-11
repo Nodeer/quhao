@@ -155,6 +155,11 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 				reservationForPaiduiAdapter = new ReservationForHistoryPaiduiAdapter(QuhaoHistoryStatesActivity.this, paiduiListView, reservations);
 				paiduiListView.setAdapter(reservationForPaiduiAdapter);
 				reservationForPaiduiAdapter.notifyDataSetChanged();
+				
+				if (null == reservations ||reservations.isEmpty()) {
+					Toast.makeText(QuhaoHistoryStatesActivity.this, R.string.no_result_found, Toast.LENGTH_SHORT).show();
+				}
+				
 				paiduiListView.setOnItemClickListener(new OnItemClickListener() {
 
 					@Override

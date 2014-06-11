@@ -226,6 +226,8 @@
     <string name="no_data">没有找到符合条件</string>
 	<!-- Expend tab view end -->
 	
+	<string name="no_result_found">抱歉，亲， 暂无数据。</string>
+	
 	<!-- refresh view begin -->
 	<string name="pull_to_refresh_pull_label">下拉刷新</string>
     <string name="pull_to_refresh_release_label">松开后刷新</string>

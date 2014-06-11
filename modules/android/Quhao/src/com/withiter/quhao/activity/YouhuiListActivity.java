@@ -65,12 +65,6 @@ public class YouhuiListActivity extends QuhaoBaseActivity{
 
 			if (msg.what == 200) {
 
-				if (null == msg.obj) {
-					findViewById(R.id.loadingbar).setVisibility(View.GONE);
-					findViewById(R.id.youhui_list_ayout).setVisibility(View.VISIBLE);
-					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-					return;
-				}
 				if (isFirstLoad) {
 
 					findViewById(R.id.loadingbar).setVisibility(View.GONE);
@@ -82,6 +76,14 @@ public class YouhuiListActivity extends QuhaoBaseActivity{
 					youhuiAdapter.youhuis = youhuis;
 				}
 				youhuiAdapter.notifyDataSetChanged();
+				
+				findViewById(R.id.loadingbar).setVisibility(View.GONE);
+				findViewById(R.id.youhui_list_ayout).setVisibility(View.VISIBLE);
+				
+				if (null == youhuis ||youhuis.isEmpty()) {
+					Toast.makeText(YouhuiListActivity.this, R.string.no_result_found, Toast.LENGTH_SHORT).show();
+				}
+				
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 		}

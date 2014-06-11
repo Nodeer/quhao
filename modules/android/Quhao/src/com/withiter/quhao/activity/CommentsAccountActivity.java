@@ -93,6 +93,11 @@ public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItem
 				} else {
 					commentAdapter.comments = comments;
 				}
+				
+				if (null == comments || comments.isEmpty()) {
+					Toast.makeText(CommentsAccountActivity.this, R.string.no_result_found, Toast.LENGTH_SHORT).show();
+				}
+				
 				commentAdapter.notifyDataSetChanged();
 				mPullToRefreshView.onHeaderRefreshComplete();
 				mPullToRefreshView.onFooterRefreshComplete();

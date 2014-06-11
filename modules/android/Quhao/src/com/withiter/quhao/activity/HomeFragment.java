@@ -39,6 +39,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.ActivityAdapter;
@@ -46,6 +47,7 @@ import com.withiter.quhao.adapter.MyPagerAdapter;
 import com.withiter.quhao.data.CategoryData;
 import com.withiter.quhao.task.AllCategoriesTask;
 import com.withiter.quhao.task.GetActivitiesTask;
+import com.withiter.quhao.task.GetChooseHardMerchantTask;
 import com.withiter.quhao.task.JsonPack;
 import com.withiter.quhao.task.TopMerchantsTask;
 import com.withiter.quhao.util.ActivityUtil;
@@ -59,6 +61,7 @@ import com.withiter.quhao.view.refresh.PullToRefreshView.OnHeaderRefreshListener
 import com.withiter.quhao.view.viewpager.MyViewPager;
 import com.withiter.quhao.vo.ActivityVO;
 import com.withiter.quhao.vo.Category;
+import com.withiter.quhao.vo.Merchant;
 import com.withiter.quhao.vo.TopMerchant;
 
 public class HomeFragment extends Fragment implements OnHeaderRefreshListener, OnFooterRefreshListener, OnClickListener {
@@ -844,30 +847,62 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 				startActivity(login3);
 			}
 
-			break;case R.id.btn_chat_room:
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				if (QHClientApplication.getInstance().isLogined) {
-					Intent attention = new Intent();
-					attention.setClass(getActivity(), MerchantChatRoomsActivity.class);
-					startActivity(attention);
-				} else {
+			break;
+		case R.id.btn_chat_room:
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			if (QHClientApplication.getInstance().isLogined) {
+				Intent attention = new Intent();
+				attention.setClass(getActivity(), MerchantChatRoomsActivity.class);
+				startActivity(attention);
+			} else {
+				
+				Intent login2 = new Intent(getActivity(), LoginActivity.class);
+				login2.putExtra("activityName", this.getClass().getName());
+				login2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				startActivity(login2);
+			}
+
+			break;
+		case R.id.btn_choose_hard:
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			// http://localhost:9081/app/tuijian?cityCode=021&userX=11.011&userY=34.222
+			String url = "app/tuijian?cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode;
+			AMapLocation location = QHClientApplication.getInstance().location;
+			if (location != null) {
+				url = url + "&userX=" + location.getLongitude() + "&userY=" + location.getLatitude();
+			}
+			
+			final GetChooseHardMerchantTask task = new GetChooseHardMerchantTask(R.string.waitting, getActivity(), url);
+			task.execute(new Runnable() {
+				
+				@Override
+				public void run() {
+					JsonPack jsonPack = task.jsonPack;
+					Merchant merchant = ParseJson.getMerchant(jsonPack.getObj());
+					if (null != merchant && StringUtils.isNotNull(merchant.id)) {
+						Intent chooseHardIntent = new Intent();
+						chooseHardIntent.putExtra("merchantId", merchant.id);
+						chooseHardIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+						chooseHardIntent.setClass(getActivity(), MerchantDetailActivity.class);
+						startActivity(chooseHardIntent);
+					}
+					else
+					{
+						Toast.makeText(getActivity(), "亲，暂时没得选哦！", Toast.LENGTH_SHORT).show();
+						return;
+					}
 					
-					Intent login2 = new Intent(getActivity(), LoginActivity.class);
-					login2.putExtra("activityName", this.getClass().getName());
-					login2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-					startActivity(login2);
 				}
+			}, new Runnable() {
+				
+				@Override
+				public void run() {
+					Toast.makeText(getActivity(), "亲，暂时没得选哦！", Toast.LENGTH_SHORT).show();
+					return;
+				}
+			});
 
-				break;
-			case R.id.btn_choose_hard:
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				//TODO:
-				Intent chooseHardIntent = new Intent(getActivity(), LoginActivity.class);
-				chooseHardIntent.putExtra("activityName", this.getClass().getName());
-				chooseHardIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				startActivity(chooseHardIntent);
-
-				break;
+			break;
 		default:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;

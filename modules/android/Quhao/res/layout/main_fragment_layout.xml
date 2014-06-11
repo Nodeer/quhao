@@ -29,7 +29,7 @@
             android:textColor="@color/red"
             android:textStyle="bold"
             android:textIsSelectable="false"
-            android:textSize="15.0sp" />
+            android:textSize="19.0sp" />
 
         <!-- search button -->
         <Button
@@ -73,12 +73,12 @@
                 <RelativeLayout
                     android:id="@+id/viewpagerLayout"
                     android:layout_width="fill_parent"
-                    android:layout_height="100dp" >
+                    android:layout_height="150dp" >
 
                     <com.withiter.quhao.view.viewpager.MyViewPager
                         android:id="@+id/home_view_pager"
                         android:layout_width="fill_parent"
-                        android:layout_height="100dp" />
+                        android:layout_height="fill_parent" />
 
                     <LinearLayout
                         android:id="@+id/home_ad_bottom_layout"

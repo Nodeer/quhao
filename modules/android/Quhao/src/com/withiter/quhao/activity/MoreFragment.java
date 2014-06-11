@@ -311,6 +311,9 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			break;
 		case R.id.more_share_auth:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			ShareSDK.initSDK(this.getActivity());
+			sina = ShareSDK.getPlatform(getActivity(), "SinaWeibo");
+			sina.SSOSetting(true);
 			if (sina == null) {
 				ctvName.setChecked(false);
 				ctvName.setText(R.string.not_yet_authorized);
@@ -462,7 +465,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 //			oks.setDialogMode();
 
 			// 去除注释，在自动授权时可以禁用SSO方式
-//			oks.disableSSOWhenAuthorize();
+			oks.disableSSOWhenAuthorize();
 
 			// 去除注释，则快捷分享的操作结果将通过OneKeyShareCallback回调
 //			oks.setCallback(new OneKeyShareCallback());

@@ -93,6 +93,11 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnHea
 				commentAdapter.notifyDataSetChanged();
 				mPullToRefreshView.onHeaderRefreshComplete();
 				mPullToRefreshView.onFooterRefreshComplete();
+				
+				if (null == comments || comments.isEmpty()) {
+					Toast.makeText(CommentsMerchantActivity.this, R.string.no_result_found, Toast.LENGTH_SHORT).show();
+				}
+				
 				if(!needToLoad)
 				{
 					mPullToRefreshView.setEnableFooterView(false);
