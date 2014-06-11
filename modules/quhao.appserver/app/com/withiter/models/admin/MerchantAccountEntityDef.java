@@ -17,4 +17,5 @@ public abstract class MerchantAccountEntityDef extends BaseModel {
 	public String password = "";
 	public boolean enable = false;
 	public Date lastLogin = new Date();
+	public String activeLink = "";
 }

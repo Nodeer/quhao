@@ -14,24 +14,22 @@ $addJS("admin.js",true)
    		<thead>
    			<tr>
    				<th>Email</th>
-   				<th>Password</th>
-   				<th>Last Login</th>
-   				<th>Enable</th>
-   				<th>操作</th>
+   				<th>激活连接</th>
+   				<th>最后一次登陆</th>
+   				<th>激活状态</th>
    			</tr>
    		</thead>
    		<tbody>
    			`for(MerchantAccount ma : list){
 		   		<tr>
 		   			<td>${ma.email}</td>
-		   			<td>${ma.password}</td>
+		   			<td>${ma.activeLink}</td>
 		   			<td>${ma.lastLogin}</td>
-		   			<td>${ma.enable}</td>
 		   			<td>
 		   				`if(ma.enable){
-		   					启用
+		   					已激活
 		   				`}else{
-		   					禁用
+		   					未激活
 		   				`}	
 		   			</td>
 		   		</tr>

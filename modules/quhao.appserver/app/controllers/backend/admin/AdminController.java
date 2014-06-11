@@ -130,11 +130,14 @@ public class AdminController extends BaseController {
 		a.email = email;
 		a.password = Codec.hexSHA1(password);
 		a.save();
-		
 		String hexedUid = Codec.hexSHA1(a.id());
 		String url = Play.configuration.getProperty("application.domain")
 				+ "/active?hid=" + hexedUid
 				+ "&oid=" + a.id();
+		
+		// 如果邮件发送不成功，后台admin的账号管理可以看到激活连接，直接拷贝发送给商家即可
+		a.activeLink = url;
+		a.save();
 		
 		MailsController.sendTo(a.email, url);
 		avo.error = "";
