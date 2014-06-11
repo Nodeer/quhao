@@ -38,7 +38,6 @@ import android.widget.Toast;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
-import com.withiter.quhao.domain.CityInfo;
 import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
@@ -48,7 +47,6 @@ import com.withiter.quhao.util.tool.ImageUtil;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SharedprefUtil;
-import com.withiter.quhao.vo.LoginInfo;
 
 public class PersonDetailActivity extends QuhaoBaseActivity {
 
@@ -58,8 +56,6 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 //	private TextView phoneText;
 //	private TextView usualCityText;
 	private TextView currentJifenText;
-
-	private LoginInfo loginInfo;
 
 	private LinearLayout nickNameLayout;
 	private LinearLayout currentJifenLayout;
@@ -83,11 +79,11 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 	private static final int CAMERA_REQUEST_CODE = 1;
 	private static final int RESULT_REQUEST_CODE = 2;
 	
-	private CityInfo cityInfo;
-
 	private String currentTime;
 	
 	private String newImageName;
+	
+	private boolean isNeedtoRefresh = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +124,9 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		logoutButton.setOnClickListener(this);
 		
 		btnBack.setOnClickListener(goBack(this));
+		setPersonDetail();
 		
+		isNeedtoRefresh = false;
 	}
 
 	@Override
@@ -161,7 +159,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 			if (QHClientApplication.getInstance().isLogined) {
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				
+				isNeedtoRefresh = true;
 				Intent updateNickname = new Intent();
 				updateNickname.setClass(this, UpdateNicknameActivity.class);
 				startActivity(updateNickname);
@@ -716,7 +714,10 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 	protected void onResume() {
 		
 		super.onResume();
-		setPersonDetail();
+		if (isNeedtoRefresh) {
+			setPersonDetail();
+			isNeedtoRefresh = false;
+		}
 	}
 
 	private void setPersonDetail() {
@@ -787,8 +788,6 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		{
 			nickNameText.setText(account.nickName);
 		}
-		
-		cityInfo = QHClientApplication.getInstance().defaultCity;
 		
 //		usualCityText.setText(cityInfo.cityName);
 		

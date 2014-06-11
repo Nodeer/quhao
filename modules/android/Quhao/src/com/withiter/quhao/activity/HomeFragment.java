@@ -2,9 +2,6 @@ package com.withiter.quhao.activity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -58,7 +55,7 @@ import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.view.refresh.PullToRefreshView;
 import com.withiter.quhao.view.refresh.PullToRefreshView.OnFooterRefreshListener;
 import com.withiter.quhao.view.refresh.PullToRefreshView.OnHeaderRefreshListener;
-import com.withiter.quhao.view.viewpager.MyViewPager;
+import com.withiter.quhao.view.viewpager.AutoScrollViewPager;
 import com.withiter.quhao.vo.ActivityVO;
 import com.withiter.quhao.vo.Category;
 import com.withiter.quhao.vo.Merchant;
@@ -74,7 +71,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	private List<Category> categorys = null;
 	private boolean isClick;
 	private TextView homeAdTitle;								// 广告简单介绍
-	private MyViewPager mViewPager;
+	private AutoScrollViewPager mViewPager;
 	private LinearLayout adBottomLayout;
 	private List<ImageView> mPoints;
 	private int mPosition;										// pager的位置,就是当前图片的索引号
@@ -88,10 +85,6 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	private float mLastMotionX, mLastMotionY;
 	/** 是否是左右滑动 **/
 	private boolean mIsBeingDragged = true;
-
-	// /////执行广告自动滚动需要用的///////////////
-	 private ScheduledExecutorService scheduledExecutorService;
-	// private boolean isFirstScheduled;
 
 	private View contentView;
 	private ImageView myAttentions;
@@ -139,12 +132,6 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	@Override
 	public void onStop() {
 		Log.e("wjzwjz", "HomeFragment onStop");
-		// 当Activity不可见的时候停止切换
-		if(scheduledExecutorService != null)
-		{
-			scheduledExecutorService.shutdown();
-		}
-		scheduledExecutorService = null;
 		super.onStop();
 	}
 
@@ -180,16 +167,6 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 			vg.removeView(contentView);
 			getActivity().registerReceiver(cityChangeReceiver, new IntentFilter(QuhaoConstant.ACTION_CITY_CHANGED));
 			
-			if(null == scheduledExecutorService) { 
-				  scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-				  
-				  // 当Activity显示出来后，每三秒钟切换一次图片显示
-				  scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 3, 3,
-						  TimeUnit.SECONDS);
-				  
-		//		  isFirstScheduled = true; 
-			  }
-			
 			return contentView;
 		}
 		
@@ -221,8 +198,8 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 		getNumberView.setOnClickListener(this);
 		chooseHardView.setOnClickListener(this);
 
-		mViewPager = (MyViewPager) contentView.findViewById(R.id.home_view_pager);
-
+		mViewPager = (AutoScrollViewPager) contentView.findViewById(R.id.home_view_pager);
+		mViewPager.setInterval(3000);
 		homeAdTitle = (TextView) contentView.findViewById(R.id.home_ad_title);
 		adBottomLayout = (LinearLayout) contentView.findViewById(R.id.home_ad_bottom_layout);
 		mPoints = new ArrayList<ImageView>();
@@ -320,29 +297,6 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 		}, 1000);
 
 	}
-	
-	// 换行切换任务
-
-	private class ScrollTask implements Runnable {
-		public void run() {
-			synchronized (mViewPager) {
-				// System.out.println("mPosition: " + mPosition);
-				mPosition = (mPosition + 1) % mPoints.size();
-				handler.obtainMessage().sendToTarget(); // 通过Handler切换图片
-				// System.out.println("切换图片++++"+mPosition);
-			}
-		}
-
-	}
-	
-	// 切换当前显示的图片
-	private Handler handler = new Handler() {
-		public void handleMessage(android.os.Message msg) {
-			mViewPager.setCurrentItem(mPosition);// 切换当前显示的图片
-			homeAdTitle.setText(topMerchants.get(mPosition)
-					.name);
-		};
-	};
 
 	private void buildPager() {
 		// 广告下方的view
@@ -422,6 +376,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 			mPagerAdapter = new MyPagerAdapter(getActivity(), views, topMerchants);
 			mViewPager.setAdapter(mPagerAdapter);
 
+			mViewPager.startAutoScroll();
 			mViewPager.setOnTouchListener(new OnTouchListener() {
 
 				@Override
@@ -432,6 +387,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 
 					switch (event.getAction()) {
 					case MotionEvent.ACTION_DOWN:
+						mViewPager.stopAutoScroll();
 						xDistance = yDistance = 0f;
 						mLastMotionX = x;
 						mLastMotionY = y;
@@ -454,6 +410,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 						}
 						break;
 					case MotionEvent.ACTION_UP:
+						mViewPager.startAutoScroll();
 						break;
 					case MotionEvent.ACTION_CANCEL:
 						if (mIsBeingDragged) {
@@ -479,17 +436,6 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 			mViewPager.setAdapter(new MyPagerAdapter(views, getActivity()));
 		}
 		
-		  if(null == scheduledExecutorService) { 
-			  scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-		  
-			  // 当Activity显示出来后，每三秒钟切换一次图片显示
-			  scheduledExecutorService.scheduleAtFixedRate(new ScrollTask(), 3, 3,
-					  TimeUnit.SECONDS);
-			  
-	//		  isFirstScheduled = true; 
-		  }
-		 
-
 	}
 
 	// 广告滑动监听
