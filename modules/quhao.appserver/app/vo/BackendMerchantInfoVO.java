@@ -26,6 +26,7 @@ public class BackendMerchantInfoVO {
 	public String name = "";
 	public String nickName;
 	public String merchantImage = "";
+	public String merchantImageBig = "";
 	public String address = "";
 	public String telephone = "";
 	public String cateType = "";
@@ -87,7 +88,7 @@ public class BackendMerchantInfoVO {
 			vo.address = m.address;
 			try {
 				vo.merchantImage = URLDecoder.decode(m.merchantImage, "UTF-8");
-				logger.debug(vo.merchantImage);
+				vo.merchantImageBig = URLDecoder.decode(m.merchantImageBig, "UTF-8");
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
@@ -152,7 +153,7 @@ public class BackendMerchantInfoVO {
 			vo.address = m.address;
 			try {
 				vo.merchantImage = URLDecoder.decode(m.merchantImage, "UTF-8");
-				logger.debug(vo.merchantImage);
+				vo.merchantImageBig = URLDecoder.decode(m.merchantImageBig, "UTF-8");
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
@@ -178,9 +179,7 @@ public class BackendMerchantInfoVO {
 			vo.huanjing = m.huanjing;
 			vo.fuwu = m.fuwu;
 			vo.xingjiabi = m.xingjiabi;
-			
 			vo.seatType = m.seatType;
-			
 			vo.cityCode = m.cityCode;
 			
 			String imageStorePath = Play.configuration.getProperty("image.store.path");

@@ -24,6 +24,7 @@ public abstract class MerchantEntityDef extends BaseModel {
 	public String cateType1;								// 口味 default value from AMAP
 	public String cateName1;								// 口味（中文）
 	public String merchantImage = "";						// 商家 LOGO
+	public String merchantImageBig = "";					// 商家 LOGO 大图
 	
 	public String cityCode;									// 商家所在城市码 value from AMAP
 	public String postcode;									// 商家PostCode（如：上海021）value from AMAP

@@ -257,6 +257,7 @@ Merchant.buttonCheck = function(){
 Merchant.reset = function() {
 	$("#description").val("");
 	$("#merchantImage").val("");
+	$("#merchantImageBig").val("");
 	$("#address").val("");
 	$("#tel").val("");
 	$("#cateType").val("");
@@ -274,6 +275,7 @@ Merchant.enableEdit = function() {
 	$("#cityCode").removeAttr("disabled");
 	$("#address").removeAttr("disabled");
 	$("#merchantImage").removeAttr("disabled");
+	$("#merchantImageBig").removeAttr("disabled");
 	$("#tel").removeAttr("disabled");
 	$("#cateType").removeAttr("disabled");
 	$("#cateType1").removeAttr("disabled");
@@ -291,6 +293,7 @@ Merchant.create = function() {
 	$("#cityCode").removeAttr("disabled");
 	$("#address").removeAttr("disabled");
 	$("#merchantImage").removeAttr("disabled");
+	$("#merchantImageBig").removeAttr("disabled");
 	$("#tel").removeAttr("disabled");
 	$("#cateType").removeAttr("disabled");
 	$("#cateType1").removeAttr("disabled");
@@ -316,6 +319,7 @@ Merchant.update = function() {
 Merchant.validate = function() {
 	var description = $("#description").val();
 	var merchantImage = $("#merchantImage").val();
+	var merchantImageBig = $("#merchantImageBig").val();
 	var address = $("#address").val();
 	var tel = $("#tel").val();
 	var cateType = $("#cateType").val();

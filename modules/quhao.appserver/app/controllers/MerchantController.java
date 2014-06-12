@@ -80,7 +80,9 @@ public class MerchantController extends BaseController {
 	
 	/**
 	 * APP 取号排队按钮入口
+	 * 不用了，已更换为nextPage
 	 */
+	@Deprecated
 	public static void quhaoEntry(){
 		String cityCode = params.get("cityCode");
 		String pageStr = params.get("page");

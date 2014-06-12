@@ -91,7 +91,14 @@
 		<label for="merchantImage" class="col-sm-3 control-label">上传图片（147*126）：</label>
 	    <div class="col-xs-7">
 	    	<input type="file" id="merchantImage" name="merchantImage" disabled="disabled" />
-		    <p class="help-block" style="color: red;">注意：上传的图片将作为展示在APP客户端的商家Logo</p>
+		    <p class="help-block" style="color: red;">注意：上传的图片将作为展示在APP客户端的商家Logo（小）</p>
+	    </div>
+	</div>
+	<div class="form-group">
+		<label for="merchantImage" class="col-sm-3 control-label">上传图片（834*346）：</label>
+	    <div class="col-xs-7">
+	    	<input type="file" id="merchantImageBig" name="merchantImageBig" disabled="disabled" />
+		    <p class="help-block" style="color: red;">注意：上传的图片将作为展示在APP客户端的商家Logo（大）</p>
 	    </div>
 	</div>
 	
@@ -99,7 +106,7 @@
 		<label for="" class="col-sm-3 control-label">展示图片：</label>
 		<div class="col-xs-7">
 			`for(String srcStr : bmivo.imgSrc){
-				<img class="thumbnail" alt="" src="${srcStr}" />
+				<img class="thumbnail" alt="" src="${srcStr}" style="max-width: 500px;" />
 			`}
 	    </div>
 	</div>

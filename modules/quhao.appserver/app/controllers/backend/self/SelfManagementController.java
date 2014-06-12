@@ -107,6 +107,7 @@ public class SelfManagementController extends BaseController {
 		String openTime = params.get("openTime");
 		String closeTime = params.get("closeTime");
 		String merchantImage = params.get("merchantImage");
+		String merchantImageBig = params.get("merchantImageBig");
 		String[] seatType = params.getAll("seatType");
 		String dianpingFen = params.get("dianpingFen");
 		String dianpingLink = params.get("dianpingLink");
@@ -198,7 +199,7 @@ public class SelfManagementController extends BaseController {
 			GridFSInputFile file = uploadFirst(merchantImage, m.id());
 			if (file != null) {
 				m.merchantImageSet.add(file.getFilename());
-				if (StringUtils.isEmpty(m.merchantImage)) {
+//				if (StringUtils.isEmpty(m.merchantImage)) {
 					String imageStorePath = Play.configuration.getProperty("image.store.path");
 					try {
 						m.merchantImage = URLEncoder.encode(imageStorePath + file.getFilename(), "UTF-8");
@@ -206,7 +207,24 @@ public class SelfManagementController extends BaseController {
 					} catch (UnsupportedEncodingException e) {
 						e.printStackTrace();
 					}
-				}
+//				}
+				m.save();
+			}
+		}
+		// 更新商家大图片
+		if (!StringUtils.isEmpty(merchantImageBig)) {
+			GridFSInputFile file = uploadFirst(merchantImageBig, m.id(), 834, 346);
+			if (file != null) {
+				m.merchantImageSet.add(file.getFilename());
+//				if (StringUtils.isEmpty(m.merchantImageBig)) {
+					String imageStorePath = Play.configuration.getProperty("image.store.path");
+					try {
+						m.merchantImageBig = URLEncoder.encode(imageStorePath + file.getFilename(), "UTF-8");
+						logger.debug(m.merchantImageBig);
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					}
+//				}
 				m.save();
 			}
 		}
@@ -518,6 +536,35 @@ public class SelfManagementController extends BaseController {
 			try {
 				File desFile = Play.getFile("public/upload/" + file.getName());
 				Images.resize(file, desFile, 147, 126);
+				gfsFile = UploadController.saveBinary(desFile, mid);
+				desFile.delete();
+				break;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		if (gfsFile == null) {
+			return null;
+		} else {
+			return gfsFile;
+		}
+	}
+	
+	/**
+	 * 上传图片（商家页面）
+	 * @param param
+	 * @param mid
+	 * @param resizeX
+	 * @param resizeY
+	 * @return
+	 */
+	private static GridFSInputFile uploadFirst(String param, String mid, int resizeX, int resizeY) {
+		GridFSInputFile gfsFile = null;
+		File[] files = params.get(param, File[].class);
+		for (File file : files) {
+			try {
+				File desFile = Play.getFile("public/upload/" + file.getName());
+				Images.resize(file, desFile, resizeX, resizeY);
 				gfsFile = UploadController.saveBinary(desFile, mid);
 				desFile.delete();
 				break;

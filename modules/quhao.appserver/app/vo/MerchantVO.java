@@ -59,6 +59,7 @@ public class MerchantVO {
 	public String y;
 	
 	public String merchantImage;
+	public String merchantImageBig;
 	
 	public String cityCode;
 	
@@ -115,6 +116,7 @@ public class MerchantVO {
 		
 		try {
 			vo.merchantImage = URLDecoder.decode(m.merchantImage, "UTF-8");
+			vo.merchantImageBig = URLDecoder.decode(m.merchantImageBig, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
