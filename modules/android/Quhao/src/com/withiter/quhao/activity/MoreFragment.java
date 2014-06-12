@@ -47,7 +47,6 @@ public class MoreFragment extends Fragment implements OnClickListener{
 	private LinearLayout help;
 	private LinearLayout loginStatus;
 	private LinearLayout moreShareAuth;
-	private CheckedTextView ctvName;
 	private Platform sina;
 	private ImageView loginStatusImg;
 
@@ -107,8 +106,6 @@ public class MoreFragment extends Fragment implements OnClickListener{
 		aboutUs.setOnClickListener(this);
 		loginStatus.setOnClickListener(this);
 		moreShareAuth.setOnClickListener(this);
-		
-		ctvName = (CheckedTextView) contentView.findViewById(R.id.ctvName);
 		
 		loginStatusImg = (ImageView) contentView.findViewById(R.id.more_login_status_img);
 		loginStatusTxt = (TextView) contentView.findViewById(R.id.more_login_status_txt);
@@ -172,22 +169,6 @@ public class MoreFragment extends Fragment implements OnClickListener{
 		ShareSDK.initSDK(this.getActivity());
 		sina = ShareSDK.getPlatform(getActivity(), "SinaWeibo");
 		sina.SSOSetting(true);
-		ctvName.setChecked(sina.isValid());
-		
-		if (sina.isValid()) {
-			String userName = sina.getDb().get("nickname");
-			if (userName == null || userName.length() <= 0
-					|| "null".equals(userName)) {
-				// 如果平台已经授权却没有拿到帐号名称，则自动获取用户资料，以获取名称
-				userName = getName(sina);
-				
-				sina.showUser(null);
-			}
-			ctvName.setText(userName);
-		}
-		else {
-			ctvName.setText(R.string.not_yet_authorized);
-		}
 		
 		refreshLoginStatus();
 		super.onResume();
@@ -315,8 +296,6 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			sina = ShareSDK.getPlatform(getActivity(), "SinaWeibo");
 			sina.SSOSetting(true);
 			if (sina == null) {
-				ctvName.setChecked(false);
-				ctvName.setText(R.string.not_yet_authorized);
 				return;
 			}
 
@@ -330,8 +309,6 @@ public class MoreFragment extends Fragment implements OnClickListener{
 							public void onClick(DialogInterface dialog, int which) {
 								dialog.dismiss();
 								sina.removeAccount();
-								ctvName.setChecked(false);
-								ctvName.setText(R.string.not_yet_authorized);
 							}
 						}).setNegativeButton("否", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
@@ -355,7 +332,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 				@Override
 				public void onComplete(Platform arg0, int arg1, HashMap<String, Object> arg2) {
 					
-					sinaHandler.sendEmptyMessage(200);
+//					sinaHandler.sendEmptyMessage(200);
 					
 				}
 				
@@ -412,6 +389,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 
 	}
 	
+	/*
 	protected Handler sinaHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {
@@ -434,7 +412,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			}
 		}
 	};
-	
+	*/
 	
 	// 使用快捷分享完成分享（请务必仔细阅读位于SDK解压目录下Docs文件夹中OnekeyShare类的JavaDoc）
 		/**ShareSDK集成方法有两种</br>

@@ -173,27 +173,30 @@
                 android:layout_marginRight="15dip" >
 
                 <ImageView
-		            android:id="@+id/ivLogo"
-		            android:layout_width="30dp"
-		            android:layout_height="30dp"
-		            android:layout_gravity="center_vertical"
-		            android:scaleType="centerInside"
-		            android:src="@drawable/logo_sinaweibo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/empty"
+                    android:src="@drawable/icon_btn_setshare"
                     android:layout_marginLeft="10dip" />
-		
-		        <CheckedTextView
-		            android:id="@+id/ctvName"
-		            android:layout_width="fill_parent"
-		            android:layout_height="fill_parent"
-		            android:layout_gravity="center_vertical"
-		            android:layout_marginRight="10dp"
-		            android:drawablePadding="10dp"
-		            android:drawableRight="@drawable/cb_drw"
-		            android:gravity="center_vertical"
-		            android:singleLine="true"
-		            android:text="@string/not_yet_authorized"
-		            android:textColor="#ff000000"
-		            android:textSize="20dp" />
+
+                <TextView
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dip"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="绑定微博"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/empty"
+                    android:src="@drawable/arrow_right"
+					android:layout_marginRight="10dip"/>
             </LinearLayout>
             
             <LinearLayout

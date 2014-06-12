@@ -428,6 +428,8 @@ public class AccountController extends BaseController {
 		} else if (account.isSignIn) {
 			loginVO.errorCode = -2;
 			loginVO.msg = "you have signed in";
+			int count = Comment.getCommentCountByAccountId(account.id());
+			loginVO.dianping = count;
 			loginVO.build(account);
 		}
 

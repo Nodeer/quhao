@@ -105,7 +105,7 @@ public class QuhaoCurrentStatesActivity extends QuhaoBaseActivity{
 				reservationForPaiduiAdapter.notifyDataSetChanged();
 				
 				if (null == reservations ||reservations.isEmpty()) {
-					Toast.makeText(QuhaoCurrentStatesActivity.this, R.string.no_result_found, Toast.LENGTH_SHORT).show();
+					Toast.makeText(QuhaoCurrentStatesActivity.this, R.string.no_result_4_quhao_current, Toast.LENGTH_SHORT).show();
 				}
 				
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);

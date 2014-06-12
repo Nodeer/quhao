@@ -80,7 +80,7 @@ public class MerchantChatRoomsActivity extends QuhaoBaseActivity implements OnHe
 				mPullToRefreshView.onFooterRefreshComplete();
 				
 				if (null == rvos ||rvos.isEmpty()) {
-					Toast.makeText(MerchantChatRoomsActivity.this, R.string.no_result_found, Toast.LENGTH_SHORT).show();
+					Toast.makeText(MerchantChatRoomsActivity.this, R.string.no_result_4_chat_room, Toast.LENGTH_SHORT).show();
 				}
 				
 				if (!needToLoad) {

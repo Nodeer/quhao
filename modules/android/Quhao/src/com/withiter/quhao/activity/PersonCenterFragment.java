@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -44,9 +43,8 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 	private final static String TAG = PersonCenterFragment.class.getName();
 
 	private TextView nickName;
-	private TextView mobile;
 	private TextView jifen;
-	private TextView label_qiandao;
+	private ImageView label_qiandao;
 	private TextView value_qiandao;
 	private TextView value_dianpin;
 	private TextView myAttention;
@@ -87,10 +85,9 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 		isClick = false;
 		
 		nickName = (TextView) contentView.findViewById(R.id.nickName);
-		mobile = (TextView) contentView.findViewById(R.id.mobile);
 		jifen = (TextView) contentView.findViewById(R.id.jifen);
 		
-		label_qiandao = (TextView) contentView.findViewById(R.id.qiandao_label);
+		label_qiandao = (ImageView) contentView.findViewById(R.id.qiandao_label);
 		value_qiandao = (TextView) contentView.findViewById(R.id.value_qiandao);
 		value_dianpin = (TextView) contentView.findViewById(R.id.value_dianpin);
 		myAttention = (TextView) contentView.findViewById(R.id.my_attention);
@@ -142,32 +139,28 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				updateUIData(account);
 			} else {
 
-				mobile.setText(R.string.nomobile);
-				
 				nickName.setText(R.string.noname);
 
 				jifen.setText("0");
 
 				avatar.setImageResource(R.drawable.person_avatar);
-				value_qiandao.setText("0");
-				value_dianpin.setText("0");
-				myAttention.setText("0");
+				value_qiandao.setText("签到(0)");
+				value_dianpin.setText("点评(0)");
+				myAttention.setText("关注(0)");
 				loginBtn.setVisibility(View.VISIBLE);
 				regBtn.setVisibility(View.VISIBLE);
 			}
 		}
 		else
 		{
-			mobile.setText(R.string.nomobile);
-			
 			nickName.setText(R.string.noname);
 
 			jifen.setText("0");
 
 			avatar.setImageResource(R.drawable.person_avatar);
-			value_qiandao.setText("0");
-			value_dianpin.setText("0");
-			myAttention.setText("0");
+			value_qiandao.setText("签到(0)");
+			value_dianpin.setText("点评(0)");
+			myAttention.setText("关注(0)");
 			
 			loginBtn.setVisibility(View.VISIBLE);
 			regBtn.setVisibility(View.VISIBLE);
@@ -179,8 +172,6 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 
 	// update UI according to the account object
 	private void updateUIData(AccountInfo account) {
-		mobile.setText(account.phone);
-		
 		nickName.setText(account.nickName);
 		if(StringUtils.isNull(account.nickName))
 		{
@@ -188,7 +179,6 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 		}
 
 		QuhaoLog.d(TAG, "account.jifen : " + account.jifen);
-		mobile.setText(account.phone);
 		jifen.setText(account.jifen);
 
 		Bitmap bitmap = null;
@@ -249,18 +239,20 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 		}
 		
 		
-		value_qiandao.setText(account.signIn);
+		value_qiandao.setText("签到(" + account.signIn + ")");
 		if ("true".equals(account.isSignIn)) {
-			label_qiandao.setTextColor(this.getResources().getColor(R.color.black));
+			label_qiandao.setImageResource(R.drawable.ic_sign_up_gray);
+//			label_qiandao.setTextColor(this.getResources().getColor(R.color.black));
 			value_qiandao.setTextColor(this.getResources().getColor(R.color.black));
 		}
 		else
 		{
-			label_qiandao.setTextColor(this.getResources().getColor(R.color.red));
+			label_qiandao.setImageResource(R.drawable.ic_sign_up_red);
+//			label_qiandao.setTextColor(this.getResources().getColor(R.color.red));
 			value_qiandao.setTextColor(this.getResources().getColor(R.color.red));
 		}
-		value_dianpin.setText(account.dianping);
-		myAttention.setText(account.guanzhu);
+		value_dianpin.setText("点评( "+ account.dianping + ")");
+		myAttention.setText("关注(" + account.guanzhu + ")");
 	}
 	
 	private void signIn() {
@@ -412,24 +404,25 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				}
 				if (loginInfo.msg.equals("success")) {
 					nickName.setText(loginInfo.nickName);
-					mobile.setText(loginInfo.phone);
 
 					jifen.setText(loginInfo.jifen);
 
 					if ("true".equals(loginInfo.isSignIn)) {
-						label_qiandao.setTextColor(getActivity().getResources().getColor(R.color.black));
+						label_qiandao.setImageResource(R.drawable.ic_sign_up_gray);
+//						label_qiandao.setTextColor(getActivity().getResources().getColor(R.color.black));
 						value_qiandao.setTextColor(getActivity().getResources().getColor(R.color.black));
 						
 					}
 					else
 					{
-						label_qiandao.setTextColor(getActivity().getResources().getColor(R.color.red));
+						label_qiandao.setImageResource(R.drawable.ic_sign_up_red);
+//						label_qiandao.setTextColor(getActivity().getResources().getColor(R.color.red));
 						value_qiandao.setTextColor(getActivity().getResources().getColor(R.color.red));
 					}
 					
-					value_qiandao.setText(loginInfo.signIn);
-					value_dianpin.setText(loginInfo.dianping);
-					myAttention.setText(loginInfo.guanzhu);
+					value_qiandao.setText("签到(" + loginInfo.signIn + ")");
+					value_dianpin.setText("点评( "+ loginInfo.dianping + ")");
+					myAttention.setText("关注(" + loginInfo.guanzhu + ")");
 					
 				}
 			}

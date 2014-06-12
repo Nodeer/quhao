@@ -112,6 +112,7 @@
 	<string name="noname">无名人士</string>
 	<string name="nomobile">无号码</string>
 	<string name="jifen_label">剩余积分</string>
+	<string name="jifen_label_colon">剩余积分：</string>
 	<string name="jifen_default">0</string>
 	<string name="label_qiandao">签到</string>
 	<string name="value_qiandao">0</string>
@@ -127,6 +128,7 @@
 	<string name="sign_in_success">签到成功</string>
 	<string name="photo">头像</string>
 	<string name="nick_name">昵称</string>
+	<string name="nick_name_colon">昵称:</string>
 	<string name="usual_city">常住地</string>
 	<string name="phone_number">手机号</string>
 	<string name="current_jifen">现有积分</string>
@@ -154,7 +156,7 @@
 	<string name="my_number">我的号码：</string>
 	<string name="before_you">在你前面：</string>
 	<string name="nahao">拿&#160;&#160;&#160;号</string>
-	<string name="nahao_success_tip_5_less">恭喜，取号成功，在你前面排队的不多于5桌，为了避免排队号码过期，请抓紧时间前往商家。</string>
+		<string name="nahao_success_tip_5_less">恭喜，取号成功，在你前面排队的不多于5桌，为了避免排队号码过期，请抓紧时间前往商家。</string>
 	<string name="nahao_success_tip_5_more">恭喜：取号成功，当你的排号前还剩5位时，我们会用短信通知到你，继续享受你的免排队时间吧。</string>
 	<!-- get number end -->
 
@@ -209,10 +211,18 @@
     </string-array>
 	<!-- more end -->
 	
+	<!-- 积分消费情况 CreditCostListActivity begin -->
+	<string name="no_result_4_credit_cost">亲，您当前还没有消费记录哦。</string>
+	<!-- 积分消费情况 CreditCostListActivity end -->
+	
+	<!-- 当前取号情况 QuhaoCurrentStatesActivity begin -->
+	<string name="no_result_4_quhao_current">亲，您当前还没取过号哦。</string>
+	<!-- 当前取号情况 QuhaoCurrentStatesActivity end -->
 	
 	<!-- 历史取号情况 QuhaoHistoryStatesActivity begin -->
 	<string name="delete_success">删除成功</string>
 	<string name="delete_failed">网络问题，删除失败</string>
+	<string name="no_result_4_quhao_history">亲，您一次还没取过号哦。</string>
 	<!-- 历史取号情况 QuhaoHistoryStatesActivity end -->
 	
 	<!-- 城市选择 CitySelectActivity begin -->
@@ -248,5 +258,9 @@
 	<!-- MerchantLBSActivity begin -->
 	<string name="guide_route">导航</string>
 	<!-- MerchantLBSActivity begin -->
+	
+	<!-- MerchantChatRoomsActivity begin -->
+	<string name="no_result_4_chat_room">亲，至少要取个号才能聊天哦。</string>
+	<!-- MerchantChatRoomsActivity begin -->
 	
 </resources>

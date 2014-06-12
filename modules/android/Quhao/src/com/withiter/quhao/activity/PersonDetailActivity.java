@@ -261,7 +261,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 			{
 				progressDialogUtil.closeProgress();
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				Intent updatePassword = new Intent();// TODO : wjzwjz
+				Intent updatePassword = new Intent();
 				updatePassword.setClass(this, UpdatePasswordActivity.class);
 				startActivity(updatePassword);
 			} 

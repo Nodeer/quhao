@@ -187,7 +187,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 		if (StringUtils.isNull(categoryType)) {
 			categoryType = "benbangcai";
 		}
-		
+		categoryType = "";
 		expandTabView = (ExpandTabView) this.findViewById(R.id.expandtab_view);
 		viewLeft = new ViewLeft(this, categoryNames, categoryTypes, categoryType);
 
@@ -216,6 +216,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 		if (StringUtils.isNull(defaultSortBy)) {
 			defaultSortBy = "-1";
 		}
+		defaultSortBy = "";
 		viewRight = new ViewRight(this, sortByItems, sortByValues, defaultSortBy);
 		
 		

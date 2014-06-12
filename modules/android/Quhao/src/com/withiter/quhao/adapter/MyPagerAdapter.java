@@ -7,11 +7,12 @@ import android.content.Context;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.withiter.quhao.R;
+import com.withiter.quhao.util.tool.AsynImageLoader;
 import com.withiter.quhao.vo.TopMerchant;
 
 public class MyPagerAdapter extends PagerAdapter {
@@ -78,6 +79,7 @@ public class MyPagerAdapter extends PagerAdapter {
 			view = (ImageView) mViews.get(arg1);
 			if(view.getParent()==null)
 			{
+				
 				((ViewPager) arg0).addView(view);
 				
 			}
@@ -89,7 +91,8 @@ public class MyPagerAdapter extends PagerAdapter {
 			}
 
 		}
-
+		view.setImageResource(R.drawable.no_logo);
+		AsynImageLoader.getInstance().showImageAsyn(view, arg1, mDatas.get(arg1).merchantImage, R.drawable.no_logo);
 		return view;
 	}
 
