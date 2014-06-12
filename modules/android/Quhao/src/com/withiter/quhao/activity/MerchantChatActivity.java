@@ -5,7 +5,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.java_websocket.client.WebSocketClient;
@@ -86,10 +85,6 @@ public class MerchantChatActivity extends FragmentActivity implements EmojiconGr
 	protected static boolean networkOK = false;
 	
 	private long firstTime;
-	
-	private long secondTime;
-	
-	private boolean isGoing = false;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -412,10 +407,6 @@ public class MerchantChatActivity extends FragmentActivity implements EmojiconGr
 		{
 			case R.id.btn_send: 
 				
-				if (isGoing) {
-					isGoing = false;
-				}
-				isGoing = true;
 				if(StringUtils.isNull(chatMsgEdit.getText().toString().trim()))
 				{
 					Toast.makeText(this, "亲，请填写发送内容！", Toast.LENGTH_SHORT).show();
@@ -435,35 +426,6 @@ public class MerchantChatActivity extends FragmentActivity implements EmojiconGr
 					
 					firstTime = currentTime;
 					chatMsgEdit.setText("");
-					
-					Thread thread = new Thread(new Runnable() {
-						
-						@Override
-						public void run() {
-							java.util.Date date = null;
-							int count = 0;
-							while(true && isGoing)
-							{
-								
-								try {
-									date = new Date();
-									String message = "count=" + count + " , date=" + date;
-									mWebSocketClient.send(message);
-									Log.e("wjzwjz send message ： ", message);
-									Thread.sleep(2100);
-									count = count +1;
-									if (count >= 1500) {
-										break;
-									}
-								} catch (Exception e) {
-									e.printStackTrace();
-									Log.e("wjzwjz", e.getMessage());
-									break;
-								}
-								
-							}}
-					});
-					thread.start();
 				}
 				else
 				{

@@ -217,6 +217,7 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 				deleteLayout.setVisibility(View.GONE);
 				reservationForPaiduiAdapter.isShowDelete = "false";
 				
+				/*
 				final List<ReservationVO> rvosTemp = new ArrayList<ReservationVO>(reservations.size());
 //				Collections.copy(rvosTemp, reservations);
 //				System.arraycopy(reservations, 0, rvosTemp, 0, reservations.size());
@@ -233,6 +234,13 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 						rIds.add(temp.rId);
 						ridStr = ridStr + temp.rId + ",";
 						iterator.remove();
+					}*/
+				String ridStr = "";
+				if (null != reservations && !reservations.isEmpty()) {
+					for (int i = 0; i < reservations.size(); i++) {
+						if ("true".equals(reservations.get(i).isChecked)) {
+							ridStr = ridStr + reservations.get(i).rId + ",";
+						}
 					}
 				}
 				Log.e(TAG, ridStr);
@@ -243,7 +251,15 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 					@Override
 					public void run() {
 						
-						reservations = rvosTemp;
+//						reservations = rvosTemp;
+						Iterator<ReservationVO> iterator = reservations.iterator();
+						while (iterator.hasNext()) {
+							ReservationVO temp = iterator.next();
+							if ("true".equals(temp.isChecked)) {
+								iterator.remove();
+							}
+						}
+						
 						if(!reservations.isEmpty())
 						{
 							for (int i = 0; i < reservations.size(); i++) {
