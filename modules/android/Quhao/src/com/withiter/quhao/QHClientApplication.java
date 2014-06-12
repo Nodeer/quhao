@@ -9,6 +9,7 @@ import java.util.Set;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -23,6 +24,7 @@ import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 
 import com.amap.api.location.AMapLocation;
+import com.withiter.quhao.activity.JPushReceiver;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.domain.CityInfo;
 import com.withiter.quhao.util.StringUtils;
@@ -101,6 +103,14 @@ public class QHClientApplication extends Application {
 		// TODO set debug mode to false
 		JPushInterface.setDebugMode(true);
 		JPushInterface.init(this);
+		JPushInterface.reportNotificationOpened(mContext, null);
+		
+		// 注册push消息打开动作
+//		JPushReceiver mMessageReceiver = new JPushReceiver();
+//		IntentFilter filter = new IntentFilter();
+//		filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+//		filter.addAction(JPushInterface.ACTION_NOTIFICATION_OPENED);
+//		registerReceiver(mMessageReceiver,filter);
 
 		// QuhaoLog.i(TAG, "onCreate method is called");
 		QHClientApplication.mContext = this;
