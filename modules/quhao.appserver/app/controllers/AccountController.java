@@ -632,6 +632,13 @@ public class AccountController extends BaseController {
 	 */
 	public static void delHistoryCredit(String id) {
 		id= params.get("id");
+		System.out.println("the id is : " + id);
+		try {
+			id = URLDecoder.decode(id, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if(!id.equals("")){
 			String[] array = id.split(",");
 			int i;
