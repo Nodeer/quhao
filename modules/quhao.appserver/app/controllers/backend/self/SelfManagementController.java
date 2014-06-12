@@ -5,10 +5,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.httpclient.HttpException;
 import org.bson.types.ObjectId;
@@ -30,6 +28,7 @@ import cn.bran.japid.util.StringUtils;
 
 import com.mongodb.gridfs.GridFSInputFile;
 import com.withiter.common.Constants;
+import com.withiter.common.jpush.JPushReminder;
 import com.withiter.common.sms.business.SMSBusiness;
 import com.withiter.models.account.Account;
 import com.withiter.models.account.Reservation;
@@ -39,7 +38,6 @@ import com.withiter.models.merchant.Category;
 import com.withiter.models.merchant.Haoma;
 import com.withiter.models.merchant.Merchant;
 import com.withiter.models.merchant.Open;
-import com.withiter.models.merchant.Paidui;
 import com.withiter.models.merchant.Youhui;
 import com.withiter.utils.ExceptionUtil;
 
@@ -380,7 +378,26 @@ public class SelfManagementController extends BaseController {
 			if (r != null) {
 				boolean flag = Reservation.finish(r.id());
 				haoma.updateSelf();
+				
+				Reservation rr = Reservation.findReservationForSMSRemind(mid, seatNumber, 4, haoma.version);
+				if (rr == null) {
+					renderJSON(flag);
+				}
+				String aid = rr.accountId;
+				if (aid == null) {
+					renderJSON(flag);
+				}
+				Account account = Account.findById(aid);
+				// 短信提醒第4位
 				smsRemind(mid, seatNumber, haoma.version);
+				// JPush提醒第4位
+				if(StringUtils.isEmpty(account.password)){
+					// 现场取号用户
+					renderJSON(flag);
+				}
+				// app用户
+				String remind = Play.configuration.getProperty("service.push.remind");
+				JPushReminder.sendAlias(account.id(), remind);
 				renderJSON(flag);
 			} else {
 				renderJSON(false);
@@ -407,8 +424,35 @@ public class SelfManagementController extends BaseController {
 			Reservation r = Reservation.findReservationForHandle(seatNumber, currentNumber, mid, haoma.version);
 			if (r != null) {
 				boolean flag = Reservation.expire(r.id());
+				// 找到被过期的用户
+				Account expiredAccount = Account.findById(new ObjectId(r.accountId));
+				if(expiredAccount != null){
+					String remind = Play.configuration.getProperty("service.push.expiredRemind");
+					JPushReminder.sendAlias(expiredAccount.id(), remind);
+				}
+				
 				haoma.updateSelf();
+				
+				Reservation rr = Reservation.findReservationForSMSRemind(mid, seatNumber, 4, haoma.version);
+				if (rr == null) {
+					renderJSON(flag);
+				}
+				String aid = rr.accountId;
+				if (aid == null) {
+					renderJSON(flag);
+				}
+				Account account = Account.findById(aid);
+				// 短信提醒第4位
 				smsRemind(mid, seatNumber, haoma.version);
+				// JPush提醒第4位
+				if(StringUtils.isEmpty(account.password)){
+					// 现场取号用户
+					renderJSON(flag);
+				}
+				// app用户
+				String remind = Play.configuration.getProperty("service.push.remind");
+				JPushReminder.sendAlias(account.id(), remind);
+				
 				renderJSON(flag);
 			} else {
 				renderJSON(false);
