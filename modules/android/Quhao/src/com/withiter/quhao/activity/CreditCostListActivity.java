@@ -1,8 +1,10 @@
 package com.withiter.quhao.activity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -64,6 +66,8 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 	 * 取消
 	 */
 	private Button cancelBtn;
+	
+	private long time;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -153,10 +157,12 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 					}
 					
 				});
+				
 				CreditCostListActivity.this.findViewById(R.id.loadingbar).setVisibility(View.GONE);
 				CreditCostListActivity.this.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
 				
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				Log.e("wjzwjz ok ok : ", String.valueOf(System.currentTimeMillis()-time));
 			}
 
 		}
@@ -186,6 +192,10 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 //					throw new NoResultFromHTTPRequestException();
 				} else {
+					
+					time = System.currentTimeMillis();
+					Log.e("wjzwjz time : ", String.valueOf(time));
+					
 					if (isFirstLoad || null == credits) {
 						credits = new ArrayList<Credit>();
 					}
@@ -219,16 +229,21 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 				
 				if(null!=creditAdapter && "true".equals(creditAdapter.isShowDelete))
 				{
+					long time1 = System.currentTimeMillis();
 					deleteBtn.setText(R.string.delete);
 					deleteLayout.setVisibility(View.GONE);
 					creditAdapter.isShowDelete = "false";
 					
+					/*
 					final List<Credit> creditsTemp = new ArrayList<Credit>(credits.size());
 	//				Collections.copy(rvosTemp, reservations);
 	//				System.arraycopy(reservations, 0, rvosTemp, 0, reservations.size());
-					for (int i = 0; i < credits.size(); i++) {
-						creditsTemp.add(credits.get(i));
+					if (null != credits && !credits.isEmpty()) {
+						for (int i = 0; i < credits.size(); i++) {
+							creditsTemp.add(new Credit(credits.get(i).creditId, credits.get(i).accountId, credits.get(i).merchantId, credits.get(i).merchantName, credits.get(i).merchantAddress, credits.get(i).reservationId, credits.get(i).cost, credits.get(i).status, credits.get(i).created));
+						}
 					}
+					
 					List<String> rIds = new ArrayList<String>();
 					
 					Iterator<Credit> iterator = creditsTemp.iterator();
@@ -242,16 +257,39 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 						}
 					}
 					Log.e(TAG, ridStr);
+					*/
+					
+					String ridStr = "";
+					if (null != credits && !credits.isEmpty()) {
+						for (int i = 0; i < credits.size(); i++) {
+							if ("true".equals(credits.get(i).isChecked)) {
+								ridStr = ridStr + credits.get(i).creditId + ",";
+							}
+						}
+					}
 					// 解锁
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-					String url = "delCredit?id=" + ridStr;
-					final DeleteCreditTask task = new DeleteCreditTask(R.string.waitting,this,url);
+//					String url = "delCredit?id=" + ridStr;
+					String url = "delCredit";
+					Map<String, String> params = new HashMap<String, String>();
+					params.put("id", ridStr);
+					Log.e("wjzwjz time ", String.valueOf((System.currentTimeMillis()-time1)));
+					final DeleteCreditTask task = new DeleteCreditTask(R.string.waitting,this,url,params);
 					task.execute(new Runnable(){
 	
 						@Override
 						public void run() {
 							
-							credits = creditsTemp;
+//							credits = creditsTemp;
+							
+							Iterator<Credit> iterator = credits.iterator();
+							while (iterator.hasNext()) {
+								Credit temp = iterator.next();
+								if ("true".equals(temp.isChecked)) {
+									iterator.remove();
+								}
+							}
+							
 							if(!credits.isEmpty())
 							{
 								for (int i = 0; i < credits.size(); i++) {

@@ -1,5 +1,7 @@
 package com.withiter.quhao.task;
 
+import java.util.Map;
+
 import org.json.JSONException;
 
 import android.content.Context;
@@ -19,16 +21,19 @@ public class DeleteCreditTask extends BaseTask {
 	
 	public String result;
 
+	public Map<String, String> params;
 	/**
 	 * 
 	 * @param context
+	 * @param params 
 	 * @param action replay我的回复/thread我的发帖/favorites我的收藏
 	 * @param page
 	 * @param token
 	 */
-	public DeleteCreditTask(int preDialogMessage,Context context,String url) {
+	public DeleteCreditTask(int preDialogMessage,Context context,String url, Map<String, String> params) {
 		super(preDialogMessage,context);
 		this.url = url;
+		this.params = params;
 //		mParams = new HashMap<String, String>();
 //		mParams.put("apiname", API_NAME);
 //		mParams.put("method", METHOD);
@@ -42,7 +47,8 @@ public class DeleteCreditTask extends BaseTask {
 
 	@Override
 	public JsonPack getData() throws Exception {
-		String result = CommonHTTPRequest.get(url); // doGet(mParams);
+//		String result = CommonHTTPRequest.post(url,params); // doGet(mParams);
+		String result = CommonHTTPRequest.post(url,params);
 		JsonPack jsonPack = getJsonPack(result);
 		return jsonPack;
 	}
