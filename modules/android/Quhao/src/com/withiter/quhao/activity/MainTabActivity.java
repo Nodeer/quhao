@@ -221,12 +221,12 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 		}
 
 		mTabHost.setCurrentTab(0);
-		mTabHost.setOnTabChangedListener(new OnTabChangeListener() {
-			@Override
-			public void onTabChanged(String tabId) {
-
-			}
-		});
+//		mTabHost.setOnTabChangedListener(new OnTabChangeListener() {
+//			@Override
+//			public void onTabChanged(String tabId) {
+//
+//			}
+//		});
 	}
 
 	/**

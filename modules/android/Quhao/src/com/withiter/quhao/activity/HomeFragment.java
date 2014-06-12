@@ -98,6 +98,8 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	private List<ActivityVO> activityList;
 	
 	private ActivityAdapter activityAdapter;
+	
+	private List<ImageView> views;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -132,6 +134,10 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	@Override
 	public void onStop() {
 		Log.e("wjzwjz", "HomeFragment onStop");
+		if (mViewPager!= null && null != views && !views.isEmpty() && mPagerAdapter != null) {
+			mViewPager.stopAutoScroll();
+		}
+		
 		super.onStop();
 	}
 
@@ -309,7 +315,17 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 		mPoints = new ArrayList<ImageView>();
 		adBottomLayout.getChildAt(0);
 
-		ArrayList<ImageView> views = new ArrayList<ImageView>();
+		if (null != views && !views.isEmpty()) {
+			for (int i = 0; i < views.size(); i++) {
+				if (views.get(i).getParent() != null) {
+					ViewGroup vg = (ViewGroup) views.get(i).getParent();
+					vg.removeView(views.get(i));
+				}
+				
+			}
+		}
+		
+		views = new ArrayList<ImageView>();
 		ImageView image;
 		if (topMerchants != null) {
 			for (int num = 0; num < topMerchants.size(); num++) {
@@ -373,7 +389,16 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 				adBottomLayout.addView(point);
 			}
 
-			mPagerAdapter = new MyPagerAdapter(getActivity(), views, topMerchants);
+			if (null == mPagerAdapter) {
+				mPagerAdapter = new MyPagerAdapter(getActivity(), views, topMerchants);
+			}
+			else
+			{
+				mPagerAdapter.mViews = views;
+				mPagerAdapter.mDatas = topMerchants;
+			}
+			
+			
 			mViewPager.setAdapter(mPagerAdapter);
 
 			mViewPager.startAutoScroll();
@@ -482,7 +507,9 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 
 	@Override
 	public void onResume() {
-		
+		if (mViewPager!= null && null != views && !views.isEmpty() && mPagerAdapter != null) {
+			mViewPager.startAutoScroll();
+		}
 		super.onResume();
 		
 	}
