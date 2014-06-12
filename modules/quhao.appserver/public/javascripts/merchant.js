@@ -927,5 +927,19 @@ Merchant.changeStatus = function(mid, online) {
 					alert("服务器维护中，马上就好。");
 				}
 			});
+}
 
+/**
+ * 检查图片格式
+ * @param {} o
+ * @return {Boolean}
+ */
+function check(o) {
+	var ext = o.value.substr(o.value.lastIndexOf('.')+1,o.value.length);
+	if(ext !="jpg" && ext != "png" && ext != "JPG" && ext != "PNG") {
+		alert("只能选择jpg或者png格式图片，请重新选择。");
+		o.value = "";
+		return false;
+	}
+	return true;
 }
