@@ -40,8 +40,31 @@
     </RelativeLayout>
     <!-- Merchant List page's title, eg, 本帮菜【共1000家】 -->
 
+	<LinearLayout
+        android:id="@+id/loadingbar"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffffff"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dip">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="12dip"
+            android:layout_height="12dip" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading"
+            android:textColor="#ff000000" />
+    </LinearLayout>
     <LinearLayout
-        android:id="@+id/merchantsLayout"
+        android:id="@+id/serverdata"
         android:layout_width="fill_parent"
         android:layout_height="0dip"
         android:layout_weight="1.0" >

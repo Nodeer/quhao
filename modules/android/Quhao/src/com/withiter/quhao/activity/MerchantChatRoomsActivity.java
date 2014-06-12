@@ -83,6 +83,9 @@ public class MerchantChatRoomsActivity extends QuhaoBaseActivity implements OnHe
 					Toast.makeText(MerchantChatRoomsActivity.this, R.string.no_result_4_chat_room, Toast.LENGTH_SHORT).show();
 				}
 				
+				findViewById(R.id.loadingbar).setVisibility(View.GONE);
+				findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
+				
 				if (!needToLoad) {
 					mPullToRefreshView.setEnableFooterView(false);
 				} else {
@@ -98,6 +101,8 @@ public class MerchantChatRoomsActivity extends QuhaoBaseActivity implements OnHe
 	private void initView() {
 		rvoListView = (ListView) findViewById(R.id.rvos_list);
 		rvoListView.setNextFocusDownId(R.id.rvos_list);
+		findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
+		findViewById(R.id.serverdata).setVisibility(View.GONE);
 //		rvoListView.setOnItemClickListener(itemClickListener);
 		getReservations();
 	}

@@ -87,6 +87,9 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 		
 		deleteLayout = (LinearLayout) this.findViewById(R.id.deleteMenuLayout);
 		deleteLayout.setVisibility(View.GONE);
+		
+		CreditCostListActivity.this.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
+		CreditCostListActivity.this.findViewById(R.id.serverdata).setVisibility(View.GONE);
 	}
 
 	private void initListView() {
@@ -379,8 +382,7 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 	protected void onResume() {
 		backClicked = false;
 		super.onResume();
-		CreditCostListActivity.this.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
-		CreditCostListActivity.this.findViewById(R.id.serverdata).setVisibility(View.GONE);
+		
 		credits = new ArrayList<Credit>();
 		initListView();
 	}

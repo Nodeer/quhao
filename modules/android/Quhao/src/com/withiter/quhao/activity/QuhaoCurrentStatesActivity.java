@@ -31,7 +31,6 @@ import com.withiter.quhao.vo.ReservationVO;
 public class QuhaoCurrentStatesActivity extends QuhaoBaseActivity{
 
 	protected static boolean backClicked = false;
-	private static String TAG = QuhaoCurrentStatesActivity.class.getName();
 
 	private List<ReservationVO> reservations;
 	private ListView paiduiListView;
@@ -47,6 +46,9 @@ public class QuhaoCurrentStatesActivity extends QuhaoBaseActivity{
 //		paiduiListView.setOnItemClickListener(QuhaoCurrentStatesActivity.this);
 		btnBack.setOnClickListener(goBack(this));
 
+		findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
+		findViewById(R.id.serverdata).setVisibility(View.GONE);
+		
 		initData();
 	}
 
@@ -72,6 +74,8 @@ public class QuhaoCurrentStatesActivity extends QuhaoBaseActivity{
 					String buf = CommonHTTPRequest.get(url);
 					if (StringUtils.isNull(buf) || "[]".equals(buf)) {
 						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+						reservations = new ArrayList<ReservationVO>();
+						reservationsUpdateHandler.obtainMessage(200, reservations).sendToTarget();
 						throw new NoResultFromHTTPRequestException();
 					} else {
 						reservations = new ArrayList<ReservationVO>();
@@ -107,6 +111,9 @@ public class QuhaoCurrentStatesActivity extends QuhaoBaseActivity{
 				if (null == reservations ||reservations.isEmpty()) {
 					Toast.makeText(QuhaoCurrentStatesActivity.this, R.string.no_result_4_quhao_current, Toast.LENGTH_SHORT).show();
 				}
+				
+				findViewById(R.id.loadingbar).setVisibility(View.GONE);
+				findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
 				
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}

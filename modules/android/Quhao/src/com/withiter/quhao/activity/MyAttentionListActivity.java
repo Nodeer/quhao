@@ -67,7 +67,9 @@ public class MyAttentionListActivity extends QuhaoBaseActivity implements OnHead
 		mPullToRefreshView.setOnHeaderRefreshListener(this);
 		mPullToRefreshView.setOnFooterRefreshListener(this);
 		
-		initView();
+		findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
+		findViewById(R.id.serverdata).setVisibility(View.GONE);
+		
 	}
 	
 	private Handler merchantsUpdateHandler = new Handler() {
@@ -93,6 +95,9 @@ public class MyAttentionListActivity extends QuhaoBaseActivity implements OnHead
 				}
 
 				merchantAdapter.notifyDataSetChanged();
+				
+				findViewById(R.id.loadingbar).setVisibility(View.GONE);
+				findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
 				
 				if (null == merchants ||merchants.isEmpty()) {
 					Toast.makeText(MyAttentionListActivity.this, R.string.no_result_found, Toast.LENGTH_SHORT).show();
@@ -125,10 +130,6 @@ public class MyAttentionListActivity extends QuhaoBaseActivity implements OnHead
 			startActivity(intent);
 		}
 	};
-
-	private void initView() {
-		
-	}
 
 	private void getMerchants() {
 
