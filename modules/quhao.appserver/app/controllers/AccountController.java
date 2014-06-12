@@ -631,6 +631,7 @@ public class AccountController extends BaseController {
 	 * @param id
 	 */
 	public static void delHistoryCredit(String id) {
+		id= params.get("id");
 		if(!id.equals("")){
 			String[] array = id.split(",");
 			int i;
