@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import cn.jpush.android.api.JPushInterface;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.ShareSDK;
 
@@ -173,12 +174,9 @@ public class LoginActivity extends QuhaoBaseActivity {
 			String url = "login?phone=" + loginNameText.getText().toString().trim() + "&email=&password=" + passwordText.getText().toString();
 			final LoginTask task = new LoginTask(R.string.waitting, this, url);
 			task.execute(new Runnable() {
-				
 				@Override
 				public void run() {
 					String result = task.result;
-
-
 					LoginInfo loginInfo = ParseJson.getLoginInfo(result);
 					AccountInfo account = new AccountInfo();
 
@@ -187,7 +185,6 @@ public class LoginActivity extends QuhaoBaseActivity {
 					QuhaoLog.i(TAG, "account.msg : " + account.msg);
 
 					if (account.msg.equals("fail")) {
-
 						loginFailedHandler.obtainMessage(200, null).sendToTarget();
 
 						// Handler handler = new Handler();
@@ -204,7 +201,6 @@ public class LoginActivity extends QuhaoBaseActivity {
 						return;
 					}
 					else if (account.msg.equals("success")) {
-
 						SharedprefUtil.put(LoginActivity.this, QuhaoConstant.ACCOUNT_ID, loginInfo.accountId);
 						SharedprefUtil.put(LoginActivity.this, QuhaoConstant.PHONE, account.phone);
 
@@ -230,6 +226,10 @@ public class LoginActivity extends QuhaoBaseActivity {
 							}
 							
 						}
+						
+						// 设置jpush alias
+						Log.d(TAG, "Set alias in login activity.");
+						JPushInterface.setAliasAndTags(getApplicationContext(), account.phone, null, QHClientApplication.mAliasCallback);
 						loginUpdateHandler.obtainMessage(200, account).sendToTarget();
 						return;
 					}

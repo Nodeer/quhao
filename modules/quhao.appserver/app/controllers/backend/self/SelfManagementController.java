@@ -397,7 +397,7 @@ public class SelfManagementController extends BaseController {
 				}
 				// app用户
 				String remind = Play.configuration.getProperty("service.push.remind");
-				JPushReminder.sendAlias(account.id(), remind);
+				JPushReminder.sendAlias(account.phone, remind);
 				renderJSON(flag);
 			} else {
 				renderJSON(false);
@@ -428,7 +428,7 @@ public class SelfManagementController extends BaseController {
 				Account expiredAccount = Account.findById(new ObjectId(r.accountId));
 				if(expiredAccount != null){
 					String remind = Play.configuration.getProperty("service.push.expiredRemind");
-					JPushReminder.sendAlias(expiredAccount.id(), remind);
+					JPushReminder.sendAlias(expiredAccount.phone, remind);
 				}
 				
 				haoma.updateSelf();
@@ -451,7 +451,7 @@ public class SelfManagementController extends BaseController {
 				}
 				// app用户
 				String remind = Play.configuration.getProperty("service.push.remind");
-				JPushReminder.sendAlias(account.id(), remind);
+				JPushReminder.sendAlias(account.phone, remind);
 				
 				renderJSON(flag);
 			} else {

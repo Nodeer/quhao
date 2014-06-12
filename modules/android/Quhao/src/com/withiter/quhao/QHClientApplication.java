@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Set;
 
 import android.app.Application;
 import android.content.Context;
@@ -15,8 +16,11 @@ import android.content.res.Resources.NotFoundException;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 
 import com.amap.api.location.AMapLocation;
 import com.withiter.quhao.domain.AccountInfo;
@@ -71,15 +75,15 @@ public class QHClientApplication extends Application {
 	 * 默认城市
 	 */
 	public CityInfo defaultCity;
-	
+
 	public long time1;
-	
+
 	public long time2;
 
 	/**
 	 * 当前位置信息
 	 */
-//	public LatLonPoint lp = new LatLonPoint(31.235048, 121.474794);
+	// public LatLonPoint lp = new LatLonPoint(31.235048, 121.474794);
 	public AMapLocation location;
 	public static Context mContext;
 	private static QHClientApplication instance;
@@ -93,7 +97,12 @@ public class QHClientApplication extends Application {
 
 	@Override
 	public void onCreate() {
-//		QuhaoLog.i(TAG, "onCreate method is called");
+		super.onCreate();
+		// TODO set debug mode to false
+		JPushInterface.setDebugMode(true);
+		JPushInterface.init(this);
+
+		// QuhaoLog.i(TAG, "onCreate method is called");
 		QHClientApplication.mContext = this;
 		// isLogined = false;
 		instance = this;
@@ -106,19 +115,15 @@ public class QHClientApplication extends Application {
 			}
 		});
 		accountThread.start();
-		
-		/*
-		Thread facesThread = new Thread(new Runnable() {
 
-			@Override
-			public void run() {
-				FaceConversionUtil.getInstace().getFileText(QHClientApplication.mContext);
-			}
-		});
-		facesThread.start();
-		*/
+		/*
+		 * Thread facesThread = new Thread(new Runnable() {
+		 * 
+		 * @Override public void run() {
+		 * FaceConversionUtil.getInstace().getFileText
+		 * (QHClientApplication.mContext); } }); facesThread.start();
+		 */
 		initSDCardConfig();
-		super.onCreate();
 	}
 
 	public QHClientApplication() {
@@ -132,28 +137,22 @@ public class QHClientApplication extends Application {
 		try {
 
 			/*
-			String is2G3GRead = SharedprefUtil.get(this, QuhaoConstant.IS_2G3G_READ, "true");
-
-			if ("true".equals(is2G3GRead)) {
-				this.is2G3GRead = true;
-			} else {
-				this.is2G3GRead = false;
-			}
-
-			this.isWifiOpen = ActivityUtil.isWifiOpen(this);
-
-			if (this.is2G3GRead || (!this.is2G3GRead && this.isWifiOpen)) {
-				this.canLoadImg = true;
-			} else {
-				this.canLoadImg = false;
-			}
-			*/
+			 * String is2G3GRead = SharedprefUtil.get(this,
+			 * QuhaoConstant.IS_2G3G_READ, "true");
+			 * 
+			 * if ("true".equals(is2G3GRead)) { this.is2G3GRead = true; } else {
+			 * this.is2G3GRead = false; }
+			 * 
+			 * this.isWifiOpen = ActivityUtil.isWifiOpen(this);
+			 * 
+			 * if (this.is2G3GRead || (!this.is2G3GRead && this.isWifiOpen)) {
+			 * this.canLoadImg = true; } else { this.canLoadImg = false; }
+			 */
 			String canLoadImgStr = SharedprefUtil.get(this, QuhaoConstant.IS_LOAD_IMG, "false");
-			if("true".equals(canLoadImgStr))
-			{
+			if ("true".equals(canLoadImgStr)) {
 				this.canLoadImg = true;
 			}
-			
+
 			// 初始化城市
 			String cityCode = SharedprefUtil.get(this, QuhaoConstant.CITY_CODE, "021");
 			String cityName = SharedprefUtil.get(this, QuhaoConstant.CITY_NAME, "上海");
@@ -164,12 +163,13 @@ public class QHClientApplication extends Application {
 				ApplicationInfo appInfo = this.getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
 				boolean msg = appInfo.metaData.getBoolean("test");
 				QuhaoConstant.test = msg;
-//				QuhaoLog.i(TAG, "current deployment is test mode : " + msg);
+				// QuhaoLog.i(TAG, "current deployment is test mode : " + msg);
 			} catch (NameNotFoundException e) {
 				e.printStackTrace();
 			}
 
-//			QuhaoLog.i(TAG, "start to init configurations from application.properties");
+			// QuhaoLog.i(TAG,
+			// "start to init configurations from application.properties");
 			InputStream input = getResources().openRawResource(R.raw.application);
 			BufferedReader read = new BufferedReader(new InputStreamReader(input));
 			String line = "";
@@ -179,16 +179,17 @@ public class QHClientApplication extends Application {
 				}
 				if (line.contains("app.server")) {
 					QuhaoConstant.HTTP_URL = line.split("=")[1];
-//					QuhaoLog.i(TAG, "server url is : " + QuhaoConstant.HTTP_URL);
+					// QuhaoLog.i(TAG, "server url is : " +
+					// QuhaoConstant.HTTP_URL);
 				}
 			}
 			input.close();
 		} catch (NotFoundException e) {
 			e.printStackTrace();
-//			QuhaoLog.e(TAG, e.getMessage());
+			// QuhaoLog.e(TAG, e.getMessage());
 		} catch (IOException e) {
 			e.printStackTrace();
-//			QuhaoLog.e(TAG, e.getMessage());
+			// QuhaoLog.e(TAG, e.getMessage());
 		}
 	}
 
@@ -198,20 +199,22 @@ public class QHClientApplication extends Application {
 	private void initAccountConfig() {
 
 		if (!PhoneTool.isNetworkAvailable(this)) {
-//			QuhaoLog.w(TAG, "Network is not available!");
+			// QuhaoLog.w(TAG, "Network is not available!");
 			return;
 		}
 
-//		QuhaoLog.i(TAG, "Initial the account configuration");
+		// QuhaoLog.i(TAG, "Initial the account configuration");
 		SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
 
 		String phone = SharedprefUtil.get(this, QuhaoConstant.PHONE, "");
 		String isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_AUTO_LOGIN, "");
 		String password = SharedprefUtil.get(this, QuhaoConstant.PASSWORD, "");
 
-//		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//		String password = sharedPreferences.getString(QuhaoConstant.PASSWORD, "");
-//		QuhaoLog.d("cross, get password from sp", password);
+		// SharedPreferences sharedPreferences =
+		// PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		// String password = sharedPreferences.getString(QuhaoConstant.PASSWORD,
+		// "");
+		// QuhaoLog.d("cross, get password from sp", password);
 
 		if (StringUtils.isNull(isAutoLogin) || "false".equals(isAutoLogin) || StringUtils.isNull(phone) || StringUtils.isNull(password)) {
 			return;
@@ -241,19 +244,16 @@ public class QHClientApplication extends Application {
 			LoginInfo loginInfo = ParseJson.getLoginInfo(result);
 			AccountInfo account = new AccountInfo();
 			account.build(loginInfo);
-//			QuhaoLog.d(TAG, account.msg);
+			// QuhaoLog.d(TAG, account.msg);
 
 			if ("fail".equals(account.msg)) {
 				this.isLogined = false;
 				// SharedprefUtil.put(this, QuhaoConstant.IS_LOGIN, "false");
 				Handler handler = new Handler();
 				handler.post(new Runnable() {
-
 					@Override
 					public void run() {
-
 						Toast.makeText(QHClientApplication.this, "自动登陆失败，请进入个人中心登陆", Toast.LENGTH_SHORT).show();
-
 					}
 				});
 				return;
@@ -268,20 +268,21 @@ public class QHClientApplication extends Application {
 				this.accountInfo = account;
 				this.phone = phone;
 				this.isLogined = true;
+
+				// 设置jpush alias
+				Log.d(TAG, "Set alias in auto login.");
+				JPushInterface.setAliasAndTags(getApplicationContext(), phone, null, mAliasCallback);
 				return;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-//			QuhaoLog.e(TAG, e);
+			// QuhaoLog.e(TAG, e);
 			this.isLogined = false;
 			Handler handler = new Handler();
 			handler.post(new Runnable() {
-
 				@Override
 				public void run() {
-
 					Toast.makeText(QHClientApplication.this, "自动登陆失败，请进入个人中心登陆", Toast.LENGTH_SHORT).show();
-
 				}
 			});
 		} finally {
@@ -304,4 +305,27 @@ public class QHClientApplication extends Application {
 			path1.mkdirs();
 		}
 	}
+	
+	/**
+	 * Jpush alias call back
+	 */
+	public static final TagAliasCallback mAliasCallback = new TagAliasCallback() {
+		@Override
+		public void gotResult(int code, String alias, Set<String> tags) {
+			String logs;
+			switch (code) {
+			case 0:
+				logs = "Set tag and alias success";
+				Log.i(TAG, logs);
+				break;
+			case 6002:
+				Log.i(TAG, "Failed to set alias and tags due to timeout or No network");
+				break;
+
+			default:
+				logs = "Failed with errorCode = " + code;
+				Log.e(TAG, logs);
+			}
+		}
+	};
 }
