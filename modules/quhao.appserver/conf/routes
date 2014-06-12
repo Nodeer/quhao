@@ -103,6 +103,8 @@ GET		/getAuthCode						AccountController.getAuthCode
 GET		/signIn								AccountController.signIn
 GET		/delHistoryReservation				AccountController.delHistoryReservation
 GET		/delCredit				            AccountController.delHistoryCredit
+POST	/delHistoryReservation				AccountController.delHistoryReservation
+POST	/delCredit				            AccountController.delHistoryCredit
 POST    /updateUserImage					AccountController.updateUserImage
 GET  	/updatePassword						AccountController.updatePassword
 GET	    /updateUserName						AccountController.updateUserName
