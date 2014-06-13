@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--	拿号成功之后显示的页面 		-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffffff"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/getNumberLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/common_top_bar_bg_blue3"
+        android:gravity="center_vertical" >
+
+        <Button
+         	android:id="@+id/back_btn"
+         	android:layout_width="50dip"
+         	android:layout_height="fill_parent"
+         	android:background="@null"
+         	android:drawableLeft="@drawable/arrow_left"
+         	android:gravity="center|center_vertical"
+         	android:textColor="#ff000000"
+         	android:textSize="18.0sp"  />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:text="@string/get_number"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="#000000" />
+    </RelativeLayout>
+	<LinearLayout 
+          android:id="@+id/btn_GetNumberLayout"
+          android:layout_width="fill_parent"
+          android:layout_height="50dip"
+          android:gravity="center_vertical"
+          android:orientation="horizontal"
+          android:layout_alignParentBottom="true"
+          android:padding="10.0dip" >
+
+          <Button
+              android:id="@+id/btn_GetNumber"
+              android:layout_width="fill_parent"
+              android:layout_height="35dip"
+              android:layout_gravity="center_vertical|center_vertical"
+              android:background="@drawable/btn_weight"
+              android:text="@string/nahao"
+              android:textAppearance="?android:textAppearanceMediumInverse"
+              android:textColor="#ff000000"
+              android:textSize="14.0sp" />
+      </LinearLayout>
+      <LinearLayout android:layout_above="@id/btn_GetNumberLayout"
+           android:layout_below="@id/getNumberLayout"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical"
+           android:layout_marginLeft="5dp"
+           android:layout_marginRight="5dp"
+           android:layout_marginTop="5dp" >
+            
+           <ListView
+	       	    android:id="@+id/haoma_list_view"
+	       	    android:layout_width="fill_parent"
+	       	    android:layout_height="wrap_content"
+	       	    android:layout_gravity="center_horizontal"
+	       	    android:cacheColorHint="@null"
+	       	    android:divider="@null"
+	       	    android:entries="@null"
+	       	    android:headerDividersEnabled="true"
+	       	    android:listSelector="@drawable/list_item_trans"
+	       	    android:scrollbarThumbVertical="@drawable/scrollbar"
+	       	    android:scrollbars="vertical"
+	       	    android:background="@drawable/get_number_bg" />
+       </LinearLayout>
+       
+      <LinearLayout android:id="@+id/my_reservation_layout"
+          android:layout_above="@id/btn_GetNumberLayout"
+          android:layout_below="@id/getNumberLayout"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:layout_marginLeft="5dp"
+          android:layout_marginRight="5dp"
+          android:layout_marginTop="5dp" 
+          android:background="@drawable/get_number_bg"
+          android:visibility="gone">
+            
+           <LinearLayout
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center_vertical"
+               android:baselineAligned="false"
+               android:orientation="horizontal" >
+	           <LinearLayout
+	               android:layout_width="fill_parent"
+	               android:layout_height="wrap_content"
+	               android:gravity="center_vertical"
+	               android:orientation="horizontal"
+	               android:layout_weight="1.0"
+	               android:padding="10.0dip" >
+	
+	               <TextView
+	                   android:layout_width="wrap_content"
+	                   android:layout_height="wrap_content"
+	                   android:maxLines="2"
+	                   android:text="@string/seat_number"
+	                   android:textAppearance="?android:textAppearanceMedium"
+	                   android:textColor="#ff000000"
+	                   android:textSize="16.0sp" />
+	
+	               <TextView
+	                   android:id="@+id/rvo_seat_no"
+	                   android:layout_width="wrap_content"
+	                   android:layout_height="wrap_content"
+	                   android:maxLines="2"
+	                   android:paddingLeft="6.0dip"
+	                   android:text="@string/empty"
+	                   android:textAppearance="?android:textAppearanceMedium"
+	                   android:textColor="#ff000000"
+	                   android:textSize="16.0sp" />
+	           </LinearLayout>
+	
+	           <LinearLayout
+	               android:layout_width="fill_parent"
+	               android:layout_height="wrap_content"
+	               android:gravity="center_vertical"
+	               android:orientation="horizontal"
+	               android:layout_weight="1.0"
+	               android:padding="10.0dip" >
+	
+	               <TextView
+	                   android:layout_width="wrap_content"
+	                   android:layout_height="wrap_content"
+	                   android:maxLines="2"
+	                   android:text="@string/my_number"
+	                   android:textAppearance="?android:textAppearanceMedium"
+	                   android:textColor="#ff000000"
+	                   android:textSize="16.0sp" />
+	
+	               <TextView
+	                   android:id="@+id/rvo_my_number"
+	                   android:layout_width="wrap_content"
+	                   android:layout_height="wrap_content"
+	                   android:maxLines="2"
+	                   android:paddingLeft="6.0dip"
+	                   android:text="@string/empty"
+	                   android:textAppearance="?android:textAppearanceMedium"
+	                   android:textColor="#ff000000"
+	                   android:textSize="16.0sp" />
+	           </LinearLayout>
+           </LinearLayout>
+           <LinearLayout
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center_vertical"
+               android:baselineAligned="false"
+               android:orientation="horizontal" >
+	           <LinearLayout
+	               android:layout_width="fill_parent"
+	               android:layout_height="wrap_content"
+	               android:gravity="center_vertical"
+	               android:orientation="horizontal"
+	               android:layout_weight="1.0"
+	               android:padding="10.0dip" >
+	
+	               <TextView
+	                   android:layout_width="wrap_content"
+	                   android:layout_height="wrap_content"
+	                   android:maxLines="2"
+	                   android:text="@string/before_you"
+	                   android:textAppearance="?android:textAppearanceMedium"
+	                   android:textColor="#ff000000"
+	                   android:textSize="16.0sp" />
+	
+	               <TextView
+	                   android:id="@+id/rvo_before_you"
+	                   android:layout_width="wrap_content"
+	                   android:layout_height="wrap_content"
+	                   android:maxLines="2"
+	                   android:paddingLeft="6.0dip"
+	                   android:text="@string/empty"
+	                   android:textAppearance="?android:textAppearanceMedium"
+	                   android:textColor="#ff000000"
+	                   android:textSize="16.0sp" />
+	           </LinearLayout>
+	
+	           <LinearLayout
+	               android:layout_width="fill_parent"
+	               android:layout_height="wrap_content"
+	               android:gravity="center_vertical"
+	               android:orientation="horizontal"
+	               android:layout_weight="1.0"
+	               android:padding="10.0dip" >
+	
+	               <TextView
+	                   android:layout_width="wrap_content"
+	                   android:layout_height="wrap_content"
+	                   android:maxLines="2"
+	                   android:text="@string/next_number"
+	                   android:textAppearance="?android:textAppearanceMedium"
+	                   android:textColor="#ff000000"
+	                   android:textSize="16.0sp" />
+	
+	               <TextView
+	                   android:id="@+id/rvo_next_number"
+	                   android:layout_width="wrap_content"
+	                   android:layout_height="wrap_content"
+	                   android:maxLines="2"
+	                   android:paddingLeft="6.0dip"
+	                   android:text="@string/empty"
+	                   android:textAppearance="?android:textAppearanceMedium"
+	                   android:textColor="#ff000000"
+	                   android:textSize="16.0sp" />
+	           </LinearLayout>
+           </LinearLayout>
+       </LinearLayout>
+       
+</RelativeLayout>

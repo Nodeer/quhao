@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -54,5 +54,11 @@
         <item name="android:textSize">12sp</item>
         <item name="android:background">#bfbfbf</item>
     </style>
+    
+	<style name="MyCheckBox" parent="@android:style/Widget.CompoundButton.CheckBox">
+  	 	<item name="android:button">@drawable/get_number_checkbox_selector</item>
+  	 	<item name="android:maxHeight">20dp</item>
+  	 	<item name="android:maxWidth">20dp</item>
+  	</style>
     
 </resources>

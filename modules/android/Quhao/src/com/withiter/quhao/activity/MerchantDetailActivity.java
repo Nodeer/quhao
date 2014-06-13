@@ -827,7 +827,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					Intent intentGetNumber = new Intent();
 					intentGetNumber.putExtra("merchantId", merchantId);
 					intentGetNumber.putExtra("merchantName", mName);
-					intentGetNumber.setClass(MerchantDetailActivity.this, GetNumberActivity.class);
+					intentGetNumber.setClass(MerchantDetailActivity.this, GetNumber2Activity.class);
 					startActivity(intentGetNumber);
 		
 				} else {

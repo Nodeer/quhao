@@ -8,6 +8,7 @@ public class Paidui implements Comparable<Paidui> {
 	public Integer finished = 0;
 	public Integer maxNumber;
 	public boolean enable = false;
+	public boolean isChecked = false;
 
 	public Paidui(String seatNo, Integer currentNumber, Integer maxNumber,Integer canceled,
 			Integer expired, Integer finished, boolean enable) {

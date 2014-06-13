@@ -179,6 +179,10 @@
 			android:screenOrientation="portrait"  />
 		<!-- get number page -->
 
+		<!-- get number page -->
+		<activity android:name="com.withiter.quhao.activity.GetNumber2Activity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
+			android:screenOrientation="portrait"  />
+		<!-- get number page -->
 
 		<!-- login page -->
 		<activity android:name="com.withiter.quhao.activity.LoginActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
