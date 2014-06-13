@@ -18,7 +18,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="18dip"
-            android:background="@drawable/icon"
+            android:background="@drawable/person_avatar"
             android:focusable="false" />
 
         <com.rockerhieu.emojicon.EmojiconTextView
