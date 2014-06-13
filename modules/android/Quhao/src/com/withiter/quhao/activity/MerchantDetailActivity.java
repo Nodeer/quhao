@@ -948,7 +948,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	}
 	
 	@Override
-	protected void onStop() {
+	public void onStop() {
 		
 		super.onStop();
 	}

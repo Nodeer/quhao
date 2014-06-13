@@ -93,7 +93,7 @@
 		<!-- category page -->
 		
 		<!-- category page -->
-		<activity android:name="com.withiter.quhao.activity.MainTabActivity" android:label="@string/app_name" android:screenOrientation="portrait">
+		<activity android:name="com.withiter.quhao.activity.MainTabActivity" android:launchMode="singleTask" android:label="@string/app_name" android:screenOrientation="portrait">
 			
 		</activity>
 		<!-- category page -->
@@ -368,7 +368,7 @@
         <receiver android:name="cn.jpush.android.service.AlarmReceiver" />
         
         <!-- User defined.  For test only  用户自定义的广播接收器-->
-        <!-- <receiver
+        <receiver
             android:name="com.withiter.quhao.activity.JPushReceiver"
             android:enabled="true">
             <intent-filter>
@@ -380,7 +380,7 @@
                 <action android:name="cn.jpush.android.intent.ACTION_RICHPUSH_CALLBACK" /> Optional 用户接受Rich Push Javascript 回调函数的intent
                 <category android:name="com.withiter.quhao" />
             </intent-filter>
-        </receiver> -->
+        </receiver>
         
         <!-- Required  . Enable it you can get statistics data with channel -->
         <meta-data android:name="JPUSH_CHANNEL" android:value="developer-default"/>

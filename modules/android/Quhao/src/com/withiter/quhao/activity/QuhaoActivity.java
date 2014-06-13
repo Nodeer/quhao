@@ -3,7 +3,7 @@ package com.withiter.quhao.activity;
 import java.io.IOException;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -11,15 +11,31 @@ import android.content.res.Resources.NotFoundException;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
+import cn.jpush.android.api.InstrumentedActivity;
 
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.tool.PhoneTool;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 
-public abstract class QuhaoActivity extends Activity {
+public abstract class QuhaoActivity extends InstrumentedActivity {
 
 	private final static String TAG = QuhaoActivity.class.getName();
 	private static boolean inited = false;
+
+	// for receive customer msg from jpush server
+	private JPushReceiver mMessageReceiver;
+//	public static final String MESSAGE_RECEIVED_ACTION = "com.withiter.quhao.MESSAGE_RECEIVED_ACTION";
+	public static final String KEY_TITLE = "title";
+	public static final String KEY_MESSAGE = "message";
+	public static final String KEY_EXTRAS = "extras";
+
+	public void registerMessageReceiver() {
+		mMessageReceiver = new JPushReceiver();
+		IntentFilter filter = new IntentFilter();
+		filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+//		filter.addAction(MESSAGE_RECEIVED_ACTION);
+		registerReceiver(mMessageReceiver, filter);
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -30,6 +46,7 @@ public abstract class QuhaoActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		try {
 			super.onCreate(savedInstanceState);
+			registerMessageReceiver();
 			QuhaoLog.i(TAG, "QuhaoActivity onCreate invoked");
 			QuhaoLog.i(TAG, "QuhaoActivity already inited : " + inited);
 			if (!inited) {
