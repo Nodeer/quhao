@@ -12,94 +12,90 @@ $addJS("signup.js", true)
 取号啦 - 改变你的排队生活
 `
 `set mainContent
+<style>
+    .table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+border: none!important;
+}
+</style>
+
 <div class="section hero">
-	<div class="w-container">
-		<div class="w-row">
-			<div style="float: left;">
-				<h2 class="hero-header" style="margin-top: 0px; font-weight: bolder;">入驻“取号啦”，成为合作商家</h2>
-		        <p class="hero-subtitle" style="color: lemonchiffon;margin-bottom: 5px;">你可获得：</p>
-		        <p class="hero-subtitle" style="color: lemonchiffon;margin-bottom: 5px;"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;&nbsp;直接简单的额外收益。</p>
-		        <p class="hero-subtitle" style="color: lemonchiffon;margin-bottom: 5px;"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;&nbsp;更高的翻桌率。</p>
-		        <p class="hero-subtitle" style="color: lemonchiffon;margin-bottom: 5px;"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;&nbsp;更高的消费者黏性。</p>
-		        <p class="hero-subtitle" style="color: lemonchiffon;margin-bottom: 5px;"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;&nbsp;免费便捷的优惠/广告推送。</p>
-		        <p class="hero-subtitle" style="color: lemonchiffon;margin-bottom: 5px;"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;&nbsp;免费客户挖掘，提供优质建议。</p>
-		        <p class="hero-subtitle" style="color: lemonchiffon;margin-bottom: 5px;"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;&nbsp;免费消费统计报表。</p>
-		        <p class="hero-subtitle" style="color: lemonchiffon;margin-bottom: 5px;"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;&nbsp;顾客真实反馈。</p>
-		        <p class="hero-subtitle" style="color: lemonchiffon;margin-bottom: 5px;"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;&nbsp;更人性化的服务。</p>
-		        <p class="hero-subtitle" style="color: lemonchiffon;margin-bottom: 5px;"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;&nbsp;更多优质服务等待您的体验。</p>
-	        </div>
-        
-	        <div style="float: right;" class="w-col w-col-3 w-clearfix nav-column">
-	        	<form role="form" class="form-horizontal" id="businessInfoForm" action="@{backend.self.AccountController.submitinfo()}" method="post">
-	        		<div class="form-group">
-						<div class="">
-							<span id="submitinfotips" class="form-control label-danger" style="text-align: center;color: white; font-weight:bolder; display: none; "></span>
-					    </div>
-					</div>
-	        		<div class="form-group">
-						<div class="">
-							<span class="form-control" style="text-align: center;color: white; font-weight:bolder; background-color: inherit;">有意向合作，请填写信息</span>
-					    </div>
-					</div>
-					<div class="form-group">
-						<div class="">
-							<input class="form-control" name="companyName" id="companyName" value="" placeholder="你所在公司/餐厅名称" />
-					    </div>
-					</div>
-					<div class="form-group">
-						<div class="">
-							<input class="form-control" name="peopleName" id="peopleName" value="" placeholder="你的姓名" />
-					    </div>
-					</div>
-					<div class="form-group">
-						<div class="">
-							<input class="form-control" name="peopleContact" id="peopleContact" value="" placeholder="手机/座机（区号-号码）" />
-					    </div>
-					</div>
-					<div class="form-group">
-						<div class="">
-							<input class="form-control" name="peopleEmail" id="peopleEmail" value="" placeholder="邮箱地址" />
-					    </div>
-					</div>
-					<div id="captcha" class="form-group">
-				 		<div class="">
-				 			<img style="float: left;cursor: pointer;" src="@{ApplicationController.captcha(randomID)}" onclick="$(this).attr('src','@{ApplicationController.captcha(randomID)}')" title="点击更换验证码"/>
-				 			<input style="width: 100px;" class="form-control" name="captchaCode" id="captchaCode" value="" placeholder="输入验证码" />
-				 			<input type="hidden" name="randomID" value="${randomID}" />
-				 		</div>
-					</div>
-					<div id="btnupdate" class="form-group">
-				 		<div class="">
-				   			<button type="button" id="" class="btn btn-primary" style="width: 100%" onclick="Signup.submitinfo();">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
-				 		</div>
-					</div>
-					<div id="btnupdate" class="form-group">
-				 		<div class="">
-				 			<p class="hero-subtitle" style="color: lemonchiffon;margin-bottom: 5px;"></p>
-				 			
-				   			<button type="button" id="" class="btn btn-primary" style="width: 100%" data-toggle="modal" data-target="#loginModal">已经是合作商家，直接登录</button>
-				 		</div>
-					</div>
-				</form>
-	        </div>
-		</div>
-		
-		<div style="float: left; margin-bottom: 30px; margin-top: 20px;">
-			<h2 class="hero-header" style="margin-top: 10px; font-weight: bolder;">商家合作流程</h2>
-	        <p class="hero-subtitle" style="color: lemonchiffon;margin-bottom: 5px;font-size: large;">
-	        	<font>1. 留下联系方式</font><span class="glyphicon glyphicon-arrow-right" style="margin-left: 60px;"></span>
-	        	<font style="margin-left: 60px;">2. 合作洽谈</font><span class="glyphicon glyphicon-arrow-right" style="margin-left: 60px;"></span>
-	        	<font style="margin-left: 60px;">3. 上线前筹备</font><span class="glyphicon glyphicon-arrow-right" style="margin-left: 60px;"></span>
-	        	<font style="margin-left: 60px;">4. 正式上线</font>
-	        </p>
-	        <p class="hero-subtitle" style="color: white;margin-bottom: 5px;">
-	        	<font style="float: left;">请在本页面右上方留下<br/>联系方式</font>
-	        	<font style="float: left;margin-left: 80px;">客户经理主动上门洽谈合<br/>作事宜，并签订合作意向<br/>书/合同</font>
-	        	<font style="float: left;margin-left: 80px;">工程师上门，帮助设置商<br/>户信息，并提供操作培训<br/>（5分钟即可掌握）</font>
-	        	<font style="float: left;margin-left: 80px;">准备工作结束，贵店餐厅<br/>即会显示在“取号啦”APP<br/>中，上线完毕，轻松享受<br/>“取号啦”提供的优质服务</font>
-	        </p>
+<div class="w-container">
+      <div class="row featurette">
+        <div class="col-md-7">
+          <h2 style="color: white;">入驻“取号啦”成为合作商家，可获得：</h2>
+          <p class="lead">
+          	<p style="color: lemonchiffon;"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;&nbsp;直接简单的额外收益。</p>
+	        <p style="color: lemonchiffon;"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;&nbsp;更高的翻桌率。</p>
+	        <p style="color: lemonchiffon;"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;&nbsp;更高的消费者黏性。</p>
+	        <p style="color: lemonchiffon;"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;&nbsp;免费便捷的优惠/广告推送。</p>
+	        <p style="color: lemonchiffon;"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;&nbsp;免费客户挖掘，提供优质建议。</p>
+	        <p style="color: lemonchiffon;"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;&nbsp;免费消费统计报表。</p>
+	        <p style="color: lemonchiffon;"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;&nbsp;顾客真实反馈。</p>
+	        <p style="color: lemonchiffon;"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;&nbsp;更人性化的服务。</p>
+	        <p style="color: lemonchiffon;"><span class="glyphicon glyphicon-ok"></span>&nbsp;&nbsp;&nbsp;更多优质服务等待您的体验。</p>
+          </p>
         </div>
+        <div class="col-md-5">
+        	<form role="form" class="" id="businessInfoForm" action="@{backend.self.AccountController.submitinfo()}" method="post">
+        		<div class="form-group">
+					<span id="submitinfotips" class="form-control label-danger" style="text-align: center;color: white; font-weight:bolder; display: none; "></span>
+				</div>
+        		<div class="form-group">
+					<span class="form-control" style="text-align: center;color: white; font-weight:bolder; background-color: inherit;">有意向合作，请填写信息</span>
+				</div>
+				<div class="form-group">
+					<input class="form-control" name="companyName" id="companyName" value="" placeholder="你所在公司/餐厅名称" />
+				</div>
+				<div class="form-group">
+					<input class="form-control" name="peopleName" id="peopleName" value="" placeholder="你的姓名" />
+				</div>
+				<div class="form-group">
+					<input class="form-control" name="peopleContact" id="peopleContact" value="" placeholder="手机/座机（区号-号码）" />
+				</div>
+				<div class="form-group">
+					<input class="form-control" name="peopleEmail" id="peopleEmail" value="" placeholder="邮箱地址" />
+				</div>
+				<div id="captcha" class="form-group">
+		 			<img style="float: left;cursor: pointer;" src="@{ApplicationController.captcha(randomID)}" onclick="$(this).attr('src','@{ApplicationController.captcha(randomID)}')" title="点击更换验证码"/>
+		 			<input style="width: 100px;" class="form-control" name="captchaCode" id="captchaCode" value="" placeholder="输入验证码" />
+		 			<input type="hidden" name="randomID" value="${randomID}" />
+				</div>
+				<div id="btnupdate" class="form-group">
+		   			<button type="button" id="" class="btn btn-primary form-control" onclick="Signup.submitinfo();">提&nbsp;&nbsp;&nbsp;&nbsp;交</button>
+				</div>
+				<div id="btnupdate" class="form-group">
+		 			<p class="hero-subtitle" style="color: lemonchiffon;margin-bottom: 5px;"></p>
+		   			<button type="button" id="" class="btn btn-primary form-control" data-toggle="modal" data-target="#loginModal">已经是合作商家，直接登录</button>
+				</div>
+			</form>
+        </div>
+      </div>
+      
+      <h2 style="color: white;">商家合作流程</h2>
+      <div class="table-responsive">
+	      <table class="table" style="border: none; width: 100%;" border="0">
+	      	<tr class="hero-subtitle" style="color: lemonchiffon;font-size: large;" align="center" valign="top">
+	      		<td align="left" valign="top" width="16%"><font>1. 留下联系方式</font></td>
+	      		<td width="12%"><span class="glyphicon glyphicon-arrow-right"></span></td>
+	      		<td width="14%"><font>2. 合作洽谈</font></td>
+	      		<td width="13%"><span class="glyphicon glyphicon-arrow-right"></span></td>
+	      		<td width="14%"><font>3. 上线前筹备</font></td>
+	      		<td width="13%"><span class="glyphicon glyphicon-arrow-right"></span></td>
+	      		<td width="18%"><font>4. 正式上线</font></td>
+	      	</tr>
+	      	<tr class="hero-subtitle" style="color: white;">
+	      		<td valign="top"><font>请在本页面右上方留下联系方式</font></td>
+	      		<td valign="top"></td>
+	      		<td valign="top"><font>客户经理主动上门洽谈合作事宜，并签订合作意向书/合同</font></td>
+	      		<td valign="top"></td>
+	      		<td valign="top"><font>工程师上门，帮助设置商户信息，并提供操作培训（5分钟即可掌握）</font></td>
+	      		<td valign="top"></td>
+	      		<td valign="top"><font>准备工作结束，贵店餐厅即会显示在“取号啦”APP中，上线完毕，轻松享受“取号啦”提供的优质服务</font></td>
+	      	</tr>
+		  </table>
+	  </div>
 	</div>
+	
 	<!-- Modal -->
 	<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	  <div class="modal-dialog">
@@ -166,3 +162,4 @@ $addJS("signup.js", true)
 	</div>
 </div>
 `
+

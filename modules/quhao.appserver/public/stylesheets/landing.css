@@ -8,15 +8,17 @@
 
 /* 2. header
 ========================================================*/
-.landingHeader{
+.landingHeader {
 	width: 900px;
 	margin: 100px auto;
 	text-align: center;
 }
 
-.landingTip{margin: 10px 0 48px;}
+.landingTip {
+	margin: 10px 0 48px;
+}
 
-.landingHeader .btnfaceBook, .landingHeader .btnApplyful{
+.landingHeader .btnfaceBook,.landingHeader .btnApplyful {
 	color: #fff;
 	font-weight: 700;
 	border-radius: 2px;
@@ -30,30 +32,31 @@
 	-webkit-box-shadow: 0 1px 1px #597658;
 }
 
-.landingHeader .btnfaceBook{
+.landingHeader .btnfaceBook {
 	border: 1px solid #506383;
 	background: #6c83a9;
-	background: linear-gradient(to bottom, #6c83a9 0%,#596c97 100%);
+	background: linear-gradient(to bottom, #6c83a9 0%, #596c97 100%);
 	background: -moz-linear-gradient(top, #6c83a9 0%, #596c97 100%);
-	background: -webkit-linear-gradient(top, #6c83a9 0%,#596c97 100%);
-	background: -ms-linear-gradient(top, #6c83a9 0%,#596c97 100%);
+	background: -webkit-linear-gradient(top, #6c83a9 0%, #596c97 100%);
+	background: -ms-linear-gradient(top, #6c83a9 0%, #596c97 100%);
 }
 
-.landingHeader .btnApplyful{
+.landingHeader .btnApplyful {
 	border: 1px solid #5c745c;
 	background: #8bb08a;
-	background: linear-gradient(to bottom, #8bb08a 0%,#719e70 100%);
+	background: linear-gradient(to bottom, #8bb08a 0%, #719e70 100%);
 	background: -moz-linear-gradient(top, #8bb08a 0%, #719e70 100%);
-	background: -webkit-linear-gradient(top, #8bb08a 0%,#719e70 100%);
-	background: -ms-linear-gradient(top, #8bb08a 0%,#719e70 100%);
+	background: -webkit-linear-gradient(top, #8bb08a 0%, #719e70 100%);
+	background: -ms-linear-gradient(top, #8bb08a 0%, #719e70 100%);
 	margin-left: 5px;
 }
 
-.landingHeader .btnfaceBook .icon + span, .landingHeader .btnApplyful .icon + span{
+.landingHeader .btnfaceBook .icon+span,.landingHeader .btnApplyful .icon+span
+	{
 	margin: 0 25px 0 10px;
 }
 
-.loginLink{
+.loginLink {
 	color: #d1e8d4;
 	margin-top: 10px;
 	display: inline-block;
@@ -61,33 +64,35 @@
 
 /* 2. footer
 ========================================================*/
-.landingFooter{
+.landingFooter {
 	background: #eff6f0;
 	height: 223px;
 	text-align: center;
-	box-shadow: 0 1px 4px rgba(0,0,0,0.7);
-	-moz-box-shadow: 0 1px 4px rgba(0,0,0,0.7);
-	-webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.7);
-	position:fixed;
-   	left:0px;
-  	bottom:0px;
-  	width: 100%;
-  	z-index: 999;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+	position: fixed;
+	left: 0px;
+	bottom: 0px;
+	width: 100%;
+	z-index: 999;
 }
 
-.landingFooter ul{
+.landingFooter ul {
 	margin-top: 32px;
 	display: inline-block;
 }
 
-.landingFooter ul a{color: #84b181;}
+.landingFooter ul a {
+	color: #84b181;
+}
 
-.landingFooter li + li{
+.landingFooter li+li {
 	margin-left: 30px;
 	position: relative;
 }
 
-.landingFooter li + li:before{
+.landingFooter li+li:before {
 	content: '';
 	width: 4px;
 	height: 4px;
@@ -101,24 +106,26 @@
 	left: -15px;
 }
 
-.landingFooter .copyright{
+.landingFooter .copyright {
 	color: #999;
 	margin-top: 38px;
 }
 
 .landingBG {
-	width:100%;
-	height:100%;
-	background:url(../images/common/landingBG.png) no-repeat;
-}
-.logintll {
-	color:#244926;
-	font-size:14px;
-	font-weight:900;
-	text-align:right;
-	padding:25px 200px 0 0;
+	width: 100%;
+	height: 100%;
+	background: url(../images/common/landingBG.png) no-repeat;
 }
 
-.logintll a{
-	color:#244926;
+.logintll {
+	color: #244926;
+	font-size: 14px;
+	font-weight: 900;
+	text-align: right;
+	padding: 25px 200px 0 0;
 }
+
+.logintll a {
+	color: #244926;
+}
+

@@ -36,6 +36,14 @@ public class LandingController extends BaseController {
 		String randomID = Codec.UUID();
 		renderJapid(randomID);
 	}
+	/**
+	 * 跳转到商家页面
+	 * TODO test, remove
+	 */
+	public static void b() {
+		String randomID = Codec.UUID();
+		renderJapid(randomID);
+	}
 
 	/**
 	 * Android下载

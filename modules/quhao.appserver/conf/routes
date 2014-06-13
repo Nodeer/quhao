@@ -29,6 +29,7 @@ GET		/app/{action}						AppController.{action}
 GET		/home								LandingController.index
 GET		/about								LandingController.about
 GET		/business							LandingController.business
+GET		/b									LandingController.b
 GET		/down								LandingController.androidDown
 GET		/active								backend.self.AccountController.active
 GET		/reset								backend.self.AccountController.reset
