@@ -49,14 +49,9 @@ public class ReservationVO {
 		this.created = r.created;
 	}
 	
-	public void build(Reservation r, String mX, String mY, boolean youhui, double userX, double userY){
+	public void build(Reservation r, boolean youhui){
 		build(r);
 		this.youhui = youhui;
-		if(userX != 0 && userY != 0){
-			this.distance = DistanceUtils.GetDistance(Double.parseDouble(mX), Double.parseDouble(mY), userX, userY);
-		}else{
-			this.distance = -1;
-		}
 	}
 	
 	public static List<ReservationVO> build(List<Reservation> rList){

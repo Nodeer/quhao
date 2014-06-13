@@ -444,7 +444,7 @@ public class AccountController extends BaseController {
 	 * @param accountId
 	 *            account id
 	 */
-	public static void getCurrentMerchants(String accountId,int page,String sortBy, double userX, double userY) {
+	public static void getCurrentMerchants(String accountId,int page,String sortBy) {
 		List<Reservation> currentReservations = Reservation.findValidReservations(accountId,page,sortBy);
 
 		List<ReservationVO> currentReservationVOs = new ArrayList<ReservationVO>();
@@ -478,7 +478,7 @@ public class AccountController extends BaseController {
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
-			reservationVO.build(reservation, merchant.y, merchant.x, merchant.youhui,  userX, userY);
+			reservationVO.build(reservation, merchant.youhui);
 			currentReservationVOs.add(reservationVO);
 		}
 
