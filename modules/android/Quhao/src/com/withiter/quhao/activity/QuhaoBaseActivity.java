@@ -137,10 +137,6 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 						Log.i(TAG, "backClicked: " + HelpActivity.backClicked);
 						HelpActivity.backClicked = true;
 					}
-					if (params[0].equals(ShareDialogActivity.class.getName())) {
-						Log.i(TAG, "backClicked: " + ShareDialogActivity.backClicked);
-						ShareDialogActivity.backClicked = true;
-					}
 				}
 				onBackPressed();
 				activity.finish();

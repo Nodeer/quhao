@@ -132,7 +132,7 @@
             android:layout_weight="1"
             android:autoLink="phone"
             android:gravity="center_vertical"
-            android:text="021-51990657-8003"
+            android:text="021-51990657"
             android:textColor="@color/black"
             android:textSize="16sp" />
     </LinearLayout>
