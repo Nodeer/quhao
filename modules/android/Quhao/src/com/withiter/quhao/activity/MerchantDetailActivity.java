@@ -840,6 +840,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				break;
 			case R.id.btn_share:
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				ShareSDK.initSDK(this);
 				showShare(false, null);
 				break;
 			case R.id.btn_chat:
@@ -977,6 +978,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		final OnekeyShare oks = new OnekeyShare();
 		oks.setNotification(R.drawable.ic_launcher, this.getString(R.string.app_name));
 		oks.setAddress("");
+		
 		if(null != merchant)
 		{
 			oks.setText("#取号啦#发现这个软件不错哦!在\""+ merchant.name +"\"手机直接拿号不用排队,快去看看吧。@取号啦");

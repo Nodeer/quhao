@@ -19,7 +19,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -432,8 +431,10 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			final OnekeyShare oks = new OnekeyShare();
 			oks.setNotification(R.drawable.ic_launcher, getActivity().getString(R.string.app_name));
 			oks.setAddress("");
+			oks.setTitle("取号啦--让你排队不用等！");
+			oks.setUrl("http://www.quhao.la");
 			oks.setText("取号啦--让你排队不用等！\n@取号啦 \n www.quhao.la");
-//			oks.setImageUrl("http://www.quhao.la/public/images/home/site_iphone.png");
+			oks.setImageUrl("http://www.quhao.la/public/images/home/site_iphone.png");
 			oks.setSilent(silent);
 			if (platform != null) {
 				oks.setPlatform(platform);
