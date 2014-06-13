@@ -128,6 +128,9 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	@Override
 	public void onPause() {
 		Log.e("wjzwjz", "HomeFragment onPause");
+		if (mViewPager!= null && null != views && !views.isEmpty() && mPagerAdapter != null) {
+			mViewPager.stopAutoScroll();
+		}
 		super.onPause();
 	}
 

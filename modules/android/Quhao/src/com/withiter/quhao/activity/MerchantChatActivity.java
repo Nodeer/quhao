@@ -425,6 +425,7 @@ public class MerchantChatActivity extends FragmentActivity implements EmojiconGr
 				if (mWebSocketClient.getConnection().isOpen()) {
 					
 					firstTime = currentTime;
+					mWebSocketClient.send(chatMsgEdit.getText().toString().trim());
 					chatMsgEdit.setText("");
 				}
 				else

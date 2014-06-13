@@ -1,8 +1,10 @@
 package com.withiter.quhao.activity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -244,8 +246,10 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 					}
 				}
 				Log.e(TAG, ridStr);
-				String url = "delHistoryReservation?id=" + ridStr;
-				final DeleteReservationsInHistoryPaiduiTask task = new DeleteReservationsInHistoryPaiduiTask(R.string.waitting,this,url);
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("id", ridStr);
+				String url = "delHistoryReservation";
+				final DeleteReservationsInHistoryPaiduiTask task = new DeleteReservationsInHistoryPaiduiTask(R.string.waitting,this,url,params);
 				task.execute(new Runnable(){
 
 					@Override

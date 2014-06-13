@@ -1,10 +1,11 @@
 package com.withiter.quhao.task;
 
+import java.util.Map;
+
 import org.json.JSONException;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 
@@ -20,16 +21,19 @@ public class DeleteReservationsInHistoryPaiduiTask extends BaseTask {
 	
 	public String result;
 
+	private Map<String, String> params;
 	/**
 	 * 
 	 * @param context
+	 * @param params 
 	 * @param action replay我的回复/thread我的发帖/favorites我的收藏
 	 * @param page
 	 * @param token
 	 */
-	public DeleteReservationsInHistoryPaiduiTask(int preDialogMessage,Context context,String url) {
+	public DeleteReservationsInHistoryPaiduiTask(int preDialogMessage,Context context,String url, Map<String, String> params) {
 		super(preDialogMessage,context);
 		this.url = url;
+		this.params = params;
 //		mParams = new HashMap<String, String>();
 //		mParams.put("apiname", API_NAME);
 //		mParams.put("method", METHOD);
@@ -43,7 +47,7 @@ public class DeleteReservationsInHistoryPaiduiTask extends BaseTask {
 
 	@Override
 	public JsonPack getData() throws Exception {
-		String result = CommonHTTPRequest.get(url); // doGet(mParams);
+		String result = CommonHTTPRequest.post(url,params); // doGet(mParams);
 		JsonPack jsonPack = getJsonPack(result);
 		return jsonPack;
 	}
