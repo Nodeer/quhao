@@ -144,7 +144,6 @@ public class MerchantNearByAdapter extends BaseAdapter {
 				}
 				
 //				holder.distance.setText(String.valueOf(DistanceUtil.computeDistance(lp.getLatitude(), lp.getLongitude(), merchant.lat, merchant.lng)));
-//				Log.e("wjzwjz distance : ", String.valueOf(DistanceUtil.computeDistance(lp.getLatitude(), lp.getLongitude(), merchant.lat, merchant.lng)));
 			}
 			else
 			{

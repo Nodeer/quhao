@@ -232,9 +232,7 @@ public class PicUtil {
 //			conn.setDoInput(true);
 //			conn.connect();
 //			int code = conn.getResponseCode();
-//			Log.e("wjzwjz code = ", String.valueOf(code));
 //			is = conn.getInputStream();
-			//TODO:wjzwjz file name problem --- cacheFile
 			File cacheFile = FileUtil.getCacheFile(imageUri);
 			if(null != cacheFile)
 			{

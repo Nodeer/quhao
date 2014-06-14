@@ -324,7 +324,6 @@ public class MoreFragment extends Fragment implements OnClickListener{
 				
 				@Override
 				public void onError(Platform arg0, int arg1, Throwable arg2) {
-					Log.e("wjz", "on error 1");
 					
 				}
 				
@@ -337,7 +336,6 @@ public class MoreFragment extends Fragment implements OnClickListener{
 				
 				@Override
 				public void onCancel(Platform arg0, int arg1) {
-					Log.e("wjz", "on cancel 1");
 					
 				}
 			});

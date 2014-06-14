@@ -81,6 +81,10 @@ public class ViewLeft extends RelativeLayout implements ViewBaseAction{
 			}
 		});
 	}
+	
+	public void setShowText(String showText) {
+		this.showText = showText;
+	}
 
 	public void setOnSelectListener(OnSelectListener onSelectListener) {
 		mOnSelectListener = onSelectListener;

@@ -538,14 +538,12 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 					merchantList = new ArrayList<Merchant>();
 				}
 				merchantList.addAll(tempList);
-				Log.e("wjzwjz ", " success merchant list size : " + merchantList.size());
 				updateMerchantsHandler.obtainMessage(200, null).sendToTarget();
 			}
 		},new Runnable() {
 			
 			@Override
 			public void run() {
-				Log.e("wjzwjz ", " error merchant list size : " + merchantList.size());
 				needToLoad = false;
 				updateMerchantsHandler.obtainMessage(200, null).sendToTarget();
 			}

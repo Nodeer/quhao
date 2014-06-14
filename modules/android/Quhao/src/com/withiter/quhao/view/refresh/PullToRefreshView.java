@@ -224,7 +224,6 @@ public class PullToRefreshView extends LinearLayout {
         // footer layout
         
 //        mFootViewTv = (TextView) mFooterView.findViewById(R.id.xlistview_footer_hint_textview);
-//        mFootViewTv.setText("wjz loading more");
 //        mFootViewBar = (ProgressBar) mFooterView.findViewById(R.id.xlistview_footer_progressbar);
         
         measureView(mFooterView);

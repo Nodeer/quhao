@@ -122,7 +122,7 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 //					}
 //
 //				} catch (Exception e) {
-//					Log.e("wjzwjz", e.getMessage());
+		
 //				}
 //				finally
 //				{
@@ -163,7 +163,7 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 					}
 
 				} catch (Exception e) {
-					Log.e("wjzwjz", e.getMessage());
+					
 				}
 				finally
 				{

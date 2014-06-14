@@ -506,8 +506,6 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 						Looper.prepare();
 						request = post(QuhaoConstant.HTTP_URL + "updateUserImage", params, files);
 						
-						Log.e("wjzwjz", "request : " + request);
-						
 						if(!"error".equals(request))
 						{
 							SharedprefUtil.put(PersonDetailActivity.this, QuhaoConstant.USER_IMAGE, request);

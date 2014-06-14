@@ -324,7 +324,6 @@ public class ImageUtil {
 			opts.inSampleSize = computeSampleSize(opts, minSideLength, maxNumOfPixels);
 			opts.inJustDecodeBounds = false;
 			bitmap = BitmapFactory.decodeFile(path, opts); 
-			Log.e("wjzwjz decodeFile time : ", "" + (System.currentTimeMillis()-time1));
 		}catch(Exception e)
 		{
 			e.printStackTrace();

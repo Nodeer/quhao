@@ -64,7 +64,6 @@ public class MyPagerAdapter extends PagerAdapter {
 
 	@Override
 	public void destroyItem(ViewGroup container, int position, Object object) {
-		Log.e("wjzwjz", "destroy the view id : " + mViews.get(position).getId());
 		container.removeView(mViews.get(position));
 	}
 	
@@ -72,7 +71,6 @@ public class MyPagerAdapter extends PagerAdapter {
 	@Override
 	public void destroyItem(View arg0, int arg1, Object arg2) {
 		View view = (View) arg0;
-		Log.e("wjzwjz", "the view id : " + view.getId() + " - " + view.toString());
 		((ViewPager) arg0).removeView(view);
 		view = null;
 	}
@@ -83,10 +81,8 @@ public class MyPagerAdapter extends PagerAdapter {
 	public Object instantiateItem(View arg0, int arg1) {
 
 		ImageView view = (ImageView) ((ViewPager) arg0).getChildAt(arg1);
-		Log.e("wjzwjz", "view : " + (view==null));
 		if (view == null) {
 			view = (ImageView) mViews.get(arg1);
-			Log.e("wjzwjz",  " - view.parent : " + (view.getParent()==null));
 			if(view.getParent()==null)
 			{
 				
@@ -109,9 +105,7 @@ public class MyPagerAdapter extends PagerAdapter {
 	
 	@Override
 	public Object instantiateItem(ViewGroup container, int position) {
-		Log.e("wjzwjz", "instantiateItem1 : " + position);
 		container.addView(mViews.get(position)); 
-		Log.e("wjzwjz", "instantiateItem2 : " + position);
 		return mViews.get(position);
 	}
 	@Override

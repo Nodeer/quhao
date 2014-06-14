@@ -140,6 +140,11 @@ public class ViewMiddle extends LinearLayout implements ViewBaseAction {
 		return showString;
 	}
 
+	public void setShowText(String showString)
+	{
+		this.showString = showString;
+	}
+	
 	public void setOnSelectListener(OnSelectListener onSelectListener) {
 		mOnSelectListener = onSelectListener;
 	}

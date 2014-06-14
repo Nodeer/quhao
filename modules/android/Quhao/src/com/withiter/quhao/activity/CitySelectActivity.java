@@ -265,7 +265,7 @@ public class CitySelectActivity extends QuhaoBaseActivity implements AMapLocatio
 					}
 
 				} catch (Exception e) {
-					Log.e("wjzwjz", e.getMessage());
+					locateMsgHandler.obtainMessage(200, "定位失败...").sendToTarget();
 				}
 				finally
 				{

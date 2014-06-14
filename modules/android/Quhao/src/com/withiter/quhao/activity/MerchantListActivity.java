@@ -190,7 +190,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 		categoryType = "";
 		expandTabView = (ExpandTabView) this.findViewById(R.id.expandtab_view);
 		viewLeft = new ViewLeft(this, categoryNames, categoryTypes, categoryType);
-
+		viewLeft.setShowText("菜系");
 		sortByItems = new ArrayList<String>();
 		sortByItems.add("默认排序");
 		sortByItems.add("距离最近");
@@ -218,7 +218,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 		}
 		defaultSortBy = "";
 		viewRight = new ViewRight(this, sortByItems, sortByValues, defaultSortBy);
-		
+		viewRight.setShowText("排序");
 		
 		mViewArray = new ArrayList<View>();
 		mViewArray.add(viewLeft);

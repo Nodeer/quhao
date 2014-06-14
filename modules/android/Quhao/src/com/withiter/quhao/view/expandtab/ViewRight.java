@@ -28,6 +28,10 @@ public class ViewRight extends RelativeLayout implements ViewBaseAction{
 		return showText;
 	}
 
+	public void setShowText(String showText) {
+		this.showText = showText;
+	}
+	
 	public ViewRight(Context context) {
 		super(context);
 		init(context);

@@ -68,8 +68,6 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 		
 //		this.merchantName = this.getIntent().getStringExtra("merchantName");
 //		this.merchantId = this.getIntent().getStringExtra("merchantId");
-		long time1 = System.currentTimeMillis();
-		Log.e("wjzwjz", "quhaoclient : " + (time1-QHClientApplication.getInstance().time1));
 		merchant = getIntent().getParcelableExtra("merchant");
 		
 		merchantNameView = (TextView) findViewById(R.id.name);
@@ -81,8 +79,6 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 
 		btnGuideRoute = (Button) this.findViewById(R.id.guide_route);
 		btnGuideRoute.setOnClickListener(this);
-		long time2 = System.currentTimeMillis();
-		Log.e("wjzwjz", "time2-time1:" + (time2-time1));
 		mMapView = (MapView) findViewById(R.id.mapView);
 		mMapView.onCreate(savedInstanceState);
 		// markerText = (TextView) findViewById(R.id.mark_listenter_text);
@@ -98,7 +94,6 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 				MerchantLBSActivity.this.finish();
 			}
 		});
-		long time3 = System.currentTimeMillis();
 		if (mAMap == null) {
 			mAMap = mMapView.getMap();
 			mAMap.setOnMapLoadedListener(this);// 设置amap加载成功事件监听器
@@ -119,8 +114,7 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 			mAMap.getUiSettings().setMyLocationButtonEnabled(true);// 设置默认定位按钮是否显示
 //			mAMap.setMyLocationEnabled(true);// 设置为true表示显示定位层并可触发定位，false表示隐藏定位层并不可触发定位，默认是false
 		}
-		long time4 = System.currentTimeMillis();
-		Log.e("wjzwjz", "time4-time3 : " + (time4-time3));
+
 		if(null!=merchant)
 		{
 			merchantNameView.setText(merchant.getName());
@@ -139,8 +133,6 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 				mAMap.moveCamera(update);
 			}
 		}
-		long time5 = System.currentTimeMillis();
-		Log.e("wjzwjz", "time5-time4:" + (time5-time4));
 
 	}
 
@@ -376,7 +368,7 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 					}
 
 				} catch (Exception e) {
-					Log.e("wjzwjz", e.getMessage());
+					
 				}
 				finally
 				{

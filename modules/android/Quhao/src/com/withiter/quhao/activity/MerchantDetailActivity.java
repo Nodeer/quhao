@@ -233,7 +233,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				}
 
 			} catch (Exception e) {
-				//TODO: wjzwjz 系统异常时，怎么处理
 				info.findViewById(R.id.loadingbar).setVisibility(View.GONE);
 				info.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
 				paiduiConditionLayoutHandler.sendEmptyMessage(200);
@@ -353,7 +352,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						
 						// check the merchant is enabled
 						if (m.enable) {
-							
+							btnChat.setVisibility(View.VISIBLE);
 							btnOpen.setVisibility(View.GONE);
 							if(m.online)
 							{
@@ -425,6 +424,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 								currentQuHaoLayout.setVisibility(View.GONE);
 							}
 						} else {
+							btnChat.setVisibility(View.GONE);
 							btnGetNumber.setVisibility(View.GONE);
 							btnOpen.setVisibility(View.VISIBLE);
 							openNumView.setVisibility(View.VISIBLE);
@@ -436,6 +436,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					}
 					else
 					{
+						btnChat.setVisibility(View.GONE);
 						btnGetNumber.setVisibility(View.GONE);
 						btnOpen.setVisibility(View.GONE);
 						openNumView.setVisibility(View.GONE);
@@ -446,6 +447,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				}
 				else
 				{
+					btnChat.setVisibility(View.GONE);
 					btnGetNumber.setVisibility(View.GONE);
 					btnOpen.setVisibility(View.GONE);
 					openNumView.setVisibility(View.GONE);

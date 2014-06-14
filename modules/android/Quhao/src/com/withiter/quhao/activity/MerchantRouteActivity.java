@@ -153,7 +153,7 @@ public class MerchantRouteActivity extends QuhaoBaseActivity implements OnMarker
 					}
 
 				} catch (Exception e) {
-					Log.e("wjzwjz", e.getMessage());
+
 				}
 				finally
 				{

@@ -67,8 +67,6 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 	 */
 	private Button cancelBtn;
 	
-	private long time;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -162,7 +160,6 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 				CreditCostListActivity.this.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
 				
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				Log.e("wjzwjz ok ok : ", String.valueOf(System.currentTimeMillis()-time));
 			}
 
 		}
@@ -192,9 +189,6 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 //					throw new NoResultFromHTTPRequestException();
 				} else {
-					
-					time = System.currentTimeMillis();
-					Log.e("wjzwjz time : ", String.valueOf(time));
 					
 					if (isFirstLoad || null == credits) {
 						credits = new ArrayList<Credit>();
@@ -229,7 +223,6 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 				
 				if(null!=creditAdapter && "true".equals(creditAdapter.isShowDelete))
 				{
-					long time1 = System.currentTimeMillis();
 					deleteBtn.setText(R.string.delete);
 					deleteLayout.setVisibility(View.GONE);
 					creditAdapter.isShowDelete = "false";
@@ -273,7 +266,6 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 					String url = "delCredit";
 					Map<String, String> params = new HashMap<String, String>();
 					params.put("id", ridStr);
-					Log.e("wjzwjz time ", String.valueOf((System.currentTimeMillis()-time1)));
 					final DeleteCreditTask task = new DeleteCreditTask(R.string.waitting,this,url,params);
 					task.execute(new Runnable(){
 	

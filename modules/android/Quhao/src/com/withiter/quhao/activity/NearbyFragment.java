@@ -617,7 +617,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 						}
 
 					} catch (Exception e) {
-						Log.e("wjzwjz", e.getMessage());
+						
 					}
 					finally
 					{
