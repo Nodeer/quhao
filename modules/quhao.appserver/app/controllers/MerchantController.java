@@ -607,7 +607,7 @@ public class MerchantController extends BaseController {
 	 * @param cityCode
 	 *            城市代码
 	 */
-	public static void getNearNoQueueMerchants(int page, double userX, double userY, double maxDis, String cityCode) {
+	public static void getNearNoQueueMerchants(int page, double userX, double userY, double maxDis, String cityCode,String cateType) {
 		page = (page == 0) ? 1 : page;
 		int num = (page - 1) * NEAR_MERCHANT_PAGE_ITEMS_NUMBER;
 		BasicDBObject cmdBody = new BasicDBObject("aggregate", "Merchant");
@@ -626,6 +626,9 @@ public class MerchantController extends BaseController {
 		BasicDBObject fitlerParams = new BasicDBObject();
 		if (!StringUtils.isEmpty(cityCode)) {
 			fitlerParams.put("cityCode", cityCode);
+		}
+		if (!StringUtils.isEmpty(cateType)) {
+			fitlerParams.put("cateType", cateType);
 		}
 		List<ObjectId> list = Merchant.noQueueMerchants();
 		fitlerParams.put("_id", new BasicDBObject("$in", list));
@@ -674,7 +677,7 @@ public class MerchantController extends BaseController {
 	 * @param cityCode
 	 *            城市代码
 	 */
-	public static void getNearMerchants(int page, double userX, double userY, double maxDis, String cityCode) {
+	public static void getNearMerchants(int page, double userX, double userY, double maxDis, String cityCode, String cateType) {
 		page = (page == 0) ? 1 : page;
 		int num = (page - 1) * NEAR_MERCHANT_PAGE_ITEMS_NUMBER;
 		BasicDBObject cmdBody = new BasicDBObject("aggregate", "Merchant");
@@ -693,6 +696,10 @@ public class MerchantController extends BaseController {
 		if (!StringUtils.isEmpty(cityCode)) {
 			BasicDBObject filterParams = new BasicDBObject();
 			filterParams.put("cityCode", cityCode);
+			
+			if (!StringUtils.isEmpty(cateType)) {
+				filterParams.put("cateType", cateType);
+			}
 			geoNearParams.put("query", filterParams);
 		}
 
