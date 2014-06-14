@@ -486,6 +486,51 @@ public class AccountController extends BaseController {
 	}
 
 	/**
+	 * 聊聊天接口 无分页
+	 * @param accountId
+	 * @param sortBy
+	 */
+	public static void getChatMerchants(String accountId,String sortBy) {
+		List<Reservation> currentReservations = Reservation.findValidReservations(accountId,sortBy);
+
+		List<ReservationVO> currentReservationVOs = new ArrayList<ReservationVO>();
+		ReservationVO reservationVO = null;
+		Merchant merchant = null;
+		for (Reservation reservation : currentReservations) {
+			reservationVO = new ReservationVO();
+			merchant = Merchant.findById(reservation.merchantId);
+			reservationVO.merchantName = merchant.name;
+			reservationVO.merchantAddress = merchant.address;
+			reservationVO.dianpingFen = merchant.dianpingFen;
+			reservationVO.averageCost = merchant.averageCost;
+			Haoma haoma = Haoma.findByMerchantId(reservation.merchantId);
+			if(null != haoma && null != haoma.haomaMap && !haoma.haomaMap.isEmpty())
+			{
+				Iterator ite = haoma.haomaMap.keySet().iterator();
+				while (ite.hasNext()) {
+					Integer key = (Integer) ite.next();
+					if (key.equals(Integer.valueOf(reservation.seatNumber))) {
+						if(null != haoma.haomaMap.get(key))
+						{
+							reservationVO.currentNumber = haoma.haomaMap.get(key).currentNumber;
+						}
+					}
+				}
+			}
+			
+			try {
+				reservationVO.merchantImage = URLDecoder.decode(merchant.merchantImage, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			reservationVO.build(reservation, merchant.youhui);
+			currentReservationVOs.add(reservationVO);
+		}
+
+		renderJSON(currentReservationVOs);
+	}
+	
+	/**
 	 * 
 	 * get history merchants by account id
 	 * 

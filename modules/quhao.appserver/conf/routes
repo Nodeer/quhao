@@ -111,7 +111,7 @@ GET  	/updatePassword						AccountController.updatePassword
 GET	    /updateUserName						AccountController.updateUserName
 GET	    /getUserAgreement					AccountController.getUserAgreement
 GET	    /queryByAccountId					AccountController.queryByAccountId
-
+GET		/getChatMerchants					AccountController.getChatMerchants
 
 # Comment
 GET		/updateComment						CommentController.updateComment
