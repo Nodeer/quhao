@@ -776,12 +776,14 @@ public class MerchantController extends BaseController {
 			m.online = resultContainer.getBoolean("online");
 			
 			ArrayList<BasicDBObject> list=(ArrayList<BasicDBObject>)resultContainer.get("seatType");
-			Object [] objs=list.toArray();
-			String [] strs=new String[objs.length];
-			for(int i=0;i<objs.length;i++){
-			  strs[i]=objs[i].toString();
+			if(list != null && list.size() != 0){
+				Object [] objs=list.toArray();
+				String [] strs=new String[objs.length];
+				for(int i=0;i<objs.length;i++){
+				  strs[i]=objs[i].toString();
+				}
+				m.seatType = strs;
 			}
-			m.seatType = strs;
 			lists.add(m);
 		}
 		return lists;
