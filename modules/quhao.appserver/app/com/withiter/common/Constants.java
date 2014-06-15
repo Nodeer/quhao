@@ -10,31 +10,42 @@ public class Constants {
 	}
 	
 	public enum CateType{
-		benbangcai, chuancai, dongnanyacai, haixian, hanguoliaoli, huoguo,
-		mianbaodangao, ribenliaoli, shaokao, tianpinyinpin, xiangcai,
-		xiaochikuaican, xican, xinjiangqingzhen, yuecaiguan, zhongcancaixi, zizhucan
+		benbangcai, chuancai, dongnanyacai, haixian, huoguo,
+		liaoli, tianpinyinpin, xiangcai,
+		xiaochikuaican, xican, xinjiangqingzhen, yuecai, 
+		zhongcancaixi, zizhucan, shandongcai, jiangsucai, zhejiangcai, 
+		anhuicai, fujiancai, dongbeicai, xibeicai, beijingcai, hubeicai, 
+		yunguicai, taiwancai
 	}
 	
 	public static Map<String, String> categorys = new HashMap<String, String>();
 	
-	static{
-		categorys.put(CateType.benbangcai.toString(), "本帮菜");
+	static {
+		categorys.put(CateType.benbangcai.toString(), "上海菜");
 		categorys.put(CateType.chuancai.toString(), "川菜");
 		categorys.put(CateType.dongnanyacai.toString(), "东南亚菜");
 		categorys.put(CateType.haixian.toString(), "海鲜");
-		categorys.put(CateType.hanguoliaoli.toString(), "火锅料理");
 		categorys.put(CateType.huoguo.toString(), "火锅");
-		categorys.put(CateType.mianbaodangao.toString(), "面包蛋糕");
-		categorys.put(CateType.ribenliaoli.toString(), "日本料理");
-		categorys.put(CateType.shaokao.toString(), "烧烤");
+		categorys.put(CateType.liaoli.toString(), "料理");
 		categorys.put(CateType.tianpinyinpin.toString(), "甜品饮品");
 		categorys.put(CateType.xiangcai.toString(), "湘菜");
 		categorys.put(CateType.xiaochikuaican.toString(), "小吃快餐");
 		categorys.put(CateType.xican.toString(), "西餐");
 		categorys.put(CateType.xinjiangqingzhen.toString(), "新疆清真");
-		categorys.put(CateType.yuecaiguan.toString(), "粤菜馆");
-		categorys.put(CateType.zhongcancaixi.toString(), "中餐菜系");
+		categorys.put(CateType.yuecai.toString(), "粤菜");
+		categorys.put(CateType.zhongcancaixi.toString(), "中餐");
 		categorys.put(CateType.zizhucan.toString(), "自助餐");
+		categorys.put(CateType.shandongcai.toString(), "山东菜");
+		categorys.put(CateType.jiangsucai.toString(), "江苏菜");
+		categorys.put(CateType.zhejiangcai.toString(), "浙江菜");
+		categorys.put(CateType.anhuicai.toString(), "安徽菜");
+		categorys.put(CateType.fujiancai.toString(), "福建菜");
+		categorys.put(CateType.dongbeicai.toString(), "东北菜");
+		categorys.put(CateType.xibeicai.toString(), "西北菜");
+		categorys.put(CateType.beijingcai.toString(), "北京菜");
+		categorys.put(CateType.hubeicai.toString(), "湖北菜");
+		categorys.put(CateType.yunguicai.toString(), "云贵菜");
+		categorys.put(CateType.taiwancai.toString(), "台湾菜");
 	}
 	
 	public enum SortBy{

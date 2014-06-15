@@ -10,6 +10,7 @@ import play.Play;
 import play.modules.morphia.Model.MorphiaQuery;
 
 import com.google.code.morphia.annotations.Entity;
+import com.withiter.common.Constants;
 import com.withiter.common.Constants.CateType;
 import com.withiter.models.merchant.Merchant;
 
@@ -95,74 +96,63 @@ public class ImportGuangzhouAmapDatas extends OnetimePatch {
 			
 			if(m.name.contains("自助")){
 				m.cateType = CateType.zizhucan.toString();
-				m.cateName = "自助餐";
+				m.cateName = Constants.categorys.get(CateType.zizhucan);
 				m.save();
 				continue;
 			}
 			
 			if(value.contains("上海菜")){
 				m.cateType = CateType.benbangcai.toString();
-				m.cateName = "本帮菜";
+				m.cateName = Constants.categorys.get(CateType.benbangcai);
 				m.save();
 				continue;
 			}
 			if(value.contains("四川菜")){
 				m.cateType = CateType.chuancai.toString();
-				m.cateName = "川菜";
+				m.cateName = Constants.categorys.get(CateType.chuancai);
 				m.save();
 				continue;
 			}
 			if(value.contains("其它亚洲菜") || value.contains("泰国")){
 				m.cateType = CateType.dongnanyacai.toString();
-				m.cateName = "东南亚菜";
+				m.cateName = Constants.categorys.get(CateType.dongnanyacai);
 				m.save();
 				continue;
 			}
 			if(value.contains("海鲜酒楼")){
 				m.cateType = CateType.haixian.toString();
-				m.cateName = "海鲜";
+				m.cateName = Constants.categorys.get(CateType.haixian);
 				m.save();
 				continue;
 			}
 			if(value.contains("火锅店")){
 				m.cateType = CateType.huoguo.toString();
-				m.cateName = "火锅";
-				m.save();
-				continue;
-			}
-			if(value.contains("糕饼店")){
-				m.cateType = CateType.mianbaodangao.toString();
-				m.cateName = "面包蛋糕";
+				m.cateName = Constants.categorys.get(CateType.huoguo);
 				m.save();
 				continue;
 			}
 			if(value.contains("日本料理") || value.contains("韩国料理")){
-				m.cateType = CateType.ribenliaoli.toString();
-				m.cateName = "日本料理";
+				m.cateType = CateType.liaoli.toString();
+				m.cateName = Constants.categorys.get(CateType.liaoli);
 				m.save();
 				continue;
 			}
-			if(value.contains("休闲餐饮场所")){
-				m.cateType = CateType.shaokao.toString();
-				m.cateName = "烧烤";
-				m.save();
-				continue;
-			}
+			
 			if(value.contains("甜品店") || value.contains("冷饮店") || key.contains("咖啡厅") || key.contains("茶艺馆")){
 				m.cateType = CateType.tianpinyinpin.toString();
-				m.cateName = "甜品饮品";
+				m.cateName = Constants.categorys.get(CateType.tianpinyinpin);
 				m.save();
 				continue;
 			}
 			if(value.contains("湘菜")){
 				m.cateType = CateType.xiangcai.toString();
-				m.cateName = "湘菜";
+				m.cateName = Constants.categorys.get(CateType.xiangcai);
 				m.save();
 				continue;
 			}
 			if(key.contains("快餐厅")){
 				m.cateType = CateType.xiaochikuaican.toString();
-				m.cateName = "小吃快餐";
+				m.cateName = Constants.categorys.get(CateType.xiaochikuaican);
 				m.save();
 				continue;
 			}
@@ -172,36 +162,98 @@ public class ImportGuangzhouAmapDatas extends OnetimePatch {
 					|| value.contains("牛扒店")|| value.contains("俄国菜")|| value.contains("葡国菜")
 					|| value.contains("德国菜")|| value.contains("巴西菜")|| value.contains("墨西哥菜")){
 				m.cateType = CateType.xican.toString();
-				m.cateName = "西餐";
+				m.cateName = Constants.categorys.get(CateType.xican);
 				m.save();
 				continue;
 			}
 			if(value.contains("清真菜馆")){
 				m.cateType = CateType.xinjiangqingzhen.toString();
-				m.cateName = "新疆清真";
+				m.cateName = Constants.categorys.get(CateType.xinjiangqingzhen);
 				m.save();
 				continue;
 			}
 			if(value.contains("粤菜")){
-				m.cateType = CateType.yuecaiguan.toString();
-				m.cateName = "粤菜馆";
+				m.cateType = CateType.yuecai.toString();
+				m.cateName = Constants.categorys.get(CateType.yuecai);
 				m.save();
 				continue;
 			}
 			
-			// 山东菜(鲁菜), 江苏菜, 浙江菜, 安徽菜(徽菜), 
-			// 福建菜, 北京菜, 湖北菜(鄂菜), 东北菜, 云贵菜, 西北菜, 老字号, 特色/地方风味餐厅, 中式素菜馆, 
-			// 台湾菜, 潮州菜
-			if(value.contains("综合酒楼") || value.contains("山东菜")|| value.contains("江苏菜")|| value.contains("浙江菜")|| value.contains("v")
-					|| value.contains("福建菜")|| value.contains("北京菜")|| value.contains("湖北菜")|| value.contains("东北菜")|| value.contains("云贵菜")
-					|| value.contains("西北菜")|| value.contains("老字号")|| value.contains("地方风味餐厅")|| value.contains("中式素菜馆")
-					|| value.contains("台湾菜")|| value.contains("潮州菜")){
+			// 老字号, 特色/地方风味餐厅, 中式素菜馆, 
+			if(value.contains("综合酒楼") 
+					|| value.contains("老字号")|| value.contains("地方风味餐厅")|| value.contains("中式素菜馆")
+					){
 				m.cateType = CateType.zhongcancaixi.toString();
-				m.cateName = "中餐菜系";
+				m.cateName = Constants.categorys.get(CateType.zhongcancaixi);
 				m.save();
 				continue;
 			}
-			
+			if(value.contains("山东菜")){
+				m.cateType = CateType.shandongcai.toString();
+				m.cateName = Constants.categorys.get(CateType.shandongcai);
+				m.save();
+				continue;
+			}
+			if(value.contains("江苏菜")){
+				m.cateType = CateType.jiangsucai.toString();
+				m.cateName = Constants.categorys.get(CateType.jiangsucai);
+				m.save();
+				continue;
+			}
+			if(value.contains("浙江菜")){
+				m.cateType = CateType.zhejiangcai.toString();
+				m.cateName = Constants.categorys.get(CateType.zhejiangcai);
+				m.save();
+				continue;
+			}
+			if(value.contains("安徽菜")){
+				m.cateType = CateType.anhuicai.toString();
+				m.cateName = Constants.categorys.get(CateType.anhuicai);
+				m.save();
+				continue;
+			}
+			if(value.contains("福建菜")){
+				m.cateType = CateType.fujiancai.toString();
+				m.cateName = Constants.categorys.get(CateType.fujiancai);
+				m.save();
+				continue;
+			}
+			if(value.contains("东北菜")){
+				m.cateType = CateType.dongbeicai.toString();
+				m.cateName = Constants.categorys.get(CateType.dongbeicai);
+				m.save();
+				continue;
+			}
+			if(value.contains("西北菜")){
+				m.cateType = CateType.xibeicai.toString();
+				m.cateName = Constants.categorys.get(CateType.xibeicai);
+				m.save();
+				continue;
+			}
+			if(value.contains("北京菜")){
+				m.cateType = CateType.beijingcai.toString();
+				m.cateName = Constants.categorys.get(CateType.beijingcai);
+				m.save();
+				continue;
+			}
+			if(value.contains("湖北菜")){
+				m.cateType = CateType.hubeicai.toString();
+				m.cateName = Constants.categorys.get(CateType.hubeicai);
+				m.save();
+				continue;
+			}
+			if(value.contains("云贵菜")){
+				m.cateType = CateType.yunguicai.toString();
+				m.cateName = Constants.categorys.get(CateType.yunguicai);
+				m.save();
+				continue;
+			}
+			if(value.contains("台湾菜")){
+				m.cateType = CateType.taiwancai.toString();
+				m.cateName = Constants.categorys.get(CateType.taiwancai);
+				m.save();
+				continue;
+			}
 		}
 		br.close();
 	}

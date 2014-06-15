@@ -17,6 +17,7 @@ import vo.MerchantVO;
 import com.withiter.models.account.Account;
 import com.withiter.models.merchant.Attention;
 import com.withiter.models.merchant.Merchant;
+import com.withiter.models.merchant.Open;
 import com.withiter.utils.StringUtils;
 
 public class AttentionController extends BaseController {
@@ -109,7 +110,7 @@ public class AttentionController extends BaseController {
 		MerchantVO mvo = null;
 		if (ms != null) {
 			for (Merchant m : ms) {
-				mvo = MerchantVO.build(m, userX, userY);
+				mvo = MerchantVO.build(m, userX, userY, Open.getNumberByMid(m.id()));
 				avos.add(mvo);
 			}
 		}

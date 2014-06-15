@@ -175,7 +175,7 @@ public class MerchantController extends BaseController {
 		List<Merchant> merchantList = Merchant.nextPage(cateType, page, sortBy, cityCode);
 		List<MerchantVO> merchantVOList = new ArrayList<MerchantVO>();
 		for (Merchant m : merchantList) {
-			merchantVOList.add(MerchantVO.build(m, userX, userY));
+			merchantVOList.add(MerchantVO.build(m, userX, userY, Open.getNumberByMid(m.id())));
 		}
 		renderJSON(merchantVOList);
 	}

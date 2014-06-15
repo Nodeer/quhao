@@ -176,4 +176,23 @@ public class MerchantVO {
 		
 		return vo;
 	}
+	
+	/**
+	 * @param m
+	 * @param userX 经度
+	 * @param userY 纬度
+	 * @param openNum 希望开通数
+	 * @return
+	 */
+	public static MerchantVO build(Merchant m, double userX, double userY, long openNum) {
+		MerchantVO vo = build(m);
+		vo.openNum = openNum;
+		if(userX != 0 && userY != 0){
+			vo.distance = DistanceUtils.GetDistance(Double.parseDouble(m.y), Double.parseDouble(m.x), userX, userY);
+		}else{
+			vo.distance = -1;
+		}
+		
+		return vo;
+	}
 }
