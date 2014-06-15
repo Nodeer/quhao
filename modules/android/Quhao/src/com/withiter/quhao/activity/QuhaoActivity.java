@@ -115,4 +115,10 @@ public abstract class QuhaoActivity extends InstrumentedActivity {
 	protected void onPause() {
 		super.onPause();
 	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unregisterReceiver(mMessageReceiver);
+	}
 }

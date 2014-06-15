@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -59,10 +58,12 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 	private RelativeLayout personInfoLayout;
 	private LinearLayout myAttentionLayout;
 	
+	private RelativeLayout personInfoLogoutLayout;
+	
 	private ImageView avatar;
 
-	private Button loginBtn;
-	private Button regBtn;
+	private ImageView loginBtn;
+	private TextView regBtn;
 
 	private final int UNLOCK_CLICK = 1000;
 	
@@ -109,8 +110,9 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 		historyPaiduiLayout.setOnClickListener(this);
 		creditCostLayout.setOnClickListener(this);
 		
-		loginBtn = (Button) contentView.findViewById(R.id.login);
-		regBtn = (Button) contentView.findViewById(R.id.register);
+		personInfoLogoutLayout = (RelativeLayout) contentView.findViewById(R.id.person_info_logout);
+		loginBtn = (ImageView) contentView.findViewById(R.id.login);
+		regBtn = (TextView) contentView.findViewById(R.id.register);
 
 		loginBtn.setOnClickListener(this);
 		regBtn.setOnClickListener(this);
@@ -134,8 +136,8 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 		if (QHClientApplication.getInstance().isLogined) {
 			AccountInfo account = QHClientApplication.getInstance().accountInfo;
 			if (account != null) {
-				loginBtn.setVisibility(View.GONE);
-				regBtn.setVisibility(View.GONE);
+				personInfoLogoutLayout.setVisibility(View.GONE);
+				personInfoLayout.setVisibility(View.VISIBLE);
 				updateUIData(account);
 			} else {
 
@@ -147,8 +149,8 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				value_qiandao.setText("签到(0)");
 				value_dianpin.setText("点评(0)");
 				myAttention.setText("关注(0)");
-				loginBtn.setVisibility(View.VISIBLE);
-				regBtn.setVisibility(View.VISIBLE);
+				personInfoLogoutLayout.setVisibility(View.VISIBLE);
+				personInfoLayout.setVisibility(View.GONE);
 			}
 		}
 		else
@@ -162,10 +164,8 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 			value_dianpin.setText("点评(0)");
 			myAttention.setText("关注(0)");
 			
-			loginBtn.setVisibility(View.VISIBLE);
-			regBtn.setVisibility(View.VISIBLE);
-			loginBtn.setVisibility(View.VISIBLE);
-			regBtn.setVisibility(View.VISIBLE);
+			personInfoLogoutLayout.setVisibility(View.VISIBLE);
+			personInfoLayout.setVisibility(View.GONE);
 		}
 
 	}

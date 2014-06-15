@@ -32,16 +32,6 @@
             android:text="@string/gerenxinxi"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="#ff000000" />
-		<Button
-		    android:id="@+id/submit"
-		    android:layout_width="wrap_content"
-		    android:layout_height="35dip"
-		    android:background="@drawable/btn_weight"
-		    android:text="@string/commit"
-		    android:layout_gravity="right|center_vertical"
-		    android:textAppearance="?android:textAppearanceMediumInverse"
-		    android:textColor="#ff000000"
-		    android:textSize="14.0sp" />
 
     </FrameLayout>
     <!-- title -->
@@ -62,16 +52,6 @@
             android:orientation="horizontal"
             android:padding="10.0dip" >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="6.0dip"
-                android:maxLines="2"
-                android:paddingRight="6.0dip"
-                android:text="@string/nick_name"
-                android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="#ff000000"
-                android:textSize="16.0sp" />
 			<View android:layout_width="0dip" android:layout_height="0dip" android:focusable="true" android:focusableInTouchMode="true" />
             <EditText android:id="@+id/nick_name" 
                 android:layout_width="match_parent"
@@ -81,7 +61,8 @@
                 android:paddingRight="6.0dip"
                 android:singleLine="true"
                 android:hint="@string/input_nickname"
-                android:text="@string/empty"/>
+                android:text="@string/empty"
+                android:background="@drawable/update_password_input"/>
             
         </LinearLayout>
         
@@ -104,6 +85,27 @@
                 android:textAppearance="?android:textAppearanceMedium"
                 android:textColor="@color/gray"
                 android:textSize="12.0sp" />
+
+        </LinearLayout>
+        
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/list_item_border"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="10.0dip" >
+
+            <Button
+			    android:id="@+id/submit"
+			    android:layout_width="wrap_content"
+			    android:layout_height="50dp"
+			    android:background="@drawable/update_password_submit"
+			    android:layout_gravity="right|center_vertical"
+			    android:textAppearance="?android:textAppearanceMediumInverse"
+			    android:textColor="#ff000000"
+			    android:textSize="14.0sp" />
 
         </LinearLayout>
 

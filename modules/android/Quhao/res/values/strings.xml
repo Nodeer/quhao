@@ -139,6 +139,8 @@
 	<string name="input_nickname">请填写昵称</string>
 	<string name="nickname_cannot_null">请填写昵称</string>
 	<string name="nickname_update_failed">亲，网络原因，昵称更新失败！</string>
+	<string name="no_register_tip">还没账号？马上</string>
+	<string name="link_register">注册</string>
 	<!-- 我的 -->
 	
 	<!-- menu bar -->
