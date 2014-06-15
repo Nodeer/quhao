@@ -71,6 +71,7 @@ public class Opinion extends OpinionEntityDef {
 
 	public static int totalSize() {
 		MorphiaQuery q = Opinion.q();
+		q.filter("handle", false);
 		return (int)q.count();
 	}
 	
