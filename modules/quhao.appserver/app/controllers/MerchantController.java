@@ -628,7 +628,10 @@ public class MerchantController extends BaseController {
 			fitlerParams.put("cityCode", cityCode);
 		}
 		if (!StringUtils.isEmpty(cateType)) {
-			fitlerParams.put("cateType", cateType);
+			BasicDBList values = new BasicDBList();
+			values.add(new BasicDBObject("cateType", cateType));
+			values.add(new BasicDBObject("cateType1", cateType));
+			fitlerParams.put("$or", values);
 		}
 		List<ObjectId> list = Merchant.noQueueMerchants();
 		fitlerParams.put("_id", new BasicDBObject("$in", list));
@@ -702,7 +705,10 @@ public class MerchantController extends BaseController {
 			filterParams.put("cityCode", cityCode);
 			
 			if (!StringUtils.isEmpty(cateType)) {
-				filterParams.put("cateType", cateType);
+				BasicDBList values = new BasicDBList();
+				values.add(new BasicDBObject("cateType", cateType));
+				values.add(new BasicDBObject("cateType1", cateType));
+				filterParams.put("$or", values);
 			}
 			geoNearParams.put("query", filterParams);
 		}
