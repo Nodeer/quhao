@@ -22,7 +22,6 @@ public class ImportShanghaiAmapDatas extends OnetimePatch {
 
 	@Override
 	public void run() throws Exception {
-		Logger.info("start to import merchants.");
 		long start = System.currentTimeMillis();
 		String dir = MERCHANT_TXT_FOLDER;
 		File f = new File(dir);
