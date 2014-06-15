@@ -31,10 +31,12 @@ public class AppController extends BaseController {
 			AppConfig androidconfig = new AppConfig();
 			androidconfig.type = "Android";
 			androidconfig.version = "1.0";
+			androidconfig.erweimalink = "";
 			androidconfig.save();
 			AppConfig iosconfig = new AppConfig();
 			iosconfig.type = "iOS";
 			iosconfig.version = "1.0";
+			iosconfig.version = "";
 			iosconfig.save();
 			
 			configs.add(androidconfig);
