@@ -23,6 +23,12 @@ public class Opinion extends OpinionEntityDef {
 		return q.asList();
 	}
 
+	/**
+	 * 分页查询，每页十条数据。
+	 * @param page 第page页
+	 * @param countPerPage 每页的记录数
+	 * @return
+	 */
 	public static List<Opinion> nextNoHandle(int page, int countPerPage){
 		MorphiaQuery q = Opinion.q();
 		q.filter("handle", false);
