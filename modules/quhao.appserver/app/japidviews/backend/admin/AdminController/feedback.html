@@ -15,6 +15,7 @@ $addJS("admin.js",true)
    		<thead>
    			<tr>
    				<th>ID</th>
+   				<th>提交时间</th>
    				<th>联系方式</th>
    				<th>反馈内容</th>
    				<th>是否已经处理</th>
@@ -25,6 +26,7 @@ $addJS("admin.js",true)
    			`for(Opinion o : list){
 		   		<tr>
 		   			<td style="vertical-align: middle;">${o.id()}</td>
+		   			<td style="vertical-align: middle;">${o.created}</td>
 		   			<td style="vertical-align: middle;">${o.contact}</td>
 		   			<td style="vertical-align: middle;">${o.opinion}</td>
 		   			<td style="vertical-align: middle;">${o.handle}</td>
