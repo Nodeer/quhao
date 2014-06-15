@@ -59,7 +59,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	private MerchantDetailVO merchantDetail;
 	private Button btnGetNumber;
 	private Button btnOpen;
-	private TextView openNumView;
 	private Button btnAttention;
 	private LinearLayout info;
 	private LinearLayout mapLayout;
@@ -70,10 +69,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	private TextView merchantBusinessTime;
 	private TextView merchantDesc;
 	private TextView merchantAverageCost;
-	private TextView xingjiabi;
-	private TextView kouwei;
-	private TextView huanjing;
-	private TextView fuwu;
+	private TextView dazhongdianping;
 
 	private LinearLayout currentQuHaoLayout;
 	private LinearLayout critiqueLayout;
@@ -94,8 +90,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	
 	private Button refershPaiduiBtn;
 	
-	public static boolean backClicked = false;
-
 	private LinearLayout youhuiLayout;
 	
 	private TextView youhuiView;
@@ -113,9 +107,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
 
 		this.merchantId = getIntent().getStringExtra("merchantId");
-		
-		btnGetNumber = (Button) findViewById(R.id.btn_GetNumber);
-		btnGetNumber.setOnClickListener(this);
 		
 		LayoutInflater inflater = LayoutInflater.from(this);
 		info = (LinearLayout) inflater.inflate(R.layout.merchant_detail_info, null);
@@ -135,12 +126,13 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		
 		btnAttention.setOnClickListener(this);
 		
+		btnGetNumber = (Button) info.findViewById(R.id.btn_GetNumber);
+		btnGetNumber.setOnClickListener(this);
+		
 		btnOpen = (Button) info.findViewById(R.id.btn_open);
 		btnOpen.setOnClickListener(this);
 		
-		openNumView = (TextView) info.findViewById(R.id.open_number);
-		
-		btnShare = (Button) info.findViewById(R.id.btn_share);
+		btnShare = (Button) this.findViewById(R.id.btn_share);
 		btnShare.setOnClickListener(this);
 		
 		btnChat = (Button) info.findViewById(R.id.btn_chat);
@@ -154,10 +146,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		descLayout.setOnClickListener(this);
 		this.merchantDesc = (TextView) info.findViewById(R.id.description);
 		this.merchantAverageCost = (TextView) info.findViewById(R.id.merchant_details_AverageCost);
-		this.xingjiabi = (TextView) info.findViewById(R.id.xingjiabi);
-		this.kouwei = (TextView) info.findViewById(R.id.kouwei);
-		this.fuwu = (TextView) info.findViewById(R.id.fuwu);
-		this.huanjing = (TextView) info.findViewById(R.id.huanjing);
+		this.dazhongdianping = (TextView) info.findViewById(R.id.dazhongdianping);
 
 		currentQuHaoLayout = (LinearLayout) info.findViewById(R.id.currentQuHaoLayout);
 		reservationListView = (ListView) info.findViewById(R.id.reservationListView);
@@ -255,6 +244,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 
 				info.findViewById(R.id.loadingbar).setVisibility(View.GONE);
 				info.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
+				handlerPaidui();
 				if(null != merchantDetail)
 				{
 					
@@ -309,8 +299,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						}
 						merchantDesc.setText(m.description);
 						
-						openNumView.setText(String.valueOf(m.openNum));
-						
 						if (StringUtils.isNull(m.description)) {
 							merchantDesc.setText(R.string.no_desc);
 						}
@@ -324,10 +312,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						}
 						
 						merchantAverageCost.setText(m.averageCost);
-						xingjiabi.setText(String.valueOf(m.xingjiabi));
-						kouwei.setText(String.valueOf(m.kouwei));
-						fuwu.setText(String.valueOf(m.fuwu));
-						huanjing.setText(String.valueOf(m.huanjing));
+						dazhongdianping.setText(String.valueOf(m.dianpingFen));
 	
 						// comment layout
 						critiqueLayout = (LinearLayout) info.findViewById(R.id.critiqueLayout);
@@ -343,17 +328,18 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						btnAttention.setVisibility(View.VISIBLE);
 						if(m.isAttention)
 						{
-							btnAttention.setText(R.string.cancel_attention);
+							btnAttention.setBackgroundResource(R.drawable.pay_attention_ed);
 						}
 						else
 						{
-							btnAttention.setText(R.string.attention);
+							btnAttention.setBackgroundResource(R.drawable.pay_attention);
 						}
 						
 						// check the merchant is enabled
 						if (m.enable) {
-							btnChat.setVisibility(View.VISIBLE);
 							btnOpen.setVisibility(View.GONE);
+							btnGetNumber.setVisibility(View.VISIBLE);
+							btnChat.setVisibility(View.VISIBLE);
 							if(m.online)
 							{
 								Calendar cal = Calendar.getInstance();
@@ -372,22 +358,23 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 								}
 								if(currentHour<openHour || currentHour>closeHour)
 								{
-									btnGetNumber.setVisibility(View.GONE);
+									// TODO wjzwjz 缺少取号按钮 disable样式
+									btnGetNumber.setEnabled(false);
 								}
 								else
 								{
-									btnGetNumber.setVisibility(View.VISIBLE);
+									btnGetNumber.setBackgroundResource(R.drawable.merchant_list_getno);
+									btnGetNumber.setEnabled(true);
 								}
 							}
 							else
 							{
-								btnGetNumber.setVisibility(View.GONE);
+								// TODO wjzwjz 缺少取号按钮 disable样式
+								btnGetNumber.setEnabled(false);
 							}
 							
 							btnOpen.setVisibility(View.GONE);
-							openNumView.setVisibility(View.GONE);
 							QuhaoLog.d(LOGTAG, "check login state on MerchantDetailActivity, isLogined : " + QHClientApplication.getInstance().isLogined);
-							handlerPaidui();
 							if(QHClientApplication.getInstance().isLogined)
 							{
 								currentQuHaoLayout.setVisibility(View.VISIBLE);
@@ -403,7 +390,8 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 									reservationListView.setLayoutParams(reservationsParams);
 									reservationListView.invalidate();
 
-									btnGetNumber.setVisibility(View.GONE);
+									// TODO wjzwjz 缺少取号按钮 disable样式
+									btnGetNumber.setEnabled(false);
 
 									reservationAdapter = new ReservationAdapter(MerchantDetailActivity.this, reservationListView, rvos);
 									reservationListView.setAdapter(reservationAdapter);
@@ -424,11 +412,11 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 								currentQuHaoLayout.setVisibility(View.GONE);
 							}
 						} else {
-							btnChat.setVisibility(View.GONE);
+//							btnChat.setVisibility(View.GONE);
+							btnChat.setBackgroundResource(R.drawable.ic_chat_ed);
 							btnGetNumber.setVisibility(View.GONE);
 							btnOpen.setVisibility(View.VISIBLE);
-							openNumView.setVisibility(View.VISIBLE);
-							paiduiConditionLayout.setVisibility(View.GONE);
+							btnOpen.setText("希望开通：" + m.openNum);
 							currentQuHaoLayout.setVisibility(View.GONE);
 							
 						}
@@ -439,8 +427,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						btnChat.setVisibility(View.GONE);
 						btnGetNumber.setVisibility(View.GONE);
 						btnOpen.setVisibility(View.GONE);
-						openNumView.setVisibility(View.GONE);
-						paiduiConditionLayout.setVisibility(View.GONE);
 						btnAttention.setVisibility(View.GONE);
 						currentQuHaoLayout.setVisibility(View.GONE);
 					}
@@ -450,8 +436,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					btnChat.setVisibility(View.GONE);
 					btnGetNumber.setVisibility(View.GONE);
 					btnOpen.setVisibility(View.GONE);
-					openNumView.setVisibility(View.GONE);
-					paiduiConditionLayout.setVisibility(View.GONE);
 					btnAttention.setVisibility(View.GONE);
 					currentQuHaoLayout.setVisibility(View.GONE);
 				}
@@ -467,9 +451,8 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		
 		paiduiConditionLayout.setVisibility(View.VISIBLE);
 		
-		haoma = merchantDetail.haoma;
-		if (null != haoma && null != haoma.paiduiList && haoma.paiduiList.size() > 0) {
-
+		if (null != merchantDetail && null != merchantDetail.haoma && null != merchantDetail.haoma.paiduiList && merchantDetail.haoma.paiduiList.size() > 0) {
+			haoma = merchantDetail.haoma;
 			paiduiListView.getEmptyView().setVisibility(View.GONE);
 			paiduiAdapter = new PaiduiConditionAdapter(MerchantDetailActivity.this, paiduiListView, haoma.paiduiList);
 			paiduiListView.setAdapter(paiduiAdapter);
@@ -512,7 +495,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		public void handleMessage(Message msg) {
 			if(msg.what == 0){
 				String num = (String) msg.obj;;
-				openNumView.setText(num);
+				btnOpen.setText("希望开通：" + num);
 			}
 		};
 	};
@@ -528,11 +511,11 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_SHORT).show();
 					if(merchant.isAttention)
 					{
-						btnAttention.setText(R.string.cancel_attention);
+						btnAttention.setBackgroundResource(R.drawable.pay_attention_ed);
 					}
 					else
 					{
-						btnAttention.setText(R.string.attention);
+						btnAttention.setBackgroundResource(R.drawable.pay_attention);
 					}
 					
 				} else {
@@ -540,14 +523,15 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					{
 						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 //						Toast.makeText(MerchantDetailActivity.this, R.string.committing_success, Toast.LENGTH_SHORT).show();
+						
 						if(merchant.isAttention)
 						{
-							btnAttention.setText(R.string.attention);
+							btnAttention.setBackgroundResource(R.drawable.pay_attention);
 							merchant.isAttention = false;
 						}
 						else
 						{
-							btnAttention.setText(R.string.cancel_attention);
+							btnAttention.setBackgroundResource(R.drawable.pay_attention_ed);
 							merchant.isAttention = true;
 						}
 					}
@@ -555,14 +539,16 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					{
 						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 						Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_SHORT).show();
+						
 						if(merchant.isAttention)
 						{
-							btnAttention.setText(R.string.cancel_attention);
+							btnAttention.setBackgroundResource(R.drawable.pay_attention_ed);
 						}
 						else
 						{
-							btnAttention.setText(R.string.attention);
+							btnAttention.setBackgroundResource(R.drawable.pay_attention);
 						}
+						
 					}
 					
 				}
@@ -933,7 +919,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 
 	@Override
 	protected void onResume() {
-		backClicked = false;
 		
 		ShareSDK.initSDK(this);
 		Thread merchantThread = new Thread(merchantDetailRunnable);

@@ -16,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,12 +71,10 @@ public class ReservationForCurrentPaiduiAdapter extends BaseAdapter {
 				convertView = inflator.inflate(R.layout.paidui_current_list_item, null);
 				holder.merchantImg = (ImageView) convertView.findViewById(R.id.merchantImg);
 				holder.merchantName = (TextView) convertView.findViewById(R.id.merchantName);
-				holder.merchantAddress = (TextView) convertView.findViewById(R.id.merchantAddress);
 				holder.myNumber = (TextView) convertView.findViewById(R.id.myNumber);
-				holder.seatNo = (TextView) convertView.findViewById(R.id.seatNo);
 				holder.beforeYou = (TextView) convertView.findViewById(R.id.beforeYou);
-				holder.currentNumber = (TextView) convertView.findViewById(R.id.currentNumber);
 				holder.cancelBtn = (Button) convertView.findViewById(R.id.btn_cancel);
+				holder.youhuiLayout = (RelativeLayout) convertView.findViewById(R.id.layout_top_youhui);
 			}
 			if (holder == null) {
 				holder = (ViewHolderCurrentPaidui) convertView.getTag();
@@ -92,36 +91,6 @@ public class ReservationForCurrentPaiduiAdapter extends BaseAdapter {
 			holder.merchantImg.setImageResource(R.drawable.no_logo);
 			// get image from memory/SDCard/URL stream
 			AsynImageLoader.getInstance().showImageAsyn(holder.merchantImg,position, merchantImg, R.drawable.no_logo);
-			/*
-			holder.merchantImg.setTag(merchantImg + position);
-			Drawable cachedImage = null;
-			if (null != merchantImg && !"".equals(merchantImg)) {
-				cachedImage = asyncImageLoader.loadDrawable(merchantImg, position, new ImageCallback() {
-
-					@Override
-					public void imageLoaded(Drawable imageDrawable, String imageUrl, int position) {
-						ImageView imageViewByTag = (ImageView) listView.findViewWithTag(imageUrl + position);
-						if (null != imageViewByTag && null != imageDrawable) {
-							imageViewByTag.setImageDrawable(imageDrawable);
-							imageViewByTag.invalidate();
-							imageDrawable.setCallback(null);
-							imageDrawable = null;
-						}
-
-					}
-				});
-
-			}
-			// // 设置图片给imageView 对象
-			if (null != cachedImage) {
-				holder.merchantImg.setImageDrawable(cachedImage);
-				holder.merchantImg.invalidate();
-				cachedImage.setCallback(null);
-				cachedImage = null;
-			} else {
-				holder.merchantImg.setImageResource(R.drawable.no_logo);
-			}
-			*/
 			holder.merchantImg.setOnClickListener(new OnClickListener() {
 				
 				@Override
@@ -138,17 +107,11 @@ public class ReservationForCurrentPaiduiAdapter extends BaseAdapter {
 			});
 			holder.merchantName.setTag("merchantNamer_" + position);
 			holder.merchantName.setText(rvo.merchantName);
-			holder.merchantAddress.setTag("merchantAddress_" + position);
-			holder.merchantAddress.setText(rvo.merchantAddress);
 
 			holder.myNumber.setTag("myNumber_" + position);
 			holder.myNumber.setText(rvo.myNumber);
-			holder.seatNo.setTag("seatNo_" + position);
-			holder.seatNo.setText(rvo.seatNumber);
 			holder.beforeYou.setTag("beforeYou_" + position);
 			holder.beforeYou.setText(rvo.beforeYou);
-			holder.currentNumber.setTag("currentNumber_" + position);
-			holder.currentNumber.setText(rvo.currentNumber);
 			
 			final String reservationId = rvo.rId;
 			holder.cancelBtn.setOnClickListener(new OnClickListener() {
@@ -167,6 +130,14 @@ public class ReservationForCurrentPaiduiAdapter extends BaseAdapter {
 					
 			});
 			
+			if (rvo.youhui) 
+			{
+				holder.youhuiLayout.setVisibility(View.VISIBLE);
+			}
+			else
+			{
+				holder.youhuiLayout.setVisibility(View.GONE);
+			}
 			convertView.setTag(holder);
 			return convertView;
 		}

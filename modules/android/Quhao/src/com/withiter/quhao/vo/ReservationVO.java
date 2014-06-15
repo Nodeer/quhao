@@ -24,10 +24,7 @@ public class ReservationVO {
 	
 	public String isChecked;
 	
-	/**
-	 * 检查优惠时间
-	 */
-	public int promptYouhuiTime;
+	public boolean youhui;
 	
 	public String created;
 	

@@ -558,8 +558,8 @@ public class ParseJson {
 		
 		String status = obj.optString("status");
 		rvo = new ReservationVO(rId, accountId, merchantId, seatNumber, myNumber, beforeYou, currentNumber, valid, tipKey, tipValue, merchantName, merchantAddress, isCommented, merchantImage,created);
-		int promptYouhuiTime = obj.optInt("promptYouhuiTime");
-		rvo.promptYouhuiTime = promptYouhuiTime;
+		boolean youhui = obj.optBoolean("youhui");
+		rvo.youhui = youhui;
 		rvo.status = status;
 		return rvo;
 	}

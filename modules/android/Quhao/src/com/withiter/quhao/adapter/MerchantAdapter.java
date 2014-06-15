@@ -5,17 +5,25 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
+import com.withiter.quhao.activity.GetNumber2Activity;
+import com.withiter.quhao.activity.LoginActivity;
+import com.withiter.quhao.activity.MerchantDetailActivity;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.AsynImageLoader;
@@ -26,11 +34,13 @@ public class MerchantAdapter extends BaseAdapter {
 	private ListView listView;
 	public List<Merchant> merchants;
 	private static String TAG = MerchantAdapter.class.getName();
+	private Activity activity;
 
 	public MerchantAdapter(Activity activity, ListView listView, List<Merchant> merchants) {
 		super();
 		this.listView = listView;
 		this.merchants = merchants;
+		this.activity = activity;
 	}
 
 	@Override
@@ -61,8 +71,7 @@ public class MerchantAdapter extends BaseAdapter {
 				holder.img.setAdjustViewBounds(true);
 				holder.content = (TextView) convertView.findViewById(R.id.merchantName);
 				holder.distance = (TextView) convertView.findViewById(R.id.distance);
-				holder.youhui = (ImageView) convertView.findViewById(R.id.youhui);
-				holder.quhao = (ImageView) convertView.findViewById(R.id.quhao);
+				holder.btnGetNumber = (Button) convertView.findViewById(R.id.get_number);
 //				holder.pinfenImage = (ImageView) convertView.findViewById(R.id.pingfen);
 				holder.merchantRenjun = (TextView) convertView.findViewById(R.id.merchantRenjun);
 				holder.dianpingLayout = (LinearLayout) convertView.findViewById(R.id.dianping_layout);
@@ -110,32 +119,55 @@ public class MerchantAdapter extends BaseAdapter {
 			*/
 			holder.content.setTag("content_" + position);
 			holder.content.setText(merchant.name);
-			
-			holder.youhui.setTag("youhui_" + position);
+			holder.youhuiLayout.setTag("youhui_layout_" + position);
 			if(merchant.youhuiExist)
 			{
 				holder.youhuiLayout.setVisibility(View.VISIBLE);
-				holder.youhui.setVisibility(View.VISIBLE);
-				holder.youhui.setImageResource(R.drawable.ic_youhui);
 			}
 			else
 			{
 				holder.youhuiLayout.setVisibility(View.GONE);
-				holder.youhui.setVisibility(View.GONE);
 			}
 			
-			holder.quhao.setTag("quhao_" + position);
 			
 			if(merchant.enable)
 			{
-				holder.quhao.setVisibility(View.VISIBLE);
-				holder.quhao.setImageResource(R.drawable.ic_quhao);
+				holder.btnGetNumber.setEnabled(true);
 			}
 			else
 			{
-				holder.quhao.setVisibility(View.GONE);
+				holder.btnGetNumber.setEnabled(false);
 			}
 			
+			final boolean enable = merchant.enable;
+			final String merchantId = merchant.id;
+			final String mName = merchant.name;
+			holder.btnGetNumber.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					
+					if (QHClientApplication.getInstance().isLogined) {
+						if (!enable) {
+							Toast.makeText(activity, "商家原因，暂时无法取号。", Toast.LENGTH_SHORT).show();
+							return;
+						}
+						Intent intentGetNumber = new Intent();
+						intentGetNumber.putExtra("merchantId", merchantId);
+						intentGetNumber.putExtra("merchantName", mName);
+						intentGetNumber.setClass(activity, GetNumber2Activity.class);
+						activity.startActivity(intentGetNumber);
+			
+					} else {
+						Intent intentGetNumber = new Intent(activity, LoginActivity.class);
+						intentGetNumber.putExtra("activityName", MerchantDetailActivity.class.getName());
+						intentGetNumber.putExtra("merchantId", merchantId);
+						intentGetNumber.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						activity.startActivity(intentGetNumber);
+					}
+					
+				}
+			});
 			holder.distance.setTag("distance_" + position);
 			
 			if(merchant.distance > 0)
@@ -167,72 +199,6 @@ public class MerchantAdapter extends BaseAdapter {
 				holder.dazhongdianping.setText(merchant.dianpingFen);
 			}
 			
-			/*
-			AMapLocation location = QHClientApplication.getInstance().location;
-			if(null != location && merchant.lat != 0 && merchant.lng != 0)
-			{
-				double distance = DistanceUtil.computeDistance(location.getLatitude(), location.getLongitude(), merchant.lat, merchant.lng);
-				if(distance>1000)
-				{
-					
-					NumberFormat nf = NumberFormat.getNumberInstance();
-			        nf.setMaximumFractionDigits(2);
-					holder.distance.setText(nf.format(distance/1000) + "千米");
-				}
-				else
-				{
-					holder.distance.setText(String.valueOf((int)distance) + "米");
-				}
-				
-//				holder.distance.setText(String.valueOf(DistanceUtil.computeDistance(lp.getLatitude(), lp.getLongitude(), merchant.lat, merchant.lng)));
-			}
-			else
-			{
-				holder.distance.setText("没有定位信息，暂时无法显示距离");
-			}
-			*/
-			/*
-			if (StringUtils.isNull(merchant.grade)) {
-				merchant.grade = "0.0";
-			} else {
-				merchant.grade = merchant.grade.replace("%", "");
-			}
-			QuhaoLog.i(TAG, merchant.grade);
-			float score = Float.parseFloat(merchant.grade) / 100;
-			if (score == 0.0f) {
-				holder.pinfenImage.setImageResource(R.drawable.star00);
-			}
-			if (score > 0.0f && score < 1.0f) {
-				holder.pinfenImage.setImageResource(R.drawable.star05);
-			}
-			if (score == 1.0f) {
-				holder.pinfenImage.setImageResource(R.drawable.star10);
-			}
-			if (score > 1.0f && score < 2.0f) {
-				holder.pinfenImage.setImageResource(R.drawable.star15);
-			}
-			if (score == 2.0f) {
-				holder.pinfenImage.setImageResource(R.drawable.star20);
-			}
-			if (score > 2.0f && score < 3.0f) {
-				holder.pinfenImage.setImageResource(R.drawable.star25);
-			}
-			if (score == 3.0f) {
-				holder.pinfenImage.setImageResource(R.drawable.star30);
-			}
-			if (score > 3.0f && score < 4.0f) {
-				holder.pinfenImage.setImageResource(R.drawable.star35);
-			}
-			if (score == 4.0f) {
-				holder.pinfenImage.setImageResource(R.drawable.star40);
-			}
-			if (score > 4.0f && score < 5.0f) {
-				holder.pinfenImage.setImageResource(R.drawable.star45);
-			}
-			if (score == 5.0f) {
-				holder.pinfenImage.setImageResource(R.drawable.star50);
-			}
-			*/
 			if (StringUtils.isNull(merchant.averageCost)) {
 				holder.merchantRenjun.setText("人均：暂无");
 			} else {
@@ -247,12 +213,11 @@ public class MerchantAdapter extends BaseAdapter {
 	class ViewHolder {
 		ImageView img;
 		TextView content;
-		ImageView youhui;
-		ImageView quhao;
 //		ImageView pinfenImage;
 		TextView merchantRenjun;
 		TextView dazhongdianping;
 		TextView distance;
+		Button btnGetNumber;
 		LinearLayout dianpingLayout;
 		RelativeLayout youhuiLayout;
 	}

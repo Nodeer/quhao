@@ -26,24 +26,20 @@
             android:textColor="#ff000000"
             android:textSize="18.0sp"  />
         <!-- back button -->
-
-
-        <!-- quhao button -->
-        <Button
-            android:id="@+id/btn_GetNumber"
+		
+		<Button
+            android:id="@+id/btn_share"
             android:layout_width="wrap_content"
-            android:layout_height="35dip"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="@string/get_reservation"
             android:textAppearance="?android:textAppearanceMediumInverse"
             android:textColor="@color/white"
             android:textSize="15.0sp" 
-            android:background="@android:color/transparent"
+            android:background="@drawable/icon_btn_setshare_white"
             android:paddingRight="10dp"
             />
-        <!-- quhao button -->
-        
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
