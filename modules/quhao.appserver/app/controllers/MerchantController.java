@@ -647,7 +647,11 @@ public class MerchantController extends BaseController {
 		projectParams.put("merchantImage", 1);
 		projectParams.put("grade", 1);
 		projectParams.put("enable", 1);
-
+		projectParams.put("openTime", 1);
+		projectParams.put("closeTime", 1);
+		projectParams.put("online", 1);
+		projectParams.put("seatType", 1);
+		
 		pipeline.add(new BasicDBObject("$project", projectParams));
 		cmdBody.put("pipeline", pipeline);
 		if (!MorphiaQuery.ds().getDB().command(cmdBody).ok()) {
@@ -716,6 +720,10 @@ public class MerchantController extends BaseController {
 		projectParams.put("merchantImage", 1);
 		projectParams.put("grade", 1);
 		projectParams.put("enable", 1);
+		projectParams.put("openTime", 1);
+		projectParams.put("closeTime", 1);
+		projectParams.put("online", 1);
+		projectParams.put("seatType", 1);
 
 		pipeline.add(new BasicDBObject("$project", projectParams));
 		cmdBody.put("pipeline", pipeline);
@@ -763,7 +771,13 @@ public class MerchantController extends BaseController {
 			
 			m.grade = Float.parseFloat(resultContainer.get("grade").toString());
 			m.enable = resultContainer.getBoolean("enable");
-
+			m.openTime = resultContainer.getString("openTime");
+			m.closeTime = resultContainer.getString("closeTime");
+			m.online = resultContainer.getBoolean("online");
+			
+			ArrayList<BasicDBObject> versi=(ArrayList<BasicDBObject>)resultContainer.get("seatType");
+			m.seatType = (String [])versi.toArray() ;
+			
 			lists.add(m);
 		}
 		return lists;
