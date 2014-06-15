@@ -459,14 +459,12 @@ public class AccountController extends BaseController {
 			reservationVO.averageCost = merchant.averageCost;
 			Haoma haoma = Haoma.findByMerchantId(reservation.merchantId);
 			// HaomaVO vo = HaomaVO.build(haoma);
-			if(null != haoma && null != haoma.haomaMap && !haoma.haomaMap.isEmpty())
-			{
+			if(null != haoma && null != haoma.haomaMap && !haoma.haomaMap.isEmpty()) {
 				Iterator ite = haoma.haomaMap.keySet().iterator();
 				while (ite.hasNext()) {
 					Integer key = (Integer) ite.next();
 					if (key.equals(Integer.valueOf(reservation.seatNumber))) {
-						if(null != haoma.haomaMap.get(key))
-						{
+						if(null != haoma.haomaMap.get(key)) {
 							reservationVO.currentNumber = haoma.haomaMap.get(key).currentNumber;
 						}
 					}
@@ -475,6 +473,7 @@ public class AccountController extends BaseController {
 			
 			try {
 				reservationVO.merchantImage = URLDecoder.decode(merchant.merchantImage, "UTF-8");
+				reservationVO.merchantImageBig = URLDecoder.decode(merchant.merchantImageBig, "UTF-8");
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
@@ -550,6 +549,7 @@ public class AccountController extends BaseController {
 			reservationVO.merchantAddress = merchant.address;
 			try {
 				reservationVO.merchantImage = URLDecoder.decode(merchant.merchantImage, "UTF-8");
+				reservationVO.merchantImageBig = URLDecoder.decode(merchant.merchantImageBig, "UTF-8");
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}

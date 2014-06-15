@@ -26,6 +26,7 @@ public class ReservationVO {
 	
 	public String merchantAddress;
 	public String merchantImage;
+	public String merchantImageBig;
 	public Date created = new Date();
 	//用户和商家之间距离
 	public double distance;
