@@ -5,7 +5,7 @@
 
 $addJS("admin.js",true)
 
-`args List<Opinion> list
+`args List<Opinion> list, int page, int totalPage
 
 
 `set contents
@@ -38,6 +38,53 @@ $addJS("admin.js",true)
    		</tbody>
 	</table>
    	</div>
+   	
+   	<div style="margin-left:auto;margin-right:auto;text-align:center;">
+		<ul class="pagination">
+				<li><a href="/admin/feedback?page=1">首页</a></li>
+			`if(page == 1){
+				<li class="disabled"><a href="#">上一页</a></li>
+			`} else {
+				<li><a href="/admin/feedback?page=${page-1}">上一页</a></li>
+			`}
+			`if(page - 4 >= 1){	
+				<li><a href="/admin/feedback?page=${page-4}">${page-4}</a></li>
+			`}
+			`if(page - 3 >= 1){	
+				<li><a href="/admin/feedback?page=${page-3}">${page-3}</a></li>
+			`}
+			`if(page - 2 >= 1){	
+				<li><a href="/admin/feedback?page=${page-2}">${page-2}</a></li>
+			`}
+			`if(page - 1 >= 1){
+				<li><a href="/admin/feedback?page=${page-1}">${page-1}</a></li>
+			`}
+				<li class="active"><a href="/admin/feedback?page=${page}">${page}<span class="sr-only">(current)</span></a></li>
+			`if(page + 1 <= totalPage){
+				<li><a href="/admin/feedback?page=${page+1}">${page+1}</a></li>
+			`}
+			`if(page + 2 <= totalPage){
+				<li><a href="/admin/feedback?page=${page+2}">${page+2}</a></li>
+			`}
+			`if(page + 3 <= totalPage){
+				<li><a href="/admin/feedback?page=${page+3}">${page+3}</a></li>
+			`}
+			`if(page + 4 <= totalPage){
+				<li><a href="/admin/feedback?page=${page+4}">${page+4}</a></li>
+			`}
+			`if(page + 5 <= totalPage){
+				<li><a href="/admin/feedback?page=${page+5}">${page+5}</a></li>
+			`}
+			`if(page == totalPage){
+				<li class="disabled"><a href="#">下一页</a></li>
+			`} else {
+				<li><a href="/admin/feedback?page=${page+1}">下一页</a></li>
+			`}
+				<li><a href="/admin/feedback?page=${totalPage}">尾页</a></li>
+		</ul>
+	</div>
+   	
+   	
    <script type="text/javascript">
    		$("#feedback").css("color","#fff");
    </script>

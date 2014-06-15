@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.bson.types.ObjectId;
 
+import play.modules.morphia.Model.MorphiaQuery;
 import play.modules.morphia.Model.NoAutoTimestamp;
 
 import com.google.code.morphia.annotations.Entity;
+import com.withiter.models.admin.MerchantAccount;
 
 @Entity
 @NoAutoTimestamp
@@ -18,6 +20,13 @@ public class Opinion extends OpinionEntityDef {
 		MorphiaQuery q = Opinion.q();
 		q.filter("handle", false);
 		q = paginate(q, page);
+		return q.asList();
+	}
+
+	public static List<Opinion> nextNoHandle(int page, int countPerPage){
+		MorphiaQuery q = Opinion.q();
+		q.filter("handle", false);
+		q.offset((page-1)*countPerPage).limit(countPerPage);
 		return q.asList();
 	}
 	
@@ -52,6 +61,11 @@ public class Opinion extends OpinionEntityDef {
 		Opinion o = Opinion.findById(new ObjectId(oid));
 		o.handle = true;
 		o.save();
+	}
+
+	public static int totalSize() {
+		MorphiaQuery q = Opinion.q();
+		return (int)q.count();
 	}
 	
 }

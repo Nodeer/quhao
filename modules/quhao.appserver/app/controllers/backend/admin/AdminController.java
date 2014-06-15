@@ -382,8 +382,16 @@ public class AdminController extends BaseController {
 		if(page <=0){
 			page = 1;
 		}
-		List<Opinion> list = Opinion.nextNoHandle(page);
-		renderJapid(list);
+		
+		int totalSize = Opinion.totalSize();
+		int countPerPage = 10;
+		int totalPage = totalSize / countPerPage;
+		if(totalSize % countPerPage != 0){
+			totalPage++;
+		}
+		
+		List<Opinion> list = Opinion.nextNoHandle(page, countPerPage);
+		renderJapid(list, page, totalPage);
 	}
 	
 	/**
