@@ -3,19 +3,25 @@
 <html>
     <head>
         <title>Application error</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=${_response_encoding}"/>	
+        <meta http-equiv="Content-Type" content="text/html; charset="/>	
     </head>
     <body>
         #{if play.mode.name() == 'DEV'}
             #{500 exception /}
         #{/if}
         #{else}
-            <h1>Oops, an error occured</h1>
-            #{if exception instanceof play.exceptions.PlayException}
-                <p>
-                    This exception has been logged with id <strong>${exception.id}</strong>.
-                </p>
-            #{/if}
+        	<center>
+	        	<h2 class="form-signin-heading" style="vertical-align: top;">
+					<img style="margin-bottom: 10px;" alt="" width="200" height="200" src="/public/images/common/crying.png"><br/>
+					<span class="glyphicon glyphicon-remove-circle" style="margin-right: 10px;"></span>
+					服务器维护，请稍后。或者联系管理员 021-52990657-8003<br/>
+		            #{if exception instanceof play.exceptions.PlayException}
+		                <p>
+		                    错误 id <strong>${exception.id}</strong>.
+		                </p>
+		            #{/if}
+				</h2>
+        	</center>
         #{/else}
     </body>
 </html>

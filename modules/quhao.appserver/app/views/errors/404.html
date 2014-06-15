@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <title>Not found</title>
+        <title>404 Not found</title>
         <meta http-equiv="Content-Type" content="text/html; charset=${_response_encoding}"/>    
     </head>
     <body>
@@ -10,10 +10,12 @@
             #{404 result /}
         #{/if}
         #{else}
-            <h1>Not found</h1>
-            <p>
-                ${result.message}
-            </p>
+        	<center>
+	        	<h2 class="form-signin-heading" style="vertical-align: top;">
+					<img style="margin-bottom: 10px;" alt="" width="200" height="200" src="/public/images/common/crying.png"><br/>
+					<span class="glyphicon glyphicon-remove-circle" style="margin-right: 10px;"></span>404! 亲，不要瞎跑，找不到页面哦
+				</h2>
+        	</center>
         #{/else}
     </body>
 </html>
