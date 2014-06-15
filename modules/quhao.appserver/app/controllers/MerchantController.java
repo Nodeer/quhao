@@ -782,7 +782,8 @@ public class MerchantController extends BaseController {
 			m.openTime = resultContainer.getString("openTime");
 			m.closeTime = resultContainer.getString("closeTime");
 			m.online = resultContainer.getBoolean("online");
-			m.openNum = resultContainer.getInt("openNum");
+			m.openNum = Open.getNumberByMid(m.id);
+;
 			ArrayList<BasicDBObject> list=(ArrayList<BasicDBObject>)resultContainer.get("seatType");
 			if(list != null && list.size() != 0){
 				Object [] objs=list.toArray();
