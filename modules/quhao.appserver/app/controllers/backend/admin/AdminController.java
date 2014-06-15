@@ -294,7 +294,7 @@ public class AdminController extends BaseController {
 				}
 			}
 		}
-		renderJSON(true);
+		topmerchant();
 	}
 	
 	/**
