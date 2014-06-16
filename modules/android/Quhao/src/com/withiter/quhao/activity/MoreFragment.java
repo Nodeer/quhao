@@ -44,25 +44,18 @@ public class MoreFragment extends Fragment implements OnClickListener{
 	private LinearLayout version;
 	private LinearLayout moreShare;
 	private LinearLayout help;
-	private LinearLayout loginStatus;
 	private LinearLayout moreShareAuth;
 	private Platform sina;
 	private ImageView loginStatusImg;
-
 	private TextView loginStatusTxt;
-	
 	private View contentView;
-	
 	private final int UNLOCK_CLICK = 1000;
-	
 	private boolean isClick;
-	
 	private ProgressDialogUtil progressDialogUtil;
 	
 	protected Handler unlockHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what == UNLOCK_CLICK) {
-				
 				isClick = false;
 			}
 		}
@@ -71,8 +64,6 @@ public class MoreFragment extends Fragment implements OnClickListener{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-//		ShareSDK.initSDK(getActivity());
 	}
 	
 	@Override
@@ -80,22 +71,19 @@ public class MoreFragment extends Fragment implements OnClickListener{
 		if (!ActivityUtil.isNetWorkAvailable(getActivity())) {
 			Toast.makeText(getActivity(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
 		}
-		if(contentView != null)
-		{
+		if(contentView != null) {
 			ViewGroup vg = (ViewGroup) contentView.getParent();
 			vg.removeView(contentView);
 			return contentView;
 		}
 		
 		contentView = inflater.inflate(R.layout.more_fragment_layout, container,false);
-		
 		settings = (LinearLayout) contentView.findViewById(R.id.more_settings);
 		version = (LinearLayout) contentView.findViewById(R.id.more_version);
 		opinion = (LinearLayout) contentView.findViewById(R.id.more_opinion);
 		moreShare = (LinearLayout) contentView.findViewById(R.id.more_share);
 		help = (LinearLayout) contentView.findViewById(R.id.more_help);
 		aboutUs = (LinearLayout) contentView.findViewById(R.id.more_aboutus);
-		loginStatus = (LinearLayout) contentView.findViewById(R.id.more_login_status);
 		moreShareAuth = (LinearLayout) contentView.findViewById(R.id.more_share_auth);
 		settings.setOnClickListener(this);
 		version.setOnClickListener(this);
@@ -103,34 +91,14 @@ public class MoreFragment extends Fragment implements OnClickListener{
 		moreShare.setOnClickListener(this);
 		help.setOnClickListener(this);
 		aboutUs.setOnClickListener(this);
-		loginStatus.setOnClickListener(this);
 		moreShareAuth.setOnClickListener(this);
-		
-		loginStatusImg = (ImageView) contentView.findViewById(R.id.more_login_status_img);
-		loginStatusTxt = (TextView) contentView.findViewById(R.id.more_login_status_txt);
-		refreshLoginStatus();
-//		ShareSDK.initSDK(getActivity());
 		return contentView;		
-	}
-	
-	private void refreshLoginStatus() {
-		boolean loginStatus = QHClientApplication.getInstance().isLogined;
-		if (loginStatus) {
-			loginStatusImg.setImageResource(R.drawable.login_status);
-			loginStatusTxt.setText(R.string.more_logout);
-		} else {
-			loginStatusImg.setImageResource(R.drawable.logout_status);
-			loginStatusTxt.setText(R.string.more_no_login);
-		}
 	}
 	
 	protected Handler toastHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what == UNLOCK_CLICK) {
-				
 				Map<String, Object> toastParams = (Map<String, Object>) msg.obj;
-//				Toast.makeText((Context)toastParams.get("activity"), toastParams.get("text"), );
-				
 				Toast.makeText((Context)toastParams.get("activity"), Integer.parseInt(String.valueOf(toastParams.get("text"))), Integer.parseInt(String.valueOf(toastParams.get("toastLength")))).show();
 			}
 		}
@@ -140,8 +108,6 @@ public class MoreFragment extends Fragment implements OnClickListener{
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
-				// SharedprefUtil.put(MoreActivity.this, QuhaoConstant.IS_LOGIN,
-				// "false");
 				QHClientApplication.getInstance().isLogined = false;
 				loginStatusImg.setImageResource(R.drawable.login_status);
 				loginStatusTxt.setText(R.string.more_no_login);
@@ -168,8 +134,6 @@ public class MoreFragment extends Fragment implements OnClickListener{
 		ShareSDK.initSDK(this.getActivity());
 		sina = ShareSDK.getPlatform(getActivity(), "SinaWeibo");
 		sina.SSOSetting(true);
-		
-		refreshLoginStatus();
 		super.onResume();
 	}
 	
@@ -185,9 +149,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			return;
 		}
 		isClick = true;
-		
 		progressDialogUtil = new ProgressDialogUtil(getActivity(), R.string.empty, R.string.querying, false);
-		
 		switch (v.getId()) {
 		case R.id.more_settings:// 系统设置
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -212,10 +174,8 @@ public class MoreFragment extends Fragment implements OnClickListener{
 		case R.id.more_version:// 版本检测
 			progressDialogUtil.showProgress();
 			progressDialogUtil.closeProgress();
-			if(!ActivityUtil.isNetWorkAvailable(getActivity()))
-			{
+			if(!ActivityUtil.isNetWorkAvailable(getActivity())) {
 				Toast.makeText(getActivity(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
-				
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				return;
 			}
@@ -224,10 +184,8 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			String url = "app/appCode";
 			final MoreVersionCheckTask task = new MoreVersionCheckTask(R.string.waitting, getActivity(), url);
 			task.execute(new Runnable() {
-				
 				@Override
 				public void run() {
-					
 					String result = task.result;
 					final AppVersionVO avo = ParseJson.convertToAppVersionVO(result);
 					if (avo == null) {
@@ -272,10 +230,8 @@ public class MoreFragment extends Fragment implements OnClickListener{
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				}
 			},new Runnable() {
-				
 				@Override
 				public void run() {
-					
 					Builder dialog = new AlertDialog.Builder(getActivity());
 					dialog.setTitle("温馨提示").setMessage("网络情况不是很好哟").setPositiveButton("确定", null);
 					dialog.show();
@@ -287,7 +243,6 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			// 显示分享界面
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			showShare(false, null);
-			
 			break;
 		case R.id.more_share_auth:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -299,7 +254,6 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			}
 
 			if (sina.isValid()) {
-				
 				Dialog dialog = new AlertDialog.Builder(getActivity()).setMessage("亲，确定要取消授权吗？")
 				// 设置内容
 				.setPositiveButton("是",// 设置确定按钮
@@ -321,17 +275,13 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			}
 
 			sina.setPlatformActionListener(new PlatformActionListener() {
-				
 				@Override
 				public void onError(Platform arg0, int arg1, Throwable arg2) {
 					
 				}
-				
 				@Override
 				public void onComplete(Platform arg0, int arg1, HashMap<String, Object> arg2) {
-					
 //					sinaHandler.sendEmptyMessage(200);
-					
 				}
 				
 				@Override
@@ -341,75 +291,12 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			});
 			sina.showUser(null);
 			break;
-		case R.id.more_login_status:
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			if(!ActivityUtil.isNetWorkAvailable(getActivity()))
-			{
-				Toast.makeText(getActivity(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				return;
-			}
-			
-			// String loginStatus = SharedprefUtil.get(MoreActivity.this,
-			// QuhaoConstant.IS_LOGIN, "false");
-			if (QHClientApplication.getInstance().isLogined) {
-				AlertDialog.Builder builder = new Builder(getActivity());
-				builder.setTitle("温馨提示");
-				builder.setMessage("您确定要退出吗？");
-				builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-						loginHandler.obtainMessage(200, loginStatus).sendToTarget();
-					}});
-				builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
-				builder.create().show();
-				
-			} else {
-				Intent intent5 = new Intent(getActivity(), LoginActivity.class);
-				intent5.putExtra("activityName", this.getClass().getName());
-				intent5.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent5);
-			}
-			break;
-
 		default:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;
 		}
 
 	}
-	
-	/*
-	protected Handler sinaHandler = new Handler() {
-		public void handleMessage(Message msg) {
-			if (msg.what == 200) {
-				ctvName.setChecked(sina.isValid());
-				if (sina.isValid()) {
-					
-					String userName = sina.getDb().get("nickname");
-					if (userName == null || userName.length() <= 0
-							|| "null".equals(userName)) {
-						// 如果平台已经授权却没有拿到帐号名称，则自动获取用户资料，以获取名称
-						userName = getName(sina);
-						
-						sina.showUser(null);
-					}
-					ctvName.setText(userName);
-				}
-				else {
-					ctvName.setText(R.string.not_yet_authorized);
-				}
-			}
-		}
-	};
-	*/
 	
 	// 使用快捷分享完成分享（请务必仔细阅读位于SDK解压目录下Docs文件夹中OnekeyShare类的JavaDoc）
 		/**ShareSDK集成方法有两种</br>
