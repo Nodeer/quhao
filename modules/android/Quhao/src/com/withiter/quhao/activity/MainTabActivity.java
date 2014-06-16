@@ -118,10 +118,9 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 					}
 
 				} catch (Exception e) {
-					
+					e.printStackTrace();
 				}
-				finally
-				{
+				finally {
 					Looper.loop();
 				}
 			}
@@ -217,7 +216,6 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 
 	@Override
 	public void onLocationChanged(AMapLocation location) {
-
 		if (null != location) {
 			this.location = location;
 			QHClientApplication.getInstance().location = location;
