@@ -50,7 +50,6 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 	/**
 	 * Tab选项卡的文字
 	 */
-//	private String menuTextViews[] = { "主页", "周边美食", "我的", "更多" };
 	private LocationManagerProxy mAMapLocationManager;
 	private Handler locationHandler = new Handler();
 	private AMapLocation location;
@@ -74,7 +73,6 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 	}
 
 	private Runnable locationRunnable = new Runnable() {
-		
 		@Override
 		public void run() {
 			if (location == null) {
@@ -86,50 +84,7 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 	
 	@Override
 	protected void onResume() {
-		Log.e("wjzwjz", "MainTabActivity onResume");
 		super.onResume();
-//		Handler handler = new Handler();
-//		handler.post(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				Looper.prepare();
-//				try {
-//					if (mAMapLocationManager == null) {
-//
-//						mAMapLocationManager = LocationManagerProxy
-//								.getInstance(MainTabActivity.this);
-//						/*
-//						 * mAMapLocManager.setGpsEnable(false);//
-//						 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
-//						 */
-//						// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
-//						mAMapLocationManager.requestLocationUpdates(
-//								LocationProviderProxy.AMapNetwork, 10000, 100,
-//								MainTabActivity.this);
-//						locationHandler.postDelayed(locationRunnable, 60000);// 设置超过12秒还没有定位到就停止定位
-//					} else {
-//						/*
-//						 * mAMapLocManager.setGpsEnable(false);//
-//						 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
-//						 */
-//						// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
-//						mAMapLocationManager.requestLocationUpdates(
-//								LocationProviderProxy.AMapNetwork, 10000, 100,
-//								MainTabActivity.this);
-//						locationHandler.postDelayed(locationRunnable, 60000);// 设置超过12秒还没有定位到就停止定位
-//
-//					}
-//
-//				} catch (Exception e) {
-		
-//				}
-//				finally
-//				{
-//					Looper.loop();
-//				}
-//			}
-//		});
 		Thread requestLocation = new Thread(new Runnable() {
 
 			@Override
@@ -176,7 +131,6 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 
 	@Override
 	public void onPause() {
-		Log.e("wjzwjz", "MainTabActivity onPause");
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
 			locationHandler.removeCallbacks(locationRunnable);
@@ -216,17 +170,9 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 		for (int i = 0; i < fragments.length; i++) {
 			// 为每一个Tab按钮设置图标、文字和内容
 			TabSpec tabSpec = mTabHost.newTabSpec(menuTags[i]).setIndicator(getTabItemView(i));
-			
 			mTabHost.addTab(tabSpec, fragments[i], null);
 		}
-
 		mTabHost.setCurrentTab(0);
-//		mTabHost.setOnTabChangedListener(new OnTabChangeListener() {
-//			@Override
-//			public void onTabChanged(String tabId) {
-//
-//			}
-//		});
 	}
 
 	/**
@@ -246,10 +192,6 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 		// 初始化menu图片
 		ImageView imgView = (ImageView) view.findViewById(R.id.imageview);
 		imgView.setImageResource(menuImgs[i]);
-
-		// 初始化menu文字
-//		TextView textView = (TextView) view.findViewById(R.id.textview);
-//		textView.setText(menuTextViews[i]);
 		return view;
 	}
 
