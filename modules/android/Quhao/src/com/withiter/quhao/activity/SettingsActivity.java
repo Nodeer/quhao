@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
-import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.tool.ImageUtil;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;

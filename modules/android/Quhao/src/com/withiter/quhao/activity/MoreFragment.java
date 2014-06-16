@@ -1,5 +1,6 @@
 package com.withiter.quhao.activity;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,11 +11,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,19 +33,24 @@ import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.task.MoreVersionCheckTask;
 import com.withiter.quhao.util.ActivityUtil;
+import com.withiter.quhao.util.tool.ImageUtil;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
+import com.withiter.quhao.util.tool.QuhaoConstant;
+import com.withiter.quhao.util.tool.SharedprefUtil;
 import com.withiter.quhao.vo.AppVersionVO;
 
 public class MoreFragment extends Fragment implements OnClickListener{
 
-	private LinearLayout settings;
 	private LinearLayout aboutUs;
 	private LinearLayout opinion;
 	private LinearLayout version;
 	private LinearLayout moreShare;
 	private LinearLayout help;
 	private LinearLayout moreShareAuth;
+	private LinearLayout cleanPicture;
+	private LinearLayout imageShow;
+	private ImageView imageView;
 	private Platform sina;
 	private ImageView loginStatusImg;
 	private TextView loginStatusTxt;
@@ -78,21 +84,38 @@ public class MoreFragment extends Fragment implements OnClickListener{
 		}
 		
 		contentView = inflater.inflate(R.layout.more_fragment_layout, container,false);
-		settings = (LinearLayout) contentView.findViewById(R.id.more_settings);
 		version = (LinearLayout) contentView.findViewById(R.id.more_version);
 		opinion = (LinearLayout) contentView.findViewById(R.id.more_opinion);
 		moreShare = (LinearLayout) contentView.findViewById(R.id.more_share);
 		help = (LinearLayout) contentView.findViewById(R.id.more_help);
 		aboutUs = (LinearLayout) contentView.findViewById(R.id.more_aboutus);
 		moreShareAuth = (LinearLayout) contentView.findViewById(R.id.more_share_auth);
-		settings.setOnClickListener(this);
+		
+		cleanPicture = (LinearLayout) contentView.findViewById(R.id.more_settings_cleanpicture);
+		imageShow = (LinearLayout) contentView.findViewById(R.id.more_settings_imageshow);
+
+		imageView = (ImageView) contentView.findViewById(R.id.more_settings_image);
+
+		String isLoadImg = SharedprefUtil.get(getActivity(), QuhaoConstant.IS_LOAD_IMG, "false");
+
+		if ("true".equals(isLoadImg)) {
+			QHClientApplication.getInstance().canLoadImg = true; 
+			imageView.setImageResource(R.drawable.checkbox_checked);
+		} else {
+			QHClientApplication.getInstance().canLoadImg = false;
+			imageView.setImageResource(R.drawable.checkbox_unchecked);
+		}
+		
+		cleanPicture.setOnClickListener(this);
+		imageShow.setOnClickListener(this);
+		
 		version.setOnClickListener(this);
 		opinion.setOnClickListener(this);
 		moreShare.setOnClickListener(this);
 		help.setOnClickListener(this);
 		aboutUs.setOnClickListener(this);
 		moreShareAuth.setOnClickListener(this);
-		return contentView;		
+		return contentView;
 	}
 	
 	protected Handler toastHandler = new Handler() {
@@ -151,11 +174,6 @@ public class MoreFragment extends Fragment implements OnClickListener{
 		isClick = true;
 		progressDialogUtil = new ProgressDialogUtil(getActivity(), R.string.empty, R.string.querying, false);
 		switch (v.getId()) {
-		case R.id.more_settings:// 系统设置
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			Intent intent = new Intent(getActivity(), SettingsActivity.class);
-			startActivity(intent);
-			break;
 		case R.id.more_aboutus:// 关于我们
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			Intent intent1 = new Intent(getActivity(), AboutUsActivity.class);
@@ -291,6 +309,28 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			});
 			sina.showUser(null);
 			break;
+		case R.id.more_settings_cleanpicture:
+			new CleanPicTask().execute();
+			break;
+		case R.id.more_settings_imageshow:
+			progressDialogUtil = new ProgressDialogUtil(getActivity(), R.string.empty, R.string.deleting, false);
+			progressDialogUtil.showProgress();
+
+			String isLoadImg1 = SharedprefUtil.get(getActivity(), QuhaoConstant.IS_LOAD_IMG, "false");
+			if ("true".equals(isLoadImg1)) {
+				imageView.setImageResource(R.drawable.checkbox_unchecked);
+				isLoadImg1 = "false";
+				QHClientApplication.getInstance().canLoadImg = false;
+			} else {
+				imageView.setImageResource(R.drawable.checkbox_checked);
+				isLoadImg1 = "true";
+				QHClientApplication.getInstance().canLoadImg = true;
+			}
+
+			SharedprefUtil.put(getActivity(), QuhaoConstant.IS_LOAD_IMG, isLoadImg1);
+			progressDialogUtil.closeProgress();
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			break;
 		default:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;
@@ -352,5 +392,37 @@ public class MoreFragment extends Fragment implements OnClickListener{
 //			oks.addHiddenPlatform(TencentWeibo.NAME);
 
 			oks.show(getActivity());
+		}
+		
+		class CleanPicTask extends AsyncTask<Void, Void, Boolean> {
+			ProgressDialogUtil progress;
+
+			@Override
+			protected void onPreExecute() {
+				progress = new ProgressDialogUtil(getActivity(), R.string.empty, R.string.deleting, false);
+				progress.showProgress();
+			}
+
+			@Override
+			protected Boolean doInBackground(Void... params) {
+				try {
+					ImageUtil.getInstance().cleanPictureCache();
+				} catch (IOException e) {
+					e.printStackTrace();
+					return false;
+				}
+				return true;
+			}
+
+			@Override
+			protected void onPostExecute(Boolean result) {
+				progress.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				if (result) {
+					Toast.makeText(getActivity(), "清除成功", Toast.LENGTH_SHORT).show();
+				} else {
+					Toast.makeText(getActivity(), "清除失败", Toast.LENGTH_SHORT).show();
+				}
+			}
 		}
 }

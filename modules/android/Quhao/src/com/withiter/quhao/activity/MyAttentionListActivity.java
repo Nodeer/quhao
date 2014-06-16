@@ -33,7 +33,6 @@ import com.withiter.quhao.vo.Merchant;
  */
 public class MyAttentionListActivity extends QuhaoBaseActivity implements OnHeaderRefreshListener,OnFooterRefreshListener{
 
-	private String LOGTAG = MyAttentionListActivity.class.getName();
 	protected ListView merchantsListView;
 	private List<Merchant> merchants;
 	private MerchantAdapter merchantAdapter;
@@ -100,7 +99,7 @@ public class MyAttentionListActivity extends QuhaoBaseActivity implements OnHead
 				findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
 				
 				if (null == merchants ||merchants.isEmpty()) {
-					Toast.makeText(MyAttentionListActivity.this, R.string.no_result_found, Toast.LENGTH_SHORT).show();
+					Toast.makeText(MyAttentionListActivity.this, R.string.no_result_4_my_attention, Toast.LENGTH_SHORT).show();
 				}
 				
 				mPullToRefreshView.onHeaderRefreshComplete();

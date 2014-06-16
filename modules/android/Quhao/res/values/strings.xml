@@ -194,7 +194,7 @@
     <string name="more_weibo_value">\@取号啦</string>
     <string name="more_web_location">网\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020址：</string>
     <string name="more_domain">http://www.quhao.la</string>
-    <string name="more_option_hint">留下您的宝贵意见，我们将持续改进产品（最多不能超过500字）</string>
+    <string name="more_option_hint">留下您的宝贵意见，我们将持续改进产品（最多不能超过200汉字）</string>
     <string name="more_option_phone_hint">手机号码或邮箱地址(选填)</string>
     <string name="committing">正在提交中&#8230;&#8230;&#8230;</string>
     <string name="more_logout">注销</string>
@@ -227,6 +227,10 @@
 	<string name="delete_failed">网络问题，删除失败</string>
 	<string name="no_result_4_quhao_history">亲，您一次还没取过号哦。</string>
 	<!-- 历史取号情况 QuhaoHistoryStatesActivity end -->
+	
+	<!-- MyAttentionListActivity begin -->
+	<string name="no_result_4_my_attention">亲，你还没有关注过商家哦。</string>
+	<!-- MyAttentionListActivity end -->
 	
 	<!-- 城市选择 CitySelectActivity begin -->
 	<string name="city_list">城市列表</string>

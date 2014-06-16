@@ -170,6 +170,8 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 
 		categoryNames = new ArrayList<String>();
 		categoryTypes = new ArrayList<String>();
+		categoryNames.add("默认排序");
+		categoryTypes.add("-1");
 		if (categorys!=null && !categorys.isEmpty()) {
 			for (int i = 0; i < categorys.size(); i++) {
 				categoryNames.add(categorys.get(i).getCateName());
@@ -187,25 +189,13 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 //		viewLeft.setBackgroundResource(R.drawable.expand_tab_bg);
 		sortByItems = new ArrayList<String>();
 		sortByItems.add("默认排序");
-		sortByItems.add("距离最近");
+		sortByItems.add("按评分排序");
 		sortByItems.add("按人气排序");
-		sortByItems.add("按总体评价排序");
-		sortByItems.add("按口味排序");
-		sortByItems.add("按环境排序");
-		sortByItems.add("按服务排序");
-		sortByItems.add("费用从低到高");
-		sortByItems.add("费用从高到低");
 		
 		sortByValues = new ArrayList<String>();
 		sortByValues.add("-1");
-		sortByValues.add("1");
-		sortByValues.add("2");
-		sortByValues.add("3");
-		sortByValues.add("4");
-		sortByValues.add("5");
-		sortByValues.add("6");
-		sortByValues.add("7");
-		sortByValues.add("8");
+		sortByValues.add("grade");
+		sortByValues.add("markedCount");
 		
 		if (StringUtils.isNull(defaultSortBy)) {
 			defaultSortBy = "-1";
@@ -247,7 +237,32 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 		if (position >= 0 && !expandTabView.getTitle(position).equals(showText)) {
 			expandTabView.setTitle(showText, position);
 		}
-		Toast.makeText(this, showText, Toast.LENGTH_SHORT).show();
+		
+		if (0 == position) {
+			categoryType = categoryTypes.get(categoryNames.indexOf(showText));
+			if ("-1".equals(categoryType)) {
+				categoryType = "";
+			}
+//			for (int i = 0; i < categoryNames.size(); i++) {
+//				
+//			}
+		}
+		else if(1 == position)
+		{
+			defaultSortBy = sortByValues.get(sortByItems.indexOf(showText));
+			if ("-1".equals(defaultSortBy)) {
+				defaultSortBy = "";
+			}
+		}
+		
+		MerchantListActivity.this.page = 1;
+		isFirst = true;
+		needToLoad = true;
+
+		// merchantsListView.setSelectionFromTop(0, 0);// 滑动到第一项
+		MerchantListActivity.this.merchants = new ArrayList<Merchant>();
+		
+		getMerchants();
 
 	}
 	
@@ -270,10 +285,6 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 	}
 
 	private void getMerchants() {
-		if (isClick) {
-			return;
-		}
-		isClick = true;
 
 		progressMerchants = new ProgressDialogUtil(this, R.string.empty, R.string.querying, false);
 		progressMerchants.showProgress();
@@ -287,7 +298,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 			try {
 				Looper.prepare();
 				QuhaoLog.d(LOGTAG, "get categorys data form server begin");
-				String url = "nextPage?sortBy=created&page=" + page + "&cateType=" + categoryType + "&cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode;
+				String url = "nextPage?page=" + page + "&cateType=" + categoryType + "&cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode + "&sortBy=" + defaultSortBy;
 				AMapLocation location = QHClientApplication.getInstance().location;
 				if (location != null) {
 					url = url + "&userX=" + location.getLongitude() + "&userY=" + location.getLatitude();

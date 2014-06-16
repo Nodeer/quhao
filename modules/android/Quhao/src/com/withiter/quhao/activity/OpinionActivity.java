@@ -81,6 +81,14 @@ public class OpinionActivity extends QuhaoBaseActivity {
 				return;
 			}
 			
+			if (opinion.length()>400) 
+			{
+				Toast.makeText(this, "亲，最多为200个汉字哦。", Toast.LENGTH_SHORT).show();
+				progressDialogUtil.closeProgress();
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				return;
+			}
+			
 			contact = contactEdit.getText().toString();
 
 			Thread thread = new Thread(opinionRunnable);

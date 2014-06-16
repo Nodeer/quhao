@@ -495,6 +495,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			if(msg.what == 0){
 				String num = (String) msg.obj;;
 				btnOpen.setText("希望开通：" + num);
+				unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
 			}
 		};
 	};
@@ -673,18 +674,17 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 							}
 							String buf = CommonHTTPRequest.get("openService?mid=" + merchantId + "&accountId=" + accountId);
 							if (StringUtils.isNull(buf)) {
-								unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+								unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
 								Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_SHORT).show();
 								
 							} else {
 								if("error".equals(buf))
 								{
-									unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+									unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
 									Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_SHORT).show();
 								}
 								else
 								{
-									unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 									openServiceHandler.obtainMessage(0, buf).sendToTarget();
 //									Toast.makeText(MerchantDetailActivity.this, R.string.committing_success, Toast.LENGTH_SHORT).show();
 								}
