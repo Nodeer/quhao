@@ -135,7 +135,7 @@
 	<string name="current_jifen">现有积分</string>
 	<string name="jifen_layout_menul">积分说明</string>
 	<string name="update_password">修改密码</string>
-	<string name="current_password">当前密码：</string>
+	<string name="current_password">当前密码</string>
 	<string name="exit_login">退出当前帐号</string>
 	<string name="input_nickname">请填写昵称</string>
 	<string name="nickname_cannot_null">请填写昵称</string>
@@ -159,7 +159,7 @@
 	<string name="my_number">我的号码：</string>
 	<string name="before_you">在你前面：</string>
 	<string name="nahao">拿&#160;&#160;&#160;号</string>
-		<string name="nahao_success_tip_5_less">恭喜，取号成功，在你前面排队的不多于5桌，为了避免排队号码过期，请抓紧时间前往商家。</string>
+	<string name="nahao_success_tip_5_less">恭喜，取号成功，在你前面排队的不多于5桌，为了避免排队号码过期，请抓紧时间前往商家。</string>
 	<string name="nahao_success_tip_5_more">恭喜：取号成功，当你的排号前还剩5位时，我们会用短信通知到你，继续享受你的免排队时间吧。</string>
 	<!-- get number end -->
 
