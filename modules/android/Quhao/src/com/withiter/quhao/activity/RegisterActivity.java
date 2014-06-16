@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -62,13 +63,16 @@ public class RegisterActivity extends QuhaoBaseActivity {
 	private TextView userAgreementText;
 	
 	private String firstAccountId;
-
+	
+	private TimeCount timeCount;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.register_layout);
 		super.onCreate(savedInstanceState);
 
+		timeCount = new TimeCount(60000, 1000);
 		loginNameText = (EditText) this.findViewById(R.id.login_name);
 		verifyCodeText = (EditText) this.findViewById(R.id.verify_code);
 		passwordText = (EditText) this.findViewById(R.id.edit_pass);
@@ -122,8 +126,9 @@ public class RegisterActivity extends QuhaoBaseActivity {
 				if (null == signup) {
 					Toast.makeText(RegisterActivity.this, "发送验证码失败， 请重按验证码按钮。", Toast.LENGTH_SHORT).show();
 				} else {
-					if ("1".equals(signup.errorKey)) {
+					if (!"mobile".equals(signup.errorKey)) {
 						Toast.makeText(RegisterActivity.this, "发送验证码成功， 稍后请输入验证码，24小时有效。", Toast.LENGTH_SHORT).show();
+						timeCount.start();
 					} else {
 						Toast.makeText(RegisterActivity.this, signup.errorText, Toast.LENGTH_SHORT).show();
 					}
@@ -544,5 +549,29 @@ public class RegisterActivity extends QuhaoBaseActivity {
 //            	im.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
 //			}
         }
+    }
+    
+    class TimeCount extends CountDownTimer
+    {
+    	
+		public TimeCount(long millisInFuture, long countDownInterval) {
+			super(millisInFuture, countDownInterval);
+		}
+
+		@Override
+		public void onFinish() {
+			
+			verifyCodeBtn.setText("获取验证码");
+			verifyCodeBtn.setClickable(true);
+			
+		}
+
+		@Override
+		public void onTick(long millisUntilFinished) {
+			
+			verifyCodeBtn.setClickable(false);
+			verifyCodeBtn.setText(millisUntilFinished/1000 + "秒");
+		}
+    	
     }
 }

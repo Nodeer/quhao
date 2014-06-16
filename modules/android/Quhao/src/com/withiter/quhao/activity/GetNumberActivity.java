@@ -215,7 +215,6 @@ public class GetNumberActivity extends QuhaoBaseActivity {
 					});
 					btnGetNo.setOnClickListener(GetNumberActivity.this);
 				} else {
-					// TODO : 没有位置时， 该怎么做， 应该返回到列表页面， 在酒店详细信息页面应该判断
 					Toast.makeText(GetNumberActivity.this, "此酒店没有座位了，请选择其他酒店。", Toast.LENGTH_SHORT).show();
 					GetNumberActivity.this.finish();
 				}

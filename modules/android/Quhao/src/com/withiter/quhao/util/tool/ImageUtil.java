@@ -36,7 +36,7 @@ public class ImageUtil {
 	private static File cacheDir;
 	private static ImageUtil instance;
 	
-	// TODO update this singleton implementation due to unsafe thread problem
+	//  update this singleton implementation due to unsafe thread problem
 	public static ImageUtil getInstance() {
 		if (null == instance) {
 			instance = new ImageUtil();

@@ -470,7 +470,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			paiduiAdapter.notifyDataSetChanged();
 			
 		} else {
-			// TODO : 没有位置时， 该怎么做， 应该返回到列表页面， 在酒店详细信息页面应该判断
 //			Toast.makeText(MerchantDetailActivity.this, "此酒店没有座位，请选择其他酒店。", Toast.LENGTH_SHORT).show();
 //			btnGetNumber.setVisibility(View.INVISIBLE);
 			paiduiConditionLayout.setVisibility(View.VISIBLE);

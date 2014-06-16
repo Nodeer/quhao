@@ -137,7 +137,7 @@ public class UpdatePasswordActivity extends QuhaoBaseActivity {
 					Looper.prepare();
 					try {
 						currentPassword = currentPasswordText.getText().toString().trim();
-//						String HexedPwd = new DesUtils().decrypt(accountInfo.password); TODO : 密码加密问题
+//						String HexedPwd = new DesUtils().decrypt(accountInfo.password); 
 //						SharedprefUtil.put(this, QuhaoConstant.PASSWORD, HexedPwd); 1711bd2d3d6441525f4826681a8b4d9a
 						if (StringUtils.isNotNull(currentPassword)) {
 							newPassword = newPasswordText.getText().toString().trim();

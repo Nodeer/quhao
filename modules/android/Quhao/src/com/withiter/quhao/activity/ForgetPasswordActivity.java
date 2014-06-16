@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -55,12 +56,15 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 
 	private SignupVO signup;
 	
+	private TimeCount timeCount;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.forget_password_layout);
 		super.onCreate(savedInstanceState);
 
+		timeCount = new TimeCount(60000, 1000);
 		loginNameText = (EditText) this.findViewById(R.id.login_name);
 		verifyCodeText = (EditText) this.findViewById(R.id.verify_code);
 		passwordText = (EditText) this.findViewById(R.id.new_pass);
@@ -91,9 +95,10 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 				}
 				else
 				{
-					if("1".equals(signup.errorKey))
+					if(!"mobile".equals(signup.errorKey))
 					{
 						Toast.makeText(ForgetPasswordActivity.this, "发送验证码成功， 稍后请输入验证码，24小时有效。", Toast.LENGTH_SHORT).show();
+						timeCount.start();
 					}
 					else
 					{
@@ -411,4 +416,27 @@ public class ForgetPasswordActivity extends QuhaoBaseActivity {
 		return false;
 	}
 
+	class TimeCount extends CountDownTimer
+    {
+    	
+		public TimeCount(long millisInFuture, long countDownInterval) {
+			super(millisInFuture, countDownInterval);
+		}
+
+		@Override
+		public void onFinish() {
+			
+			verifyCodeBtn.setText("获取验证码");
+			verifyCodeBtn.setClickable(true);
+			
+		}
+
+		@Override
+		public void onTick(long millisUntilFinished) {
+			
+			verifyCodeBtn.setClickable(false);
+			verifyCodeBtn.setText(millisUntilFinished/1000 + "秒");
+		}
+    	
+    }
 }
