@@ -100,6 +100,8 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	private ActivityAdapter activityAdapter;
 	
 	private List<ImageView> views;
+	
+	private LinearLayout activityLayout;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -187,6 +189,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 		
 		noResultLayout = (LinearLayout) contentView.findViewById(R.id.no_result_layout);
 
+		activityLayout = (LinearLayout) contentView.findViewById(R.id.activity_layout);
 		searchTextView = (Button) contentView.findViewById(R.id.edit_search);
 		searchTextView.setOnClickListener(new OnClickListener() {
 			@Override
@@ -266,7 +269,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 		
 		getActivity().registerReceiver(cityChangeReceiver, new IntentFilter(QuhaoConstant.ACTION_CITY_CHANGED));
 		getTopMerchantsFromServerAndDisplay();
-		getCategoriesFromServerAndDisplay();
+//		getCategoriesFromServerAndDisplay();
 		getActivities();
 		return contentView;
 	}
@@ -282,7 +285,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 				cityBtn.setText(QHClientApplication.getInstance().defaultCity.cityName);
 				getTopMerchantsFromServerAndDisplay();
 				getActivities();
-				getCategoriesFromServerAndDisplay();
+//				getCategoriesFromServerAndDisplay();
 			}
 			
 		}
@@ -298,7 +301,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 				activityListView.setVisibility(View.VISIBLE);
 				noResultLayout.setVisibility(View.GONE);
 				getTopMerchantsFromServerAndDisplay();
-				getCategoriesFromServerAndDisplay();
+//				getCategoriesFromServerAndDisplay();
 				getActivities();
 				mPullToRefreshView.onHeaderRefreshComplete();
 				// mPullToRefreshView.onHeaderRefreshComplete();
@@ -647,6 +650,35 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 //					categorysGird.setVisibility(View.GONE);
 //					noResultLayout.setVisibility(View.VISIBLE);
 //				}
+				
+				if (categorys != null && !categorys.isEmpty()) {
+					Intent intent = new Intent();
+					ArrayList<CategoryData> categoryDatas = new ArrayList<CategoryData>();
+					intent.putExtra("categoryType", categorys.get(0).categoryType);
+					intent.putExtra("cateName", categorys.get(0).cateName);
+					intent.putExtra("categoryCount", String.valueOf(categorys.get(0).count));
+					CategoryData data = null;
+					
+					for (int i = 0; i < categorys.size(); i++) {
+						data = new CategoryData();
+						data.setCount(categorys.get(i).count);
+						data.setCategoryType(categorys.get(i).categoryType);
+						data.setCateName(categorys.get(i).cateName);
+						categoryDatas.add(data);
+					}
+					
+					Bundle mBundle = new Bundle();
+					mBundle.putParcelableArrayList("categorys", categoryDatas);
+					intent.putExtras(mBundle);
+					
+					intent.setClass(getActivity(), MerchantListActivity.class);
+					startActivity(intent);
+				}
+				else
+				{
+					Toast.makeText(getActivity(), "亲，该城市暂未开通，请选择其他城市。", Toast.LENGTH_SHORT).show();
+				}
+				
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 		}
@@ -663,11 +695,13 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 				activityAdapter.notifyDataSetChanged();
 				if(null != activityList && !activityList.isEmpty())
 				{
+					activityLayout.setVisibility(View.VISIBLE);
 					activityListView.setVisibility(View.VISIBLE);
 					noResultLayout.setVisibility(View.GONE);
 				}
 				else
 				{
+					activityLayout.setVisibility(View.GONE);
 					activityListView.setVisibility(View.GONE);
 					noResultLayout.setVisibility(View.VISIBLE);
 				}
@@ -713,7 +747,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	 */
 	public void getCategoriesFromServerAndDisplay() {
 
-		final AllCategoriesTask task = new AllCategoriesTask(0, getActivity(), "allCategories?cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode);
+		final AllCategoriesTask task = new AllCategoriesTask(R.string.waitting, getActivity(), "allCategories?cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode);
 		task.execute(new Runnable() {
 
 			@Override
@@ -790,30 +824,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			if (QHClientApplication.getInstance().isLogined) {
 				
-				if (categorys != null && !categorys.isEmpty()) {
-					Intent intent = new Intent();
-					ArrayList<CategoryData> categoryDatas = new ArrayList<CategoryData>();
-					intent.putExtra("categoryType", categorys.get(0).categoryType);
-					intent.putExtra("cateName", categorys.get(0).cateName);
-					intent.putExtra("categoryCount", String.valueOf(categorys.get(0).count));
-					CategoryData data = null;
-					
-					for (int i = 0; i < categorys.size(); i++) {
-						data = new CategoryData();
-						data.setCount(categorys.get(i).count);
-						data.setCategoryType(categorys.get(i).categoryType);
-						data.setCateName(categorys.get(i).cateName);
-						categoryDatas.add(data);
-					}
-					
-					Bundle mBundle = new Bundle();
-					mBundle.putParcelableArrayList("categorys", categoryDatas);
-					intent.putExtras(mBundle);
-					
-					intent.setClass(getActivity(), MerchantListActivity.class);
-					startActivity(intent);
-				}
-				
+				getCategoriesFromServerAndDisplay();
 				
 			} else {
 				
@@ -864,7 +875,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 					}
 					else
 					{
-						Toast.makeText(getActivity(), "亲，暂时没得选哦！", Toast.LENGTH_SHORT).show();
+						Toast.makeText(getActivity(), "亲，该城市暂未开通，请选择其他城市！", Toast.LENGTH_SHORT).show();
 						return;
 					}
 					

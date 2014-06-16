@@ -32,7 +32,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:gravity="center_vertical"
-            android:text=""
+            android:text="@string/quhao_paidui"
             android:textSize="16sp"
             android:textColor="@color/white"
             android:textStyle="bold" />

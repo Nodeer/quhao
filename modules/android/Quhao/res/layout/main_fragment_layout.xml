@@ -206,7 +206,7 @@
                     <!-- 选择困难症 -->
                 </LinearLayout>
 
-                <LinearLayout
+                <LinearLayout android:id="@+id/activity_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:baselineAligned="false"
@@ -246,8 +246,7 @@
 			       	    android:listSelector="@drawable/list_item_trans"
 			       	    android:scrollbarThumbVertical="@drawable/scrollbar"
 			       	    android:layout_marginLeft="10dp"
-			       	    android:layout_marginRight="10dp"
-			       	    android:scrollbars="none" />
+			       	    android:layout_marginRight="10dp" />
                         
                     <LinearLayout android:id="@+id/no_result_layout"
 					    android:orientation="vertical"

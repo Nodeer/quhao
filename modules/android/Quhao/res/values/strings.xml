@@ -266,4 +266,8 @@
 	<string name="no_result_4_chat_room">亲，至少要取个号才能聊天哦。</string>
 	<!-- MerchantChatRoomsActivity begin -->
 	
+	<!-- MerchantListActivity begin -->
+	<string name="quhao_paidui">取号排队</string>
+	<!-- MerchantListActivity begin -->
+	
 </resources>

@@ -15,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
@@ -50,8 +49,6 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 	private ProgressDialogUtil progressMerchants;
 	private int page;
 	private String categoryType;
-	private String cateName;
-	private TextView categoryTypeTitle;
 	private boolean isFirst = true;
 	private boolean needToLoad = true;
 	public static boolean backClicked = false;
@@ -88,13 +85,9 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 		this.page = getIntent().getIntExtra("page", 1);
 		QuhaoLog.i(LOGTAG, "init page is : " + this.page);
 		this.categoryType = getIntent().getStringExtra("categoryType");
-		this.cateName = getIntent().getStringExtra("cateName");
 
 		this.categorys = getIntent().getParcelableArrayListExtra("categorys");
 		
-		this.categoryTypeTitle = (TextView) findViewById(R.id.categoryTypeTitle);
-		this.categoryTypeTitle.setText(cateName);
-
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
 
 		this.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
@@ -191,6 +184,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 		expandTabView = (ExpandTabView) this.findViewById(R.id.expandtab_view);
 		viewLeft = new ViewLeft(this, categoryNames, categoryTypes, categoryType);
 		viewLeft.setShowText("菜系");
+//		viewLeft.setBackgroundResource(R.drawable.expand_tab_bg);
 		sortByItems = new ArrayList<String>();
 		sortByItems.add("默认排序");
 		sortByItems.add("距离最近");
