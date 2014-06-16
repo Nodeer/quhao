@@ -38,23 +38,9 @@
             android:orientation="vertical" >
 
             <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal|bottom"
-                android:orientation="vertical" >
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/empty"
-                    android:src="@drawable/launch_logo" />
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/more_settings"
                 android:layout_width="fill_parent"
                 android:layout_height="42dp"
-                android:layout_marginTop="20dip"
                 android:background="@drawable/form_border_top"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
