@@ -593,8 +593,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 					intent.setClass(getActivity(), MerchantListActivity.class);
 					startActivity(intent);
 				}
-				else
-				{
+				else {
 					Toast.makeText(getActivity(), "亲，该城市暂未开通，请选择其他城市。", Toast.LENGTH_SHORT).show();
 				}
 				
@@ -698,6 +697,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		isClick = true;
 
 		switch (v.getId()) {
+		// 我的关注事件按钮
 		case R.id.my_attention:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			if (QHClientApplication.getInstance().isLogined) {
@@ -713,18 +713,19 @@ public class HomeFragment extends Fragment implements OnClickListener {
 			}
 
 			break;
+		// 马上就吃按钮事件
 		case R.id.no_sequence_merchants:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			Intent login1 = new Intent(getActivity(), NoQueueMerchantListActivity.class);
 			login1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			startActivity(login1);
 			break;
+		// 取号排队按钮事件
 		case R.id.btn_get_number:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			if (QHClientApplication.getInstance().isLogined) {
 				getCategoriesFromServerAndDisplay();
 			} else {
-				
 				Intent login3 = new Intent(getActivity(), LoginActivity.class);
 				login3.putExtra("activityName", this.getClass().getName());
 				login3.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -732,6 +733,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 			}
 
 			break;
+		// 聊聊天吧按钮事件
 		case R.id.btn_chat_room:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			if (QHClientApplication.getInstance().isLogined) {

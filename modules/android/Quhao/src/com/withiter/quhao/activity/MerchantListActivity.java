@@ -52,26 +52,16 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 	private boolean isFirst = true;
 	private boolean needToLoad = true;
 	public static boolean backClicked = false;
-
 	private PullToRefreshView mPullToRefreshView;
-	
 	private ExpandTabView expandTabView; 
-	
 	private ArrayList<View> mViewArray = new ArrayList<View>();
 	private ViewLeft viewLeft;
-	
-	private ArrayList<CategoryData> categorys;
-	
-	private List<String> categoryTypes;
-	
-	private List<String> categoryNames;
-	
 	private ViewRight viewRight;
-	
+	private ArrayList<CategoryData> categorys;
+	private List<String> categoryTypes;
+	private List<String> categoryNames;
 	private List<String> sortByValues;
-	
 	private List<String> sortByItems;
-	
 	private String defaultSortBy;
 	
 	@Override
@@ -79,20 +69,14 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.merchants);
 		super.onCreate(savedInstanceState);
-
 		this.merchants = new ArrayList<Merchant>();
-
 		this.page = getIntent().getIntExtra("page", 1);
 		QuhaoLog.i(LOGTAG, "init page is : " + this.page);
 		this.categoryType = getIntent().getStringExtra("categoryType");
-
 		this.categorys = getIntent().getParcelableArrayListExtra("categorys");
-		
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
-
 		this.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
 		this.findViewById(R.id.serverdata).setVisibility(View.GONE);
-		
 		mPullToRefreshView = (PullToRefreshView) this.findViewById(R.id.main_pull_refresh_view);
 		mPullToRefreshView.setOnHeaderRefreshListener(this);
 		mPullToRefreshView.setOnFooterRefreshListener(this);

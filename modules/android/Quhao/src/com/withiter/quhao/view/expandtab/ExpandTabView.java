@@ -82,8 +82,7 @@ public class ExpandTabView extends LinearLayout implements OnDismissListener {
 			rl.leftMargin = 10;
 			rl.rightMargin = 10;
 			r.addView(viewArray.get(i), rl);
-			if(r.getParent()!=null)
-			{
+			if(r.getParent()!=null) {
 				ViewGroup vg = (ViewGroup) r.getParent();
 				vg.removeView(r);
 			}
