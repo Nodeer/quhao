@@ -21,7 +21,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import cn.jpush.android.api.JPushInterface;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.ShareSDK;
@@ -78,12 +77,22 @@ public class LoginActivity extends QuhaoBaseActivity {
 		}
 		loginResult = (TextView) this.findViewById(R.id.person_center_login_result);
 
+		String phone = SharedprefUtil.get(LoginActivity.this, QuhaoConstant.PHONE, "");
+		loginNameText = (EditText) findViewById(R.id.login_name);
+		
+		
 		isAutoLoginView = (ImageView) findViewById(R.id.isAutoLogin);
 		isAutoLoginView.setOnClickListener(this);
 		isAutoLogin = SharedprefUtil.get(this, QuhaoConstant.IS_AUTO_LOGIN, "false");
 
+		String isExitedLastTime = SharedprefUtil.get(this, QuhaoConstant.IS_EXITED_LASTTIME, "true");
+		
 		if ("true".equals(isAutoLogin)) {
 			isAutoLoginView.setImageResource(R.drawable.checkbox_checked);
+			if ("true".equals(isExitedLastTime)) {
+				loginNameText.setText(phone);
+			}
+			
 		} else {
 			isAutoLoginView.setImageResource(R.drawable.checkbox_unchecked);
 		}
@@ -91,9 +100,7 @@ public class LoginActivity extends QuhaoBaseActivity {
 		// phone label
 		pannelLoginName = (TextView) findViewById(R.id.pannel_login_name);
 		// phone text filed
-		String phone = SharedprefUtil.get(LoginActivity.this, QuhaoConstant.PHONE, "");
-		loginNameText = (EditText) findViewById(R.id.login_name);
-		loginNameText.setText(phone);
+		
 
 		passwordText = (EditText) findViewById(R.id.edit_pass);
 
@@ -129,27 +136,7 @@ public class LoginActivity extends QuhaoBaseActivity {
 	}
 	@Override
 	public void onClick(View v) {
-		// 隐藏软键盘
 
-//		InputMethodManager m = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//		if (m != null) {
-			// if(this.getCurrentFocus()!=null &&
-			// this.getCurrentFocus().getWindowToken() != null)
-			// {
-			// m.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(),
-			// InputMethodManager.HIDE_NOT_ALWAYS);
-			// }
-
-			// R.id.login
-			// m.hideSoftInputFromWindow(passwordText.getWindowToken(), 0);
-			// m.hideSoftInputFromWindow(loginNameText.getWindowToken(), 0);
-//			if (m.isActive()) {
-//				m.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
-//			}
-
-//		}
-
-		// getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		// 已经点过，直接返回
 		if (isClick) {
 			return;
@@ -157,8 +144,6 @@ public class LoginActivity extends QuhaoBaseActivity {
 		// 设置已点击标志，避免快速重复点击
 		isClick = true;
 
-		// 解锁
-		
 		switch (v.getId()) {
 		case R.id.isAutoLogin:
 			if ("true".equals(isAutoLogin)) {
@@ -209,7 +194,9 @@ public class LoginActivity extends QuhaoBaseActivity {
 						SharedprefUtil.put(LoginActivity.this, QuhaoConstant.PASSWORD, HexedPwd);
 
 						SharedprefUtil.put(LoginActivity.this, QuhaoConstant.IS_AUTO_LOGIN, isAutoLogin.trim());
-
+						
+						SharedprefUtil.put(LoginActivity.this, QuhaoConstant.IS_EXITED_LASTTIME, "false");
+						
 						// login state will store in QHClientApplication
 						QHClientApplication.getInstance().accountInfo = account;
 						QHClientApplication.getInstance().isLogined = true;

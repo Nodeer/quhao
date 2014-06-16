@@ -9,7 +9,6 @@ import java.util.Set;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -24,7 +23,6 @@ import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 
 import com.amap.api.location.AMapLocation;
-import com.withiter.quhao.activity.JPushReceiver;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.domain.CityInfo;
 import com.withiter.quhao.util.StringUtils;
@@ -225,8 +223,8 @@ public class QHClientApplication extends Application {
 		// String password = sharedPreferences.getString(QuhaoConstant.PASSWORD,
 		// "");
 		// QuhaoLog.d("cross, get password from sp", password);
-
-		if (StringUtils.isNull(isAutoLogin) || "false".equals(isAutoLogin) || StringUtils.isNull(phone) || StringUtils.isNull(password)) {
+		String isExitedLastTime = SharedprefUtil.get(this, QuhaoConstant.IS_EXITED_LASTTIME, "true");
+		if (StringUtils.isNull(isAutoLogin) || "false".equals(isAutoLogin) || StringUtils.isNull(phone) || StringUtils.isNull(password) || "true".equals(isExitedLastTime)) {
 			return;
 		}
 

@@ -25,7 +25,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -297,6 +296,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
 						logoutHandler.obtainMessage(200, null).sendToTarget();
+						SharedprefUtil.put(PersonDetailActivity.this, QuhaoConstant.IS_EXITED_LASTTIME, "true");
 					}});
 				builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
 					

@@ -53,16 +53,13 @@ import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.AsynImageLoader;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.QuhaoConstant;
-import com.withiter.quhao.view.refresh.PullToRefreshView;
-import com.withiter.quhao.view.refresh.PullToRefreshView.OnFooterRefreshListener;
-import com.withiter.quhao.view.refresh.PullToRefreshView.OnHeaderRefreshListener;
 import com.withiter.quhao.view.viewpager.AutoScrollViewPager;
 import com.withiter.quhao.vo.ActivityVO;
 import com.withiter.quhao.vo.Category;
 import com.withiter.quhao.vo.Merchant;
 import com.withiter.quhao.vo.TopMerchant;
 
-public class HomeFragment extends Fragment implements OnHeaderRefreshListener, OnFooterRefreshListener, OnClickListener {
+public class HomeFragment extends Fragment implements OnClickListener {
 
 	private static final int UNLOCK_CLICK = 1000;
 	
@@ -79,7 +76,6 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 	private List<ImageView> mPoints;
 	private int mPosition;										// pager的位置,就是当前图片的索引号
 	private MyPagerAdapter mPagerAdapter;
-	private PullToRefreshView mPullToRefreshView;
 	private float xDistance, yDistance;
 	/** 记录按下的X坐标 **/
 	private float mLastMotionX, mLastMotionY;
@@ -170,15 +166,14 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 			ViewGroup vg = (ViewGroup) contentView.getParent();
 			vg.removeView(contentView);
 			getActivity().registerReceiver(cityChangeReceiver, new IntentFilter(QuhaoConstant.ACTION_CITY_CHANGED));
+			activityListView.setVisibility(View.VISIBLE);
+			getTopMerchantsFromServerAndDisplay();
+			getActivities();
 			return contentView;
 		}
 		
 		// 主页面layout
 		contentView = inflater.inflate(R.layout.main_fragment_layout, container, false);
-		
-		mPullToRefreshView = (PullToRefreshView) contentView.findViewById(R.id.main_pull_refresh_view);
-		mPullToRefreshView.setOnHeaderRefreshListener(this);
-		mPullToRefreshView.setOnFooterRefreshListener(this);
 		
 		activityLayout = (LinearLayout) contentView.findViewById(R.id.activity_layout);
 		searchTextView = (Button) contentView.findViewById(R.id.edit_search);
@@ -261,21 +256,6 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 		}
 	};
 	
-	@Override
-	public void onHeaderRefresh(PullToRefreshView view) {
-		mPullToRefreshView.postDelayed(new Runnable() {
-
-			@Override
-			public void run() {
-				activityListView.setVisibility(View.VISIBLE);
-				getTopMerchantsFromServerAndDisplay();
-				getActivities();
-				mPullToRefreshView.onHeaderRefreshComplete();
-			}
-		}, 1000);
-
-	}
-
 	private void buildPager() {
 		// 广告下方的view
 		adBottomLayout.setGravity(Gravity.CENTER_VERTICAL);
@@ -407,7 +387,7 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 						}
 						break;
 					case MotionEvent.ACTION_UP:
-						mViewPager.startAutoScroll();
+						mViewPager.startAutoScroll(3000);
 						break;
 					case MotionEvent.ACTION_CANCEL:
 						if (mIsBeingDragged) {
@@ -707,12 +687,6 @@ public class HomeFragment extends Fragment implements OnHeaderRefreshListener, O
 			}
 		});
 
-	}
-
-	@Override
-	public void onFooterRefresh(PullToRefreshView view) {
-		// 处理下拉刷新最新数据
-		mPullToRefreshView.onFooterRefreshComplete();
 	}
 
 	@Override

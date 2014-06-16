@@ -1,6 +1,5 @@
 package com.withiter.quhao.util.tool;
 
-import java.io.File;
 
 public class QuhaoConstant {
 
@@ -66,11 +65,12 @@ public class QuhaoConstant {
 	 */
 //	public static long TIME_STAMP = 0;
 //	public static long TIME_STAMP_OLD = 0;
-	public static String PERSON_IMAGE_FILE_NAME = "person.png";
+	public static final String PERSON_IMAGE_FILE_NAME = "person.png";
 	
-	public static String PERSON_IMAGE_FOLDER = "quhao/personimages/";
+	public static final String PERSON_IMAGE_FOLDER = "quhao/personimages/";
 	
-	public static String ACTION_CITY_CHANGED = "android.intent.action.quhao.city_changed";
-	public static String USER_IMAGE = "user_image";
+	public static final String ACTION_CITY_CHANGED = "android.intent.action.quhao.city_changed";
+	public static final String USER_IMAGE = "user_image";
+	public static final String IS_EXITED_LASTTIME = "IS_EXITED_LASTTIME";
 	
 }

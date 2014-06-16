@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TreeSet;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,7 +14,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,7 +29,6 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
@@ -44,7 +41,6 @@ import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SharedprefUtil;
 
-@SuppressLint("InlinedApi")
 public class CitySelectActivity extends QuhaoBaseActivity implements AMapLocationListener {
 
 	/**
@@ -122,7 +118,8 @@ public class CitySelectActivity extends QuhaoBaseActivity implements AMapLocatio
 		@Override
 		public void run() {
 			if (location == null) {
-				Toast.makeText(CitySelectActivity.this, "亲，定位失败，请检查网络状态！", Toast.LENGTH_SHORT).show();
+//				Toast.makeText(CitySelectActivity.this, "亲，定位失败，请检查网络状态！", Toast.LENGTH_SHORT).show();
+				locateMsg.setText("定位失败，请手动选择城市");
 				stopLocation();// 销毁掉定位
 			}
 		}
@@ -265,7 +262,7 @@ public class CitySelectActivity extends QuhaoBaseActivity implements AMapLocatio
 					}
 
 				} catch (Exception e) {
-					locateMsgHandler.obtainMessage(200, "定位失败...").sendToTarget();
+					locateMsgHandler.obtainMessage(200, "定位失败，请手动选择城市").sendToTarget();
 				}
 				finally
 				{
@@ -529,7 +526,7 @@ public class CitySelectActivity extends QuhaoBaseActivity implements AMapLocatio
 			}
 			mAMapLocationManager = null;
 //			locateMsg.setText("定位失败...");
-			locateMsgHandler.obtainMessage(200, "定位失败...").sendToTarget();
+			locateMsgHandler.obtainMessage(200, "定位失败，请手动选择城市").sendToTarget();
 		}
 	}
 }
