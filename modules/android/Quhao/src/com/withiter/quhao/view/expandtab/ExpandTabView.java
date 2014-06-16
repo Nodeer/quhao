@@ -91,7 +91,6 @@ public class ExpandTabView extends LinearLayout implements OnDismissListener {
 			ToggleButton tButton = (ToggleButton) inflater.inflate(R.layout.toggle_button, this, false);
 			addView(tButton);
 			View line = new TextView(mContext);
-			line.setBackgroundResource(R.drawable.choosebar_line);
 			if (i < viewArray.size() - 1) {
 				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(2, LinearLayout.LayoutParams.FILL_PARENT);
 				addView(line, lp);
