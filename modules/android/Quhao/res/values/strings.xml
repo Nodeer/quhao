@@ -44,7 +44,7 @@
 	<string name="no_tags">暂无推荐</string>
 	<string name="no_desc">暂无描述</string>
 	
-	<!-- 详细页面 -->
+	<!-- MerchantDetailActivity begin -->
 	<string name="get_reservation">取&#160;&#160;&#160;号</string>
 	<string name="open_service">希望开通</string>
 	<string name="login">登陆</string>
@@ -57,6 +57,7 @@
 	<string name="huanjing_4_space">环&#160;&#160;&#160;&#160;境:</string>
 	<string name="fuwu">服务:</string>
 	<string name="fuwu_4_space">服&#160;&#160;&#160;&#160;务:</string>
+	<string name="zongtipingjia">总体评价:</string>
 	<string name="quhaoqingkuang">取号情况:</string>
 	<string name="search_merchant">搜索 - 美食</string>
 	<string name="loading">载入中&#8230;</string>
@@ -76,7 +77,7 @@
 	<string name="check_youhui_list_info">查看优惠信息</string>
 	<string name="youhui_list_info">优惠信息</string>
 	<string name="chat_chat">聊聊天</string>
-	<!-- 详细页面 -->
+	<!-- MerchantDetailActivity end -->
 	
     <!-- 提示信息 -->
     <string name="dazhongdianping">大众点评：</string>

@@ -69,7 +69,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	private TextView merchantBusinessTime;
 	private TextView merchantDesc;
 	private TextView merchantAverageCost;
-	private TextView dazhongdianping;
+	private TextView zongtipingjia;
 
 	private LinearLayout currentQuHaoLayout;
 	private LinearLayout critiqueLayout;
@@ -146,7 +146,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		descLayout.setOnClickListener(this);
 		this.merchantDesc = (TextView) info.findViewById(R.id.description);
 		this.merchantAverageCost = (TextView) info.findViewById(R.id.merchant_details_AverageCost);
-		this.dazhongdianping = (TextView) info.findViewById(R.id.dazhongdianping);
+		this.zongtipingjia = (TextView) info.findViewById(R.id.zongtipingjia);
 
 		currentQuHaoLayout = (LinearLayout) info.findViewById(R.id.currentQuHaoLayout);
 		reservationListView = (ListView) info.findViewById(R.id.reservationListView);
@@ -312,7 +312,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						}
 						
 						merchantAverageCost.setText(m.averageCost);
-						dazhongdianping.setText(String.valueOf(m.dianpingFen));
+						zongtipingjia.setText(String.valueOf(m.grade));
 	
 						// comment layout
 						critiqueLayout = (LinearLayout) info.findViewById(R.id.critiqueLayout);
