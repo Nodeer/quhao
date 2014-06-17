@@ -177,13 +177,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		
 		activityLayout = (LinearLayout) contentView.findViewById(R.id.activity_layout);
 		searchTextView = (Button) contentView.findViewById(R.id.edit_search);
-		searchTextView.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(getActivity(), MerchantsSearchActivity.class);
-				startActivity(intent);
-			}
-		});
+		searchTextView.setOnClickListener(this);
 
 		myAttentions = (ImageView) contentView.findViewById(R.id.my_attention);
 		noSequenceMerchants = (ImageView) contentView.findViewById(R.id.no_sequence_merchants);
@@ -212,24 +206,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		
 		// 城市选择按钮
 		cityBtn = (TextView) contentView.findViewById(R.id.city);
-		cityBtn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (isClick) {
-					return;
-				}
-				isClick = true;
-				switch (v.getId()) {
-				case R.id.city:
-					Intent intent = new Intent();
-					intent.setClass(getActivity(), CitySelectActivity.class);
-					startActivity(intent);
-				default:
-					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-					break;
-				}
-			}
-		});
+		cityBtn.setOnClickListener(this);
 		
 		cityBtn.setText(QHClientApplication.getInstance().defaultCity.cityName);
 		activityListView.setVisibility(View.VISIBLE);
@@ -786,6 +763,17 @@ public class HomeFragment extends Fragment implements OnClickListener {
 				}
 			});
 
+			break;
+		case R.id.city:
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			Intent intent = new Intent();
+			intent.setClass(getActivity(), CitySelectActivity.class);
+			startActivity(intent);
+			break;
+		case R.id.edit_search:
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			Intent intent2 = new Intent(getActivity(), MerchantsSearchActivity.class);
+			startActivity(intent2);
 			break;
 		default:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
