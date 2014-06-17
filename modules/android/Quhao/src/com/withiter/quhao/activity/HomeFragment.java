@@ -726,6 +726,8 @@ public class HomeFragment extends Fragment implements OnClickListener {
 			}
 
 			break;
+			
+		// 选择困难症按钮事件
 		case R.id.btn_choose_hard:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			String url = "app/tuijian?cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode;
@@ -748,8 +750,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 						chooseHardIntent.setClass(getActivity(), MerchantDetailActivity.class);
 						startActivity(chooseHardIntent);
 					}
-					else
-					{
+					else {
 						Toast.makeText(getActivity(), "亲，该城市暂未开通，请选择其他城市！", Toast.LENGTH_SHORT).show();
 						return;
 					}
@@ -758,7 +759,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 			}, new Runnable() {
 				@Override
 				public void run() {
-					Toast.makeText(getActivity(), "亲，暂时没得选哦！", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getActivity(), "亲，该城市暂未开通，请选择其他城市！", Toast.LENGTH_SHORT).show();
 					return;
 				}
 			});
