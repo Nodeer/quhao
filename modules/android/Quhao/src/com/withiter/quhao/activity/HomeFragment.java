@@ -591,6 +591,16 @@ public class HomeFragment extends Fragment implements OnClickListener {
 				if(null != activityList && !activityList.isEmpty()) {
 					activityLayout.setVisibility(View.VISIBLE);
 					activityListView.setVisibility(View.VISIBLE);
+					int totalHeight = 0;    
+			        for (int i = 0, len = activityAdapter.getCount(); i < len; i++) { //listAdapter.getCount()返回数据项的数目    
+				        View listItem = activityAdapter.getView(i, null, activityListView);    
+				        listItem.measure(0, 0); //计算子项View 的宽高    
+				        totalHeight += listItem.getMeasuredHeight(); //统计所有子项的总高度    
+			        }
+			            
+			        android.view.ViewGroup.LayoutParams params = activityListView.getLayoutParams();   
+			        params.height = totalHeight + (activityListView.getDividerHeight() * (activityListView.getCount() - 1));    
+			        activityListView.setLayoutParams(params);
 				}
 				else {
 					activityLayout.setVisibility(View.GONE);
