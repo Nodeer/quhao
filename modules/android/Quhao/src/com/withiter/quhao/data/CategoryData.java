@@ -13,7 +13,7 @@ public class CategoryData implements Parcelable{
 
 	}
 
-public static final Parcelable.Creator<CategoryData> CREATOR = new Creator<CategoryData>() {
+	public static final Parcelable.Creator<CategoryData> CREATOR = new Creator<CategoryData>() {
 		
 		@Override
 		public CategoryData[] newArray(int size) {
