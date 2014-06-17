@@ -184,10 +184,13 @@
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        android:maxWidth="110dp"
-			        android:background="@drawable/merchant_list_getno"/>
-			    
+			        android:background="@drawable/merchant_list_getno"
+			        android:visibility="gone"/>
+			    <Button android:id="@+id/open"
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:background="@drawable/btn_background_red"/>
             </LinearLayout>
-            
         </LinearLayout>
     </RelativeLayout>
  </RelativeLayout>
