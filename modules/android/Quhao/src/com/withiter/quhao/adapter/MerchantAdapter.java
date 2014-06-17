@@ -29,6 +29,7 @@ import com.withiter.quhao.activity.GetNumber2Activity;
 import com.withiter.quhao.activity.LoginActivity;
 import com.withiter.quhao.activity.MerchantDetailActivity;
 import com.withiter.quhao.task.CreateMerchentOpenTask;
+import com.withiter.quhao.task.JsonPack;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.AsynImageLoader;
@@ -50,10 +51,10 @@ public class MerchantAdapter extends BaseAdapter {
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			Map<String, String> obj2 = (Map<String, String>) msg.obj;
-			if (StringUtils.isNotNull(obj2.get("marketCount"))) {
-				int marketCount = Integer.valueOf(obj2.get("marketCount"));
+			if (StringUtils.isNotNull(obj2.get("openNum"))) {
+				int openNum = Integer.valueOf(obj2.get("openNum"));
 				int position = Integer.valueOf(obj2.get("position"));
-				updateView(position,marketCount);
+				updateView(position,openNum);
 			}
 			else
 			{
@@ -63,10 +64,10 @@ public class MerchantAdapter extends BaseAdapter {
 	};
 	
 	
-	private void updateView(int position, int marketCount) {
+	private void updateView(int position, int openNum) {
 		
 		int visiblePos = listView.getFirstVisiblePosition();
-		merchants.get(position).marketCount = marketCount;
+		merchants.get(position).openNum = openNum;
 		int offset = position - visiblePos;
 		// 只有在可见区域才更新
 		if(offset < 0)
@@ -76,7 +77,7 @@ public class MerchantAdapter extends BaseAdapter {
 		
 		View view = listView.getChildAt(offset);
 		ViewHolder holder = (ViewHolder)view.getTag();
-		holder.btnOpen.setText("希望开通:" + marketCount);
+		holder.btnOpen.setText("希望开通:" + openNum);
 	}
 	
 	public MerchantAdapter(Activity activity, ListView listView, List<Merchant> merchants) {
@@ -142,7 +143,7 @@ public class MerchantAdapter extends BaseAdapter {
 				holder.btnGetNumber.setVisibility(View.VISIBLE);
 			} else {
 				holder.btnOpen.setVisibility(View.VISIBLE);
-				holder.btnOpen.setText("希望开通：" + merchant.marketCount);
+				holder.btnOpen.setText("希望开通：" + merchant.openNum);
 				holder.btnGetNumber.setVisibility(View.GONE);
 			}
 			
@@ -159,6 +160,7 @@ public class MerchantAdapter extends BaseAdapter {
 							Toast.makeText(activity, "亲，商家未开通，暂时无法取号。", Toast.LENGTH_SHORT).show();
 							return;
 						}
+						
 						Intent intentGetNumber = new Intent();
 						intentGetNumber.putExtra("merchantId", merchantId);
 						intentGetNumber.putExtra("merchantName", mName);
@@ -192,12 +194,24 @@ public class MerchantAdapter extends BaseAdapter {
 							
 							@Override
 							public void run() {
-								Message msg = refreshOpenHandler.obtainMessage();
-								Map<String, String> obj = new HashMap<String, String>();
-								obj.put("position", positionStr);
-								obj.put("marketCount", task.jsonPack.getObj());
-								msg.obj = obj;
-								msg.sendToTarget();
+								JsonPack jsonPack = task.jsonPack;
+								if (jsonPack != null && StringUtils.isNotNull(jsonPack.getObj())) {
+									Message msg = refreshOpenHandler.obtainMessage();
+									Map<String, String> obj = new HashMap<String, String>();
+									obj.put("position", positionStr);
+									obj.put("openNum", task.jsonPack.getObj());
+									msg.obj = obj;
+									msg.sendToTarget();
+								}
+								else
+								{
+									Message msg = refreshOpenHandler.obtainMessage();
+									Map<String, String> obj = new HashMap<String, String>();
+									obj.put("position", positionStr);
+									obj.put("openNum", "");
+									msg.obj = obj;
+									msg.sendToTarget();
+								}
 								
 							}
 						}, new Runnable() {
@@ -207,7 +221,7 @@ public class MerchantAdapter extends BaseAdapter {
 								Message msg = refreshOpenHandler.obtainMessage();
 								Map<String, String> obj = new HashMap<String, String>();
 								obj.put("position", positionStr);
-								obj.put("marketCount", "");
+								obj.put("openNum", "");
 								msg.obj = obj;
 								msg.sendToTarget();
 								
