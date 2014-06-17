@@ -127,60 +127,20 @@ public class MerchantAdapter extends BaseAdapter {
 			}
 
 			String imageUrl = merchant.merchantImage;
-
-			QuhaoLog.i(TAG, "merchant adapter's imageUrl : " + imageUrl);
-
-//			holder.img.setTag(imageUrl + position);
 			holder.img.setImageResource(R.drawable.no_logo);
 			AsynImageLoader.getInstance().showImageAsyn(holder.img, position,imageUrl, R.drawable.no_logo);
-			/*
-			if (null != imageUrl && !"".equals(imageUrl)) {
-				cachedImage = asyncImageLoader.loadDrawable(imageUrl, position, new ImageCallback() {
-
-					@Override
-					public void imageLoaded(Drawable imageDrawable, String imageUrl, int position) {
-						ImageView imageViewByTag = (ImageView) listView.findViewWithTag(imageUrl + position);
-						if (null != imageViewByTag && null != imageDrawable) {
-							imageViewByTag.setImageDrawable(imageDrawable);
-							imageViewByTag.invalidate();
-							imageDrawable.setCallback(null);
-							imageDrawable = null;
-						}
-
-					}
-				});
-
-			}
-			// // 设置图片给imageView 对象
-			if (null != cachedImage) {
-				holder.img.setImageDrawable(cachedImage);
-				holder.img.invalidate();
-				cachedImage.setCallback(null);
-				cachedImage = null;
-			} else {
-				holder.img.setImageResource(R.drawable.no_logo);
-			}
-			*/
 			holder.content.setTag("content_" + position);
 			holder.content.setText(merchant.name);
 			holder.youhuiLayout.setTag("youhui_layout_" + position);
-			if(merchant.youhuiExist)
-			{
+			if(merchant.youhuiExist) {
 				holder.youhuiLayout.setVisibility(View.VISIBLE);
-			}
-			else
-			{
+			} else {
 				holder.youhuiLayout.setVisibility(View.GONE);
 			}
-			
-			
-			if(merchant.enable)
-			{
+			if(merchant.enable) {
 				holder.btnOpen.setVisibility(View.GONE);
 				holder.btnGetNumber.setVisibility(View.VISIBLE);
-			}
-			else
-			{
+			} else {
 				holder.btnOpen.setVisibility(View.VISIBLE);
 				holder.btnOpen.setText("希望开通：" + merchant.marketCount);
 				holder.btnGetNumber.setVisibility(View.GONE);

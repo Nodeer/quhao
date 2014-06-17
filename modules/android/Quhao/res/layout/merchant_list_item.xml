@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="160dp"
-    android:layout_marginBottom="5dp"
     android:descendantFocusability="blocksDescendants"
     android:background="@drawable/update_password_input"
     >
@@ -12,7 +11,6 @@
 	    android:layout_height="50dp"
 	    android:layout_alignParentTop="true"
 	    android:layout_alignParentRight="true"
-	    android:background="@drawable/merchang_list_youhui"
 	    >
 
         <ImageView
@@ -44,7 +42,7 @@
             android:ellipsize="end"
             android:singleLine="true"
             android:text="@string/empty"
-            android:textColor="@color/black"
+            android:textColor="@color/black_little"
             android:textSize="16sp" />
         <!-- 商家名称 -->
 	</RelativeLayout>
@@ -189,6 +187,8 @@
 			    <Button android:id="@+id/open"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
+			        android:textColor="@color/white"
+			        android:textSize="18sp"
 			        android:background="@drawable/btn_background_red"/>
             </LinearLayout>
         </LinearLayout>
