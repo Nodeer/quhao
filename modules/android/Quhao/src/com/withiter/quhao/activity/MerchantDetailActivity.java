@@ -30,6 +30,7 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.PaiduiConditionAdapter;
 import com.withiter.quhao.adapter.ReservationAdapter;
 import com.withiter.quhao.data.MerchantData;
+import com.withiter.quhao.task.CreateMerchentOpenTask;
 import com.withiter.quhao.task.GetChatPortTask;
 import com.withiter.quhao.task.GetPaiduiListTask;
 import com.withiter.quhao.task.JsonPack;
@@ -493,8 +494,14 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	private Handler openServiceHandler = new Handler(){
 		public void handleMessage(Message msg) {
 			if(msg.what == 0){
-				String num = (String) msg.obj;;
-				btnOpen.setText("希望开通：" + num);
+				String num = (String) msg.obj;
+				if (StringUtils.isNotNull(num)) {
+					btnOpen.setText("希望开通：" + num);
+				}
+				else
+				{
+					Toast.makeText(MerchantDetailActivity.this, "亲，网络不是很好哦。", Toast.LENGTH_SHORT).show();
+				}
 				unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
 			}
 		};
@@ -653,13 +660,56 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		case R.id.btn_open:
 			if(QHClientApplication.getInstance().isLogined)
 			{
+				
+				String accountId = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.ACCOUNT_ID, "");
+				String merchantId = merchant.id;
+				
+				try {
+					QuhaoLog.v(LOGTAG, "commit open service, account id  : " + accountId + " , merchant ID : " + merchantId);
+					if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+						Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+						unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+						return;
+					}
+					
+					String url = "openService?mid=" + merchantId + "&accountId=" + accountId;
+					final CreateMerchentOpenTask task = new CreateMerchentOpenTask(R.string.waitting, MerchantDetailActivity.this, url);
+					task.execute(new Runnable() {
+						
+						@Override
+						public void run() {
+							JsonPack jsonPack = task.jsonPack;
+							if (merchant!=null && jsonPack != null && StringUtils.isNotNull(jsonPack.getObj())) {
+								merchant.openNum = Integer.valueOf(jsonPack.getObj());
+								openServiceHandler.obtainMessage(0, jsonPack.getObj()).sendToTarget();
+							}
+							else
+							{
+								openServiceHandler.obtainMessage(0, "").sendToTarget();
+							}
+							
+						}
+					}, new Runnable() {
+						
+						@Override
+						public void run() {
+							openServiceHandler.obtainMessage(0, "").sendToTarget();
+							
+						}
+					});
+
+				} catch (Exception e) {
+					Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_SHORT).show();
+					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+					e.printStackTrace();
+				}
+				
+				/*
 				Thread thread = new Thread(new Runnable() {
 					
 					@Override
 					public void run() {
 						Looper.prepare();
-						progressDialogUtil = new ProgressDialogUtil(MerchantDetailActivity.this, R.string.empty, R.string.waitting_for_commit, false);
-						progressDialogUtil.showProgress();
 						
 						String accountId = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.ACCOUNT_ID, "");
 						String merchantId = merchant.id;
@@ -669,9 +719,9 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 							if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
 								Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
 								unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
-								progressDialogUtil.closeProgress();
 								return;
 							}
+							
 							String buf = CommonHTTPRequest.get("openService?mid=" + merchantId + "&accountId=" + accountId);
 							if (StringUtils.isNull(buf)) {
 								unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
@@ -690,10 +740,8 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 								}
 								
 							}
-							progressDialogUtil.closeProgress();
 
 						} catch (Exception e) {
-							progressDialogUtil.closeProgress();
 							Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_SHORT).show();
 							unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 							e.printStackTrace();
@@ -704,6 +752,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					}
 				});
 				thread.start();
+				*/
 			}
 			else
 			{

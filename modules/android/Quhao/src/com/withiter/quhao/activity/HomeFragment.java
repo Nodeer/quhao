@@ -710,14 +710,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		// 取号排队按钮事件
 		case R.id.btn_get_number:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			if (QHClientApplication.getInstance().isLogined) {
-				getCategoriesFromServerAndDisplay();
-			} else {
-				Intent login3 = new Intent(getActivity(), LoginActivity.class);
-				login3.putExtra("activityName", this.getClass().getName());
-				login3.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				startActivity(login3);
-			}
+			getCategoriesFromServerAndDisplay();
 
 			break;
 		// 聊聊天吧按钮事件
