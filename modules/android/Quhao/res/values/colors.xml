@@ -31,4 +31,5 @@
     
     <color name="user_detail_public_bg">#f3f3f3</color>
     <color name="user_list_public_bg">#e5e6e7</color>
+    <color name="black_little">#666666</color>
 </resources>

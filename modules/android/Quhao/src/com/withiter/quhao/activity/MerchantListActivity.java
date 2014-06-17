@@ -170,7 +170,6 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 		expandTabView = (ExpandTabView) this.findViewById(R.id.expandtab_view);
 		viewLeft = new ViewLeft(this, categoryNames, categoryTypes, categoryType);
 		viewLeft.setShowText("菜系");
-//		viewLeft.setBackgroundResource(R.drawable.expand_tab_bg);
 		sortByItems = new ArrayList<String>();
 		sortByItems.add("默认排序");
 		sortByItems.add("按评分排序");
@@ -227,12 +226,8 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 			if ("-1".equals(categoryType)) {
 				categoryType = "";
 			}
-//			for (int i = 0; i < categoryNames.size(); i++) {
-//				
-//			}
 		}
-		else if(1 == position)
-		{
+		else if(1 == position) {
 			defaultSortBy = sortByValues.get(sortByItems.indexOf(showText));
 			if ("-1".equals(defaultSortBy)) {
 				defaultSortBy = "";

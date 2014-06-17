@@ -75,7 +75,7 @@
 		    android:layout_width="fill_parent" 
 		    android:layout_height="50dip" 
 		    android:background="#ffffffff">
-	
+		    
 			<com.withiter.quhao.view.expandtab.ExpandTabView 
 			    android:id="@+id/expandtab_view"
 		        android:layout_width="fill_parent"
@@ -84,6 +84,7 @@
 			
 		</LinearLayout>
 		<LinearLayout android:id="@+id/result_layout"
+		    android:layout_marginTop="10dp"
 		    android:orientation="vertical"
 		    android:layout_width="fill_parent" 
 		    android:layout_height="match_parent" 

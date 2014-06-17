@@ -2,42 +2,40 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="160dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    android:paddingTop="5dp"
-    android:layout_marginTop="5dp"
     android:layout_marginBottom="5dp"
-    android:paddingBottom="10dp"
     android:descendantFocusability="blocksDescendants"
-    android:background="@drawable/update_password_input">
-   	<!-- android:background="@drawable/list_selector"> -->
+    android:background="@drawable/update_password_input"
+    >
 
-    <RelativeLayout android:id="@+id/youhui_layout"
+   <RelativeLayout android:id="@+id/youhui_layout"
 	    android:layout_width="wrap_content"
 	    android:layout_height="50dp"
-	    android:gravity="right"
-	    android:background="@color/no_color"
 	    android:layout_alignParentTop="true"
-	    android:layout_alignParentRight="true">
+	    android:layout_alignParentRight="true"
+	    android:background="@drawable/merchang_list_youhui"
+	    >
+
         <ImageView
             android:id="@+id/youhui_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
+            android:layout_alignParentTop="true"
             android:contentDescription="@string/empty"
             android:focusable="false"
             android:scaleType="fitXY"
-            android:src="@drawable/merchang_list_youhui" />
+            android:background="@drawable/merchang_list_youhui" />
 	</RelativeLayout>
 	
-    <RelativeLayout android:id="@+id/relative_layout1"
-	    android:layout_width="fill_parent"
-	    android:layout_height="40dp"
-	    android:paddingLeft="0dp"
-	    android:gravity="center_vertical"
-	    android:layout_marginLeft="0dp"
-	    android:layout_alignParentTop="true">
+    <RelativeLayout
+        android:id="@+id/relative_layout1"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:gravity="center_vertical"
+        >
+
      	<!-- 商家名称 -->
         <TextView
             android:id="@+id/merchantName"
@@ -47,16 +45,14 @@
             android:singleLine="true"
             android:text="@string/empty"
             android:textColor="@color/black"
-            android:textSize="15sp" />
+            android:textSize="16sp" />
         <!-- 商家名称 -->
 	</RelativeLayout>
     
     <RelativeLayout 
         android:id="@+id/relative_layout2"
 	    android:layout_width="fill_parent"
-	    android:layout_height="100dp"
-	    android:paddingLeft="3dp"
-	    android:layout_marginLeft="0dp"
+	    android:layout_height="90dp"
 	    android:layout_alignParentBottom="true"
 	    android:layout_below="@id/relative_layout1">
         <!-- 商家logo -->
@@ -64,7 +60,7 @@
         <ImageView
             android:id="@+id/img"
             android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_height="90dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:contentDescription="@string/empty"
@@ -76,15 +72,16 @@
         <LinearLayout
             android:id="@+id/linearLayout2"
             android:layout_width="fill_parent"
-            android:layout_height="100dp"
+            android:layout_height="90dp"
             android:layout_alignParentRight="true"
             android:layout_centerHorizontal="false"
             android:layout_centerInParent="true"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/img"
             android:orientation="vertical"
-            android:paddingLeft="5dp"
-            android:paddingTop="2dp" >
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="5dp"
+            >
 
             <LinearLayout 
                 android:layout_width="fill_parent"
@@ -100,18 +97,17 @@
                 android:layout_height="fill_parent"
                 android:orientation="horizontal"
                 android:gravity="bottom|left" >
-
-                <!--
-                <ImageView
-                    android:id="@+id/pingfen"
-                    android:contentDescription="@string/empty"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:src="@drawable/star50" />
-                -->
                 <!-- 人均消费 -->
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="人均:￥"
+                    android:textColor="@color/black_little"
+                    android:textSize="15sp" />
+                
                 <TextView
                     android:id="@+id/merchantRenjun"
                     android:layout_width="wrap_content"
@@ -119,8 +115,8 @@
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="@string/empty"
-                    android:textColor="@color/black"
-                    android:textSize="13sp" />
+                    android:textColor="@color/red"
+                    android:textSize="15sp" />
                 <!-- 人均消费 -->
             </LinearLayout>
 
@@ -130,17 +126,6 @@
                 android:layout_height="fill_parent"
                 android:orientation="horizontal" 
                 android:gravity="bottom|right">
-
-                <!-- 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/empty"
-                    android:focusable="false"
-                    android:text="@string/distance"
-                    android:textColor="@color/gray"
-                    android:textSize="13sp" />
-				 -->
                 <TextView
                     android:id="@+id/distance"
                     android:layout_width="wrap_content"
@@ -149,8 +134,8 @@
                     android:paddingLeft="6dp"
                     android:singleLine="true"
                     android:text="@string/empty"
-                    android:textColor="@color/black"
-                    android:textSize="13sp" />
+                    android:textColor="@color/black_little"
+                    android:textSize="15sp" />
             </LinearLayout>
             </LinearLayout>
             
@@ -166,8 +151,8 @@
 	                android:layout_height="wrap_content"
 	                android:ellipsize="end"
 	                android:singleLine="true"
-	                android:text="大众点评："
-	                android:textColor="@color/black"
+	                android:text="大众点评评分："
+	                android:textColor="@color/black_little"
 	                android:textSize="15sp" />
 	            <TextView
 	                android:id="@+id/dazhongdianping"
@@ -184,13 +169,13 @@
 	                android:ellipsize="end"
 	                android:singleLine="true"
 	                android:text="分"
-	                android:textColor="@color/black"
+	                android:textColor="@color/black_little"
 	                android:textSize="15sp" />
             </LinearLayout>
 			<LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="3dp"
+                android:layout_marginTop="3dp"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:layout_weight="1.0">
@@ -198,6 +183,7 @@
 			    <Button android:id="@+id/get_number"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
+			        android:maxWidth="110dp"
 			        android:background="@drawable/merchant_list_getno"/>
 			    
             </LinearLayout>
