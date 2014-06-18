@@ -68,15 +68,18 @@
                 android:layout_height="fill_parent"
                 android:orientation="vertical"
                 android:paddingLeft="2.0dip"
-                android:paddingTop="3dp" >
+                android:paddingTop="3dp" 
+                android:weightSum="4"
+                >
 
-                <!-- 人均 -->
                 <LinearLayout
                     android:id="@+id/tex2_lay1"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dip"
                     android:layout_marginTop="0.0dip"
-                    android:orientation="vertical" >
+                    android:orientation="vertical" 
+                    android:layout_weight="1"
+                    >
 
                     <TextView
                         android:id="@+id/merchant_detail_merchantName"
@@ -89,19 +92,20 @@
                         android:singleLine="true"
                         android:text="@string/empty"
                         android:textAppearance="?android:textAppearanceMedium"
-                        android:textColor="#ff000000"
-                        android:textSize="15.0sp" />
+                        android:textColor="@color/black_little"
+                        android:textSize="17.0sp" />
                 </LinearLayout>
-                <!-- 人均 -->
 
-				<!-- 总体评价 -->
                 <LinearLayout
                     android:id="@+id/tex2_lay3"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dip"
                     android:layout_marginTop="0.0dip"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal" 
+                    android:layout_weight="1"
+                    >
 
+	                <!-- 人均 -->
                     <TextView
                         android:id="@+id/text2_renjun"
                         android:layout_width="wrap_content"
@@ -109,8 +113,8 @@
                         android:singleLine="true"
                         android:text="@string/renjun"
                         android:textAppearance="?android:textAppearanceMedium"
-                        android:textColor="#ff000000"
-                        android:textSize="12.0sp" />
+                        android:textColor="@color/black_little"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/merchant_details_AverageCost"
@@ -121,26 +125,18 @@
                         android:text="@string/zero"
                         android:textAppearance="?android:textAppearanceMedium"
                         android:textColor="@color/red"
-                        android:textSize="12.0sp" />
-                </LinearLayout>
-				<!-- 总体评价 -->
-
-                <LinearLayout
-                    android:id="@+id/text2_lay2"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0.0dip"
-                    android:orientation="horizontal" >
-
-                    <TextView
+                        android:textSize="15sp" />
+	                <!-- 人均 -->
+					<!-- 总体评价 -->
+	                <TextView
                         android:id="@+id/text2_shop_score1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:singleLine="true"
                         android:text="@string/zongtipingjia"
                         android:textAppearance="?android:textAppearanceMedium"
-                        android:textColor="#ff000000"
-                        android:textSize="12.0sp" />
+                        android:textColor="@color/black_little"
+                        android:textSize="15.0sp" />
 
                     <TextView
                         android:id="@+id/zongtipingjia"
@@ -151,15 +147,17 @@
                         android:text="@string/zero"
                         android:textAppearance="?android:textAppearanceMedium"
                         android:textColor="@color/red"
-                        android:textSize="12.0sp" />
+                        android:textSize="15.0sp" />
+				<!-- 总体评价 -->
                 </LinearLayout>
-
                 <LinearLayout
                     android:id="@+id/tex2_lay2"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dip"
                     android:layout_marginTop="5dp"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal" 
+                    android:layout_weight="1"
+                    >
 
                     <Button
                         android:id="@+id/btn_attention"
@@ -187,10 +185,12 @@
 
                 <LinearLayout
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dip"
                     android:layout_marginTop="5dp"
                     android:gravity="center"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal" 
+                    android:layout_weight="1"
+                    >
 
                     <Button
                         android:id="@+id/btn_open"
