@@ -4,21 +4,26 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
-import android.widget.ListView;
+import android.widget.TextView;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.data.ReservationData;
-import com.withiter.quhao.util.QuhaoLog;
 
 public class MyNumberActivity extends QuhaoBaseActivity {
 
-	private String LOGTAG = MyNumberActivity.class.getName();
-
 	private ReservationData data;
+	
+	private TextView seatNoView;
+	
+	private TextView myNoView;
+	
+	private TextView beforeYouView; 
+	
+	private TextView nextNoView;
+	
 	@Override
 	public void finish() {
 		super.finish();
-		QuhaoLog.i(LOGTAG, LOGTAG + " finished");
 	}
 
 	@Override
@@ -41,6 +46,15 @@ public class MyNumberActivity extends QuhaoBaseActivity {
 		
 		this.data = getIntent().getParcelableExtra("rvo");
 		
+		this.seatNoView = (TextView) this.findViewById(R.id.rvo_seat_no);
+		this.myNoView = (TextView) this.findViewById(R.id.rvo_my_number);
+		this.beforeYouView = (TextView) this.findViewById(R.id.rvo_before_you);
+		this.nextNoView = (TextView) this.findViewById(R.id.rvo_next_number);
+		
+		seatNoView.setText(data.getSeatNumber());
+		myNoView.setText(data.getMyNumber());
+		beforeYouView.setText(data.getBeforeYou());
+		nextNoView.setText(data.getCurrentNumber());
 	}
 
 	@Override

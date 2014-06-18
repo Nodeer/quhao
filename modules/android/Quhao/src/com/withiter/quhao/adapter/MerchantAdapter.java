@@ -8,6 +8,7 @@ import java.util.Map;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -28,14 +29,18 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.activity.GetNumber2Activity;
 import com.withiter.quhao.activity.LoginActivity;
 import com.withiter.quhao.activity.MerchantDetailActivity;
+import com.withiter.quhao.activity.MyNumberActivity;
+import com.withiter.quhao.data.ReservationData;
 import com.withiter.quhao.task.CreateMerchentOpenTask;
+import com.withiter.quhao.task.GetReservationsTask;
 import com.withiter.quhao.task.JsonPack;
-import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.AsynImageLoader;
+import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SharedprefUtil;
 import com.withiter.quhao.vo.Merchant;
+import com.withiter.quhao.vo.ReservationVO;
 
 public class MerchantAdapter extends BaseAdapter {
 
@@ -161,11 +166,63 @@ public class MerchantAdapter extends BaseAdapter {
 							return;
 						}
 						
-						Intent intentGetNumber = new Intent();
-						intentGetNumber.putExtra("merchantId", merchantId);
-						intentGetNumber.putExtra("merchantName", mName);
-						intentGetNumber.setClass(activity, GetNumber2Activity.class);
-						activity.startActivity(intentGetNumber);
+						
+						String accountId = SharedprefUtil.get(activity, QuhaoConstant.ACCOUNT_ID, "");
+						String url = "getReservations?accountId=" + accountId + "&mid=" + merchantId;
+						if (StringUtils.isNotNull(merchantId) && StringUtils.isNotNull(accountId)) {
+							final GetReservationsTask task = new GetReservationsTask(R.string.waitting, activity, url);
+							task.execute(new Runnable() {
+								
+								@Override
+								public void run() {
+									JsonPack jsonPack = task.jsonPack;
+									List<ReservationVO> rvos = ParseJson.getReservations(jsonPack.getObj());
+									if (null != rvos && !rvos.isEmpty()) {
+										
+										ReservationVO rvo = rvos.get(0);
+										ReservationData data = new ReservationData();
+										data.setAccountId(rvo.accountId);
+										data.setBeforeYou(rvo.beforeYou);
+										data.setCurrentNumber(rvo.currentNumber);
+										data.setMerchantAddress(rvo.merchantAddress);
+										data.setMerchantId(rvo.merchantId);
+										data.setMerchantImage(rvo.merchantImage);
+										data.setMerchantName(rvo.merchantName);
+										data.setMyNumber(rvo.myNumber);
+										data.setrId(rvo.rId);
+										data.setSeatNumber(rvo.seatNumber);
+										
+										Intent intentMyNo = new Intent();
+										Bundle bundle = new Bundle();
+										bundle.putParcelable("rvo", data);
+										intentMyNo.putExtras(bundle);
+										
+										intentMyNo.setClass(activity, MyNumberActivity.class);
+										activity.startActivity(intentMyNo);
+									}
+									else
+									{
+										Intent intentGetNumber = new Intent();
+										intentGetNumber.putExtra("merchantId", merchantId);
+										intentGetNumber.putExtra("merchantName", mName);
+										intentGetNumber.setClass(activity, GetNumber2Activity.class);
+										activity.startActivity(intentGetNumber);
+									}
+									
+								}
+							},new Runnable() {
+								
+								@Override
+								public void run() {
+									Intent intentGetNumber = new Intent();
+									intentGetNumber.putExtra("merchantId", merchantId);
+									intentGetNumber.putExtra("merchantName", mName);
+									intentGetNumber.setClass(activity, GetNumber2Activity.class);
+									activity.startActivity(intentGetNumber);
+									
+								}
+							});
+						}
 			
 					} else {
 						Intent intentGetNumber = new Intent(activity, LoginActivity.class);
