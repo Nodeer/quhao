@@ -10,7 +10,7 @@
         android:layout_height="fill_parent"
         android:textColor="@color/black_little"
         android:layout_weight="1.0"
-        android:textSize="12sp"
+        android:textSize="13sp"
         />
     
     <TextView android:id="@+id/current_no"
@@ -18,7 +18,7 @@
         android:layout_height="fill_parent"
         android:textColor="@color/black_little"
         android:layout_weight="1.0"
-        android:textSize="12sp"
+        android:textSize="13sp"
         />
     
     <TextView android:id="@+id/max_no"
@@ -26,7 +26,7 @@
         android:layout_height="fill_parent"
         android:textColor="@color/black_little"
         android:layout_weight="1.0"
-        android:textSize="12sp"
+        android:textSize="13sp"
         />
        
  </LinearLayout>

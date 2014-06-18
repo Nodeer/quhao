@@ -33,4 +33,6 @@
     <color name="user_list_public_bg">#e5e6e7</color>
     <color name="black_little">#666666</color>
     <color name="red_text">#cb3f40</color>
+    <color name="yellow_text">#f8bd09</color>
+    <color name="blue_text">#89d7e4</color>
 </resources>
