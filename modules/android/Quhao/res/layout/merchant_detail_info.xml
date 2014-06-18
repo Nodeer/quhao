@@ -245,6 +245,7 @@
                 android:id="@+id/reservation_list_empty"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:text="暂无信息"
                 android:textSize="15sp"
                 android:textColor="@color/black_little"
@@ -252,6 +253,7 @@
         </LinearLayout>
         <!-- 我的取号情况 -->
 
+		<!-- 排队情况 -->
         <LinearLayout
             android:id="@+id/paidui_condition_layout"
             android:layout_width="fill_parent"
@@ -317,6 +319,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:textColor="@color/black_little"
                     android:cacheColorHint="@null"
                     android:divider="@null"
                     android:entries="@null"
@@ -328,20 +331,21 @@
                     android:id="@+id/paidui_list_empty"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:padding="15dip"
-                    android:text="暂无"
-                    android:textSize="14sp"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/black_little"
+                    android:text="暂无信息"
+                    android:textSize="15sp"
                     android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
-
+   		<!-- 排队情况 -->
+        
+        <!-- 优惠 -->
         <LinearLayout
             android:id="@+id/youhui_layout"
             android:layout_width="fill_parent"
             android:layout_height="50dp"
-            android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
             android:background="@drawable/merchant_detail_bg"
             android:clickable="true"
             android:gravity="center_vertical"
@@ -376,14 +380,12 @@
                 android:paddingRight="6.0dip"
                 android:src="@drawable/arrow_right" />
         </LinearLayout>
+		<!-- 优惠 -->
         <!-- 地址 -->
-
         <LinearLayout
             android:id="@+id/mapLayout"
             android:layout_width="fill_parent"
             android:layout_height="50dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/ic_multi_top"
             android:clickable="true"
