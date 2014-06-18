@@ -55,7 +55,7 @@ public class ViewLeft extends RelativeLayout implements ViewBaseAction{
 		mContext = context;
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		inflater.inflate(R.layout.view_distance, this, true);
-		setBackgroundDrawable(getResources().getDrawable(R.drawable.choosearea_bg_mid));
+		setBackgroundDrawable(getResources().getDrawable(R.drawable.choosearea_bg_left));
 		mListView = (ListView) findViewById(R.id.listView);
 		adapter = new TextAdapter(context, items, R.drawable.choose_item_right, R.drawable.choose_eara_item_selector);
 		adapter.setTextSize(17);

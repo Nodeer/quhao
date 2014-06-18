@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     android:background="#ffffffff"
     android:orientation="vertical" >
 
@@ -30,7 +30,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:gravity="center_vertical"
-            android:text="@string/get_number"
+            android:text="@string/my_number_title"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="#000000" />
     </RelativeLayout>

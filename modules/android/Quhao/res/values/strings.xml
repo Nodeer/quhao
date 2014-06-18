@@ -277,4 +277,8 @@
 	<string name="quhao_paidui">取号排队</string>
 	<!-- MerchantListActivity begin -->
 	
+	<!-- MyNumberActivity begin -->
+	<string name="my_number_title">我的号码</string>
+	<!-- MyNumberActivity end -->
+	
 </resources>
