@@ -209,6 +209,7 @@
             </LinearLayout>
         </LinearLayout>
 
+        <!-- 我的取号情况 -->
         <LinearLayout
             android:id="@+id/currentQuHaoLayout"
             android:layout_width="fill_parent"
@@ -231,6 +232,7 @@
                 android:id="@+id/reservationListView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black_little"
                 android:cacheColorHint="@null"
                 android:divider="@null"
                 android:entries="@null"
@@ -245,18 +247,18 @@
                 android:layout_height="wrap_content"
                 android:text="暂无信息"
                 android:textSize="15sp"
+                android:textColor="@color/black_little"
                 android:visibility="gone" />
         </LinearLayout>
+        <!-- 我的取号情况 -->
 
         <LinearLayout
             android:id="@+id/paidui_condition_layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:background="@drawable/update_password_input"
             android:orientation="vertical"
-            android:paddingTop="5dp" >
+            >
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -276,13 +278,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:gravity="center_vertical"
-                        android:paddingLeft="10.0dip"
-                        android:paddingRight="10.0dip"
                         android:paddingTop="5.0dip"
                         android:text="@string/paidui_condition"
                         android:textAppearance="?android:textAppearanceMedium"
-                        android:textColor="#ff000000"
-                        android:textSize="16.0sp" />
+                        android:textColor="@color/red_text"
+                        android:textSize="17.0sp" />
                 </LinearLayout>
 
                 <LinearLayout
