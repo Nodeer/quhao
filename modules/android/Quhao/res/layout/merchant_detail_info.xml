@@ -440,8 +440,6 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="50dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:background="@drawable/ic_multi_mid"
             android:clickable="true"
             android:gravity="center_vertical"
@@ -458,7 +456,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="2"
-                android:text="@string/contact"
+                android:text="@string/dianhua"
                 android:textColor="#ff000000"
                 android:textSize="16.0sp" />
 
@@ -496,8 +494,6 @@
             android:id="@+id/opentimeLayout"
             android:layout_width="fill_parent"
             android:layout_height="50dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:background="@drawable/ic_multi_end"
             android:clickable="true"
             android:gravity="center_vertical"
@@ -539,8 +535,6 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:orientation="vertical" >
 
             <LinearLayout
