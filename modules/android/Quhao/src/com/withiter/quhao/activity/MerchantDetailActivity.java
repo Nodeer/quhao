@@ -417,7 +417,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 							btnChat.setBackgroundResource(R.drawable.ic_chat_ed);
 							btnGetNumber.setVisibility(View.GONE);
 							btnOpen.setVisibility(View.VISIBLE);
-							btnOpen.setText("希望开通：" + m.openNum);
+							btnOpen.setText("希望开通（" + m.openNum+"）");
 							currentQuHaoLayout.setVisibility(View.GONE);
 							
 						}
@@ -496,7 +496,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			if(msg.what == 0){
 				String num = (String) msg.obj;
 				if (StringUtils.isNotNull(num)) {
-					btnOpen.setText("希望开通：" + num);
+					btnOpen.setText("希望开通（" + num+"）");
 				}
 				else
 				{

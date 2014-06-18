@@ -12,8 +12,7 @@
         android:background="#ffffffff"
         android:gravity="center"
         android:orientation="horizontal"
-        android:padding="10dip"
-        android:visibility="gone" >
+        android:padding="10dip" >
 
         <ProgressBar
             android:layout_width="wrap_content"
@@ -71,6 +70,8 @@
                 android:padding="4dp"
                 android:weightSum="4" >
 
+                <!-- 商家名称 -->
+
                 <LinearLayout
                     android:id="@+id/tex2_lay1"
                     android:layout_width="fill_parent"
@@ -93,13 +94,14 @@
                         android:textColor="@color/black_little"
                         android:textSize="17.0sp" />
                 </LinearLayout>
+                <!-- 商家名称 -->
 
                 <LinearLayout
                     android:id="@+id/tex2_lay3"
                     android:layout_width="fill_parent"
                     android:layout_height="0dip"
                     android:layout_weight="1"
-                    android:gravity="center_vertical|center_horizontal"
+                    android:gravity="clip_vertical"
                     android:orientation="horizontal" >
 
                     <!-- 人均 -->
@@ -158,6 +160,8 @@
                     android:gravity="center_vertical|center_horizontal"
                     android:orientation="horizontal" >
 
+                    <!-- 关注按钮 -->
+
                     <Button
                         android:id="@+id/btn_attention"
                         android:layout_width="0dip"
@@ -165,6 +169,8 @@
                         android:layout_weight="1"
                         android:background="@drawable/pay_attention"
                         android:textAppearance="?android:textAppearanceMediumInverse" />
+                    <!-- 关注按钮 -->
+                    <!-- 聊天室按钮 -->
 
                     <Button
                         android:id="@+id/btn_chat"
@@ -173,6 +179,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/ic_chat"
                         android:textAppearance="?android:textAppearanceMediumInverse" />
+                    <!-- 聊天室按钮 -->
                 </LinearLayout>
 
                 <LinearLayout
@@ -180,31 +187,36 @@
                     android:layout_height="0dip"
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
-                    android:gravity="center"
+                    android:gravity="left"
                     android:orientation="horizontal" >
+
+                    <!-- 希望开通按钮 -->
 
                     <Button
                         android:id="@+id/btn_open"
                         android:layout_width="wrap_content"
-                        android:layout_height="35dip"
-                        android:layout_gravity="right|center_vertical"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
                         android:background="@drawable/btn_background_red"
                         android:paddingRight="10dip"
                         android:text="@string/open_service"
                         android:textAppearance="?android:textAppearanceMediumInverse"
                         android:textColor="@color/white"
                         android:textSize="11.0sp" />
+                    <!-- 希望开通按钮 -->
+                    <!-- 取号按钮 -->
 
                     <Button
                         android:id="@+id/btn_GetNumber"
                         android:layout_width="wrap_content"
-                        android:layout_height="35dip"
-                        android:layout_gravity="right|center_vertical"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
                         android:background="@drawable/btn_background_red"
                         android:paddingRight="10dip"
                         android:textAppearance="?android:textAppearanceMediumInverse"
                         android:textColor="@color/white"
                         android:textSize="11.0sp" />
+                    <!-- 取号按钮 -->
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -215,7 +227,6 @@
             android:id="@+id/currentQuHaoLayout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="0.0dip"
             android:background="@drawable/update_password_input"
             android:orientation="vertical" >
 
@@ -223,7 +234,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:gravity="center_vertical"
-                android:paddingBottom="1.0dip"
                 android:text="@string/wodequhaoqingkuang"
                 android:textAppearance="?android:textAppearanceMedium"
                 android:textColor="@color/red_text"
@@ -262,7 +272,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/update_password_input"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:visibility="gone" >
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -298,14 +309,12 @@
 
                     <Button
                         android:id="@+id/btn_refresh_paidui"
-                        android:layout_width="35dip"
-                        android:layout_height="25dip"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="right|center_vertical"
-                        android:background="@drawable/button_background_blue"
+                        android:background="@drawable/btn_refresh"
                         android:gravity="center"
-                        android:text="刷新"
-                        android:textAppearance="?android:textAppearanceMediumInverse"
-                        android:textSize="11.0sp" />
+                        android:textAppearance="?android:textAppearanceMediumInverse" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -348,7 +357,7 @@
         <LinearLayout
             android:id="@+id/youhui_layout"
             android:layout_width="fill_parent"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:background="@drawable/update_password_input"
             android:clickable="true"
             android:gravity="center_vertical"
@@ -383,154 +392,172 @@
                 android:src="@drawable/arrow_right" />
         </LinearLayout>
         <!-- 优惠 -->
-        <!-- 地址 -->
-
-        <LinearLayout
-            android:id="@+id/mapLayout"
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/ic_multi_top"
-            android:clickable="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/empty"
-                android:src="@drawable/ic_address_big" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="2"
-                android:text="@string/address"
-                android:textColor="@color/black_little"
-                android:textSize="15.0sp" />
-
-            <TextView
-                android:id="@+id/merchantAddress"
-                android:layout_width="0.0px"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="6.0dip"
-                android:layout_weight="1.0"
-                android:ellipsize="marquee"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:singleLine="true"
-                android:text="@string/empty"
-                android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="@color/black_little"
-                android:textSize="15.0sp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:contentDescription="@string/empty"
-                android:duplicateParentState="true"
-                android:paddingRight="6.0dip"
-                android:src="@drawable/arrow_right" />
-        </LinearLayout>
-        <!-- 地址 -->
-
-
-        <!-- 联系方式 -->
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/ic_multi_mid"
-            android:clickable="true"
+            android:layout_height="wrap_content"
+            android:background="@drawable/update_password_input"
             android:gravity="center_vertical"
-            android:orientation="horizontal" >
+            android:orientation="vertical" >
+
+            <!-- 地址 -->
+
+            <LinearLayout
+                android:id="@+id/mapLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:contentDescription="@string/empty"
+                    android:src="@drawable/ic_address_big" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6.0dip"
+                    android:maxLines="2"
+                    android:text="@string/address"
+                    android:textColor="@color/black_little"
+                    android:textSize="15.0sp" />
+
+                <TextView
+                    android:id="@+id/merchantAddress"
+                    android:layout_width="0.0px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6.0dip"
+                    android:layout_weight="1.0"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:singleLine="true"
+                    android:text="@string/empty"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textColor="@color/black_little"
+                    android:textSize="15.0sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/empty"
+                    android:duplicateParentState="true"
+                    android:paddingRight="6.0dip"
+                    android:src="@drawable/arrow_right" />
+            </LinearLayout>
+            <!-- 地址 -->
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/empty"
-                android:src="@drawable/ic_phone_big" />
+                android:src="@drawable/break_line" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="2"
-                android:text="@string/dianhua"
-                android:textColor="@color/black_little"
-                android:textSize="15.0sp" />
+            <!-- 联系方式 -->
 
-            <TextView
-                android:id="@+id/merchantPhone"
-                android:layout_width="0.0px"
+            <LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="6.0dip"
-                android:layout_weight="1.0"
-                android:ellipsize="marquee"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:singleLine="true"
-                android:text="@string/empty"
-                android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="@color/black_little"
-                android:textSize="15.0sp" />
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:contentDescription="@string/empty"
+                    android:src="@drawable/ic_phone_big" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6.0dip"
+                    android:maxLines="2"
+                    android:text="@string/dianhua"
+                    android:textColor="@color/black_little"
+                    android:textSize="15.0sp" />
+
+                <TextView
+                    android:id="@+id/merchantPhone"
+                    android:layout_width="0.0px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6.0dip"
+                    android:layout_weight="1.0"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:singleLine="true"
+                    android:text="@string/empty"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textColor="@color/black_little"
+                    android:textSize="15.0sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:contentDescription="@string/empty"
+                    android:duplicateParentState="true"
+                    android:paddingRight="6.0dip"
+                    android:src="@drawable/arrow_right" />
+            </LinearLayout>
+            <!-- 联系方式 -->
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:contentDescription="@string/empty"
-                android:duplicateParentState="true"
-                android:paddingRight="6.0dip"
-                android:src="@drawable/arrow_right" />
+                android:src="@drawable/break_line" />
+
+            <!-- 营业时间 -->
+
+            <LinearLayout
+                android:id="@+id/opentimeLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:contentDescription="@string/empty"
+                    android:src="@drawable/ic_clock_big" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6.0dip"
+                    android:maxLines="2"
+                    android:text="@string/opentime"
+                    android:textColor="@color/black_little"
+                    android:textSize="15.0sp" />
+
+                <TextView
+                    android:id="@+id/merchantBusinessTime"
+                    android:layout_width="0.0px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6.0dip"
+                    android:layout_weight="1.0"
+                    android:ellipsize="marquee"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:singleLine="true"
+                    android:text="@string/empty"
+                    android:textAppearance="?android:textAppearanceMedium"
+                    android:textColor="@color/black_little"
+                    android:textSize="15.0sp" />
+            </LinearLayout>
+            <!-- 营业时间 -->
         </LinearLayout>
-        <!-- 联系方式 -->
-
-
-        <!-- 营业时间 -->
-
-        <LinearLayout
-            android:id="@+id/opentimeLayout"
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/ic_multi_end"
-            android:clickable="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/empty"
-                android:src="@drawable/ic_clock_big" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="2"
-                android:text="@string/opentime"
-                android:textColor="@color/black_little"
-                android:textSize="15.0sp" />
-
-            <TextView
-                android:id="@+id/merchantBusinessTime"
-                android:layout_width="0.0px"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="6.0dip"
-                android:layout_weight="1.0"
-                android:ellipsize="marquee"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:singleLine="true"
-                android:text="@string/empty"
-                android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="@color/black_little"
-                android:textSize="15.0sp" />
-        </LinearLayout>
-        <!-- 营业时间 -->
 
         <LinearLayout
             android:layout_width="fill_parent"
