@@ -67,8 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:orientation="vertical"
-                android:paddingLeft="2.0dip"
-                android:paddingTop="3dp" 
+                android:padding="4dp"
                 android:weightSum="4"
                 >
 
@@ -100,10 +99,9 @@
                     android:id="@+id/tex2_lay3"
                     android:layout_width="fill_parent"
                     android:layout_height="0dip"
-                    android:layout_marginTop="0.0dip"
-                    android:orientation="horizontal" 
                     android:layout_weight="1"
-                    >
+                    android:gravity="center_vertical|center_horizontal"
+                    android:orientation="horizontal" >
 
 	                <!-- 人均 -->
                     <TextView
@@ -150,35 +148,28 @@
                         android:textSize="15.0sp" />
 				<!-- 总体评价 -->
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/tex2_lay2"
                     android:layout_width="fill_parent"
                     android:layout_height="0dip"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal" 
                     android:layout_weight="1"
-                    >
+                    android:gravity="center_vertical|center_horizontal"
+                    android:orientation="horizontal" >
 
                     <Button
                         android:id="@+id/btn_attention"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dip"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right|center_vertical"
+                        android:layout_weight="1"
                         android:background="@drawable/pay_attention"
                         android:textAppearance="?android:textAppearanceMediumInverse" />
 
-                    <TextView
-                        android:layout_width="2dp"
-                        android:layout_height="35dip"
-                        android:paddingRight="10dip"
-                        android:text="@string/null_2_space"
-                        android:textSize="11.0sp" />
-
                     <Button
                         android:id="@+id/btn_chat"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dip"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right|center_vertical"
+                        android:layout_weight="1"
                         android:background="@drawable/ic_chat"
                         android:textAppearance="?android:textAppearanceMediumInverse" />
                 </LinearLayout>
