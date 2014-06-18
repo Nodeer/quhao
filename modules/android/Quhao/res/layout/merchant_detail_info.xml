@@ -112,7 +112,7 @@
                         android:text="@string/renjun"
                         android:textAppearance="?android:textAppearanceMedium"
                         android:textColor="@color/black_little"
-                        android:textSize="15sp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/merchant_details_AverageCost"
@@ -122,8 +122,8 @@
                         android:singleLine="true"
                         android:text="@string/zero"
                         android:textAppearance="?android:textAppearanceMedium"
-                        android:textColor="@color/red"
-                        android:textSize="15sp" />
+                        android:textColor="@color/red_text"
+                        android:textSize="12sp" />
 	                <!-- 人均 -->
 					<!-- 总体评价 -->
 	                <TextView
@@ -134,7 +134,7 @@
                         android:text="@string/zongtipingjia"
                         android:textAppearance="?android:textAppearanceMedium"
                         android:textColor="@color/black_little"
-                        android:textSize="15.0sp" />
+                        android:textSize="12.0sp" />
 
                     <TextView
                         android:id="@+id/zongtipingjia"
@@ -144,8 +144,8 @@
                         android:singleLine="true"
                         android:text="@string/zero"
                         android:textAppearance="?android:textAppearanceMedium"
-                        android:textColor="@color/red"
-                        android:textSize="15.0sp" />
+                        android:textColor="@color/red_text"
+                        android:textSize="12.0sp" />
 				<!-- 总体评价 -->
                 </LinearLayout>
 
@@ -213,8 +213,6 @@
             android:id="@+id/currentQuHaoLayout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
             android:layout_marginTop="0.0dip"
             android:background="@drawable/update_password_input"
             android:orientation="vertical" >
@@ -224,19 +222,15 @@
                 android:layout_height="fill_parent"
                 android:gravity="center_vertical"
                 android:paddingBottom="1.0dip"
-                android:paddingLeft="10.0dip"
-                android:paddingRight="10.0dip"
-                android:paddingTop="1.0dip"
-                android:text="@string/quhaoqingkuang"
+                android:text="@string/wodequhaoqingkuang"
                 android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="#ff000000"
-                android:textSize="16.0sp" />
+                android:textColor="@color/red_text"
+                android:textSize="17.0sp" />
 
             <ListView
                 android:id="@+id/reservationListView"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:cacheColorHint="@null"
                 android:divider="@null"
                 android:entries="@null"
@@ -249,9 +243,8 @@
                 android:id="@+id/reservation_list_empty"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dip"
-                android:text="暂无"
-                android:textSize="14sp"
+                android:text="暂无信息"
+                android:textSize="15sp"
                 android:visibility="gone" />
         </LinearLayout>
 

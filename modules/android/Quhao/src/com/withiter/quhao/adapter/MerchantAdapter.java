@@ -44,8 +44,7 @@ public class MerchantAdapter extends BaseAdapter {
 	private static String TAG = MerchantAdapter.class.getName();
 	private Activity activity;
 	
-	private Handler refreshOpenHandler = new Handler()
-	{
+	private Handler refreshOpenHandler = new Handler() {
 
 		@Override
 		public void handleMessage(Message msg) {
@@ -56,8 +55,7 @@ public class MerchantAdapter extends BaseAdapter {
 				int position = Integer.valueOf(obj2.get("position"));
 				updateView(position,openNum);
 			}
-			else
-			{
+			else {
 				Toast.makeText(activity, "亲，网络有点异常哦。", Toast.LENGTH_SHORT).show();
 			}
 		}
@@ -70,8 +68,7 @@ public class MerchantAdapter extends BaseAdapter {
 		merchants.get(position).openNum = openNum;
 		int offset = position - visiblePos;
 		// 只有在可见区域才更新
-		if(offset < 0)
-		{
+		if(offset < 0) {
 			return;
 		}
 		
@@ -123,6 +120,7 @@ public class MerchantAdapter extends BaseAdapter {
 				holder.dazhongdianping = (TextView) convertView.findViewById(R.id.dazhongdianping);
 				holder.youhuiLayout = (RelativeLayout) convertView.findViewById(R.id.youhui_layout);
 			}
+			
 			if (holder == null) {
 				holder = (ViewHolder) convertView.getTag();
 			}
@@ -215,7 +213,6 @@ public class MerchantAdapter extends BaseAdapter {
 								
 							}
 						}, new Runnable() {
-							
 							@Override
 							public void run() {
 								Message msg = refreshOpenHandler.obtainMessage();
@@ -224,7 +221,6 @@ public class MerchantAdapter extends BaseAdapter {
 								obj.put("openNum", "");
 								msg.obj = obj;
 								msg.sendToTarget();
-								
 							}
 						});
 			
