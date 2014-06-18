@@ -1,6 +1,5 @@
 package com.withiter.quhao.adapter;
 
-import java.text.NumberFormat;
 import java.util.List;
 
 import android.app.Activity;
@@ -9,14 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.withiter.quhao.R;
-import com.withiter.quhao.util.QuhaoLog;
-import com.withiter.quhao.util.StringUtils;
-import com.withiter.quhao.util.tool.AsynImageLoader;
 import com.withiter.quhao.vo.Paidui;
 
 public class PaiduiConditionAdapter extends BaseAdapter {

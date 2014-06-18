@@ -1,84 +1,179 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#ffffffff"
     android:orientation="vertical" >
 
     <RelativeLayout
+        android:id="@+id/getNumberLayout"
         android:layout_width="fill_parent"
         android:layout_height="50dip"
+        android:layout_alignParentTop="true"
         android:background="@drawable/common_top_bar_bg_blue3"
-        android:gravity="center_vertical"
-        android:paddingBottom="5dip"
-        android:paddingLeft="5dip"
-        android:paddingRight="5dip"
-        android:paddingTop="5dip" >
+        android:gravity="center_vertical" >
 
         <Button
-            android:id="@+id/back_btn"
-            android:layout_width="50dip"
-            android:layout_height="fill_parent"
-            android:background="@null"
-            android:drawableLeft="@drawable/arrow_left"
-            android:gravity="center|center_vertical"
-            android:textColor="#ff000000"
-            android:textSize="18.0sp"  />
+         	android:id="@+id/back_btn"
+         	android:layout_width="50dip"
+         	android:layout_height="fill_parent"
+         	android:background="@null"
+         	android:drawableLeft="@drawable/arrow_left"
+         	android:gravity="center|center_vertical"
+         	android:textColor="#ff000000"
+         	android:textSize="18.0sp"  />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:gravity="center"
-            android:text="帮助"
+            android:gravity="center_vertical"
+            android:text="@string/get_number"
             android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="#ff000000" />
+            android:textColor="#000000" />
     </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/loadingbar"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1.0"
-        android:background="#ffffffff"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="10dip" >
-
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <View
-            android:layout_width="10dip"
-            android:layout_height="10dip" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="载入中..."
-            android:textColor="#ff000000" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/helpLayout"
-        android:visibility="gone"
-        android:layout_width="fill_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1.0" >
-
-        <ListView
-            android:id="@+id/helpListView"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center_horizontal"
-            android:cacheColorHint="@null"
-            android:divider="@null"
-            android:entries="@null"
-            android:listSelector="@drawable/list_item_trans"
-            android:scrollbarThumbVertical="@drawable/scrollbar"
-            android:scrollbars="vertical" />
-    </LinearLayout>
-
-</LinearLayout>
+       
+      <LinearLayout android:id="@+id/my_reservation_layout"
+          android:layout_below="@id/getNumberLayout"
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:layout_marginLeft="5dp"
+          android:layout_marginRight="5dp"
+          android:layout_marginTop="5dp" 
+          android:layout_alignParentBottom="true"
+          android:background="@drawable/get_number_bg">
+            
+           <LinearLayout
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center_vertical"
+               android:baselineAligned="false"
+               android:orientation="horizontal" >
+	           <LinearLayout
+	               android:layout_width="fill_parent"
+	               android:layout_height="wrap_content"
+	               android:gravity="center_vertical"
+	               android:orientation="horizontal"
+	               android:layout_weight="1.0"
+	               android:padding="10.0dip" >
+	
+	               <TextView
+	                   android:layout_width="wrap_content"
+	                   android:layout_height="wrap_content"
+	                   android:maxLines="2"
+	                   android:text="@string/seat_number"
+	                   android:textAppearance="?android:textAppearanceMedium"
+	                   android:textColor="#ff000000"
+	                   android:textSize="16.0sp" />
+	
+	               <TextView
+	                   android:id="@+id/rvo_seat_no"
+	                   android:layout_width="wrap_content"
+	                   android:layout_height="wrap_content"
+	                   android:maxLines="2"
+	                   android:paddingLeft="6.0dip"
+	                   android:text="@string/empty"
+	                   android:textAppearance="?android:textAppearanceMedium"
+	                   android:textColor="#ff000000"
+	                   android:textSize="16.0sp" />
+	           </LinearLayout>
+	
+	           <LinearLayout
+	               android:layout_width="fill_parent"
+	               android:layout_height="wrap_content"
+	               android:gravity="center_vertical"
+	               android:orientation="horizontal"
+	               android:layout_weight="1.0"
+	               android:padding="10.0dip" >
+	
+	               <TextView
+	                   android:layout_width="wrap_content"
+	                   android:layout_height="wrap_content"
+	                   android:maxLines="2"
+	                   android:text="@string/my_number"
+	                   android:textAppearance="?android:textAppearanceMedium"
+	                   android:textColor="#ff000000"
+	                   android:textSize="16.0sp" />
+	
+	               <TextView
+	                   android:id="@+id/rvo_my_number"
+	                   android:layout_width="wrap_content"
+	                   android:layout_height="wrap_content"
+	                   android:maxLines="2"
+	                   android:paddingLeft="6.0dip"
+	                   android:text="@string/empty"
+	                   android:textAppearance="?android:textAppearanceMedium"
+	                   android:textColor="#ff000000"
+	                   android:textSize="16.0sp" />
+	           </LinearLayout>
+           </LinearLayout>
+           <LinearLayout
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center_vertical"
+               android:baselineAligned="false"
+               android:orientation="horizontal" >
+	           <LinearLayout
+	               android:layout_width="fill_parent"
+	               android:layout_height="wrap_content"
+	               android:gravity="center_vertical"
+	               android:orientation="horizontal"
+	               android:layout_weight="1.0"
+	               android:padding="10.0dip" >
+	
+	               <TextView
+	                   android:layout_width="wrap_content"
+	                   android:layout_height="wrap_content"
+	                   android:maxLines="2"
+	                   android:text="@string/before_you"
+	                   android:textAppearance="?android:textAppearanceMedium"
+	                   android:textColor="#ff000000"
+	                   android:textSize="16.0sp" />
+	
+	               <TextView
+	                   android:id="@+id/rvo_before_you"
+	                   android:layout_width="wrap_content"
+	                   android:layout_height="wrap_content"
+	                   android:maxLines="2"
+	                   android:paddingLeft="6.0dip"
+	                   android:text="@string/empty"
+	                   android:textAppearance="?android:textAppearanceMedium"
+	                   android:textColor="#ff000000"
+	                   android:textSize="16.0sp" />
+	           </LinearLayout>
+	
+	           <LinearLayout
+	               android:layout_width="fill_parent"
+	               android:layout_height="wrap_content"
+	               android:gravity="center_vertical"
+	               android:orientation="horizontal"
+	               android:layout_weight="1.0"
+	               android:padding="10.0dip" >
+	
+	               <TextView
+	                   android:layout_width="wrap_content"
+	                   android:layout_height="wrap_content"
+	                   android:maxLines="2"
+	                   android:text="@string/next_number"
+	                   android:textAppearance="?android:textAppearanceMedium"
+	                   android:textColor="#ff000000"
+	                   android:textSize="16.0sp" />
+	
+	               <TextView
+	                   android:id="@+id/rvo_next_number"
+	                   android:layout_width="wrap_content"
+	                   android:layout_height="wrap_content"
+	                   android:maxLines="2"
+	                   android:paddingLeft="6.0dip"
+	                   android:text="@string/empty"
+	                   android:textAppearance="?android:textAppearanceMedium"
+	                   android:textColor="#ff000000"
+	                   android:textSize="16.0sp" />
+	           </LinearLayout>
+           </LinearLayout>
+       </LinearLayout>
+       
+</RelativeLayout>
