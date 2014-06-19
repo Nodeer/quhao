@@ -2,7 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="160dp"
-    android:layout_margin="5dp"
+    android:paddingBottom="5dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp" >
+<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="160dp"
     android:background="@drawable/merchant_detail_bg" >
 
     <RelativeLayout android:id="@+id/layout_top1"
@@ -26,7 +31,7 @@
     </RelativeLayout>
 	<RelativeLayout android:id="@+id/layout_top_youhui"
 	        android:layout_width="wrap_content"
-	        android:layout_height="50dp"
+	        android:layout_height="60dp"
 	        android:orientation="vertical"
 	        android:layout_alignParentTop="true"
 	        android:layout_alignParentRight="true"
@@ -72,7 +77,7 @@
 	                 android:layout_width="wrap_content"
 	                 android:layout_height="wrap_content"
 	                 android:layout_marginTop="3.0dip"
-	                 android:text="11122222222222222222222222222222222222222222"
+	                 android:text="@string/empty"
 	                 android:textAppearance="?android:textAppearanceMedium"
 	                 android:textColor="#ff000000"
 	                 android:singleLine="true"
@@ -168,4 +173,5 @@
                 android:background="@drawable/cancel_number"/>
         </LinearLayout>
     </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>

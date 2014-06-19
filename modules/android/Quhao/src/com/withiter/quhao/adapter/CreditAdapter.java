@@ -66,7 +66,6 @@ public class CreditAdapter extends BaseAdapter {
 
 				convertView = inflator.inflate(R.layout.credit_cost_list_item, null);
 				holder.merchantName = (TextView) convertView.findViewById(R.id.merchantName);
-				holder.merchantAddress = (TextView) convertView.findViewById(R.id.merchantAddress);
 				holder.desc = (TextView) convertView.findViewById(R.id.description);
 				holder.date = (TextView) convertView.findViewById(R.id.date);
 				holder.cbLayout = (LinearLayout) convertView.findViewById(R.id.cb_layout);
@@ -96,8 +95,6 @@ public class CreditAdapter extends BaseAdapter {
 				convertView.findViewById(R.id.merchantLayout).setVisibility(View.VISIBLE);
 				holder.merchantName.setTag("merchantName_" + position);
 				holder.merchantName.setText(credit.merchantName);
-				holder.merchantAddress.setTag("merchantAddress_" + position);
-				holder.merchantAddress.setText(credit.merchantAddress);
 			}
 			else
 			{
