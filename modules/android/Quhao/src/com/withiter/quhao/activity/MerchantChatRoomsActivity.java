@@ -3,14 +3,17 @@ package com.withiter.quhao.activity;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
@@ -27,7 +30,7 @@ import com.withiter.quhao.vo.ReservationVO;
 /**
  * 商家列表页面
  */
-public class MerchantChatRoomsActivity extends QuhaoBaseActivity implements OnHeaderRefreshListener, OnFooterRefreshListener {
+public class MerchantChatRoomsActivity extends QuhaoBaseActivity implements OnHeaderRefreshListener, OnFooterRefreshListener, OnItemClickListener {
 
 	private String LOGTAG = MerchantChatRoomsActivity.class.getName();
 	protected ListView rvoListView;
@@ -101,6 +104,7 @@ public class MerchantChatRoomsActivity extends QuhaoBaseActivity implements OnHe
 	private void initView() {
 		rvoListView = (ListView) findViewById(R.id.rvos_list);
 		rvoListView.setNextFocusDownId(R.id.rvos_list);
+		rvoListView.setOnItemClickListener(this);
 		findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
 		findViewById(R.id.serverdata).setVisibility(View.GONE);
 //		rvoListView.setOnItemClickListener(itemClickListener);
@@ -188,6 +192,25 @@ public class MerchantChatRoomsActivity extends QuhaoBaseActivity implements OnHe
 			}
 		}, 1000);
 
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		
+		if (isClick) {
+			return;
+		}
+		isClick = false;
+		
+		unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+		if (rvos != null && !rvos.isEmpty()) {
+			ReservationVO rvo = rvos.get(arg2);
+			Intent intent = new Intent();
+			intent.setClass(MerchantChatRoomsActivity.this, MerchantDetailActivity.class);
+			intent.putExtra("merchantId", rvo.merchantId);
+			startActivity(intent);
+		}
+		
 	}
 
 }
