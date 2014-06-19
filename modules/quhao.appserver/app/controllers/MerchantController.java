@@ -655,6 +655,7 @@ public class MerchantController extends BaseController {
 		projectParams.put("online", 1);
 		projectParams.put("seatType", 1);
 		projectParams.put("openNum", 1);
+		projectParams.put("youhui", 1);
 
 		pipeline.add(new BasicDBObject("$project", projectParams));
 		cmdBody.put("pipeline", pipeline);
@@ -732,7 +733,8 @@ public class MerchantController extends BaseController {
 		projectParams.put("online", 1);
 		projectParams.put("seatType", 1);
 		projectParams.put("openNum", 1);
-		
+		projectParams.put("youhui", 1);
+
 		pipeline.add(new BasicDBObject("$project", projectParams));
 		cmdBody.put("pipeline", pipeline);
 
@@ -783,7 +785,7 @@ public class MerchantController extends BaseController {
 			m.closeTime = resultContainer.getString("closeTime");
 			m.online = resultContainer.getBoolean("online");
 			m.openNum = Open.getNumberByMid(m.id);
-;
+			m.youhui = resultContainer.getBoolean("youhui");
 			ArrayList<BasicDBObject> list=(ArrayList<BasicDBObject>)resultContainer.get("seatType");
 			if(list != null && list.size() != 0){
 				Object [] objs=list.toArray();
