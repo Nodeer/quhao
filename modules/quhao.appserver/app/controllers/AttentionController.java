@@ -58,37 +58,39 @@ public class AttentionController extends BaseController {
 	 */
 	public static void updateAttention(String mid, String accountId, int flag) {
 		if (!StringUtils.isEmpty(mid) && !StringUtils.isEmpty(accountId)) {
-			Attention attention = Attention.getAttentionById(mid, accountId);
-			Merchant merchant = Merchant.findByMid(mid);
-			Account account = Account.findById(accountId);
-			if (null == merchant || null == account) {
-				renderText("error");
-			}
+			synchronized (AttentionController.class) {
+				Attention attention = Attention.getAttentionById(mid, accountId);
+				Merchant merchant = Merchant.findByMid(mid);
+				Account account = Account.findById(accountId);
+				if (null == merchant || null == account) {
+					renderText("error");
+				}
 
-			if (attention == null) {
-				Attention a = new Attention();
-				a.accountId = accountId;
-				a.mid = mid;
-				a.flag = true;
-				a.save();
-				merchant.markedCount = merchant.markedCount + 1;
-				account.guanzhu = account.guanzhu + 1;
-			} else {
-				if (flag == 1) {
-					attention.flag = false;
-					account.guanzhu = account.guanzhu - 1;
-					merchant.markedCount = merchant.markedCount - 1;
-				} else {
-					attention.flag = true;
+				if (attention == null) {
+					Attention a = new Attention();
+					a.accountId = accountId;
+					a.mid = mid;
+					a.flag = true;
+					a.save();
 					merchant.markedCount = merchant.markedCount + 1;
 					account.guanzhu = account.guanzhu + 1;
-				}
-				attention.save();
+				} else {
+					if (flag == 1) {
+						attention.flag = false;
+						account.guanzhu = account.guanzhu - 1;
+						merchant.markedCount = merchant.markedCount - 1;
+					} else {
+						attention.flag = true;
+						merchant.markedCount = merchant.markedCount + 1;
+						account.guanzhu = account.guanzhu + 1;
+					}
+					attention.save();
 
+				}
+				merchant.save();
+				account.save();
+				renderText("success");
 			}
-			merchant.save();
-			account.save();
-			renderText("success");
 		} else {
 			renderText("error");
 		}
