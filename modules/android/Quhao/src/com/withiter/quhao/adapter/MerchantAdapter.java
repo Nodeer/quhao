@@ -46,7 +46,6 @@ public class MerchantAdapter extends BaseAdapter {
 
 	private ListView listView;
 	public List<Merchant> merchants;
-	private static String TAG = MerchantAdapter.class.getName();
 	private Activity activity;
 	
 	private Handler refreshOpenHandler = new Handler() {

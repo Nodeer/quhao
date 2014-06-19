@@ -85,6 +85,8 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 	private LinearLayout noResultLayout;
 	private TextView noResultView;
 	private TextView locationResult;
+	
+	private long time1;
 
 	protected Handler unlockHandler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -435,7 +437,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 	@Override
 	public void onLocationChanged(AMapLocation location) {
-		Log.e("wjzwjz", "NearByFragment onLocationChanged");
+		Log.e("wjzwjz", "NearByFragment onLocationChanged : " + (System.currentTimeMillis()-time1));
 		if (null != location) {
 			QHClientApplication.getInstance().location = location;
 			if (!isFirstLocation) {
@@ -517,9 +519,11 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 						 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
 						 */
 						// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
+						time1 = System.currentTimeMillis();
 						mAMapLocationManager.requestLocationUpdates(
 								LocationProviderProxy.AMapNetwork, 10000, 100,
 								NearbyFragment.this);
+						Log.e("wjzwjz", "nearby location manager : " + (System.currentTimeMillis()-time1));
 						locationHandler.removeCallbacks(locationRunnable);
 						locationHandler.postDelayed(locationRunnable, 60000);// 设置超过12秒还没有定位到就停止定位
 					} else {

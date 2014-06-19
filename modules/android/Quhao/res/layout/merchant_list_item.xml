@@ -2,29 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="160dp"
-    android:descendantFocusability="blocksDescendants"
-    android:background="@drawable/update_password_input"
-    >
+    android:paddingLeft="10dp"
+    android:paddingBottom="10dp"
+    android:paddingRight="10dp"
+    android:descendantFocusability="blocksDescendants" >
 
-   <RelativeLayout android:id="@+id/youhui_layout"
-	    android:layout_width="wrap_content"
-	    android:layout_height="50dp"
-	    android:layout_alignParentTop="true"
-	    android:layout_alignParentRight="true"
-	    >
-
-        <ImageView
-            android:id="@+id/youhui_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:contentDescription="@string/empty"
-            android:focusable="false"
-            android:scaleType="fitXY"
-            android:background="@drawable/merchang_list_youhui" />
-	</RelativeLayout>
-	
+	<RelativeLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="160dp"
+	    android:padding="10dp"
+	    android:background="@drawable/merchant_detail_bg">
     <RelativeLayout
         android:id="@+id/relative_layout1"
         android:layout_width="fill_parent"
@@ -41,6 +28,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:singleLine="true"
+            android:maxLength="15"
             android:text="@string/empty"
             android:textColor="@color/black_little"
             android:textSize="16sp" />
@@ -52,6 +40,9 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="90dp"
 	    android:layout_alignParentBottom="true"
+	    android:layout_marginLeft="5dp"
+	    android:layout_marginRight="5dp"
+	    android:layout_marginBottom="5dp"
 	    android:layout_below="@id/relative_layout1">
         <!-- 商家logo -->
 
@@ -193,4 +184,24 @@
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
+    </RelativeLayout>
+    <RelativeLayout android:id="@+id/youhui_layout"
+	    android:layout_width="wrap_content"
+	    android:layout_height="50dp"
+	    android:layout_marginRight="1dp"
+	    android:layout_marginTop="1dp"
+	    android:layout_alignParentTop="true"
+	    android:layout_alignParentRight="true"
+	    >
+
+        <ImageView
+            android:id="@+id/youhui_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:contentDescription="@string/empty"
+            android:focusable="false"
+            android:background="@drawable/merchang_list_youhui" />
+	</RelativeLayout>
  </RelativeLayout>
