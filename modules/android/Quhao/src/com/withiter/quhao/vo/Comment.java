@@ -23,6 +23,8 @@ public class Comment {
 	public float huanjing = 0;
 	public float fuwu = 0;
 	
+	public float grade;
+	
 	public String content;
 	
 	public String created;
