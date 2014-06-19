@@ -13,7 +13,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.withiter.quhao.R;
-import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.vo.Comment;
 
 public class CommentAccountAdapter extends BaseAdapter {

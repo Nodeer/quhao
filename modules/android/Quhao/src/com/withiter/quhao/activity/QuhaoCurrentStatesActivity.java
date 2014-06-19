@@ -30,8 +30,6 @@ import com.withiter.quhao.vo.ReservationVO;
  */
 public class QuhaoCurrentStatesActivity extends QuhaoBaseActivity{
 
-	protected static boolean backClicked = false;
-
 	private List<ReservationVO> reservations;
 	private ListView paiduiListView;
 	private ReservationForCurrentPaiduiAdapter reservationForPaiduiAdapter;
@@ -73,9 +71,6 @@ public class QuhaoCurrentStatesActivity extends QuhaoBaseActivity{
 					
 					String buf = CommonHTTPRequest.get(url);
 					if (StringUtils.isNull(buf) || "[]".equals(buf)) {
-						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-						reservations = new ArrayList<ReservationVO>();
-						reservationsUpdateHandler.obtainMessage(200, reservations).sendToTarget();
 						throw new NoResultFromHTTPRequestException();
 					} else {
 						reservations = new ArrayList<ReservationVO>();
@@ -133,7 +128,6 @@ public class QuhaoCurrentStatesActivity extends QuhaoBaseActivity{
 	
 	@Override
 	protected void onResume() {
-		backClicked = false;
 		super.onResume();
 	}
 
