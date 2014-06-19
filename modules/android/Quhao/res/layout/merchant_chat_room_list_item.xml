@@ -6,7 +6,7 @@
     android:background="@drawable/list_selector"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:focusable="false" >
+    android:descendantFocusability="blocksDescendants">
 
     <LinearLayout android:id="@+id/left_layout"
         android:layout_width="100dip"
@@ -23,47 +23,27 @@
             android:layout_height="fill_parent"
             android:adjustViewBounds="true"
             android:contentDescription="@string/empty"
-            android:padding="4dp"
+            android:padding="5dp"
+            android:src="@drawable/no_logo"
+            android:background="@drawable/person_avatar_bg"
             android:scaleType="fitXY" />
         <!-- merchant logo -->
     </LinearLayout>
 
-    <LinearLayout android:id="@+id/right_layout"
-        android:layout_width="20dip"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:padding="1.0dip"
-        android:gravity="center_vertical"
-        android:layout_alignParentRight="true" >
-
-        <!-- merchant logo -->
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/empty"
-            android:padding="4dp"
-            android:src="@drawable/arrow_right_normal"
-            android:scaleType="fitXY" />
-        <!-- merchant logo -->
-    </LinearLayout>
-    
-    <LinearLayout android:layout_toLeftOf="@id/right_layout"
+    <LinearLayout 
         android:layout_toRightOf="@id/left_layout"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="100dip"
         android:orientation="vertical"
-        android:paddingLeft="2.0dip"
-        android:paddingTop="0dip" >
+        android:paddingLeft="2.0dip" >
 
         <LinearLayout
             android:id="@+id/tex2_lay1"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0.0dip"
+            android:layout_height="0dp"
             android:layout_weight="1.0"
-            android:orientation="vertical" >
+            android:orientation="vertical" 
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/merchantName"
@@ -78,30 +58,21 @@
                 android:text="@string/empty"
                 android:textAppearance="?android:textAppearanceMedium"
                 android:textColor="#ff000000"
-                android:textSize="11.0sp" />
+                android:textSize="18.0sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0.0dip"
+            android:layout_height="0dp"
             android:layout_weight="1.0"
+            android:gravity="left|bottom"
             android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/merchantAddress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3.0dip"
-                android:ellipsize="marquee"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:singleLine="true"
-                android:text="@string/empty"
-                android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="#ff000000"
-                android:textSize="11.0sp" />
+            <Button android:id="@+id/btn_chat"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="bottom"
+		        android:background="@drawable/ic_goto_chat"/>
         </LinearLayout>
     </LinearLayout>
 	

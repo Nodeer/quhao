@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -65,7 +66,7 @@ public class MerchantChatRoomAdapter extends BaseAdapter {
 				convertView = inflator.inflate(R.layout.merchant_chat_room_list_item, null);
 				holder.merchantImg = (ImageView) convertView.findViewById(R.id.merchantImg);
 				holder.merchantName = (TextView) convertView.findViewById(R.id.merchantName);
-				holder.merchantAddress = (TextView) convertView.findViewById(R.id.merchantAddress);
+				holder.btnChat = (Button) convertView.findViewById(R.id.btn_chat);
 				holder.layout = (RelativeLayout) convertView.findViewById(R.id.layout);
 			}
 			if (holder == null) {
@@ -78,12 +79,10 @@ public class MerchantChatRoomAdapter extends BaseAdapter {
 			AsynImageLoader.getInstance().showImageAsyn(holder.merchantImg,position, merchantImg, R.drawable.no_logo);
 			holder.merchantName.setTag("merchantNamer_" + position);
 			holder.merchantName.setText(rvo.merchantName);
-			holder.merchantAddress.setTag("merchantAddress_" + position);
-			holder.merchantAddress.setText(rvo.merchantAddress);
 			
 			final String mid = rvo.merchantId;
 			final String merchantName = rvo.merchantName;
-			holder.layout.setOnClickListener(new OnClickListener() {
+			holder.btnChat.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View arg0) {
@@ -140,7 +139,7 @@ public class MerchantChatRoomAdapter extends BaseAdapter {
 	class ViewHolder {
 		public ImageView merchantImg;
 		public TextView merchantName;
-		public TextView merchantAddress;
+		public Button btnChat;
 		public RelativeLayout layout;
 	}
 	
