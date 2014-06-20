@@ -5,7 +5,7 @@
     android:layout_height="fill_parent" 
     android:paddingLeft="10dp"
 	android:paddingRight="10dp"
-    android:background="@color/Silver"
+    android:background="#EFEFEF"
     android:descendantFocusability="blocksDescendants"
     android:paddingBottom="5dp">
    		<LinearLayout android:gravity="center_vertical" 

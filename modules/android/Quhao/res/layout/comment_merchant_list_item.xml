@@ -6,14 +6,14 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:paddingBottom="5dp"
-    android:background="@color/Silver"
+    android:background="#EFEFEF"
     android:descendantFocusability="blocksDescendants">
    		<LinearLayout 
    		    android:gravity="center_vertical" 
     		android:orientation="vertical" 
     		android:layout_width="fill_parent" 
     		android:layout_height="wrap_content"
-    		android:background="@drawable/comment_merchant_bg">
+    		android:background="@drawable/rec_bg">
    		<LinearLayout android:gravity="center_vertical" 
     		android:orientation="horizontal" 
     		android:paddingLeft="10.0dip" 
@@ -42,11 +42,46 @@
     		android:layout_width="fill_parent" 
     		android:layout_height="wrap_content">
    			
-  			<ImageView android:id="@+id/star"
-   				android:layout_width="wrap_content"
-   				android:layout_height="wrap_content"
-   				android:contentDescription="@string/imageDesc"
-   				android:src="@drawable/star45"/>
+   		    <LinearLayout 
+		    	android:layout_width="0dp" 
+		    	android:layout_height="wrap_content" 
+		    	android:layout_weight="1.0"
+		    	android:orientation="horizontal"
+		    	android:gravity="center_vertical"
+		     	android:baselineAligned="false" >
+		     	
+	  			<ImageView android:id="@+id/star"
+	   				android:layout_width="wrap_content"
+	   				android:layout_height="wrap_content"
+	   				
+	   				android:contentDescription="@string/imageDesc"
+	   				android:src="@drawable/star45"/>
+	  		</LinearLayout>
+  			<LinearLayout 
+		    	android:layout_width="0dp" 
+		    	android:layout_height="wrap_content" 
+		    	android:layout_weight="1.0"
+		    	android:orientation="horizontal"
+		    	android:gravity="center_vertical"
+		     	android:baselineAligned="false" >
+	    		<TextView  
+	    		    android:textAppearance="?android:textAppearanceSmall" 
+	    		    android:textSize="14.0sp" 
+	    		    android:textColor="@color/light_gray" 
+	    		    android:text="人均:" 
+	    		    android:layout_gravity="left|center" 
+	    		    android:layout_width="wrap_content"
+	    		    android:layout_height="wrap_content" 
+	    		    android:singleLine="true" />
+	       		<TextView android:id="@+id/averageCost"  
+	       		    android:textAppearance="?android:textAppearanceSmall" 
+	       		    android:textSize="14.0sp" 
+	       		    android:textColor="@color/red_text"
+	       		    android:layout_gravity="left|center" 
+	       		    android:layout_width="wrap_content" 
+	       		    android:layout_height="wrap_content" 
+	       		    android:singleLine="true" />
+   			</LinearLayout>
    		</LinearLayout>
    	
     	<LinearLayout 
@@ -70,32 +105,5 @@
 
 		</LinearLayout>
 		
-		<LinearLayout 
-		    android:gravity="center_vertical" 
-		    android:layout_width="fill_parent" 
-		    android:layout_height="wrap_content" 
-		    android:paddingRight="8.0dip" 
-		    android:paddingLeft="8.0dip" 
-		    android:orientation="horizontal"
-		     android:baselineAligned="false" >
-	    		<TextView  
-	    		    android:textAppearance="?android:textAppearanceSmall" 
-	    		    android:textSize="14.0sp" 
-	    		    android:textColor="@color/light_gray" 
-	    		    android:text="人均:" 
-	    		    android:layout_gravity="left|center" 
-	    		    android:layout_width="wrap_content"
-	    		    android:layout_height="wrap_content" 
-	    		    android:singleLine="true" />
-	       		<TextView android:id="@+id/averageCost"  
-	       		    android:textAppearance="?android:textAppearanceSmall" 
-	       		    android:textSize="14.0sp" 
-	       		    android:textColor="@color/light_gray" 
-	       		    android:text="" 
-	       		    android:layout_gravity="left|center" 
-	       		    android:layout_width="wrap_content" 
-	       		    android:layout_height="wrap_content" 
-	       		    android:singleLine="true" />
-   		</LinearLayout>
    		</LinearLayout>
 </LinearLayout> 

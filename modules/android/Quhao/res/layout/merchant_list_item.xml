@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="160dp"
+    android:layout_height="145dp"
     android:paddingLeft="10dp"
     android:paddingBottom="10dp"
     android:paddingRight="10dp"
@@ -9,17 +9,15 @@
 
 	<RelativeLayout 
 	    android:layout_width="fill_parent"
-	    android:layout_height="160dp"
-	    android:padding="10dp"
-	    android:background="@drawable/merchant_detail_bg">
+	    android:layout_height="145dp"
+	    android:background="@drawable/rec_bg">
     <RelativeLayout
         android:id="@+id/relative_layout1"
         android:layout_width="fill_parent"
-        android:layout_height="40dp"
+        android:layout_height="35dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:gravity="center_vertical"
-        >
+        android:gravity="center_vertical" >
 
      	<!-- 商家名称 -->
         <TextView
@@ -188,8 +186,6 @@
     <RelativeLayout android:id="@+id/youhui_layout"
 	    android:layout_width="wrap_content"
 	    android:layout_height="50dp"
-	    android:layout_marginRight="1dp"
-	    android:layout_marginTop="1dp"
 	    android:layout_alignParentTop="true"
 	    android:layout_alignParentRight="true"
 	    >

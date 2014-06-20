@@ -168,7 +168,7 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 					public void onItemClick(AdapterView<?> parent, View view,
 							int position, long id) {
 						Log.e(TAG, "onclick : " + position);
-						if("true".equals(reservationForPaiduiAdapter.isShowDelete))
+						if(null != reservationForPaiduiAdapter && "true".equals(reservationForPaiduiAdapter.isShowDelete))
 						{
 							// 取得ViewHolder对象，这样就省去了通过层层的findViewById去实例化我们需要的cb实例的步骤
 							ViewHolderHistoryPaidui holder = (ViewHolderHistoryPaidui) view.getTag();

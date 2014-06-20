@@ -590,13 +590,13 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			}
 			break;
 		case R.id.critiqueLayout:
-			if(StringUtils.isNotNull(this.merchant.commentContent) && !"暂无评论".equals(this.merchant.commentContent))
+			if(null != merchant && StringUtils.isNotNull(this.merchant.commentContent) && !"暂无评论".equals(this.merchant.commentContent))
 			{
 				QuhaoLog.d("", "the commentContent : " + this.merchant.commentContent);
 				Intent intent = new Intent(this, CommentsMerchantActivity.class);
 				intent.putExtra("merchantName", this.merchant.name);
 				intent.putExtra("merchantId", this.merchant.id);
-				
+				intent.putExtra("grade", this.merchant.grade);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				startActivity(intent);
 			}
