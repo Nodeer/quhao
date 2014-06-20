@@ -181,7 +181,7 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 								reservations.get(position).isChecked = "true";
 //									checkNum++;
 							} else {
-								reservations.get(position).isChecked = "true";
+								reservations.get(position).isChecked = "false";
 //									checkNum--;
 							}
 						}
