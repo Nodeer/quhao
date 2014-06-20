@@ -397,7 +397,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		isClick = true;
 		// 解锁
 		try {
-			if (null != merchantList && !merchantList.isEmpty() && null != merchantList.get(position) && StringUtils.isNotNull(merchantList.get(position).id) && merchantList.get(position).enable) {
+			if (null != merchantList && !merchantList.isEmpty() && null != merchantList.get(position) && StringUtils.isNotNull(merchantList.get(position).id)) {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				Intent intent = new Intent();
 				intent.setClass(getActivity(), MerchantDetailActivity.class);

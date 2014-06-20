@@ -13,7 +13,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.withiter.quhao.R;
-import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.vo.Comment;
 
 public class CommentAccountAdapter extends BaseAdapter {
@@ -66,7 +65,7 @@ public class CommentAccountAdapter extends BaseAdapter {
 				holder.star = (ImageView) convertView.findViewById(R.id.star);
 				holder.content = (TextView) convertView.findViewById(R.id.content);
 				
-				holder.averageCost = (TextView) convertView.findViewById(R.id.averageCost);
+//				holder.averageCost = (TextView) convertView.findViewById(R.id.averageCost);
 
 				/*
 				 * 重新设置图片的宽高
@@ -83,36 +82,58 @@ public class CommentAccountAdapter extends BaseAdapter {
 				holder = (ViewHolder) convertView.getTag();
 			}
 
+			holder.modified.setTag("modified_" + position);
 			holder.modified.setText(comment.modified);
+			
+			holder.merchantName.setTag("merchantName_" + position);
 			holder.merchantName.setText(comment.merchantName);
 //			holder.merchantAddress.setText(comment.merchantAddress);
 //			holder.fuwu.setText(String.valueOf(comment.fuwu));
 //			holder.huanjing.setText(String.valueOf(comment.huanjing));
 //			holder.kouwei.setText(String.valueOf(comment.kouwei));
 //			holder.xingjiabi.setText(String.valueOf(comment.xingjiabi));
-			holder.star = (ImageView) convertView.findViewById(R.id.star);
-			holder.content.setText(comment.content);
-			holder.averageCost.setText(comment.averageCost);
-			float avgValue = (comment.fuwu + comment.huanjing + comment.kouwei + comment.xingjiabi)/4;
-			int avg = Math.round(avgValue);
 			
+			holder.content.setTag("content_" + position);
+			holder.content.setText(comment.content);
+//			holder.averageCost.setText(comment.averageCost);
+//			float avgValue = (comment.fuwu + comment.huanjing + comment.kouwei + comment.xingjiabi)/4;
+//			int avg = Math.round(avgValue);
+			
+			int avg = (int) (comment.grade*2);
+			
+			holder.star.setTag("star_" + position);
 			switch (avg) {
 			case 0:
 				holder.star.setImageResource(R.drawable.star00);
 				break;
 			case 1:
-				holder.star.setImageResource(R.drawable.star10);
+				holder.star.setImageResource(R.drawable.star05);
 				break;
 			case 2:
-				holder.star.setImageResource(R.drawable.star20);
+				holder.star.setImageResource(R.drawable.star10);
 				break;
 			case 3:
-				holder.star.setImageResource(R.drawable.star30);
+				holder.star.setImageResource(R.drawable.star15);
 				break;
 			case 4:
-				holder.star.setImageResource(R.drawable.star40);
+				holder.star.setImageResource(R.drawable.star20);
 				break;
 			case 5:
+				holder.star.setImageResource(R.drawable.star25);
+				break;
+			case 6:
+				holder.star.setImageResource(R.drawable.star30);
+				break;
+			case 7:
+				holder.star.setImageResource(R.drawable.star35);
+				break;
+			case 8:
+				holder.star.setImageResource(R.drawable.star40);
+				break;
+			case 9:
+				holder.star.setImageResource(R.drawable.star45);
+				break;
+			case 10:
 				holder.star.setImageResource(R.drawable.star50);
 				break;
 			default:
@@ -133,7 +154,7 @@ public class CommentAccountAdapter extends BaseAdapter {
 //		TextView huanjing;
 //		TextView fuwu;
 		ImageView star;
-		TextView averageCost;
+//		TextView averageCost;
 		TextView content;
 		TextView modified;
 	}

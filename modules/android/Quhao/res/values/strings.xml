@@ -276,7 +276,9 @@
 	<!-- MerchantListActivity begin -->
 	<string name="quhao_paidui">取号排队</string>
 	<!-- MerchantListActivity begin -->
-	
+	<!-- CreateCommentActivity begin -->
+	<string name="comment_desc_hint">亲，留下您的宝贵评论吧!（最多不能超过200汉字）</string>
+	<!-- CreateCommentActivity end -->
 	<!-- MyNumberActivity begin -->
 	<string name="my_number_title">我的号码</string>
 	<!-- MyNumberActivity end -->

@@ -1,201 +1,150 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/list_selector"
-    android:gravity="center_vertical"
-    android:orientation="horizontal" 
-    android:descendantFocusability="blocksDescendants">
-
-    <LinearLayout
-        android:layout_width="100dip"
-        android:layout_height="100dip"
-        android:orientation="vertical"
-        android:padding="1.0dip" >
-			
-            <!-- merchant logo -->
-            <ImageView
-                android:id="@+id/merchantImg"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:padding="4dp"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                android:contentDescription="@string/empty"
-                />
-            <!-- merchant logo -->
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical"
-            android:paddingLeft="2.0dip"
-            android:paddingTop="0dip" >
-			
-			<LinearLayout
-                android:id="@+id/tex2_lay1"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0.0dip"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/merchantName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3.0dip"
-                    android:text="@string/empty"
-                    android:textAppearance="?android:textAppearanceMedium"
-                    android:textColor="#ff000000"
-                    android:singleLine="true"
-                    android:ellipsize="marquee"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:textSize="11.0sp" />
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0.0dip"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/merchantAddress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="3.0dip"
-                    android:text="@string/empty"
-                    android:textAppearance="?android:textAppearanceMedium"
-                    android:textColor="#ff000000"
-                    android:singleLine="true"
-                    android:ellipsize="marquee"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:textSize="11.0sp" />
-
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/tex2_lay2"
-                android:layout_width="fill_parent"
-                android:layout_height="30dip"
-                android:layout_marginTop="0.0dip"
-                android:orientation="horizontal" >
-				<LinearLayout
-	                android:layout_width="wrap_content"
-	                android:layout_height="fill_parent"
-	                android:layout_marginTop="0.0dip"
-	                android:layout_weight="1.0" >
-	                <Button
-			            android:id="@+id/btn_comment"
-			            android:layout_width="50dip"
-			            android:layout_height="30dip"
-			            android:text="@string/quhao_states_comment"
-			            android:textAppearance="?android:textAppearanceMediumInverse"
-			            android:textSize="11.0sp" 
-			            android:textColor="#64bae9"
-			            android:background="@android:color/transparent"
-			            android:layout_gravity="center_vertical"
-			            />
-					<TextView
-			            android:id="@+id/is_comment"
-			            android:visibility="gone"
-			            android:layout_width="wrap_content"
-			            android:layout_height="wrap_content"
-			            android:lineSpacingMultiplier="1.3"
-			            android:text="已点评"
-			            android:textAppearance="?android:textAppearanceMedium"
-			            android:textColor="@color/deep_gray"
-			            android:layout_gravity="right|center_vertical"
-			            android:textSize="14.0sp" />
-				</LinearLayout>
-				<LinearLayout
-	                android:layout_width="wrap_content"
-	                android:layout_height="fill_parent"
-	                android:layout_marginTop="0.0dip"
-	                android:layout_weight="1.0" >
-					<CheckBox
-				        android:id="@+id/item_cb"
-				        android:layout_width="wrap_content"
-				        android:layout_height="30dip"
-				        android:focusable="false"
-				        android:clickable="false"
-				        android:focusableInTouchMode="false"
-				        android:gravity="center_vertical"
-				        android:layout_gravity="right" />
-				</LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/tex2_lay3"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="0.0dip"
-                android:orientation="horizontal"
-                android:baselineAligned="false" >
-
-                <LinearLayout
-	                android:layout_width="fill_parent"
-	                android:layout_height="fill_parent"
-	                android:layout_marginTop="0.0dip"
-	                android:layout_weight="1"
-	                android:orientation="horizontal" >
-	                <TextView
-	                    android:layout_width="wrap_content"
-	                    android:layout_height="wrap_content"
-	                    android:layout_marginTop="3.0dip"
-	                    android:singleLine="true"
-	                    android:text="@string/my_number"
-	                    android:textAppearance="?android:textAppearanceMedium"
-	                    android:textColor="#ff000000"
-	                    android:textSize="10.0sp" />
-	
-	                <!-- 我的号码-->
-	                <TextView
-	                    android:id="@+id/myNumber"
-	                    android:layout_width="wrap_content"
-	                    android:layout_height="wrap_content"
-	                    android:layout_marginTop="3.0dip"
-	                    android:paddingRight="4.0dip"
-	                    android:singleLine="true"
-	                    android:text="@string/empty"
-	                    android:textAppearance="?android:textAppearanceMedium"
-	                    android:textColor="#ff000000"
-	                    android:textSize="10.0sp" />
-					<!-- 我的号码-->
-				</LinearLayout>
-				<LinearLayout
-	                android:layout_width="fill_parent"
-	                android:layout_height="fill_parent"
-	                android:layout_marginTop="0.0dip"
-	                android:layout_weight="1"
-	                android:orientation="horizontal" >
-					<!-- 座位人数-->
-	                <TextView
-	                    android:layout_width="wrap_content"
-	                    android:layout_height="wrap_content"
-	                    android:layout_marginLeft="3.0dip"
-	                    android:layout_marginTop="3.0dip"
-	                    android:singleLine="true"
-	                    android:text="@string/seat_number"
-	                    android:textAppearance="?android:textAppearanceMedium"
-	                    android:textColor="#ff000000"
-	                    android:textSize="10.0sp" />
-	
-	                <TextView
-	                    android:id="@+id/seatNo"
-	                    android:layout_width="wrap_content"
-	                    android:layout_height="wrap_content"
-	                    android:layout_marginTop="3.0dip"
-	                    android:singleLine="true"
-	                    android:text="@string/zero"
-	                    android:textAppearance="?android:textAppearanceMedium"
-	                    android:textColor="#ff000000"
-	                    android:textSize="10.0sp" />
-	                <!-- 座位人数-->
-	            </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
+    android:layout_height="160dp"
+    android:paddingBottom="5dp"
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp"
+    android:descendantFocusability="blocksDescendants" >
+<LinearLayout android:id="@+id/cb_layout"
+	android:layout_width="wrap_content"
+	android:layout_height="fill_parent"
+	android:layout_alignParentTop="true"
+	android:layout_alignParentLeft="true"
+	android:gravity="center" >
+	<CheckBox
+        android:id="@+id/item_cb"
+        android:layout_width="wrap_content"
+        android:layout_height="30dip"
+        android:layout_gravity="center"
+        android:gravity="center_vertical"/>
 </LinearLayout>
+
+<RelativeLayout android:id="@+id/paidui_layout"
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentRight="true"
+    android:layout_toRightOf="@id/cb_layout"
+    android:background="@drawable/rec_bg" >
+
+    <RelativeLayout android:id="@+id/layout_top1"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:orientation="vertical" >
+        <!-- merchant logo -->
+        <ImageView
+            android:id="@+id/merchantImg"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentTop="true"
+            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/no_logo"
+            android:contentDescription="@string/empty" />
+        <!-- merchant logo -->
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/layout_top1"
+         android:baselineAligned="false"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
+
+        <LinearLayout android:id="@+id/merchant_layout"
+             android:layout_width="0dp"
+             android:layout_weight="1.5"
+             android:layout_height="fill_parent"
+             android:layout_marginTop="0.0dip"
+             android:orientation="vertical" 
+             android:gravity="center_vertical">
+
+			<LinearLayout
+			    android:id="@+id/layout_merchant_name"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_marginTop="0.0dip"
+			    android:gravity="center_vertical"
+			    android:orientation="vertical" >
+
+	             <TextView
+	                 android:id="@+id/merchantName"
+	                 android:layout_width="wrap_content"
+	                 android:layout_height="wrap_content"
+	                 android:layout_marginTop="3.0dip"
+	                 android:text="你好你好你好你好你好你好"
+	                 android:textAppearance="?android:textAppearanceMedium"
+	                 android:textColor="#ff000000"
+	                 android:singleLine="true"
+	                 android:ellipsize="marquee"
+	                 android:marqueeRepeatLimit="marquee_forever"
+	                 android:maxLength="10"
+	                 android:textSize="15.0sp" />
+	         </LinearLayout>
+        	<LinearLayout
+	            android:id="@+id/text2_lay2"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginTop="0.0dip"
+	            android:baselineAligned="false"
+	            android:orientation="horizontal"
+	            android:gravity="center_vertical" >
+	             <TextView android:id="@+id/date"
+	                 android:layout_width="wrap_content"
+	                 android:layout_height="wrap_content"
+	                 android:layout_marginLeft="3.0dip"
+	                 android:layout_marginTop="3.0dip"
+	                 android:singleLine="true"
+	                 android:text="2014-06-20 11:12:12"
+	                 android:textAppearance="?android:textAppearanceMedium"
+	                 android:textColor="#ff000000"
+	                 android:textSize="13.0sp" />
+	
+        	</LinearLayout>
+        </LinearLayout>
+        <LinearLayout android:id="@+id/get_number_layout"
+            android:layout_width="0dp"
+            android:layout_weight="1.0"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal"
+            android:gravity="center">
+            <Button android:id="@+id/btn_comment"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:background="@drawable/btn_comment"
+                android:visibility="gone"/>
+            <TextView android:id="@+id/is_comment"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginLeft="3.0dip"
+                 android:layout_marginTop="3.0dip"
+                 android:singleLine="true"
+                 android:text="过期号码不能评价"
+                 android:textAppearance="?android:textAppearanceMedium"
+                 android:textColor="#ff000000"
+                 android:textSize="12.0sp" />
+        </LinearLayout>
+    </LinearLayout>
+    </RelativeLayout>
+    <RelativeLayout android:id="@+id/youhui_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true" >
+
+        <!-- merchant logo -->
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+        	android:layout_alignParentRight="true"
+            android:adjustViewBounds="true"
+            android:src="@drawable/merchang_list_youhui"
+            android:contentDescription="@string/empty" />
+        <!-- merchant logo -->
+    </RelativeLayout>
+</RelativeLayout>

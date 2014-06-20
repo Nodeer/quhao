@@ -642,12 +642,14 @@ public class ParseJson {
 		float kouwei = Float.valueOf(obj.optString("kouwei"));
 		float huanjing = Float.valueOf(obj.optString("huanjing"));
 		float fuwu = Float.valueOf(obj.optString("fuwu"));
+		float grade = Float.valueOf(obj.optString("grade"));
 		String content = obj.optString("content");
 		String created = DateUtils.formatDate(obj.optString("created"), "yyyy-MM-dd HH:mm:ss");
 
 		String modified = DateUtils.formatDate(obj.optString("modified"), "yyyy-MM-dd HH:mm:ss");
 
 		comment = new Comment(uid, accountId, nickName, mid, merchantName, merchantAddress, rId, averageCost, xingjiabi, kouwei, huanjing, fuwu, content, created, modified);
+		comment.grade = grade;
 		return comment;
 	}
 

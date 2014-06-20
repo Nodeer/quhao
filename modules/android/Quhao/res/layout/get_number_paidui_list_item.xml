@@ -10,9 +10,8 @@
     android:descendantFocusability="blocksDescendants" >
 
     <LinearLayout 
-        android:layout_width="0dp"
+        android:layout_width="70dp"
         android:layout_height="fill_parent"
-        android:layout_weight="1.0"
         android:gravity="center_vertical" 
         android:orientation="horizontal">
 	    <CheckBox android:id="@+id/paidui_cb"
@@ -20,6 +19,14 @@
 	        android:layout_height="wrap_content"
 	        style="@style/MyCheckBox"
 	        android:clickable="false"/>
+	    
+	</LinearLayout>
+    <LinearLayout 
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1.0"
+        android:gravity="center_vertical" 
+        android:orientation="horizontal">
 	    
 	    <TextView android:id="@+id/seat_number"
 	        android:layout_height="wrap_content"

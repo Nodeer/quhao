@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" android:background="#ffffffff"
-  xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" 
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent" 
+    android:background="#ffffffff">
    
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -19,7 +22,6 @@
             android:textSize="18.0sp" />
 
         <TextView
-            android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_centerHorizontal="true"
@@ -28,23 +30,13 @@
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="#ff000000" />
 
-        <Button
-            android:id="@+id/submit"
-            android:layout_width="wrap_content"
-            android:layout_height="35dip"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="@string/commit"
-            android:textAppearance="?android:textAppearanceMediumInverse"
-            android:textColor="@color/white"
-            android:textSize="15.0sp" 
-            android:background="@android:color/transparent"
-            android:paddingRight="10dp"
-            />
-
     </RelativeLayout>
 
-	<ScrollView android:layout_width="fill_parent" android:layout_height="wrap_content" android:fillViewport="true" android:layout_weight="1.0">
+	<ScrollView 
+	    android:layout_width="fill_parent" 
+	    android:layout_height="0dip" 
+	    android:fillViewport="true" 
+	    android:layout_weight="1.0">
 	<LinearLayout
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
@@ -52,115 +44,139 @@
 	    android:background="#ffffffff"
 	    android:gravity="center"
 	    android:orientation="vertical" >
-		
-	    <LinearLayout android:layout_width="fill_parent" 
-	        android:layout_height="wrap_content" android:layout_gravity="center_vertical" android:orientation="horizontal">
+	    <LinearLayout 
+		    android:layout_width="fill_parent" 
+	        android:layout_height="wrap_content" 
+	        android:layout_gravity="center_vertical" 
+	        android:gravity="right"
+	        android:orientation="horizontal">
 		    
 		    <Button
 	            android:id="@+id/opinion_button"
 	            android:layout_width="wrap_content"
 	            android:layout_height="35dip"
-	            android:text="反馈APP问题"
-	            android:background="@drawable/button_background_blue"
+	            android:text="点击此处反馈APP问题"
+	            android:textColor="@color/blue_text"
+	            android:textColorHighlight="@color/Silver"
+	            android:background="@null"
 	            android:textAppearance="?android:textAppearanceMediumInverse"
-	            android:textColor="@color/black"
 	            android:textSize="15.0sp" 
 	            android:paddingRight="10dp"
 	            />
 	    </LinearLayout>
-	    
-	    <LinearLayout android:layout_width="fill_parent" 
-	        android:layout_height="wrap_content" android:layout_gravity="center_vertical" android:orientation="horizontal">
-	        <View android:layout_width="0dip" android:layout_height="0dip" android:focusable="true" android:focusableInTouchMode="true" />
-		    <TextView android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_marginLeft="5dip"
-		        android:text="口味    ："
-		        android:gravity="center_vertical"/>
-		    <RatingBar style="@style/commentRatingBar" android:stepSize="1"
-				android:layout_marginLeft="10dip" android:layout_width="wrap_content"
-				android:rating="4"
-				android:layout_height="wrap_content" android:id="@+id/kouwei_ratingbar">
-		        
-		    </RatingBar>
-		    
-	    </LinearLayout>
-	    <LinearLayout android:layout_width="fill_parent" 
-	        android:layout_height="wrap_content">
-		    <TextView android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_marginLeft="5dp"
-		        android:text="环境    ："/>
-		    <RatingBar style="@style/commentRatingBar" android:stepSize="1"
-				android:layout_marginLeft="10dip" android:layout_width="wrap_content"
-				android:rating="4"
-				android:layout_height="wrap_content" android:id="@+id/huanjing_ratingbar">
-		        
-		    </RatingBar>
-	    </LinearLayout>
-	    <LinearLayout android:layout_width="fill_parent" 
-	        android:layout_height="wrap_content">
-		    <TextView android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_marginLeft="5dp"
-		        android:text="服务    ："/>
-		    <RatingBar style="@style/commentRatingBar" android:stepSize="1"
-				android:layout_marginLeft="10dip" android:layout_width="wrap_content"
-				android:rating="4"
-				android:layout_height="wrap_content" android:id="@+id/fuwu_ratingbar">
-		        
-		    </RatingBar>
-	    </LinearLayout>
-	    <LinearLayout android:layout_width="fill_parent" 
-	        android:layout_height="wrap_content">
-		    <TextView android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_marginLeft="5dp"
-		        android:text="性价比："/>
-		    <RatingBar style="@style/commentRatingBar" android:stepSize="1"
-		        android:rating="4"
-				android:layout_marginLeft="10dip" android:layout_width="wrap_content"
-				android:layout_height="wrap_content" android:id="@+id/xingjiabi_ratingbar">
-		        
-		    </RatingBar>
-	    </LinearLayout>
-	    <LinearLayout android:layout_width="fill_parent" 
-	        android:layout_height="wrap_content">
-		    <TextView android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_marginLeft="5dp"
-		        android:text="总体："/>
-		    <RatingBar style="@style/commentRatingBar" android:stepSize="1"
-		        android:rating="4"
-				android:layout_marginLeft="10dip" android:layout_width="wrap_content"
-				android:layout_height="wrap_content" android:id="@+id/grade_ratingbar">
-		        
-		    </RatingBar>
-	    </LinearLayout>
-
-	    <LinearLayout android:layout_width="fill_parent" 
+		<LinearLayout android:layout_width="fill_parent" 
 	        android:layout_height="wrap_content"
-	        android:paddingTop="5dip" android:orientation="horizontal" android:layout_gravity="center_vertical">
-		    <TextView android:layout_width="wrap_content"
+	        android:paddingTop="5dip" 
+	        android:orientation="horizontal" >
+		    <TextView 
+		        android:layout_width="100dp"
+		        android:layout_gravity="center"
 		        android:layout_height="fill_parent"
-		        android:layout_marginLeft="5dp"
-		        android:gravity="center_vertical"
-		        android:text="平均消费："/>
+		        android:gravity="center"
+		        android:text="人均消费"/>
 		    
 		    <EditText
 			    android:id="@+id/avg_cost_edit"
-			    android:layout_width="fill_parent"
+			    android:layout_width="100dp"
 			    android:layout_height="40dip"
-			    android:background="@drawable/post_edit_bg"
+			    android:background="@drawable/update_password_input"
 			    android:ems="10"
 			    android:padding="5dip"
 			    android:maxLength="5"
-			    android:hint="平均消费"
-			    android:gravity="center"
+			    android:hint="人均消费"
 			    android:inputType="number"
 			    android:textSize="14.0sp" />
 	    </LinearLayout>
 	    
+	    <LinearLayout android:layout_width="fill_parent" 
+	        android:layout_height="wrap_content" 
+	        android:layout_gravity="center_vertical" 
+	        android:orientation="horizontal">
+	        <View android:layout_width="0dip" 
+	            android:layout_height="0dip" 
+	            android:focusable="true" 
+	            android:focusableInTouchMode="true" />
+		    <TextView 
+		        android:layout_height="fill_parent"
+		        android:layout_width="100dp"
+		        android:gravity="center"
+		        android:text="口味 "/>
+		    <RatingBar style="@style/commentRatingBar" 
+		        android:stepSize="1"
+				android:layout_marginLeft="10dip" 
+				android:layout_width="wrap_content"
+				android:rating="1"
+				android:layout_height="wrap_content" 
+				android:id="@+id/kouwei_ratingbar">
+		        
+		    </RatingBar>
+		    
+	    </LinearLayout>
+	    <LinearLayout android:layout_width="fill_parent" 
+	        android:layout_height="wrap_content">
+		    <TextView android:layout_width="100dp"
+		        android:layout_height="fill_parent"
+		        android:gravity="center"
+		        android:text="环境 "/>
+		    <RatingBar style="@style/commentRatingBar" 
+		        android:stepSize="1"
+				android:layout_marginLeft="10dip" 
+				android:layout_width="wrap_content"
+				android:rating="1"
+				android:layout_height="wrap_content" 
+				android:id="@+id/huanjing_ratingbar">
+		        
+		    </RatingBar>
+	    </LinearLayout>
+	    <LinearLayout android:layout_width="fill_parent" 
+	        android:layout_height="wrap_content">
+		    <TextView android:layout_width="100dp"
+		        android:layout_height="fill_parent"
+		        android:gravity="center"
+		        android:text="服务"/>
+		    <RatingBar style="@style/commentRatingBar" 
+		        android:stepSize="1"
+				android:layout_marginLeft="10dip" 
+				android:layout_width="wrap_content"
+				android:rating="1"
+				android:layout_height="wrap_content" 
+				android:id="@+id/fuwu_ratingbar">
+		        
+		    </RatingBar>
+	    </LinearLayout>
+	    <LinearLayout android:layout_width="fill_parent" 
+	        android:layout_height="wrap_content">
+		    <TextView android:layout_width="100dp"
+		        android:layout_height="fill_parent"
+		        android:gravity="center"
+		        android:text="性价比"/>
+		    <RatingBar style="@style/commentRatingBar" 
+		        android:stepSize="1"
+		        android:rating="1"
+				android:layout_marginLeft="10dip" 
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" 
+				android:id="@+id/xingjiabi_ratingbar">
+		        
+		    </RatingBar>
+	    </LinearLayout>
+	    <LinearLayout android:layout_width="fill_parent" 
+	        android:layout_height="wrap_content">
+		    <TextView android:layout_width="100dp"
+		        android:layout_height="fill_parent"
+		        android:gravity="center"
+		        android:text="总体"/>
+		    <RatingBar style="@style/commentRatingBar" 
+		        android:stepSize="1"
+		        android:rating="1"
+				android:layout_marginLeft="10dip" 
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" 
+				android:id="@+id/grade_ratingbar">
+		        
+		    </RatingBar>
+	    </LinearLayout>
+
 		<LinearLayout android:layout_width="fill_parent" 
 	        android:layout_height="wrap_content"
 	        android:paddingTop="5dip">
@@ -168,13 +184,29 @@
 			<EditText
 			    android:id="@+id/comment_edit"
 			    android:layout_width="fill_parent"
-			    android:layout_height="365dp"
-			    android:background="@drawable/post_edit_bg"
+			    android:layout_height="165dp"
+			    android:background="@drawable/update_password_input"
 			    android:gravity="left"
-			    android:hint="@string/more_option_hint"
+			    android:hint="@string/comment_desc_hint"
 			    android:textSize="14.0sp" />
 	    </LinearLayout>
-
+		<LinearLayout 
+		    android:layout_width="fill_parent" 
+	        android:layout_height="wrap_content" 
+	        android:layout_gravity="center_vertical" 
+	        android:orientation="horizontal">
+		    
+		    <Button
+	            android:id="@+id/submit"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:background="@drawable/btn_submit"
+	            android:textAppearance="?android:textAppearanceMediumInverse"
+	            android:textColor="@color/black"
+	            android:textSize="15.0sp" 
+	            android:paddingRight="10dp"
+	            />
+	    </LinearLayout>
 	</LinearLayout>
 	</ScrollView>
 </LinearLayout> 

@@ -12,7 +12,9 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.withiter.quhao.R;
@@ -66,12 +68,13 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 				convertView = inflator.inflate(R.layout.paidui_history_list_item, null);
 				holder.merchantImg = (ImageView) convertView.findViewById(R.id.merchantImg);
 				holder.merchantName = (TextView) convertView.findViewById(R.id.merchantName);
-				holder.merchantAddress = (TextView) convertView.findViewById(R.id.merchantAddress);
-				holder.myNumber = (TextView) convertView.findViewById(R.id.myNumber);
-				holder.seatNo = (TextView) convertView.findViewById(R.id.seatNo);
 				holder.commentBtn = (Button) convertView.findViewById(R.id.btn_comment);
 				holder.isComment = (TextView) convertView.findViewById(R.id.is_comment);
 				holder.cb = (CheckBox) convertView.findViewById(R.id.item_cb);
+				holder.cbLayout = (LinearLayout) convertView.findViewById(R.id.cb_layout);
+				holder.date = (TextView) convertView.findViewById(R.id.date);
+				holder.youhuiLayout = (RelativeLayout) convertView.findViewById(R.id.youhui_layout);
+				holder.paiduiLayout = (RelativeLayout) convertView.findViewById(R.id.paidui_layout);
 			}
 			if (holder == null) {
 				holder = (ViewHolderHistoryPaidui) convertView.getTag();
@@ -79,12 +82,14 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 			
 			if("true".equals(isShowDelete))
 			{
+				holder.cbLayout.setVisibility(View.VISIBLE);
 				holder.cb.setVisibility(View.VISIBLE);
 				holder.cb.setChecked("true".equals(rvo.isChecked));
 				
 			}
 			else
 			{
+				holder.cbLayout.setVisibility(View.GONE);
 				holder.cb.setVisibility(View.GONE);
 			}
 			
@@ -94,10 +99,33 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 				holder.merchantImg.setImageResource(R.drawable.no_logo);
 			}
 			
+			
+			if (rvo.youhui) 
+			{
+				holder.youhuiLayout.setVisibility(View.VISIBLE);
+			}
+			else
+			{
+				holder.youhuiLayout.setVisibility(View.GONE);
+			}
+			
 			String merchantImg = rvo.merchantImage;
 			holder.merchantImg.setImageResource(R.drawable.no_logo);
 			AsynImageLoader.getInstance().showImageAsyn(holder.merchantImg,position, merchantImg, R.drawable.no_logo);
 			// get image from memory/SDCard/URL stream
+			
+			holder.paiduiLayout.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					
+					Intent intent = new Intent(activity, MerchantDetailActivity.class);
+					intent.putExtra("merchantId", merchantId);
+					activity.startActivity(intent);
+				}
+			});
+			
+			/*
 			holder.merchantImg.setOnClickListener(new OnClickListener() {
 				
 				@Override
@@ -111,22 +139,20 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 					progress.closeProgress();
 				}
 			});
-			
+			*/
 			holder.merchantName.setTag("merchantNamer_" + position);
 			holder.merchantName.setText(rvo.merchantName);
-			holder.merchantAddress.setTag("merchantAddress_" + position);
-			holder.merchantAddress.setText(rvo.merchantAddress);
 
-			holder.myNumber.setTag("myNumber_" + position);
-			holder.myNumber.setText(rvo.myNumber);
-			holder.seatNo.setTag("seatNo_" + position);
-			holder.seatNo.setText(rvo.seatNumber);
+			holder.date.setTag("date_" + position);
+			holder.date.setText(rvo.created);
 			
 			if(rvo.isCommented)
 			{
-				holder.isComment.setVisibility(View.VISIBLE);
-				holder.commentBtn.setVisibility(View.GONE);
-				holder.isComment.setText("已评价");
+				holder.isComment.setVisibility(View.GONE);
+//				holder.commentBtn.setVisibility(View.GONE);
+				holder.commentBtn.setVisibility(View.VISIBLE);
+				holder.commentBtn.setBackgroundResource(R.drawable.btn_commented);
+//				holder.isComment.setText("已评价");
 			}
 			else
 			{
@@ -144,6 +170,7 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 				{
 					holder.isComment.setVisibility(View.GONE);
 					holder.commentBtn.setVisibility(View.VISIBLE);
+					holder.commentBtn.setBackgroundResource(R.drawable.btn_comment);
 					final String reservationId = rvo.rId;
 					holder.commentBtn.setOnClickListener(new OnClickListener() {
 						

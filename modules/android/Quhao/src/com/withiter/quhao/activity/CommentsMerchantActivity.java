@@ -32,6 +32,8 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnHea
 
 	private String merchantId;
 	
+	private String grade;
+	
 	/**
 	 * the critiques queried from merchant
 	 */
@@ -119,6 +121,7 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnHea
 		setContentView(R.layout.comments_merchant);
 
 		this.merchantId = getIntent().getStringExtra("merchantId");
+		this.grade = getIntent().getStringExtra("grade");
 		this.page = getIntent().getIntExtra("page", 1);
 
 		mPullToRefreshView = (PullToRefreshView) this.findViewById(R.id.main_pull_refresh_view);
