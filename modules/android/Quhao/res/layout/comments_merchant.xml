@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#ffffffff"
+    android:background="#EFEFEF"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -61,7 +61,27 @@
         android:id="@+id/commentsLayout"
         android:layout_width="fill_parent"
         android:layout_height="0dip"
-        android:layout_weight="1.0" >
+        android:layout_weight="1.0"
+        android:orientation="vertical"
+        android:gravity="center" 
+        android:visibility="gone">
+        <LinearLayout 
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+        	android:padding="10dp">
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="总体评价："
+                android:textSize="18sp"/>
+            <RatingBar android:id="@+id/grade"
+                style="@style/commentRatingBar" 
+		        android:stepSize="0.1"
+				android:layout_width="wrap_content"
+				android:rating="1.4"
+				android:layout_height="wrap_content" />
+        </LinearLayout>
+        <!--   -->
 		<com.withiter.quhao.view.refresh.PullToRefreshView xmlns:android="http://schemas.android.com/apk/res/android" 
 		  	    android:id="@+id/main_pull_refresh_view"
 			    android:layout_width="fill_parent"
@@ -79,7 +99,7 @@
             android:listSelector="@drawable/list_item_trans"
             android:scrollbarThumbVertical="@drawable/scrollbar"
             android:scrollbars="vertical" />
-        </com.withiter.quhao.view.refresh.PullToRefreshView>
+        <!--  --></com.withiter.quhao.view.refresh.PullToRefreshView>
     </LinearLayout>
 
 </LinearLayout>

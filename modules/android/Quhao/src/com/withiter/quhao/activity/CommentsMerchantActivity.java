@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
 import com.withiter.quhao.R;
@@ -66,6 +67,8 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnHea
 	private int page;
 	
 	private PullToRefreshView mPullToRefreshView;
+	
+	private RatingBar gradeRatingBar;
 	
 	protected Handler updateCommentsHandler = new Handler() {
 
@@ -124,6 +127,9 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnHea
 		this.grade = getIntent().getStringExtra("grade");
 		this.page = getIntent().getIntExtra("page", 1);
 
+		gradeRatingBar = (RatingBar) this.findViewById(R.id.grade);
+		
+		gradeRatingBar.setRating(4.66F);
 		mPullToRefreshView = (PullToRefreshView) this.findViewById(R.id.main_pull_refresh_view);
 		mPullToRefreshView.setOnHeaderRefreshListener(this);
 		mPullToRefreshView.setOnFooterRefreshListener(this);

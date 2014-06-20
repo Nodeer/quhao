@@ -110,6 +110,7 @@ public class GetNumber2Activity extends QuhaoBaseActivity implements OnItemClick
 				haomaListView.setEnabled(false);
 				btnGetNumberLayout.setVisibility(View.GONE);
 				findViewById(R.id.btn_GetNumberLayout).setVisibility(View.GONE);
+				findViewById(R.id.haoma_list_layout).setVisibility(View.GONE);
 				findViewById(R.id.my_reservation_layout).setVisibility(View.VISIBLE);
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				
