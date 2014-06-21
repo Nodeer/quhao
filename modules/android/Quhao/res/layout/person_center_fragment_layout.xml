@@ -37,16 +37,18 @@
 
         <RelativeLayout android:id="@+id/person_info"
             android:layout_width="fill_parent"
-            android:layout_height="100dip"
+            android:layout_height="120dip"
             android:background="#ffffffff"
             android:orientation="horizontal"
-             >
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp" >
 
             <!-- left avatar -->
 
             <LinearLayout android:id="@+id/avatar_layout"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
                 android:orientation="vertical"
                 android:layout_alignParentLeft="true"
                 android:padding="8.0dip"
@@ -90,24 +92,24 @@
                 android:layout_height="fill_parent"
                 android:orientation="vertical"
                 android:gravity="center_vertical"
-                android:paddingLeft="10.0dip"
-                android:paddingTop="8.0dip">
+                android:paddingLeft="10.0dip">
 
                 <!-- nickname -->
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0.0dip"
-                    android:orientation="horizontal" >
+                    android:layout_height="0dp"
+                    android:layout_weight="1.0"
+                    android:orientation="horizontal" 
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
-                        android:layout_marginTop="3.0dip"
                         android:singleLine="true"
                         android:text="@string/nick_name_colon"
                         android:textColor="#ff000000"
+                        android:gravity="center_vertical"
                         android:layout_marginRight="3dp"
                         android:textSize="16.0sp" />
                     
@@ -115,8 +117,8 @@
                         android:id="@+id/nickName"
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
-                        android:layout_marginTop="3.0dip"
                         android:singleLine="true"
+                        android:gravity="center_vertical"
                         android:text="@string/noname"
                         android:textColor="#ff000000"
                         android:textSize="16.0sp" />
@@ -127,15 +129,16 @@
 
                 <LinearLayout
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0.0dip"
-                    android:orientation="horizontal" >
+                    android:layout_height="0dp"
+                    android:layout_weight="1.0"
+                    android:orientation="horizontal" 
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="3.0dip"
+                        android:layout_height="fill_parent"
                         android:singleLine="true"
+                        android:gravity="center_vertical"
                         android:text="@string/jifen_label_colon"
                         android:textColor="#ff000000"
                         android:textSize="16.0sp" />
@@ -143,10 +146,10 @@
                     <TextView
                         android:id="@+id/jifen"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="fill_parent"
                         android:layout_marginLeft="3.0dip"
-                        android:layout_marginTop="3.0dip"
                         android:singleLine="true"
+                        android:gravity="center_vertical"
                         android:text="@string/jifen_default"
                         android:textColor="#ff000000"
                         android:textSize="16.0sp" />
@@ -159,18 +162,21 @@
         
         <RelativeLayout android:id="@+id/person_info_logout"
             android:layout_width="fill_parent"
-            android:layout_height="100dip"
+            android:layout_height="120dip"
             android:background="#ffffffff"
-            android:orientation="horizontal" >
+            android:orientation="horizontal" 
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp">
 
             <!-- left avatar -->
 
             <LinearLayout android:id="@+id/avatar_layout_logout"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
                 android:orientation="vertical"
                 android:layout_alignParentLeft="true"
-                android:padding="8.0dip"
+                android:padding="8dp"
                 android:background="@drawable/person_avatar_bg"
                 android:gravity="center" >
 
@@ -286,7 +292,6 @@
                 android:clickable="true"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
-                android:padding="10.0dip"
                 android:textAlignment="center" >
 
                 <ImageView android:id="@+id/qiandao_label"
@@ -315,7 +320,6 @@
                 android:clickable="true"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
-                android:padding="10.0dip"
                 android:textAlignment="center" >
 
                 <ImageView 
@@ -344,7 +348,6 @@
                 android:clickable="true"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
-                android:padding="10.0dip"
                 android:textAlignment="center" >
 
                 <ImageView 

@@ -1,5 +1,6 @@
 package com.withiter.quhao.activity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,7 +130,22 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnHea
 
 		gradeRatingBar = (RatingBar) this.findViewById(R.id.grade);
 		
-		gradeRatingBar.setRating(4.66F);
+		if (StringUtils.isNotNull(grade)) {
+			int scale = 2;//设置位数 
+
+			int roundingMode = 4;//表示四舍五入，可以选择其他舍值方式，例如去尾，等等. 
+
+			BigDecimal bd = new BigDecimal(grade); 
+
+			bd = bd.setScale(scale,roundingMode); 
+			
+			gradeRatingBar.setRating(bd.floatValue());
+		}
+		else
+		{
+			gradeRatingBar.setRating(0);
+		}
+		
 		mPullToRefreshView = (PullToRefreshView) this.findViewById(R.id.main_pull_refresh_view);
 		mPullToRefreshView.setOnHeaderRefreshListener(this);
 		mPullToRefreshView.setOnFooterRefreshListener(this);
