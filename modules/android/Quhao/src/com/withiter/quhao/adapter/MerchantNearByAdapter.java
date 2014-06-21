@@ -26,7 +26,7 @@ import android.widget.Toast;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
-import com.withiter.quhao.activity.GetNumber2Activity;
+import com.withiter.quhao.activity.GetNumberActivity;
 import com.withiter.quhao.activity.LoginActivity;
 import com.withiter.quhao.activity.MerchantDetailActivity;
 import com.withiter.quhao.activity.MyNumberActivity;
@@ -202,7 +202,7 @@ public class MerchantNearByAdapter extends BaseAdapter {
 										Intent intentGetNumber = new Intent();
 										intentGetNumber.putExtra("merchantId", merchantId);
 										intentGetNumber.putExtra("merchantName", mName);
-										intentGetNumber.setClass(activity, GetNumber2Activity.class);
+										intentGetNumber.setClass(activity, GetNumberActivity.class);
 										activity.startActivity(intentGetNumber);
 									}
 									
@@ -214,7 +214,7 @@ public class MerchantNearByAdapter extends BaseAdapter {
 									Intent intentGetNumber = new Intent();
 									intentGetNumber.putExtra("merchantId", merchantId);
 									intentGetNumber.putExtra("merchantName", mName);
-									intentGetNumber.setClass(activity, GetNumber2Activity.class);
+									intentGetNumber.setClass(activity, GetNumberActivity.class);
 									activity.startActivity(intentGetNumber);
 									
 								}
