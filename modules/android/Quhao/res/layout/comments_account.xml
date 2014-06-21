@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#ffffffff"
+    android:background="#ffefefef"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -65,7 +65,7 @@
 		  	    android:id="@+id/main_pull_refresh_view"
 			    android:layout_width="fill_parent"
 			    android:layout_height="fill_parent"
-			    android:background="@android:color/white">
+			    android:background="#ffefefef">
         <ListView
             android:id="@+id/commentsView"
             android:layout_width="fill_parent"

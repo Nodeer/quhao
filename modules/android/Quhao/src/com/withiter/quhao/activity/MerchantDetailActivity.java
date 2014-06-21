@@ -846,7 +846,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				String phoneNO = merchant.phone;
 				// 如果输入不为空创建打电话的Intent
 				if (StringUtils.isNotNull(phoneNO)) {
-					Intent phoneIntent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + phoneNO));
+					Intent phoneIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNO));
 					startActivity(phoneIntent);
 				} else {
 					Toast.makeText(MerchantDetailActivity.this, "此商家还未添加联系方式", Toast.LENGTH_SHORT).show();
