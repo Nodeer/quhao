@@ -89,6 +89,19 @@ public class SelfManagementController extends BaseController {
 		renderJapid(bmivo);
 	}
 
+	public static void checkEditAble(){
+		String mid = params.get("mid");
+		Merchant merchant = Merchant.findById(mid);
+		
+		// 检查是否能编辑
+		if(merchant != null){
+			Haoma haoma = Haoma.findByMerchantId(merchant.id());
+			boolean editable = haoma.checkEditAble();
+			renderJSON(editable);
+		}
+		renderJSON(false);
+	}
+	
 	public static void editMerchant(String uid, String mid) {
 		Merchant m = null;
 		String merchantName = params.get("merchantName");

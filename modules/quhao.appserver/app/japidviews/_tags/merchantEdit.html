@@ -27,7 +27,7 @@
 			<div class="input-group" style="width: 100%">
 				<font style="font-size: large;">商家信息</font>
 			  `if(bmivo.merchantExist){
-				<button style="float: right;" class="btn btn-primary" data-toggle="modal" data-target="#updateMerchant">编辑商家信息</button>
+				<button style="float: right;" class="btn btn-primary" data-toggle="modal" onclick="Merchant.checkEdit('${bmivo.mid}');">编辑商家信息</button>
 			  `}
 			</div>
 		</div>
