@@ -572,6 +572,9 @@ Merchant.finish = function(seatNumber, currentNumber, mid) {
 					"mid" : mid
 				},
 				success : function(data) {
+					
+					console.log(data);
+					
 					if (data == true) {
 						// window.location.reload();
 						// 改成异步刷新
