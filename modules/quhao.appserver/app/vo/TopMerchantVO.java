@@ -73,9 +73,6 @@ public class TopMerchantVO {
 			logger.error(ExceptionUtil.getTrace(e));
 		}
 
-		logger.info(TopMerchantVO.class.getName() + " vo.merchantImage : "
-				+ vo.merchantImage);
-
 		return vo;
 	}
 }

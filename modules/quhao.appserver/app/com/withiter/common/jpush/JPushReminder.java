@@ -83,9 +83,9 @@ public class JPushReminder {
 			Logger.debug(result.toString());
 		} else {
 			if (result.getErrorCode() > 0) {
-				Logger.debug(result.getOriginalContent());
+				Logger.error(result.getOriginalContent());
 			} else {
-				Logger.debug("Maybe connect error. Retry laster. ");
+				Logger.error("Maybe connect error. Retry laster. ");
 			}
 		}
 		
