@@ -33,15 +33,19 @@ import com.amap.api.location.LocationProviderProxy;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantNearByAdapter;
+import com.withiter.quhao.data.CategoryData;
+import com.withiter.quhao.task.AllCategoriesTask;
 import com.withiter.quhao.task.NearbyMerchantsTask;
 import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.view.expandtab.ExpandTabView;
 import com.withiter.quhao.view.expandtab.ViewLeft;
+import com.withiter.quhao.view.expandtab.ViewRight;
 import com.withiter.quhao.view.refresh.PullToRefreshView;
 import com.withiter.quhao.view.refresh.PullToRefreshView.OnFooterRefreshListener;
 import com.withiter.quhao.view.refresh.PullToRefreshView.OnHeaderRefreshListener;
+import com.withiter.quhao.vo.Category;
 import com.withiter.quhao.vo.Merchant;
 
 public class NearbyFragment extends Fragment implements AMapLocationListener, OnItemClickListener, OnClickListener, OnHeaderRefreshListener, OnFooterRefreshListener {
@@ -64,12 +68,20 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 	private ExpandTabView expandTabView;
 	private ArrayList<View> mViewArray = new ArrayList<View>();
 	private ViewLeft viewLeft;
+	
+	private ViewRight viewRight;
 
 	private int searchDistence;
 
 	private List<String> distanceItems;
 
 	private List<String> distanceItemsValue;
+	
+	private String categoryType;
+	
+	private List<String> categoryTypes;
+	
+	private List<String> categoryNames;
 
 	private boolean isClick;
 
@@ -85,6 +97,8 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 	private LinearLayout noResultLayout;
 	private TextView noResultView;
 	private TextView locationResult;
+	
+	private List<Category> categorys;
 	
 	private long time1;
 
@@ -130,8 +144,16 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 		merchantsListView.setNextFocusDownId(R.id.merchantsListView);
 
-		initExpandView();
-
+//		initExpandView();
+//		expandTabView = (ExpandTabView) contentView.findViewById(R.id.expandtab_view);
+		if (QHClientApplication.getInstance().categorys != null && !QHClientApplication.getInstance().categorys.isEmpty()) {
+			initExpandView();
+		}
+		else
+		{
+			getCategoriesFromServerAndDisplay();
+		}
+		
 		contentView.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
 		contentView.findViewById(R.id.serverdata).setVisibility(View.GONE);
 		resultLayout.setVisibility(View.VISIBLE);
@@ -168,8 +190,74 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		mAMapLocationManager = null;
 	}
 	
+	/**
+	 * get all categories from server and display them
+	 */
+	public void getCategoriesFromServerAndDisplay() {
+		final AllCategoriesTask task = new AllCategoriesTask(0, getActivity(), "allCategories?cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode);
+		task.execute(new Runnable() {
+			@Override
+			public void run() {
+				String result = task.result;
+				if (null == categorys) {
+					categorys = new ArrayList<Category>();
+				}
+				categorys.clear();
+				categorys.addAll(ParseJson.getCategorys(result));
+				QHClientApplication.getInstance().categorys = categorys;
+				categorysUpdateHandler.obtainMessage(200, categorys).sendToTarget();
+			}
+		}, new Runnable() {
+
+			@Override
+			public void run() {
+				String result = task.result;
+				if (null == categorys) {
+					categorys = new ArrayList<Category>();
+				}
+				categorys.clear();
+				categorys.addAll(ParseJson.getCategorys(result));
+				categorysUpdateHandler.obtainMessage(200, categorys).sendToTarget();
+			}
+		});
+
+	}
+	
+	private Handler categorysUpdateHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.what == 200) {
+				super.handleMessage(msg);
+				if (categorys != null && !categorys.isEmpty()) {
+					initExpandView();
+				}
+				else {
+					Toast.makeText(getActivity(), "亲，该城市暂未开通，请选择其他城市。", Toast.LENGTH_SHORT).show();
+				}
+				
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			}
+		}
+	};
+	
 	private void initExpandView() {
 
+		categoryNames = new ArrayList<String>();
+		categoryTypes = new ArrayList<String>();
+		categoryNames.add("默认排序");
+		categoryTypes.add("-1");
+		if (categorys!=null && !categorys.isEmpty()) {
+			for (int i = 0; i < categorys.size(); i++) {
+				categoryNames.add(categorys.get(i).cateName);
+				categoryTypes.add(categorys.get(i).categoryType);
+			}
+		}
+		
+		categoryType = "";
+		expandTabView = (ExpandTabView) contentView.findViewById(R.id.expandtab_view);
+		viewLeft = new ViewLeft(contentView.getContext(), categoryNames, categoryTypes, categoryType);
+		viewLeft.setShowText("菜系");
+		
 		if (searchDistence == 0) {
 			searchDistence = 3;
 //			distanceItems = new String[] { "1千米", "3千米", "5千米", "10千米", "全城" };// 显示字段
@@ -189,16 +277,25 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		distanceItemsValue.add("5");
 		distanceItemsValue.add("10");
 		distanceItemsValue.add("-1");
-
-		expandTabView = (ExpandTabView) contentView.findViewById(R.id.expandtab_view);
-		viewLeft = new ViewLeft(contentView.getContext(), distanceItems, distanceItemsValue, String.valueOf(searchDistence));
-
+		
+		viewRight = new ViewRight(contentView.getContext(), distanceItems, distanceItemsValue, String.valueOf(searchDistence));
+		viewRight.setShowText("距离");
+		
 		mViewArray = new ArrayList<View>();
 		mViewArray.add(viewLeft);
+		mViewArray.add(viewRight);
+		
 		ArrayList<String> mTextArray = new ArrayList<String>();
-		mTextArray.add("距离");
-		expandTabView.setValue(mTextArray, mViewArray);
+		mTextArray.add("菜系");
+		mTextArray.add("排序");
+		
+		ArrayList<Integer> imgArray = new ArrayList<Integer>();
+		imgArray.add(R.drawable.ic_expand_category);
+		imgArray.add(R.drawable.ic_expand_queue);
+		
+		expandTabView.setValue(mTextArray, mViewArray,imgArray);
 		expandTabView.setTitle(viewLeft.getShowText(), 0);
+		expandTabView.setTitle(viewRight.getShowText(), 1);
 
 		viewLeft.setOnSelectListener(new ViewLeft.OnSelectListener() {
 			@Override
@@ -206,25 +303,101 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 				onRefresh(viewLeft, showText);
 			}
 		});
+		
+		viewRight.setOnSelectListener(new ViewRight.OnSelectListener() {
+			@Override
+			public void getValue(String distance, String showText) {
+				onRefresh(viewRight, showText);
+			}
+		});
+	
+		/*
+		categoryNames = new ArrayList<String>();
+		categoryTypes = new ArrayList<String>();
+		categoryNames.add("默认排序");
+		categoryTypes.add("-1");
+		if (categorys!=null && !categorys.isEmpty()) {
+			for (int i = 0; i < categorys.size(); i++) {
+				categoryNames.add(categorys.get(i).cateName);
+				categoryTypes.add(categorys.get(i).categoryType);
+			}
+		}
+		
+		categoryType = "";
+		
+		viewLeft = new ViewLeft(getActivity(), categoryNames, categoryTypes, categoryType);
+		viewLeft.setShowText("菜系");
+		
+		if (searchDistence == 0) {
+			searchDistence = 3;
+//			distanceItems = new String[] { "1千米", "3千米", "5千米", "10千米", "全城" };// 显示字段
+//			distanceItemsValue = new String[] { "1", "3", "5", "10", "-1" };// 显示字段
+		}
+		
+		distanceItems = new ArrayList<String>();
+		distanceItems.add("1千米");
+		distanceItems.add("3千米");
+		distanceItems.add("5千米");
+		distanceItems.add("10千米");
+		distanceItems.add("全城");
+		
+		distanceItemsValue = new ArrayList<String>();
+		distanceItemsValue.add("1");
+		distanceItemsValue.add("3");
+		distanceItemsValue.add("5");
+		distanceItemsValue.add("10");
+		distanceItemsValue.add("-1");
+		
+
+		expandTabView = (ExpandTabView) contentView.findViewById(R.id.expandtab_view);
+		viewLeft = new ViewLeft(contentView.getContext(), distanceItems, distanceItemsValue, String.valueOf(searchDistence));
+		viewLeft.setShowText("距离");
+		mViewArray = new ArrayList<View>();
+		mViewArray.add(viewLeft);
+		ArrayList<String> mTextArray = new ArrayList<String>();
+		mTextArray.add("距离");
+		
+		ArrayList<Integer> imgArray = new ArrayList<Integer>();
+		imgArray.add(R.drawable.ic_expand_queue);
+		
+		expandTabView.setValue(mTextArray, mViewArray,imgArray);
+		expandTabView.setTitle(viewLeft.getShowText(), 0);
+
+		viewLeft.setOnSelectListener(new ViewLeft.OnSelectListener() {
+			@Override
+			public void getValue(String distance, String showText) {
+				onRefresh(viewLeft, showText);
+			}
+		});*/
 	}
 
 	private void onRefresh(View view, String showText) {
-
+		
 		expandTabView.onPressBack();
 		int position = getPositon(view);
 		if (position >= 0 && !expandTabView.getTitle(position).equals(showText)) {
 			expandTabView.setTitle(showText, position);
 		}
 
-		for (int i = 0; i < distanceItems.size(); i++) {
-			if (showText.equals(distanceItems.get(i))) {
-				searchDistence = Integer.valueOf(distanceItemsValue.get(i));
-				break;
+		if (0 == position) {
+			categoryType = categoryTypes.get(categoryNames.indexOf(showText));
+			if ("-1".equals(categoryType)) {
+				categoryType = "";
 			}
 		}
+		else if(1 == position) {
+			searchDistence = Integer.parseInt(distanceItemsValue.get(distanceItems.indexOf(showText)));
+		}
+		
+//		for (int i = 0; i < distanceItems.size(); i++) {
+//			if (showText.equals(distanceItems.get(i))) {
+//				searchDistence = Integer.valueOf(distanceItemsValue.get(i));
+//				break;
+//			}
+//		}
 		// setPoiSearch();
 		// buildTask();
-		merchantsListView.setSelectionFromTop(0, 0);// 滑动到第一项
+//		merchantsListView.setSelectionFromTop(0, 0);// 滑动到第一项
 		page = 1;
 		// isFirstLoad = true;
 		needToLoad = true;
@@ -289,6 +462,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 				} else {
 					mPullToRefreshView.setEnableFooterView(true);
 				}
+				
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			}
 		}
@@ -438,7 +612,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 	@Override
 	public void onLocationChanged(AMapLocation location) {
 		Log.e("wjzwjz", "NearByFragment onLocationChanged : " + (System.currentTimeMillis()-time1));
-		if (null != location) {
+		if (null != location && categorys != null) {
 			QHClientApplication.getInstance().location = location;
 			if (!isFirstLocation) {
 				isFirstLocation = true;
@@ -467,7 +641,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 			return;
 		}
 		String url = "getNearMerchants?userX=" + firstLocation.getLongitude() + "&userY=" + firstLocation.getLatitude() + "&cityCode=" + firstLocation.getCityCode()
-				+ "&page=" + page + "&maxDis=" + searchDistence;
+				+ "&page=" + page + "&maxDis=" + searchDistence + "&cateType=" + categoryType;
 		final NearbyMerchantsTask task = new NearbyMerchantsTask(0, getActivity(), url);
 		task.execute(new Runnable() {
 

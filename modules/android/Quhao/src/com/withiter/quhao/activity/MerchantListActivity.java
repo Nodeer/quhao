@@ -163,9 +163,6 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 			}
 		}
 		
-		if (StringUtils.isNull(categoryType)) {
-			categoryType = "benbangcai";
-		}
 		categoryType = "";
 		expandTabView = (ExpandTabView) this.findViewById(R.id.expandtab_view);
 		viewLeft = new ViewLeft(this, categoryNames, categoryTypes, categoryType);
@@ -192,9 +189,14 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 		mViewArray.add(viewRight);
 		
 		ArrayList<String> mTextArray = new ArrayList<String>();
-		mTextArray.add("口味");
+		mTextArray.add("菜系");
 		mTextArray.add("排序");
-		expandTabView.setValue(mTextArray, mViewArray);
+		
+		ArrayList<Integer> imgArray = new ArrayList<Integer>();
+		imgArray.add(R.drawable.ic_expand_category);
+		imgArray.add(R.drawable.ic_expand_queue);
+		
+		expandTabView.setValue(mTextArray, mViewArray,imgArray);
 		expandTabView.setTitle(viewLeft.getShowText(), 0);
 		expandTabView.setTitle(viewRight.getShowText(), 1);
 

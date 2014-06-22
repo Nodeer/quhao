@@ -109,7 +109,7 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 				holder.youhuiLayout.setVisibility(View.GONE);
 			}
 			
-			String merchantImg = rvo.merchantImage;
+			String merchantImg = rvo.merchantImageBig;
 			holder.merchantImg.setImageResource(R.drawable.no_logo);
 			AsynImageLoader.getInstance().showImageAsyn(holder.merchantImg,position, merchantImg, R.drawable.no_logo);
 			// get image from memory/SDCard/URL stream
@@ -152,6 +152,7 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 //				holder.commentBtn.setVisibility(View.GONE);
 				holder.commentBtn.setVisibility(View.VISIBLE);
 				holder.commentBtn.setBackgroundResource(R.drawable.btn_commented);
+				holder.commentBtn.setEnabled(false);
 //				holder.isComment.setText("已评价");
 			}
 			else
@@ -170,6 +171,7 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 				{
 					holder.isComment.setVisibility(View.GONE);
 					holder.commentBtn.setVisibility(View.VISIBLE);
+					holder.commentBtn.setEnabled(true);
 					holder.commentBtn.setBackgroundResource(R.drawable.btn_comment);
 					final String reservationId = rvo.rId;
 					holder.commentBtn.setOnClickListener(new OnClickListener() {

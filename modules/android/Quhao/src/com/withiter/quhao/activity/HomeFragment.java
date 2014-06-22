@@ -657,6 +657,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 				}
 				categorys.clear();
 				categorys.addAll(ParseJson.getCategorys(result));
+				QHClientApplication.getInstance().categorys = categorys;
 				categorysUpdateHandler.obtainMessage(200, categorys).sendToTarget();
 			}
 		}, new Runnable() {

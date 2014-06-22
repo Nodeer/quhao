@@ -78,7 +78,7 @@ public class MerchantAdapter extends BaseAdapter {
 		
 		View view = listView.getChildAt(offset);
 		ViewHolder holder = (ViewHolder)view.getTag();
-		holder.btnOpen.setText("希望开通:" + openNum);
+		holder.btnOpen.setText("希望开通(" + openNum + ")");
 	}
 	
 	public MerchantAdapter(Activity activity, ListView listView, List<Merchant> merchants) {
@@ -145,7 +145,7 @@ public class MerchantAdapter extends BaseAdapter {
 				holder.btnGetNumber.setVisibility(View.VISIBLE);
 			} else {
 				holder.btnOpen.setVisibility(View.VISIBLE);
-				holder.btnOpen.setText("希望开通：" + merchant.openNum);
+				holder.btnOpen.setText("希望开通(" + merchant.openNum + ")");
 				holder.btnGetNumber.setVisibility(View.GONE);
 			}
 			

@@ -198,7 +198,10 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 		mViewArray.add(viewLeft);
 		ArrayList<String> mTextArray = new ArrayList<String>();
 		mTextArray.add("距离");
-		expandTabView.setValue(mTextArray, mViewArray);
+		ArrayList<Integer> imgArray = new ArrayList<Integer>();
+		imgArray.add(R.drawable.ic_expand_queue);
+		
+		expandTabView.setValue(mTextArray, mViewArray,imgArray);
 		expandTabView.setTitle(viewLeft.getShowText(), 0);
 		
 		viewLeft.setOnSelectListener(new ViewLeft.OnSelectListener() {

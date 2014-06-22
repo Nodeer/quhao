@@ -73,7 +73,8 @@
         android:layout_width="fill_parent"
         android:layout_height="0dip"
         android:layout_weight="1.0" 
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:fadingEdge="none">
 
         <LinearLayout 
 		    android:orientation="vertical"
@@ -84,7 +85,9 @@
 			<com.withiter.quhao.view.expandtab.ExpandTabView 
 			    android:id="@+id/expandtab_view"
 		        android:layout_width="fill_parent"
-		        android:layout_height="fill_parent">
+		        android:layout_height="fill_parent"
+		        android:gravity="center_vertical"
+		        android:fadingEdge="none">
 		    </com.withiter.quhao.view.expandtab.ExpandTabView>
 			
 		</LinearLayout>
@@ -93,12 +96,14 @@
 		    android:orientation="vertical"
 		    android:layout_width="fill_parent" 
 		    android:layout_height="match_parent" 
-		    android:background="#ffffffff">
+		    android:background="#ffffffff"
+		    android:fadingEdge="none">
 			<com.withiter.quhao.view.refresh.PullToRefreshView xmlns:android="http://schemas.android.com/apk/res/android" 
 		  	    android:id="@+id/main_pull_refresh_view"
 			    android:layout_width="fill_parent"
 			    android:layout_height="fill_parent"
-			    android:background="@android:color/white">
+			    android:background="@android:color/white"
+			    android:fadingEdge="none">
 		       	<ListView
 		       	    android:id="@+id/merchantsListView"
 		       	    android:layout_width="fill_parent"

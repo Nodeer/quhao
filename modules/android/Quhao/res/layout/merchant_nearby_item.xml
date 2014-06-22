@@ -19,6 +19,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:gravity="center_vertical"
+        android:paddingLeft="5dp"
         >
 
      	<!-- 商家名称 -->
