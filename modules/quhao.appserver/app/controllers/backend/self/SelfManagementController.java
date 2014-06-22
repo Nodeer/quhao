@@ -376,6 +376,10 @@ public class SelfManagementController extends BaseController {
 			Haoma haoma = Haoma.findByMerchantId(mid);
 			Reservation r = Reservation.findReservationForHandle(seatNumber, currentNumber, mid, haoma.version);
 			if (r != null) {
+				if(r.status == Constants.ReservationStatus.canceled){
+					renderJSON("ALREADY_CANCELED");
+				}
+				
 				boolean flag = Reservation.finish(r.id());
 				haoma.updateSelf();
 				

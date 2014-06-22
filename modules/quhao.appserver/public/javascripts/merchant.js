@@ -576,7 +576,13 @@ Merchant.finish = function(seatNumber, currentNumber, mid) {
 						// window.location.reload();
 						// 改成异步刷新
 						refresh(mid);
-
+						return;
+					} 
+					if (data == "ALREADY_CANCELED"){
+						$("#paiduipageTip")
+									.html("用户已经取消了此号码，3秒后自动刷新页面排队信息")
+									.removeClass().addClass("text-danger");
+						setTimeout('$("#paiduipageTip").html("")', 3000);
 					} else {
 						alert("服务器维护中，马上就好。");
 					}
