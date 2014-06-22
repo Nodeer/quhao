@@ -147,6 +147,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 //		initExpandView();
 //		expandTabView = (ExpandTabView) contentView.findViewById(R.id.expandtab_view);
 		if (QHClientApplication.getInstance().categorys != null && !QHClientApplication.getInstance().categorys.isEmpty()) {
+			categorys = QHClientApplication.getInstance().categorys;
 			initExpandView();
 		}
 		else
