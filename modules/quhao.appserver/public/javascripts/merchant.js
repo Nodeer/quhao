@@ -565,7 +565,7 @@ Merchant.finish = function(seatNumber, currentNumber, mid) {
 	$.ajax({
 				type : "POST",
 				url : "/b/w/finishByMerchant",
-				dataType : "JSON",
+				dataType : "html",
 				data : {
 					"currentNumber" : currentNumber,
 					"seatNumber" : seatNumber,
@@ -575,17 +575,15 @@ Merchant.finish = function(seatNumber, currentNumber, mid) {
 					
 					console.log(data);
 					
-					if (data == true) {
+					if (data == "true") {
 						// window.location.reload();
 						// 改成异步刷新
 						refresh(mid);
 						return;
 					} 
 					if (data == "ALREADY_CANCELED"){
-						$("#paiduipageTip")
-									.html("用户已经取消了此号码，3秒后自动刷新页面排队信息")
-									.removeClass().addClass("text-danger");
-						setTimeout('$("#paiduipageTip").html("")', 3000);
+						$("#paiduipageTip").html("用户已经取消了此号码，3秒后自动刷新页面排队信息").removeClass().addClass("text-danger");
+						setTimeout(function(){refresh(mid);}, 3000);
 					} else {
 						alert("服务器维护中，马上就好。");
 					}
@@ -634,17 +632,21 @@ Merchant.expired = function(seatNumber, currentNumber, mid) {
 	$.ajax({
 				type : "POST",
 				url : "/b/w/expireByMerchant",
-				dataType : "JSON",
+				dataType : "html",
 				data : {
 					"currentNumber" : currentNumber,
 					"seatNumber" : seatNumber,
 					"mid" : mid
 				},
 				success : function(data) {
-					if (data == true) {
+					if (data == "true") {
 						// window.location.reload();
 						// 改成局部刷新
 						refresh(mid);
+					} 
+					if (data == "ALREADY_CANCELED"){
+						$("#paiduipageTip").html("用户已经取消了此号码，3秒后自动刷新页面排队信息").removeClass().addClass("text-danger");
+						setTimeout(function(){refresh(mid);}, 3000);
 					} else {
 						alert("服务器维护中，马上就好。");
 					}

@@ -367,7 +367,7 @@ public class SelfManagementController extends BaseController {
 		String mid = params.get("mid");
 
 		if (StringUtils.isEmpty(cNumber) || StringUtils.isEmpty(sNumber) || StringUtils.isEmpty(mid)) {
-			renderJSON(false);
+			renderJSON("false");
 		}
 		int currentNumber = Integer.parseInt(cNumber);
 		int seatNumber = Integer.parseInt(sNumber);
@@ -376,21 +376,17 @@ public class SelfManagementController extends BaseController {
 			Haoma haoma = Haoma.findByMerchantId(mid);
 			Reservation r = Reservation.findReservationForHandle(seatNumber, currentNumber, mid, haoma.version);
 			if (r != null) {
-				if(r.status == Constants.ReservationStatus.canceled){
-					logger.info("Reservation (id:"+r.id()+") ALREADY_CANCELED");
-					renderJSON("ALREADY_CANCELED");
-				}
-				
 				boolean flag = Reservation.finish(r.id());
 				haoma.updateSelf();
 				
 				Reservation rr = Reservation.findReservationForSMSRemind(mid, seatNumber, 4, haoma.version);
 				if (rr == null) {
-					renderJSON(flag);
+					logger.debug("No number 4 reservation, no need to send sms");
+					renderJSON(String.valueOf(flag));
 				}
 				String aid = rr.accountId;
 				if (aid == null) {
-					renderJSON(flag);
+					renderJSON(String.valueOf(flag));
 				}
 				Account account = Account.findById(aid);
 				// 短信提醒第4位
@@ -398,12 +394,12 @@ public class SelfManagementController extends BaseController {
 				// JPush提醒第4位
 				if(StringUtils.isEmpty(account.password)){
 					// 现场取号用户
-					renderJSON(flag);
+					renderJSON(String.valueOf(flag));
 				}
 				// app用户
 				String remind = Play.configuration.getProperty("service.push.remind");
 				JPushReminder.sendAlias(account.phone, remind);
-				renderJSON(flag);
+				renderJSON(String.valueOf(flag));
 			} else {
 				renderJSON("ALREADY_CANCELED");
 			}
@@ -419,7 +415,7 @@ public class SelfManagementController extends BaseController {
 		String mid = params.get("mid");
 
 		if (StringUtils.isEmpty(cNumber) || StringUtils.isEmpty(sNumber) || StringUtils.isEmpty(mid)) {
-			renderJSON(false);
+			renderJSON("false");
 		}
 		int currentNumber = Integer.parseInt(cNumber);
 		int seatNumber = Integer.parseInt(sNumber);
@@ -440,11 +436,11 @@ public class SelfManagementController extends BaseController {
 				
 				Reservation rr = Reservation.findReservationForSMSRemind(mid, seatNumber, 4, haoma.version);
 				if (rr == null) {
-					renderJSON(flag);
+					renderJSON(String.valueOf(flag));
 				}
 				String aid = rr.accountId;
 				if (aid == null) {
-					renderJSON(flag);
+					renderJSON(String.valueOf(flag));
 				}
 				Account account = Account.findById(aid);
 				// 短信提醒第4位
@@ -452,15 +448,15 @@ public class SelfManagementController extends BaseController {
 				// JPush提醒第4位
 				if(StringUtils.isEmpty(account.password)){
 					// 现场取号用户
-					renderJSON(flag);
+					renderJSON(String.valueOf(flag));
 				}
 				// app用户
 				String remind = Play.configuration.getProperty("service.push.remind");
 				JPushReminder.sendAlias(account.phone, remind);
 				
-				renderJSON(flag);
+				renderJSON(String.valueOf(flag));
 			} else {
-				renderJSON(false);
+				renderJSON("ALREADY_CANCELED");
 			}
 		}
 	}
