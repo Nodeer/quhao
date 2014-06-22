@@ -31,6 +31,8 @@ public class BackendMerchantInfoVO {
 	public String telephone = "";
 	public String cateType = "";
 	public String cateType1 = "";
+	public String cateName = "";
+	public String cateName1 = "";
 	public String description;
 	public String openTime;
 	public String closeTime;	
@@ -95,6 +97,8 @@ public class BackendMerchantInfoVO {
 			
 			vo.cateType = m.cateType;
 			vo.cateType1 = m.cateType1;
+			vo.cateName = m.cateName;
+			vo.cateName1 = m.cateName1;
 			vo.closeTime = m.closeTime;
 			vo.description = m.description;
 			vo.enable = m.enable;
