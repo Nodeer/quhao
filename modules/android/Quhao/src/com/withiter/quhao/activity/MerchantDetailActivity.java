@@ -860,6 +860,11 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						Toast.makeText(this, "商家原因，暂时无法取号。", Toast.LENGTH_SHORT).show();
 						return;
 					}
+					
+					if (null == merchantDetail || null == merchantDetail.merchant || ! merchantDetail.merchant.enable || ! merchantDetail.merchant.online) {
+						Toast.makeText(this, "商家离线，暂时无法取号。", Toast.LENGTH_SHORT).show();
+						return;
+					}
 					Intent intentGetNumber = new Intent();
 					intentGetNumber.putExtra("merchantId", merchantId);
 					intentGetNumber.putExtra("merchantName", mName);

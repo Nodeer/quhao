@@ -31,7 +31,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:gravity="center_vertical"
-            android:text="@string/get_number"
+            android:text="@string/empty"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="#000000" />
     </RelativeLayout>
@@ -43,7 +43,7 @@
         android:layout_alignParentBottom="true"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="10.0dip" >
+        android:padding="10.0dip" android:visibility="gone">
 
         <Button
             android:id="@+id/btn_GetNumber"
@@ -66,7 +66,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
-        android:orientation="vertical"
+        android:orientation="vertical" android:visibility="gone"
          >
 
         <ListView
@@ -94,8 +94,7 @@
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
         android:background="#EFEFEF"
-        android:orientation="vertical" 
-        android:visibility="gone">
+        android:orientation="vertical" >
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -279,31 +278,10 @@
 	           android:orientation="vertical" 
 	           android:paddingLeft="10dp"
 	           android:paddingRight="10dp">
-			    <LinearLayout
-		           android:layout_width="fill_parent"
-		           android:layout_height="wrap_content"
-		           android:baselineAligned="false"
-		           android:orientation="horizontal">
-		           <TextView 
-		               android:layout_height="wrap_content"
-		               android:layout_width="wrap_content"
-		               android:text="恭喜，"/>
-		           <TextView 
-		               android:layout_height="wrap_content"
-		               android:layout_width="wrap_content"
-		               android:textColor="@color/red"
-		               android:text="取号成功！"/>
-		        </LinearLayout>
-		        <LinearLayout
-		           android:layout_width="fill_parent"
-		           android:layout_height="wrap_content"
-		           android:baselineAligned="false"
-		           android:orientation="horizontal">
-		           <TextView android:id="@+id/success_tip_msg"
-		               android:layout_height="wrap_content"
-		               android:layout_width="wrap_content"
-		               android:text="在您前面排队的不多多于5桌，为了避免排队号码过期，请抓紧时间！"/>
-		        </LinearLayout>
+	           <TextView android:id="@+id/success_tip_msg"
+	               android:layout_height="wrap_content"
+	               android:layout_width="wrap_content"
+	               android:text="在您前面排队的不多多于5桌，为了避免排队号码过期，请抓紧时间！"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

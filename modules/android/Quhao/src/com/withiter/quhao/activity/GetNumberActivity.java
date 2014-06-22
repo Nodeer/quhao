@@ -14,7 +14,6 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -90,6 +89,10 @@ public class GetNumberActivity extends QuhaoBaseActivity implements OnItemClickL
 		beforeYouView = (TextView) this.findViewById(R.id.rvo_before_you);
 		nextNoView = (TextView) this.findViewById(R.id.rvo_next_number);
 		
+		findViewById(R.id.btn_GetNumberLayout).setVisibility(View.VISIBLE);
+		findViewById(R.id.haoma_list_layout).setVisibility(View.VISIBLE);
+		findViewById(R.id.my_reservation_layout).setVisibility(View.GONE);
+		
 		if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
 			Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
 			unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
@@ -123,12 +126,23 @@ public class GetNumberActivity extends QuhaoBaseActivity implements OnItemClickL
 				
 				if(Integer.parseInt(reservation.beforeYou)<5)
 				{
-					successTipView.setText("在你前面排队的不多于5桌，为了避免排队号码过期，请抓紧时间前往商家。");
+//					String html="<html><head><title></title></head><body>恭喜，<font color=\"red\">取号成功！</font>在你前面排队的不多于5桌，为了避免排队号码过期，请抓紧时间前往商家。"  
+//			                +"</body></html>";  
+//			          
+//					successTipView.setMovementMethod(ScrollingMovementMethod.getInstance());//滚动  
+//					successTipView.setText(Html.fromHtml(html));      
+					successTipView.setText("恭喜，取号成功！在你前面排队的不多于5桌，为了避免排队号码过期，请抓紧时间前往商家。");
 					dialog.setTitle("温馨提示").setMessage(R.string.nahao_success_tip_5_less).setPositiveButton("确定", null);
 				}
 				else
 				{
-					successTipView.setText("当你的排号前还剩5位时，我们会用短信通知到你，继续享受你的免排队时间吧。");
+//					String html="<html><head><title></title></head><body>恭喜，<font color=\"#aabb00\">取号成功！</font>当你的排号前还剩5位时，我们会用短信通知到你，继续享受你的免排队时间吧。"  
+//			                +"</body></html>";  
+//			          
+//					successTipView.setMovementMethod(ScrollingMovementMethod.getInstance());//滚动  
+//					successTipView.setText(Html.fromHtml(html));     
+					
+					successTipView.setText("恭喜，取号成功！当你的排号前还剩5位时，我们会用短信通知到你，继续享受你的免排队时间吧。");
 					dialog.setTitle("温馨提示").setMessage(R.string.nahao_success_tip_5_more).setPositiveButton("确定", null);
 				}
 				dialog.show();

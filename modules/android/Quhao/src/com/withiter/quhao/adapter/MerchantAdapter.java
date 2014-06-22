@@ -152,6 +152,7 @@ public class MerchantAdapter extends BaseAdapter {
 			final boolean enable = merchant.enable;
 			final String merchantId = merchant.id;
 			final String mName = merchant.name;
+			final boolean online = merchant.online;
 			holder.btnGetNumber.setOnClickListener(new OnClickListener() {
 				
 				@Override
@@ -163,7 +164,10 @@ public class MerchantAdapter extends BaseAdapter {
 							return;
 						}
 						
-						
+						if (!online) {
+							Toast.makeText(activity, "商家离线，暂时无法取号。", Toast.LENGTH_SHORT).show();
+							return;
+						}
 						String accountId = SharedprefUtil.get(activity, QuhaoConstant.ACCOUNT_ID, "");
 						String url = "getReservations?accountId=" + accountId + "&mid=" + merchantId;
 						if (StringUtils.isNotNull(merchantId) && StringUtils.isNotNull(accountId)) {
