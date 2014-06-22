@@ -377,7 +377,7 @@ public class SelfManagementController extends BaseController {
 			Reservation r = Reservation.findReservationForHandle(seatNumber, currentNumber, mid, haoma.version);
 			if (r != null) {
 				if(r.status == Constants.ReservationStatus.canceled){
-					logger.debug("Reservation (id:"+r.id()+") ALREADY_CANCELED");
+					logger.info("Reservation (id:"+r.id()+") ALREADY_CANCELED");
 					renderJSON("ALREADY_CANCELED");
 				}
 				
@@ -405,7 +405,7 @@ public class SelfManagementController extends BaseController {
 				JPushReminder.sendAlias(account.phone, remind);
 				renderJSON(flag);
 			} else {
-				renderJSON(false);
+				renderJSON("ALREADY_CANCELED");
 			}
 		}
 	}
