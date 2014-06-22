@@ -630,31 +630,31 @@ Merchant.expiredConfirm = function(seatNumber, currentNumber, mid) {
 Merchant.expired = function(seatNumber, currentNumber, mid) {
 	$("#guoqi_confirm").modal("hide");
 	$.ajax({
-				type : "POST",
-				url : "/b/w/expireByMerchant",
-				dataType : "html",
-				data : {
-					"currentNumber" : currentNumber,
-					"seatNumber" : seatNumber,
-					"mid" : mid
-				},
-				success : function(data) {
-					if (data == "true") {
-						// window.location.reload();
-						// 改成局部刷新
-						refresh(mid);
-					} 
-					if (data == "ALREADY_CANCELED"){
-						$("#paiduipageTip").html("用户已经取消了此号码，3秒后自动刷新页面排队信息").removeClass().addClass("text-danger");
-						setTimeout(function(){refresh(mid);}, 3000);
-					} else {
-						alert("服务器维护中，马上就好。");
-					}
-				},
-				error : function() {
-					alert("服务器维护中，马上就好。");
-				}
-			});
+		type : "POST",
+		url : "/b/w/expireByMerchant",
+		dataType : "html",
+		data : {
+			"currentNumber" : currentNumber,
+			"seatNumber" : seatNumber,
+			"mid" : mid
+		},
+		success : function(data) {
+			if (data == "true") {
+				// 改成局部刷新
+				refresh(mid);
+				return;
+			} 
+			if (data == "ALREADY_CANCELED"){
+				$("#paiduipageTip").html("用户已经取消了此号码，3秒后自动刷新页面排队信息").removeClass().addClass("text-danger");
+				setTimeout(function(){refresh(mid);}, 3000);
+			} else {
+				alert("服务器维护中，马上就好。");
+			}
+		},
+		error : function() {
+			alert("服务器维护中，马上就好。");
+		}
+	});
 }
 
 /**
