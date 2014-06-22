@@ -135,7 +135,7 @@
 	<string name="nick_name_colon">昵称:</string>
 	<string name="usual_city">常住地</string>
 	<string name="phone_number">手机号</string>
-	<string name="current_jifen">现有积分</string>
+	<string name="current_jifen">现有积分:</string>
 	<string name="jifen_layout_menul">积分说明</string>
 	<string name="update_password">修改密码</string>
 	<string name="current_password">当前密码</string>

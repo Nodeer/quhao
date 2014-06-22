@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -41,8 +40,6 @@ import com.withiter.quhao.util.StringUtils;
 public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerClickListener, OnMapLoadedListener, 
 	OnInfoWindowClickListener, InfoWindowAdapter,LocationSource, AMapLocationListener {
 
-	private Button btnBack;
-
 	private Button btnGuideRoute;
 	
 	private TextView merchantNameView;
@@ -62,9 +59,8 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		super.onCreate(savedInstanceState);
 		setContentView(R.layout.merchant_lbs_map);
-
+		super.onCreate(savedInstanceState);
 		
 //		this.merchantName = this.getIntent().getStringExtra("merchantName");
 //		this.merchantId = this.getIntent().getStringExtra("merchantId");
@@ -86,14 +82,7 @@ public class MerchantLBSActivity extends QuhaoBaseActivity implements OnMarkerCl
 	}
 
 	private void init() {
-		btnBack = (Button) findViewById(R.id.back_btn);
-		btnBack.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				MerchantLBSActivity.this.finish();
-			}
-		});
+		btnBack.setOnClickListener(goBack(this));
 		if (mAMap == null) {
 			mAMap = mMapView.getMap();
 			mAMap.setOnMapLoadedListener(this);// 设置amap加载成功事件监听器

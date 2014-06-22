@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.withiter.quhao.R;
@@ -36,6 +37,7 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 	protected Button btnPerson;
 	protected Button btnMore;
 	protected Button btnBack;
+//	protected LinearLayout btnBackLayout;
 
 	protected static final int FIRST_REQUEST_CODE = 1;
 	// 网络是否可用
@@ -86,6 +88,20 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 		btnPerson = (Button) findViewById(R.id.btnPerson);
 		btnMore = (Button) findViewById(R.id.btnMore);
 		btnBack = (Button) findViewById(R.id.back_btn);
+//		btnBackLayout = (LinearLayout) findViewById(R.id.back_btn_layout);
+	}
+	
+	protected OnClickListener clickBackBtn(Activity activity) {
+		OnClickListener clickListener = new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				btnBack.performClick();
+//				btnBack.requestFocus();
+//				btnBack.callOnClick();
+				
+			}
+		};
+		return clickListener;
 	}
 
 	/**

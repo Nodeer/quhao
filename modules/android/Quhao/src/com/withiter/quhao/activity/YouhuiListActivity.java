@@ -35,11 +35,6 @@ public class YouhuiListActivity extends QuhaoBaseActivity{
 	private List<YouhuiVO> youhuis;
 
 	/**
-	 * back button
-	 */
-	private Button btnBack;
-
-	/**
 	 * list view for critiques
 	 */
 	private ListView youhuisView;
@@ -93,16 +88,15 @@ public class YouhuiListActivity extends QuhaoBaseActivity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		super.onCreate(savedInstanceState);
 		setContentView(R.layout.youhui_list_layout);
-
+		super.onCreate(savedInstanceState);
+		
 		this.merchantId = getIntent().getStringExtra("merchantId");
 		
 		youhuisView = (ListView) findViewById(R.id.youhuis_listview);
 		youhuisView.setNextFocusDownId(R.id.youhuis_listview);
 
-		btnBack = (Button) findViewById(R.id.back_btn);
-		btnBack.setOnClickListener(this);
+		btnBack.setOnClickListener(goBack(this));
 		
 	}
 
@@ -167,10 +161,6 @@ public class YouhuiListActivity extends QuhaoBaseActivity{
 		unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 
 		switch (v.getId()) {
-		case R.id.back_btn:
-			onBackPressed();
-			this.finish();
-			break;
 		default:
 			break;
 		}

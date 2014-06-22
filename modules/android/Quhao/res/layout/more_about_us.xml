@@ -15,15 +15,19 @@
         android:paddingRight="5dip"
         android:paddingTop="5dip" >
 
-        <Button
-            android:id="@+id/back_btn"
-            android:layout_width="50dip"
-            android:layout_height="fill_parent"
-            android:background="@null"
-            android:drawableLeft="@drawable/arrow_left"
-            android:gravity="center|center_vertical"
-            android:textColor="#ff000000"
-            android:textSize="18.0sp"  />
+        <LinearLayout android:id="@+id/back_btn_layout"
+	        android:layout_width="50dp"
+	        android:layout_centerVertical="true"
+	        android:layout_height="fill_parent"
+	        android:gravity="center">
+	        <Button android:id="@+id/back_btn"
+	            android:layout_width="20dp"
+	            android:layout_height="18dp"
+	            android:background="@drawable/arrow_left"
+	            android:gravity="center"
+	            android:textColor="#ff000000"
+	            android:textSize="18.0sp"  />
+		</LinearLayout>
 
         <TextView
             android:id="@+id/merchantName"

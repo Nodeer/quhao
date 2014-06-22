@@ -42,11 +42,6 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnHea
 	private List<Comment> comments;
 
 	/**
-	 * back button
-	 */
-	private Button btnBack;
-
-	/**
 	 * list view for critiques
 	 */
 	private ListView commentsView;
@@ -121,8 +116,8 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnHea
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		super.onCreate(savedInstanceState);
 		setContentView(R.layout.comments_merchant);
+		super.onCreate(savedInstanceState);
 
 		this.merchantId = getIntent().getStringExtra("merchantId");
 		this.grade = getIntent().getStringExtra("grade");
@@ -153,8 +148,7 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnHea
 		commentsView = (ListView) findViewById(R.id.commentsView);
 		commentsView.setNextFocusDownId(R.id.commentsView);
 
-		btnBack = (Button) findViewById(R.id.back_btn);
-		btnBack.setOnClickListener(this);
+		btnBack.setOnClickListener(goBack(this));
 		
 	}
 
@@ -222,10 +216,6 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnHea
 		unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 
 		switch (v.getId()) {
-		case R.id.back_btn:
-			onBackPressed();
-			this.finish();
-			break;
 		default:
 			break;
 		}

@@ -37,8 +37,6 @@ public class UpdatePasswordActivity extends QuhaoBaseActivity {
 
 	private Button submitBtn;
 
-	private Button backBtn;
-
 	private String currentPassword;
 	private String newPassword;
 	private String newPassword2;
@@ -58,9 +56,7 @@ public class UpdatePasswordActivity extends QuhaoBaseActivity {
 		newPasswordText = (EditText) this.findViewById(R.id.new_pass);
 		newPassword2Text = (EditText) this.findViewById(R.id.new_pass2);
 		submitBtn = (Button) this.findViewById(R.id.submit);
-		backBtn = (Button) this.findViewById(R.id.back_btn);
-		
-		backBtn.setOnClickListener(this);
+		btnBack.setOnClickListener(goBack(this));
 		submitBtn.setOnClickListener(this);
 		
 		accountInfo = QHClientApplication.getInstance().accountInfo;
@@ -235,11 +231,6 @@ public class UpdatePasswordActivity extends QuhaoBaseActivity {
 				}
 			});
 			thread.start();
-			break;
-		case R.id.back_btn:
-			progressDialogUtil.closeProgress();
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			this.finish();
 			break;
 		default:
 			progressDialogUtil.closeProgress();
