@@ -28,6 +28,7 @@
     <color name="choose_eara_item_press_color">#f4f4f4</color>
     <color name="no_color">#00000000</color>
     <color name="jiuhong">#cb3f40</color>
+    <color name="light_light_gray">#ffdddddd</color>
     
     <color name="user_detail_public_bg">#f3f3f3</color>
     <color name="user_list_public_bg">#e5e6e7</color>
