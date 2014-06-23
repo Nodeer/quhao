@@ -148,7 +148,7 @@ public class MyAttentionListActivity extends QuhaoBaseActivity implements OnHead
 			url = url + "&userX=0.000000&userY=0.000000";
 		}
 		
-		final MyAttentionListTask task = new MyAttentionListTask(R.string.waitting, this, url);
+		final MyAttentionListTask task = new MyAttentionListTask(0, this, url);
 		
 		task.execute(new Runnable() {
 			

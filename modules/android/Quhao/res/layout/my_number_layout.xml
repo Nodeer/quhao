@@ -92,9 +92,9 @@
                     android:maxLines="2"
                     android:text="111"
                     android:gravity="center"
+                    android:textColor="#89d7e4"
                     android:background="@drawable/ic_number_bg"
                     android:textAppearance="?android:textAppearanceMedium"
-                    android:textColor="#ff000000"
                     android:textSize="16.0sp" />
                 
                 <TextView
@@ -124,7 +124,7 @@
                     android:gravity="center"
                     android:background="@drawable/ic_number_bg"
                     android:textAppearance="?android:textAppearanceMedium"
-                    android:textColor="#ff000000"
+                    android:textColor="#ffacc52c"
                     android:textSize="16.0sp" />
                 
                 <TextView
@@ -154,7 +154,7 @@
                     android:gravity="center"
                     android:background="@drawable/ic_number_bg"
                     android:textAppearance="?android:textAppearanceMedium"
-                    android:textColor="#ff000000"
+                    android:textColor="#fff8bd09"
                     android:textSize="16.0sp" />
                 
                 <TextView
@@ -162,7 +162,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:text="下一号码"
+                    android:text="当前号码"
                     android:textAppearance="?android:textAppearanceMedium"
                     android:textColor="#ff000000"
                     android:textSize="14.0sp" />
@@ -184,7 +184,7 @@
                     android:gravity="center"
                     android:background="@drawable/ic_number_bg"
                     android:textAppearance="?android:textAppearanceMedium"
-                    android:textColor="#ff000000"
+                    android:textColor="#ffd66d8e"
                     android:textSize="16.0sp" />
                 
                 <TextView
@@ -192,7 +192,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:text="当前号码"
+                    android:text="在你前面"
                     android:textAppearance="?android:textAppearanceMedium"
                     android:textColor="#ff000000"
                     android:textSize="14.0sp" />

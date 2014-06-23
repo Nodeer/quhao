@@ -284,7 +284,7 @@ public class MerchantChatActivity extends FragmentActivity implements EmojiconGr
 				
 				if(StringUtils.isNull(chatMsgEdit.getText().toString().trim()))
 				{
-					Toast.makeText(this, "亲，请填写发送内容！", Toast.LENGTH_SHORT).show();
+//					Toast.makeText(this, "亲，请填写发送内容！", Toast.LENGTH_SHORT).show();
 					return;
 				}
 				

@@ -47,7 +47,7 @@
         <com.rockerhieu.emojicon.EmojiconEditText
             android:id="@+id/et_sendmessage"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dip"
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="10dp"
@@ -60,11 +60,12 @@
         
     </RelativeLayout>
 
-   <fragment
+    <fragment
         android:id="@+id/emojicons"
         android:layout_width="match_parent"
         android:layout_height="220dip"
-        class="com.rockerhieu.emojicon.EmojiconsFragment"/>
+        class="com.rockerhieu.emojicon.EmojiconsFragment" />
+
      <!-- 
     <RelativeLayout
         android:id="@+id/ll_facechoose"

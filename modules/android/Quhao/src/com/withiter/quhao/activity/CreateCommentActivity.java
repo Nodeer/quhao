@@ -3,7 +3,9 @@ package com.withiter.quhao.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -16,8 +18,12 @@ import android.widget.Toast;
 
 import com.withiter.quhao.R;
 import com.withiter.quhao.task.CreateCommentTask;
+import com.withiter.quhao.task.GetCommentByRIdTask;
+import com.withiter.quhao.task.JsonPack;
 import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.util.tool.ParseJson;
+import com.withiter.quhao.vo.Comment;
 
 public class CreateCommentActivity extends QuhaoBaseActivity implements OnRatingBarChangeListener{
 
@@ -55,6 +61,10 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 	
 	private String averageCost;
 	
+	private String isCommented;
+	
+	private Comment commentVO;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
@@ -63,6 +73,7 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 		super.onCreate(savedInstanceState);
 		btnBack.setOnClickListener(goBack(this));
 		rId = getIntent().getStringExtra("rId");
+		isCommented = getIntent().getStringExtra("isCommented");
 		submit = (Button) this.findViewById(R.id.submit);
 		kouweiRatingBar = (RatingBar) this.findViewById(R.id.kouwei_ratingbar);
 		fuwuRatingBar = (RatingBar) this.findViewById(R.id.fuwu_ratingbar);
@@ -81,6 +92,59 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 		
 		opinion = (Button) this.findViewById(R.id.opinion_button);
 		opinion.setOnClickListener(this);
+		
+		if ("true".equals(isCommented)) 
+		{
+			getComment();
+		}
+	}
+
+	private Handler commentHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.what == 200) {
+				super.handleMessage(msg);
+				
+				if (null != commentVO) {
+					kouweiRatingBar.setRating(commentVO.kouwei);
+					fuwuRatingBar.setRating(commentVO.kouwei);
+					huanjingRatingBar.setRating(commentVO.kouwei);
+					xingjiabiRatingBar.setRating(commentVO.kouwei);
+					gradeRatingbar.setRating(commentVO.kouwei);
+					avgCostEdit.setText(commentVO.averageCost);
+					commentEdit.setText(commentVO.content);
+				}
+				else
+				{
+					Toast.makeText(CreateCommentActivity.this, "亲，网络不是很好哦！", Toast.LENGTH_SHORT).show();
+				}
+				
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			}
+		}
+	};
+	
+	private void getComment() {
+		String url = "getComment?rid=" + rId;
+		final GetCommentByRIdTask task = new GetCommentByRIdTask(0, this, url);
+		task.execute(new Runnable() {
+			
+			@Override
+			public void run() {
+				
+				JsonPack jsonPack = task.jsonPack;
+				commentVO = ParseJson.getComment(jsonPack.getObj());
+				commentHandler.obtainMessage(200, commentVO).sendToTarget();
+			}
+		}, new Runnable() {
+			
+			@Override
+			public void run() {
+				
+				commentHandler.obtainMessage(200, commentVO).sendToTarget();
+			}
+		});
+		
 	}
 
 	@Override

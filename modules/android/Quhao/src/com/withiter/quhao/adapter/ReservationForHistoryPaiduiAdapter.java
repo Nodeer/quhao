@@ -152,8 +152,30 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 //				holder.commentBtn.setVisibility(View.GONE);
 				holder.commentBtn.setVisibility(View.VISIBLE);
 				holder.commentBtn.setBackgroundResource(R.drawable.btn_commented);
-				holder.commentBtn.setEnabled(false);
+//				holder.commentBtn.setEnabled(false);
 //				holder.isComment.setText("已评价");
+				final String reservationId = rvo.rId;
+				holder.commentBtn.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+
+						progress = new ProgressDialogUtil(activity, R.string.empty, R.string.waitting, false);
+						progress.showProgress();
+						try {
+							Intent intent = new Intent();
+							intent.putExtra("rId", reservationId);
+							intent.putExtra("isCommented", "true");
+							intent.setClass(activity, CreateCommentActivity.class);
+							activity.startActivity(intent);
+						} catch (Exception e) {
+							e.printStackTrace();
+						} finally {
+							progress.closeProgress();
+						}
+					
+					}
+				});
 			}
 			else
 			{
@@ -184,6 +206,7 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 							try {
 								Intent intent = new Intent();
 								intent.putExtra("rId", reservationId);
+								intent.putExtra("isCommented", "false");
 								intent.setClass(activity, CreateCommentActivity.class);
 								activity.startActivity(intent);
 							} catch (Exception e) {

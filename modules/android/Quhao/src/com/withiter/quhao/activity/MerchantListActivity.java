@@ -21,7 +21,7 @@ import com.amap.api.location.AMapLocation;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantAdapter;
-import com.withiter.quhao.data.CategoryData;
+import com.withiter.quhao.task.AllCategoriesTask;
 import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
@@ -33,6 +33,7 @@ import com.withiter.quhao.view.expandtab.ViewRight;
 import com.withiter.quhao.view.refresh.PullToRefreshView;
 import com.withiter.quhao.view.refresh.PullToRefreshView.OnFooterRefreshListener;
 import com.withiter.quhao.view.refresh.PullToRefreshView.OnHeaderRefreshListener;
+import com.withiter.quhao.vo.Category;
 import com.withiter.quhao.vo.Merchant;
 
 /**
@@ -55,12 +56,14 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 	private ArrayList<View> mViewArray = new ArrayList<View>();
 	private ViewLeft viewLeft;
 	private ViewRight viewRight;
-	private ArrayList<CategoryData> categorys;
+//	private ArrayList<CategoryData> categorys;
 	private List<String> categoryTypes;
 	private List<String> categoryNames;
 	private List<String> sortByValues;
 	private List<String> sortByItems;
 	private String defaultSortBy;
+	
+	private List<Category> categoryList;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +73,8 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 		this.merchants = new ArrayList<Merchant>();
 		this.page = getIntent().getIntExtra("page", 1);
 		QuhaoLog.i(LOGTAG, "init page is : " + this.page);
-		this.categoryType = getIntent().getStringExtra("categoryType");
-		this.categorys = getIntent().getParcelableArrayListExtra("categorys");
+//		this.categoryType = getIntent().getStringExtra("categoryType");
+//		this.categorys = getIntent().getParcelableArrayListExtra("categorys");
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
 		this.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
 		this.findViewById(R.id.serverdata).setVisibility(View.GONE);
@@ -79,7 +82,63 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 		mPullToRefreshView.setOnHeaderRefreshListener(this);
 		mPullToRefreshView.setOnFooterRefreshListener(this);
 		mPullToRefreshView.setEnableFooterView(true);
+		
+		expandTabView = (ExpandTabView) this.findViewById(R.id.expandtab_view);
+		expandTabView.setEnabled(false);
+		expandTabView.setClickable(false);
+		getCategoriesFromServerAndDisplay();
 		initView();
+	}
+	
+	private Handler categorysUpdateHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.what == 200) {
+				super.handleMessage(msg);
+				if (categoryList != null && !categoryList.isEmpty()) {
+					
+					initExpandView();
+				}
+				else {
+					Toast.makeText(MerchantListActivity.this, "亲，该城市暂未开通，请选择其他城市。", Toast.LENGTH_SHORT).show();
+				}
+				
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			}
+		}
+	};
+	
+	/**
+	 * get all categories from server and display them
+	 */
+	public void getCategoriesFromServerAndDisplay() {
+		final AllCategoriesTask task = new AllCategoriesTask(0, MerchantListActivity.this, "allCategories?cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode);
+		task.execute(new Runnable() {
+			@Override
+			public void run() {
+				String result = task.result;
+				if (null == categoryList) {
+					categoryList = new ArrayList<Category>();
+				}
+				categoryList.clear();
+				categoryList.addAll(ParseJson.getCategorys(result));
+				QHClientApplication.getInstance().categorys = categoryList;
+				categorysUpdateHandler.obtainMessage(200, categoryList).sendToTarget();
+			}
+		}, new Runnable() {
+
+			@Override
+			public void run() {
+				String result = task.result;
+				if (null == categoryList) {
+					categoryList = new ArrayList<Category>();
+				}
+				categoryList.clear();
+				categoryList.addAll(ParseJson.getCategorys(result));
+				categorysUpdateHandler.obtainMessage(200, categoryList).sendToTarget();
+			}
+		});
+
 	}
 
 	private Handler merchantsUpdateHandler = new Handler() {
@@ -143,8 +202,6 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 		merchantsListView.setVisibility(View.GONE);
 		merchantsListView.setOnItemClickListener(merchantItemClickListener);
 		
-		initExpandView();
-		
 		getMerchants();
 	}
 
@@ -154,15 +211,15 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 		categoryTypes = new ArrayList<String>();
 		categoryNames.add("全部");
 		categoryTypes.add("-1");
-		if (categorys!=null && !categorys.isEmpty()) {
-			for (int i = 0; i < categorys.size(); i++) {
-				categoryNames.add(categorys.get(i).getCateName());
-				categoryTypes.add(categorys.get(i).getCategoryType());
+		if (categoryList!=null && !categoryList.isEmpty()) {
+			for (int i = 0; i < categoryList.size(); i++) {
+				categoryNames.add(categoryList.get(i).cateName);
+				categoryTypes.add(categoryList.get(i).categoryType);
 			}
 		}
 		
 		categoryType = "";
-		expandTabView = (ExpandTabView) this.findViewById(R.id.expandtab_view);
+		
 		viewLeft = new ViewLeft(this, categoryNames, categoryTypes, categoryType);
 		viewLeft.setShowText("菜系");
 		sortByItems = new ArrayList<String>();
@@ -193,7 +250,8 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 		ArrayList<Integer> imgArray = new ArrayList<Integer>();
 		imgArray.add(R.drawable.ic_expand_category);
 		imgArray.add(R.drawable.ic_expand_queue);
-		
+		expandTabView.setEnabled(true);
+		expandTabView.setClickable(true);
 		expandTabView.setValue(mTextArray, mViewArray,imgArray);
 		expandTabView.setTitle(viewLeft.getShowText(), 0);
 		expandTabView.setTitle(viewRight.getShowText(), 1);
@@ -293,6 +351,14 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 			try {
 				Looper.prepare();
 				QuhaoLog.d(LOGTAG, "get categorys data form server begin");
+				if (null == categoryType || "null".equals(categoryType)) {
+					categoryType = "";
+				}
+				
+				if (null == defaultSortBy || "null".equals(defaultSortBy)) {
+					defaultSortBy = "";
+				}
+				
 				String url = "nextPage?page=" + page + "&cateType=" + categoryType + "&cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode + "&sortBy=" + defaultSortBy;
 				AMapLocation location = QHClientApplication.getInstance().location;
 				if (location != null) {

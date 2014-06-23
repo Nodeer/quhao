@@ -674,6 +674,32 @@ public class ParseJson {
 
 		return comments;
 	}
+	
+	/**
+	 * 
+	 * parse json string to comment
+	 * 
+	 * @param buf
+	 *            json string
+	 * @return critiques
+	 */
+	public static Comment getComment(String buf) {
+
+		Comment comment = null;
+		if (StringUtils.isNull(buf)) {
+			return comment;
+		}
+
+		try {
+				JSONObject obj = new JSONObject(buf);
+				comment = coventComment(obj);
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return comment;
+		}
+
+		return comment;
+	}
 
 	private static Comment coventComment(JSONObject obj) throws JSONException {
 

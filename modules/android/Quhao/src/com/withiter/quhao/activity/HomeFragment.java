@@ -26,8 +26,6 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewParent;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -41,8 +39,6 @@ import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.ActivityAdapter;
 import com.withiter.quhao.adapter.MyPagerAdapter;
-import com.withiter.quhao.data.CategoryData;
-import com.withiter.quhao.task.AllCategoriesTask;
 import com.withiter.quhao.task.GetActivitiesTask;
 import com.withiter.quhao.task.GetChooseHardMerchantTask;
 import com.withiter.quhao.task.JsonPack;
@@ -509,77 +505,6 @@ public class HomeFragment extends Fragment implements OnClickListener {
 
 	}
 
-	private OnItemClickListener categorysClickListener = new OnItemClickListener() {
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			Category category = categorys.get(position);
-			Intent intent = new Intent();
-			intent.putExtra("categoryType", category.categoryType);
-			intent.putExtra("cateName", category.cateName);
-			intent.putExtra("categoryCount", String.valueOf(category.count));
-			
-			ArrayList<CategoryData> categoryDatas = new ArrayList<CategoryData>();
-			if (categorys != null && !categorys.isEmpty()) {
-				CategoryData data = null;
-				
-				for (int i = 0; i < categorys.size(); i++) {
-					data = new CategoryData();
-					data.setCount(categorys.get(i).count);
-					data.setCategoryType(categorys.get(i).categoryType);
-					data.setCateName(categorys.get(i).cateName);
-					categoryDatas.add(data);
-				}
-			}
-			
-			Bundle mBundle = new Bundle();
-			mBundle.putParcelableArrayList("categorys", categoryDatas);
-			intent.putExtras(mBundle);
-			
-			intent.setClass(getActivity(), MerchantListActivity.class);
-			startActivity(intent);
-			
-		}
-	};
-
-	
-	private Handler categorysUpdateHandler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			if (msg.what == 200) {
-				super.handleMessage(msg);
-				if (categorys != null && !categorys.isEmpty()) {
-					Intent intent = new Intent();
-					ArrayList<CategoryData> categoryDatas = new ArrayList<CategoryData>();
-					intent.putExtra("categoryType", categorys.get(0).categoryType);
-					intent.putExtra("cateName", categorys.get(0).cateName);
-					intent.putExtra("categoryCount", String.valueOf(categorys.get(0).count));
-					CategoryData data = null;
-					
-					for (int i = 0; i < categorys.size(); i++) {
-						data = new CategoryData();
-						data.setCount(categorys.get(i).count);
-						data.setCategoryType(categorys.get(i).categoryType);
-						data.setCateName(categorys.get(i).cateName);
-						categoryDatas.add(data);
-					}
-					
-					Bundle mBundle = new Bundle();
-					mBundle.putParcelableArrayList("categorys", categoryDatas);
-					intent.putExtras(mBundle);
-					
-					intent.setClass(getActivity(), MerchantListActivity.class);
-					startActivity(intent);
-				}
-				else {
-					Toast.makeText(getActivity(), "亲，该城市暂未开通，请选择其他城市。", Toast.LENGTH_SHORT).show();
-				}
-				
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			}
-		}
-	};
-	
-	
 	private Handler activitiesUpdateHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -643,39 +568,6 @@ public class HomeFragment extends Fragment implements OnClickListener {
 
 	}
 	
-	/**
-	 * get all categories from server and display them
-	 */
-	public void getCategoriesFromServerAndDisplay() {
-		final AllCategoriesTask task = new AllCategoriesTask(R.string.waitting, getActivity(), "allCategories?cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode);
-		task.execute(new Runnable() {
-			@Override
-			public void run() {
-				String result = task.result;
-				if (null == categorys) {
-					categorys = new ArrayList<Category>();
-				}
-				categorys.clear();
-				categorys.addAll(ParseJson.getCategorys(result));
-				QHClientApplication.getInstance().categorys = categorys;
-				categorysUpdateHandler.obtainMessage(200, categorys).sendToTarget();
-			}
-		}, new Runnable() {
-
-			@Override
-			public void run() {
-				String result = task.result;
-				if (null == categorys) {
-					categorys = new ArrayList<Category>();
-				}
-				categorys.clear();
-				categorys.addAll(ParseJson.getCategorys(result));
-				categorysUpdateHandler.obtainMessage(200, categorys).sendToTarget();
-			}
-		});
-
-	}
-
 	@Override
 	public void onClick(View v) {
 
@@ -711,7 +603,10 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		// 取号排队按钮事件
 		case R.id.btn_get_number:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			getCategoriesFromServerAndDisplay();
+//			getCategoriesFromServerAndDisplay();
+			Intent intent3 = new Intent();
+			intent3.setClass(getActivity(), MerchantListActivity.class);
+			startActivity(intent3);
 
 			break;
 		// 聊聊天吧按钮事件
