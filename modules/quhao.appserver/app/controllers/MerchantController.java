@@ -313,12 +313,6 @@ public class MerchantController extends BaseController {
 	 *            商家id
 	 */
 	public static void quhao(String id) {
-		// 实时检查商家的在线状态
-		Merchant m = Merchant.findByMid(id);
-		if(!m.online){
-			renderJSON("OFFLINE");
-		}
-		
 		Haoma haoma = Haoma.findByMerchantId(id);
 		HaomaVO vo = HaomaVO.build(haoma);
 		renderJSON(vo);
@@ -363,12 +357,6 @@ public class MerchantController extends BaseController {
 	 *            几人桌
 	 */
 	public static void getReservations(String accountId, String mid) {
-		// 实时检查商家的状态
-		Merchant m = Merchant.findByMid(mid);
-		if(!m.online){
-			renderJSON("OFFLINE");
-		}
-		
 		List<ReservationVO> rvos = new ArrayList<ReservationVO>();
 		Haoma haoma = Haoma.findByMerchantId(mid);
 		haoma.updateSelf();
@@ -402,6 +390,12 @@ public class MerchantController extends BaseController {
 	public static void nahao(String accountId, String mid, int seatNumber) {
 		if (StringUtils.isEmpty(accountId) || StringUtils.isEmpty(mid) || seatNumber == 0) {
 			renderJSON(false);
+		}
+		
+		// 实时检查商家的在线状态
+		Merchant m = Merchant.findByMid(mid);
+		if(!m.online){
+			renderJSON("OFFLINE");
 		}
 
 		synchronized (MerchantController.class) {

@@ -39,6 +39,7 @@ public class ReservationController extends BaseController{
 	/**
 	 * APP 实时排队信息
 	 */
+	@Deprecated
 	public static void paiduiStatusForApp(){
 		String mid = params.get("mid");
 		Haoma haoma = Haoma.findByMerchantId(mid);
