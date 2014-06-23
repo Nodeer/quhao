@@ -31,6 +31,7 @@ import com.withiter.quhao.task.AllCategoriesTask;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.encrypt.DesUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
+import com.withiter.quhao.util.tool.FileUtil;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.PhoneTool;
 import com.withiter.quhao.util.tool.QuhaoConstant;
@@ -139,7 +140,7 @@ public class QHClientApplication extends Application {
 		 */
 		initSDCardConfig();
 		
-		
+		FileUtil.saveLogo(this);
 	}
 
 	/**

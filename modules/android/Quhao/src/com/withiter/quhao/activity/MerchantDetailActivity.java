@@ -39,6 +39,7 @@ import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.AsynImageLoader;
+import com.withiter.quhao.util.tool.FileUtil;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
@@ -107,6 +108,8 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
 
+		FileUtil.saveLogo(this);
+		
 		this.merchantId = getIntent().getStringExtra("merchantId");
 		
 		LayoutInflater inflater = LayoutInflater.from(this);
@@ -1027,7 +1030,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		{
 			oks.setText("#取号啦# 发现个超牛逼的APP，再也不担心排多长的队了。我用手机直接拿号不用排队，还可以和一起排队的人扯淡聊天，快去体验全新的排队模式吧。@取号啦");
 		}
-		
 //				oks.setImageUrl("http://www.quhao.la/public/images/home/site_iphone.png");
 		oks.setSilent(silent);
 		if (platform != null) {

@@ -33,6 +33,7 @@ import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.task.MoreVersionCheckTask;
 import com.withiter.quhao.util.ActivityUtil;
+import com.withiter.quhao.util.tool.FileUtil;
 import com.withiter.quhao.util.tool.ImageUtil;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
@@ -77,6 +78,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 		if (!ActivityUtil.isNetWorkAvailable(getActivity())) {
 			Toast.makeText(getActivity(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
 		}
+		FileUtil.saveLogo(getActivity());
 		if(contentView != null) {
 			ViewGroup vg = (ViewGroup) contentView.getParent();
 			vg.removeView(contentView);
@@ -359,7 +361,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			oks.setTitle("取号啦--让你排队不用等！");
 			oks.setUrl("http://www.quhao.la");
 			oks.setText("#取号啦# 发现个超牛逼的APP，再也不担心排多长的队了。我用手机直接拿号不用排队，还可以和一起排队的人扯淡聊天，快去体验全新的排队模式吧。@取号啦");
-			oks.setImageUrl("http://www.quhao.la/public/images/home/site_iphone.png");
+//			oks.setImageUrl("http://www.quhao.la/public/images/home/site_iphone.png");
 			oks.setSilent(silent);
 			if (platform != null) {
 				oks.setPlatform(platform);

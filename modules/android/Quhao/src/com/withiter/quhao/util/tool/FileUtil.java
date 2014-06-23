@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
@@ -120,6 +120,71 @@ public class FileUtil {
 		return bitmap;
 	}
 
+	public static String saveLogo(Context context)
+	{
+		String path = "";
+		File cacheFile = null;
+		InputStream is = null;
+		FileOutputStream os = null;
+		try {
+			if (Environment.getExternalStorageState().equals(
+					Environment.MEDIA_MOUNTED)) {
+				is = context.getAssets().open("logo.png");
+				File sdCardDir = Environment.getExternalStorageDirectory();
+				File dir = new File(sdCardDir.getCanonicalPath() + "/"
+						+ QuhaoConstant.IMAGES_SD_URL);
+				if (!dir.exists()) {
+					dir.mkdirs();
+				}
+				
+				cacheFile = new File(dir, "logo.png");
+				if (!cacheFile.exists()) {
+					cacheFile.createNewFile();
+				}
+				else
+				{
+					return cacheFile.getCanonicalPath();
+				}
+				
+				os = new FileOutputStream(cacheFile);
+				Log.i(TAG, "write file to " + cacheFile.getCanonicalPath());
+				path = cacheFile.getCanonicalPath();
+				byte[] buf = new byte[1024];
+				int len = 0;
+				// 将网络上的图片存储到本地
+				while ((len = is.read(buf)) > 0) {
+					os.write(buf, 0, len);
+				}
+				os.flush();
+				Log.i(TAG, "exists:" + cacheFile.exists() + ",dir:" + dir
+						+ ",file:" + "logo.png");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			Log.e(TAG, "getCacheFileError:" + e.getMessage());
+			return "";
+		}finally
+		{
+			if (is != null) {
+				try {
+					is.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			if (os != null) {
+				try {
+					os.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return path;
+	}
+	
 	public static File getCacheFile(String imageUri) {
 		File cacheFile = null;
 		try {
