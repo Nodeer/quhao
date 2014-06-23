@@ -76,7 +76,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 	private List<String> distanceItemsValue;
 	
-	private String categoryType;
+	private String categoryType = "";
 	
 	private List<String> categoryTypes;
 	
@@ -144,15 +144,9 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		merchantsListView.setNextFocusDownId(R.id.merchantsListView);
 
 //		initExpandView();
-//		expandTabView = (ExpandTabView) contentView.findViewById(R.id.expandtab_view);
-		if (QHClientApplication.getInstance().categorys != null && !QHClientApplication.getInstance().categorys.isEmpty()) {
-			categorys = QHClientApplication.getInstance().categorys;
-			initExpandView();
-		}
-		else
-		{
-			getCategoriesFromServerAndDisplay();
-		}
+		expandTabView = (ExpandTabView) contentView.findViewById(R.id.expandtab_view);
+		expandTabView.setEnabled(false);
+		expandTabView.setClickable(false);
 		
 		contentView.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
 		contentView.findViewById(R.id.serverdata).setVisibility(View.GONE);
@@ -193,8 +187,12 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 	/**
 	 * get all categories from server and display them
 	 */
-	public void getCategoriesFromServerAndDisplay() {
-		final AllCategoriesTask task = new AllCategoriesTask(0, getActivity(), "allCategories?cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode);
+	public void getCategoriesFromServerAndDisplay(String cityCode) {
+		
+		if (null != categorys && !categorys.isEmpty()) {
+			return;
+		}
+		final AllCategoriesTask task = new AllCategoriesTask(0, getActivity(), "allCategories?cityCode=" + cityCode);
 		task.execute(new Runnable() {
 			@Override
 			public void run() {
@@ -293,6 +291,8 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		imgArray.add(R.drawable.ic_expand_category);
 		imgArray.add(R.drawable.ic_expand_queue);
 		
+		expandTabView.setEnabled(true);
+		expandTabView.setClickable(true);
 		expandTabView.setValue(mTextArray, mViewArray,imgArray);
 		expandTabView.setTitle(viewLeft.getShowText(), 0);
 		expandTabView.setTitle(viewRight.getShowText(), 1);
@@ -405,7 +405,10 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		// firstLocation = null;
 
 		merchantList = new ArrayList<Merchant>();
-		queryNearbyMerchants();
+		
+		mPullToRefreshView.headerRefreshing();
+		
+//		queryNearbyMerchants();
 
 //		Toast.makeText(getActivity(), showText, Toast.LENGTH_SHORT).show();
 
@@ -612,11 +615,13 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 	@Override
 	public void onLocationChanged(AMapLocation location) {
 		Log.e("wjzwjz", "NearByFragment onLocationChanged : " + (System.currentTimeMillis()-time1));
-		if (null != location && categorys != null) {
+		if (null != location) {
+			getCategoriesFromServerAndDisplay(location.getCityCode());
 			QHClientApplication.getInstance().location = location;
 			if (!isFirstLocation) {
 				isFirstLocation = true;
 				firstLocation = location;
+				
 				merchantList = new ArrayList<Merchant>();
 				queryNearbyMerchants();
 			} else {
@@ -624,6 +629,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 				if (distance > 100) {
 					firstLocation = location;
 					merchantList = new ArrayList<Merchant>();
+					
 					queryNearbyMerchants();
 				} else {
 					return;
@@ -842,31 +848,6 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 		merchantList = new ArrayList<Merchant>();
 		queryNearbyMerchants();
-		// mPullToRefreshView.postDelayed(new Runnable() {
-		//
-		// @Override
-		// public void run() {
-		//
-		// page = 1;
-		// isFirstLoad = true;
-		// needToLoad = true;
-		// isFirstLocation = false;
-		// // firstLocation = null;
-		//
-		// merchantList = new ArrayList<Merchant>();
-		// queryNearbyMerchants();
-		// // mAMapLocationManager = LocationManagerProxy.getInstance(this);
-		// // mAMapLocationManager.requestLocationUpdates(
-		// // LocationProviderProxy.AMapNetwork, 5000, 10, this);
-		//
-		// // buildTask();
-		//
-		// // mPullToRefreshView.onHeaderRefreshComplete("更新于:"+new
-		// Date().toLocaleString());
-		//
-		// // mPullToRefreshView.onHeaderRefreshComplete();
-		// }
-		// }, 1000);
 
 	}
 
