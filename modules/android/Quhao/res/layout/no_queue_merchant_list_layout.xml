@@ -88,7 +88,8 @@
 		    android:orientation="vertical"
 		    android:layout_width="fill_parent" 
 		    android:layout_height="match_parent" 
-		    android:background="#ffffffff">
+		    android:background="#ffffffff"
+		    android:paddingTop="5dp">
 			<com.withiter.quhao.view.refresh.PullToRefreshView xmlns:android="http://schemas.android.com/apk/res/android" 
 		  	    android:id="@+id/main_pull_refresh_view"
 			    android:layout_width="fill_parent"

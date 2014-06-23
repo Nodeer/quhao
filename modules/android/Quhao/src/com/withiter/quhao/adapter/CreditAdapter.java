@@ -127,7 +127,7 @@ public class CreditAdapter extends BaseAdapter {
 			
 			//其实过期是没有积分消费记录增加的。也就是说数据库中不可能有这样的数据
 			if ("expired".equals(credit.status)) {
-				holder.desc.setText("过期，丢失一个积分。");
+				holder.desc.setText("号码过期，无积分返还。");
 			}
 			
 			holder.desc.setTag("status_" + position);

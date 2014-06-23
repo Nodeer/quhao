@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 拿号成功之后显示的页面 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -11,7 +11,6 @@
         android:id="@+id/getNumberLayout"
         android:layout_width="fill_parent"
         android:layout_height="50dip"
-        android:layout_alignParentTop="true"
         android:background="@drawable/common_top_bar_bg_blue3"
         android:gravity="center_vertical" >
 
@@ -41,32 +40,9 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/btn_GetNumberLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="50dip"
-        android:layout_alignParentBottom="true"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="10.0dip" >
-
-        <Button
-            android:id="@+id/btn_GetNumber"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|center_vertical"
-            android:background="@drawable/btn_background_red"
-            android:text="@string/nahao"
-            android:textAppearance="?android:textAppearanceMediumInverse"
-            android:textColor="@color/white"
-            android:textSize="14.0sp" />
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/haoma_list_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/btn_GetNumberLayout"
-        android:layout_below="@id/getNumberLayout"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
@@ -89,11 +65,29 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/btn_GetNumberLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10.0dip" >
+
+        <Button
+            android:id="@+id/btn_GetNumber"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_vertical"
+            android:background="@drawable/btn_background_red"
+            android:text="@string/nahao"
+            android:textAppearance="?android:textAppearanceMediumInverse"
+            android:textColor="@color/white"
+            android:textSize="14.0sp" />
+    </LinearLayout>
+    
+    <LinearLayout
         android:id="@+id/my_reservation_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/btn_GetNumberLayout"
-        android:layout_below="@id/getNumberLayout"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginTop="5dp"
@@ -291,4 +285,4 @@
         </LinearLayout>
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

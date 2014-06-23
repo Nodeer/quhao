@@ -278,7 +278,9 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 		needToLoad = true;
 
 		merchantList = new ArrayList<Merchant>();
-		
+		resultLayout.setVisibility(View.VISIBLE);
+		noResultLayout.setVisibility(View.GONE);
+		locationResult.setVisibility(View.GONE);
 		mPullToRefreshView.headerRefreshing();
 
 	}
