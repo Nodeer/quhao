@@ -27,7 +27,6 @@ import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
-import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.view.expandtab.ExpandTabView;
 import com.withiter.quhao.view.expandtab.ViewLeft;
 import com.withiter.quhao.view.expandtab.ViewRight;
@@ -46,7 +45,6 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 	private List<Merchant> merchants;
 	private MerchantAdapter merchantAdapter;
 	private final int UNLOCK_CLICK = 1000;
-	private ProgressDialogUtil progressMerchants;
 	private int page;
 	private String categoryType;
 	private boolean isFirst = true;
@@ -154,7 +152,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 
 		categoryNames = new ArrayList<String>();
 		categoryTypes = new ArrayList<String>();
-		categoryNames.add("默认排序");
+		categoryNames.add("全部");
 		categoryTypes.add("-1");
 		if (categorys!=null && !categorys.isEmpty()) {
 			for (int i = 0; i < categorys.size(); i++) {
@@ -242,10 +240,28 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 
 		// merchantsListView.setSelectionFromTop(0, 0);// 滑动到第一项
 		MerchantListActivity.this.merchants = new ArrayList<Merchant>();
-		
-		getMerchants();
+		mPullToRefreshView.headerRefreshing();
+//		getMerchants();
 
 	}
+	
+	private Handler queryErrorHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.what == 200) {
+				super.handleMessage(msg);
+				needToLoad = false;
+				findViewById(R.id.loadingbar).setVisibility(View.GONE);
+				findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
+				mPullToRefreshView.onHeaderRefreshComplete();
+				mPullToRefreshView.onFooterRefreshComplete();
+				mPullToRefreshView.setEnableFooterView(false);
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			}
+
+		}
+
+	};
 	
 	@Override
 	public void onBackPressed() {
@@ -267,8 +283,6 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 
 	private void getMerchants() {
 
-		progressMerchants = new ProgressDialogUtil(this, R.string.empty, R.string.querying, false);
-		progressMerchants.showProgress();
 		Thread merchantsThread = new Thread(merchantsRunnable);
 		merchantsThread.start();
 	}
@@ -289,9 +303,8 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 				QuhaoLog.d(LOGTAG, "the request url is : " + url);
 				if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
 					Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
-					merchants = new ArrayList<Merchant>();
-					needToLoad = false;
-					merchantsUpdateHandler.obtainMessage(200, merchants).sendToTarget();
+//					merchants = new ArrayList<Merchant>();
+					queryErrorHandler.sendEmptyMessage(200);
 					return;
 				}
 				
@@ -319,10 +332,8 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 				}
 
 			} catch (Exception e) {
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				e.printStackTrace();
+				queryErrorHandler.sendEmptyMessage(200);
 			} finally {
-				progressMerchants.closeProgress();
 				Looper.loop();
 			}
 		}
@@ -351,7 +362,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 
 	@Override
 	public void onFooterRefresh(PullToRefreshView view) {
-		mPullToRefreshView.postDelayed(new Runnable() {
+		mPullToRefreshView.post(new Runnable() {
 
 			@Override
 			public void run() {
@@ -359,12 +370,12 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 				Thread merchantsThread = new Thread(merchantsRunnable);
 				merchantsThread.start();
 			}
-		}, 1000);
+		});
 	}
 
 	@Override
 	public void onHeaderRefresh(PullToRefreshView view) {
-		mPullToRefreshView.postDelayed(new Runnable() {
+		mPullToRefreshView.post(new Runnable() {
 
 			@Override
 			public void run() {
@@ -377,7 +388,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 				Thread merchantsThread = new Thread(merchantsRunnable);
 				merchantsThread.start();
 			}
-		}, 1000);
+		});
 
 	}
 

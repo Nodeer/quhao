@@ -514,7 +514,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				super.handleMessage(msg);
 				String buf = String.valueOf(msg.obj);
 				if (StringUtils.isNull(buf)) {
-					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+					unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
 					Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_SHORT).show();
 					if(merchant.isAttention)
 					{
@@ -528,7 +528,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				} else {
 					if("success".equals(buf))
 					{
-						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+						unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
 //						Toast.makeText(MerchantDetailActivity.this, R.string.committing_success, Toast.LENGTH_SHORT).show();
 						
 						if(merchant.isAttention)
@@ -544,7 +544,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					}
 					else
 					{
-						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+						unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
 						Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_SHORT).show();
 						
 						if(merchant.isAttention)

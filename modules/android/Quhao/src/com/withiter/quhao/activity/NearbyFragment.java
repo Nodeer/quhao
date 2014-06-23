@@ -33,7 +33,6 @@ import com.amap.api.location.LocationProviderProxy;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantNearByAdapter;
-import com.withiter.quhao.data.CategoryData;
 import com.withiter.quhao.task.AllCategoriesTask;
 import com.withiter.quhao.task.NearbyMerchantsTask;
 import com.withiter.quhao.util.ActivityUtil;
@@ -245,7 +244,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 		categoryNames = new ArrayList<String>();
 		categoryTypes = new ArrayList<String>();
-		categoryNames.add("默认排序");
+		categoryNames.add("全部");
 		categoryTypes.add("-1");
 		if (categorys!=null && !categorys.isEmpty()) {
 			for (int i = 0; i < categorys.size(); i++) {
