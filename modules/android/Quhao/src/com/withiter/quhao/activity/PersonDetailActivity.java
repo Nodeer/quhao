@@ -27,7 +27,6 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -150,7 +149,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 			
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			currentTime = String.valueOf(System.currentTimeMillis());
-			showChooseDialog();
+//			showChooseDialog();
 //			this.finish();
 			break;
 		case R.id.nick_name_layout:
@@ -547,7 +546,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 	}
 	
 	private Handler updateNewImgHandler = new Handler()
- {
+	{
 
 		@Override
 		public void handleMessage(Message msg) {

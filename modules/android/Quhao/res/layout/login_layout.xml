@@ -23,8 +23,8 @@
 	        android:layout_height="fill_parent"
 	        android:gravity="center">
 	        <Button android:id="@+id/back_btn"
-	            android:layout_width="20dp"
-	            android:layout_height="18dp"
+	            android:layout_width="40dp"
+	            android:layout_height="40dp"
 	            android:background="@drawable/arrow_left"
 	            android:gravity="center"
 	            android:textColor="#ff000000"
