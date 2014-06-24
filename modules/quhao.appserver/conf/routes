@@ -15,7 +15,7 @@ GET     /press/images/         				staticDir:public/images
 # Ignore favicon request
 GET     /favicon.ico                        staticFile:public/images/common/quhao_favicon.png
 
-GET     /                     		  		LandingController.index
+GET     /                     		  		LandingController.index1
 
 # Routes for Android & IOS clients
 GET		/app/marked							AttentionController.marked
@@ -27,6 +27,7 @@ GET		/app/{action}						AppController.{action}
 
 # Home page
 GET		/home								LandingController.index
+GET		/home								LandingController.index1
 GET		/about								LandingController.about
 GET		/business							LandingController.business
 GET		/b									LandingController.b

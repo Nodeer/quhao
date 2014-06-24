@@ -21,6 +21,18 @@ public class LandingController extends BaseController {
 		}
 		renderJapid(vo);
 	}
+	
+	/**
+	 * 跳转到首页
+	 */
+	public static void index1() {
+		AppConfig android = AppConfig.android();
+		AppConfigVO vo = null;
+		if (android != null) {
+			vo = AppConfigVO.bulid(android);
+		}
+		renderJapid();
+	}
 
 	/**
 	 * 跳转到关于页面
