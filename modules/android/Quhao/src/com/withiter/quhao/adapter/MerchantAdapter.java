@@ -118,6 +118,7 @@ public class MerchantAdapter extends BaseAdapter {
 				holder.distance = (TextView) convertView.findViewById(R.id.distance);
 				holder.btnGetNumber = (Button) convertView.findViewById(R.id.get_number);
 				holder.btnOpen = (Button) convertView.findViewById(R.id.open);
+				holder.btnOffline = (Button) convertView.findViewById(R.id.btn_offline);
 //				holder.pinfenImage = (ImageView) convertView.findViewById(R.id.pingfen);
 				holder.merchantRenjun = (TextView) convertView.findViewById(R.id.merchantRenjun);
 				holder.dianpingLayout = (LinearLayout) convertView.findViewById(R.id.dianping_layout);
@@ -142,7 +143,17 @@ public class MerchantAdapter extends BaseAdapter {
 			}
 			if(merchant.enable) {
 				holder.btnOpen.setVisibility(View.GONE);
-				holder.btnGetNumber.setVisibility(View.VISIBLE);
+				if (merchant.online) {
+					holder.btnGetNumber.setVisibility(View.VISIBLE);
+					holder.btnOffline.setVisibility(View.GONE);
+				}
+				else
+				{
+					holder.btnOffline.setVisibility(View.VISIBLE);
+					holder.btnGetNumber.setVisibility(View.GONE);
+				}
+				
+				
 			} else {
 				holder.btnOpen.setVisibility(View.VISIBLE);
 				holder.btnOpen.setText("希望开通(" + merchant.openNum + ")");
@@ -345,6 +356,7 @@ public class MerchantAdapter extends BaseAdapter {
 		TextView distance;
 		Button btnGetNumber;
 		Button btnOpen;
+		Button btnOffline;
 		LinearLayout dianpingLayout;
 		RelativeLayout youhuiLayout;
 	}

@@ -145,8 +145,6 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 //		initExpandView();
 		expandTabView = (ExpandTabView) contentView.findViewById(R.id.expandtab_view);
-		expandTabView.setEnabled(false);
-		expandTabView.setClickable(false);
 		
 		contentView.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
 		contentView.findViewById(R.id.serverdata).setVisibility(View.GONE);
@@ -252,7 +250,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		}
 		
 		categoryType = "";
-		expandTabView = (ExpandTabView) contentView.findViewById(R.id.expandtab_view);
+//		expandTabView = (ExpandTabView) contentView.findViewById(R.id.expandtab_view);
 		viewLeft = new ViewLeft(contentView.getContext(), categoryNames, categoryTypes, categoryType);
 		viewLeft.setShowText("菜系");
 		
@@ -291,8 +289,6 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		imgArray.add(R.drawable.ic_expand_category);
 		imgArray.add(R.drawable.ic_expand_queue);
 		
-		expandTabView.setEnabled(true);
-		expandTabView.setClickable(true);
 		expandTabView.setValue(mTextArray, mViewArray,imgArray);
 		expandTabView.setTitle(viewLeft.getShowText(), 0);
 		expandTabView.setTitle(viewRight.getShowText(), 1);
@@ -405,6 +401,10 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		// firstLocation = null;
 
 		merchantList = new ArrayList<Merchant>();
+		
+		resultLayout.setVisibility(View.VISIBLE);
+		noResultLayout.setVisibility(View.GONE);
+		locationResult.setVisibility(View.GONE);
 		
 		mPullToRefreshView.headerRefreshing();
 		

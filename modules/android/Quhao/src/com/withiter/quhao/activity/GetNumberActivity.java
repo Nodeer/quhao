@@ -207,16 +207,16 @@ public class GetNumberActivity extends QuhaoBaseActivity implements OnItemClickL
 					
 					paiduiAdapter.notifyDataSetChanged();
 					
-//					int totalHeight = 0;    
-//			        for (int i = 0, len = paiduiAdapter.getCount(); i < len; i++) { //listAdapter.getCount()返回数据项的数目    
-//				        View listItem = paiduiAdapter.getView(i, null, haomaListView);    
-//				        listItem.measure(0, 0); //计算子项View 的宽高    
-//				        totalHeight += listItem.getMeasuredHeight(); //统计所有子项的总高度    
-//			        }
-//			            
-//			        android.view.ViewGroup.LayoutParams params = haomaListView.getLayoutParams();   
-//			        params.height = totalHeight + (haomaListView.getDividerHeight() * (haomaListView.getCount() - 1));    
-//			        haomaListView.setLayoutParams(params);
+					int totalHeight = 0;    
+			        for (int i = 0, len = paiduiAdapter.getCount(); i < len; i++) { //listAdapter.getCount()返回数据项的数目    
+				        View listItem = paiduiAdapter.getView(i, null, haomaListView);    
+				        listItem.measure(0, 0); //计算子项View 的宽高    
+				        totalHeight += listItem.getMeasuredHeight(); //统计所有子项的总高度    
+			        }
+			            
+			        android.view.ViewGroup.LayoutParams params = haomaListView.getLayoutParams();   
+			        params.height = totalHeight + (haomaListView.getDividerHeight() * (haomaListView.getCount() - 1));    
+			        haomaListView.setLayoutParams(params);
 				}
 				else
 				{
