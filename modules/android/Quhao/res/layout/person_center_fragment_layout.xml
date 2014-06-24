@@ -429,7 +429,7 @@
                 android:textSize="16.0sp" />
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="25dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@null"
@@ -467,7 +467,7 @@
                 android:textSize="16.0sp" />
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="25dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@null"
@@ -505,7 +505,7 @@
                 android:textSize="16.0sp" />
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="25dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@null"

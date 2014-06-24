@@ -228,11 +228,12 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/update_password_input"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:visibility="gone" >
 
             <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
                 android:gravity="center_vertical"
                 android:text="@string/wodequhaoqingkuang"
                 android:textAppearance="?android:textAppearanceMedium"
@@ -273,11 +274,11 @@
             android:layout_height="wrap_content"
             android:background="@drawable/update_password_input"
             android:orientation="vertical"
-            android:visibility="gone" >
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="35dip"
+                android:layout_height="30dip"
                 android:baselineAligned="false"
                 android:clickable="true"
                 android:gravity="center_vertical"
@@ -310,7 +311,7 @@
                     <Button
                         android:id="@+id/btn_refresh_paidui"
                         android:layout_width="60dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="30dp"
                         android:layout_gravity="right|center_vertical"
                         android:background="@drawable/btn_refresh"
                         android:gravity="center"
@@ -383,7 +384,7 @@
                 android:textSize="16.0sp" />
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="25dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@string/empty"
@@ -398,7 +399,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/update_password_input"
             android:gravity="center_vertical"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <!-- 地址 -->
 
@@ -442,7 +443,7 @@
                     android:textSize="15.0sp" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
+                    android:layout_width="25dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:contentDescription="@string/empty"
@@ -499,7 +500,7 @@
                     android:textSize="15.0sp" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
+                    android:layout_width="25dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:contentDescription="@string/empty"
@@ -568,32 +569,49 @@
                 android:id="@+id/desc_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:baselineAligned="true"
                 android:background="@drawable/update_password_input"
-                android:orientation="vertical" >
+                android:orientation="horizontal" >
 
                 <!-- merchant description -->
-
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="50dip"
-                    android:gravity="center_vertical"
-                    android:text="@string/merchant_description"
-                    android:textAppearance="?android:textAppearanceMedium"
-                    android:textColor="@color/yellow_text"
-                    android:textSize="17.0sp" />
-
-                <TextView
-                    android:id="@+id/description"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:ellipsize="end"
-                    android:lineSpacingMultiplier="1.3"
-                    android:lines="2"
-                    android:text="@string/no_description"
-                    android:textAppearance="?android:textAppearanceMedium"
-                    android:textColor="@color/black_little"
-                    android:textSize="15.0sp" />
-                <!-- merchant description -->
+				<LinearLayout
+	                android:layout_width="0dip"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="1.0"
+	                android:orientation="vertical" >
+	                <TextView
+	                    android:layout_width="fill_parent"
+	                    android:layout_height="25dip"
+	                    android:gravity="center_vertical"
+	                    android:text="@string/merchant_description"
+	                    android:textAppearance="?android:textAppearanceMedium"
+	                    android:textColor="@color/yellow_text"
+	                    android:textSize="17.0sp" />
+	
+	                <TextView
+	                    android:id="@+id/description"
+	                    android:layout_width="match_parent"
+	                    android:layout_height="match_parent"
+	                    android:ellipsize="end"
+	                    android:lineSpacingMultiplier="1.3"
+	                    android:lines="2"
+	                    android:text="@string/no_description"
+	                    android:textAppearance="?android:textAppearanceMedium"
+	                    android:textColor="@color/black_little"
+	                    android:textSize="15.0sp" />
+	                <!-- merchant description -->
+                </LinearLayout>
+                <LinearLayout
+	                android:layout_width="wrap_content"
+	                android:layout_height="fill_parent"
+	                android:orientation="vertical" 
+	                android:gravity="center">
+	                <ImageView 
+	                    android:layout_height="25dp"
+	                    android:layout_width="wrap_content"
+	                    android:contentDescription="@null"
+	                    android:src="@drawable/arrow_right"/>
+                </LinearLayout>
             </LinearLayout>
 
             <!-- comments title -->
@@ -611,7 +629,7 @@
 
                     <TextView
                         android:layout_width="fill_parent"
-                        android:layout_height="40dip"
+                        android:layout_height="25dip"
                         android:gravity="center_vertical"
                         android:text="@string/comment"
                         android:textAppearance="?android:textAppearanceMedium"
@@ -624,17 +642,24 @@
                     android:id="@+id/critiqueLayout"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:baselineAligned="true"
                     android:clickable="true"
                     android:gravity="center_vertical"
-                    android:orientation="vertical" >
+                    android:orientation="horizontal" >
 
                     <!-- comment content -->
-
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal" >
+					<LinearLayout
+	                    android:layout_width="0dp"
+	                    android:layout_height="wrap_content"
+	                    android:clickable="true"
+	                    android:gravity="center_vertical"
+	                    android:layout_weight="1.0"
+	                    android:orientation="vertical" >
+	                    <LinearLayout
+	                        android:layout_width="fill_parent"
+	                        android:layout_height="wrap_content"
+	                        android:gravity="center_vertical"
+	                        android:orientation="horizontal" >
 
                         <TextView
                             android:id="@+id/comment_content"
@@ -646,26 +671,38 @@
                             android:textAppearance="?android:textAppearanceMedium"
                             android:textColor="@color/black_little"
                             android:textSize="15.0sp" />
+	                    </LinearLayout>
+	                    <!-- comment content -->
+	
+	                    <LinearLayout
+	                        android:layout_width="fill_parent"
+	                        android:layout_height="wrap_content"
+	                        android:gravity="center_vertical"
+	                        android:orientation="horizontal" >
+	
+	                        <TextView
+	                            android:id="@+id/comment_date"
+	                            android:layout_width="wrap_content"
+	                            android:layout_height="wrap_content"
+	                            android:layout_gravity="left|center"
+	                            android:singleLine="true"
+	                            android:text="@string/empty"
+	                            android:textAppearance="?android:textAppearanceSmall"
+	                            android:textColor="@color/light_gray"
+	                            android:textSize="15.0sp" />
+	                    </LinearLayout>
                     </LinearLayout>
-                    <!-- comment content -->
-
                     <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal" >
-
-                        <TextView
-                            android:id="@+id/comment_date"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="left|center"
-                            android:singleLine="true"
-                            android:text="@string/empty"
-                            android:textAppearance="?android:textAppearanceSmall"
-                            android:textColor="@color/light_gray"
-                            android:textSize="15.0sp" />
-                    </LinearLayout>
+		                android:layout_width="wrap_content"
+		                android:layout_height="fill_parent"
+		                android:orientation="vertical" 
+		                android:gravity="center">
+		                <ImageView 
+		                    android:layout_height="25dp"
+		                    android:layout_width="wrap_content"
+		                    android:contentDescription="@null"
+		                    android:src="@drawable/arrow_right"/>
+	                </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

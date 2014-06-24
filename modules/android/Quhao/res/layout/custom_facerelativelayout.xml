@@ -5,19 +5,32 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/rl_input"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/chat_footer_bg" >
+        android:orientation="horizontal"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:background="#ffffffff" >
 
+        <com.rockerhieu.emojicon.EmojiconEditText
+            android:id="@+id/et_sendmessage"
+            android:layout_width="0dp"
+            android:layout_height="40dip"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1.0"
+            android:background="@drawable/login_edit_normal"
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:textSize="18sp" />
+        
         <ImageButton
             android:id="@+id/btn_face"
             android:layout_width="40dip"
             android:layout_height="40dip"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="8dip"
+            android:layout_marginRight="8dip"
             android:background="@drawable/chat_send_btn"
             android:src="@drawable/ib_face" />
 
@@ -25,9 +38,7 @@
             android:id="@+id/btn_send"
             android:layout_width="60dp"
             android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="5dp"
             android:background="@drawable/chat_send_btn"
             android:text="发送" />
 
@@ -44,21 +55,7 @@
             android:singleLine="true"
             android:textSize="18sp" /> -->
         
-        <com.rockerhieu.emojicon.EmojiconEditText
-            android:id="@+id/et_sendmessage"
-            android:layout_width="fill_parent"
-            android:layout_height="40dip"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@id/btn_send"
-            android:layout_toRightOf="@id/btn_face"
-            android:background="@drawable/login_edit_normal"
-            android:inputType="textMultiLine"
-            android:maxLines="3"
-            android:textSize="18sp" />
-        
-    </RelativeLayout>
+    </LinearLayout>
 
     <fragment
         android:id="@+id/emojicons"

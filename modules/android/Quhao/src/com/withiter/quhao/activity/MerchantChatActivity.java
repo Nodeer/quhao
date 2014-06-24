@@ -333,7 +333,7 @@ public class MerchantChatActivity extends FragmentActivity implements EmojiconGr
 						im.hideSoftInputFromWindow(chatMsgEdit.getWindowToken(),
 			                    InputMethodManager.HIDE_NOT_ALWAYS);
 					}
-					showFaceHandler.sendEmptyMessageDelayed(1000, 500);
+					showFaceHandler.sendEmptyMessageDelayed(1000, 400);
 					
 				}
 				break;

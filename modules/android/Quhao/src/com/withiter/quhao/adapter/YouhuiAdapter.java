@@ -54,6 +54,7 @@ public class YouhuiAdapter extends BaseAdapter {
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				convertView = inflator.inflate(R.layout.youhui_list_item,
 						null);
+				holder.seq = (TextView) convertView.findViewById(R.id.seq);
 				holder.title = (TextView) convertView.findViewById(R.id.title);
 				holder.content = (TextView) convertView.findViewById(R.id.content);
 
@@ -62,10 +63,23 @@ public class YouhuiAdapter extends BaseAdapter {
 				holder = (ViewHolder) convertView.getTag();
 			}
 
+			holder.seq.setTag("seq_" + position);
+			holder.seq.setText("" + (position +1));
 			holder.title.setTag("title_" + position);
-			holder.title.setText((position +1) +"." + youhui.title);
-			holder.title.setTag("content_" + position);
+			holder.title.setText(youhui.title);
+			holder.content.setTag("content_" + position);
 			holder.content.setText(youhui.content);
+			
+			if (position/2 == 0) 
+			{
+				holder.seq.setTextColor(0xfff8bd09);
+				holder.title.setTextColor(0xfff8bd09);
+			}
+			else
+			{
+				holder.seq.setTextColor(0xff89d7e4);
+				holder.title.setTextColor(0xff89d7e4);
+			}
 			
 			convertView.setTag(holder);
 			return convertView;
@@ -74,6 +88,7 @@ public class YouhuiAdapter extends BaseAdapter {
 	}
 
 	class ViewHolder {
+		TextView seq;
 		TextView title;
 		TextView content;
 	}

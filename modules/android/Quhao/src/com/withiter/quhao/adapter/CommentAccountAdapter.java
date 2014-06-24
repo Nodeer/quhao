@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.withiter.quhao.R;
+import com.withiter.quhao.util.DateUtils;
 import com.withiter.quhao.vo.Comment;
 
 public class CommentAccountAdapter extends BaseAdapter {
@@ -83,7 +84,8 @@ public class CommentAccountAdapter extends BaseAdapter {
 			}
 
 			holder.modified.setTag("modified_" + position);
-			holder.modified.setText(comment.modified);
+			String modified = DateUtils.yyyyMMddHHmmss2yyyyMMdd(comment.modified);
+			holder.modified.setText(modified);
 			
 			holder.merchantName.setTag("merchantName_" + position);
 			holder.merchantName.setText(comment.merchantName);

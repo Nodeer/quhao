@@ -31,4 +31,30 @@ public final class DateUtils {
 		
 		return created;
 	}
+	
+	public static String yyyyMMddHHmmss2yyyyMMdd(String createdTime) {
+		
+		if(StringUtils.isNull(createdTime))
+		{
+			return "";
+		}
+		
+		String created = "";
+		try
+		{
+//			Date date = new Date(createdTime);
+//			Calendar cal = Calendar.getInstance();
+//			cal.setTimeInMillis(new Date(createdTime).getTime());
+			DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date date = format1.parse(createdTime);
+			DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
+			created = format.format(date);
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			return created;
+		}
+		
+		return created;
+	}
 }

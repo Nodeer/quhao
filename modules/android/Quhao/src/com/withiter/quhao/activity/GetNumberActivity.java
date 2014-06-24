@@ -215,7 +215,7 @@ public class GetNumberActivity extends QuhaoBaseActivity implements OnItemClickL
 			        }
 			            
 			        android.view.ViewGroup.LayoutParams params = haomaListView.getLayoutParams();   
-			        params.height = totalHeight + (haomaListView.getDividerHeight() * (haomaListView.getCount() - 1));    
+			        params.height = totalHeight + (haomaListView.getDividerHeight() * (haomaListView.getCount() - 1)) + 70;    
 			        haomaListView.setLayoutParams(params);
 				}
 				else
@@ -263,6 +263,11 @@ public class GetNumberActivity extends QuhaoBaseActivity implements OnItemClickL
 				@Override
 				public void run() {
 					JsonPack jsonPack = task.jsonPack;
+					if ("OFFLINE".equals(jsonPack.getObj())) {
+						Toast.makeText(GetNumberActivity.this, "亲，当前商家已离线。", Toast.LENGTH_SHORT).show();
+						finish();
+						return;
+					}
 					reservation = ParseJson.getReservation(jsonPack.getObj());
 					if ("NO_MORE_JIFEN".equalsIgnoreCase(reservation.tipValue)) {
 						Toast.makeText(GetNumberActivity.this, "您没有更多的积分了..", Toast.LENGTH_SHORT).show();

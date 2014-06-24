@@ -235,6 +235,10 @@
 	<string name="no_result_4_my_attention">亲，你还没有关注过商家哦。</string>
 	<!-- MyAttentionListActivity end -->
 	
+	<!-- GetNumberActivity begin -->
+	<string name="quhao">取号</string>
+	<!-- GetNumberActivity end -->
+	
 	<!-- 城市选择 CitySelectActivity begin -->
 	<string name="city_list">城市列表</string>
 	<string name="city_search_hint">请输入城市名或首字母查询</string>

@@ -68,8 +68,8 @@ public class PaiduiAdapter extends BaseAdapter {
 			
 			if (paidui.isChecked) {
 				holder.cb.setChecked(true);
-				holder.seatNo.setTextColor(activity.getResources().getColor(R.color.red));
-				holder.currentNo.setTextColor(activity.getResources().getColor(R.color.red));
+				holder.seatNo.setTextColor(activity.getResources().getColor(R.color.red_text));
+				holder.currentNo.setTextColor(activity.getResources().getColor(R.color.red_text));
 			}
 			else
 			{

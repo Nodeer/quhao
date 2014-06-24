@@ -65,7 +65,8 @@
         android:id="@+id/youhui_list_ayout"
         android:layout_width="fill_parent"
         android:layout_height="0dip"
-        android:layout_weight="1.0" >
+        android:layout_weight="1.0"
+        android:background="@drawable/youhui_list_bg" >
         <ListView
             android:id="@+id/youhuis_listview"
             android:layout_width="fill_parent"

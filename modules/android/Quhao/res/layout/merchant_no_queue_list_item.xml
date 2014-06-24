@@ -189,7 +189,7 @@
 			        android:textColor="@color/white"
 			        android:textSize="18sp"
 			        android:text="商家离线"
-			        android:background="@drawable/btn_background_red"
+			        android:background="@drawable/btn_background_red_disable"
 			        android:visibility="gone"/>
             </LinearLayout>
         </LinearLayout>

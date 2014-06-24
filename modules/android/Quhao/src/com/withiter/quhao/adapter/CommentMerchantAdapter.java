@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.withiter.quhao.R;
+import com.withiter.quhao.util.DateUtils;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.vo.Comment;
 
@@ -88,8 +89,11 @@ public class CommentMerchantAdapter extends BaseAdapter {
 			{
 				holder.nickName.setText("匿名");
 			}
+			
+			String modified = DateUtils.yyyyMMddHHmmss2yyyyMMdd(comment.modified);
+			
 			holder.modified.setTag("modified_" + position);
-			holder.modified.setText(comment.modified);
+			holder.modified.setText(modified);
 //			holder.fuwu.setText(String.valueOf(comment.fuwu));
 //			holder.huanjing.setText(String.valueOf(comment.huanjing));
 //			holder.kouwei.setText(String.valueOf(comment.kouwei));

@@ -11,7 +11,6 @@ import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.Toast;

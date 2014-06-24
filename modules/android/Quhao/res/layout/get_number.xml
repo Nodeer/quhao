@@ -61,7 +61,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/get_number_bg"
+            android:background="@drawable/update_password_input"
             android:cacheColorHint="@null"
             android:divider="@null"
             android:entries="@null"
@@ -76,8 +76,9 @@
         android:layout_width="fill_parent"
         android:layout_height="50dip"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="10.0dip" >
+        android:orientation="horizontal" 
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
         <Button
             android:id="@+id/btn_GetNumber"
@@ -85,10 +86,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_vertical"
             android:background="@drawable/btn_background_red"
-            android:text="@string/nahao"
+            android:text="@string/quhao"
             android:textAppearance="?android:textAppearanceMediumInverse"
             android:textColor="@color/white"
-            android:textSize="14.0sp" />
+            android:textSize="18.0sp" />
     </LinearLayout>
     
     <LinearLayout
