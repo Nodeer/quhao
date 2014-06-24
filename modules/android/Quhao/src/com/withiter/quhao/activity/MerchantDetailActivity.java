@@ -100,12 +100,16 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	
 	private Button btnChat;
 	
+	private String shareImagePath;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.merchant_detail);
 		super.onCreate(savedInstanceState);
 
+		shareImagePath = FileUtil.saveLogo(this);
+		
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
 
 		FileUtil.saveLogo(this);
@@ -1022,6 +1026,9 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		oks.setNotification(R.drawable.ic_launcher, this.getString(R.string.app_name));
 		oks.setAddress("");
 		
+		oks.setTitle("取号啦--让你排队不用等！");
+		oks.setUrl("http://www.quhao.la");
+		
 		if(null != merchant)
 		{
 			oks.setText("#取号啦# 发现个超牛逼的APP，再也不担心排多长的队了。我在\""+ merchant.name +"\"用手机直接拿号不用排队，还可以和一起排队的人扯淡聊天，快去体验全新的排队模式吧。@取号啦");
@@ -1030,6 +1037,11 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		{
 			oks.setText("#取号啦# 发现个超牛逼的APP，再也不担心排多长的队了。我用手机直接拿号不用排队，还可以和一起排队的人扯淡聊天，快去体验全新的排队模式吧。@取号啦");
 		}
+		
+		if (StringUtils.isNotNull(shareImagePath)) {
+			oks.setImagePath(shareImagePath);
+		}
+		
 //				oks.setImageUrl("http://www.quhao.la/public/images/home/site_iphone.png");
 		oks.setSilent(silent);
 		if (platform != null) {

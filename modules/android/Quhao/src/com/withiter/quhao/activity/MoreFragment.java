@@ -367,7 +367,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			oks.setText("#取号啦# 发现个超牛逼的APP，再也不担心排多长的队了。我用手机直接拿号不用排队，还可以和一起排队的人扯淡聊天，快去体验全新的排队模式吧。@取号啦");
 			Log.e("wjzwjz", "share image path : " + shareImagePath);
 			if (StringUtils.isNotNull(shareImagePath)) {
-//				oks.setImagePath(shareImagePath);
+				oks.setImagePath(shareImagePath);
 			}
 //			oks.setImageUrl("http://www.quhao.la/public/images/home/site_iphone.png");
 			oks.setSilent(silent);
