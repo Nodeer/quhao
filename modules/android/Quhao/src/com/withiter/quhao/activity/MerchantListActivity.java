@@ -112,6 +112,14 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 	 * get all categories from server and display them
 	 */
 	public void getCategoriesFromServerAndDisplay() {
+		
+		if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+//			Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+//			merchants = new ArrayList<Merchant>();
+			queryErrorHandler.sendEmptyMessage(200);
+			return;
+		}
+		
 		final AllCategoriesTask task = new AllCategoriesTask(0, MerchantListActivity.this, "allCategories?cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode);
 		task.execute(new Runnable() {
 			@Override
