@@ -102,6 +102,10 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 	
 	protected ProgressDialogUtil progressDialogUtil;
 	
+	private LinearLayout infoDetailLayout;
+	private LinearLayout rightLayout;
+	
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		
@@ -131,6 +135,11 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 		signInLayout = (LinearLayout) contentView.findViewById(R.id.signInLayout);
 		dianpingLayout = (LinearLayout) contentView.findViewById(R.id.dianpingLayout);
 
+		infoDetailLayout = (LinearLayout) contentView.findViewById(R.id.info_detail_layout);
+		rightLayout = (LinearLayout) contentView.findViewById(R.id.right_layout);
+		infoDetailLayout.setOnClickListener(this);
+		rightLayout.setOnClickListener(this);
+		
 		currentPaiduiLayout = (LinearLayout) contentView.findViewById(R.id.current_paidui_layout);
 		historyPaiduiLayout = (LinearLayout) contentView.findViewById(R.id.history_paidui_layout);
 		creditCostLayout = (LinearLayout) contentView.findViewById(R.id.credit_cost_layout);
@@ -139,7 +148,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 		signInLayout.setOnClickListener(this);
 		dianpingLayout.setOnClickListener(this);
 		currentPaiduiLayout.setOnClickListener(this);
-		personInfoLayout.setOnClickListener(this);
+//		personInfoLayout.setOnClickListener(this);
 		myAttentionLayout.setOnClickListener(this);
 		historyPaiduiLayout.setOnClickListener(this);
 		creditCostLayout.setOnClickListener(this);
@@ -875,21 +884,36 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 			startActivity(intent);
 //			this.finish();
 			break;
-//		case R.id.person_info:
-//			if (QHClientApplication.getInstance().isLogined) {
-//				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-//				Intent intent1 = new Intent(getActivity(), PersonDetailActivity.class);
-//				intent1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-//				startActivity(intent1);
-//				
-//			} else {
-//				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-//				Intent login1 = new Intent(getActivity(), LoginActivity.class);
-//				login1.putExtra("activityName", this.getClass().getName());
-//				login1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-//				startActivity(login1);
-//			}
-//			break;
+		case R.id.info_detail_layout:
+			if (QHClientApplication.getInstance().isLogined) {
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				Intent intent1 = new Intent(getActivity(), PersonDetailActivity.class);
+				intent1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				startActivity(intent1);
+				
+			} else {
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				Intent login1 = new Intent(getActivity(), LoginActivity.class);
+				login1.putExtra("activityName", this.getClass().getName());
+				login1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				startActivity(login1);
+			}
+			break;
+		case R.id.right_layout:
+			if (QHClientApplication.getInstance().isLogined) {
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				Intent intent1 = new Intent(getActivity(), PersonDetailActivity.class);
+				intent1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				startActivity(intent1);
+				
+			} else {
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				Intent login1 = new Intent(getActivity(), LoginActivity.class);
+				login1.putExtra("activityName", this.getClass().getName());
+				login1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				startActivity(login1);
+			}
+			break;
 		case R.id.register:
 			
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);

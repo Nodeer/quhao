@@ -1,35 +1,18 @@
 package com.withiter.quhao.activity;
 
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,11 +21,7 @@ import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.util.ActivityUtil;
-import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
-import com.withiter.quhao.util.tool.AsynImageLoader;
-import com.withiter.quhao.util.tool.FileUtil;
-import com.withiter.quhao.util.tool.ImageUtil;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SharedprefUtil;
@@ -67,9 +46,9 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 	
 	private final int UNLOCK_CLICK = 1000;
 
-	private LinearLayout photoLayout;
+//	private LinearLayout photoLayout;
 	
-	private ImageView personAvatar;
+//	private ImageView personAvatar;
 	
 	private String[] items = new String[] { "选择本地图片", "拍照" };
 
@@ -93,8 +72,8 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		setContentView(R.layout.person_detail_layout);
 		super.onCreate(savedInstanceState);
 
-		photoLayout = (LinearLayout) this.findViewById(R.id.photoLayout);
-		photoLayout.setOnClickListener(this);
+//		photoLayout = (LinearLayout) this.findViewById(R.id.photoLayout);
+//		photoLayout.setOnClickListener(this);
 		
 		nickNameLayout = (LinearLayout) this.findViewById(R.id.nick_name_layout);
 		nickNameLayout.setOnClickListener(this);
@@ -112,7 +91,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		jifenIntructionLayout.setOnClickListener(this);
 		updatePasswordLayout = (LinearLayout) this.findViewById(R.id.update_password_layout);
 		updatePasswordLayout.setOnClickListener(this);
-		personAvatar = (ImageView) this.findViewById(R.id.person_avatar);
+//		personAvatar = (ImageView) this.findViewById(R.id.person_avatar);
 		
 		nickNameText = (TextView) this.findViewById(R.id.nick_name);
 		
@@ -145,13 +124,13 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 			return;
 		}
 		switch (v.getId()) {
-		case R.id.photoLayout:
+//		case R.id.photoLayout:
 			
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			currentTime = String.valueOf(System.currentTimeMillis());
+//			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+//			currentTime = String.valueOf(System.currentTimeMillis());
 //			showChooseDialog();
 //			this.finish();
-			break;
+//			break;
 		case R.id.nick_name_layout:
 			progressDialogUtil = new ProgressDialogUtil(this, R.string.empty, R.string.waitting, false);
 			progressDialogUtil.showProgress();
@@ -344,6 +323,8 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		}
 	};
 	
+	/*
+	
 	private void showChooseDialog() {
 
 		new AlertDialog.Builder(this)
@@ -390,7 +371,8 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 				}).show();
 
 	}
-
+*/
+	/*
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		//结果码不等于取消时候
@@ -421,12 +403,13 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-
+*/
 	/**
 	 * 裁剪图片方法实现
 	 * 
 	 * @param uri
 	 */
+	/*
 	public void startPhotoZoom(Uri uri) {
 
 		Intent intent = new Intent("com.android.camera.action.CROP");
@@ -442,12 +425,13 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		intent.putExtra("return-data", true);
 		startActivityForResult(intent, 2);
 	}
-
+	*/
 	/**
 	 * 保存裁剪之后的图片数据
 	 * 
 	 * @param picdata
 	 */
+	/*
 	private void getImageToView(Intent data) {
 		if(progressDialogUtil == null)
 		{
@@ -544,7 +528,8 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 			
 		}
 	}
-	
+	*/
+	/*
 	private Handler updateNewImgHandler = new Handler()
 	{
 
@@ -577,7 +562,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 		}
 
 	};
-	
+	*/
 	/**
      * 通过拼接的方式构造请求内容，实现参数传输以及文件传输
      * 
@@ -587,6 +572,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
      * @return String result of Service response
      * @throws IOException
      */
+	/*
     public static String post(String url, Map<String, String> params, Map<String, File> files)
             throws IOException {
     	InputStream is = null;
@@ -707,7 +693,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
     	}
          
     }
-	
+	*/
 	@Override
 	protected void onResume() {
 		
@@ -721,7 +707,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 	private void setPersonDetail() {
 		
 		AccountInfo account = QHClientApplication.getInstance().accountInfo;
-		
+		/*
 		Bitmap bitmap = null;
 		String fileName = "";
 		// get cached image from SD card
@@ -777,7 +763,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 			AsynImageLoader.getInstance().showImageAsyn(personAvatar, 0,"" + account.userImage, R.drawable.person_avatar);
 			
 		}
-		
+		*/
 		if(StringUtils.isNull(account.nickName))
 		{
 			nickNameText.setText(R.string.noname);

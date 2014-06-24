@@ -47,7 +47,7 @@
         android:background="#ffffffff"
         android:orientation="vertical" >
 
-        <!-- current/history quhao, history jifen -->
+        <!-- current/history quhao, history jifen
         <LinearLayout android:id="@+id/photoLayout"
             android:layout_width="fill_parent"
             android:layout_height="120dip"
@@ -85,7 +85,7 @@
                 android:contentDescription="@null"
                 android:duplicateParentState="true"
                 android:src="@drawable/arrow_right" />
-        </LinearLayout>
+        </LinearLayout> -->
         
         <!-- current/history quhao, history jifen -->
         <LinearLayout android:id="@+id/nick_name_layout"
