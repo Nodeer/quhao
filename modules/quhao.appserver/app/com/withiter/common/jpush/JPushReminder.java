@@ -4,6 +4,7 @@ import play.Logger;
 import cn.jpush.api.JPushClient;
 import cn.jpush.api.push.PushResult;
 import cn.jpush.api.push.model.Message;
+import cn.jpush.api.push.model.Options;
 import cn.jpush.api.push.model.Platform;
 import cn.jpush.api.push.model.PushPayload;
 import cn.jpush.api.push.model.audience.Audience;
@@ -76,6 +77,9 @@ public class JPushReminder {
 
 	public static void sendAlias(String id, String content) {
 		PushPayload payload = PushPayload.newBuilder().setPlatform(Platform.all()).setAudience(Audience.alias(id)).setNotification(Notification.alert(content)).build();
+		
+		// TODO set to true when using under production modal
+		payload.resetOptionsApnsProduction(false);
 		Logger.debug("Paylaod JSON - " + payload.toString());
 		JPushClient jpushClient = new JPushClient(masterSecret, appKey);
 		PushResult result = jpushClient.sendPush(payload);
@@ -83,9 +87,9 @@ public class JPushReminder {
 			Logger.debug(result.toString());
 		} else {
 			if (result.getErrorCode() > 0) {
-				Logger.debug(result.getOriginalContent());
+				Logger.error(result.getOriginalContent());
 			} else {
-				Logger.debug("Maybe connect error. Retry laster. ");
+				Logger.error("Maybe connect error. Retry laster. ");
 			}
 		}
 		

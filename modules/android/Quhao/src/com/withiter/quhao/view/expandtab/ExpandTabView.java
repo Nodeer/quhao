@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,7 +69,7 @@ public class ExpandTabView extends LinearLayout implements OnDismissListener {
 	/**
 	 * 设置tabitem的个数和初始值
 	 */
-	public void setValue(ArrayList<String> textArray, ArrayList<View> viewArray) {
+	public void setValue(ArrayList<String> textArray, ArrayList<View> viewArray,ArrayList<Integer> backImgId) {
 		if (mContext == null) {
 			return;
 		}
@@ -89,6 +90,10 @@ public class ExpandTabView extends LinearLayout implements OnDismissListener {
 			mViewArray.add(r);
 			r.setTag(SMALL);
 			ToggleButton tButton = (ToggleButton) inflater.inflate(R.layout.toggle_button, this, false);
+			Drawable drawable= getResources().getDrawable(backImgId.get(i));
+			/// 这一步必须要做,否则不会显示.
+			drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+			tButton.setCompoundDrawables(drawable,null,null,null);
 			addView(tButton);
 			View line = new TextView(mContext);
 			if (i < viewArray.size() - 1) {

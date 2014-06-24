@@ -5,6 +5,7 @@ public class Merchant{
 
 	public String id;
 	public String merchantImage = "";
+	public String merchantImageBig;
 	public String name;
 	public String address;
 	public String phone;

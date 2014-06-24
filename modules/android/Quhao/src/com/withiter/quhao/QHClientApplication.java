@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import android.app.Application;
@@ -25,13 +27,16 @@ import cn.jpush.android.api.TagAliasCallback;
 import com.amap.api.location.AMapLocation;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.domain.CityInfo;
+import com.withiter.quhao.task.AllCategoriesTask;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.encrypt.DesUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
+import com.withiter.quhao.util.tool.FileUtil;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.PhoneTool;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.util.tool.SharedprefUtil;
+import com.withiter.quhao.vo.Category;
 import com.withiter.quhao.vo.LoginInfo;
 
 public class QHClientApplication extends Application {
@@ -53,7 +58,8 @@ public class QHClientApplication extends Application {
 								// number
 	public AccountInfo accountInfo = null; // Global attribute, indicates
 											// current login account
-
+	public List<Category> categorys;
+	
 	public boolean isAuto = false;
 
 	/**
@@ -124,6 +130,7 @@ public class QHClientApplication extends Application {
 		});
 		accountThread.start();
 
+		getCategoriesFromServerAndDisplay();
 		/*
 		 * Thread facesThread = new Thread(new Runnable() {
 		 * 
@@ -132,8 +139,40 @@ public class QHClientApplication extends Application {
 		 * (QHClientApplication.mContext); } }); facesThread.start();
 		 */
 		initSDCardConfig();
+		
+		FileUtil.saveLogo(this);
 	}
 
+	/**
+	 * get all categories from server and display them
+	 */
+	public void getCategoriesFromServerAndDisplay() {
+		final AllCategoriesTask task = new AllCategoriesTask(0, this, "allCategories?cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode);
+		task.execute(new Runnable() {
+			@Override
+			public void run() {
+				String result = task.result;
+				if (null == categorys) {
+					categorys = new ArrayList<Category>();
+				}
+				categorys.clear();
+				categorys.addAll(ParseJson.getCategorys(result));
+			}
+		}, new Runnable() {
+
+			@Override
+			public void run() {
+				String result = task.result;
+				if (null == categorys) {
+					categorys = new ArrayList<Category>();
+				}
+				categorys.clear();
+				categorys.addAll(ParseJson.getCategorys(result));
+			}
+		});
+
+	}
+	
 	public QHClientApplication() {
 		super();
 	}

@@ -27,6 +27,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -79,6 +80,8 @@ public class MerchantChatActivity extends FragmentActivity implements EmojiconGr
 	
 	protected Button btnBack;
 	
+	private LinearLayout btnBackLayout;
+	
 	private View faceFragment; 
 
 	// 网络是否可用
@@ -94,10 +97,10 @@ public class MerchantChatActivity extends FragmentActivity implements EmojiconGr
 		setContentView(R.layout.merchant_chat_layout);
 		networkOK = PhoneTool.isNetworkAvailable(this);
 		btnBack = (Button) findViewById(R.id.back_btn);
-		
+		btnBackLayout = (LinearLayout) findViewById(R.id.back_btn_layout);
 		faceBtn = (ImageButton) this.findViewById(R.id.btn_face);
 		faceBtn.setOnClickListener(this);
-		
+		btnBackLayout.setOnClickListener(this);
 		getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		
@@ -281,7 +284,7 @@ public class MerchantChatActivity extends FragmentActivity implements EmojiconGr
 				
 				if(StringUtils.isNull(chatMsgEdit.getText().toString().trim()))
 				{
-					Toast.makeText(this, "亲，请填写发送内容！", Toast.LENGTH_SHORT).show();
+//					Toast.makeText(this, "亲，请填写发送内容！", Toast.LENGTH_SHORT).show();
 					return;
 				}
 				
@@ -341,6 +344,13 @@ public class MerchantChatActivity extends FragmentActivity implements EmojiconGr
 				}
 				break;
 			case R.id.back_btn:
+				if (mWebSocketClient != null && mWebSocketClient.getConnection() != null && mWebSocketClient.getConnection().isConnecting()) {
+					mWebSocketClient.close();
+				}
+				onBackPressed();
+				finish();
+				break;
+			case R.id.back_btn_layout:
 				if (mWebSocketClient != null && mWebSocketClient.getConnection() != null && mWebSocketClient.getConnection().isConnecting()) {
 					mWebSocketClient.close();
 				}

@@ -150,6 +150,7 @@ GET		/createOpinion						OpinionController.createOpinion
 *		/b/w/saveYouhui						backend.self.SelfManagementController.saveYouhui
 *		/b/w/disableYouhui					backend.self.SelfManagementController.disableYouhui
 *		/b/w/changeStatus					backend.self.SelfManagementController.changeStatus
+*		/b/w/checkEditAble					backend.self.SelfManagementController.checkEditAble
 
 *		/b/a/updatePwd						backend.self.AccountController.updatePwd
 *		/b/a/logout							backend.self.AccountController.logout

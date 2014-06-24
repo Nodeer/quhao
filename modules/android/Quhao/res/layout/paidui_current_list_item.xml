@@ -154,8 +154,8 @@
     </LinearLayout>
     </RelativeLayout>
     <RelativeLayout android:id="@+id/layout_top_youhui"
-	        android:layout_width="wrap_content"
-	        android:layout_height="55dp"
+	        android:layout_width="70dp"
+	    	android:layout_height="50dp"
 	        android:orientation="vertical"
 	        android:layout_alignParentTop="true"
 	        android:layout_alignParentRight="true" >

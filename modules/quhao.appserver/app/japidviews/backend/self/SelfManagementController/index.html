@@ -155,11 +155,8 @@ $addCSS("backend.css", true)
 	        `}
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
-	        `if(bmivo.editable){
-		        <button type="button" class="btn btn-primary" onclick="Merchant.enableEdit();">确定</button>
-	        `} else {
-	        `}
+	        <button type="button" id="btnCancel" class="btn btn-primary" data-dismiss="modal">取消</button>
+	        <button type="button" id="btnOK" style="display: none;" class="btn btn-primary" onclick="Merchant.enableEdit();">确定</button>
 	      </div>
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->

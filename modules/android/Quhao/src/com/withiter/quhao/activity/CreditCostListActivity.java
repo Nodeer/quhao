@@ -147,7 +147,7 @@ public class CreditCostListActivity extends QuhaoBaseActivity{
 								credits.get(position).isChecked = "true";
 //									checkNum++;
 							} else {
-								credits.get(position).isChecked = "true";
+								credits.get(position).isChecked = "false";
 //									checkNum--;
 							}
 						}

@@ -17,6 +17,21 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+    <style name="Theme.Notitle" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:listViewStyle">@style/pathListView</item>
+        <item name="android:scrollViewStyle">@style/pathScrollView</item>
+    </style>
+    
+    <style name="pathListView" parent="@android:style/Widget.ListView">
+        <item name="android:fadingEdge">none</item>
+        <item name="android:divider">@color/light_light_gray</item>
+    </style>
+    
+    <style name="pathScrollView" parent="@android:style/Widget.ScrollView">
+        <item name="android:fadingEdge">none</item>
+    </style>
+    
     <style name="DialogWindowTitle">
 		<item name="android:maxLines">0</item>
 		<item name="android:scrollHorizontally">true</item>

@@ -1,5 +1,6 @@
 package com.withiter.quhao.activity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
 import com.withiter.quhao.R;
@@ -40,11 +42,6 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnHea
 	private List<Comment> comments;
 
 	/**
-	 * back button
-	 */
-	private Button btnBack;
-
-	/**
 	 * list view for critiques
 	 */
 	private ListView commentsView;
@@ -66,6 +63,8 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnHea
 	private int page;
 	
 	private PullToRefreshView mPullToRefreshView;
+	
+	private RatingBar gradeRatingBar;
 	
 	protected Handler updateCommentsHandler = new Handler() {
 
@@ -117,13 +116,31 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnHea
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		super.onCreate(savedInstanceState);
 		setContentView(R.layout.comments_merchant);
+		super.onCreate(savedInstanceState);
 
 		this.merchantId = getIntent().getStringExtra("merchantId");
 		this.grade = getIntent().getStringExtra("grade");
 		this.page = getIntent().getIntExtra("page", 1);
 
+		gradeRatingBar = (RatingBar) this.findViewById(R.id.grade);
+		
+		if (StringUtils.isNotNull(grade)) {
+			int scale = 2;//设置位数 
+
+			int roundingMode = 4;//表示四舍五入，可以选择其他舍值方式，例如去尾，等等. 
+
+			BigDecimal bd = new BigDecimal(grade); 
+
+			bd = bd.setScale(scale,roundingMode); 
+			
+			gradeRatingBar.setRating(bd.floatValue());
+		}
+		else
+		{
+			gradeRatingBar.setRating(0);
+		}
+		
 		mPullToRefreshView = (PullToRefreshView) this.findViewById(R.id.main_pull_refresh_view);
 		mPullToRefreshView.setOnHeaderRefreshListener(this);
 		mPullToRefreshView.setOnFooterRefreshListener(this);
@@ -131,8 +148,7 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnHea
 		commentsView = (ListView) findViewById(R.id.commentsView);
 		commentsView.setNextFocusDownId(R.id.commentsView);
 
-		btnBack = (Button) findViewById(R.id.back_btn);
-		btnBack.setOnClickListener(this);
+		btnBack.setOnClickListener(goBack(this));
 		
 	}
 
@@ -200,10 +216,6 @@ public class CommentsMerchantActivity extends QuhaoBaseActivity implements OnHea
 		unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 
 		switch (v.getId()) {
-		case R.id.back_btn:
-			onBackPressed();
-			this.finish();
-			break;
 		default:
 			break;
 		}

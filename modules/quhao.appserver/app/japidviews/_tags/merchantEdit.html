@@ -27,7 +27,7 @@
 			<div class="input-group" style="width: 100%">
 				<font style="font-size: large;">商家信息</font>
 			  `if(bmivo.merchantExist){
-				<button style="float: right;" class="btn btn-primary" data-toggle="modal" data-target="#updateMerchant">编辑商家信息</button>
+				<button style="float: right;" class="btn btn-primary" data-toggle="modal" onclick="Merchant.checkEdit('${bmivo.mid}');">编辑商家信息</button>
 			  `}
 			</div>
 		</div>
@@ -147,8 +147,8 @@
 	</div>
 	<div class="form-group">
 		<label for="cateType" class="col-sm-3 control-label">商家风味：</label>
-		<input type="hidden" id="cateName" name="cateName" value="" />
-		<input type="hidden" id="cateName1" name="cateName1" value="" />
+		<input type="hidden" id="cateName" name="cateName" value="${bmivo.cateName}" />
+		<input type="hidden" id="cateName1" name="cateName1" value="${bmivo.cateName1}" />
 		<div class="col-xs-4">
 			<select disabled="disabled" class="form-control" id="cateType" name="cateType" onchange="javascript:$('#cateName').val($(this).find('option:selected').text())">
 				<option class="form-control" value="">请选择主要风味（必选）</option>

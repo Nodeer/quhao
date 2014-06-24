@@ -17,7 +17,7 @@ import com.withiter.quhao.R;
 public class TextAdapter extends ArrayAdapter<String> {
 
 	private Context mContext;
-	private List<String> mListData;
+	public List<String> mListData;
 	private String[] mArrayData;
 	private int selectedPos = -1;
 	private String selectedText = "";

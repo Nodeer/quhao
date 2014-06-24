@@ -17,7 +17,6 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.withiter.quhao.R;
-import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.tool.PhoneTool;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 
@@ -36,6 +35,7 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 	protected Button btnPerson;
 	protected Button btnMore;
 	protected Button btnBack;
+//	protected LinearLayout btnBackLayout;
 
 	protected static final int FIRST_REQUEST_CODE = 1;
 	// 网络是否可用
@@ -86,6 +86,20 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 		btnPerson = (Button) findViewById(R.id.btnPerson);
 		btnMore = (Button) findViewById(R.id.btnMore);
 		btnBack = (Button) findViewById(R.id.back_btn);
+//		btnBackLayout = (LinearLayout) findViewById(R.id.back_btn_layout);
+	}
+	
+	protected OnClickListener clickBackBtn(Activity activity) {
+		OnClickListener clickListener = new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				btnBack.performClick();
+//				btnBack.requestFocus();
+//				btnBack.callOnClick();
+				
+			}
+		};
+		return clickListener;
 	}
 
 	/**
@@ -108,10 +122,6 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 					if (params[0].equals(MerchantListActivity.class.getName())) {
 						Log.i(TAG, "backClicked: " + MerchantListActivity.backClicked);
 						MerchantListActivity.backClicked = true;
-					}
-					if (params[0].equals(GetNumberActivity.class.getName())) {
-						Log.i(TAG, "backClicked: " + GetNumberActivity.backClicked);
-						GetNumberActivity.backClicked = true;
 					}
 					if (params[0].equals(CreditCostListActivity.class.getName())) {
 						Log.i(TAG, "backClicked: " + CreditCostListActivity.backClicked);

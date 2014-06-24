@@ -565,18 +565,25 @@ Merchant.finish = function(seatNumber, currentNumber, mid) {
 	$.ajax({
 				type : "POST",
 				url : "/b/w/finishByMerchant",
-				dataType : "JSON",
+				dataType : "html",
 				data : {
 					"currentNumber" : currentNumber,
 					"seatNumber" : seatNumber,
 					"mid" : mid
 				},
 				success : function(data) {
-					if (data == true) {
+					
+					console.log(data);
+					
+					if (data == "true") {
 						// window.location.reload();
 						// 改成异步刷新
 						refresh(mid);
-
+						return;
+					} 
+					if (data == "ALREADY_CANCELED"){
+						$("#paiduipageTip").html("用户已经取消了此号码，3秒后自动刷新页面排队信息").removeClass().addClass("text-danger");
+						setTimeout(function(){refresh(mid);}, 3000);
 					} else {
 						alert("服务器维护中，马上就好。");
 					}
@@ -623,27 +630,59 @@ Merchant.expiredConfirm = function(seatNumber, currentNumber, mid) {
 Merchant.expired = function(seatNumber, currentNumber, mid) {
 	$("#guoqi_confirm").modal("hide");
 	$.ajax({
-				type : "POST",
-				url : "/b/w/expireByMerchant",
-				dataType : "JSON",
-				data : {
-					"currentNumber" : currentNumber,
-					"seatNumber" : seatNumber,
-					"mid" : mid
-				},
-				success : function(data) {
-					if (data == true) {
-						// window.location.reload();
-						// 改成局部刷新
-						refresh(mid);
-					} else {
-						alert("服务器维护中，马上就好。");
-					}
-				},
-				error : function() {
-					alert("服务器维护中，马上就好。");
-				}
-			});
+		type : "POST",
+		url : "/b/w/expireByMerchant",
+		dataType : "html",
+		data : {
+			"currentNumber" : currentNumber,
+			"seatNumber" : seatNumber,
+			"mid" : mid
+		},
+		success : function(data) {
+			if (data == "true") {
+				// 改成局部刷新
+				refresh(mid);
+				return;
+			} 
+			if (data == "ALREADY_CANCELED"){
+				$("#paiduipageTip").html("用户已经取消了此号码，3秒后自动刷新页面排队信息").removeClass().addClass("text-danger");
+				setTimeout(function(){refresh(mid);}, 3000);
+			} else {
+				alert("服务器维护中，马上就好。");
+			}
+		},
+		error : function() {
+			alert("服务器维护中，马上就好。");
+		}
+	});
+}
+
+/**
+ * 实时检查商家是否能编辑
+ * @param {} mid
+ */
+Merchant.checkEdit = function(mid){
+	$.ajax({
+		type : "POST",
+		url : "/b/w/checkEditAble",
+		dataType : "JSON",
+		data : {
+			"mid" : mid
+		},
+		success : function(data) {
+			if (data == true) {
+				$("#updateMerchantDescription").html("更改桌位类型将清空当前排队号，请谨慎操作！确定要更新商家信息吗?");
+				$("#btnOK").show();
+			} else {
+				$("#updateMerchantDescription").html("由于当前有用户排队，目前无法编辑商家信息。推荐在营业时间结束或者没有人排队的情况下编辑信息。");
+				$("#btnOK").hide();
+			}
+			$("#updateMerchant").modal();
+		},
+		error : function() {
+			alert("服务器维护中，马上就好。");
+		}
+	});
 }
 
 Merchant.quhaoOnsiteConfirm = function(seatNumber, mid) {

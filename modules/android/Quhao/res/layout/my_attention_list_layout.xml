@@ -15,15 +15,19 @@
         android:paddingRight="5dip"
         android:paddingTop="5dip" >
 
-        <Button
-            android:id="@+id/back_btn"
-            android:layout_width="50dip"
-            android:layout_height="fill_parent"
-            android:background="@null"
-            android:drawableLeft="@drawable/arrow_left"
-            android:gravity="center|center_vertical"
-            android:textColor="#ff000000"
-            android:textSize="18.0sp"  />
+        <LinearLayout android:id="@+id/back_btn_layout"
+	        android:layout_width="50dp"
+	        android:layout_centerVertical="true"
+	        android:layout_height="fill_parent"
+	        android:gravity="center">
+	        <Button android:id="@+id/back_btn"
+	            android:layout_width="40dp"
+	            android:layout_height="40dp"
+	            android:background="@drawable/arrow_left"
+	            android:gravity="center"
+	            android:textColor="#ff000000"
+	            android:textSize="18.0sp"  />
+		</LinearLayout>
 
         <TextView
             android:id="@+id/categoryTypeTitle"
@@ -67,7 +71,8 @@
         android:id="@+id/serverdata"
         android:layout_width="fill_parent"
         android:layout_height="0dip"
-        android:layout_weight="1.0" >
+        android:layout_weight="1.0"
+        android:paddingTop="5dp" >
 		<com.withiter.quhao.view.refresh.PullToRefreshView xmlns:android="http://schemas.android.com/apk/res/android" 
 		  	    android:id="@+id/main_pull_refresh_view"
 			    android:layout_width="fill_parent"

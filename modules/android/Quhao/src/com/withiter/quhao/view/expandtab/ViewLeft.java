@@ -20,6 +20,22 @@ public class ViewLeft extends RelativeLayout implements ViewBaseAction{
 	private List<String> itemsVaule = new ArrayList<String>();// { "1", "2", "3", "4", "5", "6" };//隐藏id
 	private OnSelectListener mOnSelectListener;
 	private TextAdapter adapter;
+	public List<String> getItems() {
+		return items;
+	}
+
+	public void setItems(List<String> items) {
+		this.items = items;
+	}
+
+	public List<String> getItemsVaule() {
+		return itemsVaule;
+	}
+
+	public void setItemsVaule(List<String> itemsVaule) {
+		this.itemsVaule = itemsVaule;
+	}
+
 	private String mDistance;
 	private String showText = "item1";
 	private Context mContext;
@@ -102,6 +118,11 @@ public class ViewLeft extends RelativeLayout implements ViewBaseAction{
 	@Override
 	public void show() {
 		
+	}
+
+	public void changed(Context context) 
+	{
+		init(context);
 	}
 
 }

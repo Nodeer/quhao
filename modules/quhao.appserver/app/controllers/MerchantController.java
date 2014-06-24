@@ -391,6 +391,12 @@ public class MerchantController extends BaseController {
 		if (StringUtils.isEmpty(accountId) || StringUtils.isEmpty(mid) || seatNumber == 0) {
 			renderJSON(false);
 		}
+		
+		// 实时检查商家的在线状态
+		Merchant m = Merchant.findByMid(mid);
+		if(!m.online){
+			renderJSON("OFFLINE");
+		}
 
 		synchronized (MerchantController.class) {
 			ReservationVO rvo = new ReservationVO();
@@ -462,6 +468,14 @@ public class MerchantController extends BaseController {
 	 *            the id of reservation
 	 */
 	public static void cancel(String reservationId) {
+		// 检查此reservation状态
+		Reservation rr = Reservation.findById(reservationId);
+		if(rr != null){
+			if(!rr.valid){
+				renderJSON(true);
+			}
+		}
+		
 		boolean flag = Reservation.cancel(reservationId);
 		Reservation r = Reservation.findByRid(reservationId);
 		Haoma haoma = Haoma.findByMerchantId(r.merchantId);

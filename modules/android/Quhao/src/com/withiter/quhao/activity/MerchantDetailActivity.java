@@ -39,6 +39,7 @@ import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.AsynImageLoader;
+import com.withiter.quhao.util.tool.FileUtil;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
@@ -107,6 +108,8 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
 
+		FileUtil.saveLogo(this);
+		
 		this.merchantId = getIntent().getStringExtra("merchantId");
 		
 		LayoutInflater inflater = LayoutInflater.from(this);
@@ -417,7 +420,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 							btnChat.setBackgroundResource(R.drawable.ic_chat_ed);
 							btnGetNumber.setVisibility(View.GONE);
 							btnOpen.setVisibility(View.VISIBLE);
-							btnOpen.setText("希望开通（" + m.openNum+"）");
+							btnOpen.setText("希望开通(" + m.openNum+")");
 							currentQuHaoLayout.setVisibility(View.GONE);
 							
 						}
@@ -496,7 +499,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 			if(msg.what == 0){
 				String num = (String) msg.obj;
 				if (StringUtils.isNotNull(num)) {
-					btnOpen.setText("希望开通（" + num+"）");
+					btnOpen.setText("希望开通(" + num+")");
 				}
 				else
 				{
@@ -514,7 +517,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				super.handleMessage(msg);
 				String buf = String.valueOf(msg.obj);
 				if (StringUtils.isNull(buf)) {
-					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+					unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
 					Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_SHORT).show();
 					if(merchant.isAttention)
 					{
@@ -528,7 +531,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				} else {
 					if("success".equals(buf))
 					{
-						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+						unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
 //						Toast.makeText(MerchantDetailActivity.this, R.string.committing_success, Toast.LENGTH_SHORT).show();
 						
 						if(merchant.isAttention)
@@ -544,7 +547,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					}
 					else
 					{
-						unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+						unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
 						Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_SHORT).show();
 						
 						if(merchant.isAttention)
@@ -846,7 +849,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				String phoneNO = merchant.phone;
 				// 如果输入不为空创建打电话的Intent
 				if (StringUtils.isNotNull(phoneNO)) {
-					Intent phoneIntent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + phoneNO));
+					Intent phoneIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNO));
 					startActivity(phoneIntent);
 				} else {
 					Toast.makeText(MerchantDetailActivity.this, "此商家还未添加联系方式", Toast.LENGTH_SHORT).show();
@@ -860,10 +863,15 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						Toast.makeText(this, "商家原因，暂时无法取号。", Toast.LENGTH_SHORT).show();
 						return;
 					}
+					
+					if (null == merchantDetail || null == merchantDetail.merchant || ! merchantDetail.merchant.enable || ! merchantDetail.merchant.online) {
+						Toast.makeText(this, "商家离线，暂时无法取号。", Toast.LENGTH_SHORT).show();
+						return;
+					}
 					Intent intentGetNumber = new Intent();
 					intentGetNumber.putExtra("merchantId", merchantId);
 					intentGetNumber.putExtra("merchantName", mName);
-					intentGetNumber.setClass(MerchantDetailActivity.this, GetNumber2Activity.class);
+					intentGetNumber.setClass(MerchantDetailActivity.this, GetNumberActivity.class);
 					startActivity(intentGetNumber);
 		
 				} else {
@@ -1016,13 +1024,12 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		
 		if(null != merchant)
 		{
-			oks.setText("#取号啦#发现这个软件不错哦!在\""+ merchant.name +"\"手机直接拿号不用排队,快去看看吧。@取号啦");
+			oks.setText("#取号啦# 发现个超牛逼的APP，再也不担心排多长的队了。我在\""+ merchant.name +"\"用手机直接拿号不用排队，还可以和一起排队的人扯淡聊天，快去体验全新的排队模式吧。@取号啦");
 		}
 		else
 		{
-			oks.setText("#取号啦#发现这个软件不错哦!手机直接拿号不用排队,快去看看吧。@取号啦");
+			oks.setText("#取号啦# 发现个超牛逼的APP，再也不担心排多长的队了。我用手机直接拿号不用排队，还可以和一起排队的人扯淡聊天，快去体验全新的排队模式吧。@取号啦");
 		}
-		
 //				oks.setImageUrl("http://www.quhao.la/public/images/home/site_iphone.png");
 		oks.setSilent(silent);
 		if (platform != null) {

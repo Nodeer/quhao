@@ -49,7 +49,6 @@ public class RegisterActivity extends QuhaoBaseActivity {
 	private EditText password2Text;
 	private Button verifyCodeBtn;
 	private Button registerBtn;
-	private Button backBtn;
 	private String loginName;
 	private String verifyCode;
 	private String password;
@@ -79,7 +78,6 @@ public class RegisterActivity extends QuhaoBaseActivity {
 		password2Text = (EditText) this.findViewById(R.id.edit_pass_2);
 		verifyCodeBtn = (Button) this.findViewById(R.id.verify_code_button);
 		registerBtn = (Button) this.findViewById(R.id.register_btn);
-		backBtn = (Button) this.findViewById(R.id.back_btn);
 		userAgreementCheckBox = (ImageView) this.findViewById(R.id.agreement_check_box);
 		
 		if(userAgreementFlag)
@@ -98,7 +96,7 @@ public class RegisterActivity extends QuhaoBaseActivity {
 		
 		registerBtn.setOnClickListener(this);
 		verifyCodeBtn.setOnClickListener(this);
-		backBtn.setOnClickListener(goBack(this));
+		btnBack.setOnClickListener(goBack(this));
 		TelephonyManager telephonyManager = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
 		String phone = telephonyManager.getLine1Number();
 

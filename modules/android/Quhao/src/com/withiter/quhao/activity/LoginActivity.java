@@ -46,7 +46,6 @@ public class LoginActivity extends QuhaoBaseActivity {
 	private TextView pannelLoginName;
 	private EditText loginNameText;
 	private EditText passwordText;
-	private Button btnBack;
 	private Button btnLogin;
 	private Button forgetPasswordBtn;
 	private TextView loginResult;
@@ -104,13 +103,13 @@ public class LoginActivity extends QuhaoBaseActivity {
 
 		passwordText = (EditText) findViewById(R.id.edit_pass);
 
-		btnBack = (Button) findViewById(R.id.back_btn);
 		btnLogin = (Button) findViewById(R.id.login);
 		forgetPasswordBtn = (Button) findViewById(R.id.forgetPassword);
 
-		btnBack.setOnClickListener(this);
 		btnLogin.setOnClickListener(this);
 		forgetPasswordBtn.setOnClickListener(this);
+		
+		btnBack.setOnClickListener(goBack(this));
 		
 		ShareSDK.initSDK(this);
 	}
@@ -243,14 +242,6 @@ public class LoginActivity extends QuhaoBaseActivity {
 				}
 			});
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			break;
-		case R.id.back_btn:
-			// Intent intent = new Intent();
-			// intent.setClass(this, PersonCenterActivity.class);
-			// startActivity(intent);
-			onBackPressed();
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1);
-			this.finish();
 			break;
 		case R.id.forgetPassword:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);

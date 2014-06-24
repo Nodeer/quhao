@@ -149,7 +149,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 			
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			currentTime = String.valueOf(System.currentTimeMillis());
-			showChooseDialog();
+//			showChooseDialog();
 //			this.finish();
 			break;
 		case R.id.nick_name_layout:
@@ -546,7 +546,7 @@ public class PersonDetailActivity extends QuhaoBaseActivity {
 	}
 	
 	private Handler updateNewImgHandler = new Handler()
- {
+	{
 
 		@Override
 		public void handleMessage(Message msg) {

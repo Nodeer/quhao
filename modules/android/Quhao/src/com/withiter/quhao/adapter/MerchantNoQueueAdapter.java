@@ -26,7 +26,7 @@ import android.widget.Toast;
 
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
-import com.withiter.quhao.activity.GetNumber2Activity;
+import com.withiter.quhao.activity.GetNumberActivity;
 import com.withiter.quhao.activity.LoginActivity;
 import com.withiter.quhao.activity.MerchantDetailActivity;
 import com.withiter.quhao.activity.MyNumberActivity;
@@ -78,7 +78,7 @@ public class MerchantNoQueueAdapter extends BaseAdapter {
 		
 		View view = listView.getChildAt(offset);
 		ViewHolder holder = (ViewHolder)view.getTag();
-		holder.btnOpen.setText("希望开通:" + openNum);
+		holder.btnOpen.setText("希望开通(" + openNum + ")");
 	}
 	
 	public MerchantNoQueueAdapter(Activity activity, ListView listView, List<Merchant> merchants) {
@@ -145,13 +145,14 @@ public class MerchantNoQueueAdapter extends BaseAdapter {
 				holder.btnGetNumber.setVisibility(View.VISIBLE);
 			} else {
 				holder.btnOpen.setVisibility(View.VISIBLE);
-				holder.btnOpen.setText("希望开通：" + merchant.openNum);
+				holder.btnOpen.setText("希望开通(" + merchant.openNum + ")");
 				holder.btnGetNumber.setVisibility(View.GONE);
 			}
 			
 			final boolean enable = merchant.enable;
 			final String merchantId = merchant.id;
 			final String mName = merchant.name;
+			final boolean online = merchant.online;
 			holder.btnGetNumber.setOnClickListener(new OnClickListener() {
 				
 				@Override
@@ -162,7 +163,10 @@ public class MerchantNoQueueAdapter extends BaseAdapter {
 							Toast.makeText(activity, "亲，商家未开通，暂时无法取号。", Toast.LENGTH_SHORT).show();
 							return;
 						}
-						
+						if (! online) {
+							Toast.makeText(activity, "商家离线，暂时无法取号。", Toast.LENGTH_SHORT).show();
+							return;
+						}
 						
 						String accountId = SharedprefUtil.get(activity, QuhaoConstant.ACCOUNT_ID, "");
 						String url = "getReservations?accountId=" + accountId + "&mid=" + merchantId;
@@ -202,7 +206,7 @@ public class MerchantNoQueueAdapter extends BaseAdapter {
 										Intent intentGetNumber = new Intent();
 										intentGetNumber.putExtra("merchantId", merchantId);
 										intentGetNumber.putExtra("merchantName", mName);
-										intentGetNumber.setClass(activity, GetNumber2Activity.class);
+										intentGetNumber.setClass(activity, GetNumberActivity.class);
 										activity.startActivity(intentGetNumber);
 									}
 									
@@ -214,7 +218,7 @@ public class MerchantNoQueueAdapter extends BaseAdapter {
 									Intent intentGetNumber = new Intent();
 									intentGetNumber.putExtra("merchantId", merchantId);
 									intentGetNumber.putExtra("merchantName", mName);
-									intentGetNumber.setClass(activity, GetNumber2Activity.class);
+									intentGetNumber.setClass(activity, GetNumberActivity.class);
 									activity.startActivity(intentGetNumber);
 									
 								}

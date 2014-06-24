@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,6 +34,8 @@ import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.task.MoreVersionCheckTask;
 import com.withiter.quhao.util.ActivityUtil;
+import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.util.tool.FileUtil;
 import com.withiter.quhao.util.tool.ImageUtil;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
@@ -59,6 +62,8 @@ public class MoreFragment extends Fragment implements OnClickListener{
 	private boolean isClick;
 	private ProgressDialogUtil progressDialogUtil;
 	
+	private String shareImagePath;
+	
 	protected Handler unlockHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what == UNLOCK_CLICK) {
@@ -77,6 +82,7 @@ public class MoreFragment extends Fragment implements OnClickListener{
 		if (!ActivityUtil.isNetWorkAvailable(getActivity())) {
 			Toast.makeText(getActivity(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
 		}
+		shareImagePath = FileUtil.saveLogo(getActivity());
 		if(contentView != null) {
 			ViewGroup vg = (ViewGroup) contentView.getParent();
 			vg.removeView(contentView);
@@ -358,8 +364,12 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			oks.setAddress("");
 			oks.setTitle("取号啦--让你排队不用等！");
 			oks.setUrl("http://www.quhao.la");
-			oks.setText("取号啦--让你排队不用等！\n@取号啦 \n www.quhao.la");
-			oks.setImageUrl("http://www.quhao.la/public/images/home/site_iphone.png");
+			oks.setText("#取号啦# 发现个超牛逼的APP，再也不担心排多长的队了。我用手机直接拿号不用排队，还可以和一起排队的人扯淡聊天，快去体验全新的排队模式吧。@取号啦");
+			Log.e("wjzwjz", "share image path : " + shareImagePath);
+			if (StringUtils.isNotNull(shareImagePath)) {
+//				oks.setImagePath(shareImagePath);
+			}
+//			oks.setImageUrl("http://www.quhao.la/public/images/home/site_iphone.png");
 			oks.setSilent(silent);
 			if (platform != null) {
 				oks.setPlatform(platform);

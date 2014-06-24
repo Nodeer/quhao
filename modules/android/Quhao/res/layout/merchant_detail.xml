@@ -16,26 +16,30 @@
         android:paddingTop="5dip" >
 
         <!-- back button -->
-        <Button
-            android:id="@+id/back_btn"
-            android:layout_width="50dip"
-            android:layout_height="fill_parent"
-            android:background="@null"
-            android:drawableLeft="@drawable/arrow_left"
-            android:gravity="center|center_vertical"
-            />
+        <LinearLayout android:id="@+id/back_btn_layout"
+	        android:layout_width="50dp"
+	        android:layout_centerVertical="true"
+	        android:layout_height="fill_parent"
+	        android:gravity="center">
+	        <Button android:id="@+id/back_btn"
+	            android:layout_width="40dp"
+	            android:layout_height="40dp"
+	            android:background="@drawable/arrow_left"
+	            android:gravity="center"
+	            android:textColor="#ff000000"
+	            android:textSize="18.0sp"  />
+		</LinearLayout>
         <!-- back button -->
 		
 		<!-- share button -->
 		<Button
             android:id="@+id/btn_share"
-            android:layout_width="50dp"
+            android:layout_width="35dp"
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:textAppearance="?android:textAppearanceMediumInverse"
             android:background="@drawable/icon_btn_setshare_white"
-            android:paddingRight="10dp"
             />
 		<!-- share button -->
 

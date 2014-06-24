@@ -619,7 +619,7 @@ public class PullToRefreshView extends LinearLayout {
     /**
      * header refreshing
      */
-    private void headerRefreshing() {
+    public void headerRefreshing() {
         mHeaderState = REFRESHING;
         setHeaderTopMargin(0);
         mHeaderImageView.setVisibility(View.GONE);

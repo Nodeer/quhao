@@ -16,16 +16,19 @@
         android:paddingRight="5dip"
         android:paddingTop="5dip" >
 
-        <Button
-            android:id="@+id/back_btn"
-            android:layout_width="50dip"
-            android:layout_height="fill_parent"
-            android:background="@null"
-            android:drawableLeft="@drawable/arrow_left"
-            android:gravity="center|center_vertical"
-            android:textColor="#ff000000"
-            android:textSize="18.0sp"  />
-
+	    <LinearLayout android:id="@+id/back_btn_layout"
+	        android:layout_width="50dp"
+	        android:layout_centerVertical="true"
+	        android:layout_height="fill_parent"
+	        android:gravity="center">
+	        <Button android:id="@+id/back_btn"
+	            android:layout_width="40dp"
+	            android:layout_height="40dp"
+	            android:background="@drawable/arrow_left"
+	            android:gravity="center"
+	            android:textColor="#ff000000"
+	            android:textSize="18.0sp"  />
+		</LinearLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
@@ -72,17 +75,15 @@
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@null"
                 android:duplicateParentState="true"
-                android:paddingRight="6dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/person_avatar" />
             
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@null"
                 android:duplicateParentState="true"
-                android:paddingRight="6dp"
                 android:src="@drawable/arrow_right" />
         </LinearLayout>
         
@@ -105,33 +106,23 @@
                 android:paddingRight="6.0dip"
                 android:src="@drawable/person_detail_nickname" />
             
-            <TextView
-                android:layout_width="0.0px"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="6.0dip"
-                android:layout_weight="1.0"
-                android:maxLines="2"
-                android:paddingRight="6.0dip"
-                android:text="@string/nick_name"
-                android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="#ff000000"
-                android:textSize="16.0sp" />
-
             <TextView android:id="@+id/nick_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_weight="1.0"
                 android:duplicateParentState="true"
                 android:paddingRight="6.0dip"
+                android:textSize="16sp"
+                android:layout_marginLeft="6.0dip"
                 android:text="@string/empty" />
             
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@null"
                 android:duplicateParentState="true"
-                android:paddingRight="6.0dip"
                 android:src="@drawable/arrow_right" />
         </LinearLayout>
         
@@ -155,10 +146,9 @@
                 android:src="@drawable/person_detail_jifen" />
             
             <TextView
-                android:layout_width="0.0px"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="6.0dip"
-                android:layout_weight="1.0"
                 android:maxLines="2"
                 android:paddingRight="6.0dip"
                 android:text="@string/current_jifen"
@@ -167,20 +157,21 @@
                 android:textSize="16.0sp" />
 
             <TextView android:id="@+id/current_jifen"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1.0"
                 android:layout_gravity="center_vertical"
                 android:duplicateParentState="true"
                 android:paddingRight="6.0dip"
+                android:textSize="16sp"
                 android:text="@string/empty" />
             
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@null"
                 android:duplicateParentState="true"
-                android:paddingRight="6.0dip"
                 android:src="@drawable/arrow_right" />
         </LinearLayout>
 
@@ -215,12 +206,11 @@
                 android:textSize="16.0sp" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@null"
                 android:duplicateParentState="true"
-                android:paddingRight="6.0dip"
                 android:src="@drawable/arrow_right" />
         </LinearLayout>
         
@@ -334,12 +324,11 @@
                 android:textSize="16.0sp" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@null"
                 android:duplicateParentState="true"
-                android:paddingRight="6.0dip"
                 android:src="@drawable/arrow_right" />
         </LinearLayout>
         <LinearLayout
@@ -362,8 +351,9 @@
         <Button android:id="@+id/logout_btn"
             android:layout_width="fill_parent" 
             android:layout_height="fill_parent"
-            android:background="@drawable/button_background_blue"
-            android:text="@string/exit_login"/>
+            android:background="@drawable/btn_background_red"
+            android:text="@string/exit_login"
+            android:textColor="@color/white"/>
 
     </LinearLayout>
 </LinearLayout>

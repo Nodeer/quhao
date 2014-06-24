@@ -11,7 +11,7 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="160dp"
 	    android:padding="10dp"
-	    android:background="@drawable/merchant_detail_bg">
+	    android:background="@drawable/rec_bg">
     <RelativeLayout
         android:id="@+id/relative_layout1"
         android:layout_width="fill_parent"
@@ -19,6 +19,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:gravity="center_vertical"
+        android:paddingLeft="5dp"
         >
 
      	<!-- 商家名称 -->
@@ -186,10 +187,8 @@
     </RelativeLayout>
     </RelativeLayout>
     <RelativeLayout android:id="@+id/youhui_layout"
-	    android:layout_width="wrap_content"
+	    android:layout_width="70dp"
 	    android:layout_height="50dp"
-	    android:layout_marginRight="1dp"
-	    android:layout_marginTop="1dp"
 	    android:layout_alignParentTop="true"
 	    android:layout_alignParentRight="true"
 	    >

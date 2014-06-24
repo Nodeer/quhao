@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -39,11 +38,6 @@ public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItem
 	 * the critiques queried from merchant
 	 */
 	private List<Comment> comments;
-
-	/**
-	 * back button
-	 */
-	private Button btnBack;
 
 	/**
 	 * list view for critiques
@@ -120,8 +114,8 @@ public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItem
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		super.onCreate(savedInstanceState);
 		setContentView(R.layout.comments_account);
+		super.onCreate(savedInstanceState);
 
 		this.accountId = getIntent().getStringExtra("accountId");
 		this.page = getIntent().getIntExtra("page", 1);
@@ -134,8 +128,7 @@ public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItem
 		commentsView = (ListView) findViewById(R.id.commentsView);
 		commentsView.setNextFocusDownId(R.id.commentsView);
 
-		btnBack = (Button) findViewById(R.id.back_btn);
-		btnBack.setOnClickListener(this);
+		btnBack.setOnClickListener(goBack(this));
 		getComments();
 
 	}
@@ -235,10 +228,6 @@ public class CommentsAccountActivity extends QuhaoBaseActivity implements OnItem
 		unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 
 		switch (v.getId()) {
-		case R.id.back_btn:
-			onBackPressed();
-			this.finish();
-			break;
 		default:
 			break;
 		}

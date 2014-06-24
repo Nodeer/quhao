@@ -195,6 +195,35 @@ public class ParseJson {
 				e.printStackTrace();
 			}
 		}
+		
+		String merchantImageBig = "";
+		if (obj.has("merchantImageBig")) {
+			merchantImageBig = obj.optString("merchantImageBig");
+		}
+		if (QuhaoConstant.test) {
+			if (null != merchantImageBig && !"".equals(merchantImageBig)) {
+				// imgUrl =
+				// obj.optString("merchantImage").replace("http://localhost:9081/",
+				// QuhaoConstant.HTTP_URL);
+				merchantImageBig = QuhaoConstant.HTTP_URL + obj.optString("merchantImageBig").substring(1);
+			}
+
+			// imgUrl =
+			// obj.optString("merchantImage").replace("http://localhost:9081/",
+			// "http://192.168.2.100:9081/");
+		} else {
+			if (null != merchantImageBig && !"".equals(merchantImageBig)) {
+				merchantImageBig = QuhaoConstant.HTTP_URL + obj.optString("merchantImageBig").substring(1);
+			}
+		}
+		if (StringUtils.isNotNull(merchantImageBig) && !merchantImageBig.contains("=")) {
+			try {
+				merchantImageBig = URLDecoder.decode(merchantImageBig, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		String name = "";
 		if (obj.has("name")) {
 			name = obj.optString("name");
@@ -348,7 +377,7 @@ public class ParseJson {
 		
 		merchant.dianpingLink = dianpingLink;
 		
-		
+		merchant.merchantImageBig = merchantImageBig;
 		String commentAverageCost = obj.optString("commentAverageCost");
 		int commentXingjiabi = obj.optInt("commentXingjiabi");
 		int commentKouwei = obj.optInt("commentHuanjing");
@@ -554,6 +583,24 @@ public class ParseJson {
 			}
 		}
 		
+		String merchantImageBig = obj.optString("merchantImageBig");
+		if (QuhaoConstant.test) {
+			if (null != merchantImageBig && !"".equals(merchantImageBig)) {
+				merchantImageBig = QuhaoConstant.HTTP_URL + obj.optString("merchantImageBig").substring(1);
+			}
+		} else {
+			if (null != merchantImageBig && !"".equals(merchantImageBig)) {
+				merchantImageBig = QuhaoConstant.HTTP_URL + obj.optString("merchantImageBig").substring(1);
+			}
+		}
+		if (StringUtils.isNotNull(merchantImageBig) && !merchantImageBig.contains("=")) {
+			try {
+				merchantImageBig = URLDecoder.decode(merchantImageBig, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		String created = DateUtils.formatDate(obj.optString("created"), "yyyy-MM-dd HH:mm:ss");
 		
 		String status = obj.optString("status");
@@ -561,6 +608,7 @@ public class ParseJson {
 		boolean youhui = obj.optBoolean("youhui");
 		rvo.youhui = youhui;
 		rvo.status = status;
+		rvo.merchantImageBig = merchantImageBig;
 		return rvo;
 	}
 
@@ -625,6 +673,32 @@ public class ParseJson {
 		}
 
 		return comments;
+	}
+	
+	/**
+	 * 
+	 * parse json string to comment
+	 * 
+	 * @param buf
+	 *            json string
+	 * @return critiques
+	 */
+	public static Comment getComment(String buf) {
+
+		Comment comment = null;
+		if (StringUtils.isNull(buf)) {
+			return comment;
+		}
+
+		try {
+				JSONObject obj = new JSONObject(buf);
+				comment = coventComment(obj);
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return comment;
+		}
+
+		return comment;
 	}
 
 	private static Comment coventComment(JSONObject obj) throws JSONException {

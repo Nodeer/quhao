@@ -22,6 +22,8 @@ public class ReservationVO {
 	
 	public String merchantImage;
 	
+	public String merchantImageBig;
+	
 	public String isChecked;
 	
 	public boolean youhui;

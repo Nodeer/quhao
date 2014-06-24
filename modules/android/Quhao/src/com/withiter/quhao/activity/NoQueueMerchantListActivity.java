@@ -31,6 +31,7 @@ import com.amap.api.location.LocationProviderProxy;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantNoQueueAdapter;
+import com.withiter.quhao.task.AllCategoriesTask;
 import com.withiter.quhao.task.JsonPack;
 import com.withiter.quhao.task.QueryNoQueueMerchantsTask;
 import com.withiter.quhao.util.QuhaoLog;
@@ -38,9 +39,11 @@ import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.view.expandtab.ExpandTabView;
 import com.withiter.quhao.view.expandtab.ViewLeft;
+import com.withiter.quhao.view.expandtab.ViewRight;
 import com.withiter.quhao.view.refresh.PullToRefreshView;
 import com.withiter.quhao.view.refresh.PullToRefreshView.OnFooterRefreshListener;
 import com.withiter.quhao.view.refresh.PullToRefreshView.OnHeaderRefreshListener;
+import com.withiter.quhao.vo.Category;
 import com.withiter.quhao.vo.Merchant;
 
 /**
@@ -75,6 +78,8 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 	private ArrayList<View> mViewArray = new ArrayList<View>();
 	private ViewLeft viewLeft;
 	
+	private ViewRight viewRight;
+	
 	private int searchDistence;
 	
 	private List<String> distanceItems;
@@ -82,6 +87,15 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 	private List<String> distanceItemsValue;
 	
 	private LocationManagerProxy mAMapLocationManager = null;
+	
+	private String categoryType = "";
+	
+	private List<String> categoryTypes;
+	
+	private List<String> categoryNames;
+	
+	private List<Category> categorys;
+	
 	private Handler locationHandler = new Handler();
 	private Runnable locationRunnable = new Runnable() {
 		
@@ -164,14 +178,28 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 		merchantsListView.setNextFocusDownId(R.id.merchantsListView);
 		merchantsListView.setVisibility(View.GONE);
 		merchantsListView.setOnItemClickListener(merchantItemClickListener);
-		
-		initExpandView();
+		expandTabView = (ExpandTabView) this.findViewById(R.id.expandtab_view);
 	}
 	
 	private void initExpandView() {
+
+		categoryNames = new ArrayList<String>();
+		categoryTypes = new ArrayList<String>();
+		categoryNames.add("全部");
+		categoryTypes.add("-1");
+		if (categorys!=null && !categorys.isEmpty()) {
+			for (int i = 0; i < categorys.size(); i++) {
+				categoryNames.add(categorys.get(i).cateName);
+				categoryTypes.add(categorys.get(i).categoryType);
+			}
+		}
 		
-		if(searchDistence == 0)
-		{
+		categoryType = "";
+		expandTabView = (ExpandTabView) findViewById(R.id.expandtab_view);
+		viewLeft = new ViewLeft(this, categoryNames, categoryTypes, categoryType);
+		viewLeft.setShowText("菜系");
+		
+		if (searchDistence == 0) {
 			searchDistence = 3;
 //			distanceItems = new String[] { "1千米", "3千米", "5千米", "10千米", "全城" };// 显示字段
 //			distanceItemsValue = new String[] { "1", "3", "5", "10", "-1" };// 显示字段
@@ -191,23 +219,41 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 		distanceItemsValue.add("10");
 		distanceItemsValue.add("-1");
 		
-		expandTabView = (ExpandTabView) this.findViewById(R.id.expandtab_view);
-		viewLeft = new ViewLeft(this,distanceItems,distanceItemsValue,String.valueOf(searchDistence));
+		viewRight = new ViewRight(this, distanceItems, distanceItemsValue, String.valueOf(searchDistence));
+		viewRight.setShowText("距离");
 		
 		mViewArray = new ArrayList<View>();
 		mViewArray.add(viewLeft);
-		ArrayList<String> mTextArray = new ArrayList<String>();
-		mTextArray.add("距离");
-		expandTabView.setValue(mTextArray, mViewArray);
-		expandTabView.setTitle(viewLeft.getShowText(), 0);
+		mViewArray.add(viewRight);
 		
-		viewLeft.setOnSelectListener(new ViewLeft.OnSelectListener() {
+		ArrayList<String> mTextArray = new ArrayList<String>();
+		mTextArray.add("菜系");
+		mTextArray.add("排序");
+		
+		ArrayList<Integer> imgArray = new ArrayList<Integer>();
+		imgArray.add(R.drawable.ic_expand_category);
+		imgArray.add(R.drawable.ic_expand_queue);
+		
+		expandTabView.setEnabled(true);
+		expandTabView.setClickable(true);
+		expandTabView.setValue(mTextArray, mViewArray,imgArray);
+		expandTabView.setTitle(viewLeft.getShowText(), 0);
+		expandTabView.setTitle(viewRight.getShowText(), 1);
 
+		viewLeft.setOnSelectListener(new ViewLeft.OnSelectListener() {
 			@Override
 			public void getValue(String distance, String showText) {
 				onRefresh(viewLeft, showText);
 			}
 		});
+		
+		viewRight.setOnSelectListener(new ViewRight.OnSelectListener() {
+			@Override
+			public void getValue(String distance, String showText) {
+				onRefresh(viewRight, showText);
+			}
+		});
+	
 	}
 	
 	private void onRefresh(View view, String showText) {
@@ -217,28 +263,25 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 		if (position >= 0 && !expandTabView.getTitle(position).equals(showText)) {
 			expandTabView.setTitle(showText, position);
 		}
-		
-		for (int i = 0; i < distanceItems.size(); i++) {
-			if(showText.equals(distanceItems.get(i)))
-			{
-				searchDistence = Integer.valueOf(distanceItemsValue.get(i)); 
-				break;
+
+		if (0 == position) {
+			categoryType = categoryTypes.get(categoryNames.indexOf(showText));
+			if ("-1".equals(categoryType)) {
+				categoryType = "";
 			}
 		}
-//		setPoiSearch();
-//		buildTask();
-		merchantsListView.setSelectionFromTop(0, 0);// 滑动到第一项
+		else if(1 == position) {
+			searchDistence = Integer.parseInt(distanceItemsValue.get(distanceItems.indexOf(showText)));
+		}
+		
 		page = 1;
-//		isFirstLoad = true;
 		needToLoad = true;
-//		isFirstLocation = false;
-//		firstLocation = null;
-		
-		
+
 		merchantList = new ArrayList<Merchant>();
-		queryNoQueueMerchants();
-		
-//		Toast.makeText(NoQueueMerchantListActivity.this, showText, Toast.LENGTH_SHORT).show();
+		resultLayout.setVisibility(View.VISIBLE);
+		noResultLayout.setVisibility(View.GONE);
+		locationResult.setVisibility(View.GONE);
+		mPullToRefreshView.headerRefreshing();
 
 	}
 
@@ -521,7 +564,7 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 	private void queryNoQueueMerchants() {
 		
 		String url = "getNearNoQueueMerchants?userX=" + firstLocation.getLongitude() + "&userY=" + firstLocation.getLatitude() + "&cityCode=" + firstLocation.getCityCode() + 
-				"&page=" + page + "&maxDis=" + searchDistence;
+				"&page=" + page + "&maxDis=" + searchDistence + "&cateType=" + categoryType;;
 		final QueryNoQueueMerchantsTask task = new QueryNoQueueMerchantsTask(0, this, url);
 		task.execute(new Runnable() {
 			
@@ -550,11 +593,68 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 		});
 	}
 	
+	private Handler categorysUpdateHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			if (msg.what == 200) {
+				super.handleMessage(msg);
+				if (categorys != null && !categorys.isEmpty()) {
+					initExpandView();
+				}
+				else {
+					Toast.makeText(NoQueueMerchantListActivity.this, "亲，该城市暂未开通，请选择其他城市。", Toast.LENGTH_SHORT).show();
+				}
+				
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			}
+		}
+	};
+	
+	/**
+	 * get all categories from server and display them
+	 */
+	public void getCategoriesFromServerAndDisplay(String cityCode) {
+		
+		if (null != categorys && !categorys.isEmpty()) {
+			return;
+		}
+		final AllCategoriesTask task = new AllCategoriesTask(0, this, "allCategories?cityCode=" + cityCode);
+		task.execute(new Runnable() {
+			@Override
+			public void run() {
+				String result = task.result;
+				if (null == categorys) {
+					categorys = new ArrayList<Category>();
+				}
+				categorys.clear();
+				categorys.addAll(ParseJson.getCategorys(result));
+				QHClientApplication.getInstance().categorys = categorys;
+				categorysUpdateHandler.obtainMessage(200, categorys).sendToTarget();
+			}
+		}, new Runnable() {
+
+			@Override
+			public void run() {
+				String result = task.result;
+				if (null == categorys) {
+					categorys = new ArrayList<Category>();
+				}
+				categorys.clear();
+				categorys.addAll(ParseJson.getCategorys(result));
+				categorysUpdateHandler.obtainMessage(200, categorys).sendToTarget();
+			}
+		});
+
+	}
+	
 	@Override
 	public void onLocationChanged(AMapLocation location) {
 
 		if (null != location) {
+			
 			QHClientApplication.getInstance().location = location;
+			getCategoriesFromServerAndDisplay(location.getCityCode());
+			
 			if(!isFirstLocation)
 			{
 				isFirstLocation = true;
