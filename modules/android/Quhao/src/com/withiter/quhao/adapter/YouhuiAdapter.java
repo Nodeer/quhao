@@ -70,7 +70,7 @@ public class YouhuiAdapter extends BaseAdapter {
 			holder.content.setTag("content_" + position);
 			holder.content.setText(youhui.content);
 			
-			if (position/2 == 0) 
+			if (position%2 == 0) 
 			{
 				holder.seq.setTextColor(0xfff8bd09);
 				holder.title.setTextColor(0xfff8bd09);
