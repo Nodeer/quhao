@@ -31,7 +31,7 @@ public class LandingController extends BaseController {
 		if (android != null) {
 			vo = AppConfigVO.bulid(android);
 		}
-		renderJapid();
+		renderJapid(vo);
 	}
 
 	/**
@@ -40,11 +40,18 @@ public class LandingController extends BaseController {
 	public static void about() {
 		renderJapid();
 	}
+	public static void about1() {
+		renderJapid();
+	}
 
 	/**
 	 * 跳转到商家页面
 	 */
 	public static void business() {
+		String randomID = Codec.UUID();
+		renderJapid(randomID);
+	}
+	public static void business1() {
 		String randomID = Codec.UUID();
 		renderJapid(randomID);
 	}
