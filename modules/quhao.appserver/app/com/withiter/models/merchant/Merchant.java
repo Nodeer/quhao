@@ -346,6 +346,22 @@ public class Merchant extends MerchantEntityDef {
 		if(commentQ.count() == 0){
 			return;
 		}
+		
+		long count1 = commentQ.count();
+		long xingjiabiSum = commentQ.sum("xingjiabi");
+		long kouweiSum = commentQ.sum("kouwei");
+		long huanjingSum = commentQ.sum("huanjing");
+		long fuwuSum = commentQ.sum("fuwu");
+		long gradeSum = commentQ.sum("grade");
+		long averageCostSum = commentQ.sum("averageCost");
+		Logger.info(((float)xingjiabiSum/(float)count1)+"xingjiabiSum/count1");
+		Logger.info(((float)kouweiSum/(float)count1)+"kouweiSum/count1");
+		Logger.info(((float)huanjingSum/(float)count1)+"huanjingSum/count1");
+		Logger.info(((float)fuwuSum/(float)count1)+"fuwuSum/count1");
+		Logger.info(((float)gradeSum/(float)count1)+"gradeSum/count1");
+		Logger.info(((float)averageCostSum/(float)count1)+"averageCostSum/count1");
+		
+		
 		this.xingjiabi =  commentQ.average("xingjiabi");
 		this.kouwei =  commentQ.average("kouwei");
 		this.huanjing =  commentQ.average("huanjing");
