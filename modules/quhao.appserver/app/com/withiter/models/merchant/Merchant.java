@@ -354,20 +354,27 @@ public class Merchant extends MerchantEntityDef {
 		long fuwuSum = commentQ.sum("fuwu");
 		long gradeSum = commentQ.sum("grade");
 		long averageCostSum = commentQ.sum("averageCost");
-		Logger.info(((float)xingjiabiSum/(float)count1)+"xingjiabiSum/count1");
-		Logger.info(((float)kouweiSum/(float)count1)+"kouweiSum/count1");
-		Logger.info(((float)huanjingSum/(float)count1)+"huanjingSum/count1");
-		Logger.info(((float)fuwuSum/(float)count1)+"fuwuSum/count1");
-		Logger.info(((float)gradeSum/(float)count1)+"gradeSum/count1");
-		Logger.info(((float)averageCostSum/(float)count1)+"averageCostSum/count1");
+//		Logger.info(((float)xingjiabiSum/count1)+"xingjiabiSum/count1");
+//		Logger.info(((float)kouweiSum/count1)+"kouweiSum/count1");
+//		Logger.info(((float)huanjingSum/count1)+"huanjingSum/count1");
+//		Logger.info(((float)fuwuSum/count1)+"fuwuSum/count1");
+//		Logger.info(((float)gradeSum/count1)+"gradeSum/count1");
+//		Logger.info(((float)averageCostSum/count1)+"averageCostSum/count1");
+		
+		this.xingjiabi = (float)xingjiabiSum/count1;
+		this.kouwei = (float)kouweiSum/count1;
+		this.huanjing = (float)huanjingSum/count1;
+		this.fuwu = (float)fuwuSum/count1;
+		this.grade = (float)gradeSum/count1;
+		this.averageCost = (float)averageCostSum/count1;
 		
 		
-		this.xingjiabi =  commentQ.average("xingjiabi");
-		this.kouwei =  commentQ.average("kouwei");
-		this.huanjing =  commentQ.average("huanjing");
-		this.fuwu =  commentQ.average("fuwu");
-		this.grade =  commentQ.average("grade");
-		this.averageCost =  commentQ.average("averageCost");
+//		this.xingjiabi =  commentQ.average("xingjiabi");
+//		this.kouwei =  commentQ.average("kouwei");
+//		this.huanjing =  commentQ.average("huanjing");
+//		this.fuwu =  commentQ.average("fuwu");
+//		this.grade =  commentQ.average("grade");
+//		this.averageCost =  commentQ.average("averageCost");
 		
 		// update mark count
 		MorphiaQuery q = Attention.q();
