@@ -51,7 +51,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 	private MerchantAdapter merchantAdapter;
 	private final int UNLOCK_CLICK = 1000;
 	private int page;
-	private String categoryType;
+	private String categoryType = "-1";
 	private boolean isFirst = true;
 	private boolean needToLoad = true;
 	public static boolean backClicked = false;
@@ -65,7 +65,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 	private List<String> categoryNames;
 	private List<String> sortByValues;
 	private List<String> sortByItems;
-	private String defaultSortBy;
+	private String defaultSortBy = "-1";
 	
 	private List<Category> categoryList;
 	
@@ -251,7 +251,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 			}
 		}
 		
-		if (StringUtils.isNull(categoryType)) {
+		if (StringUtils.isNull(categoryType) || "-1".equals(categoryType)) {
 			categoryType = "-1";
 			categoryNameView.setText("全部分类");
 		}
@@ -268,7 +268,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 		sortByValues.add("markedCount");
 		
 		
-		if (StringUtils.isNull(defaultSortBy)) {
+		if (StringUtils.isNull(defaultSortBy) || "-1".equals(defaultSortBy)) {
 			defaultSortBy = "-1";
 			queueNameView.setText("默认排序");
 		}

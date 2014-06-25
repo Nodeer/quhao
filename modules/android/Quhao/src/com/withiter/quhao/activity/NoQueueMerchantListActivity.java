@@ -82,7 +82,7 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 	
 	private ViewRight viewRight;
 	
-	private String searchDistence;
+	private String searchDistence = "-1";
 	
 	private List<String> distanceItems;
 	
@@ -90,7 +90,7 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 	
 	private LocationManagerProxy mAMapLocationManager = null;
 	
-	private String categoryType = "";
+	private String categoryType = "-1";
 	
 	private List<String> categoryTypes;
 	
@@ -221,7 +221,7 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 			}
 		}
 		
-		if (StringUtils.isNull(categoryType)) {
+		if (StringUtils.isNull(categoryType) || "-1".equals(categoryType)) {
 			categoryType = "-1";
 			categoryNameView.setText("全部分类");
 		}
@@ -242,7 +242,7 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 		distanceItemsValue.add("5");
 		distanceItemsValue.add("10");
 		
-		if (StringUtils.isNull(searchDistence)) {
+		if (StringUtils.isNull(searchDistence) || "-1".equals(searchDistence)) {
 			searchDistence = "-1";
 			queueNameView.setText("全城");
 		}
