@@ -59,8 +59,8 @@
 	          <br/>
 	          <!-- onclick="$('#iphoneModal').modal();" -->
 	          <!-- onclick="$('#androidModal').modal();" -->
-          	<div style="float: left;"><img width="160px;"  alt="" src="/public/images/home/applestore.png" onmouseover="$(this).attr('src','/public/images/home/applestore_hover.png')" onmouseout="$(this).attr('src','/public/images/home/applestore.png')"></div>
-          	<div style="float: left;"><img width="160px;"  alt="" src="/public/images/home/googleplay.png" onmouseover="$(this).attr('src','/public/images/home/googleplay_hover.png')" onmouseout="$(this).attr('src','/public/images/home/googleplay.png')"></div>
+          	<div style="float: left;"><img width="160px;" alt="" src="/public/images/home/applestore.png" onmouseover="$(this).attr('src','/public/images/home/applestore_hover.png')" onmouseout="$(this).attr('src','/public/images/home/applestore.png')"></div>
+          	<div style="float: left;"><img width="160px;" alt="" src="/public/images/home/googleplay.png" onmouseover="$(this).attr('src','/public/images/home/googleplay_hover.png')" onmouseout="$(this).attr('src','/public/images/home/googleplay.png')"></div>
 	        </div>
 	      </div>
 	      
@@ -74,10 +74,10 @@
 			      </div>
 			      <div class="modal-body" style="height: 100%;">
 			      	<div class="col-left" style="float: left; width: 50%;">
-			      		<img alt="" align="middle" height="213px;" src="/public/images/home/down_android.png">
+			      		<a target="_blank" href="https://itunes.apple.com/cn/app/qu-hao-la/id867985717?l=en&mt=8"><img alt="" align="middle" height="213px;" src="/public/images/home/down_ios.png"></a>
 			      	</div>
 			      	<div class="col-right" style="float: right;width: 50%;border-left: 1px solid #d7d7d7;">
-			      		<img align="middle" height="213px;" src="/public/images/home/codeimage_android.png" />
+			      		<img align="middle" height="213px;" src="/public/images/home/codeimage_ios.png" />
 			      	</div>
 			      </div>
 			      <div class="modal-footer" style="visibility: hidden;">
@@ -97,10 +97,14 @@
 			      </div>
 			      <div class="modal-body" style="height: 100%;">
 			      	<div class="col-left" style="float: left; width: 50%;">
-			      		<img alt="" align="middle" height="213px;" src="/public/images/home/down_android.png">
+			      		<a target="_blank" href="http://apk.hiapk.com/html/2014/04/2595144.html?module=256&info=cQB1AGgAYQBvAGwAYQA%3D"><img alt="" align="middle" height="213px;" src="/public/images/home/down_android.png"></a>
 			      	</div>
 			      	<div class="col-right" style="float: right;width: 50%;border-left: 1px solid #d7d7d7;">
-			      		<img align="middle" height="213px;" src="/public/images/home/codeimage_android.png" />
+			      		`if(android != null && !android.erweimalink.equals("")){
+				      		<img align="middle" height="213px;" src="${android.erweimalink}" />
+				  		`} else {
+				      		<img align="middle" height="213px;" src="/public/images/home/codeimage_android.png" />
+				  		`}
 			      	</div>
 			      </div>
 			      <div class="modal-footer" style="visibility: hidden;">
