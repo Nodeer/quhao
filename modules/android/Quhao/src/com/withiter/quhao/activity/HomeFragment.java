@@ -552,7 +552,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 				}
 				activityList.clear();
 				activityList.addAll(ParseJson.getActivities(result.getObj()));
-				activitiesUpdateHandler.obtainMessage(200, categorys).sendToTarget();
+				activitiesUpdateHandler.obtainMessage(200, activityList).sendToTarget();
 
 			}
 		}, new Runnable() {
@@ -562,7 +562,8 @@ public class HomeFragment extends Fragment implements OnClickListener {
 				if (null == activityList) {
 					activityList = new ArrayList<ActivityVO>();
 				}
-				activitiesUpdateHandler.obtainMessage(200, categorys).sendToTarget();
+				activityList.clear();
+				activitiesUpdateHandler.obtainMessage(200, activityList).sendToTarget();
 			}
 		});
 

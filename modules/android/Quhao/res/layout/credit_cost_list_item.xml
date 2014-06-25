@@ -93,7 +93,7 @@
 	                android:paddingLeft="8dip"
 	                android:text="desc"
 	                android:textColor="#ff000000" 
-	                android:textSize="10.0sp"
+	                android:textSize="12.0sp"
 					android:layout_gravity="left"/>
         </LinearLayout>
         <!-- 积分消费信息描述 -->

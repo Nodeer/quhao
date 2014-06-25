@@ -107,10 +107,10 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 				
 				if (null != commentVO) {
 					kouweiRatingBar.setRating(commentVO.kouwei);
-					fuwuRatingBar.setRating(commentVO.kouwei);
-					huanjingRatingBar.setRating(commentVO.kouwei);
-					xingjiabiRatingBar.setRating(commentVO.kouwei);
-					gradeRatingbar.setRating(commentVO.kouwei);
+					fuwuRatingBar.setRating(commentVO.fuwu);
+					huanjingRatingBar.setRating(commentVO.huanjing);
+					xingjiabiRatingBar.setRating(commentVO.xingjiabi);
+					gradeRatingbar.setRating(commentVO.grade);
 					avgCostEdit.setText(commentVO.averageCost);
 					commentEdit.setText(commentVO.content);
 				}

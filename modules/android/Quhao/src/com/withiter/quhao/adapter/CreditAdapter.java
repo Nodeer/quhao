@@ -8,6 +8,8 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.text.Html;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -98,31 +100,52 @@ public class CreditAdapter extends BaseAdapter {
 			}
 			else
 			{
-				convertView.findViewById(R.id.merchantLayout).setVisibility(View.GONE);
+				holder.merchantName.setTag("merchantName_" + position);
+				holder.merchantName.setText("");
 			}
-			
 			// 取消号码增加积分
 			if ("canceled".equals(credit.status)) {
-				holder.desc.setText("取消号码,系统返还一个积分。");
+				String html="<html><body>取消号码,系统返还<font color=\"#f8bd09\">1</font>积分。"  
+			            +"</body></html>";  
+			      
+				holder.desc.setMovementMethod(ScrollingMovementMethod.getInstance());//滚动  
+				holder.desc.setText(Html.fromHtml(html));  
 			}
 			
 			// 取号消费积分
 			if ("getNumber".equals(credit.status)) {
-				holder.desc.setText("排队取号,消费一个积分");
+				String html="<html><body>取号,减少<font color=\"#f8bd09\">1</font>积分。"  
+			            +"</body></html>";  
+			      
+				holder.desc.setMovementMethod(ScrollingMovementMethod.getInstance());//滚动  
+				holder.desc.setText(Html.fromHtml(html)); 
 			}
 
 			// 完成消费返还积分
 			if ("finished".equals(credit.status)) {
-				holder.desc.setText("完成消费,系统返还一个积分。");
+				String html="<html><body>消费成功,获得<font color=\"#f8bd09\">1</font>积分。"  
+			            +"</body></html>";  
+			      
+				holder.desc.setMovementMethod(ScrollingMovementMethod.getInstance());//滚动  
+				holder.desc.setText(Html.fromHtml(html));
 			}
 			
 			// 评论增加积分
 			if ("comment".equals(credit.status)) {
-				holder.desc.setText("评论,增加一个积分。");
+				String html="<html><body>评论,增加<font color=\"#f8bd09\">1</font>积分。"  
+			            +"</body></html>";  
+			      
+				holder.desc.setMovementMethod(ScrollingMovementMethod.getInstance());//滚动  
+				holder.desc.setText(Html.fromHtml(html));
 			}
 
 			if ("exchange".equals(credit.status)) {
-				holder.desc.setText("签到数量足够，增加一个积分。");
+				holder.merchantName.setText("亲，恭喜！");
+				String html="<html><body>签到满5次,获得<font size=\"30\" color=\"#f8bd09\">1</font>积分。"  
+			            +"</body></html>";  
+			    
+				holder.desc.setMovementMethod(ScrollingMovementMethod.getInstance());//滚动  
+				holder.desc.setText(Html.fromHtml(html));
 			}
 			
 			//其实过期是没有积分消费记录增加的。也就是说数据库中不可能有这样的数据

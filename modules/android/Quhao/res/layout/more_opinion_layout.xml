@@ -26,20 +26,6 @@
 	            android:textSize="18.0sp"  />
 		</LinearLayout>
 
-        <Button
-            android:id="@+id/btn_opinion"
-           	android:layout_width="wrap_content"
-            android:layout_height="35dip"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="@string/commit"
-            android:textAppearance="?android:textAppearanceMediumInverse"
-            android:textColor="@color/white"
-            android:textSize="15.0sp" 
-            android:background="@android:color/transparent"
-            android:paddingRight="10dp"
-            />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
@@ -82,6 +68,18 @@
 		    android:textSize="14.0sp" >
 
 		</EditText>
+		
+		<Button
+            android:id="@+id/btn_opinion"
+            android:layout_marginTop="10dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_vertical"
+            android:background="@drawable/btn_background_red"
+            android:text="@string/commit"
+            android:textAppearance="?android:textAppearanceMediumInverse"
+            android:textColor="@color/white"
+            android:textSize="18.0sp" />
 	</LinearLayout>
 	</ScrollView>
 </LinearLayout> 
