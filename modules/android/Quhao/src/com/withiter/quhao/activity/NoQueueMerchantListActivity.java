@@ -16,11 +16,14 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +40,6 @@ import com.withiter.quhao.task.QueryNoQueueMerchantsTask;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.ParseJson;
-import com.withiter.quhao.view.expandtab.ExpandTabView;
 import com.withiter.quhao.view.expandtab.ViewLeft;
 import com.withiter.quhao.view.expandtab.ViewRight;
 import com.withiter.quhao.view.refresh.PullToRefreshView;
@@ -74,13 +76,13 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 	private TextView noResultView;
 	private TextView locationResult;
 	
-	private ExpandTabView expandTabView;
+//	private ExpandTabView expandTabView;
 	private ArrayList<View> mViewArray = new ArrayList<View>();
 	private ViewLeft viewLeft;
 	
 	private ViewRight viewRight;
 	
-	private int searchDistence;
+	private String searchDistence;
 	
 	private List<String> distanceItems;
 	
@@ -95,6 +97,21 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 	private List<String> categoryNames;
 	
 	private List<Category> categorys;
+	
+	private LinearLayout categoryLayout;
+	
+	private LinearLayout queueLayout;
+	
+	private TextView categoryNameView;
+	
+	private TextView queueNameView;
+	
+	private PopupWindow popupWindow1;
+	
+	private PopupWindow popupWindow2;
+	
+	private int displayWidth;
+	private int displayHeight;
 	
 	private Handler locationHandler = new Handler();
 	private Runnable locationRunnable = new Runnable() {
@@ -143,6 +160,16 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 		mPullToRefreshView.setEnableFooterView(false);
 		mPullToRefreshView.setOnHeaderRefreshListener(this);
 		mPullToRefreshView.setOnFooterRefreshListener(this);
+		
+		categoryLayout = (LinearLayout) this.findViewById(R.id.category_layout);
+		queueLayout = (LinearLayout) this.findViewById(R.id.queue_layout);
+		categoryNameView = (TextView) this.findViewById(R.id.categoryName);
+		queueNameView = (TextView) this.findViewById(R.id.queueName);
+		categoryLayout.setOnClickListener(this);
+		queueLayout.setOnClickListener(this);
+		displayWidth = this.getWindowManager().getDefaultDisplay().getWidth();
+		displayHeight = this.getWindowManager().getDefaultDisplay().getHeight();
+		
 		this.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
 		this.findViewById(R.id.serverdata).setVisibility(View.GONE);
 		resultLayout.setVisibility(View.VISIBLE);
@@ -178,14 +205,14 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 		merchantsListView.setNextFocusDownId(R.id.merchantsListView);
 		merchantsListView.setVisibility(View.GONE);
 		merchantsListView.setOnItemClickListener(merchantItemClickListener);
-		expandTabView = (ExpandTabView) this.findViewById(R.id.expandtab_view);
+//		expandTabView = (ExpandTabView) this.findViewById(R.id.expandtab_view);
 	}
 	
 	private void initExpandView() {
 
 		categoryNames = new ArrayList<String>();
 		categoryTypes = new ArrayList<String>();
-		categoryNames.add("全部");
+		categoryNames.add("全部分类");
 		categoryTypes.add("-1");
 		if (categorys!=null && !categorys.isEmpty()) {
 			for (int i = 0; i < categorys.size(); i++) {
@@ -194,84 +221,113 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 			}
 		}
 		
-		categoryType = "";
-		expandTabView = (ExpandTabView) findViewById(R.id.expandtab_view);
-		viewLeft = new ViewLeft(this, categoryNames, categoryTypes, categoryType);
-		viewLeft.setShowText("菜系");
-		
-		if (searchDistence == 0) {
-			searchDistence = 3;
-//			distanceItems = new String[] { "1千米", "3千米", "5千米", "10千米", "全城" };// 显示字段
-//			distanceItemsValue = new String[] { "1", "3", "5", "10", "-1" };// 显示字段
+		if (StringUtils.isNull(categoryType)) {
+			categoryType = "-1";
+			categoryNameView.setText("全部分类");
 		}
+//		expandTabView = (ExpandTabView) findViewById(R.id.expandtab_view);
+		viewLeft = new ViewLeft(this, categoryNames, categoryTypes, categoryType);
 		
 		distanceItems = new ArrayList<String>();
+		distanceItems.add("全城");
 		distanceItems.add("1千米");
 		distanceItems.add("3千米");
 		distanceItems.add("5千米");
 		distanceItems.add("10千米");
-		distanceItems.add("全城");
 		
 		distanceItemsValue = new ArrayList<String>();
+		distanceItemsValue.add("-1");
 		distanceItemsValue.add("1");
 		distanceItemsValue.add("3");
 		distanceItemsValue.add("5");
 		distanceItemsValue.add("10");
-		distanceItemsValue.add("-1");
+		
+		if (StringUtils.isNull(searchDistence)) {
+			searchDistence = "-1";
+			queueNameView.setText("全城");
+		}
 		
 		viewRight = new ViewRight(this, distanceItems, distanceItemsValue, String.valueOf(searchDistence));
-		viewRight.setShowText("距离");
 		
 		mViewArray = new ArrayList<View>();
-		mViewArray.add(viewLeft);
-		mViewArray.add(viewRight);
-		
-		ArrayList<String> mTextArray = new ArrayList<String>();
-		mTextArray.add("菜系");
-		mTextArray.add("排序");
-		
-		ArrayList<Integer> imgArray = new ArrayList<Integer>();
-		imgArray.add(R.drawable.ic_expand_category);
-		imgArray.add(R.drawable.ic_expand_queue);
-		
-		expandTabView.setEnabled(true);
-		expandTabView.setClickable(true);
-		expandTabView.setValue(mTextArray, mViewArray,imgArray);
-		expandTabView.setTitle(viewLeft.getShowText(), 0);
-		expandTabView.setTitle(viewRight.getShowText(), 1);
 
+		final RelativeLayout viewLeftLayout = new RelativeLayout(this);
+		int maxHeight = (int) (displayHeight * 0.5);
+		RelativeLayout.LayoutParams viewLeftParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, maxHeight);
+		viewLeftParams.leftMargin = 10;
+		viewLeftParams.rightMargin = 10;
+		viewLeftLayout.addView(viewLeft, viewLeftParams);
+		if(viewLeftLayout.getParent()!=null) {
+			ViewGroup vg = (ViewGroup) viewLeftLayout.getParent();
+			vg.removeView(viewLeftLayout);
+		}
+		viewLeftLayout.setBackgroundColor(this.getResources().getColor(R.color.popup_main_background));
+		viewLeftLayout.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				onPressBack();
+			}
+		});
+		mViewArray.add(viewLeftLayout);
+		
+		final RelativeLayout viewRightLayout = new RelativeLayout(this);
+		RelativeLayout.LayoutParams viewRightLP = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, maxHeight);
+		viewRightLP.leftMargin = 10;
+		viewRightLP.rightMargin = 10;
+		viewRightLayout.addView(viewRight, viewRightLP);
+		if(viewRightLayout.getParent()!=null) {
+			ViewGroup vg = (ViewGroup) viewRightLayout.getParent();
+			vg.removeView(viewRightLayout);
+		}
+		viewRightLayout.setBackgroundColor(this.getResources().getColor(R.color.popup_main_background));
+		viewRightLayout.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				onPressBack();
+			}
+		});
+		mViewArray.add(viewRightLayout);
+		
 		viewLeft.setOnSelectListener(new ViewLeft.OnSelectListener() {
 			@Override
 			public void getValue(String distance, String showText) {
-				onRefresh(viewLeft, showText);
+				onRefresh(0, showText);
 			}
 		});
 		
 		viewRight.setOnSelectListener(new ViewRight.OnSelectListener() {
 			@Override
 			public void getValue(String distance, String showText) {
-				onRefresh(viewRight, showText);
+				onRefresh(1, showText);
 			}
 		});
 	
 	}
 	
-	private void onRefresh(View view, String showText) {
+	private void onRefresh(int position, String showText) {
 		
-		expandTabView.onPressBack();
-		int position = getPositon(view);
-		if (position >= 0 && !expandTabView.getTitle(position).equals(showText)) {
-			expandTabView.setTitle(showText, position);
+		if (position >= 0 && position == 0) {
+			categoryNameView.setText(showText);
+		}
+		
+		if (position >= 0 && position == 1) {
+			queueNameView.setText(showText);
 		}
 
 		if (0 == position) {
 			categoryType = categoryTypes.get(categoryNames.indexOf(showText));
-			if ("-1".equals(categoryType)) {
-				categoryType = "";
+			if (null != popupWindow1 && popupWindow1.isShowing()) {
+				popupWindow1.dismiss();
 			}
 		}
 		else if(1 == position) {
-			searchDistence = Integer.parseInt(distanceItemsValue.get(distanceItems.indexOf(showText)));
+			if (null != popupWindow2 && popupWindow2.isShowing()) {
+				popupWindow2.dismiss();
+			}
+			
+			searchDistence = distanceItemsValue.get(distanceItems.indexOf(showText));
 		}
 		
 		page = 1;
@@ -360,6 +416,66 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 			});
 			requestLocation.start();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			break;
+		case R.id.category_layout:
+			if (mViewArray == null || mViewArray.isEmpty()) {
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 0);
+				return;
+			}
+			
+			if (popupWindow2 != null && popupWindow2.isShowing()) {
+				popupWindow2.dismiss();
+			}
+			View view = mViewArray.get(0);
+			if (popupWindow1 == null) {
+				
+				popupWindow1 = new PopupWindow(view, displayWidth, displayHeight);
+				popupWindow1.setAnimationStyle(R.style.PopupWindowAnimation);
+				popupWindow1.setFocusable(false);
+				popupWindow1.setOutsideTouchable(true);
+			}
+			
+			if (!popupWindow1.isShowing()) {
+				popupWindow1.showAsDropDown(categoryLayout);
+//				showPopup(selectPosition);
+			} else {
+//				popupWindow.setOnDismissListener(this);
+				popupWindow1.dismiss();
+//				popupWindow.
+//				hideView();
+			}
+			
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 0);
+			break;
+		case R.id.queue_layout:
+			if (mViewArray == null || mViewArray.isEmpty()) {
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 0);
+				return;
+			}
+			if (popupWindow1 != null && popupWindow1.isShowing()) {
+				popupWindow1.dismiss();
+			}
+			
+			View view2 = mViewArray.get(1);
+			if (popupWindow2 == null) {
+				
+				popupWindow2 = new PopupWindow(view2, displayWidth, displayHeight);
+				popupWindow2.setAnimationStyle(R.style.PopupWindowAnimation);
+				popupWindow2.setFocusable(false);
+				popupWindow2.setOutsideTouchable(true);
+			}
+			
+			if (!popupWindow2.isShowing()) {
+				popupWindow2.showAsDropDown(queueLayout);
+//				showPopup(selectPosition);
+			} else {
+//				popupWindow.setOnDismissListener(this);
+				popupWindow2.dismiss();
+//				popupWindow.
+//				hideView();
+			}
+			
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 0);
 			break;
 		default:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
@@ -563,8 +679,19 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 	
 	private void queryNoQueueMerchants() {
 		
+		if(null == firstLocation)
+		{
+			Toast.makeText(this, "亲，现在没有定位信息，不能查看哦。", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		
+		String type = categoryType;
+		if ("-1".equals(categoryType)) {
+			type = "";
+		}
+		
 		String url = "getNearNoQueueMerchants?userX=" + firstLocation.getLongitude() + "&userY=" + firstLocation.getLatitude() + "&cityCode=" + firstLocation.getCityCode() + 
-				"&page=" + page + "&maxDis=" + searchDistence + "&cateType=" + categoryType;;
+				"&page=" + page + "&maxDis=" + searchDistence + "&cateType=" + type;;
 		final QueryNoQueueMerchantsTask task = new QueryNoQueueMerchantsTask(0, this, url);
 		task.execute(new Runnable() {
 			
@@ -681,6 +808,24 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 		}
 	}
 
+	/**
+	 * 如果菜单成展开状态，则让菜单收回去
+	 */
+	public boolean onPressBack() {
+		if (popupWindow1 != null && popupWindow1.isShowing()) {
+			popupWindow1.dismiss();
+			return true;
+		}
+		else if(popupWindow2 != null && popupWindow2.isShowing())
+		{
+			popupWindow2.dismiss();
+			return true;
+		}else {
+			return false;
+		}
+
+	}
+	
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {

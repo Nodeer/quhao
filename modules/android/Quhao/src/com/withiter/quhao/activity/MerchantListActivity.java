@@ -10,11 +10,16 @@ import android.os.Looper;
 import android.os.Message;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
@@ -27,7 +32,6 @@ import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 import com.withiter.quhao.util.tool.ParseJson;
-import com.withiter.quhao.view.expandtab.ExpandTabView;
 import com.withiter.quhao.view.expandtab.ViewLeft;
 import com.withiter.quhao.view.expandtab.ViewRight;
 import com.withiter.quhao.view.refresh.PullToRefreshView;
@@ -52,7 +56,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 	private boolean needToLoad = true;
 	public static boolean backClicked = false;
 	private PullToRefreshView mPullToRefreshView;
-	private ExpandTabView expandTabView; 
+//	private ExpandTabView expandTabView; 
 	private ArrayList<View> mViewArray = new ArrayList<View>();
 	private ViewLeft viewLeft;
 	private ViewRight viewRight;
@@ -64,6 +68,21 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 	private String defaultSortBy;
 	
 	private List<Category> categoryList;
+	
+	private LinearLayout categoryLayout;
+	
+	private LinearLayout queueLayout;
+	
+	private TextView categoryNameView;
+	
+	private TextView queueNameView;
+	
+	private PopupWindow popupWindow1;
+	
+	private PopupWindow popupWindow2;
+	
+	private int displayWidth;
+	private int displayHeight;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -83,9 +102,15 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 		mPullToRefreshView.setOnFooterRefreshListener(this);
 		mPullToRefreshView.setEnableFooterView(true);
 		
-		expandTabView = (ExpandTabView) this.findViewById(R.id.expandtab_view);
-		expandTabView.setEnabled(false);
-		expandTabView.setClickable(false);
+		categoryLayout = (LinearLayout) this.findViewById(R.id.category_layout);
+		queueLayout = (LinearLayout) this.findViewById(R.id.queue_layout);
+		categoryNameView = (TextView) this.findViewById(R.id.categoryName);
+		queueNameView = (TextView) this.findViewById(R.id.queueName);
+		categoryLayout.setOnClickListener(this);
+		queueLayout.setOnClickListener(this);
+		displayWidth = this.getWindowManager().getDefaultDisplay().getWidth();
+		displayHeight = this.getWindowManager().getDefaultDisplay().getHeight();
+		
 		getCategoriesFromServerAndDisplay();
 		initView();
 	}
@@ -217,7 +242,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 
 		categoryNames = new ArrayList<String>();
 		categoryTypes = new ArrayList<String>();
-		categoryNames.add("全部");
+		categoryNames.add("全部分类");
 		categoryTypes.add("-1");
 		if (categoryList!=null && !categoryList.isEmpty()) {
 			for (int i = 0; i < categoryList.size(); i++) {
@@ -226,10 +251,12 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 			}
 		}
 		
-		categoryType = "";
+		if (StringUtils.isNull(categoryType)) {
+			categoryType = "-1";
+			categoryNameView.setText("全部分类");
+		}
 		
 		viewLeft = new ViewLeft(this, categoryNames, categoryTypes, categoryType);
-		viewLeft.setShowText("菜系");
 		sortByItems = new ArrayList<String>();
 		sortByItems.add("默认排序");
 		sortByItems.add("按评分排序");
@@ -240,64 +267,91 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 		sortByValues.add("grade");
 		sortByValues.add("markedCount");
 		
+		
 		if (StringUtils.isNull(defaultSortBy)) {
 			defaultSortBy = "-1";
+			queueNameView.setText("默认排序");
 		}
-		defaultSortBy = "";
 		viewRight = new ViewRight(this, sortByItems, sortByValues, defaultSortBy);
-		viewRight.setShowText("排序");
 		
 		mViewArray = new ArrayList<View>();
-		mViewArray.add(viewLeft);
-		mViewArray.add(viewRight);
 		
-		ArrayList<String> mTextArray = new ArrayList<String>();
-		mTextArray.add("菜系");
-		mTextArray.add("排序");
+		final RelativeLayout viewLeftLayout = new RelativeLayout(this);
+		int maxHeight = (int) (displayHeight * 0.5);
+		RelativeLayout.LayoutParams viewLeftParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, maxHeight);
+		viewLeftParams.leftMargin = 10;
+		viewLeftParams.rightMargin = 10;
+		viewLeftLayout.addView(viewLeft, viewLeftParams);
+		if(viewLeftLayout.getParent()!=null) {
+			ViewGroup vg = (ViewGroup) viewLeftLayout.getParent();
+			vg.removeView(viewLeftLayout);
+		}
+		viewLeftLayout.setBackgroundColor(this.getResources().getColor(R.color.popup_main_background));
+		viewLeftLayout.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				onPressBack();
+			}
+		});
+		mViewArray.add(viewLeftLayout);
 		
-		ArrayList<Integer> imgArray = new ArrayList<Integer>();
-		imgArray.add(R.drawable.ic_expand_category);
-		imgArray.add(R.drawable.ic_expand_queue);
-		expandTabView.setEnabled(true);
-		expandTabView.setClickable(true);
-		expandTabView.setValue(mTextArray, mViewArray,imgArray);
-		expandTabView.setTitle(viewLeft.getShowText(), 0);
-		expandTabView.setTitle(viewRight.getShowText(), 1);
-
+		final RelativeLayout viewRightLayout = new RelativeLayout(this);
+		RelativeLayout.LayoutParams viewRightLP = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, maxHeight);
+		viewRightLP.leftMargin = 10;
+		viewRightLP.rightMargin = 10;
+		viewRightLayout.addView(viewRight, viewRightLP);
+		if(viewRightLayout.getParent()!=null) {
+			ViewGroup vg = (ViewGroup) viewRightLayout.getParent();
+			vg.removeView(viewRightLayout);
+		}
+		viewRightLayout.setBackgroundColor(this.getResources().getColor(R.color.popup_main_background));
+		viewRightLayout.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				onPressBack();
+			}
+		});
+		mViewArray.add(viewRightLayout);
+		
 		viewLeft.setOnSelectListener(new ViewLeft.OnSelectListener() {
 			@Override
 			public void getValue(String distance, String showText) {
-				onRefresh(viewLeft, showText);
+				onRefresh(0, showText);
 			}
 		});
 		
 		viewRight.setOnSelectListener(new ViewRight.OnSelectListener() {
 			@Override
 			public void getValue(String distance, String showText) {
-				onRefresh(viewRight, showText);
+				onRefresh(1, showText);
 			}
 		});
 	}
 	
-	private void onRefresh(View view, String showText) {
+	private void onRefresh(int position, String showText) {
 		
-		expandTabView.onPressBack();
-		int position = getPositon(view);
-		if (position >= 0 && !expandTabView.getTitle(position).equals(showText)) {
-			expandTabView.setTitle(showText, position);
+		if (position >= 0 && position == 0) {
+			categoryNameView.setText(showText);
 		}
 		
+		if (position >= 0 && position == 1) {
+			queueNameView.setText(showText);
+		}
+
 		if (0 == position) {
 			categoryType = categoryTypes.get(categoryNames.indexOf(showText));
-			if ("-1".equals(categoryType)) {
-				categoryType = "";
+			if (null != popupWindow1 && popupWindow1.isShowing()) {
+				popupWindow1.dismiss();
 			}
 		}
 		else if(1 == position) {
-			defaultSortBy = sortByValues.get(sortByItems.indexOf(showText));
-			if ("-1".equals(defaultSortBy)) {
-				defaultSortBy = "";
+			if (null != popupWindow2 && popupWindow2.isShowing()) {
+				popupWindow2.dismiss();
 			}
+			
+			defaultSortBy = sortByValues.get(sortByItems.indexOf(showText));
 		}
 		
 		MerchantListActivity.this.page = 1;
@@ -332,10 +386,6 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 	@Override
 	public void onBackPressed() {
 		
-		if (!expandTabView.onPressBack()) {
-			finish();
-		}
-		
 	}
 	
 	private int getPositon(View tView) {
@@ -358,16 +408,17 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 		public void run() {
 			try {
 				Looper.prepare();
+				String type = categoryType;
 				QuhaoLog.d(LOGTAG, "get categorys data form server begin");
-				if (null == categoryType || "null".equals(categoryType)) {
-					categoryType = "";
+				if (null == type || "-1".equals(type)) {
+					type = "";
+				}
+				String sortBy = defaultSortBy;
+				if (null == sortBy || "-1".equals(sortBy)) {
+					sortBy = "";
 				}
 				
-				if (null == defaultSortBy || "null".equals(defaultSortBy)) {
-					defaultSortBy = "";
-				}
-				
-				String url = "nextPage?page=" + page + "&cateType=" + categoryType + "&cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode + "&sortBy=" + defaultSortBy;
+				String url = "nextPage?page=" + page + "&cateType=" + type + "&cityCode=" + QHClientApplication.getInstance().defaultCity.cityCode + "&sortBy=" + sortBy;
 				AMapLocation location = QHClientApplication.getInstance().location;
 				if (location != null) {
 					url = url + "&userX=" + location.getLongitude() + "&userY=" + location.getLatitude();
@@ -416,8 +467,99 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 	@Override
 	public void onClick(View v) {
 
+		// 已经点过，直接返回
+		if (isClick) {
+			return;
+		}
+
+		// 设置已点击标志，避免快速重复点击
+		isClick = true;
+		
+		switch (v.getId()) {
+		case R.id.category_layout:
+			if (mViewArray == null || mViewArray.isEmpty()) {
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 0);
+				return;
+			}
+			
+			if (popupWindow2 != null && popupWindow2.isShowing()) {
+				popupWindow2.dismiss();
+			}
+			View view = mViewArray.get(0);
+			if (popupWindow1 == null) {
+				
+				popupWindow1 = new PopupWindow(view, displayWidth, displayHeight);
+				popupWindow1.setAnimationStyle(R.style.PopupWindowAnimation);
+				popupWindow1.setFocusable(false);
+				popupWindow1.setOutsideTouchable(true);
+			}
+			
+			if (!popupWindow1.isShowing()) {
+				popupWindow1.showAsDropDown(categoryLayout);
+//				showPopup(selectPosition);
+			} else {
+//				popupWindow.setOnDismissListener(this);
+				popupWindow1.dismiss();
+//				popupWindow.
+//				hideView();
+			}
+			
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 0);
+			break;
+		case R.id.queue_layout:
+			if (mViewArray == null || mViewArray.isEmpty()) {
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 0);
+				return;
+			}
+			if (popupWindow1 != null && popupWindow1.isShowing()) {
+				popupWindow1.dismiss();
+			}
+			
+			View view2 = mViewArray.get(1);
+			if (popupWindow2 == null) {
+				
+				popupWindow2 = new PopupWindow(view2, displayWidth, displayHeight);
+				popupWindow2.setAnimationStyle(R.style.PopupWindowAnimation);
+				popupWindow2.setFocusable(false);
+				popupWindow2.setOutsideTouchable(true);
+			}
+			
+			if (!popupWindow2.isShowing()) {
+				popupWindow2.showAsDropDown(queueLayout);
+//				showPopup(selectPosition);
+			} else {
+//				popupWindow.setOnDismissListener(this);
+				popupWindow2.dismiss();
+//				popupWindow.
+//				hideView();
+			}
+			
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 0);
+			break;
+		default:
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			break;
+		}
 	}
 
+	/**
+	 * 如果菜单成展开状态，则让菜单收回去
+	 */
+	public boolean onPressBack() {
+		if (popupWindow1 != null && popupWindow1.isShowing()) {
+			popupWindow1.dismiss();
+			return true;
+		}
+		else if(popupWindow2 != null && popupWindow2.isShowing())
+		{
+			popupWindow2.dismiss();
+			return true;
+		}else {
+			return false;
+		}
+
+	}
+	
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		return false;

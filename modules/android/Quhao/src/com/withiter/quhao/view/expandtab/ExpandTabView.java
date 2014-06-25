@@ -88,7 +88,7 @@ public class ExpandTabView extends LinearLayout implements OnDismissListener {
 				vg.removeView(r);
 			}
 			mViewArray.add(r);
-			r.setTag(SMALL);
+			r.setTag(i);
 			ToggleButton tButton = (ToggleButton) inflater.inflate(R.layout.toggle_button, this, false);
 			Drawable drawable= getResources().getDrawable(backImgId.get(i));
 			/// 这一步必须要做,否则不会显示.

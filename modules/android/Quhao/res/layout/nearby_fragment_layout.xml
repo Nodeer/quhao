@@ -31,7 +31,8 @@
         android:background="#ffffffff"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="10dip">
+        android:padding="10dip"
+        android:visibility="gone">
 
         <ProgressBar
             android:layout_width="wrap_content"
@@ -54,17 +55,66 @@
 	    android:layout_width="fill_parent" 
 	    android:layout_height="match_parent" 
 	    android:background="#ffffffff"
-	    android:visibility="gone">
-		<LinearLayout 
-		    android:orientation="vertical"
+	    android:paddingTop="5dp">
+		<LinearLayout android:id="@+id/expand_tab_layout"
+		    android:orientation="horizontal"
 		    android:layout_width="fill_parent" 
 		    android:layout_height="50dip" 
-		    android:background="#ffffffff">
+		    android:baselineAligned="true"
+		    android:background="@color/no_color">
 	
-			<com.withiter.quhao.view.expandtab.ExpandTabView 
+		    <LinearLayout android:id="@+id/category_layout"
+		        android:layout_width="0dp"
+		        android:layout_height="fill_parent"
+		        android:gravity="center"
+		        android:layout_weight="1.0"
+				android:background="@drawable/ic_expand_tab">
+		    <LinearLayout
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:gravity="center"
+		        android:background="@drawable/okok">
+		        <ImageView 
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:contentDescription="@null"
+		            android:src="@drawable/ic_expand_category"/>
+		        <TextView android:id="@+id/categoryName"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="本帮菜"
+		            android:singleLine="true"
+		            android:textSize="12sp"/>
+		    </LinearLayout>
+		    </LinearLayout>
+		    <LinearLayout android:id="@+id/queue_layout"
+		        android:layout_width="0dp"
+		        android:layout_height="fill_parent"
+		        android:gravity="center"
+		        android:layout_weight="1.0"
+		        android:background="@drawable/ic_expand_tab">
+		    <LinearLayout
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:gravity="center"
+		        android:background="@drawable/okok">
+		        <ImageView 
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:contentDescription="@null"
+		            android:src="@drawable/ic_expand_queue"/>
+		        <TextView android:id="@+id/queueName"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:text="按距离排序"
+		            android:singleLine="true"
+		            android:textSize="12sp"/>
+		    </LinearLayout>
+		    </LinearLayout>
+			<!-- <com.withiter.quhao.view.expandtab.ExpandTabView 
 			    android:id="@+id/expandtab_view"
 		        android:layout_width="fill_parent"
-		        android:layout_height="fill_parent"/>
+		        android:layout_height="fill_parent"/> -->
 			
 		</LinearLayout>
 		<LinearLayout android:id="@+id/result_layout"
@@ -72,7 +122,7 @@
 		    android:layout_width="fill_parent" 
 		    android:layout_height="match_parent" 
 		    android:background="#ffffffff">
-			<com.withiter.quhao.view.refresh.PullToRefreshView xmlns:android="http://schemas.android.com/apk/res/android" 
+			<!--  --> <com.withiter.quhao.view.refresh.PullToRefreshView xmlns:android="http://schemas.android.com/apk/res/android" 
 		  	    android:id="@+id/main_pull_refresh_view"
 			    android:layout_width="fill_parent"
 			    android:layout_height="fill_parent"
@@ -89,7 +139,7 @@
 		       	    android:listSelector="@drawable/list_item_trans"
 		       	    android:scrollbarThumbVertical="@drawable/scrollbar"
 		       	    android:scrollbars="vertical" />
-			</com.withiter.quhao.view.refresh.PullToRefreshView>
+			<!--  --> </com.withiter.quhao.view.refresh.PullToRefreshView> 
 		</LinearLayout>
 		<LinearLayout android:id="@+id/no_result_layout"
 		    android:orientation="vertical"

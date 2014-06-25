@@ -23,6 +23,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +40,6 @@ import com.withiter.quhao.task.NearbyMerchantsTask;
 import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.ParseJson;
-import com.withiter.quhao.view.expandtab.ExpandTabView;
 import com.withiter.quhao.view.expandtab.ViewLeft;
 import com.withiter.quhao.view.expandtab.ViewRight;
 import com.withiter.quhao.view.refresh.PullToRefreshView;
@@ -47,7 +48,8 @@ import com.withiter.quhao.view.refresh.PullToRefreshView.OnHeaderRefreshListener
 import com.withiter.quhao.vo.Category;
 import com.withiter.quhao.vo.Merchant;
 
-public class NearbyFragment extends Fragment implements AMapLocationListener, OnItemClickListener, OnClickListener, OnHeaderRefreshListener, OnFooterRefreshListener {
+public class NearbyFragment extends Fragment implements AMapLocationListener, OnItemClickListener, OnClickListener, 
+	OnHeaderRefreshListener, OnFooterRefreshListener {
 
 	private LocationManagerProxy mAMapLocationManager = null;
 	
@@ -64,13 +66,13 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 	private AMapLocation firstLocation = null;
 
-	private ExpandTabView expandTabView;
+//	private ExpandTabView expandTabView;
 	private ArrayList<View> mViewArray = new ArrayList<View>();
 	private ViewLeft viewLeft;
 	
 	private ViewRight viewRight;
 
-	private int searchDistence;
+	private String searchDistence;
 
 	private List<String> distanceItems;
 
@@ -100,7 +102,22 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 	private List<Category> categorys;
 	
 	private long time1;
-
+	
+	private LinearLayout categoryLayout;
+	
+	private LinearLayout queueLayout;
+	
+	private TextView categoryNameView;
+	
+	private TextView queueNameView;
+	
+	private PopupWindow popupWindow1;
+	
+	private PopupWindow popupWindow2;
+	
+	private int displayWidth;
+	private int displayHeight;
+	
 	protected Handler unlockHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what == UNLOCK_CLICK) {
@@ -143,8 +160,16 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 		merchantsListView.setNextFocusDownId(R.id.merchantsListView);
 
+		categoryLayout = (LinearLayout) contentView.findViewById(R.id.category_layout);
+		queueLayout = (LinearLayout) contentView.findViewById(R.id.queue_layout);
+		categoryNameView = (TextView) contentView.findViewById(R.id.categoryName);
+		queueNameView = (TextView) contentView.findViewById(R.id.queueName);
+		categoryLayout.setOnClickListener(this);
+		queueLayout.setOnClickListener(this);
+		displayWidth = getActivity().getWindowManager().getDefaultDisplay().getWidth();
+		displayHeight = getActivity().getWindowManager().getDefaultDisplay().getHeight();
 //		initExpandView();
-		expandTabView = (ExpandTabView) contentView.findViewById(R.id.expandtab_view);
+//		expandTabView = (ExpandTabView) contentView.findViewById(R.id.expandtab_view);
 		
 		contentView.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
 		contentView.findViewById(R.id.serverdata).setVisibility(View.GONE);
@@ -240,7 +265,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 		categoryNames = new ArrayList<String>();
 		categoryTypes = new ArrayList<String>();
-		categoryNames.add("全部");
+		categoryNames.add("全部分类");
 		categoryTypes.add("-1");
 		if (categorys!=null && !categorys.isEmpty()) {
 			for (int i = 0; i < categorys.size(); i++) {
@@ -249,61 +274,91 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 			}
 		}
 		
-		categoryType = "";
+		if (StringUtils.isNull(categoryType)) {
+			categoryType = "-1";
+			categoryNameView.setText("全部分类");
+		}
 //		expandTabView = (ExpandTabView) contentView.findViewById(R.id.expandtab_view);
 		viewLeft = new ViewLeft(contentView.getContext(), categoryNames, categoryTypes, categoryType);
-		viewLeft.setShowText("菜系");
-		
-		if (searchDistence == 0) {
-			searchDistence = 3;
-//			distanceItems = new String[] { "1千米", "3千米", "5千米", "10千米", "全城" };// 显示字段
-//			distanceItemsValue = new String[] { "1", "3", "5", "10", "-1" };// 显示字段
-		}
 		
 		distanceItems = new ArrayList<String>();
+		distanceItems.add("全城");
 		distanceItems.add("1千米");
 		distanceItems.add("3千米");
 		distanceItems.add("5千米");
 		distanceItems.add("10千米");
-		distanceItems.add("全城");
 		
 		distanceItemsValue = new ArrayList<String>();
+		distanceItemsValue.add("-1");
 		distanceItemsValue.add("1");
 		distanceItemsValue.add("3");
 		distanceItemsValue.add("5");
 		distanceItemsValue.add("10");
-		distanceItemsValue.add("-1");
 		
-		viewRight = new ViewRight(contentView.getContext(), distanceItems, distanceItemsValue, String.valueOf(searchDistence));
-		viewRight.setShowText("距离");
+		if (StringUtils.isNull(searchDistence)) {
+			searchDistence = "-1";
+			queueNameView.setText("全城");
+		}
+		
+		viewRight = new ViewRight(contentView.getContext(), distanceItems, distanceItemsValue, searchDistence);
 		
 		mViewArray = new ArrayList<View>();
-		mViewArray.add(viewLeft);
-		mViewArray.add(viewRight);
+//		mViewArray.add(viewLeft);
+//		mViewArray.add(viewRight);
 		
-		ArrayList<String> mTextArray = new ArrayList<String>();
-		mTextArray.add("菜系");
-		mTextArray.add("排序");
+//		expandTabView.setValue(mTextArray, mViewArray,imgArray);
+//		expandTabView.setTitle(viewLeft.getShowText(), 0);
+//		expandTabView.setTitle(viewRight.getShowText(), 1);
+		final RelativeLayout viewLeftLayout = new RelativeLayout(this.getActivity());
+		int maxHeight = (int) (displayHeight * 0.5);
+		RelativeLayout.LayoutParams viewLeftParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, maxHeight);
+		viewLeftParams.leftMargin = 10;
+		viewLeftParams.rightMargin = 10;
+		viewLeftLayout.addView(viewLeft, viewLeftParams);
+		if(viewLeftLayout.getParent()!=null) {
+			ViewGroup vg = (ViewGroup) viewLeftLayout.getParent();
+			vg.removeView(viewLeftLayout);
+		}
+		viewLeftLayout.setBackgroundColor(getActivity().getResources().getColor(R.color.popup_main_background));
+		viewLeftLayout.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				onPressBack();
+			}
+		});
+		mViewArray.add(viewLeftLayout);
 		
-		ArrayList<Integer> imgArray = new ArrayList<Integer>();
-		imgArray.add(R.drawable.ic_expand_category);
-		imgArray.add(R.drawable.ic_expand_queue);
+		final RelativeLayout viewRightLayout = new RelativeLayout(this.getActivity());
+		RelativeLayout.LayoutParams viewRightLP = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, maxHeight);
+		viewRightLP.leftMargin = 10;
+		viewRightLP.rightMargin = 10;
+		viewRightLayout.addView(viewRight, viewRightLP);
+		if(viewRightLayout.getParent()!=null) {
+			ViewGroup vg = (ViewGroup) viewRightLayout.getParent();
+			vg.removeView(viewRightLayout);
+		}
+		viewRightLayout.setBackgroundColor(getActivity().getResources().getColor(R.color.popup_main_background));
+		viewRightLayout.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				onPressBack();
+			}
+		});
+		mViewArray.add(viewRightLayout);
 		
-		expandTabView.setValue(mTextArray, mViewArray,imgArray);
-		expandTabView.setTitle(viewLeft.getShowText(), 0);
-		expandTabView.setTitle(viewRight.getShowText(), 1);
-
 		viewLeft.setOnSelectListener(new ViewLeft.OnSelectListener() {
 			@Override
 			public void getValue(String distance, String showText) {
-				onRefresh(viewLeft, showText);
+				onRefresh(0, showText);
 			}
 		});
 		
 		viewRight.setOnSelectListener(new ViewRight.OnSelectListener() {
 			@Override
 			public void getValue(String distance, String showText) {
-				onRefresh(viewRight, showText);
+				onRefresh(1, showText);
 			}
 		});
 	
@@ -367,60 +422,41 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		});*/
 	}
 
-	private void onRefresh(View view, String showText) {
+	private void onRefresh(int position, String showText) {
 		
-		expandTabView.onPressBack();
-		int position = getPositon(view);
-		if (position >= 0 && !expandTabView.getTitle(position).equals(showText)) {
-			expandTabView.setTitle(showText, position);
+//		expandTabView.onPressBack();
+//		int position = getPositon(view);
+		if (position >= 0 && position == 0) {
+			categoryNameView.setText(showText);
+		}
+		
+		if (position >= 0 && position == 1) {
+			queueNameView.setText(showText);
 		}
 
 		if (0 == position) {
 			categoryType = categoryTypes.get(categoryNames.indexOf(showText));
-			if ("-1".equals(categoryType)) {
-				categoryType = "";
+			if (null != popupWindow1 && popupWindow1.isShowing()) {
+				popupWindow1.dismiss();
 			}
 		}
 		else if(1 == position) {
-			searchDistence = Integer.parseInt(distanceItemsValue.get(distanceItems.indexOf(showText)));
+			if (null != popupWindow2 && popupWindow2.isShowing()) {
+				popupWindow2.dismiss();
+			}
+			
+			searchDistence = distanceItemsValue.get(distanceItems.indexOf(showText));
 		}
 		
-//		for (int i = 0; i < distanceItems.size(); i++) {
-//			if (showText.equals(distanceItems.get(i))) {
-//				searchDistence = Integer.valueOf(distanceItemsValue.get(i));
-//				break;
-//			}
-//		}
-		// setPoiSearch();
-		// buildTask();
-//		merchantsListView.setSelectionFromTop(0, 0);// 滑动到第一项
 		page = 1;
-		// isFirstLoad = true;
 		needToLoad = true;
-		// isFirstLocation = false;
-		// firstLocation = null;
-
 		merchantList = new ArrayList<Merchant>();
-		
 		resultLayout.setVisibility(View.VISIBLE);
 		noResultLayout.setVisibility(View.GONE);
 		locationResult.setVisibility(View.GONE);
 		
 		mPullToRefreshView.headerRefreshing();
-		
-//		queryNearbyMerchants();
 
-//		Toast.makeText(getActivity(), showText, Toast.LENGTH_SHORT).show();
-
-	}
-
-	private int getPositon(View tView) {
-		for (int i = 0; i < mViewArray.size(); i++) {
-			if (mViewArray.get(i) == tView) {
-				return i;
-			}
-		}
-		return -1;
 	}
 
 	protected Handler updateMerchantsHandler = new Handler() {
@@ -646,8 +682,14 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 			Toast.makeText(getActivity(), "亲，现在没有定位信息，不能查看哦。", Toast.LENGTH_SHORT).show();
 			return;
 		}
+		
+		String type = categoryType;
+		if ("-1".equals(categoryType)) {
+			type = "";
+		}
+		
 		String url = "getNearMerchants?userX=" + firstLocation.getLongitude() + "&userY=" + firstLocation.getLatitude() + "&cityCode=" + firstLocation.getCityCode()
-				+ "&page=" + page + "&maxDis=" + searchDistence + "&cateType=" + categoryType;
+				+ "&page=" + page + "&maxDis=" + searchDistence + "&cateType=" + type;
 		final NearbyMerchantsTask task = new NearbyMerchantsTask(0, getActivity(), url);
 		task.execute(new Runnable() {
 
@@ -755,9 +797,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 		// 设置已点击标志，避免快速重复点击
 		isClick = true;
-		// 解锁
 		
-
 		switch (v.getId()) {
 		case R.id.location_result:
 			contentView.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
@@ -832,12 +872,97 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 //			}
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;
+		case R.id.category_layout:
+			if (mViewArray == null || mViewArray.isEmpty()) {
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 0);
+				return;
+			}
+			
+			if (popupWindow2 != null && popupWindow2.isShowing()) {
+				popupWindow2.dismiss();
+			}
+			View view = mViewArray.get(0);
+			if(view.getParent()!=null) {
+				group.removeView(view);
+			}
+			if (popupWindow1 == null) {
+				
+				popupWindow1 = new PopupWindow(view, displayWidth, displayHeight);
+				popupWindow1.setAnimationStyle(R.style.PopupWindowAnimation);
+				popupWindow1.setFocusable(false);
+				popupWindow1.setOutsideTouchable(true);
+			}
+			
+			if (!popupWindow1.isShowing()) {
+				popupWindow1.showAsDropDown(categoryLayout);
+//				showPopup(selectPosition);
+			} else {
+//				popupWindow.setOnDismissListener(this);
+				popupWindow1.dismiss();
+//				popupWindow.
+//				hideView();
+			}
+			
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 0);
+			break;
+		case R.id.queue_layout:
+			if (mViewArray == null || mViewArray.isEmpty()) {
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 0);
+				return;
+			}
+			if (popupWindow1 != null && popupWindow1.isShowing()) {
+				popupWindow1.dismiss();
+			}
+			
+			View view2 = mViewArray.get(1);
+			if(view2.getParent()!=null) {
+			
+				group.removeView(view2);
+			}
+			if (popupWindow2 == null) {
+				
+				popupWindow2 = new PopupWindow(view2, displayWidth, displayHeight);
+				popupWindow2.setAnimationStyle(R.style.PopupWindowAnimation);
+				popupWindow2.setFocusable(false);
+				popupWindow2.setOutsideTouchable(true);
+			}
+			
+			if (!popupWindow2.isShowing()) {
+				popupWindow2.showAsDropDown(queueLayout);
+//				showPopup(selectPosition);
+			} else {
+//				popupWindow.setOnDismissListener(this);
+				popupWindow2.dismiss();
+//				popupWindow.
+//				hideView();
+			}
+			
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 0);
+			break;
 		default:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;
 		}
 	}
+	
+	/**
+	 * 如果菜单成展开状态，则让菜单收回去
+	 */
+	public boolean onPressBack() {
+		if (popupWindow1 != null && popupWindow1.isShowing()) {
+			popupWindow1.dismiss();
+			return true;
+		}
+		else if(popupWindow2 != null && popupWindow2.isShowing())
+		{
+			popupWindow2.dismiss();
+			return true;
+		}else {
+			return false;
+		}
 
+	}
+	
 	@Override
 	public void onHeaderRefresh(PullToRefreshView view) {
 		page = 1;
