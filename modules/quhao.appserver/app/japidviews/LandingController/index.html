@@ -57,8 +57,10 @@
 	          <p class="lead">一个聪明的APP，<br/>帮你节省排队时间。</p>
 	          <br/>
 	          <br/>
-          	<div style="float: left;"><img width="160px;" onclick="$('#iphoneModal').modal();" alt="" src="/public/images/home/applestore.png" onmouseover="$(this).attr('src','/public/images/home/applestore_hover.png')" onmouseout="$(this).attr('src','/public/images/home/applestore.png')"></div>
-          	<div style="float: left;"><img width="160px;" alt="" src="/public/images/home/googleplay.png" onmouseover="$(this).attr('src','/public/images/home/googleplay_hover.png')" onmouseout="$(this).attr('src','/public/images/home/googleplay.png')"></div>
+	          <!-- onclick="$('#iphoneModal').modal();" -->
+	          <!-- onclick="$('#androidModal').modal();" -->
+          	<div style="float: left;"><img width="160px;"  alt="" src="/public/images/home/applestore.png" onmouseover="$(this).attr('src','/public/images/home/applestore_hover.png')" onmouseout="$(this).attr('src','/public/images/home/applestore.png')"></div>
+          	<div style="float: left;"><img width="160px;"  alt="" src="/public/images/home/googleplay.png" onmouseover="$(this).attr('src','/public/images/home/googleplay_hover.png')" onmouseout="$(this).attr('src','/public/images/home/googleplay.png')"></div>
 	        </div>
 	      </div>
 	      
@@ -72,7 +74,30 @@
 			      </div>
 			      <div class="modal-body" style="height: 100%;">
 			      	<div class="col-left" style="float: left; width: 50%;">
-			      		<img alt="" align="middle" height="100%" src="/public/images/home/applestore.png">
+			      		<img alt="" align="middle" height="213px;" src="/public/images/home/down_android.png">
+			      	</div>
+			      	<div class="col-right" style="float: right;width: 50%;border-left: 1px solid #d7d7d7;">
+			      		<img align="middle" height="213px;" src="/public/images/home/codeimage_android.png" />
+			      	</div>
+			      </div>
+			      <div class="modal-footer" style="visibility: hidden;">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				        <button type="button" class="btn btn-primary" name="" onclick="Login.login();">登陆</button>
+				  </div>
+			    </div>
+			  </div>
+			</div>
+	      <!-- android Modal -->
+			<div class="modal fade" id="androidModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			        <h4 class="modal-title" id="myModalLabel">选择下载方式</h4>
+			      </div>
+			      <div class="modal-body" style="height: 100%;">
+			      	<div class="col-left" style="float: left; width: 50%;">
+			      		<img alt="" align="middle" height="213px;" src="/public/images/home/down_android.png">
 			      	</div>
 			      	<div class="col-right" style="float: right;width: 50%;border-left: 1px solid #d7d7d7;">
 			      		<img align="middle" height="213px;" src="/public/images/home/codeimage_android.png" />
