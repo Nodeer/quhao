@@ -38,9 +38,9 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:gravity="center"
-            android:text="用户注册"
+            android:text="注册"
             android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="#ff000000" />
+            android:textColor="@color/white" />
     </RelativeLayout>
 
     <ScrollView
@@ -50,11 +50,12 @@
         android:fillViewport="true" >
 
         <LinearLayout
-            android:id="@+id/linear"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffffff"
-            android:orientation="vertical" >
+            android:background="#ffefefef"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp" >
             <TextView
             android:id="@+id/register_result"
             android:layout_width="wrap_content"
@@ -67,15 +68,17 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dip"
             android:layout_marginRight="5dip"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:paddingTop="10dp" >
 			<View android:layout_width="0dip" android:layout_height="0dip" android:focusable="true" android:focusableInTouchMode="true" />
             <TextView
                 android:id="@+id/pannel_login_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/radioPhone" 
+                android:text="@string/phone_number_label" 
                 android:layout_gravity="left|center"
                 android:textSize="17sp"
+                android:textColor="@color/black_little"
                 android:gravity="left|center"/>
 
             <EditText
@@ -87,7 +90,8 @@
                 android:focusableInTouchMode="true"
                 android:inputType="phone"
                 android:paddingLeft="4dip"
-                android:paddingRight="4dip" >
+                android:paddingRight="4dip"
+                android:background="@drawable/phone_number_bg" >
             </EditText>
 
         </LinearLayout>
@@ -97,13 +101,15 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dip"
             android:layout_marginRight="5dip"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:paddingTop="20dp" >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="17sp"
-                android:text="验证码：" />
+                android:text="@string/verify_code_label" 
+                android:textColor="@color/black_little"/>
 
             <LinearLayout
 	            android:layout_width="fill_parent"
@@ -114,17 +120,16 @@
 	                android:layout_width="170dp"
 	                android:layout_height="40dp"
 	                android:inputType="phone"
-	                android:hint="" >
+	                android:hint=""
+	                android:background="@drawable/verify_code_bg" >
 	            </EditText>
 	
 	            <Button
 	                android:id="@+id/verify_code_button"
 	                android:layout_width="wrap_content"
 	                android:layout_height="35dip"
-	                android:background="@drawable/button_background_blue"
-	                android:textSize="14sp"
-            		android:textAppearance="?android:textAppearanceMediumInverse"
-	                android:text="获取验证码" >
+	                android:layout_marginLeft="10dp"
+	                android:background="@drawable/get_verify_code_bg">
 	            </Button>
             </LinearLayout>
         </LinearLayout>
@@ -134,14 +139,16 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dip"
             android:layout_marginRight="5dip"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:paddingTop="20dp" >
 
             <TextView
                 android:id="@+id/pannel_login_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="17sp"
-                android:text="@string/radioPassword" />
+                android:text="@string/password_label"
+                android:textColor="@color/black_little" />
 
             <EditText
                 android:id="@+id/edit_pass"
@@ -150,7 +157,8 @@
                 android:ems="10"
                 android:inputType="textPassword"
                 android:paddingLeft="4dip"
-                android:paddingRight="4dip" >
+                android:paddingRight="4dip"
+                android:background="@drawable/password_bg" >
 
             </EditText>
 
@@ -160,13 +168,15 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dip"
             android:layout_marginRight="5dip"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:paddingTop="20dp" >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="17sp"
-                android:text="确认密码：" />
+                android:text="@string/password2_label"
+                android:textColor="@color/black_little" />
 
             <EditText
                 android:id="@+id/edit_pass_2"
@@ -175,7 +185,8 @@
                 android:hint=""
                 android:inputType="textPassword"
                 android:paddingLeft="4dip"
-                android:paddingRight="4dip">
+                android:paddingRight="4dip"
+                android:background="@drawable/password_bg">
             </EditText>
         </LinearLayout>
         <LinearLayout
@@ -192,7 +203,7 @@
 	            android:src="@drawable/checkbox_on"/>
 	        <TextView android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:text="我已看过并同意取号啦"
+	            android:text="同意取号啦"
 	            android:paddingLeft="5dip"/>
 	        <TextView android:id="@+id/user_agreement" 
 	            android:layout_width="wrap_content"
@@ -213,12 +224,12 @@
 	            android:layout_width="fill_parent"
 	            android:layout_height="35dip"
 	            android:text="@string/register_3space"
-	            android:background="@drawable/button_background_blue"
+	            android:background="@drawable/btn_background_red"
 	            android:gravity="center"
 	            android:layout_gravity="center"
+	            android:textColor="@color/white"
 	            android:textAppearance="?android:textAppearanceMediumInverse"
-	            android:textColor="#ff000000"
-	            android:textSize="14.0sp" 
+	            android:textSize="17.0sp" 
 	            />
 	        <!-- register button -->
         </LinearLayout>

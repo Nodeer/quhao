@@ -41,7 +41,7 @@
             android:gravity="center"
             android:text="用户登录"
             android:textAppearance="?android:textAppearanceMedium"
-            android:textColor="#ff000000" />
+            android:textColor="@color/white" />
     </RelativeLayout>
 
     <ScrollView
@@ -55,7 +55,10 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:gravity="top|center"
-	        android:orientation="vertical" >
+	        android:orientation="vertical"
+	        android:background="#ffefefef"
+	        android:paddingLeft="10dp"
+	        android:paddingRight="10dp" >
 	
 	        <TextView
 	            android:id="@+id/person_center_login_result"
@@ -77,14 +80,16 @@
 	                android:id="@+id/pannel_login_name"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:textSize="17sp"
-	                android:text="@string/radioPhone" />
+	                android:textSize="18sp"
+	                android:text="@string/phone_number_label"
+	                android:textColor="@color/black_little" />
 				<View android:layout_width="0dip" android:layout_height="0dip" android:focusable="true" android:focusableInTouchMode="true" />
 	            <EditText
 	                android:id="@+id/login_name"
 	                android:layout_width="fill_parent"
 	                android:layout_height="wrap_content"
 	                android:hint=""
+	                android:background="@drawable/phone_number_bg"
 	                android:inputType="phone"
 	                android:paddingLeft="4dip"
 	                android:paddingRight="4dip"
@@ -95,14 +100,17 @@
 	                android:id="@+id/pannel_login_password"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:textSize="17sp"
-	                android:text="@string/radioPassword" />
+	                android:layout_marginTop="20dp"
+	                android:textSize="18sp"
+	                android:text="@string/password_label"
+	                android:textColor="@color/black_little" />
 	
 	            <EditText
 	                android:id="@+id/edit_pass"
 	                android:layout_width="fill_parent"
 	                android:layout_height="wrap_content"
 	                android:hint=""
+	                android:background="@drawable/password_bg"
 	                android:inputType="textPassword"
 	                android:paddingLeft="4dip"
 	                android:paddingRight="4dip"
@@ -113,7 +121,8 @@
 		        android:layout_width="fill_parent"
 			    android:layout_height="wrap_content"
 		        android:orientation="horizontal"
-				android:layout_marginLeft="5dip">
+				android:layout_marginLeft="5dip"
+				android:paddingTop="20dp">
 		
 		        <TextView
 		            android:layout_width="wrap_content"
@@ -140,48 +149,41 @@
 	            android:layout_width="fill_parent"
 	            android:layout_height="40dip"
 	            android:layout_marginTop="8dip"
-	            android:orientation="horizontal"
-	            android:paddingLeft="50dip"
-	            android:paddingRight="25dip" >
+	            android:orientation="horizontal">
 
-	            <LinearLayout
-		            android:layout_width="wrap_content"
-		            android:layout_height="40dip"
-		            android:orientation="horizontal"
-		            android:layout_weight="1"
-		            android:gravity="left|center_vertical" >
-					<!-- login button -->
-			        <Button
-			            android:id="@+id/login"
-			            android:layout_width="wrap_content"
-			            android:layout_height="35dip"
-			            android:background="@drawable/button_background_blue"
-			            android:text="@string/login_3space"
-			            android:layout_gravity="left|center_vertical"
-			            android:textAppearance="?android:textAppearanceMediumInverse"
-			            android:textColor="#ff000000"
-			            android:textSize="14.0sp" 
-			            />
-			         <!-- login button -->
-		        </LinearLayout>
-		       <LinearLayout
-		            android:layout_width="wrap_content"
-		            android:layout_height="40dip"
-		            android:layout_weight="1"
-		            android:orientation="horizontal"
-		            android:paddingLeft="50dip"
-		            android:gravity="right|center_vertical" >
-		            <Button
-					    android:id="@+id/forgetPassword"
-					    android:layout_width="wrap_content"
-					    android:layout_height="35dip"
-					    android:background="@drawable/button_background_blue"
-					    android:text="忘记密码?"
-					    android:layout_gravity="right|center_vertical"
-					    android:textAppearance="?android:textAppearanceMediumInverse"
-					    android:textColor="#ff000000"
-					    android:textSize="14.0sp" />
-	            </LinearLayout>
+				<!-- login button -->
+		        <Button
+		            android:id="@+id/login"
+		            android:layout_width="fill_parent"
+		            android:layout_height="50dp"
+		            android:background="@drawable/btn_background_red"
+		            android:text="@string/login_3space"
+		            android:layout_gravity="left|center_vertical"
+		            android:textAppearance="?android:textAppearanceMediumInverse"
+		            android:textColor="@color/white"
+		            android:textSize="18.0sp" 
+		            />
+	        </LinearLayout>
+	        
+	        <LinearLayout
+	            android:id="@+id/linebar"
+	            android:layout_width="fill_parent"
+	            android:layout_height="40dip"
+	            android:layout_marginTop="8dip"
+	            android:orientation="horizontal"
+	            android:paddingRight="25dip" 
+	            android:gravity="right">
+
+	            <Button
+				    android:id="@+id/forgetPassword"
+				    android:layout_width="wrap_content"
+				    android:layout_height="35dip"
+				    android:background="@color/no_color"
+				    android:text="忘记密码?"
+				    android:layout_gravity="right|center_vertical"
+				    android:textAppearance="?android:textAppearanceMediumInverse"
+				    android:textColor="@color/blue_text"
+				    android:textSize="14.0sp" />
 	        </LinearLayout>
 	    </LinearLayout>
     </ScrollView>
