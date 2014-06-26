@@ -82,6 +82,8 @@ public class CitySelectActivity extends QuhaoBaseActivity implements AMapLocatio
 	private TextView locateMsg;
 	private CityInfo locateCity;
 	private AMapLocation location;
+	
+	private Button reLocateBtn;
 
 	private Handler locationHandler = new Handler();
 
@@ -97,6 +99,9 @@ public class CitySelectActivity extends QuhaoBaseActivity implements AMapLocatio
 		cancelBtn = (Button) this.findViewById(R.id.cancel_btn);
 		cancelBtn.setOnClickListener(this);
 
+		reLocateBtn = (Button) this.findViewById(R.id.relocate);
+		reLocateBtn.setOnClickListener(this);
+		
 		locateMsg = (TextView) this.findViewById(R.id.locate_message);
 		locateMsg.setText("正在定位中...");
 		locateMsg.setOnClickListener(this);
@@ -120,6 +125,7 @@ public class CitySelectActivity extends QuhaoBaseActivity implements AMapLocatio
 			if (location == null) {
 //				Toast.makeText(CitySelectActivity.this, "亲，定位失败，请检查网络状态！", Toast.LENGTH_SHORT).show();
 				locateMsg.setText("定位失败，请手动选择城市");
+				reLocationBtnHandler.obtainMessage(200, "true").sendToTarget();
 				stopLocation();// 销毁掉定位
 			}
 		}
@@ -259,10 +265,12 @@ public class CitySelectActivity extends QuhaoBaseActivity implements AMapLocatio
 					} else {
 //						locateMsg.setText("网络未开启...");
 						locateMsgHandler.obtainMessage(200, "网络未开启...").sendToTarget();
+						reLocationBtnHandler.obtainMessage(200, "true").sendToTarget();
 					}
 
 				} catch (Exception e) {
 					locateMsgHandler.obtainMessage(200, "定位失败，请手动选择城市").sendToTarget();
+					reLocationBtnHandler.obtainMessage(200, "true").sendToTarget();
 				}
 				finally
 				{
@@ -339,6 +347,23 @@ public class CitySelectActivity extends QuhaoBaseActivity implements AMapLocatio
 		}
 	};
 	
+	protected Handler reLocationBtnHandler = new Handler() {
+		public void handleMessage(Message msg) {
+			if (msg.what == 200) {
+				String message = (String) msg.obj;
+				if ("true".equals(message)) {
+					reLocateBtn.setEnabled(true);
+					reLocateBtn.setBackgroundResource(R.drawable.btn_background_red);
+				}
+				else
+				{
+					reLocateBtn.setEnabled(false);
+					reLocateBtn.setBackgroundResource(R.drawable.btn_background_red_disable);
+				}
+			}
+		}
+	};
+	
 	@Override
 	public void onClick(View v) {
 		if (isClick) {
@@ -357,6 +382,57 @@ public class CitySelectActivity extends QuhaoBaseActivity implements AMapLocatio
 			intent.setClass(this, CitySearchActivity.class);
 			startActivity(intent);
 			this.finish();
+			break;
+		case R.id.relocate:
+			unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+			
+			Thread requestLocation = new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+					Looper.prepare();
+					try {
+						
+						if (ActivityUtil.isNetWorkAvailable(CitySelectActivity.this)) {
+							
+							if (mAMapLocationManager != null) {
+								mAMapLocationManager.removeUpdates(CitySelectActivity.this);
+								mAMapLocationManager.destory();
+								locationHandler.removeCallbacks(locationRunnable);
+							}
+							mAMapLocationManager = null;
+
+							mAMapLocationManager = LocationManagerProxy
+									.getInstance(CitySelectActivity.this);
+							/*
+							 * mAMapLocManager.setGpsEnable(false);//
+							 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
+							 */
+							// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
+							mAMapLocationManager.requestLocationUpdates(
+									LocationProviderProxy.AMapNetwork, 10000, 100,
+									CitySelectActivity.this);
+							locationHandler.postDelayed(locationRunnable, 60000);// 设置超过12秒还没有定位到就停止定位
+							locateMsgHandler.obtainMessage(200, "请稍等...").sendToTarget();
+							reLocationBtnHandler.obtainMessage(200, "false").sendToTarget();
+							
+						} else {
+//							locateMsg.setText("网络未开启...");
+							locateMsgHandler.obtainMessage(200, "网络未开启...").sendToTarget();
+							reLocationBtnHandler.obtainMessage(200, "true").sendToTarget();
+						}
+
+					} catch (Exception e) {
+						locateMsgHandler.obtainMessage(200, "定位失败，请手动选择城市").sendToTarget();
+						reLocationBtnHandler.obtainMessage(200, "true").sendToTarget();
+					}
+					finally
+					{
+						Looper.loop();
+					}
+				}
+			});
+			requestLocation.start();
 			break;
 		case R.id.locate_message:
 			if (locateCity != null) {
@@ -518,6 +594,7 @@ public class CitySelectActivity extends QuhaoBaseActivity implements AMapLocatio
 			locateCity = new CityInfo(location.getCityCode(), cityName, "");
 //			locateMsg.setText("定位城市：" + cityName);
 			locateMsgHandler.obtainMessage(200, "定位城市：" + cityName).sendToTarget();
+			reLocationBtnHandler.obtainMessage(200, "true").sendToTarget();
 		} else {
 			if (mAMapLocationManager != null) {
 				mAMapLocationManager.removeUpdates(this);
@@ -527,6 +604,7 @@ public class CitySelectActivity extends QuhaoBaseActivity implements AMapLocatio
 			mAMapLocationManager = null;
 //			locateMsg.setText("定位失败...");
 			locateMsgHandler.obtainMessage(200, "定位失败，请手动选择城市").sendToTarget();
+			reLocationBtnHandler.obtainMessage(200, "true").sendToTarget();
 		}
 	}
 }

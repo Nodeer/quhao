@@ -51,13 +51,19 @@
         android:background="#ffffffff"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="10dip"
-        android:visibility="gone">
+        android:padding="10dip">
 
+	    <!-- 
         <ProgressBar
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
+            android:layout_height="wrap_content" /> -->
+            
+		<com.withiter.quhao.view.gif.CustomGifView
+			android:layout_width="140dp" 
+			android:layout_height="140dp"
+			android:contentDescription="@null"
+			android:background="@color/red"/>
+					
         <View
             android:layout_width="12dip"
             android:layout_height="12dip" />
@@ -74,7 +80,8 @@
         android:layout_height="0dip"
         android:layout_weight="1.0" 
         android:orientation="vertical"
-        android:fadingEdge="none">
+        android:fadingEdge="none"
+        android:visibility="gone">
 
         <LinearLayout android:id="@+id/expand_tab_layout"
 		    android:orientation="horizontal"

@@ -196,8 +196,8 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 				}
 
 				merchantAdapter.notifyDataSetChanged();
-				findViewById(R.id.loadingbar).setVisibility(View.GONE);
-				findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
+//				findViewById(R.id.loadingbar).setVisibility(View.GONE);
+//				findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
 				
 				if (null == merchants ||merchants.isEmpty()) {
 					Toast.makeText(MerchantListActivity.this, R.string.no_result_found, Toast.LENGTH_SHORT).show();
