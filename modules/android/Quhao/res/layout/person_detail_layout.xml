@@ -45,7 +45,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="#ffffffff"
-        android:orientation="vertical" >
+        android:orientation="vertical" 
+        android:padding="10dp">
 
         <!-- current/history quhao, history jifen
         <LinearLayout android:id="@+id/photoLayout"
@@ -87,11 +88,13 @@
                 android:src="@drawable/arrow_right" />
         </LinearLayout> -->
         
+        
+        
         <!-- current/history quhao, history jifen -->
-        <LinearLayout android:id="@+id/nick_name_layout"
+        <LinearLayout android:id="@+id/jifen_instruction_layout"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/list_selector"
+            android:layout_height="42dp"
+            android:background="@drawable/form_border_top"
             android:clickable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -104,33 +107,32 @@
                 android:contentDescription="@null"
                 android:duplicateParentState="true"
                 android:paddingRight="6.0dip"
-                android:src="@drawable/person_detail_nickname" />
+                android:src="@drawable/person_detail_jifen_ins" />
             
-            <TextView android:id="@+id/nick_name"
-                android:layout_width="0dp"
+            <TextView
+                android:layout_width="0.0px"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1.0"
-                android:duplicateParentState="true"
-                android:paddingRight="6.0dip"
-                android:textSize="16sp"
                 android:layout_marginLeft="6.0dip"
-                android:text="@string/empty" />
-            
+                android:layout_weight="1.0"
+                android:maxLines="2"
+                android:paddingRight="6.0dip"
+                android:text="@string/jifen_layout_menul"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="#ff000000"
+                android:textSize="16.0sp" />
+
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@null"
                 android:duplicateParentState="true"
                 android:src="@drawable/arrow_right" />
         </LinearLayout>
-        
-        <!-- current/history quhao, history jifen -->
         <LinearLayout android:id="@+id/current_jifen_layout"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/list_selector"
+            android:layout_height="42dp"
+            android:background="@drawable/form_border_bottom"
             android:clickable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -167,53 +169,14 @@
                 android:text="@string/empty" />
             
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@null"
                 android:duplicateParentState="true"
                 android:src="@drawable/arrow_right" />
         </LinearLayout>
 
-        <LinearLayout android:id="@+id/jifen_instruction_layout"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/list_selector"
-            android:clickable="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="10.0dip" >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:contentDescription="@null"
-                android:duplicateParentState="true"
-                android:paddingRight="6.0dip"
-                android:src="@drawable/person_detail_jifen_ins" />
-            
-            <TextView
-                android:layout_width="0.0px"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="6.0dip"
-                android:layout_weight="1.0"
-                android:maxLines="2"
-                android:paddingRight="6.0dip"
-                android:text="@string/jifen_layout_menul"
-                android:textAppearance="?android:textAppearanceMedium"
-                android:textColor="#ff000000"
-                android:textSize="16.0sp" />
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_vertical"
-                android:contentDescription="@null"
-                android:duplicateParentState="true"
-                android:src="@drawable/arrow_right" />
-        </LinearLayout>
-        
         <!-- 
         <LinearLayout android:id="@+id/usual_city_layout"
             android:layout_width="fill_parent"
@@ -293,10 +256,49 @@
                 android:src="@drawable/arrow_right" />
         </LinearLayout>
  		-->
+ 		<!-- current/history quhao, history jifen -->
+        <LinearLayout android:id="@+id/nick_name_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="42dp"
+            android:background="@drawable/form_border_top"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:padding="10.0dip" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@null"
+                android:duplicateParentState="true"
+                android:paddingRight="6.0dip"
+                android:src="@drawable/person_detail_nickname" />
+            
+            <TextView android:id="@+id/nick_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1.0"
+                android:duplicateParentState="true"
+                android:paddingRight="6.0dip"
+                android:textSize="16sp"
+                android:layout_marginLeft="6.0dip"
+                android:text="@string/empty" />
+            
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@null"
+                android:duplicateParentState="true"
+                android:src="@drawable/arrow_right" />
+        </LinearLayout>
         <LinearLayout android:id="@+id/update_password_layout"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/list_selector"
+            android:layout_height="42dp"
+            android:background="@drawable/form_border_bottom"
             android:clickable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -324,21 +326,12 @@
                 android:textSize="16.0sp" />
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@null"
                 android:duplicateParentState="true"
                 android:src="@drawable/arrow_right" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/background_line"
-            android:clickable="true"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="10.0dip" >
         </LinearLayout>
     </LinearLayout>
 
