@@ -386,6 +386,19 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 	@Override
 	public void onBackPressed() {
 		
+		if (null != popupWindow1 && popupWindow1.isShowing()) {
+			popupWindow1.dismiss();
+			return;
+		}
+		else if(null != popupWindow2 && popupWindow2.isShowing())
+		{
+			popupWindow2.dismiss();
+			return;
+		}
+		else
+		{
+			finish();
+		}
 	}
 	
 	private int getPositon(View tView) {

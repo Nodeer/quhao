@@ -366,8 +366,9 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 								}
 								if(currentHour<openHour || currentHour>closeHour)
 								{
-									// TODO wjzwjz 缺少取号按钮 disable样式
 									btnGetNumber.setEnabled(false);
+									btnGetNumber.setBackgroundResource(R.drawable.btn_background_red_disable);
+									btnGetNumber.setText("商家离线");
 								}
 								else
 								{
@@ -377,8 +378,9 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 							}
 							else
 							{
-								// TODO wjzwjz 缺少取号按钮 disable样式
 								btnGetNumber.setEnabled(false);
+								btnGetNumber.setBackgroundResource(R.drawable.btn_background_red_disable);
+								btnGetNumber.setText("商家离线");
 							}
 							
 							btnOpen.setVisibility(View.GONE);
@@ -398,9 +400,9 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 									reservationListView.setLayoutParams(reservationsParams);
 									reservationListView.invalidate();
 
-									// TODO wjzwjz 缺少取号按钮 disable样式
 									btnGetNumber.setEnabled(false);
-
+									btnGetNumber.setBackgroundResource(R.drawable.btn_background_red_disable);
+									btnGetNumber.setText("已取号");
 									reservationAdapter = new ReservationAdapter(MerchantDetailActivity.this, reservationListView, rvos);
 									reservationListView.setAdapter(reservationAdapter);
 									reservationAdapter.notifyDataSetChanged();

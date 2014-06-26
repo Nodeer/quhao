@@ -102,7 +102,7 @@
 		        <TextView android:id="@+id/categoryName"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:text="本帮菜"
+		            android:text="全部分类"
 		            android:singleLine="true"
 		            android:textSize="12sp"/>
 		    </LinearLayout>
@@ -126,7 +126,7 @@
 		        <TextView android:id="@+id/queueName"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:text="按距离排序"
+		            android:text="默认排序"
 		            android:singleLine="true"
 		            android:textSize="12sp"/>
 		    </LinearLayout>

@@ -215,7 +215,7 @@
                         android:paddingRight="10dip"
                         android:textAppearance="?android:textAppearanceMediumInverse"
                         android:textColor="@color/white"
-                        android:textSize="11.0sp" />
+                        android:textSize="15.0sp" />
                     <!-- 取号按钮 -->
                 </LinearLayout>
             </LinearLayout>
@@ -374,7 +374,6 @@
                 android:id="@+id/youhui"
                 android:layout_width="0.0px"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="6.0dip"
                 android:layout_weight="1.0"
                 android:maxLines="2"
                 android:paddingRight="6.0dip"
@@ -412,8 +411,8 @@
                 android:orientation="horizontal" >
 
                 <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:contentDescription="@string/empty"
                     android:src="@drawable/ic_address_big" />
 
@@ -469,8 +468,8 @@
                 android:orientation="horizontal" >
 
                 <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:contentDescription="@string/empty"
                     android:src="@drawable/ic_phone_big" />
 
@@ -527,8 +526,8 @@
                 android:orientation="horizontal" >
 
                 <ImageView
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:contentDescription="@string/empty"
                     android:src="@drawable/ic_clock_big" />
 
@@ -643,7 +642,6 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:baselineAligned="true"
-                    android:clickable="true"
                     android:gravity="center_vertical"
                     android:orientation="horizontal" >
 
@@ -651,7 +649,6 @@
 					<LinearLayout
 	                    android:layout_width="0dp"
 	                    android:layout_height="wrap_content"
-	                    android:clickable="true"
 	                    android:gravity="center_vertical"
 	                    android:layout_weight="1.0"
 	                    android:orientation="vertical" >

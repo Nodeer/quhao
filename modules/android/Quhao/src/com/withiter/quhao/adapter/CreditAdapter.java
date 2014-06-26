@@ -105,7 +105,7 @@ public class CreditAdapter extends BaseAdapter {
 			}
 			// 取消号码增加积分
 			if ("canceled".equals(credit.status)) {
-				String html="<html><body>取消号码,系统返还<font color=\"#f8bd09\">1</font>积分。"  
+				String html="<html><body>取消号码,系统返还<big><font color=\"#f8bd09\">1</font></big>积分。"  
 			            +"</body></html>";  
 			      
 				holder.desc.setMovementMethod(ScrollingMovementMethod.getInstance());//滚动  
@@ -114,7 +114,7 @@ public class CreditAdapter extends BaseAdapter {
 			
 			// 取号消费积分
 			if ("getNumber".equals(credit.status)) {
-				String html="<html><body>取号,减少<font color=\"#f8bd09\">1</font>积分。"  
+				String html="<html><body>取号,减少<big><font color=\"#f8bd09\">1</font></big>积分。"  
 			            +"</body></html>";  
 			      
 				holder.desc.setMovementMethod(ScrollingMovementMethod.getInstance());//滚动  
@@ -123,7 +123,7 @@ public class CreditAdapter extends BaseAdapter {
 
 			// 完成消费返还积分
 			if ("finished".equals(credit.status)) {
-				String html="<html><body>消费成功,获得<font color=\"#f8bd09\">1</font>积分。"  
+				String html="<html><body>消费成功,获得<big><font color=\"#f8bd09\">1</font></big>积分。"  
 			            +"</body></html>";  
 			      
 				holder.desc.setMovementMethod(ScrollingMovementMethod.getInstance());//滚动  
@@ -132,7 +132,7 @@ public class CreditAdapter extends BaseAdapter {
 			
 			// 评论增加积分
 			if ("comment".equals(credit.status)) {
-				String html="<html><body>评论,增加<font color=\"#f8bd09\">1</font>积分。"  
+				String html="<html><body>评论,增加<big><font color=\"#f8bd09\">1</font></big>积分。"  
 			            +"</body></html>";  
 			      
 				holder.desc.setMovementMethod(ScrollingMovementMethod.getInstance());//滚动  
@@ -141,7 +141,7 @@ public class CreditAdapter extends BaseAdapter {
 
 			if ("exchange".equals(credit.status)) {
 				holder.merchantName.setText("亲，恭喜！");
-				String html="<html><body>签到满5次,获得<font size=\"30\" color=\"#f8bd09\">1</font>积分。"  
+				String html="<html><body>签到满5次,获得<big><font color=\"#f8bd09\">1</font></big>积分。"  
 			            +"</body></html>";  
 			    
 				holder.desc.setMovementMethod(ScrollingMovementMethod.getInstance());//滚动  

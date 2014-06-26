@@ -166,6 +166,13 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 			grade = (int) gradeRatingbar.getRating();
 //			float gradeAvg = (kouwei + huanjing + fuwu + xingjiabi)/4;
 //			int grade = Math.round(gradeAvg);
+			if(StringUtils.isNull(averageCost))
+			{
+				Toast.makeText(CreateCommentActivity.this, "亲，请填写人均消费。", Toast.LENGTH_SHORT).show();
+				unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+				return;
+			}
+			
 			if(kouwei == 0|| huanjing == 0|| fuwu == 0|| xingjiabi == 0|| grade == 0)
 			{
 				Toast.makeText(CreateCommentActivity.this, "亲，评分都要选哦。", Toast.LENGTH_SHORT).show();
@@ -173,13 +180,13 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 				return;
 			}
 			
-			if(StringUtils.isNull(averageCost))
+			if(StringUtils.isNull(comment))
 			{
-				Toast.makeText(CreateCommentActivity.this, "亲，请填写人均消费。", Toast.LENGTH_SHORT).show();
+				Toast.makeText(CreateCommentActivity.this, "亲，要填写评论内容哦。", Toast.LENGTH_SHORT).show();
 				unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
 				return;
 			}
-		
+			
 			if (!ActivityUtil.isNetWorkAvailable(CreateCommentActivity.this)) {
 				Toast.makeText(CreateCommentActivity.this, R.string.network_error_info, Toast.LENGTH_SHORT).show();
 				unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
