@@ -816,6 +816,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 							mAMapLocationManager = LocationManagerProxy
 									.getInstance(getActivity());
+							
 							/*
 							 * mAMapLocManager.setGpsEnable(false);//
 							 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true

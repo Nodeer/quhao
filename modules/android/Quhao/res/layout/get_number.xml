@@ -83,7 +83,7 @@
         <Button
             android:id="@+id/btn_GetNumber"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_gravity="center_vertical|center_vertical"
             android:background="@drawable/btn_background_red"
             android:text="@string/quhao"

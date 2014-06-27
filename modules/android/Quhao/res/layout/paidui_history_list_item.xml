@@ -98,12 +98,11 @@
 	             <TextView android:id="@+id/date"
 	                 android:layout_width="wrap_content"
 	                 android:layout_height="wrap_content"
-	                 android:layout_marginLeft="3.0dip"
 	                 android:layout_marginTop="3.0dip"
 	                 android:singleLine="true"
 	                 android:text="2014-06-20 11:12:12"
 	                 android:textAppearance="?android:textAppearanceMedium"
-	                 android:textColor="#ff000000"
+	                 android:textColor="@color/black_little"
 	                 android:textSize="13.0sp" />
 	
         	</LinearLayout>
@@ -124,10 +123,11 @@
                  android:layout_height="wrap_content"
                  android:layout_marginLeft="3.0dip"
                  android:layout_marginTop="3.0dip"
+                 android:layout_gravity="bottom"
                  android:singleLine="true"
                  android:text="过期号码不能评价"
                  android:textAppearance="?android:textAppearanceMedium"
-                 android:textColor="#ff000000"
+                 android:textColor="@color/black_little"
                  android:textSize="12.0sp" />
         </LinearLayout>
     </LinearLayout>

@@ -102,8 +102,8 @@
                     android:textSize="14sp" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:adjustViewBounds="true"
                     android:contentDescription="@string/empty"
                     android:src="@drawable/arrow_right" 
@@ -140,8 +140,8 @@
                     android:textSize="14sp" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:adjustViewBounds="true"
                     android:contentDescription="@string/empty"
                     android:src="@drawable/arrow_right"
@@ -177,8 +177,8 @@
                     android:textSize="14sp" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:adjustViewBounds="true"
                     android:contentDescription="@string/empty"
                     android:src="@drawable/arrow_right"
@@ -215,8 +215,8 @@
                     android:textSize="14sp" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:adjustViewBounds="true"
                     android:contentDescription="@string/empty"
                     android:src="@drawable/arrow_right" 
@@ -252,8 +252,8 @@
                     android:textSize="14sp" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:adjustViewBounds="true"
                     android:contentDescription="@string/empty"
                     android:src="@drawable/arrow_right"
@@ -289,8 +289,8 @@
                     android:textSize="14sp" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:adjustViewBounds="true"
                     android:contentDescription="@string/empty"
                     android:src="@drawable/arrow_right"
@@ -326,8 +326,8 @@
                     android:textSize="14sp" />
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:adjustViewBounds="true"
                     android:contentDescription="@string/empty"
                     android:src="@drawable/arrow_right"

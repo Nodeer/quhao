@@ -9,7 +9,7 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="50dip"
-        android:background="@drawable/common_top_bar_green"
+        android:background="@drawable/common_top_bar_bg_blue3"
         android:gravity="center_vertical"
         android:paddingBottom="5dip"
         android:paddingLeft="5dip"
@@ -61,8 +61,7 @@
 		<com.withiter.quhao.view.gif.CustomGifView
 			android:layout_width="140dp" 
 			android:layout_height="140dp"
-			android:contentDescription="@null"
-			android:background="@color/red"/>
+			android:contentDescription="@null"/>
 					
         <View
             android:layout_width="12dip"

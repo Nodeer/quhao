@@ -112,7 +112,9 @@ public class CreateCommentActivity extends QuhaoBaseActivity implements OnRating
 					xingjiabiRatingBar.setRating(commentVO.xingjiabi);
 					gradeRatingbar.setRating(commentVO.grade);
 					avgCostEdit.setText(commentVO.averageCost);
+					avgCostEdit.clearFocus();
 					commentEdit.setText(commentVO.content);
+					commentEdit.clearFocus();
 				}
 				else
 				{

@@ -22,14 +22,22 @@
             android:layout_marginTop="10dip"
             >
 
+            <!-- 
             <ProgressBar
                 android:id="@+id/pull_to_refresh_progress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:indeterminate="true"
                 android:indeterminateOnly="true"
-                android:visibility="gone" />
+                android:visibility="gone" /> -->
 
+            <com.withiter.quhao.view.gif.CustomGifView
+                android:id="@+id/pull_to_refresh_progress"
+				android:layout_width="140dp" 
+				android:layout_height="140dp"
+				android:contentDescription="@null"
+				android:visibility="gone"/>
+	            
             <ImageView
                 android:id="@+id/pull_to_refresh_image"
                 android:layout_width="wrap_content"

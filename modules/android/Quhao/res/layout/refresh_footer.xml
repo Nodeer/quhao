@@ -6,7 +6,8 @@
     android:gravity="center"
     android:background="@android:color/white"
      >
-	<ProgressBar
+     <!-- 
+		<ProgressBar
 	        android:id="@+id/pull_to_load_progress"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
@@ -16,6 +17,16 @@
 	        android:indeterminate="true"
 	        android:visibility="gone" />
 	
+		
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" /> -->
+            
+		<com.withiter.quhao.view.gif.CustomGifView
+		    android:id="@+id/pull_to_load_progress"
+			android:layout_width="140dp" 
+			android:layout_height="140dp"
+			android:contentDescription="@null"/>
 	    <ImageView
 	        android:id="@+id/pull_to_load_image"
 	        android:layout_width="wrap_content"

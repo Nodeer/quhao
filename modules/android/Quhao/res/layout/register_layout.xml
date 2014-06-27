@@ -113,8 +113,9 @@
 	            android:orientation="horizontal" >
 	            <EditText
 	                android:id="@+id/verify_code"
-	                android:layout_width="170dp"
+	                android:layout_width="0dp"
 	                android:layout_height="40dp"
+	                android:layout_weight="1.0"
 	                android:inputType="phone"
 	                android:hint=""
 	                android:background="@drawable/verify_code_bg" >

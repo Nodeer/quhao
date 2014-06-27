@@ -151,13 +151,13 @@
 		        <Button
 		            android:id="@+id/login"
 		            android:layout_width="fill_parent"
-		            android:layout_height="50dp"
+		            android:layout_height="35dip"
 		            android:background="@drawable/btn_background_red"
 		            android:text="@string/login_3space"
 		            android:layout_gravity="left|center_vertical"
 		            android:textAppearance="?android:textAppearanceMediumInverse"
 		            android:textColor="@color/white"
-		            android:textSize="18.0sp" 
+		            android:textSize="17.0sp" 
 		            />
 	        </LinearLayout>
 	        

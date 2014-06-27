@@ -1,5 +1,7 @@
 package com.withiter.quhao.activity;
 
+import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -319,8 +321,29 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 							youhuiView.setText(R.string.no_youhui_info);
 						}
 						
-						merchantAverageCost.setText(m.averageCost);
-						zongtipingjia.setText(String.valueOf(m.grade));
+						if (StringUtils.isNull(m.averageCost)) {
+							m.grade = "0.0";
+							merchantAverageCost.setText(m.averageCost);
+						}
+						else
+						{
+							BigDecimal bd = new BigDecimal(m.averageCost);
+							bd = bd.setScale(2,BigDecimal.ROUND_HALF_UP);  
+							merchantAverageCost.setText(bd.floatValue() + "");
+							
+						}
+						
+						if (StringUtils.isNull(m.grade)) {
+							m.grade = "0.0";
+							zongtipingjia.setText(m.grade);
+						}
+						else
+						{
+							BigDecimal bd = new BigDecimal(m.grade);
+							bd = bd.setScale(2,BigDecimal.ROUND_HALF_UP);  
+					        zongtipingjia.setText(bd.floatValue() + "");
+							
+						}
 	
 						// comment layout
 						critiqueLayout = (LinearLayout) info.findViewById(R.id.critiqueLayout);

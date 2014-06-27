@@ -18,7 +18,7 @@ public class CustomGifView extends View
 	
 	public CustomGifView(Context context,AttributeSet attributeSet) 
 	{
-		super(context);
+		super(context, attributeSet);
 		mMovie = Movie.decodeStream(getResources().openRawResource(R.drawable.loading));
 	}
 

@@ -9,7 +9,6 @@ import android.view.MotionEvent;
 
 public class MyViewPager extends ViewPager implements OnGestureListener{
 
-	/** ÊÖÊÆ»¬¶¯´¦ÀíÀà   **/
 	private GestureDetector mDetector;
 	
 	public MyViewPager(Context context, AttributeSet attrs) {
@@ -58,7 +57,7 @@ public class MyViewPager extends ViewPager implements OnGestureListener{
 	
 	private onSimpleClickListener listener;
 	
-	/** µ¥»÷¼àÌý½Ó¿Ú  **/
+	/** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¿ï¿½  **/
 	public interface onSimpleClickListener {
 		void setOnSimpleClickListenr(int position);
 	}

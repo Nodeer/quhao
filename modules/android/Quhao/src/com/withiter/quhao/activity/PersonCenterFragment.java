@@ -31,6 +31,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -78,7 +79,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 	
 	private ImageView avatar;
 
-	private ImageView loginBtn;
+	private Button loginBtn;
 	private TextView regBtn;
 
 	private final int UNLOCK_CLICK = 1000;
@@ -154,7 +155,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 		creditCostLayout.setOnClickListener(this);
 		
 		personInfoLogoutLayout = (RelativeLayout) contentView.findViewById(R.id.person_info_logout);
-		loginBtn = (ImageView) contentView.findViewById(R.id.login);
+		loginBtn = (Button) contentView.findViewById(R.id.login);
 		regBtn = (TextView) contentView.findViewById(R.id.register);
 
 		loginBtn.setOnClickListener(this);
