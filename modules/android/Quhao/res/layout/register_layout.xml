@@ -85,12 +85,8 @@
                 android:id="@+id/login_name"
                 android:layout_width="fill_parent"
                 android:layout_height="40dp"
-                android:hint=""
-                android:focusable="true"
-                android:focusableInTouchMode="true"
+                android:text="@string/empty"
                 android:inputType="phone"
-                android:paddingLeft="4dip"
-                android:paddingRight="4dip"
                 android:background="@drawable/phone_number_bg" >
             </EditText>
 
@@ -129,6 +125,7 @@
 	                android:layout_width="wrap_content"
 	                android:layout_height="35dip"
 	                android:layout_marginLeft="10dp"
+	                android:layout_gravity="right|center_vertical"
 	                android:background="@drawable/get_verify_code_bg">
 	            </Button>
             </LinearLayout>
@@ -156,8 +153,6 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPassword"
-                android:paddingLeft="4dip"
-                android:paddingRight="4dip"
                 android:background="@drawable/password_bg" >
 
             </EditText>
@@ -183,9 +178,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:hint=""
+                android:text="@string/empty"
                 android:inputType="textPassword"
-                android:paddingLeft="4dip"
-                android:paddingRight="4dip"
                 android:background="@drawable/password_bg">
             </EditText>
         </LinearLayout>

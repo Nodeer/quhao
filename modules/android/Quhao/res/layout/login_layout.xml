@@ -91,8 +91,6 @@
 	                android:hint=""
 	                android:background="@drawable/phone_number_bg"
 	                android:inputType="phone"
-	                android:paddingLeft="4dip"
-	                android:paddingRight="4dip"
 	                android:singleLine="true" >
 	            </EditText>
 	
@@ -112,8 +110,6 @@
 	                android:hint=""
 	                android:background="@drawable/password_bg"
 	                android:inputType="textPassword"
-	                android:paddingLeft="4dip"
-	                android:paddingRight="4dip"
 	                android:singleLine="true" >
 	            </EditText>
 	        
