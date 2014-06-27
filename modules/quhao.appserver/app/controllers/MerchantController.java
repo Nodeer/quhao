@@ -670,7 +670,8 @@ public class MerchantController extends BaseController {
 		projectParams.put("seatType", 1);
 		projectParams.put("openNum", 1);
 		projectParams.put("youhui", 1);
-
+		projectParams.put("dianpingFen", 1);
+		
 		pipeline.add(new BasicDBObject("$project", projectParams));
 		cmdBody.put("pipeline", pipeline);
 		if (!MorphiaQuery.ds().getDB().command(cmdBody).ok()) {
@@ -748,6 +749,7 @@ public class MerchantController extends BaseController {
 		projectParams.put("seatType", 1);
 		projectParams.put("openNum", 1);
 		projectParams.put("youhui", 1);
+		projectParams.put("dianpingFen", 1);
 
 		pipeline.add(new BasicDBObject("$project", projectParams));
 		cmdBody.put("pipeline", pipeline);
@@ -800,6 +802,8 @@ public class MerchantController extends BaseController {
 			m.online = resultContainer.getBoolean("online");
 			m.openNum = Open.getNumberByMid(m.id);
 			m.youhui = resultContainer.getBoolean("youhui");
+			m.dianpingFen = resultContainer.getString("dianpingFen");
+
 			ArrayList<BasicDBObject> list=(ArrayList<BasicDBObject>)resultContainer.get("seatType");
 			if(list != null && list.size() != 0){
 				Object [] objs=list.toArray();
