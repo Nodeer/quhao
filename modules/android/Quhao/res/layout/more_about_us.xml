@@ -83,27 +83,27 @@
         android:layout_marginLeft="20dip"
         android:layout_marginRight="20dip"
         android:layout_marginTop="20dip"
-        android:background="@drawable/form_border_top"
         android:gravity="center_vertical"
         android:orientation="horizontal" >
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dip"
-            android:gravity="center_vertical"
+            android:layout_height="40dp"
             android:text="@string/more_versioncode"
+            android:gravity="center"
+            android:background="@drawable/custom_version_bg"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
         <TextView
             android:id="@+id/about_us_version"
             android:layout_width="0dip"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="@string/empty"
             android:textColor="@color/black"
+            android:background="@drawable/about_us_label_bg"
             android:textSize="16sp" />
     </LinearLayout>
 
@@ -113,15 +113,15 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dip"
         android:layout_marginRight="20dip"
-        android:background="@drawable/form_border_middle"
         android:gravity="center_vertical"
+        android:paddingTop="5dp"
         android:orientation="horizontal" >
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dip"
-            android:gravity="center_vertical"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:background="@drawable/customer_phone_bg"
             android:text="@string/super_detail_service_phone"
             android:textColor="@color/black"
             android:textSize="16sp" />
@@ -129,11 +129,12 @@
         <TextView
             android:id="@+id/about_us_phone"
             android:layout_width="0dip"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_weight="1"
             android:autoLink="phone"
             android:gravity="center_vertical"
             android:text="021-51990657"
+            android:background="@drawable/about_us_label_bg"
             android:textColor="@color/black"
             android:textSize="16sp" />
     </LinearLayout>
@@ -144,26 +145,27 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dip"
         android:layout_marginRight="20dip"
-        android:background="@drawable/form_border_middle"
         android:gravity="center_vertical"
+        android:paddingTop="5dp"
         android:orientation="horizontal" >
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dip"
-            android:gravity="center_vertical"
+            android:layout_height="40dp"
+            android:gravity="center"
             android:text="@string/more_weibo"
             android:textColor="@color/black"
+            android:background="@drawable/guanfang_weobo_bg"
             android:textSize="16sp" />
 
         <TextView
             android:layout_width="0dip"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_weight="1"
             android:autoLink="phone"
             android:gravity="center_vertical"
             android:text="@string/more_weibo_value"
+            android:background="@drawable/about_us_label_bg"
             android:textColor="@color/black"
             android:textSize="16sp" />
     </LinearLayout>
@@ -174,26 +176,27 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dip"
         android:layout_marginRight="20dip"
-        android:background="@drawable/form_border_bottom"
         android:gravity="center_vertical"
+        android:paddingTop="5dp"
         android:orientation="horizontal" >
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dip"
-            android:gravity="center_vertical"
+            android:layout_height="40dp"
+            android:gravity="center"
             android:text="@string/more_web_location"
+            android:background="@drawable/guanfang_web_bg"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
         <TextView
             android:layout_width="0dip"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_weight="1"
             android:autoLink="web"
             android:gravity="center_vertical"
             android:text="@string/more_domain"
+            android:background="@drawable/about_us_label_bg"
             android:textColor="@color/black"
             android:textSize="16sp" />
     </LinearLayout>
