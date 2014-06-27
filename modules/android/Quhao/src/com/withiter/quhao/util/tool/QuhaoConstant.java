@@ -60,6 +60,7 @@ public class QuhaoConstant {
 	public static String CITY_NAME = "cityName";
 	
 	public static String CITY_PINYIN = "cityPinyin";
+	public static String IS_FIRST_IN = "isFirstIn";
 	/**
 	 * 更新時間
 	 */

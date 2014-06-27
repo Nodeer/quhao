@@ -89,11 +89,17 @@
 		</activity>
 		<!-- startup page -->
 		
-		<!-- category page -->
+		<activity
+            android:name="com.withiter.quhao.activity.GuideActivity"
+            android:configChanges="keyboardHidden"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        
+		<!-- MainTabActivity page -->
 		<activity android:name="com.withiter.quhao.activity.MainTabActivity" android:launchMode="singleTask" android:label="@string/app_name" android:screenOrientation="portrait">
 			
 		</activity>
-		<!-- category page -->
+		<!-- MainTabActivity page -->
 		
 		<!-- my attention list page -->
 		<activity android:name="com.withiter.quhao.activity.MyAttentionListActivity" android:label="@string/app_name" android:screenOrientation="portrait">
