@@ -19,7 +19,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.withiter.quhao.R;
-import com.withiter.quhao.view.gif.CustomGifView;
 
 /**
  * 网上共用的下拉刷新类
@@ -94,11 +93,11 @@ public class PullToRefreshView extends LinearLayout {
     /**
      * header progress bar
      */
-    private CustomGifView mHeaderProgressBar;
+    private ProgressBar mHeaderProgressBar;
     /**
      * footer progress bar
      */
-    private CustomGifView mFooterProgressBar;
+    private ProgressBar mFooterProgressBar;
     /**
      * layout inflater
      */
@@ -194,7 +193,7 @@ public class PullToRefreshView extends LinearLayout {
         mHeaderTimeTextView.setVisibility(View.GONE);// 不让更新时间显示了
         mHeaderUpdateTextView = (TextView) mHeaderView
                 .findViewById(R.id.pull_to_refresh_updated_at);
-        mHeaderProgressBar = (CustomGifView) mHeaderView
+        mHeaderProgressBar = (ProgressBar) mHeaderView
                 .findViewById(R.id.pull_to_refresh_progress);
         // header layout
         measureView(mHeaderView);
@@ -220,7 +219,7 @@ public class PullToRefreshView extends LinearLayout {
         mFooterImageView.setImageResource(R.drawable.ic_pulltorefresh_arrow_up);
         mFooterTextView = (TextView) mFooterView
                 .findViewById(R.id.pull_to_load_text);
-        mFooterProgressBar = (CustomGifView) mFooterView
+        mFooterProgressBar = (ProgressBar) mFooterView
                 .findViewById(R.id.pull_to_load_progress);
         // footer layout
         
