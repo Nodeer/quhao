@@ -649,6 +649,7 @@ public class MerchantController extends BaseController {
 		}
 		List<ObjectId> list = Merchant.noQueueMerchants();
 		fitlerParams.put("_id", new BasicDBObject("$in", list));
+		fitlerParams.put("online", true);
 		geoNearParams.put("query", fitlerParams);
 
 		pipeline.add(new BasicDBObject("$geoNear", geoNearParams));
