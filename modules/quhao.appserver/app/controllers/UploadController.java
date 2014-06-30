@@ -16,6 +16,7 @@ import com.withiter.common.ContentType;
 public class UploadController extends BaseController {
 	private static String MERCHANT_IMAGE = "MerchantImage";
 	private static String USER_IMAGE = "UserImage";
+	private static String SHARE_IMAGE = "ShareImage";
 	private static String ACTIVITY_IMAGE = "ActivityImage";
 
 	@SuppressWarnings("unused")
@@ -71,6 +72,25 @@ public class UploadController extends BaseController {
 		gfsFile.put("ext", suffix);
 		gfsFile.put("accountId", aid);
 		gfsFile.setFilename(fName);
+		gfsFile.save();
+		return gfsFile;
+	}
+	
+	/**
+	 * Save file
+	 * @param file
+	 * @return
+	 * @throws IOException
+	 */
+	public static GridFSInputFile saveBinaryForShare(File file, String aid) throws IOException {
+		GridFS gfs = new GridFS(MorphiaQuery.ds().getDB(),SHARE_IMAGE);
+		GridFSInputFile gfsFile = gfs.createFile(file);
+		String fName = file.getName();
+		String suffix = fName.replaceFirst("^.*\\.", ".");
+		gfsFile.setContentType(ContentType.get(suffix));
+		gfsFile.put("ext", suffix);
+		gfsFile.put("accountId", aid);
+		gfsFile.setFilename(System.currentTimeMillis()+fName);
 		gfsFile.save();
 		return gfsFile;
 	}
@@ -137,6 +157,21 @@ public class UploadController extends BaseController {
 	 */
 	public static void findImage(String fileName) {
 		GridFSDBFile gfsFile = findOne(fileName, USER_IMAGE);
+		if (gfsFile.getContentType() == null) {
+			response.contentType = "";
+		} else {
+			response.contentType = gfsFile.getContentType();
+		}
+		renderBinary(gfsFile.getInputStream(), gfsFile.getFilename());
+	}
+	
+	/**
+	 * find file by file name for share
+	 * @param fileName
+	 * @param type
+	 */
+	public static void findImageForShare(String fileName) {
+		GridFSDBFile gfsFile = findOne(fileName, SHARE_IMAGE);
 		if (gfsFile.getContentType() == null) {
 			response.contentType = "";
 		} else {

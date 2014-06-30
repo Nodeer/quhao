@@ -123,6 +123,10 @@ GET		/getCommentsById					CommentController.getCommentsById
 # Attention
 GET     /updateAttention					AttentionController.updateAttention
 
+# Share
+POST	/share/add							ShareController.add
+GET		/share/getNearShare					ShareController.getNearShare
+
 # Open
 GET     /openService						OpenController.openService
 
@@ -160,6 +164,7 @@ GET		/createOpinion						OpinionController.createOpinion
 *		/image/f							UploadController.find
 *		/imageUser/f						UploadController.findImage
 *		/imageActivity/f					UploadController.findImageForActivity
+*		/imageShare/f						UploadController.findImageForShare
 
 # image display
 
