@@ -3,7 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="90dp"
     android:background="#EFEFEF"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:descendantFocusability="blocksDescendants" >
 
     <LinearLayout android:id="@+id/cb_layout"
         android:layout_width="wrap_content"

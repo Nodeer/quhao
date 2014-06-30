@@ -87,13 +87,13 @@ public class LoginActivity extends QuhaoBaseActivity {
 		String isExitedLastTime = SharedprefUtil.get(this, QuhaoConstant.IS_EXITED_LASTTIME, "true");
 		
 		if ("true".equals(isAutoLogin)) {
-			isAutoLoginView.setImageResource(R.drawable.checkbox_checked);
+			isAutoLoginView.setImageResource(R.drawable.checkbox_on);
 			if ("true".equals(isExitedLastTime)) {
 				loginNameText.setText(phone);
 			}
 			
 		} else {
-			isAutoLoginView.setImageResource(R.drawable.checkbox_unchecked);
+			isAutoLoginView.setImageResource(R.drawable.checkbox_off);
 		}
 
 		// phone label
@@ -147,10 +147,10 @@ public class LoginActivity extends QuhaoBaseActivity {
 		case R.id.isAutoLogin:
 			if ("true".equals(isAutoLogin)) {
 				isAutoLogin = "false";
-				isAutoLoginView.setImageResource(R.drawable.checkbox_unchecked);
+				isAutoLoginView.setImageResource(R.drawable.checkbox_off);
 			} else {
 				isAutoLogin = "true";
-				isAutoLoginView.setImageResource(R.drawable.checkbox_checked);
+				isAutoLoginView.setImageResource(R.drawable.checkbox_on);
 			}
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;

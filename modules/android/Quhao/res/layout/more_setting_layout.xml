@@ -147,7 +147,7 @@
 	            android:layout_height="wrap_content"
 	            android:layout_marginRight="10dip"
 	            android:adjustViewBounds="true"
-	            android:src="@drawable/checkbox_unchecked" />
+	            android:src="@drawable/checkbox_off" />
     	</LinearLayout>
 	</LinearLayout>
 	</ScrollView>

@@ -156,6 +156,7 @@ public class MerchantNoQueueAdapter extends BaseAdapter {
 				holder.btnOpen.setVisibility(View.VISIBLE);
 				holder.btnOpen.setText("希望开通(" + merchant.openNum + ")");
 				holder.btnGetNumber.setVisibility(View.GONE);
+				holder.btnOffline.setVisibility(View.GONE);
 			}
 			
 			final boolean enable = merchant.enable;

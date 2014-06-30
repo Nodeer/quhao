@@ -106,10 +106,10 @@ public class MoreFragment extends Fragment implements OnClickListener{
 
 		if ("true".equals(isLoadImg)) {
 			QHClientApplication.getInstance().canLoadImg = true; 
-			imageView.setImageResource(R.drawable.checkbox_checked);
+			imageView.setImageResource(R.drawable.checkbox_on);
 		} else {
 			QHClientApplication.getInstance().canLoadImg = false;
-			imageView.setImageResource(R.drawable.checkbox_unchecked);
+			imageView.setImageResource(R.drawable.checkbox_off);
 		}
 		
 		cleanPicture.setOnClickListener(this);
@@ -324,11 +324,11 @@ public class MoreFragment extends Fragment implements OnClickListener{
 
 			String isLoadImg1 = SharedprefUtil.get(getActivity(), QuhaoConstant.IS_LOAD_IMG, "false");
 			if ("true".equals(isLoadImg1)) {
-				imageView.setImageResource(R.drawable.checkbox_unchecked);
+				imageView.setImageResource(R.drawable.checkbox_off);
 				isLoadImg1 = "false";
 				QHClientApplication.getInstance().canLoadImg = false;
 			} else {
-				imageView.setImageResource(R.drawable.checkbox_checked);
+				imageView.setImageResource(R.drawable.checkbox_on);
 				isLoadImg1 = "true";
 				QHClientApplication.getInstance().canLoadImg = true;
 			}
