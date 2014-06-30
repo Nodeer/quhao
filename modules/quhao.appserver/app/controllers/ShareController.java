@@ -34,7 +34,7 @@ public class ShareController extends BaseController {
 	/**
 	 * Interception any caller on this controller, will first invoke this method
 	 */
-	@Before
+//	@Before
 	static void checkAuthentification() {
 		if(session.contains(Constants.SESSION_USERNAME)){
 			return;
