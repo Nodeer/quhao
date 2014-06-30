@@ -63,7 +63,7 @@ public class ShareController extends BaseController {
 	 * @param userY
 	 * @param maxDis
 	 */
-	public static void getNearShare(int page, double userX, double userY, double maxDis) {
+	public static void getNearShare(int page, double userX, double userY, double maxDis, String cityCode) {
 		page = (page == 0) ? 1 : page;
 		int num = (page - 1) * NUMBER_PER_PAGE;
 		BasicDBObject cmdBody = new BasicDBObject("aggregate", "Share");
@@ -82,6 +82,7 @@ public class ShareController extends BaseController {
 		// filter
 		BasicDBObject filterParams = new BasicDBObject();
 		filterParams.put("deleted", false);
+		filterParams.put("cityCode", cityCode);
 		geoNearParams.put("query", filterParams);
 
 		pipeline.add(new BasicDBObject("$geoNear", geoNearParams));
@@ -165,9 +166,11 @@ public class ShareController extends BaseController {
 		String address = params.get("address");
 		String aid = params.get("aid");
 		String image = params.get("image");
+		String cityCode = params.get("cityCode");
 		
 		Share s = new Share();
 		s.content = content;
+		s.cityCode = cityCode;
 		if(!StringUtils.isEmpty(x)){
 			s.x = x;
 			s.y = y;
