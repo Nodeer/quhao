@@ -167,11 +167,13 @@ public class ShareController extends BaseController {
 		
 		Share s = new Share();
 		s.content = content;
-		s.x = x;
-		s.y = y;
-		s.loc[0] = Float.parseFloat(y);
-		s.loc[1] = Float.parseFloat(x);
-		s.address = address;
+		if(!StringUtils.isEmpty(x)){
+			s.x = x;
+			s.y = y;
+			s.loc[0] = Float.parseFloat(y);
+			s.loc[1] = Float.parseFloat(x);
+			s.address = address;
+		}
 		s.aid = aid;
 		s.save();
 		
