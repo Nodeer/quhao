@@ -96,6 +96,7 @@ public class ShareController extends BaseController {
 		projectParams.put("dis", 1);
 		projectParams.put("aid", 1);
 		projectParams.put("image", 1);
+		projectParams.put("created", 1);
 		
 		pipeline.add(new BasicDBObject("$project", projectParams));
 		cmdBody.put("pipeline", pipeline);
