@@ -126,6 +126,7 @@ GET     /updateAttention					AttentionController.updateAttention
 # Share
 POST	/share/add							ShareController.add
 GET		/share/getNearShare					ShareController.getNearShare
+GET		/share/getShare						ShareController.getShare
 
 # Open
 GET     /openService						OpenController.openService

@@ -57,11 +57,31 @@ public class ShareController extends BaseController {
 	}
 	
 	/**
+	 * 用户未开启定位，获取分享列表
+	 * @param page 第page页
+	 * @param cityCode 城市代码
+	 */
+	public static void getShare(int page, String cityCode) {
+		page = (page == 0) ? 1 : page;
+		int num = (page - 1) * NUMBER_PER_PAGE;
+		List<Share> list = Share.nextPage(page, cityCode);
+		List<ShareVO> voList = new ArrayList<ShareVO>();
+		ShareVO svo = null;
+		for(Share s : list){
+			svo = new ShareVO();
+			svo.build(s);
+			voList.add(svo);
+		}
+		renderJSON(svo);
+	}
+	
+	/**
 	 * 获取周边分享
-	 * @param page
-	 * @param userX
-	 * @param userY
-	 * @param maxDis
+	 * @param page 第page页
+	 * @param userX x坐标
+	 * @param userY y坐标
+	 * @param maxDis 最远距离
+	 * @param cityCode 城市代码
 	 */
 	public static void getNearShare(int page, double userX, double userY, double maxDis, String cityCode) {
 		page = (page == 0) ? 1 : page;
@@ -158,6 +178,14 @@ public class ShareController extends BaseController {
 	
 	/**
 	 * 添加分享
+	 * @param content 分享内容
+	 * @param x x坐标
+	 * @param y y坐标
+	 * @param address 地址信息
+	 * @param aid Account id
+	 * @param image 图片
+	 * @param cityCode 城市代码
+	 * 
 	 */
 	public static void add(){
 		String content = params.get("content");
