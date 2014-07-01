@@ -1,0 +1,8 @@
+<resources>
+
+    <dimen name="merchant_detail_serverdata_marginLeft">3.75dp</dimen>
+    <dimen name="merchant_detail_serverdata_marginRight">3.75dp</dimen>
+    
+    <dimen name="merchant_detail_merchantImg_w">150dp</dimen>
+    <dimen name="merchant_detail_merchantImg_h">150dp</dimen>
+</resources>

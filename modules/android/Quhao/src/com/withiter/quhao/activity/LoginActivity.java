@@ -287,6 +287,8 @@ public class LoginActivity extends QuhaoBaseActivity {
 					}
 					else
 					{
+						finish();
+						/*
 						Thread thread = new Thread(new Runnable() {
 
 							@Override
@@ -330,6 +332,7 @@ public class LoginActivity extends QuhaoBaseActivity {
 							}
 						});
 						thread.start();
+						*/
 					}
 				}
 
