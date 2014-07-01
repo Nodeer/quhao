@@ -37,6 +37,7 @@ import com.withiter.quhao.adapter.MerchantNoQueueAdapter;
 import com.withiter.quhao.task.AllCategoriesTask;
 import com.withiter.quhao.task.JsonPack;
 import com.withiter.quhao.task.QueryNoQueueMerchantsTask;
+import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.ParseJson;
@@ -113,11 +114,13 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 	private int displayWidth;
 	private int displayHeight;
 	
-	private Handler locationHandler = new Handler();
-	private Runnable locationRunnable = new Runnable() {
-		
+	private Handler locationHandler = new Handler()
+	{
 		@Override
-		public void run() {
+		public void handleMessage(Message msg) {
+			
+			super.handleMessage(msg);
+			
 			if (firstLocation == null) {
 				NoQueueMerchantListActivity.this.findViewById(R.id.loadingbar).setVisibility(View.GONE);
 				NoQueueMerchantListActivity.this.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
@@ -126,10 +129,14 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 				noResultView.setText(R.string.location_failed);
 				locationResult.setText(R.string.re_location);
 				locationResult.setVisibility(View.VISIBLE);
-				Toast.makeText(NoQueueMerchantListActivity.this, "亲，定位失败，请检查网络状态！", Toast.LENGTH_SHORT).show();
+				if (ActivityUtil.isTopActivy(NoQueueMerchantListActivity.this, NoQueueMerchantListActivity.class.getName())) {
+					Toast.makeText(NoQueueMerchantListActivity.this, "亲，定位失败，请检查网络状态！", Toast.LENGTH_SHORT).show();
+				}
+				
 				stopLocation();// 销毁掉定位
 			}
 		}
+		
 	};
 
 	@Override
@@ -182,6 +189,7 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 	 * 销毁定位
 	 */
 	private void stopLocation() {
+		
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
 			mAMapLocationManager.destory();
@@ -377,33 +385,21 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 				public void run() {
 					Looper.prepare();
 					try {
-						if (mAMapLocationManager == null) {
-
-							mAMapLocationManager = LocationManagerProxy
-									.getInstance(NoQueueMerchantListActivity.this);
-							/*
-							 * mAMapLocManager.setGpsEnable(false);//
-							 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
-							 */
-							// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
-							mAMapLocationManager.requestLocationUpdates(
-									LocationProviderProxy.AMapNetwork, 10000, 100,
-									NoQueueMerchantListActivity.this);
-							locationHandler.removeCallbacks(locationRunnable);
-							locationHandler.postDelayed(locationRunnable, 60000);// 设置超过12秒还没有定位到就停止定位
-						} else {
-							/*
-							 * mAMapLocManager.setGpsEnable(false);//
-							 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
-							 */
-							// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
-							mAMapLocationManager.requestLocationUpdates(
-									LocationProviderProxy.AMapNetwork, 10000, 100,
-									NoQueueMerchantListActivity.this);
-							locationHandler.removeCallbacks(locationRunnable);
-							locationHandler.postDelayed(locationRunnable, 60000);// 设置超过12秒还没有定位到就停止定位
-
-						}
+						stopLocation();
+					
+						mAMapLocationManager = LocationManagerProxy
+								.getInstance(NoQueueMerchantListActivity.this);
+						/*
+						 * mAMapLocManager.setGpsEnable(false);//
+						 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
+						 */
+						// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
+						mAMapLocationManager.requestLocationUpdates(
+								LocationProviderProxy.AMapNetwork, 10000, 100,
+								NoQueueMerchantListActivity.this);
+//							locationHandler.removeCallbacks(locationRunnable);
+						locationHandler.sendEmptyMessageDelayed(200, 60000);
+//							locationHandler.postDelayed(locationRunnable, 60000);// 设置超过12秒还没有定位到就停止定位
 
 					} catch (Exception e) {
 						Log.e("wjzwjz", e.getMessage());
@@ -506,31 +502,33 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 //            
 //        }
 		
+		if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
+			Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			return;
+		}
+		
 		Thread requestLocation = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
 				Looper.prepare();
 				try {
-					if (null != mAMapLocationManager) {
-						stopLocation();
-					}
-					
-					if (mAMapLocationManager == null) {
-
-						mAMapLocationManager = LocationManagerProxy
-								.getInstance(NoQueueMerchantListActivity.this);
-						/*
-						 * mAMapLocManager.setGpsEnable(false);//
-						 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
-						 */
-						// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
-						mAMapLocationManager.requestLocationUpdates(
-								LocationProviderProxy.AMapNetwork, 10000, 100,
-								NoQueueMerchantListActivity.this);
-						locationHandler.removeCallbacks(locationRunnable);
-						locationHandler.postDelayed(locationRunnable, 60000);// 设置超过12秒还没有定位到就停止定位
-					}
+					stopLocation();
+				
+					mAMapLocationManager = LocationManagerProxy
+							.getInstance(NoQueueMerchantListActivity.this);
+					/*
+					 * mAMapLocManager.setGpsEnable(false);//
+					 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
+					 */
+					// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
+					mAMapLocationManager.requestLocationUpdates(
+							LocationProviderProxy.AMapNetwork, 10000, 100,
+							NoQueueMerchantListActivity.this);
+//						locationHandler.removeCallbacks(locationRunnable);
+//						locationHandler.postDelayed(locationRunnable, 60000);// 设置超过12秒还没有定位到就停止定位
+					locationHandler.sendEmptyMessageDelayed(200, 60000);
 
 				} catch (Exception e) {
 					Log.e("wjzwjz", e.getMessage());
@@ -580,7 +578,7 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 		super.onPause();
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
-			locationHandler.removeCallbacks(locationRunnable);
+//			locationHandler.removeCallbacks(locationRunnable);
 		}
 	}
 	
@@ -590,7 +588,7 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
 			mAMapLocationManager.destory();
-			locationHandler.removeCallbacks(locationRunnable);
+//			locationHandler.removeCallbacks(locationRunnable);
 		}
 		mAMapLocationManager = null;
 		super.onDestroy();

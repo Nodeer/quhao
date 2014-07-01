@@ -53,7 +53,26 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 
 	private LocationManagerProxy mAMapLocationManager = null;
 	
-	private Handler locationHandler = new Handler();
+	private Handler locationHandler = new Handler()
+	{
+
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			if (firstLocation == null) {
+				
+				contentView.findViewById(R.id.loadingbar).setVisibility(View.GONE);
+				contentView.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
+				resultLayout.setVisibility(View.GONE);
+				noResultLayout.setVisibility(View.VISIBLE);
+				noResultView.setText(R.string.location_failed);
+				locationResult.setText(R.string.re_location);
+				locationResult.setVisibility(View.VISIBLE);
+				stopLocation();// 销毁掉定位
+			}
+		}
+		
+	};
 	
 	private int page = 1;
 	private ListView merchantsListView;
@@ -179,23 +198,6 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		return contentView;
 	}
 
-	private Runnable locationRunnable = new Runnable() {
-		
-		@Override
-		public void run() {
-			if (firstLocation == null) {
-				Toast.makeText(getActivity(), "亲，定位失败，请检查网络状态！", Toast.LENGTH_SHORT).show();
-				contentView.findViewById(R.id.loadingbar).setVisibility(View.GONE);
-				contentView.findViewById(R.id.serverdata).setVisibility(View.VISIBLE);
-				resultLayout.setVisibility(View.GONE);
-				noResultLayout.setVisibility(View.VISIBLE);
-				noResultView.setText(R.string.location_failed);
-				locationResult.setText(R.string.re_location);
-				locationResult.setVisibility(View.VISIBLE);
-				stopLocation();// 销毁掉定位
-			}
-		}
-	};
 	/**
 	 * 销毁定位
 	 */
@@ -514,7 +516,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		super.onPause();
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
-			locationHandler.removeCallbacks(locationRunnable);
+//			locationHandler.removeCallbacks(locationRunnable);
 		}
 	}
 
@@ -524,7 +526,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
 			mAMapLocationManager.destory();
-			locationHandler.removeCallbacks(locationRunnable);
+//			locationHandler.removeCallbacks(locationRunnable);
 		}
 		mAMapLocationManager = null;
 		super.onDestroyView();
@@ -572,7 +574,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
 			mAMapLocationManager.destory();
-			locationHandler.removeCallbacks(locationRunnable);
+//			locationHandler.removeCallbacks(locationRunnable);
 		}
 		mAMapLocationManager = null;
 		super.onDestroy();
@@ -732,26 +734,23 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 			public void run() {
 				Looper.prepare();
 				try {
-					if (null != mAMapLocationManager) {
-						stopLocation();
-					}
-					if (mAMapLocationManager == null) {
+					stopLocation();
 
-						mAMapLocationManager = LocationManagerProxy
-								.getInstance(getActivity());
-						/*
-						 * mAMapLocManager.setGpsEnable(false);//
-						 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
-						 */
-						// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
-						time1 = System.currentTimeMillis();
-						mAMapLocationManager.requestLocationUpdates(
-								LocationProviderProxy.AMapNetwork, 10000, 100,
-								NearbyFragment.this);
-						Log.e("wjzwjz", "nearby location manager : " + (System.currentTimeMillis()-time1));
-						locationHandler.removeCallbacks(locationRunnable);
-						locationHandler.postDelayed(locationRunnable, 60000);// 设置超过12秒还没有定位到就停止定位
-					}
+					mAMapLocationManager = LocationManagerProxy
+							.getInstance(getActivity());
+					/*
+					 * mAMapLocManager.setGpsEnable(false);//
+					 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
+					 */
+					// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
+					time1 = System.currentTimeMillis();
+					mAMapLocationManager.requestLocationUpdates(
+							LocationProviderProxy.AMapNetwork, 10000, 100,
+							NearbyFragment.this);
+					Log.e("wjzwjz", "nearby location manager : " + (System.currentTimeMillis()-time1));
+//						locationHandler.removeCallbacks(locationRunnable);
+//						locationHandler.postDelayed(locationRunnable, 60000);// 设置超过12秒还没有定位到就停止定位
+					locationHandler.sendEmptyMessageDelayed(200, 60000);
 
 				} catch (Exception e) {
 					Log.e("wjzwjz", e.getMessage());
@@ -803,34 +802,22 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 				public void run() {
 					Looper.prepare();
 					try {
-						if (mAMapLocationManager == null) {
-
-							mAMapLocationManager = LocationManagerProxy
-									.getInstance(getActivity());
-							
-							/*
-							 * mAMapLocManager.setGpsEnable(false);//
-							 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
-							 */
-							// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
-							mAMapLocationManager.requestLocationUpdates(
-									LocationProviderProxy.AMapNetwork, 10000, 100,
-									NearbyFragment.this);
-							locationHandler.removeCallbacks(locationRunnable);
-							locationHandler.postDelayed(locationRunnable, 60000);// 设置超过12秒还没有定位到就停止定位
-						} else {
-							/*
-							 * mAMapLocManager.setGpsEnable(false);//
-							 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
-							 */
-							// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
-							mAMapLocationManager.requestLocationUpdates(
-									LocationProviderProxy.AMapNetwork, 10000, 100,
-									NearbyFragment.this);
-							locationHandler.removeCallbacks(locationRunnable);
-							locationHandler.postDelayed(locationRunnable, 60000);// 设置超过12秒还没有定位到就停止定位
-
-						}
+						stopLocation();
+					
+						mAMapLocationManager = LocationManagerProxy
+								.getInstance(getActivity());
+						
+						/*
+						 * mAMapLocManager.setGpsEnable(false);//
+						 * 1.0.2版本新增方法，设置true表示混合定位中包含gps定位，false表示纯网络定位，默认是true
+						 */
+						// Location SDK定位采用GPS和网络混合定位方式，时间最短是5000毫秒，否则无效
+						mAMapLocationManager.requestLocationUpdates(
+								LocationProviderProxy.AMapNetwork, 10000, 100,
+								NearbyFragment.this);
+//							locationHandler.removeCallbacks(locationRunnable);
+//							locationHandler.postDelayed(locationRunnable, 60000);// 设置超过12秒还没有定位到就停止定位
+						locationHandler.sendEmptyMessageDelayed(200, 60000);
 
 					} catch (Exception e) {
 						

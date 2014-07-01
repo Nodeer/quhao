@@ -8,7 +8,9 @@ import java.util.Enumeration;
 import com.withiter.quhao.R;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -129,6 +131,20 @@ public class ActivityUtil {
 		});
 	}
 
+	public static boolean isTopActivy(Activity activity,String activityName)
+	{
+		if (null == activity || StringUtils.isNull(activityName)) {
+			return false;
+		}
+		ActivityManager am = (ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE);
+		ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+		Log.e("wjzwjz", "activity Name : " + activityName + " , cn. className : " + cn.getClassName());
+		if (cn != null && activityName.equals(cn.getClassName())) {
+			return true;
+		}
+		return false;
+	}
+	
 	public static Display getWindowDisplay(Context context) {
 		return ((WindowManager) context
 				.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();

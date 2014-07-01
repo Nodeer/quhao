@@ -394,6 +394,12 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 		backClicked = false;
 		QuhaoHistoryStatesActivity.this.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
 		QuhaoHistoryStatesActivity.this.findViewById(R.id.serverdata).setVisibility(View.GONE);
+		deleteBtn.setText(R.string.delete);
+		deleteLayout.setVisibility(View.GONE);
+		if (null != reservationForPaiduiAdapter) {
+			reservationForPaiduiAdapter.isShowDelete = "false";
+		}
+		
 		initData();
 		super.onResume();
 	}
