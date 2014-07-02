@@ -1,9 +1,12 @@
 package vo;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.Date;
 import java.util.List;
 
 import com.withiter.models.social.Share;
+import com.withiter.utils.ExceptionUtil;
 
 public class ShareVO extends ErrorVO {
 
@@ -22,7 +25,12 @@ public class ShareVO extends ErrorVO {
 	public void build(Share s) {
 		this.id = s.id();
 		this.content = s.content;
-		this.image = s.image;
+		try {
+			this.image = URLDecoder.decode(s.image, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+//		this.image = s.image;
 		this.images = s.images;
 		this.aid = s.aid;
 		this.x = s.x;
