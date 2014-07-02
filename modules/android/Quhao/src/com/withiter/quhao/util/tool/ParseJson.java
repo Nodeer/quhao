@@ -28,6 +28,7 @@ import com.withiter.quhao.vo.MerchantDetailVO;
 import com.withiter.quhao.vo.MerchantLocation;
 import com.withiter.quhao.vo.Paidui;
 import com.withiter.quhao.vo.ReservationVO;
+import com.withiter.quhao.vo.ShareVO;
 import com.withiter.quhao.vo.SignupVO;
 import com.withiter.quhao.vo.TopMerchant;
 import com.withiter.quhao.vo.UserAgreementVO;
@@ -1020,6 +1021,102 @@ public class ParseJson {
 		activity = new ActivityVO(activityId, mid, cityCode, image,start,end,enable);
 
 		return activity;
+	}
+	
+	private static ShareVO coventShareVO(JSONObject obj) throws JSONException {
+		
+		ShareVO shareVO = null;
+		String id = obj.optString("id");
+		
+		String content = obj.optString("content");
+		
+		String aid = obj.optString("aid");
+		
+		String x = obj.optString("x");
+		
+		String y = obj.optString("y");
+		
+		String address = obj.optString("address");
+		
+		String dis = obj.optString("dis");
+		
+		String date = DateUtils.formatDate(obj.optString("date"), "yyyy-MM-dd HH:mm:ss");
+		
+		boolean deleted = obj.optBoolean("deleted");
+		
+		String image = obj.optString("image");
+		
+		if (QuhaoConstant.test) {
+			if (null != image && !"".equals(image)) {
+				image = QuhaoConstant.HTTP_URL + obj.optString("image").substring(1);
+			}
+		} else {
+			if (null != image && !"".equals(image)) {
+				image = QuhaoConstant.HTTP_URL + obj.optString("image").substring(1);
+			}
+		}
+		if (StringUtils.isNotNull(image) && !image.contains("=")) {
+			try {
+				image = URLDecoder.decode(obj.getString("image"), "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
+
+		List<String> images = new ArrayList<String>();
+		JSONArray imageArray = obj.optJSONArray("images");
+		if (null != imageArray && imageArray.length() > 0) 
+		{
+			for (int i = 0; i < imageArray.length(); i++) {
+				String imageTmp = imageArray.get(i).toString();
+				
+				if (QuhaoConstant.test) {
+					if (null != imageTmp && !"".equals(imageTmp)) {
+						imageTmp = QuhaoConstant.HTTP_URL + imageTmp.substring(1);
+					}
+				} else {
+					if (null != imageTmp && !"".equals(imageTmp)) {
+						imageTmp = QuhaoConstant.HTTP_URL + imageTmp.substring(1);
+					}
+				}
+				if (StringUtils.isNotNull(imageTmp) && !imageTmp.contains("=")) {
+					try {
+						imageTmp = URLDecoder.decode(imageTmp, "UTF-8");
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					}
+				}
+				
+				images.add(imageTmp);
+			}
+		}
+		shareVO = new ShareVO(id, content, image, images, aid, x, y, address, dis, date, deleted);
+
+		return shareVO;
+	}
+
+	public static List<ShareVO> getShareVOs(String buf) {
+
+		List<ShareVO> shares = new ArrayList<ShareVO>();
+		if (StringUtils.isNull(buf)) {
+			return shares;
+		}
+
+		try {
+			JSONArray array = new JSONArray(buf);
+			for (int i = 0; i < array.length(); i++) {
+				JSONObject obj = array.getJSONObject(i);
+				ShareVO shareVO = coventShareVO(obj);
+				if (null != shareVO) {
+					shares.add(shareVO);
+				}
+
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
+		return shares;
 	}
 	
 }

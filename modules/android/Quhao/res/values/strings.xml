@@ -294,4 +294,8 @@
 	<string name="my_number_title">我的号码</string>
 	<!-- MyNumberActivity end -->
 	
+	<!-- ShareListActivity begin -->
+	<string name="share_list_title">分享列表</string>
+	<!-- ShareListActivity end -->
+	
 </resources>
