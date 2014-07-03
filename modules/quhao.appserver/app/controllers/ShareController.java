@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -162,17 +164,21 @@ public class ShareController extends BaseController {
 			s.dis = resultContainer.getDouble("dis");
 			s.image = resultContainer.getString("image");
 
-//			ArrayList<BasicDBObject> list=(ArrayList<BasicDBObject>)resultContainer.get("images");
-//			if(list != null && list.size() != 0){
-//				Object [] objs=list.toArray();
-//				String [] strs=new String[objs.length];
-//				for(int i=0;i<objs.length;i++){
-//				  strs[i]=objs[i].toString();
-//				}
-//				s.images = strs;
-//			}
 			lists.add(s);
 		}
+		
+		// 对list按照时间排序
+		Collections.sort(lists, new Comparator(){
+			@Override
+			public int compare(Object arg0, Object arg1) {
+				if(((ShareVO)arg0).date.before(((ShareVO)arg1).date)){
+					return 1;
+				} else {
+					return -1;
+				}
+			}
+			
+		});
 		return lists;
 	}
 	
