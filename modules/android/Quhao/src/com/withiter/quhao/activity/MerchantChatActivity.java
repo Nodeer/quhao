@@ -5,12 +5,15 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -27,11 +30,16 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.rockerhieu.emojicon.EmojiconGridFragment;
 import com.rockerhieu.emojicon.EmojiconsFragment;
 import com.rockerhieu.emojicon.emoji.Emojicon;
@@ -205,7 +213,16 @@ public class MerchantChatActivity extends FragmentActivity implements EmojiconGr
                     		}
                     		
                     		if (chatAdapter == null) {
-                    			chatAdapter = new MerchantChatAdapter(MerchantChatActivity.this, chatListView, chats);
+                    			DisplayImageOptions options = new DisplayImageOptions.Builder()
+            					.showImageOnLoading(R.drawable.no_logo)
+            					.showImageForEmptyUri(R.drawable.no_logo)
+            					.showImageOnFail(R.drawable.no_logo)
+            					.cacheInMemory(true)
+            					.cacheOnDisk(true)
+            					.considerExifParams(true)
+            					.displayer(new RoundedBitmapDisplayer(20))
+            					.build();
+                    			chatAdapter = new MerchantChatAdapter(MerchantChatActivity.this, chatListView, chats,options,new AnimateFirstDisplayListener());
                     			chatListView.setAdapter(chatAdapter);
 							}
                     		else
@@ -347,6 +364,7 @@ public class MerchantChatActivity extends FragmentActivity implements EmojiconGr
 				if (mWebSocketClient != null && mWebSocketClient.getConnection() != null && mWebSocketClient.getConnection().isConnecting()) {
 					mWebSocketClient.close();
 				}
+				AnimateFirstDisplayListener.displayedImages.clear();
 				onBackPressed();
 				finish();
 				break;
@@ -495,4 +513,21 @@ public class MerchantChatActivity extends FragmentActivity implements EmojiconGr
     	super.onStop();
     	
     }
+    
+    private static class AnimateFirstDisplayListener extends SimpleImageLoadingListener {
+
+		static final List<String> displayedImages = Collections.synchronizedList(new LinkedList<String>());
+
+		@Override
+		public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+			if (loadedImage != null) {
+				ImageView imageView = (ImageView) view;
+				boolean firstDisplay = !displayedImages.contains(imageUri);
+				if (firstDisplay) {
+					FadeInBitmapDisplayer.animate(imageView, 500);
+					displayedImages.add(imageUri);
+				}
+			}
+		}
+	}
 }

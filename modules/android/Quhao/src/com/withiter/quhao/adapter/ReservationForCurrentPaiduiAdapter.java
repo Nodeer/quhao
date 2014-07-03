@@ -20,6 +20,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.withiter.quhao.R;
 import com.withiter.quhao.activity.MerchantDetailActivity;
 import com.withiter.quhao.activity.QuhaoCurrentStatesActivity;
@@ -37,12 +40,16 @@ public class ReservationForCurrentPaiduiAdapter extends BaseAdapter {
 	public List<ReservationVO> rvos;
 	private QuhaoCurrentStatesActivity activity;
 	private ProgressDialogUtil progress;
+	private DisplayImageOptions options;
+	private ImageLoadingListener animateFirstListener;
 
-	public ReservationForCurrentPaiduiAdapter(QuhaoCurrentStatesActivity activity, ListView listView, List<ReservationVO> rvos) {
+	public ReservationForCurrentPaiduiAdapter(QuhaoCurrentStatesActivity activity, ListView listView, List<ReservationVO> rvos,DisplayImageOptions options,ImageLoadingListener animateFirstListener) {
 		super();
 		this.activity = activity;
 		this.listView = listView;
 		this.rvos = rvos;
+		this.options = options;
+		this.animateFirstListener = animateFirstListener;
 	}
 
 	@Override
@@ -88,9 +95,9 @@ public class ReservationForCurrentPaiduiAdapter extends BaseAdapter {
 			}
 			
 			String merchantImg = rvo.merchantImageBig;
-			holder.merchantImg.setImageResource(R.drawable.no_logo);
-			// get image from memory/SDCard/URL stream
-			AsynImageLoader.getInstance().showImageAsyn(holder.merchantImg,position, merchantImg, R.drawable.no_logo);
+//			holder.merchantImg.setImageResource(R.drawable.no_logo);
+//			AsynImageLoader.getInstance().showImageAsyn(holder.merchantImg,position, merchantImg, R.drawable.no_logo);
+			ImageLoader.getInstance().displayImage(merchantImg, holder.merchantImg, options, animateFirstListener);
 			holder.merchantImg.setOnClickListener(new OnClickListener() {
 				
 				@Override

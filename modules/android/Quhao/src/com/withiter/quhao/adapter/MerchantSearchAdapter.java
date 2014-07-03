@@ -12,6 +12,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
@@ -24,10 +27,14 @@ public class MerchantSearchAdapter extends BaseAdapter {
 	public List<Merchant> merchants;
 	private static String TAG = MerchantSearchAdapter.class.getName();
 
-	public MerchantSearchAdapter(Activity activity, ListView listView, List<Merchant> merchants) {
+	private DisplayImageOptions options;
+	private ImageLoadingListener animateFirstListener;
+	public MerchantSearchAdapter(Activity activity, ListView listView, List<Merchant> merchants,DisplayImageOptions options,ImageLoadingListener animateFirstListener) {
 		super();
 		this.listView = listView;
 		this.merchants = merchants;
+		this.options = options;
+		this.animateFirstListener = animateFirstListener;
 	}
 
 	@Override
@@ -72,36 +79,9 @@ public class MerchantSearchAdapter extends BaseAdapter {
 			QuhaoLog.i(TAG, "merchant adapter's imageUrl : " + imageUrl);
 
 //			holder.img.setTag(imageUrl + position);
-			holder.img.setImageResource(R.drawable.no_logo);
-			AsynImageLoader.getInstance().showImageAsyn(holder.img, position,imageUrl, R.drawable.no_logo);
-			/*
-			if (null != imageUrl && !"".equals(imageUrl)) {
-				cachedImage = asyncImageLoader.loadDrawable(imageUrl, position, new ImageCallback() {
-
-					@Override
-					public void imageLoaded(Drawable imageDrawable, String imageUrl, int position) {
-						ImageView imageViewByTag = (ImageView) listView.findViewWithTag(imageUrl + position);
-						if (null != imageViewByTag && null != imageDrawable) {
-							imageViewByTag.setImageDrawable(imageDrawable);
-							imageViewByTag.invalidate();
-							imageDrawable.setCallback(null);
-							imageDrawable = null;
-						}
-
-					}
-				});
-
-			}
-			// // 设置图片给imageView 对象
-			if (null != cachedImage) {
-				holder.img.setImageDrawable(cachedImage);
-				holder.img.invalidate();
-				cachedImage.setCallback(null);
-				cachedImage = null;
-			} else {
-				holder.img.setImageResource(R.drawable.no_logo);
-			}
-			*/
+//			holder.img.setImageResource(R.drawable.no_logo);
+//			AsynImageLoader.getInstance().showImageAsyn(holder.img, position,imageUrl, R.drawable.no_logo);
+			ImageLoader.getInstance().displayImage(imageUrl, holder.img, options, animateFirstListener);
 			holder.content.setTag("content_" + position);
 			holder.content.setText(merchant.name);
 			

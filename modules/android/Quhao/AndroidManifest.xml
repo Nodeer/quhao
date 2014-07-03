@@ -143,6 +143,15 @@
 			android:screenOrientation="portrait"  />
 		<!-- more page -->
 
+		<!-- ShareListActivity page -->
+		<activity android:name="com.withiter.quhao.activity.ShareListActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
+			android:screenOrientation="portrait"  />
+		<!-- ShareListActivity page -->
+
+		<!-- ShareListActivity page -->
+		<activity android:name="com.withiter.quhao.activity.ImagePagerActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
+			android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" android:screenOrientation="portrait"  />
+		<!-- ShareListActivity page -->
 
 		<!-- merchant list page -->
 		<activity android:name="com.withiter.quhao.activity.MerchantListActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"

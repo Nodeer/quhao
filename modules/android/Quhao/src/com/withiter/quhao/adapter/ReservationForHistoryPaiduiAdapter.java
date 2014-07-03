@@ -17,6 +17,9 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.withiter.quhao.R;
 import com.withiter.quhao.activity.CreateCommentActivity;
 import com.withiter.quhao.activity.MerchantDetailActivity;
@@ -34,12 +37,18 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 	public String isShowDelete;
 	private ProgressDialogUtil progress;
 
-	public ReservationForHistoryPaiduiAdapter(QuhaoHistoryStatesActivity activity, ListView listView, List<ReservationVO> rvos) {
+	private DisplayImageOptions options = null;
+	
+	private ImageLoadingListener animateFirstListener;
+	
+	public ReservationForHistoryPaiduiAdapter(QuhaoHistoryStatesActivity activity, ListView listView, List<ReservationVO> rvos,DisplayImageOptions options,ImageLoadingListener animateFirstListener) {
 		super();
 		this.activity = activity;
 		this.listView = listView;
 		this.rvos = rvos;
 		this.isShowDelete = "false";
+		this.options = options;
+		this.animateFirstListener = animateFirstListener;
 	}
 
 	@Override
@@ -110,9 +119,9 @@ public class ReservationForHistoryPaiduiAdapter extends BaseAdapter {
 			}
 			
 			String merchantImg = rvo.merchantImageBig;
-			holder.merchantImg.setImageResource(R.drawable.no_logo);
-			AsynImageLoader.getInstance().showImageAsyn(holder.merchantImg,position, merchantImg, R.drawable.no_logo);
-			// get image from memory/SDCard/URL stream
+//			holder.merchantImg.setImageResource(R.drawable.no_logo);
+//			AsynImageLoader.getInstance().showImageAsyn(holder.merchantImg,position, merchantImg, R.drawable.no_logo);
+			ImageLoader.getInstance().displayImage(merchantImg, holder.merchantImg, options, animateFirstListener);
 			
 			holder.paiduiLayout.setOnClickListener(new OnClickListener() {
 				

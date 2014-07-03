@@ -21,6 +21,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.ReservationForHistoryPaiduiAdapter;
@@ -154,8 +156,25 @@ public class QuhaoHistoryStatesActivity extends QuhaoBaseActivity{
 				{
 					deleteBtn.setVisibility(View.GONE);
 				}
-				reservationForPaiduiAdapter = new ReservationForHistoryPaiduiAdapter(QuhaoHistoryStatesActivity.this, paiduiListView, reservations);
-				paiduiListView.setAdapter(reservationForPaiduiAdapter);
+				
+				if (null == reservationForPaiduiAdapter) {
+					DisplayImageOptions options = new DisplayImageOptions.Builder()
+					.showImageOnLoading(R.drawable.no_logo)
+					.showImageForEmptyUri(R.drawable.no_logo)
+					.showImageOnFail(R.drawable.no_logo)
+					.cacheInMemory(true)
+					.cacheOnDisk(true)
+					.considerExifParams(true)
+					.displayer(new RoundedBitmapDisplayer(20))
+					.build();
+					reservationForPaiduiAdapter = new ReservationForHistoryPaiduiAdapter(QuhaoHistoryStatesActivity.this, paiduiListView, reservations,options,animateFirstListener);
+					paiduiListView.setAdapter(reservationForPaiduiAdapter);
+				}
+				else
+				{
+					reservationForPaiduiAdapter.rvos = reservations;
+				}
+				
 				reservationForPaiduiAdapter.notifyDataSetChanged();
 				
 				if (null == reservations ||reservations.isEmpty()) {

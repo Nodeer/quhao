@@ -13,6 +13,8 @@ import android.view.Window;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.ReservationForCurrentPaiduiAdapter;
@@ -99,8 +101,24 @@ public class QuhaoCurrentStatesActivity extends QuhaoBaseActivity{
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
-				reservationForPaiduiAdapter = new ReservationForCurrentPaiduiAdapter(QuhaoCurrentStatesActivity.this, paiduiListView, reservations);
-				paiduiListView.setAdapter(reservationForPaiduiAdapter);
+				if (reservationForPaiduiAdapter == null) {
+					DisplayImageOptions options = new DisplayImageOptions.Builder()
+					.showImageOnLoading(R.drawable.no_logo)
+					.showImageForEmptyUri(R.drawable.no_logo)
+					.showImageOnFail(R.drawable.no_logo)
+					.cacheInMemory(true)
+					.cacheOnDisk(true)
+					.considerExifParams(true)
+					.displayer(new RoundedBitmapDisplayer(20))
+					.build();
+					reservationForPaiduiAdapter = new ReservationForCurrentPaiduiAdapter(QuhaoCurrentStatesActivity.this, paiduiListView, reservations,options,animateFirstListener);
+					paiduiListView.setAdapter(reservationForPaiduiAdapter);
+				}
+				else
+				{
+					reservationForPaiduiAdapter.rvos = reservations;
+				}
+				
 				reservationForPaiduiAdapter.notifyDataSetChanged();
 				
 				if (null == reservations ||reservations.isEmpty()) {

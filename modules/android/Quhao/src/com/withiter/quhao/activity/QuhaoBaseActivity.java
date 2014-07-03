@@ -1,11 +1,15 @@
 package com.withiter.quhao.activity;
 
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -14,8 +18,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.tool.PhoneTool;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
@@ -42,6 +50,8 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 	protected static boolean networkOK = false;
 	protected static String uid = "";
 	protected static boolean autoLogin = false;
+	
+	protected ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 
 	protected Handler unlockHandler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -145,6 +155,7 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 					}
 				}
 				onBackPressed();
+				AnimateFirstDisplayListener.displayedImages.clear();
 				activity.finish();
 			}
 		};
@@ -199,4 +210,21 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 //	    }
 //	    return super.onKeyDown(keyCode, event);
 //	}
+	
+	private static class AnimateFirstDisplayListener extends SimpleImageLoadingListener {
+
+		static final List<String> displayedImages = Collections.synchronizedList(new LinkedList<String>());
+
+		@Override
+		public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+			if (loadedImage != null) {
+				ImageView imageView = (ImageView) view;
+				boolean firstDisplay = !displayedImages.contains(imageUri);
+				if (firstDisplay) {
+					FadeInBitmapDisplayer.animate(imageView, 500);
+					displayedImages.add(imageUri);
+				}
+			}
+		}
+	}
 }

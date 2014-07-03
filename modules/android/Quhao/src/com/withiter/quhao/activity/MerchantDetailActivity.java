@@ -1,7 +1,6 @@
 package com.withiter.quhao.activity;
 
 import java.math.BigDecimal;
-import java.text.NumberFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +26,9 @@ import android.widget.Toast;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.PaiduiConditionAdapter;
@@ -40,7 +42,6 @@ import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
-import com.withiter.quhao.util.tool.AsynImageLoader;
 import com.withiter.quhao.util.tool.FileUtil;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
@@ -269,27 +270,19 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						}
 						merchantImg.setImageResource(R.drawable.person_avatar);
 						// get image from memory/SDCard/URL stream
-						AsynImageLoader.getInstance().showImageAsyn(merchantImg, 0,merchant.merchantImage, R.drawable.no_logo);
-						/*
-						new Thread(new Runnable() {
-							@Override
-							public void run() {
-								AsynImageLoader.getInstance().showImageAsyn(merchantImg, merchant.merchantImage, R.drawable.no_logo);
-								
-								AsyncImageLoader asynImageLoader = new AsyncImageLoader();
-								Drawable drawable = asynImageLoader.loadDrawable(merchant.merchantImage);
-								if (drawable != null) {
-									// update merchant image
-									updateMerchantImageHandler.obtainMessage(0, drawable).sendToTarget();
-								}
-								else
-								{
-									drawable = getResources().getDrawable(R.drawable.no_logo);
-									updateMerchantImageHandler.obtainMessage(0, drawable).sendToTarget();
-								}
-							}
-						}).start();
-						*/
+						
+						DisplayImageOptions options = new DisplayImageOptions.Builder()
+						.showImageOnLoading(R.drawable.no_logo)
+						.showImageForEmptyUri(R.drawable.no_logo)
+						.showImageOnFail(R.drawable.no_logo)
+						.cacheInMemory(true)
+						.cacheOnDisk(true)
+						.considerExifParams(true)
+						.displayer(new RoundedBitmapDisplayer(20))
+						.build();
+						ImageLoader.getInstance().displayImage(merchant.merchantImage, merchantImg, options, animateFirstListener);
+						
+//						AsynImageLoader.getInstance().showImageAsyn(merchantImg, 0,merchant.merchantImage, R.drawable.no_logo);
 						mName = m.name;
 						merchantName.setText(m.name);
 						merchantAddress.setText(m.address);

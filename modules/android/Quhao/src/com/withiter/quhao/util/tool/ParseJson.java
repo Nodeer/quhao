@@ -1046,6 +1046,14 @@ public class ParseJson {
 		
 		String image = obj.optString("image");
 		
+		if (StringUtils.isNotNull(image) && !image.contains("=")) {
+			try {
+				image = URLDecoder.decode(obj.getString("image"), "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		if (QuhaoConstant.test) {
 			if (null != image && !"".equals(image)) {
 				image = QuhaoConstant.HTTP_URL + obj.optString("image").substring(1);
@@ -1053,13 +1061,6 @@ public class ParseJson {
 		} else {
 			if (null != image && !"".equals(image)) {
 				image = QuhaoConstant.HTTP_URL + obj.optString("image").substring(1);
-			}
-		}
-		if (StringUtils.isNotNull(image) && !image.contains("=")) {
-			try {
-				image = URLDecoder.decode(obj.getString("image"), "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
 			}
 		}
 
@@ -1070,6 +1071,14 @@ public class ParseJson {
 			for (int i = 0; i < imageArray.length(); i++) {
 				String imageTmp = imageArray.get(i).toString();
 				
+				if (StringUtils.isNotNull(imageTmp) && !imageTmp.contains("=")) {
+					try {
+						imageTmp = URLDecoder.decode(imageTmp, "UTF-8");
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					}
+				}
+				
 				if (QuhaoConstant.test) {
 					if (null != imageTmp && !"".equals(imageTmp)) {
 						imageTmp = QuhaoConstant.HTTP_URL + imageTmp.substring(1);
@@ -1077,13 +1086,6 @@ public class ParseJson {
 				} else {
 					if (null != imageTmp && !"".equals(imageTmp)) {
 						imageTmp = QuhaoConstant.HTTP_URL + imageTmp.substring(1);
-					}
-				}
-				if (StringUtils.isNotNull(imageTmp) && !imageTmp.contains("=")) {
-					try {
-						imageTmp = URLDecoder.decode(imageTmp, "UTF-8");
-					} catch (UnsupportedEncodingException e) {
-						e.printStackTrace();
 					}
 				}
 				

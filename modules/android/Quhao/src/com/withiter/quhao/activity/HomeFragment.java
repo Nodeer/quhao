@@ -1,6 +1,8 @@
 package com.withiter.quhao.activity;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import android.app.Activity;
@@ -10,6 +12,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -35,6 +38,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.ActivityAdapter;
@@ -46,7 +54,6 @@ import com.withiter.quhao.task.TopMerchantsTask;
 import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
-import com.withiter.quhao.util.tool.AsynImageLoader;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.view.viewpager.AutoScrollViewPager;
@@ -260,8 +267,18 @@ public class HomeFragment extends Fragment implements OnClickListener {
 				views.add(image);
 
 				if (StringUtils.isNotNull(topMerchants.get(num).merchantImage)) {
-					image.setImageResource(R.drawable.no_logo);
-					AsynImageLoader.getInstance().showImageAsyn(image, 0, topMerchants.get(num).merchantImage, R.drawable.no_logo);
+					
+					DisplayImageOptions options = new DisplayImageOptions.Builder()
+					.showImageOnLoading(R.drawable.no_logo)
+					.showImageForEmptyUri(R.drawable.no_logo)
+					.showImageOnFail(R.drawable.no_logo)
+					.cacheInMemory(true)
+					.cacheOnDisk(true)
+					.considerExifParams(true)
+					.displayer(new RoundedBitmapDisplayer(20))
+					.build();
+					ImageLoader.getInstance().displayImage(topMerchants.get(num).merchantImage, image, options, new AnimateFirstDisplayListener());
+//					AsynImageLoader.getInstance().showImageAsyn(image, 0, topMerchants.get(num).merchantImage, R.drawable.no_logo);
 				} else {
 					image.setImageResource(R.drawable.no_logo);
 				}
@@ -510,8 +527,24 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		public void handleMessage(Message msg) {
 			if (msg.what == 200) {
 				super.handleMessage(msg);
-				activityAdapter = new ActivityAdapter(getActivity(),activityListView,activityList);
-				activityListView.setAdapter(activityAdapter);
+				if (null == activityAdapter) {
+					DisplayImageOptions options = new DisplayImageOptions.Builder()
+					.showImageOnLoading(R.drawable.no_logo)
+					.showImageForEmptyUri(R.drawable.no_logo)
+					.showImageOnFail(R.drawable.no_logo)
+					.cacheInMemory(true)
+					.cacheOnDisk(true)
+					.considerExifParams(true)
+					.displayer(new RoundedBitmapDisplayer(20))
+					.build();
+					activityAdapter = new ActivityAdapter(getActivity(),activityListView,activityList,options,new AnimateFirstDisplayListener());
+					activityListView.setAdapter(activityAdapter);
+				}
+				else
+				{
+					activityAdapter.Activities = activityList;
+				}
+				
 				activityAdapter.notifyDataSetChanged();
 				if(null != activityList && !activityList.isEmpty()) {
 					activityLayout.setVisibility(View.VISIBLE);
@@ -583,7 +616,8 @@ public class HomeFragment extends Fragment implements OnClickListener {
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			if (QHClientApplication.getInstance().isLogined) {
 				Intent attention = new Intent();
-				attention.setClass(getActivity(), MyAttentionListActivity.class);
+//				attention.setClass(getActivity(), MyAttentionListActivity.class);
+				attention.setClass(getActivity(), ShareListActivity.class);
 				startActivity(attention);
 			} else {
 				
@@ -681,5 +715,22 @@ public class HomeFragment extends Fragment implements OnClickListener {
 			break;
 		}
 
+	}
+	
+	private static class AnimateFirstDisplayListener extends SimpleImageLoadingListener {
+
+		static final List<String> displayedImages = Collections.synchronizedList(new LinkedList<String>());
+
+		@Override
+		public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+			if (loadedImage != null) {
+				ImageView imageView = (ImageView) view;
+				boolean firstDisplay = !displayedImages.contains(imageUri);
+				if (firstDisplay) {
+					FadeInBitmapDisplayer.animate(imageView, 500);
+					displayedImages.add(imageUri);
+				}
+			}
+		}
 	}
 }

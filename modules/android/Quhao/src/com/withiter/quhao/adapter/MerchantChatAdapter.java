@@ -12,6 +12,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.withiter.quhao.R;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.AsynImageLoader;
@@ -23,12 +26,16 @@ public class MerchantChatAdapter extends BaseAdapter {
 	private ListView listView;
 	public List<ChatVO> chats;
 	private Activity activity;
+	private DisplayImageOptions options;
+	private ImageLoadingListener animateFirstListener;
 
-	public MerchantChatAdapter(Activity activity, ListView listView, List<ChatVO> chats) {
+	public MerchantChatAdapter(Activity activity, ListView listView, List<ChatVO> chats,DisplayImageOptions options,ImageLoadingListener animateFirstListener) {
 		super();
 		this.listView = listView;
 		this.chats = chats;
 		this.activity = activity;
+		this.options = options;
+		this.animateFirstListener = animateFirstListener;
 	}
 
 	@Override
@@ -67,10 +74,11 @@ public class MerchantChatAdapter extends BaseAdapter {
 //						SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(activity, chat.msg);
 //						left.content.setText(spannableString);
 						left.content.setText(chat.msg);
-						left.userImage.setImageResource(R.drawable.no_logo);
+//						left.userImage.setImageResource(R.drawable.no_logo);
 						if(StringUtils.isNotNull(chat.userImage) && chat.userImage.contains(QuhaoConstant.HTTP_URL))
 						{
-							AsynImageLoader.getInstance().showImageAsyn(left.userImage, position, chat.userImage, R.drawable.person_avatar);
+//							AsynImageLoader.getInstance().showImageAsyn(left.userImage, position, chat.userImage, R.drawable.person_avatar);
+							ImageLoader.getInstance().displayImage(chat.userImage, left.userImage, options, animateFirstListener);
 						}
 						
 						convertView.setTag(left);
@@ -85,10 +93,11 @@ public class MerchantChatAdapter extends BaseAdapter {
 //						SpannableString spannableString1 = FaceConversionUtil.getInstace().getExpressionString(activity, chat.msg);
 //						right.content.setText(spannableString1);
 						right.content.setText(chat.msg);
-						right.userImage.setImageResource(R.drawable.no_logo);
+//						right.userImage.setImageResource(R.drawable.no_logo);
 						if(StringUtils.isNotNull(chat.userImage) && chat.userImage.contains(QuhaoConstant.HTTP_URL))
 						{
-							AsynImageLoader.getInstance().showImageAsyn(right.userImage, position, chat.userImage, R.drawable.person_avatar);
+							ImageLoader.getInstance().displayImage(chat.userImage, right.userImage, options, animateFirstListener);
+//							AsynImageLoader.getInstance().showImageAsyn(right.userImage, position, chat.userImage, R.drawable.person_avatar);
 						}
 						
 						convertView.setTag(right);
@@ -101,10 +110,11 @@ public class MerchantChatAdapter extends BaseAdapter {
 				{
 					case 0:
 						left = (ViewHolderLeft) convertView.getTag();
-						left.userImage.setImageResource(R.drawable.no_logo);
+//						left.userImage.setImageResource(R.drawable.no_logo);
 						if(StringUtils.isNotNull(chat.userImage) && chat.userImage.contains(QuhaoConstant.HTTP_URL))
 						{
-							AsynImageLoader.getInstance().showImageAsyn(left.userImage, position, chat.userImage, R.drawable.person_avatar);
+							ImageLoader.getInstance().displayImage(chat.userImage, left.userImage, options, animateFirstListener);
+//							AsynImageLoader.getInstance().showImageAsyn(left.userImage, position, chat.userImage, R.drawable.person_avatar);
 						}
 						left.content.setTag("content_" + position);
 //						SpannableString spannableString2 = FaceConversionUtil.getInstace().getExpressionString(activity, chat.msg);
@@ -119,10 +129,11 @@ public class MerchantChatAdapter extends BaseAdapter {
 //						SpannableString spannableString3 = FaceConversionUtil.getInstace().getExpressionString(activity, chat.msg);
 //						right.content.setText(spannableString3);
 						right.content.setText(chat.msg);
-						right.userImage.setImageResource(R.drawable.no_logo);
+//						right.userImage.setImageResource(R.drawable.no_logo);
 						if(StringUtils.isNotNull(chat.userImage) && chat.userImage.contains(QuhaoConstant.HTTP_URL))
 						{
-							AsynImageLoader.getInstance().showImageAsyn(right.userImage, position, chat.userImage, R.drawable.person_avatar);
+							ImageLoader.getInstance().displayImage(chat.userImage, right.userImage, options, animateFirstListener);
+//							AsynImageLoader.getInstance().showImageAsyn(right.userImage, position, chat.userImage, R.drawable.person_avatar);
 						}
 						
 						break;

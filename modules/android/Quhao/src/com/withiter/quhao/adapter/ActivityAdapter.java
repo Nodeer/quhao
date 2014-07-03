@@ -13,10 +13,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.withiter.quhao.R;
 import com.withiter.quhao.activity.MerchantDetailActivity;
 import com.withiter.quhao.util.QuhaoLog;
-import com.withiter.quhao.util.tool.AsynImageLoader;
 import com.withiter.quhao.vo.ActivityVO;
 
 public class ActivityAdapter extends BaseAdapter {
@@ -25,12 +27,16 @@ public class ActivityAdapter extends BaseAdapter {
 	public List<ActivityVO> Activities;
 	private static String TAG = ActivityAdapter.class.getName();
 	private Activity activity;
+	private DisplayImageOptions options;
+	private ImageLoadingListener animateFirstListener;
 
-	public ActivityAdapter(Activity activity, ListView listView, List<ActivityVO> Activities) {
+	public ActivityAdapter(Activity activity, ListView listView, List<ActivityVO> Activities,DisplayImageOptions options,ImageLoadingListener animateFirstListener) {
 		super();
 		this.listView = listView;
 		this.Activities = Activities;
 		this.activity = activity;
+		this.options = options;
+		this.animateFirstListener = animateFirstListener;
 	}
 
 	@Override
@@ -67,9 +73,11 @@ public class ActivityAdapter extends BaseAdapter {
 
 			QuhaoLog.i(TAG, "merchant adapter's imageUrl : " + imageUrl);
 
+			ImageLoader.getInstance().displayImage(imageUrl, holder.img, options, animateFirstListener);
+			
 //			holder.img.setTag(imageUrl + position);
-			holder.img.setImageResource(R.drawable.no_logo);
-			AsynImageLoader.getInstance().showImageAsyn(holder.img, position,imageUrl, R.drawable.no_logo);
+//			holder.img.setImageResource(R.drawable.no_logo);
+//			AsynImageLoader.getInstance().showImageAsyn(holder.img, position,imageUrl, R.drawable.no_logo);
 			final String mid = activityVO.mid;
 			holder.img.setOnClickListener(new OnClickListener() {
 				

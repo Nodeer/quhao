@@ -616,7 +616,8 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 								}
 							}
 							newImageName = request;
-							updateNewImgHandler.sendEmptyMessage(200);
+//							updateNewImgHandler.sendEmptyMessage(200);
+							progressDialogUtil.closeProgress();
 							
 						}
 						else

@@ -31,6 +31,8 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantNoQueueAdapter;
@@ -626,8 +628,17 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 				merchantsListView.setVisibility(View.VISIBLE);
 				if (isFirstLoad) {
 
+					DisplayImageOptions options = new DisplayImageOptions.Builder()
+					.showImageOnLoading(R.drawable.no_logo)
+					.showImageForEmptyUri(R.drawable.no_logo)
+					.showImageOnFail(R.drawable.no_logo)
+					.cacheInMemory(true)
+					.cacheOnDisk(true)
+					.considerExifParams(true)
+					.displayer(new RoundedBitmapDisplayer(20))
+					.build();
 					merchantNoQueueAdapter = new MerchantNoQueueAdapter(
-							NoQueueMerchantListActivity.this, merchantsListView, merchantList);
+							NoQueueMerchantListActivity.this, merchantsListView, merchantList,options,animateFirstListener);
 					merchantsListView.setAdapter(merchantNoQueueAdapter);
 					isFirstLoad = false;
 				} else {

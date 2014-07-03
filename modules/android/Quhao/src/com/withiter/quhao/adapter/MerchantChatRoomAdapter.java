@@ -16,6 +16,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.activity.MerchantChatActivity;
@@ -23,7 +26,6 @@ import com.withiter.quhao.activity.MerchantChatRoomsActivity;
 import com.withiter.quhao.task.GetChatPortTask;
 import com.withiter.quhao.task.JsonPack;
 import com.withiter.quhao.util.StringUtils;
-import com.withiter.quhao.util.tool.AsynImageLoader;
 import com.withiter.quhao.util.tool.QuhaoConstant;
 import com.withiter.quhao.vo.ReservationVO;
 
@@ -32,12 +34,16 @@ public class MerchantChatRoomAdapter extends BaseAdapter {
 	private ListView listView;
 	public List<ReservationVO> rvos;
 	private MerchantChatRoomsActivity activity;
+	private DisplayImageOptions options;
+	private ImageLoadingListener animateFirstListener;
 
-	public MerchantChatRoomAdapter(MerchantChatRoomsActivity activity, ListView listView, List<ReservationVO> rvos) {
+	public MerchantChatRoomAdapter(MerchantChatRoomsActivity activity, ListView listView, List<ReservationVO> rvos,DisplayImageOptions options,ImageLoadingListener animateFirstListener) {
 		super();
 		this.activity = activity;
 		this.listView = listView;
 		this.rvos = rvos;
+		this.options = options;
+		this.animateFirstListener = animateFirstListener;
 	}
 
 	@Override
@@ -74,9 +80,9 @@ public class MerchantChatRoomAdapter extends BaseAdapter {
 			}
 			
 			String merchantImg = rvo.merchantImage;
-			holder.merchantImg.setImageResource(R.drawable.no_logo);
-			// get image from memory/SDCard/URL stream
-			AsynImageLoader.getInstance().showImageAsyn(holder.merchantImg,position, merchantImg, R.drawable.no_logo);
+//			holder.merchantImg.setImageResource(R.drawable.no_logo);
+//			AsynImageLoader.getInstance().showImageAsyn(holder.merchantImg,position, merchantImg, R.drawable.no_logo);
+			ImageLoader.getInstance().displayImage(merchantImg, holder.merchantImg, options, animateFirstListener);
 			holder.merchantName.setTag("merchantNamer_" + position);
 			holder.merchantName.setText(rvo.merchantName);
 			

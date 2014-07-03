@@ -28,6 +28,8 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.ShareListAdapter;
@@ -353,8 +355,18 @@ public class ShareListActivity extends QuhaoBaseActivity  implements AMapLocatio
 				shareListView.setVisibility(View.VISIBLE);
 				if (isFirstLoad) {
 
+					DisplayImageOptions options = new DisplayImageOptions.Builder()
+					.showImageOnLoading(R.drawable.no_logo)
+					.showImageForEmptyUri(R.drawable.no_logo)
+					.showImageOnFail(R.drawable.no_logo)
+					.cacheInMemory(true)
+					.cacheOnDisk(true)
+					.considerExifParams(true)
+					.displayer(new RoundedBitmapDisplayer(20))
+					.build();
+					
 					shareListAdapter = new ShareListAdapter(
-							ShareListActivity.this, shareListView, shareList);
+							ShareListActivity.this, shareListView, shareList,options,animateFirstListener);
 					shareListView.setAdapter(shareListAdapter);
 					isFirstLoad = false;
 				} else {
@@ -400,7 +412,7 @@ public class ShareListActivity extends QuhaoBaseActivity  implements AMapLocatio
 		if(null != firstLocation)
 		{
 			url = "share/getNearShare?userX=" + firstLocation.getLongitude() + "&userY=" + firstLocation.getLatitude() + "&cityCode=" + firstLocation.getCityCode() + 
-					"&page=" + page + "&maxDis=";
+					"&page=" + page + "&maxDis=5";
 		}
 		else
 		{

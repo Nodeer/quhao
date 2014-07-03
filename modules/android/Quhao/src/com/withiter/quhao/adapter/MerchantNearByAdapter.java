@@ -24,6 +24,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.activity.GetNumberActivity;
@@ -47,6 +50,8 @@ public class MerchantNearByAdapter extends BaseAdapter {
 	private ListView listView;
 	public List<Merchant> merchants;
 	private Activity activity;
+	private DisplayImageOptions options;
+	private ImageLoadingListener animateFirstListener;
 	
 	private Handler refreshOpenHandler = new Handler() {
 
@@ -81,11 +86,13 @@ public class MerchantNearByAdapter extends BaseAdapter {
 		holder.btnOpen.setText("希望开通(" + openNum + ")");
 	}
 	
-	public MerchantNearByAdapter(Activity activity, ListView listView, List<Merchant> merchants) {
+	public MerchantNearByAdapter(Activity activity, ListView listView, List<Merchant> merchants,DisplayImageOptions options,ImageLoadingListener animateFirstListener) {
 		super();
 		this.listView = listView;
 		this.merchants = merchants;
 		this.activity = activity;
+		this.options = options;
+		this.animateFirstListener = animateFirstListener;
 	}
 
 	@Override
@@ -131,8 +138,9 @@ public class MerchantNearByAdapter extends BaseAdapter {
 			}
 
 			String imageUrl = merchant.merchantImage;
-			holder.img.setImageResource(R.drawable.no_logo);
-			AsynImageLoader.getInstance().showImageAsyn(holder.img, position,imageUrl, R.drawable.no_logo);
+//			holder.img.setImageResource(R.drawable.no_logo);
+//			AsynImageLoader.getInstance().showImageAsyn(holder.img, position,imageUrl, R.drawable.no_logo);
+			ImageLoader.getInstance().displayImage(imageUrl, holder.img, options, animateFirstListener);
 			holder.content.setTag("content_" + position);
 			holder.content.setText(merchant.name);
 			holder.youhuiLayout.setTag("youhui_layout_" + position);

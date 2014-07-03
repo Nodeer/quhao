@@ -25,6 +25,10 @@ import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 
 import com.amap.api.location.AMapLocation;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.withiter.quhao.domain.AccountInfo;
 import com.withiter.quhao.domain.CityInfo;
 import com.withiter.quhao.task.AllCategoriesTask;
@@ -109,6 +113,8 @@ public class QHClientApplication extends Application {
 		JPushInterface.init(this);
 		JPushInterface.reportNotificationOpened(mContext, null);
 		
+		initImageLoader(getApplicationContext());
+		
 		// 注册push消息打开动作
 //		JPushReceiver mMessageReceiver = new JPushReceiver();
 //		IntentFilter filter = new IntentFilter();
@@ -141,8 +147,26 @@ public class QHClientApplication extends Application {
 		initSDCardConfig();
 		
 		FileUtil.saveLogo(this);
+		
 	}
 
+	public static void initImageLoader(Context context) {
+		// This configuration tuning is custom. You can tune every option, you may tune some of them,
+		// or you can create default configuration by
+		//  ImageLoaderConfiguration.createDefault(this);
+		// method.
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
+				.threadPriority(Thread.NORM_PRIORITY - 2)
+				.denyCacheImageMultipleSizesInMemory()
+				.diskCacheFileNameGenerator(new Md5FileNameGenerator())
+				.tasksProcessingOrder(QueueProcessingType.LIFO)
+//				.diskCacheSize(TRIM_MEMORY_BACKGROUND)
+				.writeDebugLogs() // TODO wjzwjz Remove for release app
+				.build();
+		// Initialize ImageLoader with configuration.
+		ImageLoader.getInstance().init(config);
+	}
+	
 	/**
 	 * get all categories from server and display them
 	 */

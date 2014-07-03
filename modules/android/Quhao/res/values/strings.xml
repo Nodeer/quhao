@@ -296,6 +296,7 @@
 	
 	<!-- ShareListActivity begin -->
 	<string name="share_list_title">分享列表</string>
+	<string name="viewpager_indicator">%1$d/%2$d</string>
 	<!-- ShareListActivity end -->
 	
 </resources>

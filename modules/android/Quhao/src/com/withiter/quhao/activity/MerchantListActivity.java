@@ -23,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantAdapter;
@@ -188,7 +190,17 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 
 				// 默认isFirst是true.
 				if (isFirst) {
-					merchantAdapter = new MerchantAdapter(MerchantListActivity.this, merchantsListView, merchants);
+					
+					DisplayImageOptions options = new DisplayImageOptions.Builder()
+					.showImageOnLoading(R.drawable.no_logo)
+					.showImageForEmptyUri(R.drawable.no_logo)
+					.showImageOnFail(R.drawable.no_logo)
+					.cacheInMemory(true)
+					.cacheOnDisk(true)
+					.considerExifParams(true)
+					.displayer(new RoundedBitmapDisplayer(20))
+					.build();
+					merchantAdapter = new MerchantAdapter(MerchantListActivity.this, merchantsListView, merchants,options,animateFirstListener);
 					merchantsListView.setAdapter(merchantAdapter);
 					isFirst = false;
 				} else {
@@ -588,7 +600,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 	public void onPause() {
 		super.onPause();
 	}
-
+	
 	@Override
 	public void onFooterRefresh(PullToRefreshView view) {
 		mPullToRefreshView.post(new Runnable() {

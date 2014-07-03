@@ -15,6 +15,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.MerchantChatRoomAdapter;
@@ -71,7 +73,16 @@ public class MerchantChatRoomsActivity extends QuhaoBaseActivity implements OnHe
 
 				// 默认isFirst是true.
 				if (isFirst) {
-					merchantChatRoomAdapter = new MerchantChatRoomAdapter(MerchantChatRoomsActivity.this, rvoListView, rvos);
+					DisplayImageOptions options = new DisplayImageOptions.Builder()
+					.showImageOnLoading(R.drawable.no_logo)
+					.showImageForEmptyUri(R.drawable.no_logo)
+					.showImageOnFail(R.drawable.no_logo)
+					.cacheInMemory(true)
+					.cacheOnDisk(true)
+					.considerExifParams(true)
+					.displayer(new RoundedBitmapDisplayer(20))
+					.build();
+					merchantChatRoomAdapter = new MerchantChatRoomAdapter(MerchantChatRoomsActivity.this, rvoListView, rvos,options,animateFirstListener);
 					rvoListView.setAdapter(merchantChatRoomAdapter);
 					isFirst = false;
 				} else {

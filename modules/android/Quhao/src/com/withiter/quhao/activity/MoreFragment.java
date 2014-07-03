@@ -30,6 +30,7 @@ import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.task.MoreVersionCheckTask;
@@ -317,6 +318,8 @@ public class MoreFragment extends Fragment implements OnClickListener{
 			break;
 		case R.id.more_settings_cleanpicture:
 			new CleanPicTask().execute();
+			ImageLoader.getInstance().clearDiskCache();
+			ImageLoader.getInstance().clearMemoryCache();
 			break;
 		case R.id.more_settings_imageshow:
 			progressDialogUtil = new ProgressDialogUtil(getActivity(), R.string.empty, R.string.deleting, false);
