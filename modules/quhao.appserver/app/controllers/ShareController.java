@@ -3,6 +3,7 @@ package controllers;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -170,6 +171,18 @@ public class ShareController extends BaseController {
 			s.image = resultContainer.getString("image");
 			s.date = (Date) resultContainer.get("created");
 			s.userImage = resultContainer.getString("userImage");
+			
+			try {
+				s.image = URLDecoder.decode(s.image, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			try {
+				s.userImage = URLDecoder.decode(s.userImage, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			
 			s.nickName = resultContainer.getString("nickName");
 			s.up = resultContainer.getLong("up");
 
