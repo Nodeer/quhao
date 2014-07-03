@@ -22,6 +22,9 @@ public class ShareVO extends ErrorVO {
 	public String address;
 	public Double dis;
 	public Date date;
+	public String userImage;
+	public String nickName;
+	public long up;
 	public boolean deleted;
 	
 	public void build(Share s) {
@@ -32,7 +35,14 @@ public class ShareVO extends ErrorVO {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-//		this.image = s.image;
+		try {
+			this.userImage = URLDecoder.decode(s.userImage, "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
+		this.nickName = s.nickName;
+		this.up = s.up;
 		this.images = s.images;
 		this.aid = s.aid;
 		this.x = s.x;

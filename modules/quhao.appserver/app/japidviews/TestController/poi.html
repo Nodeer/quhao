@@ -38,17 +38,17 @@ function geocoder_CallBack(data){
         //拼接输出html
         console.log(geocode[i].location.getLng()+","+geocode[i].location.getLat());
         $("#result").append("坐标:" + geocode[i].location.getLng() + ", " + geocode[i].location.getLat() + "&nbsp;&nbsp;&nbsp;&nbsp;地址:" + geocode[i].formattedAddress + "<br/>");
-        $("#result1").append("[" + geocode[i].location.getLng() + ", " + geocode[i].location.getLat() + "],");
+        $("#result1").append("[" + geocode[i].location.getLng() + ", " + geocode[i].location.getLat() + "]_");
     }
     
 }  
 
 function startgeocoder(){
 	var areas = '${areas}';
-	var areaArray = new Array();
-	areaArray = areas.split(",");
-	//for(i=0;i<str.length)
-	var distinct = ["东城区","西城区","朝阳区","海淀区","石景山区","丰台区","通州区","顺义区","房山区","大兴区","昌平区","怀柔区","平谷区","门头沟区","密云县","延庆县"];
+	var distinct = new Array();
+	distinct = areas.split(",");
+	//var distinct = ["东城区","西城区","朝阳区","海淀区","石景山区","丰台区","通州区","顺义区","房山区","大兴区","昌平区","怀柔区","平谷区","门头沟区","密云县","延庆县"];
+	console.log(distinct);
 	for(var i=0;i<distinct.length;i++){
 		geocoder(distinct[i]);
 	}

@@ -27,6 +27,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.CommandResult;
 import com.mongodb.gridfs.GridFSInputFile;
 import com.withiter.common.Constants;
+import com.withiter.models.account.Account;
 import com.withiter.models.social.Share;
 
 public class ShareController extends BaseController {
@@ -121,6 +122,9 @@ public class ShareController extends BaseController {
 		projectParams.put("aid", 1);
 		projectParams.put("image", 1);
 		projectParams.put("created", 1);
+		projectParams.put("userImage", 1);
+		projectParams.put("nickName", 1);
+		projectParams.put("up", 1);
 		
 		pipeline.add(new BasicDBObject("$project", projectParams));
 		cmdBody.put("pipeline", pipeline);
@@ -165,6 +169,9 @@ public class ShareController extends BaseController {
 			s.dis = resultContainer.getDouble("dis");
 			s.image = resultContainer.getString("image");
 			s.date = (Date) resultContainer.get("created");
+			s.userImage = resultContainer.getString("userImage");
+			s.nickName = resultContainer.getString("nickName");
+			s.up = resultContainer.getLong("up");
 
 			lists.add(s);
 		}
@@ -204,9 +211,17 @@ public class ShareController extends BaseController {
 		String image = params.get("image");
 		String cityCode = params.get("cityCode");
 		
+		// 用户头像
+		Account a = Account.findById(new ObjectId(aid));
+		String userImage = a.userImage;
+		String nickName = a.nickname;
+		
 		Share s = new Share();
 		s.content = content;
 		s.cityCode = cityCode;
+		s.userImage = userImage;
+		s.nickName = nickName;
+		s.up = 0l;
 		if(!StringUtils.isEmpty(x)){
 			s.x = x;
 			s.y = y;

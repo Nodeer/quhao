@@ -159,6 +159,13 @@ public class TestController extends BaseController {
 		renderJapid(city, cityCode, areas);
 	}
 	
+	public static void m(){
+		String city = params.get("city");
+		String cityCode = params.get("cityCode");
+		String areas = params.get("areas");
+		renderJapid(city, cityCode, areas);
+	}
+	
 	public static void poi021() {
 		renderJapid();
 	}

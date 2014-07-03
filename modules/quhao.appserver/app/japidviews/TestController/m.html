@@ -1,0 +1,104 @@
+`args String city, String cityCode, String areas
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>${city}所有商家查询</title>
+<script language="javascript" src="http://webapi.amap.com/maps?v=1.2&key=60d9c5881dbe8dddd3de33aaacac0cbe"></script>
+<script language="javascript" src="/public/javascripts/libs/jquery-1.7.js"></script>
+<script language="javascript">
+var mapObj;
+var page = 1;
+
+// 循环distincts的下标
+var index = 0;	
+var MSearch;
+//中心点坐标
+var cpoint = new AMap.LngLat(121.472644, 31.231706);
+var areas = '${areas}';
+var distinct1 = new Array();
+distinct1 = areas.split("_");
+var distincts = distinct1;
+console.log(distincts);
+//var distincts = [[116.637122, 40.324272],[116.418757, 39.917544],[116.366794, 39.915309],[116.286968, 39.863642],[116.105381, 39.937183],[116.310316, 39.956074],[115.985006, 40.465325],[116.235906, 40.218085],[117.112335, 40.144783],[116.843352, 40.377362],[116.653525, 40.128936],[116.139157, 39.735535],[116.195445, 39.914601],[116.658603, 39.902486],[116.486409, 39.921489],[116.338033, 39.728908]];
+
+function mapInit() {
+    //加载地图
+    mapObj = new AMap.Map("iCenter");
+    
+}
+//地点查询函数
+function placeSearch(page,distinct) {
+	if(distinct != null){
+		//console.log(distinct.split(", ")[0]);
+	    //console.log(distinct.split(", ")[1]);
+	    
+	    var aaaaa = distinct.replace("[","").replace("]","").split(", ");
+	    console.log(aaaaa[0]);
+	    console.log(aaaaa[1]);
+	   
+	    cpoint = new AMap.LngLat(Number(aaaaa[0]),Number(aaaaa[1]));
+		
+	}
+    //加载服务插件，实例化地点查询类  
+    mapObj.plugin(["AMap.PlaceSearch"], function() {
+        MSearch = new AMap.PlaceSearch({ 
+            city: "${city}",
+            pageSize: 50,
+            pageIndex: page
+        }); 
+        //查询成功时的回调函数
+        AMap.event.addListener(MSearch, "complete", placeSearch_CallBack); 
+        AMap.event.addListener(MSearch, "error", placeSearch_CallBack_Error); 
+       MSearch.searchNearBy("餐饮", cpoint, 50000); 
+    });
+}
+
+function placeSearch_CallBack_Error(data){
+	alert(data);
+}
+
+//回调函数 
+function placeSearch_CallBack(data) {
+	console.log(data.poiList.count);
+	var resultStr = "";
+    var poiArr = data.poiList.pois;
+    var resultCount = data.poiList.pois.length;
+    if(data.poiList.pois.length > 0){
+    	console.log("current page : " + page);
+    	console.log("current page's poi : " + data.poiList.pois.length);
+	    for (var i = 0; i < data.poiList.pois.length; i++) {
+	        resultStr = "citycode:${cityCode}|"+"poiid:"+poiArr[i].id+"|name:"+poiArr[i].name+"|address:"+poiArr[i].address+"|location:"+poiArr[i].location+"|tel:"+poiArr[i].tel+"|type:"+poiArr[i].type+"</br>"
+	        $("#result").append(resultStr);
+	    }
+	    page++;
+	    placeSearch(page);
+    } else {
+    	$("#tip").append("爬取结束&nbsp;&nbsp;&nbsp;&nbsp;");
+    	if(index < distincts.length){
+    		page = 1;
+    		placeSearch(page,distincts[index]);
+    		index++;
+    		console.log("第"+index+"区");
+    	}
+    }
+}
+
+function startplaceSearch(){
+	placeSearch(1,distincts[0]);
+	index++;
+	console.log("第"+index+"区");
+}
+
+</script>
+</head>
+<body onload="mapInit();">  
+    <div id="iCenter" style="display: none;"></div>
+    <div class="">
+        ${city}所有商家<input type="button" value="查询" onclick="startplaceSearch();"/><br />
+        <div id="tip"></div>
+        <div id="result"> </div>
+    </div>        
+</body>
+</html>
