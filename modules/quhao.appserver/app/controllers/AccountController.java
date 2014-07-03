@@ -813,8 +813,7 @@ public class AccountController extends BaseController {
 		}
 	}
 	
-	public static void getUserAgreement()
-	{
+	public static void getUserAgreement() {
 		UserAgreementVO vo = new UserAgreementVO();
 		renderJSON(vo);
 	}

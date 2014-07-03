@@ -29,6 +29,7 @@ import com.mongodb.gridfs.GridFSInputFile;
 import com.withiter.common.Constants;
 import com.withiter.models.account.Account;
 import com.withiter.models.social.Share;
+import com.withiter.models.social.ShareNice;
 
 public class ShareController extends BaseController {
 	
@@ -67,7 +68,6 @@ public class ShareController extends BaseController {
 	 */
 	public static void getShare(int page, String cityCode) {
 		page = (page == 0) ? 1 : page;
-		int num = (page - 1) * NUMBER_PER_PAGE;
 		List<Share> list = Share.nextPage(page, cityCode);
 		List<ShareVO> voList = new ArrayList<ShareVO>();
 		ShareVO svo = null;
@@ -101,7 +101,7 @@ public class ShareController extends BaseController {
 		geoNearParams.put("distanceField", "dis");
 		geoNearParams.put("distanceMultiplier", 6371000);
 		geoNearParams.put("spherical", true);
-		geoNearParams.put("num", num + NUMBER_PER_PAGE);
+		geoNearParams.put("num", 60);	// 限制返回数量
 		
 		// filter
 		BasicDBObject filterParams = new BasicDBObject();
@@ -267,5 +267,26 @@ public class ShareController extends BaseController {
 		} else {
 			return gfsFile;
 		}
+	}
+	
+	/**
+	 * 赞接口
+	 * @param sid Share的id
+	 * @param aid 用户Account id
+	 */
+	public static void addNice(){
+		String sid = params.get("sid");
+		String aid = params.get("aid");
+		
+		Share s = Share.findById(new ObjectId(sid));
+		s.up+=1l;
+		s.save();
+		
+		ShareNice sn = new ShareNice();
+		sn.aid = aid;
+		sn.sid = sid;
+		sn.save();
+		
+		renderJSON(true);
 	}
 }

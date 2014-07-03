@@ -20,6 +20,7 @@ var areas = '${areas}';
 var distinct1 = new Array();
 distinct1 = areas.split("_");
 var distincts = distinct1;
+console.log("区域数量："+ distincts.length);
 console.log(distincts);
 //var distincts = [[116.637122, 40.324272],[116.418757, 39.917544],[116.366794, 39.915309],[116.286968, 39.863642],[116.105381, 39.937183],[116.310316, 39.956074],[115.985006, 40.465325],[116.235906, 40.218085],[117.112335, 40.144783],[116.843352, 40.377362],[116.653525, 40.128936],[116.139157, 39.735535],[116.195445, 39.914601],[116.658603, 39.902486],[116.486409, 39.921489],[116.338033, 39.728908]];
 
@@ -75,7 +76,7 @@ function placeSearch_CallBack(data) {
 	    page++;
 	    placeSearch(page);
     } else {
-    	$("#tip").append("爬取结束&nbsp;&nbsp;&nbsp;&nbsp;");
+    	$("#tip").append(index+"爬取结束&nbsp;&nbsp;&nbsp;&nbsp;");
     	if(index < distincts.length){
     		page = 1;
     		placeSearch(page,distincts[index]);
@@ -102,3 +103,7 @@ function startplaceSearch(){
     </div>        
 </body>
 </html>
+
+<script>
+$("#tip").append("区域数量："+ distincts.length+"   ");
+</script>
