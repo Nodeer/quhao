@@ -1,0 +1,68 @@
+`args String city, String cityCode, String areas
+
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>${city}地理编码</title>
+<script language="javascript" src="http://webapi.amap.com/maps?v=1.2&key=60d9c5881dbe8dddd3de33aaacac0cbe"></script>
+<script language="javascript" src="/public/javascripts/libs/jquery-1.7.js"></script>
+<script language="javascript">
+var mapObj;
+var marker = new Array();
+var windowsArr = new Array(); 
+function mapInit() { 
+    mapObj = new AMap.Map("iCenter");  
+}  
+function geocoder(distinct) {
+    var MGeocoder;
+    //加载地理编码插件
+    mapObj.plugin(["AMap.Geocoder"], function() {        
+        MGeocoder = new AMap.Geocoder({ 
+        });
+        //返回地理编码结果 
+        AMap.event.addListener(MGeocoder, "complete", geocoder_CallBack); 
+        //地理编码
+        MGeocoder.getLocation('${city}'+distinct);
+    });
+}  
+
+//地理编码返回结果展示   
+function geocoder_CallBack(data){
+    var resultStr="";
+    //地理编码结果数组
+    var geocode = new Array();
+    geocode = data.geocodes;
+    
+    for (var i = 0; i < geocode.length; i++) {
+        //拼接输出html
+        console.log(geocode[i].location.getLng()+","+geocode[i].location.getLat());
+        $("#result").append("坐标:" + geocode[i].location.getLng() + ", " + geocode[i].location.getLat() + "&nbsp;&nbsp;&nbsp;&nbsp;地址:" + geocode[i].formattedAddress + "<br/>");
+        $("#result1").append("[" + geocode[i].location.getLng() + ", " + geocode[i].location.getLat() + "],");
+    }
+    
+}  
+
+function startgeocoder(){
+	var areas = '${areas}';
+	var areaArray = new Array();
+	areaArray = areas.split(",");
+	//for(i=0;i<str.length)
+	var distinct = ["东城区","西城区","朝阳区","海淀区","石景山区","丰台区","通州区","顺义区","房山区","大兴区","昌平区","怀柔区","平谷区","门头沟区","密云县","延庆县"];
+	for(var i=0;i<distinct.length;i++){
+		geocoder(distinct[i]);
+	}
+}
+
+</script>
+</head>  
+<body onload="mapInit();">
+    <div id="iCenter" style="display: none;"></div>
+    <div class="demo_box"> 
+            <input type="button" value="地理编码" onclick="startgeocoder()"/>
+        <div id="r_title"><b>地理编码结果:</b></div>
+        <div id="result"></div>
+        <div id="result1"></div>
+    </div>
+</body>  
+</html>

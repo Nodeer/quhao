@@ -7,6 +7,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -163,6 +164,7 @@ public class ShareController extends BaseController {
 			s.y = resultContainer.getString("y");
 			s.dis = resultContainer.getDouble("dis");
 			s.image = resultContainer.getString("image");
+			s.date = (Date) resultContainer.get("created");
 
 			lists.add(s);
 		}
