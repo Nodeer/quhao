@@ -174,15 +174,19 @@ public class ShareController extends BaseController {
 			s.date = (Date) resultContainer.get("created");
 			s.userImage = resultContainer.getString("userImage");
 			
-			try {
-				s.image = URLDecoder.decode(s.image, "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
+			if(!StringUtils.isEmpty(s.image)){
+				try {
+					s.image = URLDecoder.decode(s.image, "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
 			}
-			try {
-				s.userImage = URLDecoder.decode(s.userImage, "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
+			if(!StringUtils.isEmpty(s.userImage)){
+				try {
+					s.userImage = URLDecoder.decode(s.userImage, "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
 			}
 			
 			s.nickName = resultContainer.getString("nickName");

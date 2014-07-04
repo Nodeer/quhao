@@ -8,6 +8,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.withiter.models.social.Share;
 
 public class ShareVO extends ErrorVO {
@@ -31,15 +33,20 @@ public class ShareVO extends ErrorVO {
 	public void build(Share s) {
 		this.id = s.id();
 		this.content = s.content;
-		try {
-			this.image = URLDecoder.decode(s.image, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+		
+		if(!StringUtils.isEmpty(s.image)){
+			try {
+				this.image = URLDecoder.decode(s.image, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 		}
-		try {
-			this.userImage = URLDecoder.decode(s.userImage, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+		if(!StringUtils.isEmpty(s.userImage)){
+			try {
+				this.userImage = URLDecoder.decode(s.userImage, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		this.nickName = s.nickName;
