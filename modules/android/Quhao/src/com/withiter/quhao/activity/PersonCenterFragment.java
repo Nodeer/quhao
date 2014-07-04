@@ -38,6 +38,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
@@ -277,7 +278,8 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 			if(StringUtils.isNotNull(fileName))
 			{
 				SharedprefUtil.put(getActivity(), QuhaoConstant.USER_IMAGE, fileName);
-				AsynImageLoader.getInstance().showImageAsyn(avatar, 0, account.userImage, R.drawable.person_avatar);
+				ImageLoader.getInstance().displayImage(account.userImage, avatar);
+//				AsynImageLoader.getInstance().showImageAsyn(avatar, 0, account.userImage, R.drawable.person_avatar);
 			}
 			
 		}

@@ -198,7 +198,7 @@ public class MerchantListActivity extends QuhaoBaseActivity implements OnHeaderR
 					.cacheInMemory(true)
 					.cacheOnDisk(true)
 					.considerExifParams(true)
-					.displayer(new RoundedBitmapDisplayer(20))
+//					.displayer(new RoundedBitmapDisplayer(20))
 					.build();
 					merchantAdapter = new MerchantAdapter(MerchantListActivity.this, merchantsListView, merchants,options,animateFirstListener);
 					merchantsListView.setAdapter(merchantAdapter);

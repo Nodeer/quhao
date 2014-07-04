@@ -3,9 +3,6 @@ package com.withiter.quhao.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -17,8 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,8 +24,6 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.ShareListAdapter;
@@ -37,7 +31,6 @@ import com.withiter.quhao.task.GetShareListTask;
 import com.withiter.quhao.task.JsonPack;
 import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
-import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.ParseJson;
 import com.withiter.quhao.view.refresh.PullToRefreshView;
 import com.withiter.quhao.view.refresh.PullToRefreshView.OnFooterRefreshListener;
@@ -45,7 +38,7 @@ import com.withiter.quhao.view.refresh.PullToRefreshView.OnHeaderRefreshListener
 import com.withiter.quhao.vo.ShareVO;
 
 public class ShareListActivity extends QuhaoBaseActivity  implements AMapLocationListener, OnClickListener,
-	OnHeaderRefreshListener, OnFooterRefreshListener, OnItemClickListener{
+	OnHeaderRefreshListener, OnFooterRefreshListener{
 
 	private String LOGTAG = ShareListActivity.class.getName();
 	protected ListView shareListView;
@@ -68,6 +61,8 @@ public class ShareListActivity extends QuhaoBaseActivity  implements AMapLocatio
 	private TextView locationResult;
 	
 	private LocationManagerProxy mAMapLocationManager = null;
+	
+	private Button btnCreateShare;
 	
 	private Handler locationHandler = new Handler()
 	{
@@ -112,6 +107,9 @@ public class ShareListActivity extends QuhaoBaseActivity  implements AMapLocatio
 
 		btnBack.setOnClickListener(goBack(this, this.getClass().getName()));
 
+		btnCreateShare = (Button) this.findViewById(R.id.btn_create_share);
+		btnCreateShare.setOnClickListener(this);
+		
 		resultLayout = (LinearLayout) this.findViewById(R.id.result_layout);
 		noResultLayout = (LinearLayout) this.findViewById(R.id.no_result_layout);
 		noResultView = (TextView) this.findViewById(R.id.no_result_text);
@@ -139,26 +137,15 @@ public class ShareListActivity extends QuhaoBaseActivity  implements AMapLocatio
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
 			mAMapLocationManager.destory();
+			mAMapLocationManager = null;
 		}
-		mAMapLocationManager = null;
+		
 	}
 	
-	private AdapterView.OnItemClickListener shareItemClickListener = new AdapterView.OnItemClickListener() {
-		@Override
-		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			ShareVO shareVO = shareList.get(position);
-			Intent intent = new Intent();
-			intent.putExtra("merchantId", shareVO.id);
-			intent.setClass(ShareListActivity.this, MerchantDetailActivity.class);
-			startActivity(intent);
-		}
-	};
-
 	private void initView() {
 		shareListView = (ListView) findViewById(R.id.sharesListView);
 		shareListView.setNextFocusDownId(R.id.sharesListView);
 		shareListView.setVisibility(View.GONE);
-		shareListView.setOnItemClickListener(shareItemClickListener);
 //		expandTabView = (ExpandTabView) this.findViewById(R.id.expandtab_view);
 	}
 	
@@ -216,6 +203,11 @@ public class ShareListActivity extends QuhaoBaseActivity  implements AMapLocatio
 			requestLocation.start();
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;
+		case R.id.btn_create_share:
+			unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+			Intent intent = new Intent();
+			intent.setClass(this, CreateShareActivity.class);
+			startActivity(intent);
 		default:
 			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 			break;
@@ -305,10 +297,7 @@ public class ShareListActivity extends QuhaoBaseActivity  implements AMapLocatio
 	@Override
 	public void onPause() {
 		super.onPause();
-		if (mAMapLocationManager != null) {
-			mAMapLocationManager.removeUpdates(this);
-//			locationHandler.removeCallbacks(locationRunnable);
-		}
+		stopLocation();
 	}
 	
 	@Override
@@ -317,9 +306,9 @@ public class ShareListActivity extends QuhaoBaseActivity  implements AMapLocatio
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
 			mAMapLocationManager.destory();
+			mAMapLocationManager = null;
 //			locationHandler.removeCallbacks(locationRunnable);
 		}
-		mAMapLocationManager = null;
 		super.onDestroy();
 	}
 	
@@ -355,18 +344,8 @@ public class ShareListActivity extends QuhaoBaseActivity  implements AMapLocatio
 				shareListView.setVisibility(View.VISIBLE);
 				if (isFirstLoad) {
 
-					DisplayImageOptions options = new DisplayImageOptions.Builder()
-					.showImageOnLoading(R.drawable.no_logo)
-					.showImageForEmptyUri(R.drawable.no_logo)
-					.showImageOnFail(R.drawable.no_logo)
-					.cacheInMemory(true)
-					.cacheOnDisk(true)
-					.considerExifParams(true)
-					.displayer(new RoundedBitmapDisplayer(20))
-					.build();
-					
 					shareListAdapter = new ShareListAdapter(
-							ShareListActivity.this, shareListView, shareList,options,animateFirstListener);
+							ShareListActivity.this, shareListView, shareList,animateFirstListener);
 					shareListView.setAdapter(shareListAdapter);
 					isFirstLoad = false;
 				} else {
@@ -389,7 +368,6 @@ public class ShareListActivity extends QuhaoBaseActivity  implements AMapLocatio
 					locationResult.setVisibility(View.GONE);
 				}
 				
-				shareListView.setOnItemClickListener(ShareListActivity.this);
 				mPullToRefreshView.onHeaderRefreshComplete();
 				mPullToRefreshView.onFooterRefreshComplete();
 				if(!needToLoad)
@@ -452,6 +430,7 @@ public class ShareListActivity extends QuhaoBaseActivity  implements AMapLocatio
 
 		if (null != location) {
 			
+			stopLocation();
 			QHClientApplication.getInstance().location = location;
 			
 			if(!isFirstLocation)
@@ -480,62 +459,6 @@ public class ShareListActivity extends QuhaoBaseActivity  implements AMapLocatio
 		}
 	}
 
-	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position,
-			long id) {
-
-		// 已经点过，直接返回
-		if (isClick) {
-			return;
-		}
-
-		// 设置已点击标志，避免快速重复点击
-		isClick = true;
-		// 解锁
-		try {
-			if (null != shareList && !shareList.isEmpty() && null != shareList.get(position) 
-					&& StringUtils.isNotNull(shareList.get(position).id)) {
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				Intent intent = new Intent();
-				intent.setClass(this, MerchantDetailActivity.class);
-				intent.putExtra("merchantId", shareList.get(position).id);
-				startActivity(intent);
-				
-			} else {
-				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-				AlertDialog.Builder builder = new Builder(this);
-				builder.setTitle("温馨提示");
-				builder.setMessage("对不起，该商家未在取号系统注册。");
-				builder.setPositiveButton("确认",
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								dialog.dismiss();
-							}
-						});
-				builder.create().show();
-			}
-			
-		} catch (Exception e) {
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			AlertDialog.Builder builder = new Builder(this);
-			builder.setTitle("温馨提示");
-			builder.setMessage("对不起，网络异常。");
-			builder.setPositiveButton("确认",
-					new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							dialog.dismiss();
-						}
-					});
-			builder.create().show();
-			e.printStackTrace();
-		}
-
-	}
-	
-	@Override
 	public void onBackPressed() {
 		finish();
 	}

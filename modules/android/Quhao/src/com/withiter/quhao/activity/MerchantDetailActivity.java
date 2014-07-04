@@ -918,11 +918,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						return;
 					}
 					
-					if (null == merchantDetail.rvos || merchantDetail.rvos.isEmpty()) {
-						Toast.makeText(this, "亲，请取个号码再聊天吧。", Toast.LENGTH_SHORT).show();
-						return;
-					}
-
 					final GetChatPortTask task = new GetChatPortTask(R.string.waitting, this, "chat?mid=" +merchantDetail.merchant.id);
 					task.execute(new Runnable() {
 						

@@ -152,8 +152,9 @@ public class CitySelectActivity extends QuhaoBaseActivity implements AMapLocatio
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
 			mAMapLocationManager.destory();
+			mAMapLocationManager = null;
 		}
-		mAMapLocationManager = null;
+		
 	}
 	
 	private void initView() {
@@ -541,10 +542,7 @@ public class CitySelectActivity extends QuhaoBaseActivity implements AMapLocatio
 
 	@Override
 	public void onPause() {
-		if (mAMapLocationManager != null) {
-			mAMapLocationManager.removeUpdates(this);
-//			locationHandler.removeCallbacks(locationRunnable);
-		}
+		stopLocation();
 		super.onPause();
 	}
 
@@ -555,12 +553,7 @@ public class CitySelectActivity extends QuhaoBaseActivity implements AMapLocatio
 
 	@Override
 	public void onDestroy() {
-		if (mAMapLocationManager != null) {
-			mAMapLocationManager.removeUpdates(this);
-			mAMapLocationManager.destory();
-//			locationHandler.removeCallbacks(locationRunnable);
-		}
-		mAMapLocationManager = null;
+		stopLocation();
 		super.onDestroy();
 	}
 

@@ -1,12 +1,20 @@
 package com.withiter.quhao.activity;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -15,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
@@ -22,7 +31,10 @@ import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
+import com.withiter.quhao.task.CreateShareTask;
 import com.withiter.quhao.util.ActivityUtil;
+import com.withiter.quhao.util.StringUtils;
+import com.withiter.quhao.util.tool.ImageUtil;
 
 public class CreateShareActivity extends QuhaoBaseActivity implements AMapLocationListener {
 
@@ -41,8 +53,13 @@ public class CreateShareActivity extends QuhaoBaseActivity implements AMapLocati
 	private String content;
 	
 	private String locationStr;
+	
+	private Button btnCreateShare;
+	
+	private Button btnAddressPublish;
 
-
+	private boolean showAddress = true;
+	
 	/**
 	 * 去上传文件
 	 */
@@ -93,6 +110,22 @@ public class CreateShareActivity extends QuhaoBaseActivity implements AMapLocati
 		
 		shareImgView = (ImageView) this.findViewById(R.id.share_img);
 		shareImgView.setOnClickListener(this);
+		
+		btnCreateShare = (Button) this.findViewById(R.id.btn_create_share);
+		btnCreateShare.setOnClickListener(this);
+		
+		btnAddressPublish = (Button) this.findViewById(R.id.btn_address_publish);
+		btnAddressPublish.setOnClickListener(this);
+		if (showAddress) {
+			btnAddressPublish.setBackgroundResource(R.drawable.share_gongkai);
+			btnAddressPublish.setText("公开");
+		}
+		else
+		{
+			btnAddressPublish.setBackgroundResource(R.drawable.share_bugongkai);
+			btnAddressPublish.setText("不公开");
+		}
+		
 		reLocateBtn = (Button) this.findViewById(R.id.relocate);
 		reLocateBtn.setOnClickListener(this);
 		
@@ -112,14 +145,26 @@ public class CreateShareActivity extends QuhaoBaseActivity implements AMapLocati
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
 			mAMapLocationManager.destory();
+			mAMapLocationManager = null;
 		}
-		mAMapLocationManager = null;
+		
 	}
 	
 	private void initView() {
 		
 	}
-
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(resultCode==Activity.RESULT_OK && requestCode == TO_SELECT_PHOTO)
+		{
+			picPath = data.getStringExtra(SelectPicActivity.KEY_PHOTO_PATH);
+			Log.i("wjzwjz", "最终选择的图片="+picPath);
+			Bitmap bm =  ImageUtil.decodeFile(picPath,-1,128*128);
+			shareImgView.setImageBitmap(bm);
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 
 	@Override
 	protected void onResume() {
@@ -204,9 +249,83 @@ public class CreateShareActivity extends QuhaoBaseActivity implements AMapLocati
 		isClick = true;
 
 		switch (v.getId()) {
-		case R.id.cancel_btn:
+		case R.id.share_img:
 			unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
-			this.finish();
+			Intent intent = new Intent(this,SelectPicActivity.class);
+			startActivityForResult(intent, TO_SELECT_PHOTO);
+			break;
+		case R.id.btn_address_publish:
+			if (showAddress) {
+				btnAddressPublish.setBackgroundResource(R.drawable.share_bugongkai);
+				btnAddressPublish.setText("不公开");
+				showAddress = false;
+			}
+			else
+			{
+				btnAddressPublish.setBackgroundResource(R.drawable.share_gongkai);
+				btnAddressPublish.setText("公开");
+				showAddress = true;
+			}
+			unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+			
+			break;
+		case R.id.btn_create_share:
+			unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+
+			content = contentEdit.getText().toString().trim();
+			if (StringUtils.isNull(content)) {
+				Toast.makeText(this, "亲，内容要填写哦", Toast.LENGTH_SHORT).show();
+				return;
+			}
+			
+			if (location == null) {
+				Toast.makeText(this, "亲，没有定位内容。", Toast.LENGTH_SHORT).show();
+				return;
+			}
+			
+			if (StringUtils.isNull(picPath)) {
+				Toast.makeText(this, "亲，请上传图片。", Toast.LENGTH_SHORT).show();
+				return;
+			}
+			
+//			String content = params.get("content");
+//			String x = params.get("x");
+//			String y = params.get("y");
+//			String address = params.get("address");
+//			String aid = params.get("aid");
+//			String image = params.get("image");
+//			String cityCode = params.get("cityCode");
+			
+			String url =  "share/add";
+			
+			Map<String, String> params = new HashMap<String, String>();
+			params.put("y", String.valueOf(location.getLongitude()));
+			params.put("x", String.valueOf(location.getLatitude()));
+			params.put("cityCode", location.getCityCode());
+			params.put("content", content);
+			params.put("aid", QHClientApplication.getInstance().accountInfo.accountId);
+			params.put("address", locationStr);
+			params.put("showAddress", String.valueOf(showAddress));
+			params.put("image", "shareImg");
+			
+			Map<String, File> files = new HashMap<String, File>();
+			files.put("shareImg", new File(picPath));
+			final CreateShareTask task = new CreateShareTask(R.string.waitting, this, url,params,files);
+			task.execute(new Runnable() {
+				
+				@Override
+				public void run() {
+					
+					Toast.makeText(CreateShareActivity.this, "亲，分享成功！", Toast.LENGTH_SHORT).show();
+					finish();
+				}
+			}, new Runnable() {
+				
+				@Override
+				public void run() {
+					Toast.makeText(CreateShareActivity.this, "亲，分享失败！", Toast.LENGTH_SHORT).show();
+				}
+			});
 			break;
 		case R.id.relocate:
 			unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
@@ -270,11 +389,7 @@ public class CreateShareActivity extends QuhaoBaseActivity implements AMapLocati
 
 	@Override
 	public void onPause() {
-		if (mAMapLocationManager != null) {
-			mAMapLocationManager.removeUpdates(this);
-			mAMapLocationManager.destory();
-//			locationHandler.removeCallbacks(locationRunnable);
-		}
+		stopLocation();
 		super.onPause();
 	}
 
@@ -305,14 +420,15 @@ public class CreateShareActivity extends QuhaoBaseActivity implements AMapLocati
 			this.location = location;
 			QHClientApplication.getInstance().location = location;
 			stopLocation();
-			String cityName = location.getCity().replace("市", "");
 //			locateMsg.setText("定位城市：" + cityName);
-			locateMsgHandler.obtainMessage(200, "定位城市：" + cityName).sendToTarget();
+			Bundle locBundle = location.getExtras();
+			locationStr = locBundle.getString("desc");
+			locateMsgHandler.obtainMessage(200, locationStr).sendToTarget();
 			reLocationBtnHandler.obtainMessage(200, "true").sendToTarget();
 		} else {
 			stopLocation();
 //			locateMsg.setText("定位失败...");
-			locateMsgHandler.obtainMessage(200, "定位失败，请手动选择城市").sendToTarget();
+			locateMsgHandler.obtainMessage(200, "定位失败，请重新定位").sendToTarget();
 			reLocationBtnHandler.obtainMessage(200, "true").sendToTarget();
 		}
 	}

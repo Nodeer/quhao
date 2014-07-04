@@ -125,10 +125,7 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 
 	@Override
 	public void onPause() {
-		if (mAMapLocationManager != null) {
-			mAMapLocationManager.removeUpdates(this);
-//			locationHandler.removeCallbacks(locationRunnable);
-		}
+		stopLocation();
 		super.onPause();
 	}
 
@@ -139,12 +136,7 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 
 	@Override
 	public void onDestroy() {
-		if (mAMapLocationManager != null) {
-			mAMapLocationManager.removeUpdates(this);
-			mAMapLocationManager.destory();
-//			locationHandler.removeCallbacks(locationRunnable);
-		}
-		mAMapLocationManager = null;
+		stopLocation();
 		super.onDestroy();
 
 	}
@@ -225,12 +217,7 @@ public class MainTabActivity extends FragmentActivity implements AMapLocationLis
 
 	@Override
 	public void finish() {
-		if (mAMapLocationManager != null) {
-			mAMapLocationManager.removeUpdates(this);
-			mAMapLocationManager.destory();
-//			locationHandler.removeCallbacks(locationRunnable);
-		}
-		mAMapLocationManager = null;
+		stopLocation();
 		super.finish();
 	}
 

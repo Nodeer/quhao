@@ -317,7 +317,6 @@ public class ImageUtil {
 		Bitmap bitmap = null;
 		try
 		{
-			long time1 = System.currentTimeMillis();
 			BitmapFactory.Options opts = new BitmapFactory.Options();
 			opts.inJustDecodeBounds = true;
 			BitmapFactory.decodeFile(path,opts);

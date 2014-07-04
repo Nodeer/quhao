@@ -578,10 +578,7 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 	@Override
 	public void onPause() {
 		super.onPause();
-		if (mAMapLocationManager != null) {
-			mAMapLocationManager.removeUpdates(this);
-//			locationHandler.removeCallbacks(locationRunnable);
-		}
+		stopLocation();
 	}
 	
 	@Override
@@ -782,7 +779,7 @@ public class NoQueueMerchantListActivity extends QuhaoBaseActivity implements AM
 			
 			QHClientApplication.getInstance().location = location;
 			getCategoriesFromServerAndDisplay(location.getCityCode());
-			
+			stopLocation();
 			if(!isFirstLocation)
 			{
 				isFirstLocation = true;

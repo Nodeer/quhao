@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#ffffff"
+    android:background="@drawable/share_list_bg"
     android:orientation="vertical" >
     <!-- title -->
 
@@ -38,13 +38,26 @@
             android:text="@string/gerenxinxi"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="#ff000000" />
+        
+        <Button
+            android:id="@+id/btn_create_share"
+            android:layout_width="42dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/btn_bg_no_line"
+            android:textAppearance="?android:textAppearanceMediumInverse"
+            android:textColor="@color/white"
+            android:text="发送"
+            android:textSize="15.0sp" />
     </RelativeLayout>
     <!-- title -->
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffffff"
+        android:background="#00000000"
         android:orientation="vertical" 
         android:padding="10dp">
 
@@ -54,6 +67,7 @@
             android:clickable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:background="@color/white"
             android:padding="5dp" >
 
            <EditText
@@ -73,6 +87,7 @@
             android:clickable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:background="@color/white"
             android:padding="5dp" >
 
 
@@ -83,16 +98,7 @@
                 android:contentDescription="@null"
                 android:duplicateParentState="true"
                 android:scaleType="fitXY"
-                android:src="@drawable/person_avatar" />
-            
-            <ImageView android:id="@+id/image_add"
-                android:layout_width="100dip"
-                android:layout_height="100dip"
-                android:layout_gravity="center_vertical"
-                android:contentDescription="@null"
-                android:duplicateParentState="true"
-                android:scaleType="fitXY"
-                android:src="@drawable/person_avatar" />
+                android:src="@drawable/share_create_df" />
             
         </LinearLayout>
         
@@ -102,6 +108,7 @@
             android:clickable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:layout_marginTop="10dp"
             android:padding="5dp" >
 
             <LinearLayout
@@ -114,13 +121,16 @@
 	           <TextView android:id="@+id/location"
 	               android:layout_height="wrap_content"
 	               android:layout_width="wrap_content"
-	               android:text="huaminhanzun 9d"/>
+	               android:maxLength="13"
+	               android:background="@drawable/share_create_address"
+	               android:text="@string/empty"/>
 	           
 	           <Button android:id="@+id/relocate"
 	               android:layout_width="40dp"
 	               android:layout_height="40dp"
 	               android:contentDescription="@null"
-	               android:background="@drawable/btn_background_red"
+	               android:layout_marginLeft="10dp"
+	               android:background="@drawable/btn_bg_no_line"
 	               android:text="定位"/>
 	           
            </LinearLayout>
@@ -129,13 +139,15 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:clickable="true"
+	            android:layout_marginLeft="5dp"
 	            android:gravity="center_vertical"
 	            android:orientation="horizontal" >
-	           <Button android:layout_width="wrap_content"
+	           <Button android:id="@+id/btn_address_publish"
+	               android:layout_width="wrap_content"
 	               android:layout_height="wrap_content"
 	               android:contentDescription="@null"
-	               android:background="@drawable/btn_background_red"
-	               android:text="gongkai"/>
+	               android:background="@drawable/share_gongkai"
+	               android:text="公开"/>
            </LinearLayout>
 
         </LinearLayout>

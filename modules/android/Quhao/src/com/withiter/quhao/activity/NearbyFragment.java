@@ -531,10 +531,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 	public void onPause() {
 		Log.e("wjzwjz", "NearByFragment onPause");
 		super.onPause();
-		if (mAMapLocationManager != null) {
-			mAMapLocationManager.removeUpdates(this);
-//			locationHandler.removeCallbacks(locationRunnable);
-		}
+		stopLocation();
 	}
 
 	@Override
@@ -670,7 +667,9 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 	@Override
 	public void onLocationChanged(AMapLocation location) {
 		Log.e("wjzwjz", "NearByFragment onLocationChanged : " + (System.currentTimeMillis()-time1));
-		if (null != location) {
+		if (null != location) 
+		{
+			stopLocation();
 			getCategoriesFromServerAndDisplay(location.getCityCode());
 			QHClientApplication.getInstance().location = location;
 			if (!isFirstLocation) {

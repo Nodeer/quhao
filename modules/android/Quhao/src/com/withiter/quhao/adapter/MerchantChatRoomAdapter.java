@@ -93,7 +93,6 @@ public class MerchantChatRoomAdapter extends BaseAdapter {
 				@Override
 				public void onClick(View arg0) {
 					
-					
 					final GetChatPortTask task = new GetChatPortTask(R.string.waitting, activity, "chat?mid=" +mid);
 					task.execute(new Runnable() {
 						

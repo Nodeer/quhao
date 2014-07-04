@@ -2,6 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="250dp"
+    android:paddingBottom="10dp"
+    android:background="@android:color/transparent"
     android:descendantFocusability="blocksDescendants" >
 
 	<RelativeLayout 
@@ -9,19 +11,19 @@
 	    android:paddingLeft="10dp"
 	    android:paddingBottom="10dp"
 	    android:paddingRight="10dp"
+	    android:layout_marginTop="15dp"
 	    android:layout_height="wrap_content"
 	    android:layout_marginLeft="10dp"
 	    android:layout_marginRight="10dp"
-	    android:background="@drawable/rec_bg">
+	    android:background="@color/white">
     
     <RelativeLayout 
         android:id="@+id/relative_layout2"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:layout_alignParentBottom="true"
-	    android:layout_marginTop="50dp"
-	    android:layout_marginBottom="5dp"
-	    android:layout_below="@id/relative_layout1">
+	    android:layout_marginTop="35dp"
+	    android:layout_marginBottom="5dp">
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -46,7 +48,8 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="3"
-                    android:text="今天烧的菜不错哦今天烧的菜不错哦今天烧的菜不错哦今天烧的菜不错哦今天烧的菜不错哦今天烧的菜不错哦今天烧的菜不错哦今天烧的菜不错哦今天烧的菜不错哦今天烧的菜不错哦"
+                    android:layout_marginLeft="10dp"
+                    android:text="ssssssssssssss"
                     android:textColor="@color/black_little"
                     android:textSize="12sp" />
 
@@ -74,7 +77,9 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="3"
+                    android:layout_marginLeft="10dp"
                     android:text="延安西路728号，华敏翰尊9D"
+                    android:background="@drawable/share_list_address"
                     android:textColor="@color/black_little"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -83,6 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:orientation="horizontal"
+                android:layout_marginLeft="10dp"
                 android:gravity="center_vertical">
 	            
 			    <LinearLayout
@@ -95,12 +101,13 @@
 	                    android:layout_height="wrap_content"
 	                    android:layout_width="wrap_content"
 	                    android:contentDescription="@null"
-	                    android:src="@drawable/ic_expand_distance"/>
+	                    android:src="@drawable/share_list_item_distance"/>
 	                <TextView android:id="@+id/distance"
 	                    android:layout_width="wrap_content"
 	                    android:layout_height="wrap_content"
+	                    android:paddingLeft="3dp"
 	                    android:ellipsize="end"
-	                    android:maxLines="3"
+	                    android:singleLine="true"
 	                    android:text="11"
 	                    android:textColor="@color/black_little"
 	                    android:textSize="12sp" />
@@ -116,33 +123,35 @@
 	                    android:layout_height="wrap_content"
 	                    android:layout_width="wrap_content"
 	                    android:contentDescription="@null"
-	                    android:src="@drawable/ic_expand_distance"/>
+	                    android:src="@drawable/share_list_item_date"/>
 	                <TextView android:id="@+id/date"
 	                    android:layout_width="wrap_content"
 	                    android:layout_height="wrap_content"
 	                    android:ellipsize="end"
-	                    android:maxLines="3"
+	                    android:paddingLeft="3dp"
+	                    android:singleLine="true"
 	                    android:text="2014-07-03"
 	                    android:textColor="@color/black_little"
 	                    android:textSize="12sp" />
                 </LinearLayout>
                 
-			    <LinearLayout
+			    <LinearLayout android:id="@+id/share_nice_layout"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:orientation="horizontal"
 	                android:gravity="center_vertical"
 	                android:layout_weight="1.0">
-	                <ImageView 
+	                <ImageView android:id="@+id/share_nice_img"
 	                    android:layout_height="wrap_content"
 	                    android:layout_width="wrap_content"
 	                    android:contentDescription="@null"
-	                    android:src="@drawable/ic_expand_distance"/>
+	                    android:src="@drawable/share_list_item_nice_nor"/>
 	                <TextView android:id="@+id/nice_count"
 	                    android:layout_width="wrap_content"
 	                    android:layout_height="wrap_content"
 	                    android:ellipsize="end"
-	                    android:maxLines="3"
+	                    android:singleLine="true"
+	                    android:paddingLeft="3dp"
 	                    android:text="11"
 	                    android:textColor="@color/black_little"
 	                    android:textSize="12sp" />
@@ -166,8 +175,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:contentDescription="@string/empty"
-            android:focusable="false"
-            android:background="@drawable/person_avatar" />
+            android:focusable="false" />
         <TextView
              android:id="@+id/nickName"
              android:layout_centerVertical="true"

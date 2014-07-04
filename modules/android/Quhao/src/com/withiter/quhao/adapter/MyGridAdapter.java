@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.withiter.quhao.R;
 
 public class MyGridAdapter extends BaseAdapter {
@@ -19,9 +19,12 @@ public class MyGridAdapter extends BaseAdapter {
 
 	private DisplayImageOptions options;
 	
-	public MyGridAdapter(String[] files, Context context) {
+	private ImageLoadingListener animateFirstListener;
+	
+	public MyGridAdapter(String[] files, Context context,ImageLoadingListener animateFirstListener) {
 		this.files = files;
 		mLayoutInflater = LayoutInflater.from(context);
+		this.animateFirstListener = animateFirstListener;
 		options = new DisplayImageOptions.Builder()
 		.showImageOnLoading(R.drawable.no_logo)
 		.showImageForEmptyUri(R.drawable.no_logo)
@@ -29,7 +32,7 @@ public class MyGridAdapter extends BaseAdapter {
 		.cacheInMemory(true)
 		.cacheOnDisk(true)
 		.considerExifParams(true)
-		.displayer(new RoundedBitmapDisplayer(20))
+//		.displayer(new RoundedBitmapDisplayer(20))
 		.build();
 	}
 
@@ -63,7 +66,7 @@ public class MyGridAdapter extends BaseAdapter {
 		}
 		String url = getItem(position);
 
-		ImageLoader.getInstance().displayImage(url, viewHolder.imageView,options);
+		ImageLoader.getInstance().displayImage(url, viewHolder.imageView,options,animateFirstListener);
 
 		return convertView;
 	}

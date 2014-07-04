@@ -1092,7 +1092,34 @@ public class ParseJson {
 				images.add(imageTmp);
 			}
 		}
-		shareVO = new ShareVO(id, content, image, images, aid, x, y, address, dis, date, deleted);
+		
+		String userImage = obj.optString("userImage");
+		
+		if (StringUtils.isNotNull(userImage) && !userImage.contains("=")) {
+			try {
+				userImage = URLDecoder.decode(obj.getString("userImage"), "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if (QuhaoConstant.test) {
+			if (null != userImage && !"".equals(userImage)) {
+				userImage = QuhaoConstant.HTTP_URL + obj.optString("userImage").substring(1);
+			}
+		} else {
+			if (null != userImage && !"".equals(userImage)) {
+				userImage = QuhaoConstant.HTTP_URL + obj.optString("userImage").substring(1);
+			}
+		}
+		
+		String nickName = obj.optString("nickName");
+		
+		long up = obj.optLong("up");
+		
+		boolean showAddress = obj.optBoolean("showAddress");
+		
+		shareVO = new ShareVO(id, content, image, images, aid, x, y, address, dis, date, nickName, userImage, up, showAddress, deleted);
 
 		return shareVO;
 	}
