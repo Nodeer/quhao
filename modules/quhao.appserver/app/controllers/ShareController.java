@@ -126,6 +126,7 @@ public class ShareController extends BaseController {
 		projectParams.put("userImage", 1);
 		projectParams.put("nickName", 1);
 		projectParams.put("up", 1);
+		projectParams.put("showAddress", 1);
 		
 		pipeline.add(new BasicDBObject("$project", projectParams));
 		cmdBody.put("pipeline", pipeline);
@@ -164,6 +165,7 @@ public class ShareController extends BaseController {
 			s.id = resultId.toString();
 			s.aid = resultContainer.getString("aid");
 			s.address = resultContainer.getString("address");
+			s.showAddress = resultContainer.getBoolean("showAddress");
 			s.content = resultContainer.getString("content");
 			s.x = resultContainer.getString("x");
 			s.y = resultContainer.getString("y");
@@ -223,6 +225,7 @@ public class ShareController extends BaseController {
 		String aid = params.get("aid");
 		String image = params.get("image");
 		String cityCode = params.get("cityCode");
+		boolean showAddress = Boolean.valueOf(params.get("showAddress"));
 		
 		// 用户头像
 		Account a = Account.findById(new ObjectId(aid));
@@ -234,6 +237,7 @@ public class ShareController extends BaseController {
 		s.cityCode = cityCode;
 		s.userImage = userImage;
 		s.nickName = nickName;
+		s.showAddress = showAddress;
 		s.up = 0l;
 		if(!StringUtils.isEmpty(x)){
 			s.x = x;

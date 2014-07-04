@@ -17,6 +17,8 @@ public abstract class ShareEntityDef extends BaseModel{
 	public String nickName;									// 分享的用户名
 	public long up;											// 赞的次数
 	
+	public boolean showAddress;								// 是否公开地址
+	
 	// 坐标
 	public double[] loc = new double[2];					// 坐标[x,y],用于mongodb的距离查询
 	public String address;

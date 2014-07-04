@@ -25,6 +25,7 @@ public class ShareVO extends ErrorVO {
 	public String userImage;
 	public String nickName;
 	public long up;
+	public boolean showAddress;
 	public boolean deleted;
 	
 	public void build(Share s) {
@@ -48,44 +49,8 @@ public class ShareVO extends ErrorVO {
 		this.x = s.x;
 		this.y = s.y;
 		this.address = s.address;
+		this.showAddress = s.showAddress;
 		this.date = s.created;
 		this.deleted = s.deleted;
-	}
-	
-	
-	public static void main(String[] args) throws InterruptedException {
-		List<ShareVO> list = new ArrayList<ShareVO>();
-		ShareVO s = null;
-		for(int i = 0; i< 10;i++){
-			s = new ShareVO();
-			s.id = i+"";
-			s.date = new Date();
-			list.add(s);
-			Thread.sleep(500);
-		}
-		
-		Collections.shuffle(list);
-		for(ShareVO svo : list){
-			System.out.println(svo.id+", "+ svo.date);
-		}
-		
-		System.out.println("=============");
-		
-		// 对list按照时间排序
-		Collections.sort(list, new Comparator(){
-			@Override
-			public int compare(Object arg0, Object arg1) {
-				if(((ShareVO)arg0).date.before(((ShareVO)arg1).date)){
-					return 1;
-				} else {
-					return -1;
-				}
-			}
-			
-		});
-		
-		for(ShareVO svo : list){
-			System.out.println(svo.id+", "+ svo.date);
-		}
 	}
 }
