@@ -18,6 +18,7 @@ public abstract class MerchantEntityDef extends BaseModel {
 	@Indexed
 	public String[] telephone = {""};						// 商家电话 default value from AMAP
 	
+	@Indexed
 	public String poiId;									// 高德地图唯一标示 value from AMAP
 	public String cateType;									// 口味 default value from AMAP
 	public String cateName;									// 口味（中文）
