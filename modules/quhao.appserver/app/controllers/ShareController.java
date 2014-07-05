@@ -77,7 +77,7 @@ public class ShareController extends BaseController {
 			svo.build(s);
 			voList.add(svo);
 		}
-		renderJSON(svo);
+		renderJSON(voList);
 	}
 	
 	/**
