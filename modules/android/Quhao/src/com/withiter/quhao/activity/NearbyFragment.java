@@ -319,7 +319,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 //		expandTabView.setValue(mTextArray, mViewArray,imgArray);
 //		expandTabView.setTitle(viewLeft.getShowText(), 0);
 //		expandTabView.setTitle(viewRight.getShowText(), 1);
-		final RelativeLayout viewLeftLayout = new RelativeLayout(this.getActivity());
+		final RelativeLayout viewLeftLayout = new RelativeLayout(getActivity());
 		int maxHeight = (int) (displayHeight * 0.5);
 		RelativeLayout.LayoutParams viewLeftParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, maxHeight);
 		viewLeftParams.leftMargin = 10;
@@ -339,7 +339,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		});
 		mViewArray.add(viewLeftLayout);
 		
-		final RelativeLayout viewRightLayout = new RelativeLayout(this.getActivity());
+		final RelativeLayout viewRightLayout = new RelativeLayout(getActivity());
 		RelativeLayout.LayoutParams viewRightLP = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, maxHeight);
 		viewRightLP.leftMargin = 10;
 		viewRightLP.rightMargin = 10;
@@ -475,7 +475,7 @@ public class NearbyFragment extends Fragment implements AMapLocationListener, On
 		public void handleMessage(Message msg) {
 
 			super.handleMessage(msg);
-
+			
 			if (msg.what == 200) {
 
 				if (isFirstLoad) {

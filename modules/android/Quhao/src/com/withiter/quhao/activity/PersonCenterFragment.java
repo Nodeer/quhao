@@ -46,7 +46,6 @@ import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
-import com.withiter.quhao.util.tool.AsynImageLoader;
 import com.withiter.quhao.util.tool.FileUtil;
 import com.withiter.quhao.util.tool.ImageUtil;
 import com.withiter.quhao.util.tool.ParseJson;
