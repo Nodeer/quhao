@@ -101,6 +101,12 @@
 		</activity>
 		<!-- MainTabActivity page -->
 		
+		<!-- MainTabActivity page -->
+		<activity android:name="com.withiter.quhao.activity.MainTabActivityS" android:launchMode="singleTask" android:label="@string/app_name" android:screenOrientation="portrait">
+			
+		</activity>
+		<!-- MainTabActivity page -->
+		
 		<!-- my attention list page -->
 		<activity android:name="com.withiter.quhao.activity.MyAttentionListActivity" android:label="@string/app_name" android:screenOrientation="portrait">
 			

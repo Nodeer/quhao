@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:background="@drawable/common_top_bar_bg_blue3"
+        android:gravity="center_vertical"
+        android:paddingBottom="5dip"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
+        android:paddingTop="5dip" >
+
+        <Button android:id="@+id/btn_menu"
+            android:layout_centerVertical="true"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/arrow_left"
+            android:gravity="center"
+            android:textColor="#ff000000"
+            android:textSize="18.0sp"  />
+        <TextView android:id="@+id/top_title"
+            android:layout_toRightOf="@id/btn_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="@string/gerenxinxi"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textColor="#ff000000" />
+        
+        <!-- search button -->
+
+        <!-- search button -->
+        <TextView
+            android:id="@+id/city_select"
+            android:layout_width="90dip"
+            android:layout_height="25dp"
+            android:layout_toRightOf="@id/top_title"
+            android:layout_centerVertical="true"
+            android:drawableRight="@drawable/btn_expand_background"
+            android:gravity="center|center_vertical"
+            android:singleLine="true"
+            android:layout_marginRight="10dp"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/jiuhong"
+            android:textIsSelectable="false"
+            android:textSize="18.0sp"
+            android:textStyle="bold" />
+        
+        <Button
+            android:id="@+id/edit_search_c"
+            android:layout_width="42dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/btn_search_background"
+            android:paddingRight="10dp"
+            android:textAppearance="?android:textAppearanceMediumInverse"
+            android:textColor="@color/white"
+            android:textSize="15.0sp" />
+    </RelativeLayout>
+    
+    <FrameLayout
+	    android:id="@+id/content_frame"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" />
+
+</LinearLayout>

@@ -56,7 +56,7 @@ public class LaunchActivity extends Activity {
 	};
 	
 	private void goHome() {
-		Intent intent = new Intent(LaunchActivity.this, MainTabActivity.class);
+		Intent intent = new Intent(LaunchActivity.this, MainTabActivityS.class);
 		LaunchActivity.this.startActivity(intent);
 		LaunchActivity.this.finish();
 	}
