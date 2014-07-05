@@ -107,7 +107,7 @@ public class HomeFragment extends Fragment implements OnClickListener {
 		Log.e("wjzwjz", "HomeFragment onActivityCreated");
 		super.onActivityCreated(savedInstanceState);
 	}
-
+	
 	@Override
 	public void onViewStateRestored(Bundle savedInstanceState) {
 		Log.e("wjzwjz", "HomeFragment onViewStateRestored");
