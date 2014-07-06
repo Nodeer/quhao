@@ -32,6 +32,7 @@ import com.withiter.common.Constants.CreditStatus;
 import com.withiter.models.account.Account;
 import com.withiter.models.account.Credit;
 import com.withiter.models.account.Reservation;
+import com.withiter.models.chat.MerchantPort;
 import com.withiter.models.merchant.Attention;
 import com.withiter.models.merchant.Category;
 import com.withiter.models.merchant.Comment;
@@ -781,12 +782,22 @@ public class MerchantController extends BaseController {
 		BasicDBObject resultContainer = null;
 		ObjectId resultId = null;
 		MerchantVO m = null;
+		
 		while (it.hasNext()) {
 			m = new MerchantVO();
 			resultContainer = (BasicDBObject) it.next();
 			resultId = (ObjectId) resultContainer.get("_id");
 
 			m.id = resultId.toString();
+			
+			// 查看当前商家的聊天室人数
+			MerchantPort mp = MerchantPort.findByMid(m.id);
+			if(mp != null){
+				m.socketNumber = mp.socketNumber;
+			} else {
+				m.socketNumber = 0;
+			}
+			
 			m.distance = resultContainer.getDouble("dis");
 			m.averageCost = Float.parseFloat(resultContainer.get("averageCost").toString());
 			m.name = resultContainer.getString("name");

@@ -78,6 +78,8 @@ public class MerchantVO {
 	public long openNum;
 	//取消号码时候弹出优惠提示的条件
 	public int checkTime;
+	//聊天室人数
+	public int socketNumber = 0;
 	
 	/**
 	 * @param m
