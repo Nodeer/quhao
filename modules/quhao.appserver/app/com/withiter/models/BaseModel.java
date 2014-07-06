@@ -5,11 +5,14 @@ import java.util.UUID;
 
 import org.bson.types.ObjectId;
 
+import com.google.code.morphia.annotations.Indexed;
+
 import play.modules.morphia.Model;
 import play.modules.morphia.MorphiaPlugin;
 import play.modules.morphia.Model.MorphiaQuery;
 
 public abstract class BaseModel extends Model {
+	@Indexed
 	public Date created = new Date();
 	public Date modified = new Date();
 

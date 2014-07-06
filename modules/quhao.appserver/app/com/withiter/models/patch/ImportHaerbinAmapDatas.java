@@ -103,9 +103,20 @@ public class ImportHaerbinAmapDatas extends OnetimePatch {
 			// 冷饮店-
 			// 糕饼店-
 			// 甜品店-
-			String type = s[6].split(":")[1];
-			String key = type.split(";")[1];
-			String value = type.split(";")[2];
+			
+			String type = "";
+			String key = "";
+			String value = "";
+			if(s[6].split(":").length == 2){
+				type = s[6].split(":")[1];
+				if (type.split(";").length == 2) {
+					key = type.split(";")[1];
+				}
+				if (type.split(";").length == 3) {
+					key = type.split(";")[1];
+					value = type.split(";")[2];
+				}
+			}
 			
 			if(m.name.contains("自助")){
 				m.cateType = CateType.zizhucan.toString();

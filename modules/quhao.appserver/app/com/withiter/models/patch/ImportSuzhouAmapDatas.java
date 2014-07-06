@@ -63,15 +63,31 @@ public class ImportSuzhouAmapDatas extends OnetimePatch {
 			m.cityCode = s[0].split(":")[1];
 			m.postcode = s[0].split(":")[1];
 			m.name = s[2].split(":")[1];
-			m.address = s[3].split(":")[1];
-			m.y = s[4].split(":")[1].split(",")[0];
-			m.x = s[4].split(":")[1].split(",")[1];
+			
+			if(s[3].split(":").length == 2){
+				m.address = s[3].split(":")[1];
+			} else {
+				m.address = "";
+			}
+			
+			if(s[4].split(":").length == 2){
+				m.y = s[4].split(":")[1].split(",")[0];
+				m.x = s[4].split(":")[1].split(",")[1];
+			} else {
+				m.y = "0";
+				m.x = "0";
+			}
 			
 			// 生成坐标，距离查询使用
 			m.loc[0] = Double.parseDouble(m.y);
 			m.loc[1] = Double.parseDouble(m.x);
 			
-			m.telephone = (s[5].split(":").length > 1) ? s[5].split(":")[1].split(";") : new String[] { "" };
+			if(s[5].split(":").length == 1){	// 没有电话号码
+				m.telephone = new String[] {""};
+			} else {
+				m.telephone = s[5].split(":")[1].split(";");
+			}
+//						m.telephone = (s[5].split(":").length > 1) ? s[5].split(":")[1].split(";") : new String[] { "" };
 
 					
 			// 餐厅分类
@@ -87,9 +103,20 @@ public class ImportSuzhouAmapDatas extends OnetimePatch {
 			// 冷饮店-
 			// 糕饼店-
 			// 甜品店-
-			String type = s[6].split(":")[1];
-			String key = type.split(";")[1];
-			String value = type.split(";")[2];
+			
+			String type = "";
+			String key = "";
+			String value = "";
+			if(s[6].split(":").length == 2){
+				type = s[6].split(":")[1];
+				if (type.split(";").length == 2) {
+					key = type.split(";")[1];
+				}
+				if (type.split(";").length == 3) {
+					key = type.split(";")[1];
+					value = type.split(";")[2];
+				}
+			}
 			
 			if(m.name.contains("自助")){
 				m.cateType = CateType.zizhucan.toString();
