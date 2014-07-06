@@ -1,6 +1,9 @@
 package com.withiter.quhao.activity;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +13,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -37,6 +41,8 @@ import com.withiter.quhao.task.CreateShareTask;
 import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.ImageUtil;
+import com.withiter.quhao.util.tool.QuhaoConstant;
+import com.withiter.quhao.util.tool.SharedprefUtil;
 
 public class CreateShareActivity extends QuhaoBaseActivity implements AMapLocationListener {
 
@@ -324,6 +330,33 @@ public class CreateShareActivity extends QuhaoBaseActivity implements AMapLocati
 			params.put("image", "shareImg");
 			
 			Map<String, File> files = new HashMap<String, File>();
+			Bitmap bitmap = ImageUtil.getimage(picPath);
+			
+			FileOutputStream fos;
+			File image = null;
+			try {
+				image = new File(picPath);
+				File folder = image.getParentFile();
+
+				if (!folder.exists()) {
+					folder.mkdirs();
+				}
+
+				if (!image.exists()) {
+					image.createNewFile();
+				}
+//				newImageName = image.getName();
+				fos = new FileOutputStream(image);
+				bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+				fos.flush();
+				fos.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			
 			files.put("shareImg", new File(picPath));
 			final CreateShareTask task = new CreateShareTask(R.string.waitting, this, url,params,files);
 			task.execute(new Runnable() {

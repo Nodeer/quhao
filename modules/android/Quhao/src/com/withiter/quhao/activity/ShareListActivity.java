@@ -134,6 +134,7 @@ public class ShareListActivity extends QuhaoBaseActivity  implements AMapLocatio
 	 */
 	private void stopLocation() {
 		
+		Log.e("", "wjzwjz stopLocation location : " + mAMapLocationManager);
 		if (mAMapLocationManager != null) {
 			mAMapLocationManager.removeUpdates(this);
 			mAMapLocationManager.destory();
@@ -237,7 +238,7 @@ public class ShareListActivity extends QuhaoBaseActivity  implements AMapLocatio
 				Looper.prepare();
 				try {
 					stopLocation();
-				
+					
 					mAMapLocationManager = LocationManagerProxy
 							.getInstance(ShareListActivity.this);
 					/*
@@ -315,21 +316,22 @@ public class ShareListActivity extends QuhaoBaseActivity  implements AMapLocatio
 	@Override
 	public void onLocationChanged(Location location) {
 		
+		Log.e("", "wjzwjz onLocationChanged location : " + location);
 	}
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		
+		Log.e("", "wjzwjz onStatusChanged provider : " + provider + " , status : " + status + " , extras:" + extras);
 	}
 
 	@Override
 	public void onProviderEnabled(String provider) {
-		
+		Log.e("", "wjzwjz onProviderEnabled provider : " + provider );
 	}
 
 	@Override
 	public void onProviderDisabled(String provider) {
-		
+		Log.e("", "wjzwjz onProviderDisabled provider : " + provider);
 	}
 
 	protected Handler updateSharesHandler = new Handler() {
@@ -427,7 +429,7 @@ public class ShareListActivity extends QuhaoBaseActivity  implements AMapLocatio
 	
 	@Override
 	public void onLocationChanged(AMapLocation location) {
-
+		Log.e("", "wjzwjz onLocationChanged AMapLocation location : " + location);
 		if (null != location) {
 			
 			stopLocation();
