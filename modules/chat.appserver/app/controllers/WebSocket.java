@@ -48,6 +48,7 @@ public class WebSocket extends Controller {
 				MerchantPort mp = new MerchantPort();
 				mp.port = Long.parseLong(Play.configuration.get("http.port").toString());
 				mp.mid = mid;
+				mp.socketNumber = room.socketNumber;
 				mp.save();
 				Logger.info("MerchantPort(mid:%s, port:%d) created", mp.mid,mp.port);
 				ChatPort.updateRoomCount(rooms.size(), mp.port);

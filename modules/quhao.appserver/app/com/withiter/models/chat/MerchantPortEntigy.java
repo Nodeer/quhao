@@ -9,4 +9,6 @@ public abstract class MerchantPortEntigy extends BaseModel {
 	public String mid;
 	@Indexed
 	public long port;
+	@Indexed
+	public int socketNumber;
 }

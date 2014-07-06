@@ -35,6 +35,11 @@ public class ChatRoom {
 	public EventStream<ChatRoom.Event> join(String user, String uid, String image) {
 		chatEvents.publish(new Join(user, uid, image));
 		socketNumber++;
+		MerchantPort mp = MerchantPort.findByMid(this.mid);
+		if(mp != null){
+			mp.socketNumber = this.socketNumber;
+			mp.save();
+		}
 		Logger.debug("current room mid is : %s, uid is %s, nickname is %s joined. user counts are %d.", this.mid, uid, user, socketNumber);
 		return chatEvents.eventStream();
 	}
@@ -56,6 +61,12 @@ public class ChatRoom {
 				Logger.info("Update rooms counts(%d) on port %d", ChatRoomFactory.rooms().size(), mp.port);
 			}
 			Logger.info("room id is : %s, and remove room from ChatRoomFactory.", this.mid);
+		} else {
+			MerchantPort mp = MerchantPort.findByMid(this.mid);
+			if(mp != null){
+				mp.socketNumber = this.socketNumber;
+				mp.save();
+			}
 		}
 	}
 
