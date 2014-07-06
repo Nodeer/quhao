@@ -252,7 +252,8 @@ public class MainTabActivityS extends FragmentActivity implements AMapLocationLi
 		}
 		
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		ft.replace(R.id.content_frame, mContent);
+		
+		ft.replace(R.id.content_frame, mContent,"home");
 		ft.addToBackStack(null);
 		ft.commitAllowingStateLoss();
 	}
@@ -442,9 +443,15 @@ public class MainTabActivityS extends FragmentActivity implements AMapLocationLi
 				slidingMenu.showContent();
 				return;
 			}
-			mContent = new HomeFragmentNew();
-			ft.replace(R.id.content_frame, mContent);
+			
+			mContent = getSupportFragmentManager().findFragmentByTag("home");
+			if (null == mContent) {
+				mContent = new HomeFragmentNew();
+			}
+			
+			ft.replace(R.id.content_frame, mContent,"home");
 			ft.addToBackStack(null);
+//			getSupportFragmentManager().popBackStack(arg0, arg1)
 			ft.commitAllowingStateLoss();
 			slidingMenu.showContent();
 			break;
@@ -454,8 +461,13 @@ public class MainTabActivityS extends FragmentActivity implements AMapLocationLi
 				slidingMenu.showContent();
 				return;
 			}
-			mContent = new NearbyFragment();
-			ft.replace(R.id.content_frame, mContent);
+			
+			mContent = getSupportFragmentManager().findFragmentByTag("nearby");
+			if (null == mContent) {
+				mContent = new NearbyFragment();
+			}
+			
+			ft.replace(R.id.content_frame, mContent,"nearby");
 			ft.addToBackStack(null);
 			ft.commitAllowingStateLoss();
 			slidingMenu.showContent();
@@ -465,8 +477,13 @@ public class MainTabActivityS extends FragmentActivity implements AMapLocationLi
 					slidingMenu.showContent();
 					return;
 				}
-				mContent = new PersonCenterFragment();
-				ft.replace(R.id.content_frame, mContent);
+				
+				mContent = getSupportFragmentManager().findFragmentByTag("person");
+				if (null == mContent) {
+					mContent = new PersonCenterFragment();
+				}
+				
+				ft.replace(R.id.content_frame, mContent,"person");
 				ft.addToBackStack(null);
 				ft.commitAllowingStateLoss();
 				slidingMenu.showContent();
@@ -477,8 +494,13 @@ public class MainTabActivityS extends FragmentActivity implements AMapLocationLi
 					slidingMenu.showContent();
 					return;
 				}
-				mContent = new MoreFragment();
-				ft.replace(R.id.content_frame, mContent);
+				
+				mContent = getSupportFragmentManager().findFragmentByTag("more");
+				if (null == mContent) {
+					mContent = new MoreFragment();
+				}
+				
+				ft.replace(R.id.content_frame, mContent,"more");
 				ft.addToBackStack(null);
 				ft.commitAllowingStateLoss();
 				slidingMenu.showContent();

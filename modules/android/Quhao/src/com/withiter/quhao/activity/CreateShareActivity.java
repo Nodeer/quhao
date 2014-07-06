@@ -29,6 +29,8 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.task.CreateShareTask;
@@ -83,6 +85,8 @@ public class CreateShareActivity extends QuhaoBaseActivity implements AMapLocati
 	
 	private String picPath = null;
 	
+	private DisplayImageOptions options;
+	
 	private Handler locationHandler = new Handler()
 	{
 
@@ -106,6 +110,16 @@ public class CreateShareActivity extends QuhaoBaseActivity implements AMapLocati
 		setContentView(R.layout.create_share_layout);
 		super.onCreate(savedInstanceState);
 
+		options = new DisplayImageOptions.Builder()
+//		.showImageOnLoading(R.drawable.no_logo)
+//		.showImageForEmptyUri(R.drawable.no_logo)
+//		.showImageOnFail(R.drawable.no_logo)
+//		.cacheInMemory(true)
+//		.cacheOnDisk(true)
+		.considerExifParams(true)
+//		.displayer(new RoundedBitmapDisplayer(20))
+		.build();
+		
 		btnBack.setOnClickListener(goBack(this));
 		
 		shareImgView = (ImageView) this.findViewById(R.id.share_img);
@@ -160,8 +174,9 @@ public class CreateShareActivity extends QuhaoBaseActivity implements AMapLocati
 		{
 			picPath = data.getStringExtra(SelectPicActivity.KEY_PHOTO_PATH);
 			Log.i("wjzwjz", "最终选择的图片="+picPath);
-			Bitmap bm =  ImageUtil.decodeFile(picPath,-1,128*128);
-			shareImgView.setImageBitmap(bm);
+//			Bitmap bm =  ImageUtil.decodeFile(picPath,-1,128*128);
+			ImageLoader.getInstance().displayImage("file://" + picPath, shareImgView,options);
+//			shareImgView.setImageBitmap(bm);
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}

@@ -1,7 +1,6 @@
 package com.withiter.quhao.adapter;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -127,8 +126,6 @@ public class ShareListAdapter extends BaseAdapter {
 			
 			holder.date.setText(created);
 			
-			holder.niceCount.setText(shareVO.up + "");
-			
 			if (StringUtils.isNotNull(shareVO.dis)) {
 				double dis = Double.parseDouble(shareVO.dis);
 				if(dis > 0)
@@ -177,15 +174,21 @@ public class ShareListAdapter extends BaseAdapter {
 				holder.shareImg.setVisibility(View.GONE);
 			}
 			
+			holder.niceCount.setText(shareVO.up + "");
+			
 			final String positionStr = String.valueOf(position);
 			final String sId = shareVO.id;
 			final long count = shareVO.up;
 			
 			if (shareVO.shareNiced) {
+				holder.niceCount.setTextColor(activity.getResources().getColor(R.color.red_text));
+				holder.shareNiceImg.setImageResource(R.drawable.share_list_item_nice_ed);
 				holder.shareNiceLayout.setEnabled(false);
 			}
 			else
 			{
+				holder.niceCount.setTextColor(activity.getResources().getColor(R.color.black_little));
+				holder.shareNiceImg.setImageResource(R.drawable.share_list_item_nice_nor);
 				holder.shareNiceLayout.setEnabled(true);
 				holder.shareNiceLayout.setOnClickListener(new OnClickListener() {
 					

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
@@ -22,6 +23,7 @@ public class ImageDetailFragment extends Fragment {
 	private ImageView mImageView;
 	private ProgressBar progressBar;
 	private PhotoViewAttacher mAttacher;
+	private DisplayImageOptions options;
 
 	public static ImageDetailFragment newInstance(String imageUrl) {
 		final ImageDetailFragment f = new ImageDetailFragment();
@@ -37,6 +39,15 @@ public class ImageDetailFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mImageUrl = getArguments() != null ? getArguments().getString("url") : null;
+		options = new DisplayImageOptions.Builder()
+//		.showImageOnLoading(R.drawable.no_logo)
+//		.showImageForEmptyUri(R.drawable.no_logo)
+//		.showImageOnFail(R.drawable.no_logo)
+		.cacheInMemory(true)
+		.cacheOnDisk(true)
+		.considerExifParams(true)
+//		.displayer(new RoundedBitmapDisplayer(20))
+		.build();
 
 	}
 
@@ -62,8 +73,7 @@ public class ImageDetailFragment extends Fragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		
-		ImageLoader.getInstance().displayImage(mImageUrl, mImageView, new SimpleImageLoadingListener() {
+		ImageLoader.getInstance().displayImage(mImageUrl, mImageView, options,new SimpleImageLoadingListener() {
 			@Override
 			public void onLoadingStarted(String imageUri, View view) {
 				progressBar.setVisibility(View.VISIBLE);

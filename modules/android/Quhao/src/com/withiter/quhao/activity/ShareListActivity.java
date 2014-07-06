@@ -405,7 +405,7 @@ public class ShareListActivity extends QuhaoBaseActivity  implements AMapLocatio
 				
 				JsonPack result = task.jsonPack;
 				List<ShareVO> tempList = ParseJson.getShareVOs(result.getObj());
-				if (null == tempList || tempList.isEmpty() || tempList.size()<20) {
+				if (null == tempList || tempList.isEmpty() || tempList.size()<=60) {
 					needToLoad = false;
 				}
 				if(null == shareList)
