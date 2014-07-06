@@ -63,6 +63,24 @@ public class ShareController extends BaseController {
 	}
 	
 	/**
+	 * 用户未开启定位，获取分享列表, 在time之后的数据
+	 * @param page 第page页
+	 * @param cityCode 城市代码
+	 */
+	public static void getShareAfterDate(int page, String cityCode, long time) {
+		page = (page == 0) ? 1 : page;
+		List<Share> list = Share.nextPage(page, cityCode, time);
+		List<ShareVO> voList = new ArrayList<ShareVO>();
+		ShareVO svo = null;
+		for(Share s : list){
+			svo = new ShareVO();
+			svo.build(s);
+			voList.add(svo);
+		}
+		renderJSON(voList);
+	}
+	
+	/**
 	 * 用户未开启定位，获取分享列表
 	 * @param page 第page页
 	 * @param cityCode 城市代码
@@ -81,6 +99,69 @@ public class ShareController extends BaseController {
 	}
 	
 	/**
+	 * 获取周边分享， 在time之后
+	 * @param page 第page页
+	 * @param userX x坐标
+	 * @param userY y坐标
+	 * @param maxDis 最远距离
+	 * @param cityCode 城市代码
+	 */
+	public static void getNearShareAfterDate(int page, double userX, double userY, double maxDis, String cityCode, long time) {
+//		page = (page == 0) ? 1 : page;
+//		int num = (page - 1) * NUMBER_PER_PAGE;
+		BasicDBObject cmdBody = new BasicDBObject("aggregate", "Share");
+		List<BasicDBObject> pipeline = new ArrayList<BasicDBObject>();
+		
+		BasicDBObject geoNearParams = new BasicDBObject();
+		geoNearParams.put("near", new double[] { userX, userY });
+		if (maxDis >= 0) {
+			geoNearParams.put("maxDistance", maxDis / 6371);
+		}
+		geoNearParams.put("distanceField", "dis");
+		geoNearParams.put("distanceMultiplier", 6371000);
+		geoNearParams.put("spherical", true);
+		geoNearParams.put("num", 60);	// 限制返回数量
+		
+		// filter
+		BasicDBObject filterParams = new BasicDBObject();
+		filterParams.put("deleted", false);
+		filterParams.put("cityCode", cityCode);
+		geoNearParams.put("query", filterParams);
+		
+		pipeline.add(new BasicDBObject("$geoNear", geoNearParams));
+//		if (num != 0) {
+//			pipeline.add(new BasicDBObject("$skip", num));
+//		}
+		
+		BasicDBObject projectParams = new BasicDBObject();
+		projectParams.put("_id", 1);
+		projectParams.put("content", 1);
+		projectParams.put("address", 1);
+		projectParams.put("dis", 1);
+		projectParams.put("aid", 1);
+		projectParams.put("image", 1);
+		projectParams.put("created", 1);
+		projectParams.put("userImage", 1);
+		projectParams.put("nickName", 1);
+		projectParams.put("up", 1);
+		projectParams.put("showAddress", 1);
+		
+		pipeline.add(new BasicDBObject("$project", projectParams));
+		cmdBody.put("pipeline", pipeline);
+		
+		if (!MorphiaQuery.ds().getDB().command(cmdBody).ok()) {
+			logger.warn("geoNear查询出错: " + MorphiaQuery.ds().getDB().command(cmdBody).getErrorMessage());
+		}
+		
+		CommandResult myResult = MorphiaQuery.ds().getDB().command(cmdBody);
+		if (myResult.containsField("result")) {
+			List<ShareVO> shareVOList = analyzeResults(myResult, time);
+			renderJSON(shareVOList);
+		} else {
+			renderJSON("");
+		}
+	}
+	/**
 	 * 获取周边分享
 	 * @param page 第page页
 	 * @param userX x坐标
@@ -89,8 +170,8 @@ public class ShareController extends BaseController {
 	 * @param cityCode 城市代码
 	 */
 	public static void getNearShare(int page, double userX, double userY, double maxDis, String cityCode) {
-		page = (page == 0) ? 1 : page;
-		int num = (page - 1) * NUMBER_PER_PAGE;
+//		page = (page == 0) ? 1 : page;
+//		int num = (page - 1) * NUMBER_PER_PAGE;
 		BasicDBObject cmdBody = new BasicDBObject("aggregate", "Share");
 		List<BasicDBObject> pipeline = new ArrayList<BasicDBObject>();
 
@@ -111,9 +192,9 @@ public class ShareController extends BaseController {
 		geoNearParams.put("query", filterParams);
 
 		pipeline.add(new BasicDBObject("$geoNear", geoNearParams));
-		if (num != 0) {
-			pipeline.add(new BasicDBObject("$skip", num));
-		}
+//		if (num != 0) {
+//			pipeline.add(new BasicDBObject("$skip", num));
+//		}
 
 		BasicDBObject projectParams = new BasicDBObject();
 		projectParams.put("_id", 1);
@@ -137,7 +218,7 @@ public class ShareController extends BaseController {
 
 		CommandResult myResult = MorphiaQuery.ds().getDB().command(cmdBody);
 		if (myResult.containsField("result")) {
-			List<ShareVO> shareVOList = analyzeResults(myResult);
+			List<ShareVO> shareVOList = analyzeResults(myResult, 0);
 			renderJSON(shareVOList);
 		} else {
 			renderJSON("");
@@ -150,7 +231,7 @@ public class ShareController extends BaseController {
 	 * @param commandResult
 	 * @return
 	 */
-	private static List<ShareVO> analyzeResults(CommandResult commandResult) {
+	private static List<ShareVO> analyzeResults(CommandResult commandResult, long time) {
 		List<ShareVO> lists = new ArrayList<ShareVO>();
 		BasicDBList resultList = (BasicDBList) commandResult.get("result");
 		Iterator<Object> it = resultList.iterator();
@@ -160,8 +241,15 @@ public class ShareController extends BaseController {
 		while (it.hasNext()) {
 			s = new ShareVO();
 			resultContainer = (BasicDBObject) it.next();
+			
+			// 下拉刷新
+			if(time != 0){
+				Date d = new Date(time);
+				if(d.after((Date) resultContainer.get("created"))){
+					continue;
+				}
+			}
 			resultId = (ObjectId) resultContainer.get("_id");
-
 			s.id = resultId.toString();
 			s.aid = resultContainer.getString("aid");
 			s.address = resultContainer.getString("address");
