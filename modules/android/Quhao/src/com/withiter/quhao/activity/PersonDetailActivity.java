@@ -28,8 +28,6 @@ import com.withiter.quhao.util.tool.SharedprefUtil;
 
 public class PersonDetailActivity extends QuhaoBaseActivity {
 
-	private final static String TAG = PersonDetailActivity.class.getName();
-
 	private TextView nickNameText;
 //	private TextView phoneText;
 //	private TextView usualCityText;

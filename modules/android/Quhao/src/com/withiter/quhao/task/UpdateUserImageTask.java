@@ -9,7 +9,6 @@ import android.content.Context;
 
 import com.withiter.quhao.util.CommantUtil;
 import com.withiter.quhao.util.StringUtils;
-import com.withiter.quhao.util.http.CommonHTTPRequest;
 
 /**
  * 
