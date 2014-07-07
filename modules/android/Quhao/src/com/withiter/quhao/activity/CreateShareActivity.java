@@ -1,5 +1,6 @@
 package com.withiter.quhao.activity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -11,6 +12,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Environment;
@@ -42,7 +44,6 @@ import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.ImageUtil;
 import com.withiter.quhao.util.tool.QuhaoConstant;
-import com.withiter.quhao.util.tool.SharedprefUtil;
 
 public class CreateShareActivity extends QuhaoBaseActivity implements AMapLocationListener {
 
@@ -178,9 +179,60 @@ public class CreateShareActivity extends QuhaoBaseActivity implements AMapLocati
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(resultCode==Activity.RESULT_OK && requestCode == TO_SELECT_PHOTO)
 		{
-			picPath = data.getStringExtra(SelectPicActivity.KEY_PHOTO_PATH);
-			Log.i("wjzwjz", "最终选择的图片="+picPath);
+			String path = data.getStringExtra(SelectPicActivity.KEY_PHOTO_PATH);
+			Log.i("wjzwjz", "最终选择的图片="+path);
 //			Bitmap bm =  ImageUtil.decodeFile(picPath,-1,128*128);
+			
+			int degree = ImageUtil.readPictureDegree(path);
+			Bitmap bitmap = ImageUtil.getimage(path);
+			
+			FileOutputStream fos;
+			File image = null;
+			try {
+				image = new File(Environment.getExternalStorageDirectory() + "/" + 
+						QuhaoConstant.IMAGES_SD_URL + "/" + "temp.jpg");
+//				image = new File(picPath);
+				File folder = image.getParentFile();
+
+				if (!folder.exists()) {
+					folder.mkdirs();
+				}
+
+				if (!image.exists()) {
+					image.createNewFile();
+				}
+//				newImageName = image.getName();
+				fos = new FileOutputStream(image);
+				
+				if (degree == 0 || null == bitmap) 
+				{  
+					return;
+			    }  
+			    Matrix matrix = new Matrix();  
+			    matrix.setRotate(degree, bitmap.getWidth(), bitmap.getHeight());
+			    bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+			    
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+				int options = 100;
+				while ( baos.toByteArray().length / 1024>50) {	//循环判断如果压缩后图片是否大于100kb,大于继续压缩		
+					baos.reset();//重置baos即清空baos
+					bitmap.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
+					options -= 10;//每次都减少10
+				}
+				
+				fos.write(baos.toByteArray());
+				
+//				bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+				fos.flush();
+				fos.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			picPath = image.getAbsolutePath();
 			ImageLoader.getInstance().displayImage("file://" + picPath, shareImgView,options);
 //			shareImgView.setImageBitmap(bm);
 		}
@@ -330,32 +382,6 @@ public class CreateShareActivity extends QuhaoBaseActivity implements AMapLocati
 			params.put("image", "shareImg");
 			
 			Map<String, File> files = new HashMap<String, File>();
-			Bitmap bitmap = ImageUtil.getimage(picPath);
-			
-			FileOutputStream fos;
-			File image = null;
-			try {
-				image = new File(picPath);
-				File folder = image.getParentFile();
-
-				if (!folder.exists()) {
-					folder.mkdirs();
-				}
-
-				if (!image.exists()) {
-					image.createNewFile();
-				}
-//				newImageName = image.getName();
-				fos = new FileOutputStream(image);
-				bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-				fos.flush();
-				fos.close();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
 			
 			files.put("shareImg", new File(picPath));
 			final CreateShareTask task = new CreateShareTask(R.string.waitting, this, url,params,files);

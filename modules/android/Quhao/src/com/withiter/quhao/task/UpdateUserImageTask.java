@@ -1,24 +1,32 @@
 package com.withiter.quhao.task;
 
+import java.io.File;
+import java.util.Map;
+
 import org.json.JSONException;
 
 import android.content.Context;
 
+import com.withiter.quhao.util.CommantUtil;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
 
 /**
- * 我的帖子、回复、收藏
- * @author Administrator
+ * 
+ * @author Wang Jie Ze
  *
  */
-public class CreateShareNiceTask extends BaseTask {
+public class UpdateUserImageTask extends BaseTask {
 	
 //	private HashMap<String, String> mParams;
 	private String url;
 	
 	public String result;
 
+	public Map<String, String> params;
+	
+	private Map<String, File> files;
+	
 	/**
 	 * 
 	 * @param context
@@ -27,9 +35,11 @@ public class CreateShareNiceTask extends BaseTask {
 	 * @param page
 	 * @param token
 	 */
-	public CreateShareNiceTask(int preDialogMessage,Context context,String url) {
+	public UpdateUserImageTask(int preDialogMessage,Context context,String url, Map<String, String> params,Map<String, File> files) {
 		super(preDialogMessage,context);
 		this.url = url;
+		this.params = params;
+		this.files = files;
 //		mParams = new HashMap<String, String>();
 //		mParams.put("apiname", API_NAME);
 //		mParams.put("method", METHOD);
@@ -43,7 +53,8 @@ public class CreateShareNiceTask extends BaseTask {
 
 	@Override
 	public JsonPack getData() throws Exception {
-		String result = CommonHTTPRequest.get(url); // doGet(mParams);
+//		String result = CommonHTTPRequest.post(url,params); // doGet(mParams);
+		String result =CommantUtil.uploadSubmit(url, params, files.get("userImage"), "userImage");
 		JsonPack jsonPack = getJsonPack(result);
 		return jsonPack;
 	}
@@ -58,7 +69,7 @@ public class CreateShareNiceTask extends BaseTask {
 	private static JsonPack getJsonPack(String responseString)
 			throws JSONException {
 		JsonPack jp = new JsonPack();
-		if (!StringUtils.isNull(responseString) && !"[]".equals(responseString) && !"null".equals(responseString)&& !"error".equals(responseString)) {
+		if (!StringUtils.isNull(responseString) && !"[]".equals(responseString) && !"null".equals(responseString) && !"error".equals(responseString)) {
 
 			if (responseString instanceof String) {
 				jp.setRe(200);
@@ -82,6 +93,7 @@ public class CreateShareNiceTask extends BaseTask {
 
 	@Override
 	public void onPreStart() {
+		// TODO Auto-generated method stub
 
 	}
 

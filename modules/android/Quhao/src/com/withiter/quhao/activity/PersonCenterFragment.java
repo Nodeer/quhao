@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -39,9 +40,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
+import com.withiter.quhao.task.UpdateUserImageTask;
 import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
 import com.withiter.quhao.util.StringUtils;
@@ -225,6 +228,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 		QuhaoLog.d(TAG, "account.jifen : " + account.jifen);
 		jifen.setText(account.jifen);
 
+		/*
 		Bitmap bitmap = null;
 		String fileName = "";
 		if(StringUtils.isNotNull(account.userImage))
@@ -282,7 +286,8 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 			}
 			
 		}
-		
+		*/
+		ImageLoader.getInstance().displayImage(account.userImage, avatar);
 		
 		value_qiandao.setText("签到(" + account.signIn + ")");
 		if ("true".equals(account.isSignIn)) {
@@ -501,9 +506,12 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				break;
 			case CAMERA_REQUEST_CODE:
 				if (FileUtil.hasSdcard()) {
-					File tempFile = new File(Environment
-							.getExternalStorageDirectory() + "/" + QuhaoConstant.IMAGES_SD_URL + "/" + SharedprefUtil.get(getActivity(), QuhaoConstant.ACCOUNT_ID, "") + "_" + currentTime + "_" +
+					File file = StorageUtils.getCacheDirectory(getActivity());
+					File tempFile = new File(file, SharedprefUtil.get(getActivity(), QuhaoConstant.ACCOUNT_ID, "") + "_" + currentTime + "_" +
 							QuhaoConstant.PERSON_IMAGE_FILE_NAME);
+//					File tempFile = new File(Environment
+//							.getExternalStorageDirectory() + "/" + QuhaoConstant.IMAGES_SD_URL + "/" + SharedprefUtil.get(getActivity(), QuhaoConstant.ACCOUNT_ID, "") + "_" + currentTime + "_" +
+//							QuhaoConstant.PERSON_IMAGE_FILE_NAME);
 					startPhotoZoom(Uri.fromFile(tempFile));
 				} else {
 					Toast.makeText(getActivity(), "未找到存储卡，无法存储照片！",
@@ -562,16 +570,16 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 			try {
 				String accountId = SharedprefUtil.get(getActivity(),
 						QuhaoConstant.ACCOUNT_ID, "");
-				image = new File(Environment.getExternalStorageDirectory()
-						+ "/" + QuhaoConstant.IMAGES_SD_URL + "/" + accountId
+				File folder = StorageUtils.getCacheDirectory(getActivity());
+//				image = new File(Environment.getExternalStorageDirectory()
+//						+ "/" + QuhaoConstant.IMAGES_SD_URL + "/" + accountId
+//						+ "_" + currentTime + "_"
+//						+ QuhaoConstant.PERSON_IMAGE_FILE_NAME);
+
+				image = new File(folder, accountId
 						+ "_" + currentTime + "_"
 						+ QuhaoConstant.PERSON_IMAGE_FILE_NAME);
-				File folder = image.getParentFile();
-
-				if (!folder.exists()) {
-					folder.mkdirs();
-				}
-
+				
 				if (!image.exists()) {
 					image.createNewFile();
 				}
@@ -580,6 +588,8 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 				photo.compress(Bitmap.CompressFormat.PNG, 100, fos);
 				fos.flush();
 				fos.close();
+				
+				progressDialogUtil.closeProgress();
 			} catch (FileNotFoundException e) {
 				progressDialogUtil.closeProgress();
 			} catch (IOException e) {
@@ -595,6 +605,42 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 
 			final Map<String, File> files = new HashMap<String, File>();
 			files.put("userImage", image);
+			final String fileName = image.getName();
+			UpdateUserImageTask task = new UpdateUserImageTask(R.string.waitting, getActivity(), "updateUserImage", params, files);
+			task.execute(new Runnable() {
+				
+				@Override
+				public void run() {
+					SharedprefUtil.put(getActivity(), QuhaoConstant.USER_IMAGE, fileName);
+					String userImage = QHClientApplication.getInstance().accountInfo.userImage; 
+					if (StringUtils.isNotNull(userImage) && userImage.indexOf("fileName")>0) {
+						String[] strs = userImage.split("fileName=");
+						if (null != strs && strs.length>1) {
+							try {
+								userImage = strs[0] + "fileName=" + URLEncoder.encode(fileName,"UTF-8");
+								ImageLoader.getInstance().displayImage(userImage, avatar);
+							} catch (UnsupportedEncodingException e) {
+								e.printStackTrace();
+							}
+							QHClientApplication.getInstance().accountInfo.userImage = userImage;
+						}
+					}
+					
+				}
+			},new Runnable() {
+				
+				@Override
+				public void run() {
+					Map<String, Object> toastParams = new HashMap<String, Object>();
+					toastParams.put("activity", getActivity());
+					toastParams.put("text", "上传失败，请检查网络设置.");
+					toastParams.put("toastLength", Toast.LENGTH_SHORT);
+					toastStringHandler.obtainMessage(1000, toastParams).sendToTarget();
+					
+				}
+			});
+			
+			/*
 			Thread thead = new Thread(new Runnable() {
 
 				@Override
@@ -617,7 +663,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 								}
 							}
 							newImageName = request;
-//							updateNewImgHandler.sendEmptyMessage(200);
+							updateNewImgHandler.sendEmptyMessage(200);
 							progressDialogUtil.closeProgress();
 							
 						}
@@ -641,6 +687,7 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 			});
 			thead.start();
 			avatar.setImageBitmap(photo);
+			*/
 			
 		}
 	}
@@ -844,10 +891,16 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 							// 判断存储卡是否可以用，可用进行存储
 							if (FileUtil.hasSdcard()) {
 
+//								intentFromCapture.putExtra(
+//										MediaStore.EXTRA_OUTPUT,
+//										Uri.fromFile(new File(Environment
+//												.getExternalStorageDirectory() + "/" + QuhaoConstant.IMAGES_SD_URL + "/" + SharedprefUtil.get(getActivity(), QuhaoConstant.ACCOUNT_ID, "") + "_" + currentTime + "_" +
+//												QuhaoConstant.PERSON_IMAGE_FILE_NAME)));
+								File dir = StorageUtils.getCacheDirectory(getActivity());
+								
 								intentFromCapture.putExtra(
 										MediaStore.EXTRA_OUTPUT,
-										Uri.fromFile(new File(Environment
-												.getExternalStorageDirectory() + "/" + QuhaoConstant.IMAGES_SD_URL + "/" + SharedprefUtil.get(getActivity(), QuhaoConstant.ACCOUNT_ID, "") + "_" + currentTime + "_" +
+										Uri.fromFile(new File(dir, SharedprefUtil.get(getActivity(), QuhaoConstant.ACCOUNT_ID, "") + "_" + currentTime + "_" +
 												QuhaoConstant.PERSON_IMAGE_FILE_NAME)));
 							}
 

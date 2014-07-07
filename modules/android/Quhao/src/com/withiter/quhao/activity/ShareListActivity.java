@@ -174,6 +174,7 @@ public class ShareListActivity extends QuhaoBaseActivity  implements AMapLocatio
 
 				@Override
 				public void run() {
+					Looper looper = Looper.myLooper();
 					Looper.prepare();
 					try {
 						stopLocation();
