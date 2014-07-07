@@ -16,11 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.media.audiofx.BassBoost.Settings;
 import android.os.Environment;
-import android.util.Xml.Encoding;
-
-import com.withiter.quhao.util.tool.SharedprefUtil;
 
 public class IOUtils {
 	private static final int BUFFER_SIZE = 1024; // 流转换的缓存大小
@@ -535,7 +531,7 @@ public class IOUtils {
 	 * 将Assets的数据库文件转移到data/data/packagename/database中
 	 */
 	public static void AssetsToDataBase(Context context) {
-		String dbDirPath = "/data/data/com.cs090.android/databases";
+		String dbDirPath = "/data/data/com.withiter.quhao.android/databases";
 
 		// 打开静态数据库文件的输入流
 		InputStream is;

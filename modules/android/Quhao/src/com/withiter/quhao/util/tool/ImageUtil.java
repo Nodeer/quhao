@@ -389,7 +389,7 @@ public class ImageUtil {
 	 * @param f
 	 * @return
 	 */
-	private Bitmap decodeFile(String url, File f, boolean isScaleByWidth,
+	public static Bitmap decodeFile(String url, File f, boolean isScaleByWidth,
 			int widthOrHeight) {
 		Bitmap bitmap = null;
 		try {

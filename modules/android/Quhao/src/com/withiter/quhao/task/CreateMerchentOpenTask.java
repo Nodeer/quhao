@@ -3,7 +3,6 @@ package com.withiter.quhao.task;
 import org.json.JSONException;
 
 import android.content.Context;
-import android.text.TextUtils;
 
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.http.CommonHTTPRequest;
