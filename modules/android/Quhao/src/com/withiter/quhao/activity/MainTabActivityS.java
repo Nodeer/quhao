@@ -1,12 +1,11 @@
 package com.withiter.quhao.activity;
 
-import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -29,18 +28,17 @@ import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.domain.AccountInfo;
+import com.withiter.quhao.listener.ChangeToPersonFragmentListener;
 import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.StringUtils;
-import com.withiter.quhao.util.tool.FileUtil;
-import com.withiter.quhao.util.tool.ImageUtil;
-import com.withiter.quhao.util.tool.QuhaoConstant;
-import com.withiter.quhao.util.tool.SharedprefUtil;
 
-public class MainTabActivityS extends FragmentActivity implements AMapLocationListener, OnClickListener {
+public class MainTabActivityS extends FragmentActivity implements AMapLocationListener, OnClickListener,ChangeToPersonFragmentListener {
 
 	private long exitTime = 0;
 
@@ -59,8 +57,6 @@ public class MainTabActivityS extends FragmentActivity implements AMapLocationLi
 	private TextView topTitle;
 	
 	private TextView citySelectView;
-	
-	private Button searchBtn;
 	
 	private LinearLayout homeLayout;
 	
@@ -82,11 +78,7 @@ public class MainTabActivityS extends FragmentActivity implements AMapLocationLi
 	
 	private TextView nickname;
 	
-	private TextView jifen;
-	
-	private Button btnLogin;
-	
-	private TextView btnRegister; 
+	DisplayImageOptions options;
 	
 	protected Handler unlockHandler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -112,6 +104,29 @@ public class MainTabActivityS extends FragmentActivity implements AMapLocationLi
 		}
 		
 	};
+	
+	private Handler topTitleHandler = new Handler()
+	{
+
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			Map<String, String> map = (Map<String, String>) msg.obj;
+			String title = map.get("title");
+			String isHome = map.get("isHome");
+			topTitle.setText(title);
+			if (StringUtils.isNull(isHome) || !"true".equals(isHome)) 
+			{
+				citySelectView.setVisibility(View.GONE);
+			}
+			else
+			{
+				citySelectView.setVisibility(View.VISIBLE);
+			}
+		}
+		
+	};
+	
 	private AMapLocation location;
 	
 	private SlidingMenu slidingMenu;
@@ -141,6 +156,7 @@ public class MainTabActivityS extends FragmentActivity implements AMapLocationLi
 	protected void onResume() {
 		super.onResume();
 		refreshUI();
+		
 		Thread requestLocation = new Thread(new Runnable() {
 
 			@Override
@@ -203,8 +219,6 @@ public class MainTabActivityS extends FragmentActivity implements AMapLocationLi
 		topTitle.setOnClickListener(this);
 		citySelectView = (TextView) this.findViewById(R.id.city_select);
 		citySelectView.setOnClickListener(this);
-		searchBtn = (Button) this.findViewById(R.id.edit_search);
-		searchBtn.setOnClickListener(this);
 		slidingMenu = new SlidingMenu(this);
 		slidingMenu.setMode(SlidingMenu.LEFT);
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
@@ -230,17 +244,11 @@ public class MainTabActivityS extends FragmentActivity implements AMapLocationLi
         userInfoLayout = (RelativeLayout) slidingMenu.findViewById(R.id.menu_person_info);
         
         userLoginLayout = (RelativeLayout) slidingMenu.findViewById(R.id.menu_person_info_login);
-    	
+        userLoginLayout.setOnClickListener(this);
         userImage = (ImageView) slidingMenu.findViewById(R.id.menu_user_image);
     	
         nickname = (TextView) slidingMenu.findViewById(R.id.menu_nickName);
         
-        jifen = (TextView) slidingMenu.findViewById(R.id.menu_jifen);
-        
-        btnLogin = (Button) slidingMenu.findViewById(R.id.menu_login);
-        btnLogin.setOnClickListener(this);
-        btnRegister = (TextView) slidingMenu.findViewById(R.id.menu_register);
-        btnRegister.setOnClickListener(this);
         if (savedInstanceState != null)
         {
         	mContent = getSupportFragmentManager().getFragment(savedInstanceState, "mContent");
@@ -262,6 +270,7 @@ public class MainTabActivityS extends FragmentActivity implements AMapLocationLi
 		// if haven't login, prompt the login dialog
 		// no need to check auto login from SharedPreference
 		// because when APP start up, the action had been performed
+		citySelectView.setText(QHClientApplication.getInstance().defaultCity.cityName);
 		if (QHClientApplication.getInstance().isLogined) {
 			AccountInfo account = QHClientApplication.getInstance().accountInfo;
 			if (account != null) {
@@ -272,9 +281,7 @@ public class MainTabActivityS extends FragmentActivity implements AMapLocationLi
 
 				nickname.setText(R.string.noname);
 
-				jifen.setText("0");
-
-				userImage.setImageResource(R.drawable.person_avatar);
+				userImage.setImageResource(R.drawable.menu_user_bg);
 				userLoginLayout.setVisibility(View.VISIBLE);
 				userInfoLayout.setVisibility(View.GONE);
 			}
@@ -283,9 +290,7 @@ public class MainTabActivityS extends FragmentActivity implements AMapLocationLi
 		{
 			nickname.setText(R.string.noname);
 
-			jifen.setText("0");
-
-			userImage.setImageResource(R.drawable.person_avatar);
+			userImage.setImageResource(R.drawable.menu_user_bg);
 			
 			userInfoLayout.setVisibility(View.VISIBLE);
 			userLoginLayout.setVisibility(View.GONE);
@@ -301,64 +306,19 @@ public class MainTabActivityS extends FragmentActivity implements AMapLocationLi
 				nickname.setText(R.string.noname);
 			}
 
-			jifen.setText(account.jifen);
-
-			Bitmap bitmap = null;
-			String fileName = "";
-			if(StringUtils.isNotNull(account.userImage))
-			{
-				if (FileUtil.hasSdcard()) {
-					
-					String[] strs = account.userImage.split("fileName=");
-					if(strs != null && strs.length>1)
-					{
-						fileName = account.userImage.split("fileName=")[1];
-						String localFileName = SharedprefUtil.get(this, QuhaoConstant.USER_IMAGE, "");
-						if(localFileName.equals(fileName))
-						{
-							File f = new File(Environment.getExternalStorageDirectory() + "/" + 
-									QuhaoConstant.IMAGES_SD_URL + "/" + fileName);
-							File folder = f.getParentFile();
-							if (!folder.exists()) {
-								folder.mkdirs();
-							}
-							
-							if(f.exists()){
-								bitmap = ImageUtil.decodeFile(f.getPath(),-1,128*128);
-								if (null != bitmap) {
-									userImage.setImageBitmap(bitmap);
-								}
-							}
-						}
-						else
-						{
-							File f = new File(Environment.getExternalStorageDirectory() + "/" + 
-									QuhaoConstant.IMAGES_SD_URL + "/" + localFileName);
-							File folder = f.getParentFile();
-							if (!folder.exists()) {
-								folder.mkdirs();
-							}
-							
-							if(f.exists()){
-								f.delete();
-							}
-						}
-					}
-					
-				}
+			if (options == null) {
+				options = new DisplayImageOptions.Builder()
+				.showImageOnLoading(R.drawable.menu_user_bg)
+				.showImageForEmptyUri(R.drawable.menu_user_bg)
+				.showImageOnFail(R.drawable.menu_user_bg)
+				.cacheInMemory(true)
+				.cacheOnDisk(true)
+				.considerExifParams(true)
+				.displayer(new RoundedBitmapDisplayer(80))
+				.build();
 			}
 			
-			if(null == bitmap)
-			{
-				if(StringUtils.isNotNull(fileName))
-				{
-					SharedprefUtil.put(this, QuhaoConstant.USER_IMAGE, fileName);
-					ImageLoader.getInstance().displayImage(account.userImage, userImage);
-//					AsynImageLoader.getInstance().showImageAsyn(avatar, 0, account.userImage, R.drawable.person_avatar);
-				}
-				
-			}
-			
+			ImageLoader.getInstance().displayImage(account.userImage, userImage,options);
 		}
 		
 	/**
@@ -439,6 +399,10 @@ public class MainTabActivityS extends FragmentActivity implements AMapLocationLi
 		switch (v.getId()) {
 		case R.id.home_layout:
 			unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+			Map<String, String> mapHome = new HashMap<String, String>();
+			mapHome.put("title", "首页");
+			mapHome.put("isHome", "true");
+			topTitleHandler.obtainMessage(200, mapHome).sendToTarget();
 			if (mContent instanceof HomeFragmentNew) {
 				slidingMenu.showContent();
 				return;
@@ -456,6 +420,10 @@ public class MainTabActivityS extends FragmentActivity implements AMapLocationLi
 			slidingMenu.showContent();
 			break;
 		case R.id.nearby_layout:
+			Map<String, String> mapNearby = new HashMap<String, String>();
+			mapNearby.put("title", "周边美食");
+			mapNearby.put("isHome", "false");
+			topTitleHandler.obtainMessage(200, mapNearby).sendToTarget();
 			unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
 			if (mContent instanceof NearbyFragment) {
 				slidingMenu.showContent();
@@ -471,40 +439,49 @@ public class MainTabActivityS extends FragmentActivity implements AMapLocationLi
 			ft.addToBackStack(null);
 			ft.commitAllowingStateLoss();
 			slidingMenu.showContent();
-			break;case R.id.person_layout:
-				unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
-				if (mContent instanceof PersonCenterFragment) {
-					slidingMenu.showContent();
-					return;
-				}
-				
-				mContent = getSupportFragmentManager().findFragmentByTag("person");
-				if (null == mContent) {
-					mContent = new PersonCenterFragment();
-				}
-				
-				ft.replace(R.id.content_frame, mContent,"person");
-				ft.addToBackStack(null);
-				ft.commitAllowingStateLoss();
+			break;
+		case R.id.person_layout:
+			Map<String, String> mapPerson = new HashMap<String, String>();
+			mapPerson.put("title", "个人中心");
+			mapPerson.put("isHome", "false");
+			topTitleHandler.obtainMessage(200, mapPerson).sendToTarget();
+			unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+			if (mContent instanceof PersonCenterFragment) {
 				slidingMenu.showContent();
-				break;
-			case R.id.more_layout:
-				unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
-				if (mContent instanceof MoreFragment) {
-					slidingMenu.showContent();
-					return;
-				}
-				
-				mContent = getSupportFragmentManager().findFragmentByTag("more");
-				if (null == mContent) {
-					mContent = new MoreFragment();
-				}
-				
-				ft.replace(R.id.content_frame, mContent,"more");
-				ft.addToBackStack(null);
-				ft.commitAllowingStateLoss();
+				return;
+			}
+			
+			mContent = getSupportFragmentManager().findFragmentByTag("person");
+			if (null == mContent) {
+				mContent = new PersonCenterFragment();
+			}
+			
+			ft.replace(R.id.content_frame, mContent,"person");
+			ft.addToBackStack(null);
+			ft.commitAllowingStateLoss();
+			slidingMenu.showContent();
+			break;
+		case R.id.more_layout:
+			Map<String, String> mapMore = new HashMap<String, String>();
+			mapMore.put("title", "设置");
+			mapMore.put("isHome", "false");
+			topTitleHandler.obtainMessage(200, mapMore).sendToTarget();
+			unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+			if (mContent instanceof MoreFragment) {
 				slidingMenu.showContent();
-				break;
+				return;
+			}
+			
+			mContent = getSupportFragmentManager().findFragmentByTag("more");
+			if (null == mContent) {
+				mContent = new MoreFragment();
+			}
+			
+			ft.replace(R.id.content_frame, mContent,"more");
+			ft.addToBackStack(null);
+			ft.commitAllowingStateLoss();
+			slidingMenu.showContent();
+			break;
 		case R.id.btn_menu:
 			unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
 				if (!slidingMenu.isMenuShowing()) {
@@ -512,14 +489,14 @@ public class MainTabActivityS extends FragmentActivity implements AMapLocationLi
 				}
 				break;
 		case R.id.city_select:
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
 			Intent intent = new Intent();
 			intent.setClass(this, CitySelectActivity.class);
 			startActivity(intent);
 			break;
-		case R.id.edit_search:
-			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-			Intent intent2 = new Intent(this, MerchantsSearchActivity.class);
+		case R.id.menu_person_info_login:
+			unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+			Intent intent2 = new Intent(this, LoginActivity.class);
 			startActivity(intent2);
 			break;
 		default:
@@ -527,5 +504,31 @@ public class MainTabActivityS extends FragmentActivity implements AMapLocationLi
 			break;
 		}
 
+	}
+
+	@Override
+	public void changeToPersonFragment() {
+		
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		Map<String, String> mapPerson = new HashMap<String, String>();
+		mapPerson.put("title", "个人中心");
+		mapPerson.put("isHome", "false");
+		topTitleHandler.obtainMessage(200, mapPerson).sendToTarget();
+		unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
+		if (mContent instanceof PersonCenterFragment) {
+			slidingMenu.showContent();
+			return;
+		}
+		
+		mContent = getSupportFragmentManager().findFragmentByTag("person");
+		if (null == mContent) {
+			mContent = new PersonCenterFragment();
+		}
+		
+		ft.replace(R.id.content_frame, mContent,"person");
+		ft.addToBackStack(null);
+		ft.commitAllowingStateLoss();
+		slidingMenu.showContent();
+		
 	}
 }

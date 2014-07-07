@@ -140,7 +140,7 @@ class ViewPagerAdapter extends PagerAdapter {
 
 	private void goHome() {
 		// 跳转
-		Intent intent = new Intent(activity, MainTabActivity.class);
+		Intent intent = new Intent(activity, MainTabActivityS.class);
 		activity.startActivity(intent);
 		activity.finish();
 	}

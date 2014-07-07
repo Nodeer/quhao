@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +17,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
+import com.withiter.quhao.domain.AccountInfo;
+import com.withiter.quhao.listener.ChangeToPersonFragmentListener;
 import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.QuhaoLog;
 
@@ -32,11 +38,20 @@ public class HomeFragmentNew extends Fragment implements OnClickListener {
 	private ImageView shareView;
 	private ImageView merchantChatView;
 	private ImageView getNumberView;
-
+	private ImageView userImg;
+	private DisplayImageOptions options;
+	
+	private ChangeToPersonFragmentListener listener;
+	
 	@Override
 	public void onAttach(Activity activity) {
 		Log.e("wjzwjz", "HomeFragment onAttach");
 		super.onAttach(activity);
+		try {  
+			listener = (ChangeToPersonFragmentListener) activity;  
+         } catch (ClassCastException e) {  
+            throw new ClassCastException(activity.toString() + " must implementOnArticleSelectedListener");  
+        }  
 	}
 
 	@Override
@@ -110,7 +125,9 @@ public class HomeFragmentNew extends Fragment implements OnClickListener {
 		merchantChatView.setOnClickListener(this);
 		getNumberView.setOnClickListener(this);
 		shareView.setOnClickListener(this);
-
+		userImg = (ImageView) contentView.findViewById(R.id.home_user_img);
+		userImg.setOnClickListener(this);
+		
 		InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 		inputMethodManager.hideSoftInputFromWindow(shareView.getWindowToken(), 0);
 
@@ -125,6 +142,27 @@ public class HomeFragmentNew extends Fragment implements OnClickListener {
 	@Override
 	public void onResume() {
 		super.onResume();
+		
+		AccountInfo account = QHClientApplication.getInstance().accountInfo;
+		if (account != null && QHClientApplication.getInstance().isLogined) {
+			if (options == null) {
+				options = new DisplayImageOptions.Builder()
+				.showImageOnLoading(R.drawable.home_user_img_bg)
+				.showImageForEmptyUri(R.drawable.home_user_img_bg)
+				.showImageOnFail(R.drawable.home_user_img_bg)
+				.cacheInMemory(true)
+				.cacheOnDisk(true)
+				.considerExifParams(true)
+				.displayer(new RoundedBitmapDisplayer(140))
+				.build();
+			}
+			ImageLoader.getInstance().displayImage(account.userImage, userImg, options);
+		}
+		else
+		{
+			userImg.setImageResource(R.drawable.home_page_user_img);
+		}
+		
 		QuhaoLog.i(LOGTAG, LOGTAG + " onResume");
 	}
 
@@ -167,6 +205,19 @@ public class HomeFragmentNew extends Fragment implements OnClickListener {
 				Intent attention = new Intent();
 				attention.setClass(getActivity(), MerchantChatRoomsActivity.class);
 				startActivity(attention);
+			} else {
+				
+				Intent login2 = new Intent(getActivity(), LoginActivity.class);
+				login2.putExtra("activityName", this.getClass().getName());
+				login2.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				startActivity(login2);
+			}
+
+			break;
+		case R.id.home_user_img:
+			unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+			if (QHClientApplication.getInstance().isLogined) {
+				listener.changeToPersonFragment();
 			} else {
 				
 				Intent login2 = new Intent(getActivity(), LoginActivity.class);

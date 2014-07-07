@@ -41,7 +41,7 @@ public class JPushReceiver extends BroadcastReceiver {
             JPushInterface.reportNotificationOpened(context, bundle.getString(JPushInterface.EXTRA_MSG_ID));
             
         	// 打开自定义的Activity
-        	Intent i = new Intent(context, MainTabActivity.class);
+        	Intent i = new Intent(context, MainTabActivityS.class);
         	i.putExtras(bundle);
         	i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         	context.startActivity(i);
