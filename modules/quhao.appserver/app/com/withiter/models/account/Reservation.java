@@ -219,7 +219,6 @@ public class Reservation extends ReservationEntityDef {
 	}
 
 	private void pushToClient() {
-		// TODO add push to client.
 	}
 
 	/**
@@ -361,18 +360,9 @@ public class Reservation extends ReservationEntityDef {
 	 * @return
 	 */
 	public static long findCountBetweenCurrentNoAndMyNumber(String mid, int currentNo, int myNumber, int seatNumber, long version) {
-		
-		// TODO remove below code, test first
-//		MorphiaQuery q1 = Reservation.q();
-//		q1.filter("version", version);
-//		Reservation rese = q1.filter("seatNumber", seatNumber).filter("myNumber =" , currentNo).order("-created").first();
-
 		MorphiaQuery q = Reservation.q();
 		q.filter("version", version);
 		q.filter("seatNumber", seatNumber).filter("merchantId", mid).filter("status", "canceled").filter("myNumber <" , myNumber).filter("myNumber >" , currentNo);
-//		if(rese != null){
-//			q.filter("created >=", rese.created);
-//		}
 		return q.count();
 	}
 
@@ -526,12 +516,10 @@ public class Reservation extends ReservationEntityDef {
 	}
 
 	public static long lastQuarterFinishCount(String mid) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	public static long lastQuarterCancelCount(String mid) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
