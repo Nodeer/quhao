@@ -28,7 +28,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:gravity="center"
-            android:text="@string/gerenxinxi"
+            android:text="@string/empty"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="@color/white" />
         
@@ -54,12 +54,12 @@
             android:layout_height="25dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:drawableRight="@drawable/btn_expand_background"
+            android:drawableRight="@drawable/btn_expand_bg_down"
             android:gravity="center|center_vertical"
             android:singleLine="true"
             android:layout_marginRight="10dp"
             android:textAlignment="viewEnd"
-            android:textColor="@color/jiuhong"
+            android:textColor="@color/white"
             android:textIsSelectable="false"
             android:textSize="18.0sp"
             android:textStyle="bold" />

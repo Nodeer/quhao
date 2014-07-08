@@ -246,11 +246,6 @@
 			android:screenOrientation="portrait"  />
 		<!-- comments page -->
 
-		<!-- settings page -->
-		<activity android:name="com.withiter.quhao.activity.SettingsActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
-			android:screenOrientation="portrait"  />
-		<!-- settings page -->
-
 		<!-- opinion page -->
 		<activity android:name="com.withiter.quhao.activity.OpinionActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
 			android:screenOrientation="portrait"  />

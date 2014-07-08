@@ -23,7 +23,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
@@ -56,8 +55,6 @@ public class MoreFragment extends Fragment implements OnClickListener{
 	private LinearLayout imageShow;
 	private ImageView imageView;
 	private Platform sina;
-	private ImageView loginStatusImg;
-	private TextView loginStatusTxt;
 	private View contentView;
 	private final int UNLOCK_CLICK = 1000;
 	private boolean isClick;
@@ -134,31 +131,6 @@ public class MoreFragment extends Fragment implements OnClickListener{
 		}
 	};
 
-	protected Handler loginHandler = new Handler() {
-		public void handleMessage(Message msg) {
-			if (msg.what == 200) {
-				super.handleMessage(msg);
-				QHClientApplication.getInstance().isLogined = false;
-				loginStatusImg.setImageResource(R.drawable.login_status);
-				loginStatusTxt.setText(R.string.more_no_login);
-			}
-		}
-	};
-	
-	private String getName(Platform plat) {
-		if (plat == null) {
-			return "";
-		}
-
-		String name = plat.getName();
-		if (name == null) {
-			return "";
-		}
-
-		int resId = cn.sharesdk.framework.utils.R.getStringRes(getActivity(), plat.getName());
-		return getActivity().getString(resId);
-	}
-	
 	@Override
 	public void onResume() {
 		ShareSDK.initSDK(this.getActivity());

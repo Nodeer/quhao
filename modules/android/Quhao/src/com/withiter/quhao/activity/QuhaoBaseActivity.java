@@ -137,10 +137,6 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 						Log.i(TAG, "backClicked: " + CreditCostListActivity.backClicked);
 						CreditCostListActivity.backClicked = true;
 					}
-					if (params[0].equals(SettingsActivity.class.getName())) {
-						Log.i(TAG, "backClicked: " + SettingsActivity.backClicked);
-						SettingsActivity.backClicked = true;
-					}
 					if (params[0].equals(AboutUsActivity.class.getName())) {
 						Log.i(TAG, "backClicked: " + AboutUsActivity.backClicked);
 						AboutUsActivity.backClicked = true;
