@@ -74,67 +74,139 @@
     
     <LinearLayout android:id="@+id/serverdata"
         android:layout_width="fill_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1.0" 
+        android:layout_height="match_parent"
         android:orientation="vertical">
 		<LinearLayout 
 		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    android:orientation="horizontal">
+		    android:layout_height="100dp"
+		    android:orientation="horizontal"
+		    android:background="@drawable/chat_room_top_bg">
 		    <LinearLayout 
-		        android:layout_width="wrap_content"
-		        android:layout_height="fill_parent"
+		        android:layout_width="130dp"
+		        android:layout_height="100dp"
+		        android:gravity="center_vertical|right"
+		        android:paddingRight="5dp"
 		        >
-		        <ImageView 
-		            android:layout_height="120dp"
-		            android:layout_width="120dp"
-		            android:src="@drawable/home_page_user_img"/>
+		        <ImageView android:id="@+id/selected_merchant_img"
+		            android:layout_height="80dp"
+		            android:layout_width="80dp"
+		            android:contentDescription="@null"
+		            android:src="@drawable/chat_room_merchant_img_bg"/>
 		    </LinearLayout>
 		    <LinearLayout 
-		        android:layout_width="wrap_content"
+		        android:layout_width="match_parent"
 		        android:layout_height="fill_parent"
-		        android:orientation="vertical"
-		        >
+		        android:orientation="vertical" >
 		        <LinearLayout 
-		        android:layout_width="wrap_content"
-		        android:layout_height="fill_parent"
-		        >
-			        <Button android:id="@+id/btn_chat"
-			            android:layout_height="wrap_content"
-			            android:layout_width="wrap_content"
-			            android:background="@drawable/btn_background_red"/>
+			        android:layout_width="wrap_content"
+			        android:layout_height="50dp"
+			        android:gravity="bottom|left">
+			        <LinearLayout android:id="@+id/btn_chat"
+				        android:layout_width="158dp"
+				        android:layout_height="30dp"
+				        android:gravity="center"
+				        android:background="@drawable/chat_room_btn_chat_bg">
+				        <ImageView 
+				            android:layout_height="fill_parent"
+				            android:layout_width="wrap_content"
+				            android:clickable="false"
+				            android:src="@drawable/ic_chat_img"/>
+				        <Button 
+				            android:layout_height="30dp"
+				            android:layout_width="wrap_content"
+				            android:textColor="@color/white"
+				            android:paddingLeft="10dp"
+				            android:background="@android:color/transparent"
+				            android:clickable="false"
+				            android:text="开始聊天"
+				            />
+			        </LinearLayout>
 		        </LinearLayout>
 		        <LinearLayout 
-		        android:layout_width="wrap_content"
-		        android:layout_height="fill_parent"
-		        >
-			        <Button android:id="@+id/btn_chat"
-			            android:layout_height="wrap_content"
+			        android:layout_width="wrap_content"
+			        android:layout_height="match_parent"
+			        android:orientation="horizontal"
+			        android:paddingTop="3dp"
+			        android:gravity="left|top">
+			        <TextView android:id="@+id/selected_renqi"
+			            android:layout_height="25dp"
 			            android:layout_width="wrap_content"
-			            android:background="@drawable/btn_background_red"/>
+			            android:text="人气  >10万"
+			            android:textSize="13sp"
+			            android:gravity="center_vertical"
+			            android:paddingLeft="3dp"
+			            android:drawableLeft="@drawable/ic_map_blue"
+			            android:background="@drawable/chat_room_top_side"
+			            />
+			        <TextView 
+			            android:layout_height="25dp"
+			            android:layout_width="wrap_content"
+			            android:textSize="13sp"
+			            android:gravity="center_vertical"
+			            android:background="@drawable/chat_room_top_mid"/>
+			        <TextView android:id="@+id/selected_distance"
+			            android:layout_height="25dp"
+			            android:layout_width="wrap_content"
+			            android:text="距离 124km"
+			            android:textSize="13sp"
+			            android:gravity="center_vertical"
+			            android:paddingLeft="3dp"
+			            android:drawableLeft="@drawable/ic_heart_blue"
+			            android:background="@drawable/chat_room_top_side"/>
 		        </LinearLayout>
 		    </LinearLayout>
 		</LinearLayout>
-        <com.withiter.quhao.view.refresh.PullToRefreshView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/main_pull_refresh_view"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:background="@android:color/white" >
-
-            <ListView
-                android:id="@+id/rvos_list"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center_horizontal"
-                android:cacheColorHint="@null"
-                android:divider="@null"
-                android:entries="@null"
-                android:headerDividersEnabled="true"
-                android:listSelector="@drawable/list_item_trans"
-                android:scrollbarThumbVertical="@drawable/scrollbar"
-                android:scrollbars="vertical" />
-        </com.withiter.quhao.view.refresh.PullToRefreshView>
+		<LinearLayout android:id="@+id/result_layout"
+		    android:orientation="vertical"
+		    android:layout_width="fill_parent" 
+		    android:layout_height="match_parent" 
+		    android:background="#ffffffff"
+		    android:paddingTop="5dp">
+			<!--  -->
+	        <com.withiter.quhao.view.refresh.PullToRefreshView
+	            xmlns:android="http://schemas.android.com/apk/res/android"
+	            android:id="@+id/main_pull_refresh_view"
+	            android:layout_width="fill_parent"
+	            android:layout_height="fill_parent"
+	            android:background="@android:color/white" >
+	
+	            <ListView
+	                android:id="@+id/chats_list"
+	                android:layout_width="fill_parent"
+	                android:layout_height="fill_parent"
+	                android:layout_gravity="center_horizontal"
+	                android:cacheColorHint="@null"
+	                android:divider="@null"
+	                android:entries="@null"
+	                android:headerDividersEnabled="true"
+	                android:listSelector="@drawable/list_item_trans"
+	                android:scrollbarThumbVertical="@drawable/scrollbar"
+	                android:scrollbars="vertical" />
+	        <!--  -->
+	        </com.withiter.quhao.view.refresh.PullToRefreshView>
+	    </LinearLayout>
+        <LinearLayout android:id="@+id/no_result_layout"
+		    android:orientation="vertical"
+		    android:layout_width="fill_parent" 
+		    android:layout_height="match_parent" 
+		    android:background="#ffffffff"
+		    android:gravity="center"
+		    android:visibility="gone">
+		    <ImageView android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:src="@drawable/bad_face"
+		        android:contentDescription="@string/empty"/>
+		    <TextView android:id="@+id/no_result_text"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/empty"/>
+		    
+		    <TextView android:id="@+id/location_result"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="@string/empty"
+		        android:textColor="@color/blue"/>
+		</LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

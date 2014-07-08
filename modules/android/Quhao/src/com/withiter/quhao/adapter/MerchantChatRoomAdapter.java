@@ -1,59 +1,43 @@
 package com.withiter.quhao.adapter;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
-import com.withiter.quhao.activity.MerchantChatActivity;
 import com.withiter.quhao.activity.MerchantChatRoomsActivity;
-import com.withiter.quhao.task.GetChatPortTask;
-import com.withiter.quhao.task.JsonPack;
-import com.withiter.quhao.util.StringUtils;
-import com.withiter.quhao.util.tool.QuhaoConstant;
-import com.withiter.quhao.vo.ReservationVO;
+import com.withiter.quhao.vo.Merchant;
 
 public class MerchantChatRoomAdapter extends BaseAdapter {
 
 	private ListView listView;
-	public List<ReservationVO> rvos;
+	public List<Merchant> merchants;
 	private MerchantChatRoomsActivity activity;
-	private DisplayImageOptions options;
-	private ImageLoadingListener animateFirstListener;
 
-	public MerchantChatRoomAdapter(MerchantChatRoomsActivity activity, ListView listView, List<ReservationVO> rvos,DisplayImageOptions options,ImageLoadingListener animateFirstListener) {
+	public MerchantChatRoomAdapter(MerchantChatRoomsActivity activity, ListView listView, List<Merchant> merchants) {
 		super();
 		this.activity = activity;
 		this.listView = listView;
-		this.rvos = rvos;
-		this.options = options;
-		this.animateFirstListener = animateFirstListener;
+		this.merchants = merchants;
 	}
 
 	@Override
 	public int getCount() {
-		return rvos.size();
+		return merchants.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return rvos.get(position);
+		return merchants.get(position);
 	}
 
 	@Override
@@ -63,78 +47,73 @@ public class MerchantChatRoomAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		ReservationVO rvo = (ReservationVO) getItem(position);
-		synchronized (rvo) {
+		Merchant merchant = (Merchant) getItem(position);
+		synchronized (merchant) {
 			ViewHolder holder = null;
 			if (convertView == null) {
 				holder = new ViewHolder();
 				LayoutInflater inflator = (LayoutInflater) parent.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				convertView = inflator.inflate(R.layout.merchant_chat_room_list_item, null);
-				holder.merchantImg = (ImageView) convertView.findViewById(R.id.merchantImg);
+				holder.seq = (TextView) convertView.findViewById(R.id.seq);
 				holder.merchantName = (TextView) convertView.findViewById(R.id.merchantName);
-				holder.btnChat = (Button) convertView.findViewById(R.id.btn_chat);
-				holder.layout = (RelativeLayout) convertView.findViewById(R.id.layout);
+				holder.distance = (TextView) convertView.findViewById(R.id.distance);
+//				holder.renqi = (TextView) convertView.findViewById(R.id.renqi);
+				holder.layout = (LinearLayout) convertView.findViewById(R.id.layout);
 			}
 			if (holder == null) {
 				holder = (ViewHolder) convertView.getTag();
 			}
 			
-			String merchantImg = rvo.merchantImage;
-//			holder.merchantImg.setImageResource(R.drawable.no_logo);
-//			AsynImageLoader.getInstance().showImageAsyn(holder.merchantImg,position, merchantImg, R.drawable.no_logo);
-			ImageLoader.getInstance().displayImage(merchantImg, holder.merchantImg, options, animateFirstListener);
-			holder.merchantName.setTag("merchantNamer_" + position);
-			holder.merchantName.setText(rvo.merchantName);
+			holder.seq.setTag("seq_" + position);
+			if (position + 1 < 10) {
+				holder.seq.setText((position + 1) + " ");
+			}
+			else
+			{
+				holder.seq.setText("" + (position + 1));
+			}
 			
-			final String mid = rvo.merchantId;
-			final String merchantName = rvo.merchantName;
-			holder.btnChat.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View arg0) {
+			if (position == 0) {
+				holder.seq.setBackgroundResource(R.drawable.bg_red_little);
+			}
+			
+			if (position == 1 || position == 2 || position == 3) {
+				holder.seq.setBackgroundResource(R.drawable.bg_blue_little);
+			}
+			
+			if (position > 3) {
+				holder.seq.setBackgroundResource(R.drawable.bg_gray_little);
+			}
+			
+			holder.merchantName.setTag("merchantNamer_" + position);
+			holder.merchantName.setText(merchant.name);
+			holder.distance.setTag("distance_" + position);
+			
+			if(merchant.distance > 0)
+			{
+				if(merchant.distance>1000)
+				{
 					
-					final GetChatPortTask task = new GetChatPortTask(R.string.waitting, activity, "chat?mid=" +mid);
-					task.execute(new Runnable() {
-						
-						@Override
-						public void run() {
-							JsonPack jsonPack = task.jsonPack;
-							String port = jsonPack.getObj();
-							if ("false".equals(port)) {
-								Toast.makeText(activity, "亲，房间人数已满，请稍后再来。", Toast.LENGTH_SHORT).show();
-								return;
-							}
-							Intent intent = new Intent();
-							//uid=uid1&image=image1&mid=mid1&user=11
-							String image = QHClientApplication.getInstance().accountInfo.userImage;
-							if(StringUtils.isNotNull(image) && image.contains(QuhaoConstant.HTTP_URL))
-							{
-								image = "/" + image.substring(QuhaoConstant.HTTP_URL.length());
-							}
-							if (QHClientApplication.getInstance().accountInfo == null) {
-								Toast.makeText(activity, "亲，账号登录过期了哦", Toast.LENGTH_SHORT).show();
-								return;
-							}
-							intent.putExtra("uid", QHClientApplication.getInstance().accountInfo.accountId);
-							intent.putExtra("image", image);
-							intent.putExtra("mid", mid);
-							intent.putExtra("user", QHClientApplication.getInstance().accountInfo.phone);
-							intent.putExtra("merchantName", merchantName);
-							intent.putExtra("port", port);
-							intent.setClass(activity, MerchantChatActivity.class);
-							activity.startActivity(intent);
-						}
-					},new Runnable() {
-						
-						@Override
-						public void run() {
-							Toast.makeText(activity, "亲，房间人数已满，请稍后再来。", Toast.LENGTH_SHORT).show();
-							return;
-						}
-					});
-					
+					NumberFormat nf = NumberFormat.getNumberInstance();
+			        nf.setMaximumFractionDigits(1);
+			        holder.distance.setText(nf.format(merchant.distance/1000) + "km");
 				}
-			});
+				else
+				{
+					holder.distance.setText(String.valueOf((int)merchant.distance) + "m");
+				}
+				
+			}
+			else
+			{
+				holder.distance.setText("未定位");
+			}
+			
+//			holder.renqi.setTag("renqi_" + position);
+//			holder.renqi.setText("");
+			
+			
+			
 			convertView.setTag(holder);
 			return convertView;
 		}
@@ -142,10 +121,11 @@ public class MerchantChatRoomAdapter extends BaseAdapter {
 	}
 	
 	class ViewHolder {
-		public ImageView merchantImg;
+		public TextView seq;
 		public TextView merchantName;
-		public Button btnChat;
-		public RelativeLayout layout;
+		public TextView distance;
+//		public TextView renqi;
+		public LinearLayout layout;
 	}
 	
 }

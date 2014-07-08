@@ -913,7 +913,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 				if (QHClientApplication.getInstance().isLogined) {
 					
-					if (null != merchantDetail && merchantDetail.merchant != null && !merchantDetail.merchant.enable) {
+					if (null == merchantDetail || merchantDetail.merchant == null) {
 						Toast.makeText(this, "亲，该商家还没有开通。", Toast.LENGTH_SHORT).show();
 						return;
 					}

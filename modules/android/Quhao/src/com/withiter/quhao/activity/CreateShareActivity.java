@@ -37,6 +37,7 @@ import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.task.CreateShareTask;
@@ -189,14 +190,9 @@ public class CreateShareActivity extends QuhaoBaseActivity implements AMapLocati
 			FileOutputStream fos;
 			File image = null;
 			try {
-				image = new File(Environment.getExternalStorageDirectory() + "/" + 
-						QuhaoConstant.IMAGES_SD_URL + "/" + "temp.jpg");
+				File dir = StorageUtils.getCacheDirectory(CreateShareActivity.this);
+				image = new File(dir,"temp.jpg");
 //				image = new File(picPath);
-				File folder = image.getParentFile();
-
-				if (!folder.exists()) {
-					folder.mkdirs();
-				}
 
 				if (!image.exists()) {
 					image.createNewFile();
@@ -204,7 +200,7 @@ public class CreateShareActivity extends QuhaoBaseActivity implements AMapLocati
 //				newImageName = image.getName();
 				fos = new FileOutputStream(image);
 				
-				if (degree == 0 || null == bitmap) 
+				if (null == bitmap) 
 				{  
 					return;
 			    }  
