@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -28,7 +27,6 @@ import com.withiter.quhao.R;
 import com.withiter.quhao.util.tool.PhoneTool;
 import com.withiter.quhao.util.tool.ProgressDialogUtil;
 
-@SuppressLint("NewApi")
 public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClickListener, OnTouchListener {
 
 	private final String TAG = QuhaoBaseActivity.class.getName();
@@ -38,10 +36,6 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 	protected final int UNLOCK_CLICK = 1000;
 	protected ProgressDialogUtil progressDialogUtil;
 
-	protected Button btnCategory;
-	protected Button btnNearby;
-	protected Button btnPerson;
-	protected Button btnMore;
 	protected Button btnBack;
 //	protected LinearLayout btnBackLayout;
 
@@ -91,10 +85,6 @@ public abstract class QuhaoBaseActivity extends QuhaoActivity implements OnClick
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		networkOK = PhoneTool.isNetworkAvailable(this);
-		btnCategory = (Button) findViewById(R.id.btnMerchantList);
-		btnNearby = (Button) findViewById(R.id.btnNearby);
-		btnPerson = (Button) findViewById(R.id.btnPerson);
-		btnMore = (Button) findViewById(R.id.btnMore);
 		btnBack = (Button) findViewById(R.id.back_btn);
 //		btnBackLayout = (LinearLayout) findViewById(R.id.back_btn_layout);
 	}
