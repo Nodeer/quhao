@@ -13,6 +13,7 @@ public class YudingVO extends ErrorVO {
 	public int renshu;
 	public String shijian;
 	public boolean baojian;
+	public boolean baojianOptional;
 	public String xing;
 	public String mobile;
 	public YudingStatus status;
@@ -28,6 +29,7 @@ public class YudingVO extends ErrorVO {
 		vo.shijian = sdf.format(y.shijian);
 		
 		vo.baojian = y.baojian;
+		vo.baojianOptional = y.baojianOptional;
 		vo.xing = y.xing;
 		vo.mobile = y.mobile;
 		vo.status = y.status;

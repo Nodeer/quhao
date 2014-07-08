@@ -151,6 +151,12 @@ GET		/createOpinion						OpinionController.createOpinion
 *		/b/w/editMerchant					backend.self.SelfManagementController.editMerchant
 *		/b/w/goPaiduiPage					backend.self.SelfManagementController.goPaiduiPage
 *		/b/w/goYudingPage					backend.self.SelfManagementController.goYudingPage
+*		/b/w/yuding/tongyi					backend.self.SelfManagementController.tongyi
+*		/b/w/yuding/reject					backend.self.SelfManagementController.reject
+*		/b/w/yuding/finish					backend.self.SelfManagementController.finish
+*		/b/w/yuding/expire					backend.self.SelfManagementController.expire
+*		/b/w/yuding/reject					backend.self.SelfManagementController.reject
+*		/b/w/yuding/cancelTemp				backend.self.SelfManagementController.cancelTemp
 *		/b/w/goPersonalPage					backend.self.SelfManagementController.goPersonalPage
 *		/b/w/goStatisticPage				backend.self.SelfManagementController.goStatisticPage
 *		/b/w/goYouhuiPage					backend.self.SelfManagementController.goYouhuiPage

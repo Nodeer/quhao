@@ -11,7 +11,8 @@ public abstract class YudingEntityDef extends BaseModel {
 	public int renshu;				// 人数
 	public Date shijian;			// 时间
 	public boolean baojian;			// 有包间时用包间
-	public String xing;				// 贵姓
+	public boolean baojianOptional;	// 如果没有包间是否可接受大厅
+	public String xing;				// 称呼
 	public String mobile;			// 手机号码
 	public YudingStatus status;		// 预定状态
 }

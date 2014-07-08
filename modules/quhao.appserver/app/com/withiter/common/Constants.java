@@ -81,7 +81,9 @@ public class Constants {
 		created,		// 用户创建了预定
 		canceled,		// 用户取消了预定
 		confirmed,		// 商家确认了预定
+		rejected,		// 商家拒绝了预定
 		finished,		// 商家完成此次预定
+		cancelTemp,		// 用户原因，商家临时取消此次预定
 		expired			// 商家过期了此预定
 	}
 	

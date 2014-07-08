@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import play.Play;
+import play.data.validation.Required;
 import play.libs.Codec;
 import play.libs.Images;
 import play.mvc.Before;
@@ -29,6 +31,7 @@ import cn.bran.japid.util.StringUtils;
 
 import com.mongodb.gridfs.GridFSInputFile;
 import com.withiter.common.Constants;
+import com.withiter.common.Constants.YudingStatus;
 import com.withiter.common.jpush.JPushReminder;
 import com.withiter.common.sms.business.SMSBusiness;
 import com.withiter.models.account.Account;
@@ -328,9 +331,7 @@ public class SelfManagementController extends BaseController {
 	/**
 	 * 预定管理
 	 */
-	public static void goYudingPage() {
-		String mid = params.get("mid");
-		
+	public static void goYudingPage(@Required String mid) {
 		List<Yuding> YudingList = Yuding.getAllNotHandledYuding(mid);
 		List<YudingVO> yvoList = new ArrayList<YudingVO>();
 		for (Yuding yd : YudingList) {
@@ -342,6 +343,174 @@ public class SelfManagementController extends BaseController {
 		Merchant merchant = Merchant.findById(mid);
 		BackendMerchantInfoVO bmivo = BackendMerchantInfoVO.build(merchant, account);
 		renderJapid(yvoList, bmivo);
+	}
+	
+	/**
+	 * 同意用户预定
+	 * route: *		/b/w/yuding/tongyi					backend.self.SelfManagementController.tongyi
+	 */
+	public static void tongyi(@Required String yid){
+		if(validation.hasErrors()){
+			renderJSON(false);
+		}
+		
+		Yuding yuding = Yuding.findById(new ObjectId(yid));
+		if(yuding != null){
+			yuding.status = YudingStatus.confirmed;
+			yuding.save();
+			// 发送短信通知
+			Merchant m = Merchant.findByMid(yuding.mid);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+			String content = "恭喜预定成功!"+sdf.format(yuding.shijian)+"，"+m.name+"，"+yuding.renshu+"人，";
+			if(yuding.baojian){
+				if(yuding.baojianOptional){
+					content +="如果没有包间，安排大厅，";
+				} else {
+					content +="包间必须，";
+				}
+			}
+			// 地址
+			content += m.address+"，座位保留15分钟，到店请出示此短信，如有疑问，可联系餐厅，电话:";
+			// 电话
+			if(m.telephone !=null && m.telephone.length > 0){
+				content += m.telephone[0]+"。";
+			}
+			
+			try {
+				SMSBusiness.sendSMS(yuding.mobile, content);
+			} catch (HttpException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		renderJSON(true);
+	}
+	
+	/**
+	 * 拒绝用户预定
+	 * route: *		/b/w/yuding/reject					backend.self.SelfManagementController.tongyi
+	 */
+	public static void reject(@Required String yid, @Required String type){
+		if(validation.hasErrors()){
+			renderJSON(false);
+		}
+		play.Logger.info("type:" + type);
+		Yuding yuding = Yuding.findById(new ObjectId(yid));
+		if(yuding != null){
+			yuding.status = YudingStatus.rejected;
+			yuding.save();
+			// 发送短信通知
+			Merchant m = Merchant.findByMid(yuding.mid);
+			String content = "很抱歉，您在["+m.name+"]的预定不成功。原因是：";
+			if("1".equals(type)){
+				content += "此时间段不能接受预定。";
+			}
+			if("2".equals(type)){
+				content += "没有包厢了。";
+			}
+			if("3".equals(type)){
+				content += "预定已满（没有座位）。";
+			}
+			
+			// 地址
+			content += "如有疑问，可联系餐厅，电话:";
+			// 电话
+			if(m.telephone !=null && m.telephone.length > 0){
+				content += m.telephone[0]+"。";
+			}
+			
+			try {
+				SMSBusiness.sendSMS(yuding.mobile, content);
+			} catch (HttpException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}			
+			goYudingPage(yuding.mid);
+		}
+	}
+	
+	/**
+	 * 完成预定
+	 * route: *		/b/w/yuding/finish					backend.self.SelfManagementController.finish
+	 */
+	public static void finish(@Required String yid){
+		if(validation.hasErrors()){
+			renderJSON(false);
+		}
+		Yuding yuding = Yuding.findById(new ObjectId(yid));
+		if(yuding != null){
+			yuding.status = YudingStatus.finished;
+			yuding.save();
+		}
+		renderJSON(true);
+	}
+
+	/**
+	 * 过期预定
+	 * route: *		/b/w/yuding/expire					backend.self.SelfManagementController.expire
+	 */
+	public static void expire(@Required String yid){
+		if(validation.hasErrors()){
+			renderJSON(false);
+		}
+		Yuding yuding = Yuding.findById(new ObjectId(yid));
+		if(yuding != null){
+			yuding.status = YudingStatus.expired;
+			yuding.save();
+			// 发送短信通知
+			Merchant m = Merchant.findByMid(yuding.mid);
+			String content = "很抱歉，您在["+m.name+"]的预定已过期。";
+			content += "如有疑问，可联系餐厅，电话:";
+			// 电话
+			if(m.telephone !=null && m.telephone.length > 0){
+				content += m.telephone[0]+"。";
+			}
+			
+			try {
+				SMSBusiness.sendSMS(yuding.mobile, content);
+			} catch (HttpException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}			
+		}
+		renderJSON(true);
+	}
+	
+	
+	
+	/**
+	 * 临时取消用户的预定
+	 * route: *		/b/w/yuding/cancelTemp					backend.self.SelfManagementController.cancelTemp
+	 */
+	public static void cancelTemp(@Required String yid){
+		if(validation.hasErrors()){
+			renderJSON(false);
+		}
+		Yuding yuding = Yuding.findById(new ObjectId(yid));
+		if(yuding != null){
+			yuding.status = YudingStatus.cancelTemp;
+			yuding.save();
+			// 发送短信通知
+			Merchant m = Merchant.findByMid(yuding.mid);
+			String content = "很抱歉，您在["+m.name+"]的预定已成功取消。";
+			content += "如有疑问，可联系餐厅，电话:";
+			// 电话
+			if(m.telephone !=null && m.telephone.length > 0){
+				content += m.telephone[0]+"。";
+			}
+			
+			try {
+				SMSBusiness.sendSMS(yuding.mobile, content);
+			} catch (HttpException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}			
+		}
+		renderJSON(true);
 	}
 
 	/**

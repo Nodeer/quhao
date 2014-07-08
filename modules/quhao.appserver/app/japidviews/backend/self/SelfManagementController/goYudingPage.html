@@ -5,6 +5,7 @@
 `extends base_layout
 `set cssAndJs
 $addJS("merchant.js", true)
+$addJS("yuding.js", true)
 $addCSS("backend.css", true)
 `
 `set title:i18n("取号啦 - 预定管理")
@@ -79,7 +80,10 @@ $addCSS("backend.css", true)
 		  					预定时间
 		  				</th>
 		  				<th style="border-right: 1px solid #ddd;">
-		  					是否要求包房
+		  					是否要求包间
+		  				</th>
+		  				<th style="border-right: 1px solid #ddd;">
+		  					没包间，可接受大厅
 		  				</th>
 		  				<th style="border-right: 1px solid #ddd;">
 		  					姓名
@@ -110,25 +114,44 @@ $addCSS("backend.css", true)
 				  			`}
 				  		</td>
 				  		<td align="center" style="border-right: 1px solid #ddd;">
-				  			${vo.xing}先生
+				  			`if(vo.baojianOptional){
+				  				是
+				  			`} else {
+				  				否
+				  			`}
+				  		</td>
+				  		<td align="center" style="border-right: 1px solid #ddd;">
+				  			${vo.xing}
 				  		</td>
 				  		<td align="center" style="border-right: 1px solid #ddd;">
 				  			${vo.mobile}
 				  		</td>
 				  		`if(vo.status == YudingStatus.created){
-					  		<td align="center" style="border-right: 1px solid #ddd;">
+					  		<td align="center" style="border-right: 1px solid #ddd;  font-weight: bolder;color: red;">
 				  				用户发起预定
 					  		</td>
 					  		<td align="center">
-				  				<button class="btn btn-primary" onclick="Merchant.disableYouhui('${bmivo.mid}','${vo.id}')">已确认</button>
+				  				<div class="btn-group">
+								  <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+								    拒绝 <span class="caret"></span>
+								  </button>
+								  <ul class="dropdown-menu" role="menu">
+								    <li><a href="/b/w/yuding/reject?type=1&yid=${vo.id}">此时间段不能接受预定</a></li>
+								    <li><a href="/b/w/yuding/reject?type=2&yid=${vo.id}">没有包厢了</a></li>
+								    <li><a href="/b/w/yuding/reject?type=3&yid=${vo.id}">预定已满（没有座位）</a></li>
+								  </ul>
+							    </div>
+				  				<button class="btn btn-primary" onclick="Yuding.tongyi('${vo.id}')">同意</button>
 					  		</td>
 				  		`}
 				  		`if(vo.status == YudingStatus.confirmed){
-					  		<td align="center" style="border-right: 1px solid #ddd;">
-				  				服务员已回电确认
+					  		<td align="center" style="border-right: 1px solid #ddd; font-weight: bolder; color: red;">
+				  				服务员已确认
 					  		</td>
 					  		<td align="center">
-				  				<button class="btn btn-primary" onclick="Merchant.disableYouhui('${bmivo.mid}','${vo.id}')">客户已到店</button>
+				  				<button class="btn btn-primary" onclick="Yuding.finish('${vo.id}')">完成</button>
+				  				<button class="btn btn-primary" onclick="Yuding.expire('${vo.id}')">过期</button>
+				  				<button class="btn btn-primary" onclick="Yuding.cancelTemp('${vo.id}')">临时取消</button>
 					  		</td>
 				  		`}
 				  	</tr>
@@ -143,6 +166,7 @@ $addCSS("backend.css", true)
 				<input type="text" name="renshu" placeholder="renshu"/>
 				<input type="text" name="shijian" placeholder="shijian"/>
 				<input type="text" name="baojian" placeholder="baojian"/>
+				<input type="text" name="baojianOptional" placeholder="baojianOptional"/>
 				<input type="text" name="xing" placeholder="xing"/>
 				<input type="text" name="mobile" placeholder="mobile"/>
 				<input type="submit">

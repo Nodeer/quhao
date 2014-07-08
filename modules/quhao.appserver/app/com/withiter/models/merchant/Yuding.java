@@ -18,7 +18,7 @@ public class Yuding extends YudingEntityDef {
 	public static List<Yuding> getAllNotHandledYuding(String mid) {
 		MorphiaQuery q = Yuding.q();
 		q.filter("mid", mid);
-		q.and(q.criteria("status").notEqual(YudingStatus.canceled), q.criteria("status").notEqual(YudingStatus.finished));
+		q.or(q.criteria("status").equal(YudingStatus.created), q.criteria("status").equal(YudingStatus.confirmed));
 		return q.asList();
 	}
 
@@ -36,7 +36,7 @@ public class Yuding extends YudingEntityDef {
 		} else {
 			q.filter("mobile", mobile);
 		}
-		q.and(q.criteria("status").notEqual(YudingStatus.canceled), q.criteria("status").notEqual(YudingStatus.finished));
+		q.or(q.criteria("status").equal(YudingStatus.created), q.criteria("status").equal(YudingStatus.confirmed));
 		return q.first();
 	}
 }

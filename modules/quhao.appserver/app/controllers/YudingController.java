@@ -2,6 +2,8 @@ package controllers;
 
 import java.util.Date;
 
+import org.bson.types.ObjectId;
+
 import play.data.validation.Required;
 import vo.YudingVO;
 
@@ -21,6 +23,7 @@ public class YudingController extends BaseController {
 	 */
 	public static void add(@Required String mid, @Required String renshu, @Required String shijian, @Required String baojian, @Required String xing, @Required String mobile){
 		String aid = params.get("aid");
+		String baojianOptional = params.get("baojianOptional");
 		
 		if(validation.hasErrors()){
 			renderJSON(validation.errors());
@@ -32,10 +35,30 @@ public class YudingController extends BaseController {
 		y.renshu = Integer.parseInt(renshu);
 		y.shijian = new Date(Long.parseLong(shijian));
 		y.baojian = Boolean.parseBoolean(baojian);
+		if(y.baojian){
+			y.baojianOptional = Boolean.parseBoolean(baojianOptional);
+		}
+		
 		y.xing = xing;
 		y.mobile = mobile;
 		y.status = YudingStatus.created;
 		y.save();
+		renderJSON(true);
+	}
+	
+	/**
+	 * 用户取消预定
+	 * @param yid
+	 */
+	public static void cancel(@Required String yid){
+		if(validation.hasErrors()){
+			renderJSON(validation.errors());
+		}
+		Yuding y = Yuding.findById(new ObjectId(yid));
+		if(y != null){
+			y.status = YudingStatus.canceled;
+			y.save();
+		}
 		renderJSON(true);
 	}
 	
