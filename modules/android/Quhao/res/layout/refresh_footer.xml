@@ -17,13 +17,6 @@
 	        android:indeterminateDrawable="@drawable/customer_progressbar_two"
 	        android:visibility="gone" />
 	
-        <!--  
-		<com.withiter.quhao.view.gif.CustomGifView
-		    android:id="@+id/pull_to_load_progress"
-			android:layout_width="140dp" 
-			android:layout_height="140dp"
-			android:contentDescription="@null"/>
-			 -->
 	    <ImageView
 	        android:id="@+id/pull_to_load_image"
 	        android:layout_width="wrap_content"

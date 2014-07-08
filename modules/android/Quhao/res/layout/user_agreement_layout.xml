@@ -55,12 +55,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminateDrawable="@drawable/customer_progressbar_two" />
-         <!--    
-		<com.withiter.quhao.view.gif.CustomGifView
-			android:layout_width="140dp" 
-			android:layout_height="140dp"
-			android:contentDescription="@null"/>
-		 -->
         <View
             android:layout_width="10dip"
             android:layout_height="10dip" />
