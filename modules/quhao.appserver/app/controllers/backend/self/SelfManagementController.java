@@ -23,6 +23,7 @@ import vo.HaomaVO;
 import vo.ReservationVO;
 import vo.StatisticsVO;
 import vo.YouhuiVO;
+import vo.YudingVO;
 import vo.account.MerchantAccountVO;
 import cn.bran.japid.util.StringUtils;
 
@@ -39,6 +40,7 @@ import com.withiter.models.merchant.Haoma;
 import com.withiter.models.merchant.Merchant;
 import com.withiter.models.merchant.Open;
 import com.withiter.models.merchant.Youhui;
+import com.withiter.models.merchant.Yuding;
 import com.withiter.utils.ExceptionUtil;
 
 import controllers.BaseController;
@@ -316,6 +318,25 @@ public class SelfManagementController extends BaseController {
 			yvoList.add(YouhuiVO.build(yh));
 		}
 
+		String uid = Session.current().get(Constants.SESSION_USERNAME);
+		MerchantAccount account = MerchantAccount.findById(uid);
+		Merchant merchant = Merchant.findById(mid);
+		BackendMerchantInfoVO bmivo = BackendMerchantInfoVO.build(merchant, account);
+		renderJapid(yvoList, bmivo);
+	}
+	
+	/**
+	 * 预定管理
+	 */
+	public static void goYudingPage() {
+		String mid = params.get("mid");
+		
+		List<Yuding> YudingList = Yuding.getAllNotHandledYuding(mid);
+		List<YudingVO> yvoList = new ArrayList<YudingVO>();
+		for (Yuding yd : YudingList) {
+			yvoList.add(YudingVO.build(yd));
+		}
+		
 		String uid = Session.current().get(Constants.SESSION_USERNAME);
 		MerchantAccount account = MerchantAccount.findById(uid);
 		Merchant merchant = Merchant.findById(mid);

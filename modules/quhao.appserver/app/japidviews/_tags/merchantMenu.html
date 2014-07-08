@@ -14,6 +14,11 @@
   		`}
   	><a href="javascript:void(0);" onclick="Merchant.goPaiduiPage('${bmivo.mid}');">用户排队管理</a></li>
     <li
+    	`if(asBoolean(type.equals("yuding"))){
+  		  class="active"
+  		`}
+    ><a href="javascript:void(0);" onclick="Merchant.goYudingPage('${bmivo.mid}');">预定管理</a></li>
+    <li
     	`if(asBoolean(type.equals("tongji"))){
   		  class="active"
   		`}

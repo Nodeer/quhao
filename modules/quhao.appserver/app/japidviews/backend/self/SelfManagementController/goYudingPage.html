@@ -1,0 +1,160 @@
+`import static press.Plugin.*;
+`import vo.YudingVO;
+`import com.withiter.common.Constants.*;
+`import vo.BackendMerchantInfoVO;
+`extends base_layout
+`set cssAndJs
+$addJS("merchant.js", true)
+$addCSS("backend.css", true)
+`
+`set title:i18n("取号啦 - 预定管理")
+
+`args List<YudingVO> yudingList, BackendMerchantInfoVO bmivo
+
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link href="/public/images/common/quhao_favicon.jpg" type="image/png" rel="shortcut icon">
+
+<style type="text/css">
+.dataHeader{
+	float: left;
+	width: 150px;
+	text-align: center;
+	font-size: large;
+	color: black;
+	padding-bottom: 20px;
+	border: 1px solid;
+	margin-left: 15px;
+	vertical-align: middle;
+}
+
+.dataElement{
+	float: left;
+	width: 150px;
+	text-align: center;
+	border: 1px solid;
+	height: 38px;
+	margin-left: 15px;
+	vertical-align: middle;
+}
+
+.color_red{
+	border-color: inherit;
+	color: red;
+	font: bolder;
+}
+</style>
+
+</head>
+<body>
+
+	<div class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+      <div class="container">
+        <div class="collapse navbar-collapse" style="font-size: 15px; font-weight: bolder;">
+          `t merchantMenu(bmivo,"yuding")
+        </div><!-- /.nav-collapse -->
+      </div><!-- /.container -->
+    </div><!-- /.navbar -->
+
+    <div class="container">
+      <div class="row row-offcanvas row-offcanvas-right">
+        <div class="col-xs-12 col-sm-12" style="margin-top: 100px;">
+          <div class="panel panel-default" id="">
+			  <div class="panel-heading">当前预定信息<span style="margin-left: 10px;" id="deleteErrorTip"></span></div>
+			  <table class="table" >
+		  		`if(yudingList.size() == 0){
+			  	<tr align="center">
+			  		<td>
+			  			暂无预定信息
+			  		</td>
+			  	</tr>
+		  		`} else {
+		  			<thead>
+		  				<th style="border-right: 1px solid #ddd;">
+		  					预定人数
+		  				</th>
+		  				<th style="border-right: 1px solid #ddd;">
+		  					预定时间
+		  				</th>
+		  				<th style="border-right: 1px solid #ddd;">
+		  					是否要求包房
+		  				</th>
+		  				<th style="border-right: 1px solid #ddd;">
+		  					姓名
+		  				</th>
+		  				<th style="border-right: 1px solid #ddd;">
+		  					手机号码
+		  				</th>
+		  				<th style="border-right: 1px solid #ddd;">
+		  					当前状态
+		  				</th>
+		  				<th>
+		  					操作
+		  				</th>
+		  			</thead>
+		  			`for(YudingVO vo : yudingList){
+	  				<tr style="border-bottom: 1px solid #ddd;">
+				  		<td align="center" style="border-right: 1px solid #ddd;">
+				  			${vo.renshu}
+				  		</td>
+				  		<td align="center" style="border-right: 1px solid #ddd;">
+				  			${vo.shijian}
+				  		</td>
+				  		<td align="center" style="border-right: 1px solid #ddd;">
+				  			`if(vo.baojian){
+				  				是
+				  			`} else {
+				  				否
+				  			`}
+				  		</td>
+				  		<td align="center" style="border-right: 1px solid #ddd;">
+				  			${vo.xing}先生
+				  		</td>
+				  		<td align="center" style="border-right: 1px solid #ddd;">
+				  			${vo.mobile}
+				  		</td>
+				  		`if(vo.status == YudingStatus.created){
+					  		<td align="center" style="border-right: 1px solid #ddd;">
+				  				用户发起预定
+					  		</td>
+					  		<td align="center">
+				  				<button class="btn btn-primary" onclick="Merchant.disableYouhui('${bmivo.mid}','${vo.id}')">已确认</button>
+					  		</td>
+				  		`}
+				  		`if(vo.status == YudingStatus.confirmed){
+					  		<td align="center" style="border-right: 1px solid #ddd;">
+				  				服务员已回电确认
+					  		</td>
+					  		<td align="center">
+				  				<button class="btn btn-primary" onclick="Merchant.disableYouhui('${bmivo.mid}','${vo.id}')">客户已到店</button>
+					  		</td>
+				  		`}
+				  	</tr>
+		  			`}
+		  		`}
+			  </table>
+			</div>
+			
+			<!-- test -->
+			<form action="/yuding/add" method="post">
+				<input type="text" name="mid" placeholder="mid"/>
+				<input type="text" name="renshu" placeholder="renshu"/>
+				<input type="text" name="shijian" placeholder="shijian"/>
+				<input type="text" name="baojian" placeholder="baojian"/>
+				<input type="text" name="xing" placeholder="xing"/>
+				<input type="text" name="mobile" placeholder="mobile"/>
+				<input type="submit">
+			</form>
+			<!-- test -->
+			
+        </div><!--/span-->
+      </div><!--/row-->
+
+	  <!-- footer -->
+      `t merchantFoot
+	  <!-- footer -->
+    </div><!--/.container-->
+</body>
+</html>

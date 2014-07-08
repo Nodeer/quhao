@@ -428,6 +428,10 @@ Merchant.goPaiduiPage = function(mid) {
 	window.location.href = "/b/w/goPaiduiPage?mid=" + mid;
 }
 
+Merchant.goYudingPage = function(mid) {
+	window.location.href = "/b/w/goYudingPage?mid=" + mid;
+}
+
 Merchant.goPersonalPage = function(aid, mid) {
 	window.location.href = "/b/w/goPersonalPage?aid=" + aid + "&mid=" + mid;
 }

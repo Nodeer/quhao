@@ -67,6 +67,10 @@ GET		/pStatus							ReservationController.paiduiStatusForApp
 # Youhui
 GET		/youhui								YouhuiController.youhui
 
+# Yuding
+POST	/yuding/add							YudingController.add
+GET		/yuding/my							YudingController.my
+
 # Merchant
 GET		/quhaoEntry							MerchantController.quhaoEntry
 GET		/nextPage							MerchantController.nextPage
@@ -146,6 +150,7 @@ GET		/createOpinion						OpinionController.createOpinion
 *		/b/w								backend.self.SelfManagementController.index
 *		/b/w/editMerchant					backend.self.SelfManagementController.editMerchant
 *		/b/w/goPaiduiPage					backend.self.SelfManagementController.goPaiduiPage
+*		/b/w/goYudingPage					backend.self.SelfManagementController.goYudingPage
 *		/b/w/goPersonalPage					backend.self.SelfManagementController.goPersonalPage
 *		/b/w/goStatisticPage				backend.self.SelfManagementController.goStatisticPage
 *		/b/w/goYouhuiPage					backend.self.SelfManagementController.goYouhuiPage
