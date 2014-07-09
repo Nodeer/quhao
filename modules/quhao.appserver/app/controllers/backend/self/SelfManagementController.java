@@ -11,6 +11,8 @@ import java.util.List;
 
 import org.apache.commons.httpclient.HttpException;
 import org.bson.types.ObjectId;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -361,30 +363,30 @@ public class SelfManagementController extends BaseController {
 			// 发送短信通知
 			Merchant m = Merchant.findByMid(yuding.mid);
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-			String content = "恭喜预定成功!"+sdf.format(yuding.shijian)+"，"+m.name+"，"+yuding.renshu+"人，";
+			
+			//设置模板ID
+			//401215 恭喜预定成功! 预定信息：时间(#code1#)，商家(#code2#)，地点(#code3#)，人数(#code4#)，#code5#，座位保留15分钟，到店请出示此短信，如有疑问，可联系餐厅，电话:#code6#。【取号啦】
+			long tpl_id = 401215l;
+			//设置对应的模板变量值
+			String tpl_value = "";
 			if(yuding.baojian){
 				if(yuding.baojianOptional){
-					content +="如果没有包间，安排大厅，";
+					tpl_value ="#code1#="+sdf.format(yuding.shijian)+"&#code2#="+m.name+"&#code3#="+m.address+"&#code4#="+yuding.renshu+"&#code5#=如果没有包间，安排大厅";
 				} else {
-					content +="包间必须，";
+					tpl_value ="#code1#="+sdf.format(yuding.shijian)+"&#code2#="+m.name+"&#code3#="+m.address+"&#code4#="+yuding.renshu+"&#code5#=包间必须";
 				}
 			}
-			// 地址
-			content += m.address+"，座位保留15分钟，到店请出示此短信，如有疑问，可联系餐厅，电话:";
 			// 电话
 			if(m.telephone !=null && m.telephone.length > 0){
-				content += m.telephone[0]+"。";
+				tpl_value += "&#code6#="+m.telephone[0];
 			}
-			
-			try {
-				SMSBusiness.sendSMS(yuding.mobile, content);
-			} catch (HttpException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+			int code = SMSBusiness.tplSendSms(tpl_id,tpl_value, yuding.mobile);
+			if (code == 0) {
+				renderJSON(true);
+			} else {
+				renderJSON(false);
 			}
 		}
-		renderJSON(true);
 	}
 	
 	/**
@@ -402,31 +404,30 @@ public class SelfManagementController extends BaseController {
 			yuding.save();
 			// 发送短信通知
 			Merchant m = Merchant.findByMid(yuding.mid);
-			String content = "很抱歉，您在["+m.name+"]的预定不成功。原因是：";
+			
+			//设置模板ID
+			//401228 很抱歉，您在[#code1#]的预定不成功。原因是：#code2#。如有疑问，可联系餐厅，电话:#code3#。【取号啦】
+			long tpl_id = 401228l;
+			//设置对应的模板变量值
+			String tpl_value = "";
 			if("1".equals(type)){
-				content += "此时间段不能接受预定。";
+				tpl_value = "#code1#="+m.name+"&#code2#=此时间段不能接受预定";
 			}
 			if("2".equals(type)){
-				content += "没有包厢了。";
+				tpl_value = "#code1#="+m.name+"&#code2#=没有包厢了";
 			}
 			if("3".equals(type)){
-				content += "预定已满（没有座位）。";
+				tpl_value = "#code1#="+m.name+"&#code2#=预定已满（没有座位）";
 			}
-			
-			// 地址
-			content += "如有疑问，可联系餐厅，电话:";
 			// 电话
 			if(m.telephone !=null && m.telephone.length > 0){
-				content += m.telephone[0]+"。";
+				tpl_value += "&#code3#="+m.telephone[0];
 			}
 			
-			try {
-				SMSBusiness.sendSMS(yuding.mobile, content);
-			} catch (HttpException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}			
+			int code = SMSBusiness.tplSendSms(tpl_id,tpl_value, yuding.mobile);
+			if (code != 0) {
+				logger.error("Send SMS failed!!!");
+			}
 			goYudingPage(yuding.mid);
 		}
 	}
@@ -461,25 +462,25 @@ public class SelfManagementController extends BaseController {
 			yuding.save();
 			// 发送短信通知
 			Merchant m = Merchant.findByMid(yuding.mid);
-			String content = "很抱歉，您在["+m.name+"]的预定已过期。";
-			content += "如有疑问，可联系餐厅，电话:";
+			
+			// 401210	很抱歉，您在[#code1#]的预定已过期。如有疑问，可联系餐厅，电话:#code2#。【取号啦】
+			long tpl_id = 401210l;
+			String tpl_value = "#code1#="+m.name;
+			
 			// 电话
 			if(m.telephone !=null && m.telephone.length > 0){
-				content += m.telephone[0]+"。";
+				tpl_value += "&#code2#="+m.telephone[0];
 			}
 			
-			try {
-				SMSBusiness.sendSMS(yuding.mobile, content);
-			} catch (HttpException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}			
+			int code = SMSBusiness.tplSendSms(tpl_id,tpl_value, yuding.mobile);
+			if (code == 0) {
+				renderJSON(true);
+			} else {
+				logger.error("Send SMS failed!!!");
+				renderJSON(false);
+			}
 		}
-		renderJSON(true);
 	}
-	
-	
 	
 	/**
 	 * 临时取消用户的预定
@@ -495,22 +496,24 @@ public class SelfManagementController extends BaseController {
 			yuding.save();
 			// 发送短信通知
 			Merchant m = Merchant.findByMid(yuding.mid);
-			String content = "很抱歉，您在["+m.name+"]的预定已成功取消。";
-			content += "如有疑问，可联系餐厅，电话:";
+			
+			// 401198	「取号啦」通知您，您在[#code1#]的预定已成功取消。如有疑问，可联系餐厅，电话:#code2#。【取号啦】
+			long tpl_id = 401198l;
+			String tpl_value = "#code1#="+m.name;
+			
 			// 电话
 			if(m.telephone !=null && m.telephone.length > 0){
-				content += m.telephone[0]+"。";
+				tpl_value += "&#code2#="+m.telephone[0];
 			}
 			
-			try {
-				SMSBusiness.sendSMS(yuding.mobile, content);
-			} catch (HttpException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}			
+			int code = SMSBusiness.tplSendSms(tpl_id,tpl_value, yuding.mobile);
+			if (code == 0) {
+				renderJSON(true);
+			} else {
+				logger.error("Send SMS failed!!!");
+				renderJSON(false);
+			}
 		}
-		renderJSON(true);
 	}
 
 	/**
@@ -628,8 +631,13 @@ public class SelfManagementController extends BaseController {
 			Reservation r = Reservation.findReservationForHandle(seatNumber, currentNumber, mid, haoma.version);
 			if (r != null) {
 				boolean flag = Reservation.expire(r.id());
+				
+				
 				// 找到被过期的用户
-				Account expiredAccount = Account.findById(new ObjectId(r.accountId));
+				Account expiredAccount = null;
+				if(!com.withiter.utils.StringUtils.isEmpty(r.accountId)){
+					expiredAccount = Account.findById(new ObjectId(r.accountId));
+				}
 				if(expiredAccount != null){
 					String remind = Play.configuration.getProperty("service.push.expiredRemind");
 					JPushReminder.sendAlias(expiredAccount.phone, remind);
@@ -675,24 +683,18 @@ public class SelfManagementController extends BaseController {
 		}
 		Account account = Account.findById(aid);
 		// send message
-		String remind = Play.configuration.getProperty("service.sms.remind");
-		try {
-			int i = SMSBusiness.sendSMS(account.phone, remind);
-			int j = 0;
-			while (i < 0) {
-				i = SMSBusiness.sendSMS(account.phone, remind);
-				j++;
-				if (j == 3) {
-					logger.error("发送提醒短信失败");
-					break;
-				}
+		// 401102	「取号啦」提醒您，在您前面还有#code#个人，请根据您的时间状况前往商家，或者取消排号。推荐使用「取号啦」APP，排队社交新体验。【取号啦】
+		long tpl_id = 401102l;
+		String tpl_value = "&#code#=4";
+		int i = SMSBusiness.tplSendSms(tpl_id, tpl_value, account.phone);
+		int j = 0;
+		while (i < 0) {
+			i = SMSBusiness.tplSendSms(tpl_id, tpl_value, account.phone);
+			j++;
+			if (j == 3) {
+				logger.error("发送提醒短信失败");
+				break;
 			}
-		} catch (HttpException e) {
-			e.printStackTrace();
-			logger.error(ExceptionUtil.getTrace(e));
-		} catch (IOException e) {
-			e.printStackTrace();
-			logger.error(ExceptionUtil.getTrace(e));
 		}
 	}
 
@@ -731,41 +733,27 @@ public class SelfManagementController extends BaseController {
 			rvo.build(reservation);
 			
 			// send message
-			String paiduihaoTip = Play.configuration.getProperty("service.sms.paiduihao");
-			String qianmianTip = Play.configuration.getProperty("service.sms.qianmian");
-			String apptuijian = Play.configuration.getProperty("service.sms.apptuijian");
-			String apptuijian1 = Play.configuration.getProperty("service.sms.apptuijian1");
-			String content = "";
+			long tpl_id = 0l;
+			String tpl_value = "#code1#="+reservation.myNumber+"&#code2#="+rvo.beforeYou;;
 			if(rvo.beforeYou <= 5){
-				content = paiduihaoTip + reservation.myNumber + qianmianTip + rvo.beforeYou + apptuijian1;
+				// 401095	您的排队号是#code1#号，在您前面还有#code2#位排队，很快就到你了，请不要离开哦。推荐使用「取号啦」APP，排队社交新体验。【取号啦】
+				tpl_id = 401095l;
 			} else {
-				content = paiduihaoTip + reservation.myNumber + qianmianTip + rvo.beforeYou + apptuijian;
+				// 401093	您的排队号是#code1#号，在您前面还有#code2#位排队，推荐使用「取号啦」APP，排队社交新体验。【取号啦】
+				tpl_id = 401093l;
 			}
-			try {
-				int i = SMSBusiness.sendSMS(tel, content);
-				int j = 0;
-				while (i < 0) {
-					i = SMSBusiness.sendSMS(tel, content);
-					j++;
-					if (j == 3) {
-//						Haoma.nahaoRollback(reservation);
-						rvo.tipValue = "发送短信失败，请重新发送";
-						rvo.tipKey = false;
-						break;
-					}
+				
+			int i = SMSBusiness.tplSendSms(tpl_id, tpl_value, account.phone);
+			int j = 0;
+			while (i != 0) {
+				i = SMSBusiness.tplSendSms(tpl_id, tpl_value, account.phone);
+				j++;
+				if (j == 3) {
+//					Haoma.nahaoRollback(reservation);
+					rvo.tipValue = "发送短信失败，请重新发送";
+					rvo.tipKey = false;
+					break;
 				}
-			} catch (HttpException e) {
-//				Haoma.nahaoRollback(reservation);
-				rvo.tipValue = "发送短信失败，请重新发送";
-				rvo.tipKey = false;
-				e.printStackTrace();
-				logger.error(ExceptionUtil.getTrace(e));
-			} catch (IOException e) {
-//				Haoma.nahaoRollback(reservation);
-				rvo.tipValue = "发送短信失败，请重新发送";
-				rvo.tipKey = false;
-				e.printStackTrace();
-				logger.error(ExceptionUtil.getTrace(e));
 			}
 			renderJSON(rvo);
 		}

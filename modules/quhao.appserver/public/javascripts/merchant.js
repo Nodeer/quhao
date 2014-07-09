@@ -809,7 +809,6 @@ Merchant.quhaoOnsite = function(seatNumber, mid, tel) {
 						.append("<font id=\"errorTelMsg\" color=\"red\" style=\"padding-left:20px;\">"
 								+ data.tipValue + "</font>");
 				setTimeout('hideModal()', 3000);
-				alert("服务器维护中，马上就好。");
 			}
 		},
 		error : function() {
