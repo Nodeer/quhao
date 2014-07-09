@@ -411,6 +411,9 @@ public class ShareController extends BaseController {
 	 * GET		/share/my							ShareController.my
 	 */
 	public static void my(@Required String aid, @Required int page) {
+		if(validation.hasErrors()){
+			renderJSON(validation.errors());
+		}
 		page = (page == 0) ? 1 : page;
 		List<Share> Shares = Share.findbyAccountId(page, aid);
 		List<ShareVO> ShareVOs = new ArrayList<ShareVO>();
@@ -421,5 +424,21 @@ public class ShareController extends BaseController {
 			ShareVOs.add(svo);
 		}
 		renderJSON(ShareVOs);
+	}
+	
+	/**
+	 * 删除我的分享
+	 * @param sid Share id
+	 * GET		/share/delete						ShareController.delete
+	 */
+	public static void delete(@Required String sid){
+		if(validation.hasErrors()){
+			renderJSON(validation.errors());
+		}
+		
+		Share share = Share.findById(new ObjectId(sid));
+		share.deleted = true;
+		share.save();
+		renderJSON(true);
 	}
 }
