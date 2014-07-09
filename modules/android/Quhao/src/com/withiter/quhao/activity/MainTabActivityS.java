@@ -259,6 +259,9 @@ public class MainTabActivityS extends FragmentActivity implements AMapLocationLi
 			mContent = new HomeFragmentNew();	
 		}
 		
+		topTitle.setText("");
+		citySelectView.setVisibility(View.VISIBLE);
+		
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		
 		ft.replace(R.id.content_frame, mContent,"home");
@@ -400,7 +403,7 @@ public class MainTabActivityS extends FragmentActivity implements AMapLocationLi
 		case R.id.home_layout:
 			unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
 			Map<String, String> mapHome = new HashMap<String, String>();
-			mapHome.put("title", "首页");
+			mapHome.put("title", "");
 			mapHome.put("isHome", "true");
 			topTitleHandler.obtainMessage(200, mapHome).sendToTarget();
 			if (mContent instanceof HomeFragmentNew) {

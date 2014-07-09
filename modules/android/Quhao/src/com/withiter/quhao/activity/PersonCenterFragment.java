@@ -102,8 +102,6 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 	
 	private String newImageName;
 	
-	private boolean isNeedtoRefresh = false;
-	
 	protected ProgressDialogUtil progressDialogUtil;
 	
 	private LinearLayout infoDetailLayout;
@@ -544,8 +542,8 @@ public class PersonCenterFragment extends Fragment implements OnClickListener{
 		intent.putExtra("aspectX", 1);
 		intent.putExtra("aspectY", 1);
 		// outputX outputY 是裁剪图片宽高
-		intent.putExtra("outputX", 100);
-		intent.putExtra("outputY", 100);
+		intent.putExtra("outputX", 200);
+		intent.putExtra("outputY", 200);
 		intent.putExtra("return-data", true);
 		startActivityForResult(intent, 2);
 	}

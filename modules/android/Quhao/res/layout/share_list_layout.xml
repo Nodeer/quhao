@@ -114,6 +114,7 @@
 		       	    android:divider="@null"
 		       	    android:entries="@null"
 		       	    android:headerDividersEnabled="true"
+		       	    android:listSelector="@drawable/list_item_trans"
 		       	    android:scrollbarThumbVertical="@drawable/scrollbar"
 		       	    android:scrollbars="vertical" />
 			<!--  --> </com.withiter.quhao.view.refresh.PullToRefreshView>

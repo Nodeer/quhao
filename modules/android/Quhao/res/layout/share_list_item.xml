@@ -3,7 +3,6 @@
     android:layout_width="fill_parent"
     android:layout_height="250dp"
     android:paddingBottom="10dp"
-    android:background="@android:color/transparent"
     android:descendantFocusability="blocksDescendants" >
 
 	<RelativeLayout 
@@ -96,6 +95,7 @@
 	                android:layout_height="wrap_content"
 	                android:orientation="horizontal"
 	                android:gravity="center_vertical"
+	                android:padding="3dp"
 	                android:layout_weight="1.0">
 	                <ImageView 
 	                    android:layout_height="wrap_content"
@@ -105,7 +105,6 @@
 	                <TextView android:id="@+id/distance"
 	                    android:layout_width="wrap_content"
 	                    android:layout_height="wrap_content"
-	                    android:paddingLeft="3dp"
 	                    android:ellipsize="end"
 	                    android:singleLine="true"
 	                    android:text="11"
@@ -118,6 +117,7 @@
 	                android:layout_height="wrap_content"
 	                android:orientation="horizontal"
 	                android:gravity="center_vertical"
+	                android:padding="3dp"
 	                android:layout_weight="1.0">
 	                <ImageView 
 	                    android:layout_height="wrap_content"
@@ -140,18 +140,20 @@
 	                android:layout_height="wrap_content"
 	                android:orientation="horizontal"
 	                android:gravity="center_vertical"
+	                android:padding="3dp"
 	                android:layout_weight="1.0">
 	                <ImageView android:id="@+id/share_nice_img"
-	                    android:layout_height="wrap_content"
+	                    android:layout_height="fill_parent"
 	                    android:layout_width="wrap_content"
 	                    android:contentDescription="@null"
 	                    android:src="@drawable/share_list_item_nice_nor"/>
 	                <TextView android:id="@+id/nice_count"
 	                    android:layout_width="wrap_content"
-	                    android:layout_height="wrap_content"
+	                    android:layout_height="fill_parent"
 	                    android:ellipsize="end"
 	                    android:singleLine="true"
-	                    android:paddingLeft="3dp"
+	                    android:layout_marginLeft="3dp"
+	                    android:gravity="center"
 	                    android:text="11"
 	                    android:textColor="@color/black_little"
 	                    android:textSize="12sp" />

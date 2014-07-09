@@ -200,7 +200,7 @@ public class ShareListAdapter extends BaseAdapter {
 							String accountId = SharedprefUtil.get(activity, QuhaoConstant.ACCOUNT_ID, "");
 							
 							String url = "share/addNice?sid=" + sId + "&accountId=" + accountId;
-							final CreateShareNiceTask task = new CreateShareNiceTask(R.string.waitting, activity, url);
+							final CreateShareNiceTask task = new CreateShareNiceTask(0, activity, url);
 							task.execute(new Runnable() {
 								
 								@Override

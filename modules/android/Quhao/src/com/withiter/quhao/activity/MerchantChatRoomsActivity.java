@@ -201,7 +201,6 @@ public class MerchantChatRoomsActivity extends QuhaoBaseActivity implements OnHe
 
 	private void getMerchants() {
 
-		String accountId = QHClientApplication.getInstance().accountInfo.accountId;
 		if(null == firstLocation)
 		{
 			Toast.makeText(MerchantChatRoomsActivity.this, "亲，现在没有定位信息，不能查看哦。", Toast.LENGTH_SHORT).show();

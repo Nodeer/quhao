@@ -15,7 +15,6 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -44,7 +43,6 @@ import com.withiter.quhao.task.CreateShareTask;
 import com.withiter.quhao.util.ActivityUtil;
 import com.withiter.quhao.util.StringUtils;
 import com.withiter.quhao.util.tool.ImageUtil;
-import com.withiter.quhao.util.tool.QuhaoConstant;
 
 public class CreateShareActivity extends QuhaoBaseActivity implements AMapLocationListener {
 
@@ -299,12 +297,12 @@ public class CreateShareActivity extends QuhaoBaseActivity implements AMapLocati
 				String message = (String) msg.obj;
 				if ("true".equals(message)) {
 					reLocateBtn.setEnabled(true);
-					reLocateBtn.setBackgroundResource(R.drawable.btn_background_red);
+//					reLocateBtn.setBackgroundResource(R.drawable.btn_background_red);
 				}
 				else
 				{
 					reLocateBtn.setEnabled(false);
-					reLocateBtn.setBackgroundResource(R.drawable.btn_background_red_disable);
+//					reLocateBtn.setBackgroundResource(R.drawable.btn_background_red_disable);
 				}
 			}
 		}

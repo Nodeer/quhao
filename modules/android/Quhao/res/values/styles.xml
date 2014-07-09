@@ -25,7 +25,7 @@
     
     <style name="pathListView" parent="@android:style/Widget.ListView">
         <item name="android:fadingEdge">none</item>
-        <item name="android:divider">@color/light_light_gray</item>
+        <!-- <item name="android:divider">@color/light_light_gray</item>  -->
     </style>
     
     <style name="pathScrollView" parent="@android:style/Widget.ScrollView">

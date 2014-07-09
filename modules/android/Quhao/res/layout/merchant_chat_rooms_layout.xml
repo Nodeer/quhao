@@ -126,11 +126,11 @@
 			        <TextView android:id="@+id/selected_renqi"
 			            android:layout_height="25dp"
 			            android:layout_width="wrap_content"
-			            android:text="人气  >10万"
+			            android:text=""
 			            android:textSize="13sp"
 			            android:gravity="center_vertical"
 			            android:paddingLeft="3dp"
-			            android:drawableLeft="@drawable/ic_map_blue"
+			            android:drawableLeft="@drawable/ic_heart_blue"
 			            android:background="@drawable/chat_room_top_side"
 			            />
 			        <TextView 
@@ -142,11 +142,11 @@
 			        <TextView android:id="@+id/selected_distance"
 			            android:layout_height="25dp"
 			            android:layout_width="wrap_content"
-			            android:text="距离 124km"
+			            android:text=""
 			            android:textSize="13sp"
 			            android:gravity="center_vertical"
 			            android:paddingLeft="3dp"
-			            android:drawableLeft="@drawable/ic_heart_blue"
+			            android:drawableLeft="@drawable/ic_map_blue"
 			            android:background="@drawable/chat_room_top_side"/>
 		        </LinearLayout>
 		    </LinearLayout>
