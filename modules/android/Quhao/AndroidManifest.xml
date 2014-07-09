@@ -180,6 +180,11 @@
 		<activity android:name="com.withiter.quhao.activity.MerchantDetailActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"
 			android:screenOrientation="portrait"  />
 		<!-- merchant details page -->
+		
+		<!-- CreateAppointmentActivity page -->
+		<activity android:name="com.withiter.quhao.activity.CreateAppointmentActivity" android:label="@string/app_name" android:launchMode="singleTop"
+			android:screenOrientation="portrait"  />
+		<!-- CreateAppointmentActivity page -->
 
 		<!-- merchant description page -->
 		<activity android:name="com.withiter.quhao.activity.MerchantDescActivity" android:configChanges="keyboardHidden|orientation" android:label="@string/app_name" android:launchMode="singleTop"

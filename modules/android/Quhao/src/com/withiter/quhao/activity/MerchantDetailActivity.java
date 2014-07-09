@@ -28,7 +28,6 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.withiter.quhao.QHClientApplication;
 import com.withiter.quhao.R;
 import com.withiter.quhao.adapter.PaiduiConditionAdapter;
@@ -918,6 +917,24 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					});
 		
 				} else {
+					Intent intentChat = new Intent(MerchantDetailActivity.this, LoginActivity.class);
+					intentChat.putExtra("activityName", MerchantDetailActivity.class.getName());
+					intentChat.putExtra("merchantId", MerchantDetailActivity.this.merchantId);
+					intentChat.putExtra("notGetNumber", "true");
+					intentChat.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivity(intentChat);
+				}
+				break;
+		case R.id.appointment_layout:
+				unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
+				if (QHClientApplication.getInstance().isLogined) {
+					Intent intentChat = new Intent(MerchantDetailActivity.this, CreateAppointmentActivity.class);
+					intentChat.putExtra("merchantId", MerchantDetailActivity.this.merchantId);
+					intentChat.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivity(intentChat);
+				}
+				else
+				{
 					Intent intentChat = new Intent(MerchantDetailActivity.this, LoginActivity.class);
 					intentChat.putExtra("activityName", MerchantDetailActivity.class.getName());
 					intentChat.putExtra("merchantId", MerchantDetailActivity.this.merchantId);
