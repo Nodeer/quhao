@@ -22,7 +22,7 @@ public class YudingController extends BaseController {
 	/**
 	 * Interception any caller on this controller, will first invoke this method
 	 */
-//	@Before
+	@Before
 	static void checkAuthentification() {
 		Map headers = request.headers;
 		Iterator it = headers.keySet().iterator();
