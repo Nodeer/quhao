@@ -224,12 +224,61 @@
                         android:textColor="@color/white"
                         android:textSize="15.0sp" />
                     <!-- 取号按钮 -->
+                    
+                    <Button
+                        android:id="@+id/btn_appointment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:background="@drawable/btn_background_red"
+                        android:text="@string/open_service"
+                        android:textAppearance="?android:textAppearanceMediumInverse"
+                        android:textColor="@color/white"
+                        android:textSize="11.0sp" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+        
+		<!-- 预约 begin -->
+        <LinearLayout
+            android:id="@+id/appointment_layout"
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/update_password_input"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/empty"
+                android:src="@drawable/merchant_detail_youhui" />
+
+            <TextView
+                android:id="@+id/appointment_text"
+                android:layout_width="0.0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:maxLines="2"
+                android:paddingRight="6.0dip"
+                android:text="预约"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="@color/black_little"
+                android:textSize="16.0sp" />
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/empty"
+                android:duplicateParentState="true"
+                android:paddingRight="6.0dip"
+                android:src="@drawable/arrow_right" />
+        </LinearLayout>
+        <!-- 预约 end -->
+        
         <!-- 我的取号情况 -->
-
         <LinearLayout
             android:id="@+id/currentQuHaoLayout"
             android:layout_width="fill_parent"

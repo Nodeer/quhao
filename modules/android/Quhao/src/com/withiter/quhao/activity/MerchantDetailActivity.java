@@ -105,6 +105,10 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 	
 	private String shareImagePath;
 	
+	private LinearLayout appointmentLayout;
+	
+	private TextView appointmentText;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -175,6 +179,11 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 		//添加优惠信息栏
 		youhuiLayout = (LinearLayout) info.findViewById(R.id.youhui_layout);
 		youhuiLayout.setOnClickListener(this);
+		
+		appointmentLayout = (LinearLayout) info.findViewById(R.id.appointment_layout);
+		appointmentLayout.setOnClickListener(this);
+		appointmentText = (TextView) info.findViewById(R.id.appointment_text);
+		
 		youhuiView = (TextView) info.findViewById(R.id.youhui);
 		info.findViewById(R.id.loadingbar).setVisibility(View.VISIBLE);
 		info.findViewById(R.id.serverdata).setVisibility(View.GONE);
@@ -278,7 +287,7 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 						.cacheInMemory(true)
 						.cacheOnDisk(true)
 						.considerExifParams(true)
-						.displayer(new RoundedBitmapDisplayer(20))
+//						.displayer(new RoundedBitmapDisplayer(20))
 						.build();
 						ImageLoader.getInstance().displayImage(merchant.merchantImage, merchantImg, options, animateFirstListener);
 						
@@ -728,56 +737,6 @@ public class MerchantDetailActivity extends QuhaoBaseActivity {
 					unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
 					e.printStackTrace();
 				}
-				
-				/*
-				Thread thread = new Thread(new Runnable() {
-					
-					@Override
-					public void run() {
-						Looper.prepare();
-						
-						String accountId = SharedprefUtil.get(MerchantDetailActivity.this, QuhaoConstant.ACCOUNT_ID, "");
-						String merchantId = merchant.id;
-						
-						try {
-							QuhaoLog.v(LOGTAG, "commit open service, account id  : " + accountId + " , merchant ID : " + merchantId);
-							if (!ActivityUtil.isNetWorkAvailable(getApplicationContext())) {
-								Toast.makeText(getApplicationContext(), R.string.network_error_info, Toast.LENGTH_SHORT).show();
-								unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
-								return;
-							}
-							
-							String buf = CommonHTTPRequest.get("openService?mid=" + merchantId + "&accountId=" + accountId);
-							if (StringUtils.isNull(buf)) {
-								unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
-								Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_SHORT).show();
-								
-							} else {
-								if("error".equals(buf))
-								{
-									unlockHandler.sendEmptyMessage(UNLOCK_CLICK);
-									Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_SHORT).show();
-								}
-								else
-								{
-									openServiceHandler.obtainMessage(0, buf).sendToTarget();
-//									Toast.makeText(MerchantDetailActivity.this, R.string.committing_success, Toast.LENGTH_SHORT).show();
-								}
-								
-							}
-
-						} catch (Exception e) {
-							Toast.makeText(MerchantDetailActivity.this, R.string.committing_failed, Toast.LENGTH_SHORT).show();
-							unlockHandler.sendEmptyMessageDelayed(UNLOCK_CLICK, 1000);
-							e.printStackTrace();
-						} finally {
-							Looper.loop();
-						}
-						
-					}
-				});
-				thread.start();
-				*/
 			}
 			else
 			{
