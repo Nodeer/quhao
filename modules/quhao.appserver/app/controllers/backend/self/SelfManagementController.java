@@ -685,7 +685,7 @@ public class SelfManagementController extends BaseController {
 		// send message
 		// 401102	「取号啦」提醒您，在您前面还有#code#个人，请根据您的时间状况前往商家，或者取消排号。推荐使用「取号啦」APP，排队社交新体验。【取号啦】
 		long tpl_id = 401102l;
-		String tpl_value = "&#code#=4";
+		String tpl_value = "#code#=4";
 		int i = SMSBusiness.tplSendSms(tpl_id, tpl_value, account.phone);
 		int j = 0;
 		while (i < 0) {
