@@ -19,8 +19,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import play.Play;
+import play.data.validation.Required;
 import play.modules.morphia.Model.MorphiaQuery;
 import play.mvc.Before;
+import vo.CommentVO;
 import vo.ShareVO;
 
 import com.mongodb.BasicDBList;
@@ -29,6 +31,8 @@ import com.mongodb.CommandResult;
 import com.mongodb.gridfs.GridFSInputFile;
 import com.withiter.common.Constants;
 import com.withiter.models.account.Account;
+import com.withiter.models.merchant.Comment;
+import com.withiter.models.merchant.Merchant;
 import com.withiter.models.social.Share;
 import com.withiter.models.social.ShareNice;
 
@@ -398,5 +402,24 @@ public class ShareController extends BaseController {
 		sn.save();
 		
 		renderJSON(true);
+	}
+	
+	/**
+	 * 我的分享
+	 * @param aid
+	 * @param page
+	 * GET		/share/my							ShareController.my
+	 */
+	public static void my(@Required String aid, @Required int page) {
+		page = (page == 0) ? 1 : page;
+		List<Share> Shares = Share.findbyAccountId(page, aid);
+		List<ShareVO> ShareVOs = new ArrayList<ShareVO>();
+		ShareVO svo = new ShareVO();
+		for (Share s : Shares) {
+			svo = new ShareVO();
+			svo.build(s);
+			ShareVOs.add(svo);
+		}
+		renderJSON(ShareVOs);
 	}
 }

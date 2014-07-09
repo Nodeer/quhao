@@ -132,6 +132,7 @@ POST	/share/add							ShareController.add
 GET		/share/getNearShare					ShareController.getNearShare
 GET		/share/getShare						ShareController.getShare
 GET		/share/addNice						ShareController.addNice
+GET		/share/my							ShareController.my
 
 # Open
 GET     /openService						OpenController.openService
